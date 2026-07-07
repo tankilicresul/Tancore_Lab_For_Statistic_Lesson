@@ -1,0 +1,532 @@
+Create a polished one-page web application based primarily on the uploaded UI reference image.
+
+VERY IMPORTANT PRIORITY RULE:
+There are two references:
+1. The first uploaded image is the PRIMARY visual reference. Follow its layout, section placement, card structure, spacing logic, and overall dashboard composition first.
+2. The uploaded design vision PDF is the SECONDARY design reference. Use it to improve color taste, typography, premium feeling, spacing, simplicity, rounded card style, and product-quality decisions.
+If there is any conflict between the image and the PDF, the first uploaded image wins.
+
+PROJECT NAME:
+StatSim AI Lab
+
+MAIN PURPOSE:
+Build a single-page AI-powered statistics simulation laboratory. The platform helps users create, test, visualize, and understand statistical simulations from basic functions to advanced regression models. It should combine:
+- statistical simulation charts
+- generated code
+- Excel / SQL-style data analysis
+- AI chatbot guidance
+
+The user should feel that this is a serious but accessible AI statistics product: modern, useful, premium, clean, warm, and technically reliable.
+
+LANGUAGE:
+Use Turkish throughout the interface.
+
+CORE DESIGN DIRECTION:
+Use the first image as the main layout reference:
+- Left column: “Simülasyonlar”
+- Center top: “Kodlar”
+- Right column: “Excel / SQL”
+- Center bottom: “AI Chat Bot”
+- Large rounded panels
+- Thick soft borders
+- Warm orange/yellow background
+- Dashboard-like structure
+- Visual balance between charts, code, spreadsheet, and chatbot
+
+SECONDARY DESIGN DNA FROM PDF:
+The visual style must feel:
+- Premium but accessible
+- Minimal but not empty
+- Warm but professional
+- Modern but not overly trendy
+- Symmetrical and aligned
+- Functional, not only decorative
+- Clean, trustworthy, and technically sustainable
+- Rounded, soft, spacious, and clear
+
+Avoid:
+- Too many icons
+- Too many cards
+- Too much text
+- Chaotic colors
+- Neon-heavy design
+- Cheap Canva/template feeling
+- Overly dark, cold, corporate, gray look
+- Random effects
+- Unclear user flow
+- Broken Turkish characters
+- Poor mobile responsiveness
+
+COLOR SYSTEM:
+Keep the warm orange/yellow gradient feeling from the uploaded image, but refine it with the design vision colors.
+
+Use:
+- Warm orange: #F5AE50 for actions, highlights, active states, and CTA elements
+- Burgundy: #4B232D for premium headings, section emphasis, and strong text accents
+- Cream/off-white: #FFF4BC or #FAF7EF for soft surfaces
+- Mint: #BDEBE8 only as a subtle secondary accent, not dominant
+- Dark neutral: #232323 for readable text
+- Blue: #2563EB for class 1 / positive data points
+- Red: #EF4444 for class 0 / negative data points
+- Green: #1F8A4C for Excel / SQL accents
+
+Important color rule:
+Use orange as an energy and action color, not everywhere. The product should look warm and premium, not childish or noisy.
+
+TYPOGRAPHY:
+Use a modern readable sans-serif font such as Poppins or Inter.
+Typography should be:
+- Clear
+- Bold where needed
+- Rounded and modern
+- Turkish-character safe
+- Strong section titles
+- Short button labels
+- No decorative fonts in body text
+
+PAGE STRUCTURE:
+Create a single-page responsive dashboard.
+
+Desktop layout:
+Use a 3-column grid similar to the uploaded image.
+
+Left column:
+Panel title: “Simülasyonlar”
+Contains stacked simulation cards/charts.
+
+Center column:
+Top panel: “Kodlar”
+Bottom panel: “AI Chat Bot”
+
+Right column:
+Panel title: “Excel / SQL”
+Contains spreadsheet and SQL interface.
+
+Tablet layout:
+Use 2 columns:
+- Simülasyonlar + Kodlar
+- Excel / SQL + AI Chat Bot
+
+Mobile layout:
+Single column order:
+1. Header
+2. Simülasyonlar
+3. Kodlar
+4. Excel / SQL
+5. AI Chat Bot
+
+HEADER:
+At the top, add a compact hero/header section. Do not make the header too tall.
+
+Title:
+“StatSim AI Lab”
+
+Subtitle:
+“Temel istatistikten ileri regresyon modellerine kadar simülasyon üret, kodla, analiz et ve AI ile öğren.”
+
+Badges:
+- Probability
+- Regression
+- Excel
+- SQL
+- Python
+- Simulation
+- AI Tutor
+
+Header style:
+- Clean
+- Centered or neatly aligned
+- Rounded badge components
+- Warm, premium, not overloaded
+
+SECTION 1 — SIMÜLASYONLAR:
+Create a large rounded card titled “Simülasyonlar”.
+
+This section must visually resemble the left part of the uploaded image:
+- Multiple chart previews stacked vertically
+- Logistic regression style scatter plots
+- Red and blue points
+- Smooth S-shaped curve
+- Clean axis labels
+- Small legends
+- Soft card backgrounds
+
+Include interactive simulations:
+
+1. Logistic Regression Simulation
+Chart:
+- Red and blue scatter points
+- S-shaped logistic curve
+- X-axis: “Model Output”
+- Y-axis: “Probability”
+- Legend: “0’s” and “1’s”
+
+Controls:
+- Örneklem sayısı
+- Gürültü seviyesi
+- Eğim
+- Intercept
+- Karar eşiği
+
+Metrics:
+- Accuracy
+- Confusion Matrix
+- ROC AUC placeholder
+- Precision / Recall placeholder
+
+2. Linear Regression Simulation
+Chart:
+- Scatter plot
+- Regression line
+- Residual visualization option
+
+Controls:
+- Örneklem sayısı
+- Gürültü seviyesi
+- Eğim
+- Intercept
+
+Metrics:
+- R²
+- MSE
+- MAE
+- Coefficients
+
+3. Normal Distribution Simulation
+Chart:
+- Bell curve
+- Histogram
+- Mean line
+- Standard deviation bands
+
+Controls:
+- Ortalama
+- Standart sapma
+- Örneklem sayısı
+
+Metrics:
+- Mean
+- Median
+- Variance
+- Standard deviation
+
+4. Hypothesis Testing Simulation
+Chart:
+- Two distributions
+- p-value area
+- Confidence interval
+
+Controls:
+- Alpha
+- Ortalama farkı
+- Örneklem sayısı
+- Test türü: Z-test / T-test
+
+Metrics:
+- p-value
+- Test statistic
+- Confidence interval
+- Reject / fail to reject decision
+
+5. Advanced Regression Placeholder
+Include cards or tabs for:
+- Multiple Regression
+- Polynomial Regression
+- Ridge Regression
+- Lasso Regression
+- Time Series
+- Monte Carlo Simulation
+
+Keep this section useful but not crowded. Use tabs, dropdowns, or collapsible controls instead of showing everything at once.
+
+SECTION 2 — KODLAR:
+Create a rounded panel titled “Kodlar”.
+
+This panel should resemble the center code area in the uploaded image:
+- Code editor look
+- Line numbers
+- Syntax highlighting
+- Soft shadow
+- Rounded editor card
+- Clean tabs
+
+Tabs:
+- Python
+- R
+- SQL
+- JavaScript
+
+Buttons:
+- “Kodu Kopyala”
+- “Kodu Açıkla”
+- “Simülasyondan Kod Üret”
+- “Notebook’a Aktar” placeholder
+
+The code should update based on the selected simulation.
+
+Default Python code for logistic regression:
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+np.random.seed(42)
+
+X = np.linspace(-20, 20, 500).reshape(-1, 1)
+probability = 1 / (1 + np.exp(-0.25 * X))
+
+y = np.random.binomial(1, probability.ravel())
+
+model = LogisticRegression()
+model.fit(X, y)
+
+predictions = model.predict(X)
+accuracy = accuracy_score(y, predictions)
+
+print("Accuracy:", accuracy)
+print(confusion_matrix(y, predictions))
+
+The code does not need to execute on a backend in the first MVP. However, the UI should feel ready for future code execution.
+
+SECTION 3 — EXCEL / SQL:
+Create a large rounded panel titled “Excel / SQL”.
+
+This panel should visually resemble the right side of the uploaded image, but cleaner and more premium.
+
+Top tabs:
+- Excel View
+- SQL View
+- Data Preview
+
+Excel View:
+Create a spreadsheet-like table with:
+- Formula bar
+- Active cell highlight
+- Editable-looking cells
+- Column headers
+
+Columns:
+- NO
+- X
+- Y
+- Prediction
+- Error
+- Probability
+- Class
+
+Example formula:
+=LINEAR_REGRESSION(A2:B20)
+
+Add small toolbar buttons:
+- “CSV Yükle”
+- “CSV İndir”
+- “Veriyi Temizle”
+- “Formül Uygula”
+
+SQL View:
+Add SQL editor with sample query:
+
+SELECT
+  x,
+  y,
+  prediction,
+  ABS(y - prediction) AS error
+FROM simulation_data
+WHERE model_type = 'logistic_regression';
+
+Buttons:
+- “Sorguyu Çalıştır”
+- “Tabloyu Dışa Aktar”
+- “SQL’i Kopyala”
+
+Data Preview:
+Show summary statistics:
+- Mean
+- Median
+- Standard deviation
+- Variance
+- Min
+- Max
+- Correlation
+- Sample size
+
+SECTION 4 — AI CHAT BOT:
+Create a rounded panel titled “AI Chat Bot”.
+
+This panel should resemble the bottom center dark chat area from the uploaded image.
+
+Design:
+- Dark chat interface
+- Rounded message bubbles
+- User messages in purple/blue
+- AI messages in dark gray
+- Input at bottom
+- Send button
+- Small status: “AI hazır”
+
+Placeholder:
+“İstatistik, regresyon, hipotez testi veya simülasyon hakkında soru sor…”
+
+Default AI message:
+“Merhaba, ben StatSim AI. Hangi istatistiksel modeli simüle etmek istiyorsun? Normal dağılım, güven aralığı, hipotez testi, lineer regresyon, lojistik regresyon veya zaman serisiyle başlayabiliriz.”
+
+Chatbot capabilities in MVP:
+Use mock local responses, but structure the code so it can later connect to an LLM API.
+
+The chatbot should be able to respond to:
+- “Bu model ne işe yarar?”
+- “Bu kodu açıklar mısın?”
+- “Bu regresyonu Excel’de nasıl yaparım?”
+- “Bu SQL sorgusu ne yapıyor?”
+- “P-value ne demek?”
+- “Hangi durumda logistic regression kullanılır?”
+- “Bu simülasyonu daha gerçekçi yap.”
+
+USER FLOW:
+The product should support this flow:
+
+1. User selects a statistical model.
+2. User changes simulation parameters with sliders.
+3. Chart updates.
+4. Synthetic dataset updates.
+5. Summary statistics update.
+6. Generated code updates.
+7. Excel / SQL view updates.
+8. User asks the AI chatbot for explanation.
+
+INTERACTIVITY REQUIREMENTS:
+Add:
+- Model dropdown
+- Sliders
+- Tabs
+- Copy buttons
+- Generate data button
+- Reset button
+- CSV export button
+- Mock chatbot input and response
+- Active states
+- Hover effects
+- Smooth transitions
+
+STATISTICS SCOPE:
+Design the system so it can eventually support:
+
+Basic statistics:
+- Mean
+- Median
+- Mode
+- Variance
+- Standard deviation
+- Correlation
+- Covariance
+- Probability distributions
+
+Intermediate statistics:
+- Normal distribution
+- Binomial distribution
+- Poisson distribution
+- Central Limit Theorem
+- Confidence intervals
+- Z-test
+- T-test
+- Chi-square test
+- ANOVA
+- A/B testing
+
+Advanced statistics:
+- Linear regression
+- Multiple regression
+- Polynomial regression
+- Logistic regression
+- Ridge regression
+- Lasso regression
+- Time series forecasting
+- Monte Carlo simulation
+- Classification metrics
+- Confusion matrix
+- ROC curve
+- Overfitting / underfitting visualization
+
+TECH STACK:
+Use:
+- React
+- TypeScript
+- Tailwind CSS
+- Recharts or Chart.js
+- Component-based architecture
+- Local synthetic data generation
+- No backend required for MVP
+
+Suggested components:
+- AppHeader
+- DashboardGrid
+- SimulationPanel
+- SimulationCard
+- SimulationControls
+- CodePanel
+- CodeTabs
+- SpreadsheetPanel
+- SQLPanel
+- DataPreviewPanel
+- ChatBotPanel
+- StatSummaryCard
+- MetricBadge
+
+DATA GENERATION:
+Generate synthetic data in the frontend.
+
+Linear regression:
+y = slope * x + intercept + noise
+
+Logistic regression:
+p = 1 / (1 + exp(-(slope * x + intercept)))
+y = Bernoulli(p)
+
+Normal distribution:
+Generate random values around mean and standard deviation.
+
+Hypothesis testing:
+Generate two sample groups and calculate mean difference, p-value placeholder, and confidence interval.
+
+DESIGN QUALITY RULES:
+- Keep the first uploaded image’s composition recognizable.
+- Do not redesign it into a generic SaaS landing page.
+- This is a dashboard, not a marketing-only homepage.
+- Preserve the four main modules.
+- Use big rounded cards.
+- Use warm background.
+- Use clear titles.
+- Keep charts visible and central to the product.
+- Make the interface feel like an AI-powered statistics laboratory.
+- Keep the design premium but not overly complex.
+- Use fewer, stronger elements instead of many small decorative components.
+- Every visual element should have a function.
+
+MICROCOPY:
+Use Turkish labels such as:
+- “Simülasyonlar”
+- “Kodlar”
+- “Excel / SQL”
+- “AI Chat Bot”
+- “Model Seç”
+- “Örneklem Sayısı”
+- “Gürültü Seviyesi”
+- “Simülasyonu Çalıştır”
+- “Rastgele Veri Üret”
+- “Varsayılana Dön”
+- “Kodu Kopyala”
+- “Kodu Açıkla”
+- “Sorguyu Çalıştır”
+- “CSV İndir”
+- “AI’ye Sor”
+- “Model aktif”
+- “Veri üretildi”
+- “Kod hazır”
+- “AI hazır”
+
+FINAL OUTPUT EXPECTATION:
+Build a polished interactive MVP, not a static mockup.
+
+The final result should look like the uploaded reference image upgraded with a cleaner, warmer, more premium design system. It should communicate that the user can build simulations, generate code, manipulate data in Excel/SQL style, and learn statistics with AI from beginner concepts to advanced regression models.

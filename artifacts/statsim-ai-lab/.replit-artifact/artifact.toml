@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "StatSim AI Lab"
+version = "1.0.0"
+id = "artifacts/statsim-ai-lab"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20284
+
+[services.development]
+run = "pnpm --filter @workspace/statsim-ai-lab run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/statsim-ai-lab", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/statsim-ai-lab/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20284"
+BASE_PATH = "/"
