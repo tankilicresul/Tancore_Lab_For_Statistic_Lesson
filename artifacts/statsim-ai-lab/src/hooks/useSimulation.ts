@@ -49,8 +49,12 @@ export function useSimulation() {
   }, [selectedModel, simData]);
   
   const getCode = useCallback((lang: 'python' | 'r' | 'sql' | 'javascript') => {
-    return (codeSnippets as any)[selectedModel]?.[lang] || '';
-  }, [selectedModel]);
+    const snip = (codeSnippets as any)[selectedModel]?.[lang];
+    if (typeof snip === 'function') {
+      return snip(params);
+    }
+    return snip || '';
+  }, [selectedModel, params]);
 
   const randomizeData = useCallback(() => {
     setParams(p => ({ ...p, _seed: Math.random() }));
@@ -118,7 +122,8 @@ export function useSimulation() {
           })),
           coveredCount: intervals.length > 0 ? coveredCount : 25,
           M: intervals.length > 0 ? intervals.length : 25,
-          zAlpha: 1.960
+          zAlpha: 1.960,
+          rawUploaded: newData
         }
       });
     } else if (selectedModel === 'clt') {
@@ -129,7 +134,8 @@ export function useSimulation() {
           sampleMeans: means,
           bins: [],
           expectedMean: params.mean || 40,
-          expectedSE: 1.5
+          expectedSE: 1.5,
+          rawUploaded: newData
         }
       });
     } else if (selectedModel === 'qq_plot') {
@@ -139,7 +145,8 @@ export function useSimulation() {
           qqData: newData.map((d, idx) => ({ id: idx + 1, z: d.x, value: d.value ?? d.y, 'Teorik Çizgi': d.x * 1.5 + params.mean })),
           distType: 'YÜKLENEN VERİ',
           regSlope: 1.0,
-          regIntercept: 0.0
+          regIntercept: 0.0,
+          rawUploaded: newData
         }
       });
     } else {

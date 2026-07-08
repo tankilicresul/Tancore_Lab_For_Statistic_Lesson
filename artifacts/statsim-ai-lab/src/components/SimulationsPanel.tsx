@@ -58,47 +58,122 @@ export function SimulationsPanel({ sim }: { sim: any }) {
   const [normalSubMode, setNormalSubMode] = useState<'dist' | 'ci'>('dist');
   const [selectedShooter, setSelectedShooter] = useState<number>(0);
 
+  // Model explanation helpers for educational widgets
+  const getModelExplanationText = () => {
+    switch (selectedModel) {
+      case 'logistic':
+        return 'Lojistik Regresyon: X eksenindeki değişimler sigmoid eğrisiyle 0 ile 1 aralığında olasılıklara dönüştürülür. Eğim (Slope) arttıkça olasılık geçişi daha dik hale gelir.';
+      case 'linear':
+        return "Lineer Regresyon: X ile Y arasındaki doğrusal ilişkiyi gösterir. Eğim (Slope), X arttığında Y'nin nasıl değişeceğini belirtir. Gürültü (Noise) arttıkça noktalar doğrudan uzaklaşır.";
+      case 'normal':
+        return normalSubMode === 'dist' 
+          ? 'Normal Dağılım: Verilerin ortalama (μ) etrafında simetrik çan eğrisi şeklinde yayılımıdır. Standart Sapma (σ) arttıkça çan eğrisi basıklaşır ve yayılır.'
+          : 'Güven Aralığı (CI): Simüle edilen 25 örneklem aralığından gerçek μ değerini (kırmızı çizgi) kapsayanlar yeşil, ıskalayanlar kırmızıyla gösterilmiştir.';
+      case 'hypothesis':
+        return 'Hipotez Testi: İki grubun dağılım çakışmasıdır. Aralarındaki fark (Diff) arttıkça dağılümlar birbirinden uzaklaşır ve anlamlılık (p-değeri) düşer (H₀ reddedilir).';
+      case 'error_propagation':
+        return 'Hata Yayılımı (Atıcı): Atış koordinatlarının hedeften sapma analizidir. Varyans belirsizliği (dağılım çapını), Bias ise hedeften ortalama kaymayı gösterir.';
+      case 'clt':
+        return 'Merkezi Limit Teoremi: Örneklem ortalamalarının dağılımıdır. Örneklem boyutu (n) büyüdükçe bu dağılım teorik normal eğriye (çan eğrisi) yakınsar.';
+      case 'qq_plot':
+        return 'Q-Q Grafiği: Verilerin normal dağılıma uyumunu test eder. Noktalar referans çizgisine ne kadar yakınsa, veri o kadar normal dağılımlıdır.';
+      default:
+        return 'Bu grafik seçili istatistiksel modelin parametreler doğrultusundaki reaktif çıktısını temsil eder.';
+    }
+  };
+
+  const getMetricShortLabel = (key: string) => {
+    switch (key) {
+      case 'R²': return 'açıklama gücü';
+      case 'MSE': return 'tahmin hatası';
+      case 'MAE': return 'mutlak hata';
+      case 'Accuracy': return 'doğruluk';
+      case 'Precision': return 'keskinlik';
+      case 'Recall': return 'duyarlılık';
+      case 'p-değer': return 'anlamlılık';
+      case 'Test İstatistiği': return 'z-stat';
+      case 'Kapsama Oranı': return 'kapsama';
+      case 'Kritik Z Değeri': return 'z-skor';
+      case 'İdeal Genişlik (w)': return 'ci-en';
+      case 'Eğim (reg)': return 'eğim';
+      case 'Kesişim (reg)': return 'kesişim';
+      case 'X̄ Simüle Ortalama': return 'ortalama';
+      case 'Simüle Hata (SE)': return 'standart hata';
+      default: return 'metrik';
+    }
+  };
+
+  const getMetricTooltip = (key: string) => {
+    switch (key) {
+      case 'R²': return 'Modelin açıklama gücü. 1.000 ideal uyumu gösterir.';
+      case 'MSE': return 'Ortalama tahmin hatasının karesi. Düşük olması iyidir.';
+      case 'MAE': return 'Ortalama mutlak hata derecesi.';
+      case 'Accuracy': return 'Doğru tahminlerin toplam veriye oranı.';
+      case 'p-değer': return 'İstatistiksel anlamlılık göstergesi. 0.05 altı anlamlı kabul edilir.';
+      case 'Kapsama Oranı': return 'Güven aralıklarının ne kadarının gerçek μ değerini içerdiğini gösterir.';
+      default: return '';
+    }
+  };
+
+  const getWarningMessage = () => {
+    if (selectedModel === 'clt' && params.cltSampleSize && params.cltSampleSize <= 5) {
+      return `Düşük örneklem boyutu (n = ${params.cltSampleSize}) ortalamaların normal dağılıma yakınsamasını zorlaştırabilir. Teoremin çan eğrisini görmek için örneklem boyutunu artırmayı deneyin.`;
+    }
+    if (selectedModel === 'normal' && params.n && params.n <= 15) {
+      return `Düşük örneklem sayısı (n = ${params.n}) çan eğrisi histogramında düzensiz barlara yol açabilir veya güven aralıklarının hata payını çok genişletebilir.`;
+    }
+    if ((selectedModel === 'linear' || selectedModel === 'logistic' || selectedModel === 'qq_plot') && params.n && params.n <= 25) {
+      return `Küçük veri kümesi boyutu (n = ${params.n}) modelin istatistiksel genellenebilirliğini ve metrik kararlılığını azaltabilir.`;
+    }
+    return null;
+  };
+
   return (
     <Card className="shadow-2xl rounded-[1.5rem] border-0 bg-[#FAF7EF] h-full flex flex-col">
       <CardHeader className="pb-2 shrink-0">
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <CardTitle className="text-xl md:text-2xl font-bold" style={{ color: '#4B232D' }}>
-            Simülasyonlar
-          </CardTitle>
-          
-          {selectedModel === 'normal' && (
-            <div className="flex gap-1.5 bg-white/60 p-1 rounded-xl border border-gray-200/50 shadow-sm text-xs">
-              <button
-                type="button"
-                onClick={() => setNormalSubMode('dist')}
-                className={`px-3 py-1 font-bold rounded-lg transition-all ${normalSubMode === 'dist' ? 'bg-[#F5AE50] text-[#232323] shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
-              >
-                Dağılım
-              </button>
-              <button
-                type="button"
-                onClick={() => setNormalSubMode('ci')}
-                className={`px-3 py-1 font-bold rounded-lg transition-all ${normalSubMode === 'ci' ? 'bg-[#F5AE50] text-[#232323] shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
-              >
-                CI (Güven Aralığı)
-              </button>
-            </div>
-          )}
+        <div className="flex flex-col gap-1.5 w-full">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <CardTitle className="text-xl md:text-2xl font-bold" style={{ color: '#4B232D' }}>
+              Simülasyonlar
+            </CardTitle>
+            
+            {selectedModel === 'normal' && (
+              <div className="flex gap-1.5 bg-white/60 p-1 rounded-xl border border-gray-200/50 shadow-sm text-xs">
+                <button
+                  type="button"
+                  onClick={() => setNormalSubMode('dist')}
+                  className={`px-3 py-1 font-bold rounded-lg transition-all ${normalSubMode === 'dist' ? 'bg-[#F5AE50] text-[#232323] shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
+                >
+                  Dağılım
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setNormalSubMode('ci')}
+                  className={`px-3 py-1 font-bold rounded-lg transition-all ${normalSubMode === 'ci' ? 'bg-[#F5AE50] text-[#232323] shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
+                >
+                  CI (Güven Aralığı)
+                </button>
+              </div>
+            )}
 
-          <Select value={selectedModel} onValueChange={(v: any) => setSelectedModel(v)}>
-            <SelectTrigger className="w-[180px] bg-white border-[#F5AE50]/50 shadow-sm focus:ring-[#F5AE50] font-medium text-[#232323] rounded-xl">
-              <SelectValue placeholder="Model Seç" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="error_propagation">Hata Yayılımı & Shooter</SelectItem>
-              <SelectItem value="hypothesis">Hipotez Testi (Z/t)</SelectItem>
-              <SelectItem value="linear">Lineer Regresyon</SelectItem>
-              <SelectItem value="logistic">Lojistik Regresyon</SelectItem>
-              <SelectItem value="clt">Merkezi Limit Teoremi</SelectItem>
-              <SelectItem value="normal">Normal Dağılım & CI</SelectItem>
-              <SelectItem value="qq_plot">Olasılık Grafiği (Q-Q)</SelectItem>
-            </SelectContent>
-          </Select>
+            <Select value={selectedModel} onValueChange={(v: any) => setSelectedModel(v)}>
+              <SelectTrigger className="w-[180px] bg-white border-[#F5AE50]/50 shadow-sm focus:ring-[#F5AE50] font-medium text-[#232323] rounded-xl">
+                <SelectValue placeholder="Model Seç" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="error_propagation">Hata Yayılımı & Shooter</SelectItem>
+                <SelectItem value="hypothesis">Hipotez Testi (Z/t)</SelectItem>
+                <SelectItem value="linear">Lineer Regresyon</SelectItem>
+                <SelectItem value="logistic">Lojistik Regresyon</SelectItem>
+                <SelectItem value="clt">Merkezi Limit Teoremi</SelectItem>
+                <SelectItem value="normal">Normal Dağılım & CI</SelectItem>
+                <SelectItem value="qq_plot">Olasılık Grafiği (Q-Q)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-[11px] text-[#4B232D]/70 font-semibold select-none">
+            Bu grafik, seçili modelin ürettiği veri dağılımini ve parametrelerin sonuç üzerindeki etkisini gösterir.
+          </p>
         </div>
       </CardHeader>
       
@@ -195,6 +270,37 @@ export function SimulationsPanel({ sim }: { sim: any }) {
             )}
           </ResponsiveContainer>
         </div>
+
+        {/* Model Yorumu ve Canlı Metrikler Bilgi Kartı */}
+        <div className="bg-white border border-[#F5AE50]/20 p-3.5 rounded-[1.25rem] shadow-sm shrink-0 space-y-2.5 select-none">
+          <div className="text-[10px] font-bold text-[#4B232D] uppercase tracking-wider flex items-center gap-1.5 border-b border-gray-100 pb-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F5AE50]" /> Model Yorumu & Canlı Metrikler
+          </div>
+          <p className="text-[11px] text-gray-600 leading-relaxed">
+            {getModelExplanationText()}
+          </p>
+          
+          {/* Metrikler listesi ve kısa açıklamaları */}
+          {metrics && Object.keys(metrics).length > 0 && (
+            <div className="grid grid-cols-2 gap-2 pt-1.5 border-t border-gray-100/50">
+              {Object.entries(metrics).map(([key, val]) => (
+                <div key={key} className="flex justify-between items-center text-[10px] bg-gray-50/50 p-1.5 rounded-lg border border-gray-100/30">
+                  <span className="text-gray-500 font-bold" title={getMetricTooltip(key)}>
+                    {key} <span className="text-[8px] font-normal text-gray-400">({getMetricShortLabel(key)})</span>:
+                  </span>
+                  <span className="font-mono font-bold text-gray-800">{val as string}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Parametre Uç Değer / Düşük Gözlem Uyarısı */}
+        {getWarningMessage() && (
+          <div className="bg-orange-50 border border-orange-100 p-2.5 rounded-xl text-[10px] text-orange-700 leading-relaxed select-none">
+            <strong>Not / Uyarı:</strong> {getWarningMessage()} Parametreleri değiştirerek dağılımı daha düzgün gözlemleyebilirsiniz.
+          </div>
+        )}
 
         {/* Controls */}
         <div className="space-y-4 bg-white p-4 rounded-[1.25rem] shadow-sm border border-[#F5AE50]/10 shrink-0">

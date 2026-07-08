@@ -7,7 +7,7 @@ import { Copy, Code, Laptop, Bot, Send, User, Play, Terminal } from 'lucide-reac
 import { useToast } from '@/hooks/use-toast';
 
 export function CodePanel({ sim }: { sim: any }) {
-  const { getCode, selectedModel, params, metrics } = sim;
+  const { getCode, selectedModel, params, metrics, simData } = sim;
   const [activeTab, setActiveTab] = useState<'code' | 'ai'>('code');
   const [lang, setLang] = useState<'python' | 'r' | 'sql' | 'javascript'>('python');
   const { toast } = useToast();
@@ -34,10 +34,13 @@ export function CodePanel({ sim }: { sim: any }) {
 
   useEffect(() => {
     setEditedCode(getCode(lang));
-    // Reset local logs and counter when switching model or language to keep cell state clean
+  }, [lang, selectedModel, getCode]);
+
+  useEffect(() => {
+    // Reset local logs and counter ONLY when switching model or language to keep cell state clean
     setLocalConsoleLogs([]);
     setLocalExecutionCount(0);
-  }, [lang, selectedModel, getCode]);
+  }, [lang, selectedModel]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(editedCode);
@@ -45,12 +48,100 @@ export function CodePanel({ sim }: { sim: any }) {
   };
 
   const getExplanation = () => {
+    const metricsText = Object.entries(metrics).map(([k,v]) => `- **${k}**: ${v}`).join('\n');
+    
     switch(selectedModel) {
-      case 'logistic': return "Bu blok, Lojistik Regresyon için veri simülasyonunu ve model eğitimini gerçekleştirir. Sınıflandırma problemi olduğu için olasılıklar üretilir ve accuracy (doğruluk) hesaplanır.";
-      case 'linear': return "Lineer regresyon modeli için sürekli bir bağımlı değişken ve gürültü eklenmiş bağımsız değişkenler üretilir. En küçük kareler yöntemiyle (OLS) regresyon doğrusu oluşturulur.";
-      case 'normal': return "Box-Muller veya benzeri dönüşüm algoritmaları kullanılarak belirli bir ortalama ve standart sapmaya sahip, normal dağılımlı sentetik veriler üretilir.";
-      case 'hypothesis': return "İki farklı grubun normal dağılım varsayımıyla üretilen verileri üzerinde bağımsız örneklemler t-testi veya Z-testi uygulanır. p-değeri anlamlılığı gösterir.";
-      default: return "Seçili simülasyon modelinin kod yapısı ve matematiksel formülasyonu hakkında bilgi almak için soru sorabilirsiniz.";
+      case 'logistic':
+        return `Lojistik Regresyon analizi için yazılan kod ${lang.toUpperCase()} dilindedir.
+        
+**Önemli Parametreleriniz:**
+- Eğim (Slope): ${params.slope} (Katsayı büyüdükçe sınıf sınırı dikleşir)
+- Karar Eşiği (Threshold): ${params.threshold} (0.5 üzerindekiler 1 sınıfına atanır)
+
+**Canlı Metrikler:**
+${metricsText}
+
+**Neye Dikkat Etmeliyim?**
+- Eğim katsayısının işareti pozitif ise X arttıkça Y'nin 1 olma olasılığı artar.
+- Karar eşiğini artırdığınızda (örn. 0.8), modelin 1 sınıfı tahmin etmesi zorlaşır ve Duyarlılık (Recall) düşerken, Keskinlik (Precision) yükselebilir.`;
+
+      case 'linear':
+        return `Lineer Regresyon analizi için yazılan kod ${lang.toUpperCase()} dilindedir.
+        
+**Önemli Parametreleriniz:**
+- Eğim (Slope): ${params.slope} (X'teki 1 birimlik artışın Y'deki değişim etkisi)
+- Kesişim (Intercept): ${params.intercept} (X = 0 iken Y'nin aldığı değer)
+- Gürültü (Noise): ${params.noise} (Noktaların doğrudan sapma miktarı)
+
+**Canlı Metrikler:**
+${metricsText}
+
+**Neye Dikkat Etmeliyim?**
+- R² (Açıklayıcılık Skoru) 1.0'a ne kadar yakınsa model veriyi o kadar iyi açıklar.
+- Gürültüyü (Noise) artırdığınızda verilerin saçılımı artar, MSE yükselir ve R² düşer.`;
+
+      case 'normal':
+        return `Normal Dağılım ve Güven Aralığı (CI) simülasyonu için yazılan kod ${lang.toUpperCase()} dilindedir.
+        
+**Önemli Parametreleriniz:**
+- Ortalama (μ): ${params.mean} (Çan eğrisinin tepe noktası)
+- Standart Sapma (σ): ${params.std} (Çan eğrisinin genişliği ve yayılımı)
+- Örneklem Boyutu (n): ${params.n} (Çekilen veri adedi)
+- Güven Düzeyi: %${Math.round((params.confidence ?? 0.95) * 100)}
+
+**Canlı Metrikler:**
+${metricsText}
+
+**Neye Dikkat Etmeliyim?**
+- Güven düzeyini artırdığınızda (örn. %95'ten %99'a), güven aralığı genişliği (w) artar.
+- Örneklem sayısını (n) artırdığınızda ise Standart Hata düşer ve güven aralığı daralarak daha hassas bir tahmin sunar.
+- Kapsama Oranı, simüle edilen 25 aralıktan kaç tanesinin gerçek μ değerini içerdiğini gösterir.`;
+
+      case 'hypothesis':
+        return `İki Örneklem t-Testi hipotez analizi için yazılan kod ${lang.toUpperCase()} dilindedir.
+        
+**Önemli Parametreleriniz:**
+- Grup Farkı (Diff): ${params.meanDiff} (A ve B grupları arasındaki gerçek ortalama farkı)
+- Anlamlılık Eşiği (Alpha): ${params.alpha} (Hata yapma payı eşiği, genellikle 0.05)
+
+**Canlı Metrikler:**
+${metricsText}
+
+**Neye Dikkat Etmeliyim?**
+- P-değeri (p-value), anlamlılık eşiğinden (Alpha) küçükse "Grup A ile Grup B arasında istatistiksel olarak anlamlı bir fark vardır" deriz (H0 reddedilir).
+- Grup farkını (Diff) artırdığınızda p-değerinin hızla düştüğünü ve testin gücünün arttığını göreceksiniz.`;
+
+      case 'clt':
+        return `Merkezi Limit Teoremi (CLT) analizi için yazılan kod ${lang.toUpperCase()} dilindedir.
+        
+**Önemli Parametreleriniz:**
+- Dağılım Tipi: ${params.cltSource ?? 'uniform'} (Ana kütlenin orijinal dağılımı)
+- Örneklem Boyutu (n): ${params.cltSampleSize ?? 30} (Her örneklemdeki gözlem sayısı)
+- Simülasyon Adedi (M): ${params.cltSamplesCount ?? 200} (Toplam çekilen örneklem sayısı)
+
+**Canlı Metrikler:**
+${metricsText}
+
+**Neye Dikkat Etmeliyim?**
+- Orijinal kaynak dağılım ne kadar çarpık olursa olsun, n örneklem boyutu arttıkça ortalamaların dağılımı normal dağılıma (çan eğrisine) yakınsar.
+- Standart Hata (SE), n arttıkça yayılımı daraltır.`;
+
+      case 'qq_plot':
+        return `Q-Q Grafiği normal olasılık analizi için yazılan kod ${lang.toUpperCase()} dilindedir.
+        
+**Önemli Parametreleriniz:**
+- Dağılım Tipi: ${params.qqDistribution ?? 'normal'}
+- Örneklem Adedi (n): ${params.n}
+
+**Canlı Metrikler:**
+${metricsText}
+
+**Neye Dikkat Etmeliyim?**
+- Noktalar referans doğrusu üzerinde sıralanıyorsa veri normal dağılıma uymaktadır.
+- Sağa çarpık dağılım seçildiğinde noktaların referans doğrusundan bükülerek saptığını ve normal dağılım varsayımının ihlal edildiğini görebilirsiniz.`;
+
+      default:
+        return `Seçili simülasyon modelinin kod yapısı ve matematiksel formülasyonu hakkında bilgi almak için soru sorabilirsiniz.`;
     }
   };
 
@@ -88,23 +179,34 @@ export function CodePanel({ sim }: { sim: any }) {
       const lower = userMsg.toLowerCase();
       const metricsText = Object.entries(metrics).map(([k,v]) => `- **${k}**: ${v}`).join('\n');
       
-      if (lower.includes('metrik') || lower.includes('sonuç') || lower.includes('değer') || lower.includes('tahmin') || lower.includes('ölçüm')) {
-        aiResponse = `Şu anki **${currentModelName}** simülasyon sonuçlarınız ve hesaplanan metrikleriniz şu şekildedir:\n\n${metricsText}\n\nBu metrikler, yaptığınız parametre değişikliklerine veya Excel tablosundaki veri hücrelerine yaptığınız elle müdahalelere göre dinamik olarak anında güncellenmektedir. Hangi metriği açıklayayım?`;
+      if (lower.includes('açıkla') || lower.includes('kod') || lower.includes('anlat') || lower.includes('nedir')) {
+        aiResponse = getExplanation();
+      } else if (lower.includes('metrik') || lower.includes('sonuç') || lower.includes('değer') || lower.includes('tahmin') || lower.includes('ölçüm')) {
+        aiResponse = `Şu anki **${currentModelName}** simülasyon sonuçlarınız ve hesaplanan metrikleriniz şu şekildedir:\n\n${metricsText}\n\n**Neye Dikkat Etmeliyim?**\n- Metrikler, Excel tablosundaki veri hücrelerine veya parametre slider'larına yaptığınız müdahalelere göre anlık hesaplanır.\n- Modelinizin açıklayıcılığını artırmak için parametreleri veya veri noktalarını düzenleyip "Run" butonu ile çıktıyı analiz edebilirsiniz.`;
       } else if (lower.includes('logistik') || lower.includes('lojistik')) {
-        aiResponse = `Lojistik regresyon, sınıflandırma problemlerinde olasılık üretmek için kullanılır. Şu anki parametrelerinize göre eğim: **${params.slope}** ve karar eşiği: **${params.threshold}** olarak ayarlanmış durumdadır.`;
+        aiResponse = `Lojistik regresyon, sınıflandırma problemlerinde olasılık üretmek için kullanılır. Şu anki parametrelerinize göre eğim: **${params.slope}** ve karar eşiği: **${params.threshold}** olarak ayarlanmış durumdadır. Sınıf sınırını dikleştirmek için eğim değerini artırabilirsiniz.`;
       } else if (lower.includes('lineer')) {
-        aiResponse = `Lineer regresyon, değişkenler arasındaki doğrusal ilişkiyi inceler. Şu anki modelinizde eğim: **${params.slope}** ve gürültü seviyesi: **${params.noise}** olarak ayarlanmıştır.`;
+        aiResponse = `Lineer regresyon, değişkenler arasındaki doğrusal ilişkiyi inceler. Şu anki modelinizde eğim: **${params.slope}** ve gürültü seviyesi: **${params.noise}** olarak ayarlanmıştır. Gürültü arttıkça tahmin hatası (MSE) büyüyecektir.`;
       } else if (lower.includes('normal') || lower.includes('dağılım') || lower.includes('güven')) {
         aiResponse = `Normal dağılım simülasyonunda şu anki ortalamanız: **${params.mean}** ve standart sapmanız: **${params.std}** olarak ayarlanmıştır. Güven düzeyiniz ise **%${Math.round((params.confidence ?? 0.95) * 100)}** CI olarak seçilmiştir.`;
       } else if (lower.includes('clt') || lower.includes('limit') || lower.includes('teorem')) {
         aiResponse = `Merkezi Limit Teoremi simülasyonunda örneklem boyutu n: **${params.cltSampleSize ?? 30}** ve simülasyon adedi M: **${params.cltSamplesCount ?? 200}** olarak ayarlanmıştır. Örneklem boyutu arttıkça ortalamaların dağılımı daha düzgün bir çan eğrisi halini alacaktır.`;
       } else {
-        aiResponse = `Şu an aktif olarak **${currentModelName}** simülasyonunu çalıştırıyorsunuz.\n\n**Aktif Parametreleriniz:**\n- Gözlem Sayısı (n): ${params.n}\n- Ortalama (μ): ${params.mean}\n- Standart Sapma (σ): ${params.std}\n\n**Hesaplanan Canlı Metrikler:**\n${metricsText}\n\nİstediğiniz istatistiksel konuyu sorabilirsiniz. Excel tablosundaki değerleri değiştirerek grafiklerin ve bu metriklerin nasıl anında güncellendiğini izleyebilirsiniz!`;
+        aiResponse = `Şu an aktif olarak **${currentModelName}** simülasyonunu çalıştırıyorsunuz.\n\n**Aktif Parametreleriniz:**\n- Gözlem Sayısı (n): ${getSampleSize()}\n- Ortalama (μ): ${params.mean ?? 'N/A'}\n- Standart Sapma (σ): ${params.std ?? 'N/A'}\n\n**Hesaplanan Canlı Metrikler:**\n${metricsText}\n\nİstediğiniz istatistiksel konuyu sorabilirsiniz. Excel tablosundaki değerleri değiştirerek grafiklerin ve bu metriklerin nasıl anında güncellendiğini izleyebilirsiniz!`;
       }
       
       setMessages(prev => [...prev, { role: 'ai', text: aiResponse }]);
       setIsTyping(false);
     }, 1200);
+  };
+
+  const getSampleSize = () => {
+    if (!simData) return 0;
+    if (Array.isArray(simData)) return simData.length;
+    if (simData.intervals) return simData.intervals.length;
+    if (simData.qqData) return simData.qqData.length;
+    if (simData.sampleMeans) return simData.sampleMeans.length;
+    return params.n || 0;
   };
 
   // Helper to generate simulated output logs based on current model parameters and metrics
@@ -114,6 +216,10 @@ export function CodePanel({ sim }: { sim: any }) {
     logs.push(`Type "help", "copyright", "credits" or "license" for more information.`);
     logs.push(`>>> Executing model_run.py ...\n`);
     
+    logs.push(`[VERİ ANALİZİ]`);
+    logs.push(`- Veri Kaynağı: Aktif simülasyon ve tablo verileri yüklendi.`);
+    logs.push(`- Toplam Satır Sayısı: ${getSampleSize()} satır`);
+    
     const currentModelName = model === 'logistic' ? 'Lojistik Regresyon'
       : model === 'linear' ? 'Lineer Regresyon'
       : model === 'normal' ? 'Normal Dağılım & Güven Aralığı (CI)'
@@ -122,9 +228,7 @@ export function CodePanel({ sim }: { sim: any }) {
       : model === 'clt' ? 'Merkezi Limit Teoremi'
       : 'Q-Q Olasılık Grafiği';
 
-    logs.push(`[MODEL BİLGİSİ]`);
-    logs.push(`- Model Adı: ${currentModelName}`);
-    logs.push(`- Gözlem Sayısı (n): ${activeParams.n ?? 'N/A'}`);
+    logs.push(`- Aktif İstatistiksel Model: ${currentModelName}`);
     logs.push(``); // Blank line
 
     logs.push(`[HESAPLANAN CANLI METRİKLER]`);
@@ -148,20 +252,15 @@ export function CodePanel({ sim }: { sim: any }) {
       logs.push(`- Model parametreleri varsayılan değerlerde.`);
     }
     
-    logs.push(`\n>>> Execution finished successfully without errors.`);
+    logs.push(`\n>>> Execution finished successfully. Active dataset analyzed without changes.`);
     return logs;
   };
 
   const handleRunCode = () => {
     setLocalExecutionCount(prev => prev + 1);
-    if (typeof sim.randomizeData === 'function') {
-      sim.randomizeData();
-    }
-    // Slight timeout allows randomizeData state and metrics updates to complete
-    setTimeout(() => {
-      const logs = generateConsoleLogs(sim.selectedModel, sim.params, sim.metrics);
-      setLocalConsoleLogs(logs);
-    }, 100);
+    // Generates logs directly from the current model state without randomizing data
+    const logs = generateConsoleLogs(selectedModel, params, metrics);
+    setLocalConsoleLogs(logs);
   };
 
   return (

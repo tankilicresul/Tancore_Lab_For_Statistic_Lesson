@@ -68,20 +68,29 @@ export function ExcelSQLPanel({ sim }: { sim: any }) {
         const valKey = keys.find(k => /^(value|val|score|measurement|result|data)$/i.test(k)) || keys[0];
 
         const mappedData = rawData.map((row: any, idx: number) => {
+          const parsedRow: any = { id: idx + 1 };
+          
+          // Copy all original columns, parsing strings to numbers where appropriate
+          Object.entries(row).forEach(([key, val]) => {
+            if (key === 'id') return;
+            const num = parseFloat(val as string);
+            parsedRow[key] = isNaN(num) ? val : num;
+          });
+
+          // Ensure model compatibility placeholders if they do not exist
           const xVal = parseFloat(row[xKey]);
           const yVal = parseFloat(row[yKey]);
           const val = parseFloat(row[valKey]);
 
-          return {
-            id: idx + 1,
-            x: isNaN(xVal) ? 0 : xVal,
-            y: isNaN(yVal) ? 0 : yVal,
-            value: isNaN(val) ? 0 : val,
-            prediction: isNaN(yVal) ? 0 : (yVal > 0.5 ? 1 : 0),
-            p: isNaN(xVal) ? 0.5 : 1 / (1 + Math.exp(-xVal)),
-            cleanY: isNaN(yVal) ? 0 : yVal,
-            error: 0
-          };
+          if (typeof parsedRow.x === 'undefined') parsedRow.x = isNaN(xVal) ? 0 : xVal;
+          if (typeof parsedRow.y === 'undefined') parsedRow.y = isNaN(yVal) ? 0 : yVal;
+          if (typeof parsedRow.value === 'undefined') parsedRow.value = isNaN(val) ? 0 : val;
+          if (typeof parsedRow.prediction === 'undefined') parsedRow.prediction = isNaN(yVal) ? 0 : (yVal > 0.5 ? 1 : 0);
+          if (typeof parsedRow.p === 'undefined') parsedRow.p = isNaN(xVal) ? 0.5 : 1 / (1 + Math.exp(-xVal));
+          if (typeof parsedRow.cleanY === 'undefined') parsedRow.cleanY = isNaN(yVal) ? 0 : yVal;
+          if (typeof parsedRow.error === 'undefined') parsedRow.error = 0;
+
+          return parsedRow;
         });
 
         sim.loadCustomData(mappedData);
@@ -112,6 +121,9 @@ export function ExcelSQLPanel({ sim }: { sim: any }) {
 
   const getTableData = () => {
     if (!simData) return [];
+    if (simData.rawUploaded) {
+      return simData.rawUploaded;
+    }
     switch (selectedModel) {
       case 'logistic':
       case 'linear':
@@ -289,7 +301,7 @@ export function ExcelSQLPanel({ sim }: { sim: any }) {
   return (
     <Card className="shadow-2xl rounded-[1.5rem] border-0 bg-white h-full flex flex-col">
       <CardHeader className="pb-3 flex flex-row items-center justify-between shrink-0">
-        <CardTitle className="text-2xl font-bold flex items-center gap-2" style={{ color: '#1F8A4C' }}>
+        <CardTitle className="text-xl md:text-2xl font-bold flex items-center gap-2" style={{ color: '#1F8A4C' }}>
           <FileSpreadsheet className="w-6 h-6" />
           Excel / SQL
         </CardTitle>
@@ -467,6 +479,9 @@ export function ExcelSQLPanel({ sim }: { sim: any }) {
                     </TableBody>
                   </Table>
                 )}
+              </div>
+              <div className="text-[10px] text-gray-400 italic text-right select-none pr-1 mt-1">
+                * Bu sekme SQL öğrenme amaçlıdır; veritabanı sorguları simüle edilmiş tablo verileriniz üzerinden üretilmektedir.
               </div>
             </TabsContent>
 
