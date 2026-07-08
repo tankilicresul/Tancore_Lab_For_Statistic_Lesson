@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import * as XLSX from 'xlsx';
 
 export function ExcelSQLPanel({ sim }: { sim: any }) {
-  const { simData, selectedModel, metrics } = sim;
+  const { simData, selectedModel, metrics, params } = sim;
   const [tab, setTab] = useState('excel');
   const [isQuerying, setIsQuerying] = useState(false);
   const { toast } = useToast();
@@ -174,6 +174,118 @@ export function ExcelSQLPanel({ sim }: { sim: any }) {
     }
   };
 
+  // Helper translations and metrics info for educational layout
+  const getModelNameTurkish = (model: string) => {
+    switch (model) {
+      case 'logistic': return 'Lojistik Regresyon';
+      case 'linear': return 'Lineer Regresyon';
+      case 'normal': return 'Normal Dağılım & CI';
+      case 'hypothesis': return 'Hipotez Testi (Z/t)';
+      case 'error_propagation': return 'Hata Yayılımı';
+      case 'clt': return 'Merkezi Limit Teoremi';
+      case 'qq_plot': return 'Q-Q Olasılık Grafiği';
+      default: return model;
+    }
+  };
+
+  const getSampleSize = () => {
+    if (Array.isArray(simData)) return simData.length;
+    if (simData.intervals) return simData.intervals.length;
+    if (simData.qqData) return simData.qqData.length;
+    if (simData.sampleMeans) return simData.sampleMeans.length;
+    return params.n || 0;
+  };
+
+  const getColumnCount = () => {
+    const firstRow = getTableData()[0];
+    if (!firstRow) return 0;
+    return Object.keys(firstRow).filter(k => k !== 'id').length;
+  };
+
+  const getFormulaExplanation = () => {
+    switch (selectedModel) {
+      case 'logistic': return 'Bu formül, bağımlı kategorik değişken Y ile bağımsız değişken X arasındaki lojistik regresyon ilişkisinin katsayılarını Excel üzerinde hesaplamak için kullanılır.';
+      case 'linear': return 'Bu formül, bağımlı değişken Y ile bağımsız değişken X arasındaki en uygun regresyon doğrusunun (OLS) eğim ve kesişim katsayılarını döner.';
+      case 'normal': return 'Bu formül, belirli bir alpha değeri (%95 CI için 0.05) ve standart sapma üzerinden normal dağılım tabanlı güven aralığı hata payını verir.';
+      case 'hypothesis': return 'Bu formül, iki bağımsız örneklem grubunun ortalamaları arasında anlamlı bir fark olup olmadığını t-testi ile kontrol eder.';
+      case 'error_propagation': return 'Bu formül, koordinat çiftlerinin karelerinin ortalamasını alarak atıcının hedef merkezine olan MSE (Hata Kareler Ortalaması) oranını hesaplar.';
+      case 'clt': return 'Bu formül, ana kütleden çekilen örneklemlerin alt ortalamalarını (X̄) bularak CLT grafiği için örneklem ortalaması veri serisini hazırlar.';
+      case 'qq_plot': return 'Bu formül, sıralı olasılık düzeylerine karşılık gelen standart normal dağılımın teorik çeyrekliklerini (z-skorlarını) bulur.';
+      default: return 'Bu formül, seçili istatistiksel model için güven aralığı veya özet metrik hesaplamasını temsil eder.';
+    }
+  };
+
+  const getColumnGuide = () => {
+    switch (selectedModel) {
+      case 'logistic':
+        return [
+          { col: 'x', desc: 'bağımsız değişken' },
+          { col: 'y', desc: 'gerçek sınıf (0/1)' },
+          { col: 'p', desc: 'sigmoid olasılığı' },
+          { col: 'prediction', desc: 'tahmin sınıfı' },
+          { col: 'error', desc: 'mutlak hata' }
+        ];
+      case 'linear':
+        return [
+          { col: 'x', desc: 'bağımsız değişken' },
+          { col: 'y', desc: 'gürültülü gözlem' },
+          { col: 'cleanY', desc: 'gerçek doğru değeri' },
+          { col: 'prediction', desc: 'tahmin edilen Y' },
+          { col: 'error', desc: 'hata payı (ABS)' }
+        ];
+      case 'normal':
+        return [
+          { col: 'mean', desc: 'örneklem ortalaması' },
+          { col: 'lower', desc: 'sol güven sınırı' },
+          { col: 'upper', desc: 'sağ güven sınırı' },
+          { col: 'covers', desc: 'gerçek μ aralıkta mı?' }
+        ];
+      case 'hypothesis':
+        return [
+          { col: 'groupA', desc: 'Grup A gözlem değeri' },
+          { col: 'groupB', desc: 'Grup B gözlem değeri' }
+        ];
+      case 'error_propagation':
+        return [
+          { col: 'x', desc: 'atışın X koordinatı' },
+          { col: 'y', desc: 'atışın Y koordinatı' }
+        ];
+      case 'clt':
+        return [
+          { col: 'X̄', desc: 'örneklem ortalaması' }
+        ];
+      case 'qq_plot':
+        return [
+          { col: 'z', desc: 'teorik standart normal çeyrekliği' },
+          { col: 'value', desc: 'sıralı örneklem değeri' },
+          { col: 'Teorik Çizgi', desc: 'normal referans doğrusu' }
+        ];
+      default:
+        return [];
+    }
+  };
+
+  const getModelEducationalDescription = (model: string) => {
+    switch (model) {
+      case 'logistic':
+        return 'Lojistik regresyon, sınıflandırma analizi için kullanılır. Tablodaki "y" değeri gerçek sınıfları (0 veya 1), "p" ise modelin o verinin 1 olma olasılığına dair tahminini gösterir. Hücrelerdeki X değerlerini değiştirerek tahmin olasılığının sigmoid eğrisi boyunca nasıl kaydığını izleyebilirsiniz.';
+      case 'linear':
+        return 'Lineer regresyon, iki sürekli değişken arasındaki en uygun düz doğruyu arar. Tablodaki "cleanY" gürültüsüz asıl değeri, "y" ise gürültü eklenmiş gerçek gözlemi temsil eder. Tablodaki X veya Y değerlerini düzenlediğinizde, en küçük kareler regresyon doğrusunun eğiminin nasıl saptığını gözlemleyebilirsiniz.';
+      case 'normal':
+        return 'Burada normal dağılımdan çekilen örneklemler için simüle edilmiş güven aralıkları (CI) listelenmektedir. "covers" sütunu, hesaplanan alt (lower) ve üst (upper) limitlerin gerçek ana kütle ortalamasını (μ) içerip içermediğini (true/false) test eder. Örneklem boyutu (n) arttıkça aralık genişliğinin daraldığını görebilirsiniz.';
+      case 'hypothesis':
+        return 'Bu veri seti iki bağımsız grubun (Grup A ve Grup B) ölçüm değerlerini içerir. İki grup arasındaki ortalama farkı test etmek için iki-örneklemli t-testi simüle edilir. Excel sekmesindeki veri hücrelerini değiştirerek ortalamaların ve dolayısıyla p-değerinin nasıl etkilendiğini test edebilirsiniz.';
+      case 'error_propagation':
+        return 'Hata yayılımı modunda, hedef tahtasındaki (0,0) merkezine yapılan atışların koordinatları (X, Y) listelenmektedir. Ortalama karesel farklar alınarak Bias, Varyans ve MSE (Hata Kareler Ortalaması) hesaplanır. Hataların koordinatlardaki yayılımını ve kümülatif MSE etkisini inceleyebilirsiniz.';
+      case 'clt':
+        return 'Merkezi Limit Teoremi modunda, çekilen rastgele örneklemlerin hesaplanan ortalamaları (X̄) listelenir. Başlangıç dağılımı (uniform, poisson vb.) ne olursa olsun, bu ortalamaların dağılımı her zaman çan eğrisine (normal dağılım) yakınsar. Hücre değerlerini değiştirerek ortalamanın nasıl kaydığını görebilirsiniz.';
+      case 'qq_plot':
+        return 'Q-Q Plot tablosunda, sıralanmış örneklem değerleri ("value") ile standart normal dağılımın teorik çeyreklikleri ("z") eşleştirilmektedir. Eğer veriler normal dağılıyorsa, z ve value çiftleri doğrusal bir çizgi üzerinde yer alacaktır. Uyum kalitesini eğim katsayısı üzerinden inceleyebilirsiniz.';
+      default:
+        return 'Bu istatistiksel model simülasyonu, öğrencilerin veri manipülasyonu, formülasyon ve görselleştirme arasındaki doğrudan ilişkiyi kavrayabilmesi amacıyla kurgulanmıştır.';
+    }
+  };
+
   return (
     <Card className="shadow-2xl rounded-[1.5rem] border-0 bg-white h-full flex flex-col">
       <CardHeader className="pb-3 flex flex-row items-center justify-between shrink-0">
@@ -203,8 +315,29 @@ export function ExcelSQLPanel({ sim }: { sim: any }) {
           <Button variant="ghost" size="icon" className="w-9 h-9 text-[#1F8A4C] bg-green-50 rounded-lg" title="Formül Uygula"><Sigma className="w-4 h-4" /></Button>
         </div>
       </CardHeader>
+      
       <CardContent className="flex-1 overflow-hidden flex flex-col">
-        <Tabs value={tab} onValueChange={setTab} className="h-full flex flex-col">
+        {/* Veri Kaynağı Bilgi Kartı */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 bg-green-50/40 border border-green-100/50 p-2.5 rounded-xl text-xs mb-3">
+          <div>
+            <span className="text-gray-400 font-semibold block uppercase text-[9px] tracking-wider">Veri Kaynağı</span>
+            <span className="font-bold text-gray-700">Simülasyon Datası</span>
+          </div>
+          <div>
+            <span className="text-gray-400 font-semibold block uppercase text-[9px] tracking-wider">Model</span>
+            <span className="font-bold text-[#1F8A4C]">{getModelNameTurkish(selectedModel)}</span>
+          </div>
+          <div>
+            <span className="text-gray-400 font-semibold block uppercase text-[9px] tracking-wider">Gözlem Sayısı</span>
+            <span className="font-bold text-gray-700">{getSampleSize()} Satır</span>
+          </div>
+          <div>
+            <span className="text-gray-400 font-semibold block uppercase text-[9px] tracking-wider">Çalışma Modu</span>
+            <span className="font-bold text-gray-700">Eğitim / Mock Lab</span>
+          </div>
+        </div>
+
+        <Tabs value={tab} onValueChange={setTab} className="h-full flex flex-col overflow-hidden">
           <TabsList className="grid grid-cols-3 bg-green-50/70 p-1.5 rounded-[1rem] mb-4 shrink-0 shadow-inner">
             <TabsTrigger value="excel" className="rounded-xl data-[state=active]:bg-[#1F8A4C] data-[state=active]:text-white font-bold transition-all">Excel</TabsTrigger>
             <TabsTrigger value="sql" className="rounded-xl data-[state=active]:bg-[#1F8A4C] data-[state=active]:text-white font-bold transition-all">SQL</TabsTrigger>
@@ -213,12 +346,32 @@ export function ExcelSQLPanel({ sim }: { sim: any }) {
           
           <div className="flex-1 overflow-hidden relative">
             <TabsContent value="excel" className="h-full m-0 data-[state=inactive]:hidden flex flex-col bg-white rounded-[1rem] border border-gray-200 overflow-hidden shadow-sm">
-              <div className="bg-gray-50/80 border-b border-gray-200 p-2.5 flex items-center gap-2 text-sm font-mono shrink-0">
-                <div className="bg-white border border-gray-200 px-3 py-1.5 text-gray-500 font-bold w-12 text-center rounded-lg shadow-sm italic">fx</div>
-                <div className="bg-white border border-green-200 px-4 py-1.5 flex-1 text-[#1F8A4C] rounded-lg shadow-inner ring-1 ring-green-500/20">
-                  {getFormula()}
+              {/* Formula Bar + Educational Explanation */}
+              <div className="bg-gray-50/80 border-b border-gray-200 p-2.5 flex flex-col gap-1.5 text-xs shrink-0 select-none">
+                <div className="flex items-center gap-2 font-mono">
+                  <div className="bg-white border border-gray-200 px-3 py-1.5 text-gray-500 font-bold w-12 text-center rounded-lg shadow-sm italic">fx</div>
+                  <div className="bg-white border border-green-200 px-4 py-1.5 flex-1 text-[#1F8A4C] rounded-lg shadow-inner ring-1 ring-green-500/20 font-bold">
+                    {getFormula()}
+                  </div>
+                </div>
+                <div className="text-[11px] text-gray-500 italic pl-14">
+                  {getFormulaExplanation()}
                 </div>
               </div>
+
+              {/* Kolon Rehberi */}
+              {getColumnGuide().length > 0 && (
+                <div className="bg-green-50/20 border-b border-gray-100 p-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-gray-500 shrink-0 select-none">
+                  <span className="font-semibold text-gray-600 uppercase">Kolon Rehberi:</span>
+                  {getColumnGuide().map((g, idx) => (
+                    <span key={idx}>
+                      <strong className="text-[#1F8A4C]">{g.col}:</strong> {g.desc}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Excel Table */}
               <div className="flex-1 overflow-auto bg-white">
                 <Table className="text-xs">
                   <TableHeader className="bg-gray-50 sticky top-0 z-10">
@@ -317,27 +470,52 @@ export function ExcelSQLPanel({ sim }: { sim: any }) {
               </div>
             </TabsContent>
 
-            <TabsContent value="summary" className="h-full m-0 data-[state=inactive]:hidden overflow-y-auto pr-2 pb-2">
+            <TabsContent value="summary" className="h-full m-0 data-[state=inactive]:hidden overflow-y-auto pr-2 pb-2 space-y-4">
+              {/* Eğitim Rehberi ve Açıklama Bandı */}
+              <div className="bg-green-50/50 border border-green-100/60 p-4 rounded-[1.25rem] text-sm text-gray-700 leading-relaxed shadow-sm">
+                <h4 className="font-bold text-[#1F8A4C] mb-1.5 flex items-center gap-1.5 uppercase text-[10px] tracking-wider select-none">
+                  <LayoutGrid className="w-4 h-4 text-[#1F8A4C]" /> Model Açıklaması & Eğitim Rehberi
+                </h4>
+                <p className="text-[12px] leading-relaxed text-gray-600">{getModelEducationalDescription(selectedModel)}</p>
+              </div>
+
+              {/* Veri Kümesi Özellikleri */}
+              <div className="bg-gray-50 border border-gray-200/50 p-4 rounded-[1.25rem] grid grid-cols-3 gap-4 shadow-inner text-center shrink-0">
+                <div>
+                  <span className="text-[10px] text-gray-400 font-bold block uppercase tracking-wider mb-0.5 select-none">Satır Sayısı</span>
+                  <span className="text-base font-bold text-gray-700">{getSampleSize()} Satır</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-gray-400 font-bold block uppercase tracking-wider mb-0.5 select-none">Kolon Sayısı</span>
+                  <span className="text-base font-bold text-gray-700">{getColumnCount()} Sütun</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-gray-400 font-bold block uppercase tracking-wider mb-0.5 select-none">Aktif Model</span>
+                  <span className="text-base font-bold text-[#1F8A4C]">{getModelNameTurkish(selectedModel)}</span>
+                </div>
+              </div>
+
+              {/* İstatistiksel Metrikler Grid */}
               <div className="grid grid-cols-2 gap-4">
                 {Object.entries(metrics).map(([k, v]) => (
-                  <div key={k} className="bg-gradient-to-br from-green-50 to-white border border-green-100/60 p-5 rounded-[1.25rem] flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 rounded-xl bg-white border border-green-100 flex items-center justify-center text-[#1F8A4C] shadow-sm shrink-0">
-                      <LayoutGrid className="w-6 h-6" />
+                  <div key={k} className="bg-gradient-to-br from-green-50/50 to-white border border-green-100/40 p-4 rounded-[1.25rem] flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-white border border-green-100 flex items-center justify-center text-[#1F8A4C] shadow-sm shrink-0">
+                      <LayoutGrid className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="text-[11px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">{k}</div>
-                      <div className="text-xl font-bold text-[#232323]">{v as string}</div>
+                      <div className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">{k}</div>
+                      <div className="text-base font-bold text-[#232323]">{v as string}</div>
                     </div>
                   </div>
                 ))}
-                <div className="bg-gradient-to-br from-orange-50 to-white border border-orange-100/60 p-5 rounded-[1.25rem] flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 rounded-xl bg-white border border-orange-100 flex items-center justify-center text-[#F5AE50] shadow-sm shrink-0">
-                    <Sigma className="w-6 h-6" />
+                <div className="bg-gradient-to-br from-orange-50/50 to-white border border-orange-100/40 p-4 rounded-[1.25rem] flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-lg bg-white border border-orange-100 flex items-center justify-center text-[#F5AE50] shadow-sm shrink-0">
+                    <Sigma className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-[11px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Örneklem</div>
-                    <div className="text-xl font-bold text-[#232323]">
-                      {Array.isArray(simData) ? simData.length : (simData.intervals?.length || simData.qqData?.length || simData.sampleMeans?.length || sim.params?.n || 0)} Gözlem
+                    <div className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">Örneklem</div>
+                    <div className="text-base font-bold text-[#232323]">
+                      {getSampleSize()} Gözlem
                     </div>
                   </div>
                 </div>
