@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { Flame, Trophy, Globe, RotateCcw, Zap } from 'lucide-react';
+import { Flame, Trophy, Globe, Zap, User } from 'lucide-react';
 import { BadgesModal } from './BadgesModal';
+import { ProfileModal } from './ProfileModal';
 
 interface XpStreakBarProps {
   onGoHome?: () => void;
 }
 
 export const XpStreakBar: React.FC<XpStreakBarProps> = ({ onGoHome }) => {
-  const { language, toggleLanguage, xp, streak, resetProgress, unlockedBadges } = useAppStore();
+  const { language, toggleLanguage, xp, streak, unlockedBadges } = useAppStore();
   const [showBadges, setShowBadges] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [isLogoSpinning, setIsLogoSpinning] = useState(false);
 
   // Trigger logo spin animation every 5 seconds (accelerating start, rapid deceleration stop)
@@ -24,12 +26,6 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({ onGoHome }) => {
 
     return () => clearInterval(interval);
   }, []);
-
-  const handleReset = () => {
-    if (window.confirm(language === 'tr' ? 'Tüm ilerlemenizi sıfırlamak istediğinize emin misiniz?' : 'Are you sure you want to reset all progress?')) {
-      resetProgress();
-    }
-  };
 
   return (
     <>
@@ -97,19 +93,20 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({ onGoHome }) => {
               <span>{language.toUpperCase()}</span>
             </button>
 
-            {/* Reset Progress Button */}
+            {/* My Profile Button */}
             <button
-              onClick={handleReset}
-              className="p-2 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-500 transition-colors border border-slate-200"
-              title={language === 'tr' ? 'İlerlemeyi Sıfırla' : 'Reset Progress'}
+              onClick={() => setShowProfile(true)}
+              className="p-2 rounded-xl bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border border-[#ff7a00]/40 transition-colors shadow-xs"
+              title={language === 'tr' ? 'Profilim & Performansım' : 'My Profile'}
             >
-              <RotateCcw className="w-4 h-4" />
+              <User className="w-5 h-5 stroke-[2.5]" />
             </button>
           </div>
         </div>
       </header>
 
       {showBadges && <BadgesModal onClose={() => setShowBadges(false)} />}
+      {showProfile && <ProfileModal onClose={() => setShowProfile(false)} />}
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { UserState } from '../types/stats';
+import { UserProfile, UserState } from '../types/stats';
 
 interface AppStoreActions {
   setLanguage: (lang: 'tr' | 'en') => void;
@@ -9,7 +9,15 @@ interface AppStoreActions {
   completeCaseExam: (caseId: string, moduleId: string, xpEarned?: number) => void;
   checkAndUpdateStreak: () => void;
   resetProgress: () => void;
+  updateUserProfile: (profile: Partial<UserProfile>) => void;
 }
+
+const DEFAULT_PROFILE: UserProfile = {
+  fullName: 'Resul Tan',
+  schoolEmail: 'resul.tan@marun.edu.tr',
+  university: 'Marmara Üniversitesi',
+  departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
+};
 
 const INITIAL_STATE: UserState = {
   language: 'tr',
@@ -20,12 +28,18 @@ const INITIAL_STATE: UserState = {
   completedCaseExams: [],
   unlockedModules: ['module-1'],
   unlockedBadges: [],
+  userProfile: DEFAULT_PROFILE,
 };
 
 export const useAppStore = create<UserState & AppStoreActions>()(
   persist(
     (set, get) => ({
       ...INITIAL_STATE,
+
+      updateUserProfile: (profile) =>
+        set((state) => ({
+          userProfile: { ...state.userProfile, ...profile },
+        })),
 
       setLanguage: (language) => set({ language }),
 

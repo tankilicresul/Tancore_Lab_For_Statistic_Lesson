@@ -72,6 +72,13 @@ export interface Badge {
   icon: string;
 }
 
+export interface UserProfile {
+  fullName: string;
+  schoolEmail: string;
+  university: string;
+  departmentAndClass: string;
+}
+
 export interface UserState {
   language: "tr" | "en";
   xp: number;
@@ -81,4 +88,5 @@ export interface UserState {
   completedCaseExams: string[];
   unlockedModules: string[];
   unlockedBadges: string[];
+  userProfile: UserProfile;
 }
