@@ -1,0 +1,85 @@
+{
+  "id": "module-7",
+  "order": 7,
+  "title": { "tr": "Korelasyon & Basit Regresyon", "en": "Correlation & Simple Regression" },
+  "description": {
+    "tr": "Pearson korelasyon katsayısı (r), basit doğrusal regresyon (Y = β0 + β1*X) ve R² açıklayıcılık katsayısı. Pazarlama harcaması ve satış ilişkisi vakası.",
+    "en": "Pearson correlation coefficient (r), simple linear regression (Y = β0 + β1*X), and R² coefficient of determination. Marketing spend vs sales case."
+  },
+  "iconName": "TrendingUp",
+  "lessons": [
+    {
+      "id": "m7-l1",
+      "moduleId": "module-7",
+      "order": 1,
+      "title": { "tr": "Korelasyon katsayısı r ve R²", "en": "Correlation Coefficient r and R²" },
+      "conceptCard": {
+        "tr": "Korelasyon katsayısı r, iki değişken arasındaki doğrusal ilişkinin yönünü ve gücünü -1 ile +1 arasında ölçer. R² (Belirtlilik Katsayısı), bağımlı değişkendeki varyansın yüzde kaçının bağımsız değişken tarafından açıklandığını gösterir (R² = r²).",
+        "en": "The correlation coefficient r measures the strength and direction of a linear relationship between -1 and +1. R² (coefficient of determination) shows the percentage of variance explained by the independent variable (R² = r²)."
+      },
+      "companyExample": {
+        "tr": "AdTechX dijital pazarlama ajansında 10 kampanya için reklam harcaması (X) ile üretilen satış (Y) arasındaki korelasyon r = 0.90 ölçülmüştür. R² = 0.90² = 0.81 (%81). Bu, satışlardaki değişimin %81'inin reklam harcamasıyla açıklandığını gösterir.",
+        "en": "AdTechX digital agency measures correlation r = 0.90 between ad spend (X) and sales (Y) across 10 campaigns. R² = 0.90² = 0.81 (81%). This indicates 81% of sales variation is explained by ad spend."
+      },
+      "interactiveType": "correlation_regression",
+      "vocabTerms": [
+        {
+          "term_en": "coefficient of determination (R²)",
+          "explanation_tr": "Modelin veriyi açıklama oranı (0 ile 1 arasında).",
+          "explanation_en": "Proportion of variance in the dependent variable explained by the model.",
+          "exampleSentence_en": "An R² of 0.81 indicates a strong predictive model."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m7-l1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "r = 0.80 ise R² değeri kaçtır?", "en": "If r = 0.80, what is the R² value?" },
+          "correctAnswer": 0.64,
+          "explanation": { "tr": "R² = 0.80 * 0.80 = 0.64", "en": "R² = 0.80 * 0.80 = 0.64" }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import scipy.stats as stats\nr, p_val = stats.pearsonr(spend, sales)\nprint(f'r: {r:.2f}, R2: {r**2:.2f}')"
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m7-case-1",
+      "moduleId": "module-7",
+      "difficulty": "kolay",
+      "title": { "tr": "AdTechX: Reklam Harcaması Satış Tahmini", "en": "AdTechX: Ad Spend Sales Prediction" },
+      "businessQuestion": {
+        "tr": "AdTechX basit regresyon modeli kurmuştur: Satış (bin TL) = 15 + 3.5 * Harcama (bin TL). Gelecek ay 10 bin TL reklam harcaması yapılırsa tahmin edilen satış kaç bin TL olur?",
+        "en": "AdTechX fit a simple regression model: Sales ($1k) = 15 + 3.5 * Spend ($1k). If ad spend next month is $10k, what is the predicted sales in $1k?"
+      },
+      "dataset": {
+        "columns": ["Ay", "Reklam Harcaması (bin TL)", "Gerçekleşen Satış (bin TL)"],
+        "rows": [
+          [1, 2, 22],
+          [2, 4, 29],
+          [3, 6, 36],
+          [4, 8, 43]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Regresyon denkleminde X yerine 10 koy.", "en": "Step 1: Substitute X = 10 into regression equation." },
+        { "tr": "2. Adım: Satış = 15 + 3.5 * 10 = 15 + 35 = 50 bin TL.", "en": "Step 2: Sales = 15 + 3.5 * 10 = 15 + 35 = 50 ($1k)." }
+      ],
+      "expectedApproach": {
+        "tr": "Tahmin edilen satış 50 bin TL'dir.",
+        "en": "Predicted sales is 50 ($1k)."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m7-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Tahmini satış tutarı kaçtır (bin TL)?", "en": "What is the predicted sales figure ($1k)?" },
+          "correctAnswer": 50,
+          "explanation": { "tr": "15 + 3.5 * 10 = 50", "en": "15 + 3.5 * 10 = 50" }
+        }
+      ]
+    }
+  ]
+}

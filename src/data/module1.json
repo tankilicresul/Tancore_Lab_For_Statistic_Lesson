@@ -1,0 +1,322 @@
+{
+  "id": "module-1",
+  "order": 1,
+  "title": { "tr": "Tanımlayıcı İstatistik", "en": "Descriptive Statistics" },
+  "description": {
+    "tr": "Ortalama, medyan, mod, varyans, std sapma, çeyreklikler ve outlier tespiti. Perakende mağaza ve e-ticaret analiz vakaları.",
+    "en": "Mean, median, mode, variance, std dev, quartiles, and outlier detection. Retail store & e-commerce analysis cases."
+  },
+  "iconName": "BarChart3",
+  "lessons": [
+    {
+      "id": "m1-l1",
+      "moduleId": "module-1",
+      "order": 1,
+      "title": { "tr": "Ortalama (Mean)", "en": "Mean (Average)" },
+      "conceptCard": {
+        "tr": "Ortalama, bir veri grubundaki tüm sayıları toplayıp adet sayısına bölerek bulunur. Bir grubun 'tipik' değerini özetler.",
+        "en": "The mean is found by adding all numbers in a dataset and dividing by the count. It summarizes the 'typical' value of a group."
+      },
+      "companyExample": {
+        "tr": "NovaMarket adlı kurgusal bir e-ticaret şirketinin son 6 çeyreklik kârı (milyon $): 10, 12, 12, 15, 9, 50.",
+        "en": "A fictional e-commerce company, NovaMarket, had the following quarterly profit (in million $) over 6 quarters: 10, 12, 12, 15, 9, 50."
+      },
+      "interactiveType": "mean_median_mode",
+      "interactiveInitialData": [10, 12, 12, 15, 9, 50],
+      "vocabTerms": [
+        {
+          "term_en": "average",
+          "explanation_tr": "Ortalama; İngilizce'de günlük konuşmada da sıkça kullanılır.",
+          "explanation_en": "Average = mean. Commonly used in everyday English too.",
+          "exampleSentence_en": "The average price of coffee is $5."
+        },
+        {
+          "term_en": "outlier",
+          "explanation_tr": "Diğer verilerden çok farklı olan, aşırı yüksek veya düşük bir değer.",
+          "explanation_en": "A value that is very different from the rest of the data — extremely high or low.",
+          "exampleSentence_en": "That data point is an outlier — it doesn't fit the pattern."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m1-l1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "NovaMarket verisinin ortalamasını hesapla: 10, 12, 12, 15, 9, 50", "en": "Calculate the mean of NovaMarket's data: 10, 12, 12, 15, 9, 50" },
+          "correctAnswer": 18,
+          "explanation": { "tr": "(10+12+12+15+9+50)/6 = 108/6 = 18", "en": "(10+12+12+15+9+50)/6 = 108/6 = 18" }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=ORTALAMA(A1:A6)  (EN: =AVERAGE(A1:A6))",
+        "pythonCode": "import statistics\nstatistics.mean([10, 12, 12, 15, 9, 50])",
+        "powerBiNote": { "tr": "Bir kart görselinde 'Ortalama Kâr' ölçüsü olarak eklenir.", "en": "Added as an 'Average Profit' measure in a card visual." }
+      }
+    },
+    {
+      "id": "m1-l2",
+      "moduleId": "module-1",
+      "order": 2,
+      "title": { "tr": "Medyan (Median)", "en": "Median" },
+      "conceptCard": {
+        "tr": "Medyan, veriyi küçükten büyüğe sıraladığında ortada kalan değerdir. Veri sayısı çift ise, ortadaki iki değerin ortalaması alınır. Medyan, outlier'lardan mean kadar etkilenmez.",
+        "en": "The median is the middle value when data is sorted from smallest to largest. If there is an even count, take the average of the two middle values. The median is less affected by outliers than the mean."
+      },
+      "companyExample": {
+        "tr": "Aynı NovaMarket verisi sıralanır: 9, 10, 12, 12, 15, 50. Medyan = (12+12)/2 = 12. Dikkat: Ortalama (18) ile Medyan (12) farklı — çünkü 50 bir outlier.",
+        "en": "The same NovaMarket data sorted: 9, 10, 12, 12, 15, 50. Median = (12+12)/2 = 12. Note: Mean (18) differs from Median (12) — because 50 is an outlier."
+      },
+      "interactiveType": "mean_median_mode",
+      "interactiveInitialData": [9, 10, 12, 12, 15, 50],
+      "vocabTerms": [
+        {
+          "term_en": "median",
+          "explanation_tr": "Latince 'medius' (orta) kökünden gelir.",
+          "explanation_en": "From Latin 'medius' meaning middle.",
+          "exampleSentence_en": "The median income gives a better picture than the mean when there are outliers."
+        },
+        {
+          "term_en": "typical value",
+          "explanation_tr": "Bir grubu en iyi temsil eden 'tipik' değer.",
+          "explanation_en": "The value that best represents a 'typical' member of the group.",
+          "exampleSentence_en": "The median store sales figure is more typical than the mean."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m1-l2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Bir yönetici, mağazaların 'tipik' haftalık satışını öğrenmek istiyor ama verilerde 1 tane çok büyük outlier mağaza var. Hangi ölçüyü kullanmalı?", "en": "A manager wants to know the 'typical' weekly sales of stores, but there is one very large outlier store. Which measure should they use?" },
+          "options": [
+            { "tr": "Ortalama (Mean)", "en": "Mean" },
+            { "tr": "Medyan (Median)", "en": "Median" }
+          ],
+          "correctAnswer": "Medyan (Median)",
+          "explanation": { "tr": "Medyan, outlier'dan mean kadar etkilenmediği için daha 'tipik' bir değer verir.", "en": "The median is less affected by the outlier, giving a more 'typical' value." }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=ORTANCA(A1:A6)  (EN: =MEDIAN(A1:A6))",
+        "pythonCode": "import statistics\nstatistics.median([10, 12, 12, 15, 9, 50])"
+      }
+    },
+    {
+      "id": "m1-l3",
+      "moduleId": "module-1",
+      "order": 3,
+      "title": { "tr": "Mod (Mode)", "en": "Mode" },
+      "conceptCard": {
+        "tr": "Mod, bir veri grubunda en sık tekrar eden değerdir. Kategorik veriler için özellikle faydalıdır (örn. en çok satılan ürün rengi).",
+        "en": "The mode is the most frequently occurring value in a dataset. Especially useful for categorical data (e.g. most-sold product color)."
+      },
+      "companyExample": {
+        "tr": "NovaMarket verisinde 12 iki kez tekrar ediyor, diğer sayılar bir kez. Mod = 12.",
+        "en": "In the NovaMarket data, 12 appears twice, others once. Mode = 12."
+      },
+      "interactiveType": "mean_median_mode",
+      "interactiveInitialData": [4, 4, 4, 8, 10],
+      "vocabTerms": [
+        {
+          "term_en": "mode",
+          "explanation_tr": "Fransızca 'mode' (moda/tarz) kelimesinden gelir — 'en yaygın olan' anlamında.",
+          "explanation_en": "From French 'mode' (fashion/style) — meaning 'the most common'.",
+          "exampleSentence_en": "The mode of customer age groups was 25-34."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m1-l3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Veri: 4, 4, 4, 8, 10. Mod nedir?", "en": "Data: 4, 4, 4, 8, 10. What is the mode?" },
+          "correctAnswer": 4,
+          "explanation": { "tr": "4 üç kez tekrar ediyor, en sık geçen değer bu.", "en": "4 appears three times, the most frequent value." }
+        }
+      ]
+    },
+    {
+      "id": "m1-l4",
+      "moduleId": "module-1",
+      "order": 4,
+      "title": { "tr": "Varyans ve Standart Sapma", "en": "Variance and Standard Deviation" },
+      "conceptCard": {
+        "tr": "Varyans, verilerin ortalamadan ne kadar uzakta olduğunu (yayılımını) ölçer. Her farkın karesi alınıp ortalaması hesaplanır. Standart sapma, varyansın kareköküdür ve orijinal birimle aynı birimdedir, bu yüzden yorumlaması daha kolaydır.",
+        "en": "Variance measures how spread out the data is from the mean. Each difference from the mean is squared, then averaged. Standard deviation is the square root of variance, expressed in the same unit as the original data, making it easier to interpret."
+      },
+      "companyExample": {
+        "tr": "İki mağazanın haftalık satışları (bin $): Mağaza A: 20, 21, 19, 20 (düşük varyans, istikrarlı). Mağaza B: 5, 35, 10, 30 (yüksek varyans, tutarsız) — ikisinin de ortalaması ~20 ama riskleri çok farklı!",
+        "en": "Two stores' weekly sales ($1000): Store A: 20, 21, 19, 20 (low variance, stable). Store B: 5, 35, 10, 30 (high variance, inconsistent) — both average ~20, but their risk profiles are very different!"
+      },
+      "interactiveType": "variance_stddev",
+      "interactiveInitialData": [20, 21, 19, 20],
+      "vocabTerms": [
+        {
+          "term_en": "spread / dispersion",
+          "explanation_tr": "Verinin ne kadar 'yayıldığını' ifade eder.",
+          "explanation_en": "Describes how 'spread out' the data is.",
+          "exampleSentence_en": "Store B shows much higher dispersion than Store A."
+        },
+        {
+          "term_en": "standard deviation",
+          "explanation_tr": "Standart sapma, ortalamadan tipik uzaklığı gösterir.",
+          "explanation_en": "Standard deviation shows the typical distance from the mean.",
+          "exampleSentence_en": "A low standard deviation means the data points are close to the mean."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m1-l4-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Bir yatırımcı, hangi mağazanın 'daha riskli' (öngörülemez) olduğunu anlamak istiyor. Hangi ölçüye bakmalı?", "en": "An investor wants to know which store is 'riskier' (less predictable). Which measure should they look at?" },
+          "options": [
+            { "tr": "Ortalama (Mean)", "en": "Mean" },
+            { "tr": "Standart Sapma", "en": "Standard Deviation" }
+          ],
+          "correctAnswer": "Standart Sapma",
+          "explanation": { "tr": "Standart sapma yüksekse veri daha yayılmış/öngörülemezdir — bu risk göstergesidir.", "en": "A higher standard deviation means more spread/unpredictability — a sign of risk." }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=STDSAPMA.S(A1:A4)  (EN: =STDEV.S(A1:A4))",
+        "pythonCode": "import statistics\nstatistics.stdev([20, 21, 19, 20])"
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m1-case-1",
+      "moduleId": "module-1",
+      "difficulty": "kolay",
+      "title": { "tr": "CafeLine Zinciri: Haftalık Satış Analizi", "en": "CafeLine Chain: Weekly Sales Analysis" },
+      "businessQuestion": {
+        "tr": "CafeLine'ın 6 şubesinin geçen haftaki satışları aşağıda. Yönetim, 'tipik' bir şube satışının ne olduğunu ve herhangi bir şubenin normalden farklı davranıp davranmadığını öğrenmek istiyor. Mean, median ve varsa outlier'ı belirleyip kısa bir yorum yaz.",
+        "en": "Below are last week's sales for CafeLine's 6 branches. Management wants to know the 'typical' branch sales figure and whether any branch behaves abnormally. Determine the mean, median, and any outlier, then write a short comment."
+      },
+      "dataset": {
+        "columns": ["Şube", "Haftalık Satış ($)"],
+        "rows": [
+          ["Kızılay", 8200],
+          ["Bahçelievler", 7900],
+          ["Çankaya", 8500],
+          ["Etimesgut", 8100],
+          ["Keçiören", 8000],
+          ["Sincan", 21000]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Tüm şubelerin ortalamasını hesapla.", "en": "Step 1: Calculate the mean of all branches." },
+        { "tr": "2. Adım: Medyanı hesapla.", "en": "Step 2: Calculate the median." },
+        { "tr": "3. Adım: Mean ile medyan arasındaki farka bak — neden farklılar?", "en": "Step 3: Look at the difference between mean and median — why are they different?" },
+        { "tr": "4. Adım: Hangi şube outlier? Yönetime ne önerirsin?", "en": "Step 4: Which branch is the outlier? What would you recommend to management?" }
+      ],
+      "expectedApproach": {
+        "tr": "Mean ≈ 10283$, Medyan = 8150$. Sincan şubesi (21000$) belirgin bir outlier — ya gerçekten çok başarılı bir şube ya da veri girişinde hata olabilir, araştırılmalı. Yönetime 'tipik' şube performansı için medyan baz alınmalı önerisi yapılabilir.",
+        "en": "Mean ≈ $10,283, Median = $8,150. Sincan branch ($21,000) is a clear outlier — either genuinely high-performing or a data entry error, worth investigating. Recommend using the median as the baseline for 'typical' branch performance."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m1-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Verideki medyan satış tutarı kaçtır ($)?", "en": "What is the median sales figure in the dataset ($)?" },
+          "correctAnswer": 8150,
+          "explanation": { "tr": "Sıralı veri: 7900, 8000, 8100, 8200, 8500, 21000. Ortadaki ikisinin ortalaması: (8100 + 8200)/2 = 8150", "en": "Sorted: 7900, 8000, 8100, 8200, 8500, 21000. Average of middle two: (8100 + 8200)/2 = 8150" }
+        },
+        {
+          "id": "m1-case-1-q2",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Hangi şube belirgin bir outlier (aşırı değer) olarak öne çıkmaktadır?", "en": "Which branch stands out as a clear outlier?" },
+          "options": [
+            { "tr": "Çankaya (8500)", "en": "Çankaya (8500)" },
+            { "tr": "Sincan (21000)", "en": "Sincan (21000)" },
+            { "tr": "Kızılay (8200)", "en": "Kızılay (8200)" }
+          ],
+          "correctAnswer": "Sincan (21000)",
+          "explanation": { "tr": "Sincan şubesinin 21.000$ satışı diğer tüm şubelerin 2.5 katından fazladır.", "en": "Sincan branch's $21,000 sales is more than 2.5x any other branch." }
+        }
+      ]
+    },
+    {
+      "id": "m1-case-2",
+      "moduleId": "module-1",
+      "difficulty": "orta",
+      "title": { "tr": "NovaMarket: İki Ürün Kategorisinin Kararlılığı", "en": "NovaMarket: Stability of Two Product Categories" },
+      "businessQuestion": {
+        "tr": "NovaMarket, hangi ürün kategorisine daha fazla stok yatırımı yapacağına karar vermeye çalışıyor. Elektronik ve Giyim kategorilerinin son 5 haftalık satış adetleri aşağıda. Hangi kategori daha 'öngörülebilir' (düşük varyans), hangisi daha 'riskli'?",
+        "en": "NovaMarket is deciding which product category to invest more stock in. Below are the last 5 weeks of unit sales for Electronics and Clothing categories. Which category is more 'predictable' (low variance), which is 'riskier'?"
+      },
+      "dataset": {
+        "columns": ["Hafta", "Elektronik (adet)", "Giyim (adet)"],
+        "rows": [
+          [1, 150, 90],
+          [2, 155, 200],
+          [3, 148, 60],
+          [4, 152, 220],
+          [5, 149, 80]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Her kategori için ortalamayı hesapla.", "en": "Step 1: Calculate the mean for each category." },
+        { "tr": "2. Adım: Her kategori için standart sapmayı hesapla.", "en": "Step 2: Calculate the standard deviation for each category." },
+        { "tr": "3. Adım: İki kategoriyi karşılaştır — hangisi daha kararlı?", "en": "Step 3: Compare the two categories — which is more stable?" },
+        { "tr": "4. Adım: Stok yatırımı için önerini yaz (kararlılık ile risk arasındaki dengeyi düşün).", "en": "Step 4: Write your stock investment recommendation (consider the trade-off between stability and risk)." }
+      ],
+      "expectedApproach": {
+        "tr": "Elektronik ortalaması ~150.8, std sapması çok düşük (~2.5) — çok kararlı. Giyim ortalaması ~130, std sapması çok yüksek (~65) — öngörülemez. Elektronik'e stok yatırımı daha güvenli, ancak Giyim'in yüksek haftaları fırsat da olabilir; risk toleransına bağlı bir öneri yazılmalı.",
+        "en": "Electronics mean ~150.8, very low std dev (~2.5) — highly stable. Clothing mean ~130, very high std dev (~65) — unpredictable. Investing in Electronics stock is safer, though Clothing's high weeks could be an opportunity; the recommendation should depend on risk tolerance."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m1-case-2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Düzenli stok ve tedarik zinciri yönetimi için hangi kategori daha az risklidir?", "en": "Which category carries less risk for predictable inventory and supply chain management?" },
+          "options": [
+            { "tr": "Elektronik (Düşük varyans)", "en": "Electronics (Low variance)" },
+            { "tr": "Giyim (Yüksek varyans)", "en": "Clothing (High variance)" }
+          ],
+          "correctAnswer": "Elektronik (Düşük varyans)",
+          "explanation": { "tr": "Elektronik haftalık satışı 148-155 arasında çok dar bir bantta değişir, standart sapması düşüktür.", "en": "Electronics weekly sales fluctuate in a tight 148-155 range with low standard deviation." }
+        }
+      ]
+    },
+    {
+      "id": "m1-case-3",
+      "moduleId": "module-1",
+      "difficulty": "zor",
+      "title": { "tr": "BrightHome: Müşteri Şikayet Verisinde Gizli Sorun", "en": "BrightHome: A Hidden Problem in Customer Complaint Data" },
+      "businessQuestion": {
+        "tr": "BrightHome mobilya şirketi, 8 farklı şehirdeki mağazalarından gelen aylık müşteri şikayet sayılarını incelemek istiyor. Yönetim 'ortalama şikayet sayımız düşük, sorun yok' diyor ama sen veriye daha dikkatli bakıyorsun. Ortalama, medyan, mod ve varyansı birlikte kullanarak, yönetimin bu yorumuna katılıp katılmadığını gerekçeleriyle savun.",
+        "en": "BrightHome furniture company wants to review monthly customer complaint counts from its 8 city stores. Management says 'our average complaint count is low, there's no problem' but you look at the data more carefully. Using mean, median, mode, and variance together, argue whether you agree with management's statement, with reasoning."
+      },
+      "dataset": {
+        "columns": ["Şehir", "Aylık Şikayet Sayısı"],
+        "rows": [
+          ["İstanbul", 3],
+          ["Ankara", 2],
+          ["İzmir", 3],
+          ["Bursa", 2],
+          ["Antalya", 3],
+          ["Adana", 2],
+          ["Konya", 3],
+          ["Trabzon", 48]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Mean, medyan ve modu hesapla.", "en": "Step 1: Calculate mean, median, and mode." },
+        { "tr": "2. Adım: Mean neden 'düşük görünüyor' olabilir açıkla (Trabzon'un etkisini düşün, ama mean'i tek başına yorumlama).", "en": "Step 2: Explain why the mean might 'look low' (consider Trabzon's effect, but don't interpret mean alone)." },
+        { "tr": "3. Adım: Standart sapmayı yorumla — veri gerçekten 'düşük ve sorunsuz' mu?", "en": "Step 3: Interpret the standard deviation — is the data really 'low and problem-free'?" },
+        { "tr": "4. Adım: Yönetime kısa bir 'yönetici özeti' yaz: katılıyor musun, katılmıyor musun, neden?", "en": "Step 4: Write a short 'executive summary' to management: do you agree or disagree, and why?" }
+      ],
+      "expectedApproach": {
+        "tr": "Mean ≈ 8.25, ama medyan ve mod = 3 — çoğu şehir gayet düşük şikayet sayısına sahip, TEK bir şehir (Trabzon, 48) ortalamayı yukarı çekiyor. Yönetimin 'ortalama düşük' demesi yanıltıcı çünkü Trabzon'da ciddi bir sorun var ve bu mean içinde 'gizleniyor'. Doğru yaklaşım: medyan/modu vurgulamak VE Trabzon'u ayrıca araştırmak. Yönetim kısmen haklı (çoğunluk düşük) ama kritik bir outlier'ı gözden kaçırıyor.",
+        "en": "Mean ≈ 8.25, but median and mode = 3 — most cities have quite low complaint counts, but ONE city (Trabzon, 48) pulls the mean up. Management's claim of 'low average' is misleading because there's a serious problem in Trabzon that gets 'hidden' inside the mean. The correct approach: highlight median/mode AND investigate Trabzon separately. Management is partially right (majority is low) but is missing a critical outlier."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m1-case-3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Müşteri şikayet sayılarının medyanı kaçtır?", "en": "What is the median of the customer complaint counts?" },
+          "correctAnswer": 3,
+          "explanation": { "tr": "Sıralı veri: 2, 2, 2, 3, 3, 3, 3, 48. Ortadaki ikisinin ortalaması: (3+3)/2 = 3", "en": "Sorted: 2, 2, 2, 3, 3, 3, 3, 48. Average of middle two: (3+3)/2 = 3" }
+        }
+      ]
+    }
+  ]
+}

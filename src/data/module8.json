@@ -1,0 +1,88 @@
+{
+  "id": "module-8",
+  "order": 8,
+  "title": { "tr": "Çoklu Regresyon & Model Değerlendirme", "en": "Multiple Regression & Model Evaluation" },
+  "description": {
+    "tr": "Çoklu doğrusal regresyon, çoklu doğrusallık (multicollinearity / VIF), Düzeltilmiş R² (Adjusted R²). Emlak fiyat tahmin modeli vakası.",
+    "en": "Multiple linear regression, multicollinearity (VIF), Adjusted R². Real estate price valuation model case."
+  },
+  "iconName": "Layers",
+  "lessons": [
+    {
+      "id": "m8-l1",
+      "moduleId": "module-8",
+      "order": 1,
+      "title": { "tr": "Düzeltilmiş R² ve VIF", "en": "Adjusted R² and Multicollinearity (VIF)" },
+      "conceptCard": {
+        "tr": "Çoklu regresyonda modele anlamsız bağımsız değişkenler eklendikçe standart R² yapay olarak artar. Düzeltilmiş R² (Adjusted R²), değişken sayısına ceza uygulayarak gerçek açıklayıcılığı gösterir. VIF > 5 veya 10 ise bağımsız değişkenler arasında yüksek çoklu doğrusallık (multicollinearity) vardır.",
+        "en": "In multiple regression, standard R² artificially increases as more features are added. Adjusted R² penalizes adding non-informative variables. A VIF > 5 or 10 indicates high multicollinearity among features."
+      },
+      "companyExample": {
+        "tr": "EstateVal emlak değerleme şirketinde ev fiyatı (Y) = Metrekare (X1) + Oda Sayısı (X2) + Bina Yaşı (X3) modeli kuruluyor. Metrekare ile Oda Sayısı arasında VIF = 8.5 çıkması iki değişkenin birbiriyle yüksek ilişkili olduğunu ve katsayı tahminlerini bozduğunu gösterir.",
+        "en": "At EstateVal real estate analytics, house price (Y) is modeled by Square Meters (X1), Bedrooms (X2), and Age (X3). A VIF = 8.5 between SqM and Bedrooms signals high multicollinearity distorting coefficient estimates."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "multicollinearity",
+          "explanation_tr": "Bağımsız değişkenlerin birbirleriyle yüksek korelasyonlu olması durumu.",
+          "explanation_en": "High correlation among independent variables in a multiple regression.",
+          "exampleSentence_en": "High multicollinearity causes unstable regression coefficients."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m8-l1-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Çoklu regresyonda modele gereksiz bir değişken eklendiğinde hangisi düşer?", "en": "Which metric penalizes adding useless variables to a multiple regression model?" },
+          "options": [
+            { "tr": "Düzeltilmiş R² (Adjusted R²)", "en": "Adjusted R²" },
+            { "tr": "Standart R²", "en": "Standard R²" }
+          ],
+          "correctAnswer": "Düzeltilmiş R² (Adjusted R²)",
+          "explanation": { "tr": "Standart R² asla düşmez, fakat Düzeltilmiş R² anlamsız değişken eklendiğinde ceza alıp düşer.", "en": "Standard R² never decreases, whereas Adjusted R² decreases if an uninformative feature is added." }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import statsmodels.api as sm\nmodel = sm.OLS(y, X).fit()\nprint(model.summary())"
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m8-case-1",
+      "moduleId": "module-8",
+      "difficulty": "kolay",
+      "title": { "tr": "EstateVal: Emlak Fiyat Tahmin Denklemi", "en": "EstateVal: Property Price Prediction Equation" },
+      "businessQuestion": {
+        "tr": "EstateVal modeli: Fiyat (bin $) = 50 + 1.2 * Metrekare + 15 * OdaSayisi - 2 * BinaYasi. 100 m², 3 odalı ve 5 yıllık bir evin tahmin fiyatı kaç bin $'dır?",
+        "en": "EstateVal model: Price ($1k) = 50 + 1.2 * SqM + 15 * Bedrooms - 2 * Age. What is the predicted price for a 100 m², 3-bedroom, 5-year-old house in $1k?"
+      },
+      "dataset": {
+        "columns": ["Değişken", "Katsayı"],
+        "rows": [
+          ["Sabit (Intercept)", "50"],
+          ["Metrekare (X1)", "+1.2"],
+          ["Oda Sayısı (X2)", "+15.0"],
+          ["Bina Yaşı (X3)", "-2.0"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Formülde yerine yaz: 50 + (1.2 * 100) + (15 * 3) - (2 * 5).", "en": "Step 1: Substitute: 50 + (1.2 * 100) + (15 * 3) - (2 * 5)." },
+        { "tr": "2. Adım: 50 + 120 + 45 - 10 = 205 bin $.", "en": "Step 2: 50 + 120 + 45 - 10 = 205 ($1k)." }
+      ],
+      "expectedApproach": {
+        "tr": "Tahmin edilen fiyat 205 bin $'dır.",
+        "en": "Predicted price is 205 ($1k)."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m8-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Tahmini ev fiyatı kaçtır (bin $)?", "en": "What is the predicted home price ($1k)?" },
+          "correctAnswer": 205,
+          "explanation": { "tr": "50 + 120 + 45 - 10 = 205", "en": "50 + 120 + 45 - 10 = 205" }
+        }
+      ]
+    }
+  ]
+}

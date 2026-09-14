@@ -1,0 +1,240 @@
+{
+  "id": "module-2",
+  "order": 2,
+  "title": { "tr": "Olasılık Temelleri", "en": "Probability Fundamentals" },
+  "description": {
+    "tr": "Olasılık kuralları, koşullu olasılık, Bayes teoremi ve kombinatorik. E-ticaret dolandırıcılık (fraud) risk skoru vakası.",
+    "en": "Probability rules, conditional probability, Bayes theorem, and combinatorics. E-commerce fraud risk scoring case."
+  },
+  "iconName": "Dices",
+  "lessons": [
+    {
+      "id": "m2-l1",
+      "moduleId": "module-2",
+      "order": 1,
+      "title": { "tr": "Temel Olasılık Kuralları", "en": "Basic Probability Rules" },
+      "conceptCard": {
+        "tr": "Olasılık, bir olayın gerçekleşme şansını 0 ile 1 (veya %0 ile %100) arasında ifade eder. İki bağımsız olayın aynı anda gerçekleşme olasılığı (Kesişim) çarpma kuralı ile hesaplanır.",
+        "en": "Probability expresses the chance of an event occurring between 0 and 1 (or 0% to 100%). The probability of two independent events happening together (Intersection) is calculated using the multiplication rule."
+      },
+      "companyExample": {
+        "tr": "PaySafe e-ödeme sisteminde bir işlemin yüksek tutarlı olma olasılığı P(A) = 0.20 (%20). İşlemin gece yapılmış olma olasılığı P(B) = 0.10 (%10). İki durum bağımsız ise ikisinin aynı anda olma olasılığı = 0.20 * 0.10 = 0.02 (%2).",
+        "en": "In PaySafe e-payment platform, the probability of a transaction having high value P(A) = 0.20 (20%). The probability of it occurring at night P(B) = 0.10 (10%). If independent, the probability of both = 0.20 * 0.10 = 0.02 (2%)."
+      },
+      "interactiveType": "probability_coin",
+      "vocabTerms": [
+        {
+          "term_en": "independent events",
+          "explanation_tr": "Birinin gerçekleşmesi diğerinin olasılığını değiştirmeyen olaylar.",
+          "explanation_en": "Events where the occurrence of one does not affect the probability of the other.",
+          "exampleSentence_en": "Coin flips are independent events."
+        },
+        {
+          "term_en": "sample space",
+          "explanation_tr": "Tüm olası sonuçların kümesi.",
+          "explanation_en": "The set of all possible outcomes.",
+          "exampleSentence_en": "The sample space for rolling a standard die is {1, 2, 3, 4, 5, 6}."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m2-l1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "P(A) = 0.40 ve P(B) = 0.50 bağımsız iki olay ise, P(A ve B) kaçtır?", "en": "If P(A) = 0.40 and P(B) = 0.50 are independent events, what is P(A and B)?" },
+          "correctAnswer": 0.2,
+          "explanation": { "tr": "P(A ve B) = 0.40 * 0.50 = 0.20", "en": "P(A and B) = 0.40 * 0.50 = 0.20" }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=0.4 * 0.5",
+        "pythonCode": "p_A, p_B = 0.4, 0.5\np_both = p_A * p_B\nprint(p_both)"
+      }
+    },
+    {
+      "id": "m2-l2",
+      "moduleId": "module-2",
+      "order": 2,
+      "title": { "tr": "Koşullu Olasılık (Conditional Probability)", "en": "Conditional Probability" },
+      "conceptCard": {
+        "tr": "Koşullu olasılık, P(A|B), B olayının gerçekleştiği bilindiğinde A olayının olma olasılığıdır. Formül: P(A|B) = P(A ve B) / P(B).",
+        "en": "Conditional probability, P(A|B), is the probability of event A given that event B has occurred. Formula: P(A|B) = P(A and B) / P(B)."
+      },
+      "companyExample": {
+        "tr": "TrendyShop'ta tüm alışveriş yapanların %5'i dolandırıcılıktır P(Fraud) = 0.05. Ancak VPN kullanan siparişler (B) içinde dolandırıcılık oranı %30'a yükselir P(Fraud | VPN) = 0.30.",
+        "en": "In TrendyShop, 5% of all buyers are fraudulent P(Fraud) = 0.05. However among VPN-using orders (B), the fraud rate jumps to 30% P(Fraud | VPN) = 0.30."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "conditional probability",
+          "explanation_tr": "Bir bilgi verildiğinde güncellenen olasılık.",
+          "explanation_en": "The updated probability given additional information.",
+          "exampleSentence_en": "Conditional probability helps risk engines adjust scores."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m2-l2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "P(A ve B) = 0.12 ve P(B) = 0.40 ise, P(A|B) kaçtır?", "en": "If P(A and B) = 0.12 and P(B) = 0.40, what is P(A|B)?" },
+          "correctAnswer": 0.3,
+          "explanation": { "tr": "P(A|B) = 0.12 / 0.40 = 0.30", "en": "P(A|B) = 0.12 / 0.40 = 0.30" }
+        }
+      ]
+    },
+    {
+      "id": "m2-l3",
+      "moduleId": "module-2",
+      "order": 3,
+      "title": { "tr": "Bayes Teoremi (Bayes' Rule)", "en": "Bayes' Theorem" },
+      "conceptCard": {
+        "tr": "Bayes Teoremi, yeni kanıtlar elde edildikçe bir hipotezin olasılığını güncellememizi sağlar. P(A|B) = [P(B|A) * P(A)] / P(B). Yapay zeka ve dolandırıcılık tespitinde temel taşıdır.",
+        "en": "Bayes' Theorem allows us to update the probability of a hypothesis as new evidence arrives. P(A|B) = [P(B|A) * P(A)] / P(B). Fundamental in AI and fraud detection."
+      },
+      "companyExample": {
+        "tr": "E-posta spam filtresi: Bir e-postanın spam olma ön olasılığı P(Spam) = 0.10. Spam e-postaların %80'inde 'ÜCRETSİZ' kelimesi geçer P(Kelime|Spam) = 0.80. Normal e-postaların ise %5'inde geçer. 'ÜCRETSİZ' geçen bir e-postanın spam olma olasılığı Bayes ile hesaplanır.",
+        "en": "Email spam filter: Prior probability of spam P(Spam) = 0.10. 80% of spam contains 'FREE' P(Word|Spam) = 0.80. Normal emails contain it 5% of the time. Bayes calculates the updated probability of spam given 'FREE'."
+      },
+      "interactiveType": "bayes_rule",
+      "vocabTerms": [
+        {
+          "term_en": "prior probability",
+          "explanation_tr": "Yeni bilgi gelmeden önceki başlangıç olasılığı.",
+          "explanation_en": "The initial probability before acquiring new evidence.",
+          "exampleSentence_en": "The prior probability of disease is 1%."
+        },
+        {
+          "term_en": "posterior probability",
+          "explanation_tr": "Yeni bilgi alındıktan sonra güncellenmiş olasılık.",
+          "explanation_en": "The updated probability after taking new evidence into account.",
+          "exampleSentence_en": "Bayes rule computes the posterior probability."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m2-l3-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Bayes Teoremi en çok hangi durumda kullanılır?", "en": "When is Bayes' Theorem most useful?" },
+          "options": [
+            { "tr": "Yeni kanıtlarla bir olasılığı güncellemek için", "en": "To update a probability with new evidence" },
+            { "tr": "Sadece basit ortalama hesaplamak için", "en": "Only to calculate simple average" }
+          ],
+          "correctAnswer": "Yeni kanıtlarla bir olasılığı güncellemek için",
+          "explanation": { "tr": "Bayes teoremi, kanıt ışığında önsel (prior) bilgiyi sonsal (posterior) bilgiye dönüştürür.", "en": "Bayes theorem updates prior beliefs into posterior probability upon observing evidence." }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "def bayes(p_A, p_B_given_A, p_B_given_notA):\n    p_notA = 1 - p_A\n    p_B = (p_B_given_A * p_A) + (p_B_given_notA * p_notA)\n    return (p_B_given_A * p_A) / p_B\n\nprint(bayes(0.10, 0.80, 0.05))"
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m2-case-1",
+      "moduleId": "module-2",
+      "difficulty": "kolay",
+      "title": { "tr": "PayShield: E-Ticaret İşlem Olasılığı", "en": "PayShield: E-Commerce Transaction Probability" },
+      "businessQuestion": {
+        "tr": "PayShield finans sisteminde günlük 10,000 işlem yapılmaktadır. Son verilere göre işlemlerin %15'i mobil uygulamadan, %80'i web'den yapılmaktadır. Mobil işlemlerin %4'ü şüpheli bulunmuştur. Web işlemlerinin ise %1'i şüphelidir. Rastgele seçilen bir mobil işlemin şüpheli olmama olasılığı nedir?",
+        "en": "PayShield handles 10,000 daily transactions. 15% come from mobile app, 80% from web. 4% of mobile transactions are flagged suspicious, while 1% of web are flagged. What is the probability that a randomly chosen mobile transaction is NOT suspicious?"
+      },
+      "dataset": {
+        "columns": ["Kanal", "İşlem Oranı", "Şüpheli Oranı"],
+        "rows": [
+          ["Mobil Uygulama", "%15", "%4"],
+          ["Web Masaüstü", "%80", "%1"],
+          ["Diğer (API)", "%5", "%2"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Mobil işlemdeki şüpheli olasılığını P(Şüpheli|Mobil) = 0.04 olarak belirle.", "en": "Step 1: Identify suspicious probability for mobile P(Suspicious|Mobile) = 0.04." },
+        { "tr": "2. Adım: Tümleme kuralını uygula: P(Temiz|Mobil) = 1 - P(Şüpheli|Mobil).", "en": "Step 2: Apply complement rule: P(Clean|Mobile) = 1 - P(Suspicious|Mobile)." }
+      ],
+      "expectedApproach": {
+        "tr": "Mobil işlemler için şüpheli olma olasılığı 0.04 olduğu için şüpheli olmama (temiz olma) olasılığı 1 - 0.04 = 0.96 (%96)'dır.",
+        "en": "Since mobile suspicious probability is 0.04, clean probability is 1 - 0.04 = 0.96 (96%)."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m2-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Mobil bir işlemin şüpheli OLMAMA olasılığı kaçtır (0-1 arasında)?", "en": "What is the probability of a mobile transaction NOT being suspicious (0-1)?" },
+          "correctAnswer": 0.96,
+          "explanation": { "tr": "1 - 0.04 = 0.96", "en": "1 - 0.04 = 0.96" }
+        }
+      ]
+    },
+    {
+      "id": "m2-case-2",
+      "moduleId": "module-2",
+      "difficulty": "orta",
+      "title": { "tr": "FraudScan: Koşullu Risk Skoru", "en": "FraudScan: Conditional Risk Scoring" },
+      "businessQuestion": {
+        "tr": "FraudScan güvenlik yazılımında, bir işlemin dolandırıcılık olma ön olasılığı P(F) = 0.02'dir. Dolandırıcılık yapılan işlemlerin %90'ında Gece İşlemi (N) gerçekleşmektedir. Normal işlemlerin ise sadece %10'u gece yapılmaktadır. Gece yapılan bir işlemin dolandırıcılık olma olasılığı P(F|N) kaçtır?",
+        "en": "In FraudScan security software, the prior probability of fraud P(F) = 0.02. 90% of fraudulent transactions occur at night (N). Only 10% of normal transactions occur at night. What is the probability that a night transaction is fraudulent P(F|N)?"
+      },
+      "dataset": {
+        "columns": ["Metrik", "Değer"],
+        "rows": [
+          ["P(Fraud) Ön Olasılık", "0.02"],
+          ["P(Gece | Fraud)", "0.90"],
+          ["P(Gece | Normal)", "0.10"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Bayes kuralını hatırla: P(F|N) = [P(N|F) * P(F)] / P(N).", "en": "Step 1: Recall Bayes rule: P(F|N) = [P(N|F) * P(F)] / P(N)." },
+        { "tr": "2. Adım: Payı hesapla: 0.90 * 0.02 = 0.018.", "en": "Step 2: Compute numerator: 0.90 * 0.02 = 0.018." },
+        { "tr": "3. Adım: Toplam gece olasılığı P(N) = (0.90 * 0.02) + (0.10 * 0.98) = 0.018 + 0.098 = 0.116.", "en": "Step 3: Compute total night prob P(N) = (0.90 * 0.02) + (0.10 * 0.98) = 0.018 + 0.098 = 0.116." },
+        { "tr": "4. Adım: P(F|N) = 0.018 / 0.116 ≈ 0.155 (yaklaşık %15.5).", "en": "Step 4: P(F|N) = 0.018 / 0.116 ≈ 0.155 (~15.5%)." }
+      ],
+      "expectedApproach": {
+        "tr": "P(F|N) = (0.90 * 0.02) / [(0.90 * 0.02) + (0.10 * 0.98)] = 0.018 / 0.116 ≈ 0.1552 (%15.5). Gece yapılması riski %2'den %15.5'e çıkarmıştır.",
+        "en": "P(F|N) = (0.90 * 0.02) / [(0.90 * 0.02) + (0.10 * 0.98)] = 0.018 / 0.116 ≈ 0.1552 (15.5%). Nighttime transaction increases risk from 2% to 15.5%."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m2-case-2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Gece yapılan bir siparişin dolandırıcılık olma olasılığı yaklaşık olarak yüzde kaçtır (yuvarlayarak tam sayı girin)?", "en": "What is the approximate percentage chance that a night order is fraudulent (rounded integer)?" },
+          "correctAnswer": 16,
+          "explanation": { "tr": "0.018 / 0.116 = 0.15517... ≈ %16", "en": "0.018 / 0.116 = 0.15517... ≈ 16%" }
+        }
+      ]
+    },
+    {
+      "id": "m2-case-3",
+      "moduleId": "module-2",
+      "difficulty": "zor",
+      "title": { "tr": "RiskGuard: Çok Kriterli Bayes Modeli", "en": "RiskGuard: Multi-Criteria Bayes Model" },
+      "businessQuestion": {
+        "tr": "RiskGuard şirketi yeni bir kart doğrulama algoritması geliştiriyor. Bir işlemin dolandırıcılık olma ihtimali P(F) = 0.01 (%1). İki bağımsız sinyal var: (1) Farklı IP adresi kullanımı: P(IP|F) = 0.80, P(IP|Normal) = 0.05. (2) Yüksek tutarlı alışveriş: P(High|F) = 0.70, P(High|Normal) = 0.10. Bir siparişte HEM farklı IP HEM yüksek tutar gözlemlenirse bu siparişin dolandırıcılık olma olasılığı neye yükselir?",
+        "en": "RiskGuard develops a card validation algorithm. Prior fraud probability P(F) = 0.01. Two independent signals: (1) Different IP: P(IP|F) = 0.80, P(IP|Normal) = 0.05. (2) High amount: P(High|F) = 0.70, P(High|Normal) = 0.10. If an order has BOTH different IP AND high amount, what does the posterior fraud probability become?"
+      },
+      "dataset": {
+        "columns": ["Sinyal", "Fraud Durumunda Olasılık", "Normal Durumda Olasılık"],
+        "rows": [
+          ["Farklı IP Kullanımı", "0.80", "0.05"],
+          ["Yüksek Tutar Sipariş", "0.70", "0.10"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Bağımsızlık varsayımıyla P(IP ve High | F) = 0.80 * 0.70 = 0.56.", "en": "Step 1: With independence, P(IP and High | F) = 0.80 * 0.70 = 0.56." },
+        { "tr": "2. Adım: P(IP ve High | Normal) = 0.05 * 0.10 = 0.005.", "en": "Step 2: P(IP and High | Normal) = 0.05 * 0.10 = 0.005." },
+        { "tr": "3. Adım: Bayes kuralı: P(F | Sinyaller) = (0.56 * 0.01) / [(0.56 * 0.01) + (0.005 * 0.99)].", "en": "Step 3: Bayes rule: P(F | Signals) = (0.56 * 0.01) / [(0.56 * 0.01) + (0.005 * 0.99)]." },
+        { "tr": "4. Adım: Pay = 0.0056, Payda = 0.0056 + 0.00495 = 0.01055. Olasılık = 0.0056 / 0.01055 ≈ 0.53 (%53).", "en": "Step 4: Numerator = 0.0056, Denominator = 0.0056 + 0.00495 = 0.01055. Probability = 0.0056 / 0.01055 ≈ 0.53 (53%)." }
+      ],
+      "expectedApproach": {
+        "tr": "Başlangıçta sadece %1 olan risk, iki şüpheli sinyal birleştiğinde %53'ün üzerine çıkmaktadır! Şirket bu siparişi otomatik bloke etmeli veya SMS onayı istemelidir.",
+        "en": "Risk starts at only 1%, but when two suspicious signals combine, it rockets to over 53%! The company should automatically block or require SMS verification."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m2-case-3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "İki sinyal birlikte gerçekleştiğinde dolandırıcılık olasılığı yaklaşık yüzde kaçtır (yakın tam sayı)?", "en": "What is the approximate percentage fraud risk when both signals occur (closest integer)?" },
+          "correctAnswer": 53,
+          "explanation": { "tr": "0.0056 / 0.01055 ≈ 0.5308 (%53)", "en": "0.0056 / 0.01055 ≈ 0.5308 (53%)" }
+        }
+      ]
+    }
+  ]
+}

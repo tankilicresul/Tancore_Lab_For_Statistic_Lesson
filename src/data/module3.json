@@ -1,0 +1,245 @@
+{
+  "id": "module-3",
+  "order": 3,
+  "title": { "tr": "Olasılık Dağılımları", "en": "Probability Distributions" },
+  "description": {
+    "tr": "Normal, Binom, Poisson ve Üstel dağılımlar. Müşteri hizmetleri çağrı merkezi kapasite modelleme vakaları.",
+    "en": "Normal, Binomial, Poisson, and Exponential distributions. Customer call center capacity modeling cases."
+  },
+  "iconName": "Activity",
+  "lessons": [
+    {
+      "id": "m3-l1",
+      "moduleId": "module-3",
+      "order": 1,
+      "title": { "tr": "Binom Dağılımı (Binomial Distribution)", "en": "Binomial Distribution" },
+      "conceptCard": {
+        "tr": "Binom dağılımı, sabit n sayıda bağımsız denemede k kere başarı elde etme olasılığını modeller. Her denemenin sadece 2 olası sonucu vardır (başarılı/başarısız) ve başarı olasılığı p sabittir.",
+        "en": "The binomial distribution models the probability of getting k successes in n independent trials. Each trial has only 2 outcomes (success/failure) with constant probability p."
+      },
+      "companyExample": {
+        "tr": "CallCenterDirect'te 10 müşteri temsilcisi telefon araması yapıyor. Her birinin satışı kapatma olasılığı p = 0.20 (%20). 10 aramadan tam 3 tanesinin satışla sonuçlanma olasılığı Binom formülü ile hesaplanır.",
+        "en": "At CallCenterDirect, 10 reps place outbound calls. Each has a closing probability p = 0.20 (20%). The probability of getting exactly 3 sales out of 10 calls is calculated using the Binomial formula."
+      },
+      "interactiveType": "binomial_dist",
+      "vocabTerms": [
+        {
+          "term_en": "trial",
+          "explanation_tr": "Tek bir deneme veya deney adımı.",
+          "explanation_en": "A single attempt or experimental observation.",
+          "exampleSentence_en": "Each customer call represents one trial."
+        },
+        {
+          "term_en": "success probability",
+          "explanation_tr": "Her denemedeki başarı şansı (p).",
+          "explanation_en": "The probability of success in each trial (p).",
+          "exampleSentence_en": "The success probability p is 0.20."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m3-l1-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Binom dağılımının uygulanabilmesi için hangisi zorunludur?", "en": "Which condition is mandatory for a Binomial distribution?" },
+          "options": [
+            { "tr": "Her denemede tam 2 olası sonuç olması (Başarı / Başarısız)", "en": "Exactly 2 possible outcomes per trial (Success / Failure)" },
+            { "tr": "Verilerin sürekli (continuous) sayısal değerler alması", "en": "Data taking continuous numerical values" }
+          ],
+          "correctAnswer": "Her denemede tam 2 olası sonuç olması (Başarı / Başarısız)",
+          "explanation": { "tr": "Binom dağılımı kesikli (discrete) 2 sonuçlu denemeler içindir.", "en": "Binomial distribution applies to discrete 2-outcome trials." }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=BİNOM.DAĞ(3; 10; 0.2; YANLIŞ)  (EN: =BINOM.DIST(3, 10, 0.2, FALSE))",
+        "pythonCode": "from scipy.stats import binom\nprob = binom.pmf(3, 10, 0.2)\nprint(prob)"
+      }
+    },
+    {
+      "id": "m3-l2",
+      "moduleId": "module-2",
+      "order": 2,
+      "title": { "tr": "Poisson Dağılımı (Poisson Distribution)", "en": "Poisson Distribution" },
+      "conceptCard": {
+        "tr": "Poisson dağılımı, belirli bir zaman veya mekan aralığında nadir olayların kaç kez gerçekleşeceğini modeller (örn. 1 saatte gelen çağrı sayısı). Tek parametresi ortalama oran lambda (λ)'dır.",
+        "en": "Poisson distribution models the count of events occurring in a fixed interval of time or space (e.g. calls per hour). Its single parameter is the mean rate lambda (λ)."
+      },
+      "companyExample": {
+        "tr": "CallCenterDirect çağrı merkezine saatte ortalama 5 müşteri temsilci talebi düşmektedir (λ = 5). Gelecek saatte tam 8 çağrı gelme olasılığı Poisson formülüyle hesaplanır.",
+        "en": "At CallCenterDirect, an average of 5 calls arrive per hour (λ = 5). The probability of receiving exactly 8 calls in the next hour is modeled by Poisson."
+      },
+      "interactiveType": "poisson_dist",
+      "vocabTerms": [
+        {
+          "term_en": "rate parameter (lambda)",
+          "explanation_tr": "Birim zamandaki ortalama olay sayısı (λ).",
+          "explanation_en": "Average number of events per unit interval (λ).",
+          "exampleSentence_en": "Lambda represents the arrival rate per hour."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m3-l2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Saatlik gelen müşteri çağrıları sayısını modellemek için hangi dağılım en uygundur?", "en": "Which distribution is best suited to model the number of customer calls per hour?" },
+          "options": [
+            { "tr": "Poisson Dağılımı", "en": "Poisson Distribution" },
+            { "tr": "Zaman serisi çizelgesi", "en": "Time series timeline" }
+          ],
+          "correctAnswer": "Poisson Dağılımı",
+          "explanation": { "tr": "Birim zamandaki sayım (count) verileri için Poisson kullanılır.", "en": "Poisson is used for count data per unit time interval." }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=POISSON.DAĞ(8; 5; YANLIŞ)  (EN: =POISSON.DIST(8, 5, FALSE))",
+        "pythonCode": "from scipy.stats import poisson\nprob = poisson.pmf(8, 5)\nprint(prob)"
+      }
+    },
+    {
+      "id": "m3-l3",
+      "moduleId": "module-3",
+      "order": 3,
+      "title": { "tr": "Normal Dağılım ve Z-Skoru", "en": "Normal Distribution and Z-Score" },
+      "conceptCard": {
+        "tr": "Normal (Gauss) dağılımı, çan eğrisi şeklinde simetrik bir sürekli dağılımdır. Doğadaki ve iş dünyasındaki birçok ölçüm normal dağılır. Z-skoru, bir değerin ortalamadan kaç standart sapma uzakta olduğunu gösterir: Z = (X - µ) / σ.",
+        "en": "The Normal (Gaussian) distribution is a symmetric bell-shaped continuous distribution. A Z-score indicates how many standard deviations a value is from the mean: Z = (X - µ) / σ."
+      },
+      "companyExample": {
+        "tr": "CallCenterDirect'te bir çağrının çözüm süresi ortalama µ = 300 saniye (5 dk) ve standart sapması σ = 60 saniyedir. 420 saniye süren bir çağrının Z-skoru Z = (420 - 300) / 60 = +2.0'dır (normalden belirgin uzun!).",
+        "en": "At CallCenterDirect, call handling time has mean µ = 300s (5 min) and std dev σ = 60s. A 420s call has a Z-score Z = (420 - 300) / 60 = +2.0 (noticeably longer than average!)."
+      },
+      "interactiveType": "normal_dist",
+      "vocabTerms": [
+        {
+          "term_en": "bell curve",
+          "explanation_tr": "Normal dağılımın simetrik çan biçimli grafiği.",
+          "explanation_en": "The symmetric bell-shaped graph of a normal distribution.",
+          "exampleSentence_en": "Test scores often follow a bell curve."
+        },
+        {
+          "term_en": "z-score",
+          "explanation_tr": "Standartlaştırılmış sapma değeri.",
+          "explanation_en": "Standardized measure of deviation from mean.",
+          "exampleSentence_en": "A Z-score of +3 indicates an extreme value."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m3-l3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Ortalama µ = 100, Std Sapma σ = 15 ise X = 130 için Z-skoru kaçtır?", "en": "If mean µ = 100, Std Dev σ = 15, what is the Z-score for X = 130?" },
+          "correctAnswer": 2,
+          "explanation": { "tr": "Z = (130 - 100) / 15 = 30 / 15 = 2.0", "en": "Z = (130 - 100) / 15 = 30 / 15 = 2.0" }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=NORM.DAĞ(420; 300; 60; DOĞRU)  (EN: =NORM.DIST(420, 300, 60, TRUE))",
+        "pythonCode": "from scipy.stats import norm\nz = (420 - 300) / 60\npercentile = norm.cdf(z)\nprint(f'Z: {z}, Percentile: {percentile:.4f}')"
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m3-case-1",
+      "moduleId": "module-3",
+      "difficulty": "kolay",
+      "title": { "tr": "CallCenterDirect: Z-Skoru ile Çağrı Süreleri", "en": "CallCenterDirect: Call Durations via Z-Score" },
+      "businessQuestion": {
+        "tr": "CallCenterDirect çağrı merkezinde müşteri görüşme süreleri ortalama µ = 240 saniye (4 dk) ve standart sapma σ = 30 saniye ile Normal Dağılmaktadır. Şirket yönetimi 330 saniyenin üzerindeki görüşmeleri 'Aşırı Uzun Görüşme' olarak etiketlemektedir. 330 saniyelik bir görüşmenin Z-skoru kaçtır?",
+        "en": "CallCenterDirect call handling times are Normally distributed with mean µ = 240s and std dev σ = 30s. Management flags calls exceeding 330s as 'Excessively Long'. What is the Z-score of a 330s call?"
+      },
+      "dataset": {
+        "columns": ["Parametre", "Değer"],
+        "rows": [
+          ["Ortalama Süre (µ)", "240 saniye"],
+          ["Standart Sapma (σ)", "30 saniye"],
+          ["Eşik Değer (X)", "330 saniye"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Z-skoru formülünü yaz: Z = (X - µ) / σ.", "en": "Step 1: Write Z-score formula: Z = (X - µ) / σ." },
+        { "tr": "2. Adım: Değerleri yerine koy: Z = (330 - 240) / 30 = 90 / 30 = 3.0.", "en": "Step 2: Substitute values: Z = (330 - 240) / 30 = 90 / 30 = 3.0." }
+      ],
+      "expectedApproach": {
+        "tr": "Z-skoru = +3.0. Normal dağılımda verilerin %99.7'si ±3 standart sapma aralığındadır. Z = 3.0 değerindeki bir görüşme çok nadir (%0.13'ten az) gerçekleşir ve özel inceleme gerektirir.",
+        "en": "Z-score = +3.0. In normal distribution, 99.7% of data lies within ±3 std dev. A Z = 3.0 call is extremely rare (<0.13%) and warrants review."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m3-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "330 saniyelik görüşmenin Z-skoru kaçtır?", "en": "What is the Z-score of the 330s call?" },
+          "correctAnswer": 3,
+          "explanation": { "tr": "(330 - 240) / 30 = 90 / 30 = 3", "en": "(330 - 240) / 30 = 90 / 30 = 3" }
+        }
+      ]
+    },
+    {
+      "id": "m3-case-2",
+      "moduleId": "module-3",
+      "difficulty": "orta",
+      "title": { "tr": "CallCenterDirect: Poisson Çağrı Yoğunluğu", "en": "CallCenterDirect: Poisson Call Traffic" },
+      "businessQuestion": {
+        "tr": "Öğle saatlerinde çağrı merkezine dakikada ortalama λ = 2 çağrı gelmektedir. Operasyon yöneticisi, önümüzdeki 1 dakika içinde HIÇ çağrı gelmeme (k = 0) olasılığını hesaplamak istemektedir. e^(-2) ≈ 0.1353 olduğuna göre hiç çağrı gelmeme olasılığı yüzde kaçtır?",
+        "en": "During lunch hours, the call center receives an average rate λ = 2 calls per minute. The operations manager wants to calculate the probability of receiving ZERO calls (k = 0) in the next minute. Given e^(-2) ≈ 0.1353, what is the percentage chance of 0 calls?"
+      },
+      "dataset": {
+        "columns": ["Zaman Dilimi", "Ortalama Çağrı Oranı (λ)"],
+        "rows": [
+          ["1 Dakika Aralığı", "2 çağrı / dk"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Poisson PMF formülü: P(X = k) = (λ^k * e^-λ) / k!.", "en": "Step 1: Poisson PMF formula: P(X = k) = (λ^k * e^-λ) / k!." },
+        { "tr": "2. Adım: k = 0 ve λ = 2 koy: P(X = 0) = (2^0 * e^-2) / 0! = (1 * 0.1353) / 1 = 0.1353.", "en": "Step 2: Plug in k = 0 & λ = 2: P(X = 0) = (2^0 * e^-2) / 0! = 0.1353." }
+      ],
+      "expectedApproach": {
+        "tr": "Hiç çağrı gelmeme olasılığı 0.1353 yani yaklaşık %13.5'tir. Bu durum temsilcilerin kısa molalar verebileceği küçük boşlukları gösterir.",
+        "en": "Probability of 0 calls is 0.1353 or ~13.5%. Indicates small windows where reps might be idle."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m3-case-2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Hiç çağrı gelmeme olasılığı yüzde kaçtır (en yakın tam sayıya yuvarlayın)?", "en": "What is the percentage chance of receiving 0 calls (rounded to nearest integer)?" },
+          "correctAnswer": 14,
+          "explanation": { "tr": "0.1353 ≈ %14", "en": "0.1353 ≈ 14%" }
+        }
+      ]
+    },
+    {
+      "id": "m3-case-3",
+      "moduleId": "module-3",
+      "difficulty": "zor",
+      "title": { "tr": "CallCenterDirect: Vardiya Kapasite Modeli", "en": "CallCenterDirect: Shift Capacity Model" },
+      "businessQuestion": {
+        "tr": "CallCenterDirect akşam vardiyasında 100 çağrıyı yanıtlamaktadır. Her müşteri temsilcisinin çağrıyı ikna ile kapatma ihtimali p = 0.10 (%10)'dur. Yönetim akşam vardiyasında en az 10 satış hedeflenmesini beklemektedir. Binom dağılımının beklenen değeri E(X) = n * p olduğuna göre, beklenen satış adedi kaçtır ve hedefin tutma olasılığı nasıldır?",
+        "en": "CallCenterDirect handles 100 calls in evening shift. Sales conversion per call p = 0.10 (10%). Management targets at least 10 sales. Given Binomial expected value E(X) = n * p, what is the expected number of sales?"
+      },
+      "dataset": {
+        "columns": ["Parametre", "Değer"],
+        "rows": [
+          ["Deneme Sayısı (n)", "100 çağrı"],
+          ["Başarı Olasılığı (p)", "0.10"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Beklenen değeri hesapla: E(X) = n * p = 100 * 0.10 = 10.", "en": "Step 1: Calculate expected value: E(X) = n * p = 100 * 0.10 = 10." },
+        { "tr": "2. Adım: Binom varyansı Var(X) = n * p * (1-p) = 100 * 0.10 * 0.90 = 9.", "en": "Step 2: Binomial variance Var(X) = n * p * (1-p) = 100 * 0.10 * 0.90 = 9." },
+        { "tr": "3. Adım: Standart sapma σ = √9 = 3.", "en": "Step 3: Standard deviation σ = √9 = 3." }
+      ],
+      "expectedApproach": {
+        "tr": "Ortalama beklenen satış 10 adettir. Ancak standart sapma 3 olduğu için satışlar çoğunlukla 7 ile 13 arasında değişecektir. Hedef olan 10 satış tam ortalama değerdir, tutma olasılığı yaklaşık %50-%55 civarındadır.",
+        "en": "Average expected sales is 10. With std dev of 3, sales typically fluctuate between 7 and 13. Target of 10 matches the mean, with ~50-55% probability of achievement."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m3-case-3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Vardiyadan beklenen (ortalama) satış sayısı kaçtır?", "en": "What is the expected average number of sales for the shift?" },
+          "correctAnswer": 10,
+          "explanation": { "tr": "E(X) = 100 * 0.10 = 10", "en": "E(X) = 100 * 0.10 = 10" }
+        }
+      ]
+    }
+  ]
+}

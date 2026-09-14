@@ -1,0 +1,88 @@
+{
+  "id": "module-4",
+  "order": 4,
+  "title": { "tr": "Örnekleme & CLT", "en": "Sampling & Central Limit Theorem" },
+  "description": {
+    "tr": "Örnekleme yöntemleri, örnekleme hatası ve Merkezi Limit Teoremi (CLT). Müşteri memnuniyet anketi örneklem büyüklüğü vakası.",
+    "en": "Sampling methods, sampling error, and Central Limit Theorem (CLT). Customer satisfaction survey sample size case."
+  },
+  "iconName": "Users",
+  "lessons": [
+    {
+      "id": "m4-l1",
+      "moduleId": "module-4",
+      "order": 1,
+      "title": { "tr": "Merkezi Limit Teoremi (CLT)", "en": "Central Limit Theorem (CLT)" },
+      "conceptCard": {
+        "tr": "Merkezi Limit Teoremi, ana kütle hangi dağılıma sahip olursa olsun (n >= 30 olmak şartıyla), alınan rastgele örneklemlerin ortalamalarının dağılımının Normal Dağılıma yaklaşacağını söyler.",
+        "en": "The Central Limit Theorem states that regardless of the population distribution, the distribution of sample means approaches a Normal distribution as sample size n >= 30."
+      },
+      "companyExample": {
+        "tr": "SurveyPulse şirketi, 50,000 kullanıcılı bir platformda harcama tutarlarının aşırı çarpık (skewed) olduğunu görüyor. Ancak her biri 50 kullanıcıdan oluşan 100 farklı rastgele örneklem aldığında, bu örneklem ortalamalarının mükemmel bir çan eğrisi (Normal) oluşturduğunu kanıtlıyor.",
+        "en": "SurveyPulse observes that spending amounts across 50,000 platform users are heavily skewed. However, taking 100 random samples of size n=50 yields sample means that form a clean bell curve."
+      },
+      "interactiveType": "sample_size",
+      "vocabTerms": [
+        {
+          "term_en": "standard error (SE)",
+          "explanation_tr": "Örneklem ortalamasının standart sapması: SE = σ / √n.",
+          "explanation_en": "Standard deviation of the sample mean distribution: SE = σ / √n.",
+          "exampleSentence_en": "Increasing sample size n decreases standard error."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m4-l1-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Örneklem büyüklüğü n arttıkça Standart Hata (SE) nasıl değişir?", "en": "How does Standard Error (SE) change as sample size n increases?" },
+          "options": [
+            { "tr": "Azalır (Örneklem ortalaması daha hassaslaşır)", "en": "Decreases (Sample mean becomes more precise)" },
+            { "tr": "Artar", "en": "Increases" }
+          ],
+          "correctAnswer": "Azalır (Örneklem ortalaması daha hassaslaşır)",
+          "explanation": { "tr": "SE = σ / √n formülünde n paydada olduğu için n büyüdükçe SE küçülür.", "en": "In SE = σ / √n, since n is in denominator, larger n yields smaller SE." }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import numpy as np\nse = 15.0 / np.sqrt(100)\nprint(f'Standard Error: {se}')"
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m4-case-1",
+      "moduleId": "module-4",
+      "difficulty": "kolay",
+      "title": { "tr": "SurveyPulse: Anket Standart Hatası", "en": "SurveyPulse: Survey Standard Error" },
+      "businessQuestion": {
+        "tr": "SurveyPulse anketi için ana kütle standart sapması σ = 20 TL'dir. 100 kişiden oluşan bir örneklem alındığında (n = 100), örneklem ortalamasının Standart Hatası (SE) kaçtır?",
+        "en": "For a SurveyPulse survey, population std dev σ = $20. For a sample size n = 100, what is the Standard Error (SE) of the sample mean?"
+      },
+      "dataset": {
+        "columns": ["Parametre", "Değer"],
+        "rows": [
+          ["Standart Sapma (σ)", "20 TL"],
+          ["Örneklem Büyüklüğü (n)", "100 kişi"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Standart Hata formülünü hatırla: SE = σ / √n.", "en": "Step 1: Recall SE formula: SE = σ / √n." },
+        { "tr": "2. Adım: √100 = 10.", "en": "Step 2: √100 = 10." },
+        { "tr": "3. Adım: SE = 20 / 10 = 2.0.", "en": "Step 3: SE = 20 / 10 = 2.0." }
+      ],
+      "expectedApproach": {
+        "tr": "Standart Hata = 2.0 TL'dir. Bu, 100 kişilik örneklem ortalamalarının ana kütle ortalamasından ortalama 2 TL sapacağını gösterir.",
+        "en": "Standard Error = $2.0. This means sample means of size 100 typically deviate by $2 from the true population mean."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m4-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Standart Hata (SE) kaçtır?", "en": "What is the Standard Error (SE)?" },
+          "correctAnswer": 2,
+          "explanation": { "tr": "20 / √100 = 20 / 10 = 2", "en": "20 / √100 = 20 / 10 = 2" }
+        }
+      ]
+    }
+  ]
+}

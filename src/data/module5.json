@@ -1,0 +1,84 @@
+{
+  "id": "module-5",
+  "order": 5,
+  "title": { "tr": "Güven Aralıkları", "en": "Confidence Intervals" },
+  "description": {
+    "tr": "Nokta tahmini, %95-%99 Güven Aralıkları (CI) ve örneklem boyutu belirleme. İlaç etkinliği ve medikal cihaz kalite raporu vakaları.",
+    "en": "Point estimation, 95%-99% Confidence Intervals (CI), and sample size determination. Drug efficacy & medical device quality cases."
+  },
+  "iconName": "ShieldCheck",
+  "lessons": [
+    {
+      "id": "m5-l1",
+      "moduleId": "module-5",
+      "order": 1,
+      "title": { "tr": "%95 Güven Aralığı Hesabı", "en": "95% Confidence Interval Calculation" },
+      "conceptCard": {
+        "tr": "Güven Aralığı (CI), bilinmeyen ana kütle parametresinin belirli bir güven düzeyiyle (%95) düşmesinin beklendiği değer aralığıdır. Formül: CI = X̄ ± (Z * SE). %95 güven düzeyi için Z = 1.96'dır.",
+        "en": "A Confidence Interval (CI) is an estimated range likely to contain the true population parameter. Formula: CI = X̄ ± (Z * SE). For 95% confidence, Z = 1.96."
+      },
+      "companyExample": {
+        "tr": "BioLab ilaç şirketinde yeni bir ağrı kesicinin etki süresi test edilmiş, n = 100 hastada ortalama etki başlama süresi X̄ = 20 dakika, standart sapma s = 5 dakika bulunmuştur. %95 Güven Aralığı: 20 ± 1.96 * (5 / √100) = 20 ± 0.98 = (19.02, 20.98) dakika.",
+        "en": "At BioLab pharma, a painkiller's onset time was tested in n = 100 patients, yielding mean X̄ = 20 min, std dev s = 5 min. 95% CI: 20 ± 1.96 * (5 / √100) = 20 ± 0.98 = (19.02, 20.98) minutes."
+      },
+      "interactiveType": "confidence_interval",
+      "vocabTerms": [
+        {
+          "term_en": "margin of error (ME)",
+          "explanation_tr": "Hata payı: ME = Z * (s / √n).",
+          "explanation_en": "Margin of error: ME = Z * (s / √n).",
+          "exampleSentence_en": "The survey has a margin of error of ±3%."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m5-l1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Ortalama X̄ = 50, SE = 2 ve %95 Güven Düzeyi (Z = 1.96) için Hata Payı (Margin of Error) yaklaşık kaçtır?", "en": "If mean X̄ = 50, SE = 2, and Z = 1.96 for 95% CI, what is the approximate Margin of Error?" },
+          "correctAnswer": 3.92,
+          "explanation": { "tr": "ME = 1.96 * 2 = 3.92", "en": "ME = 1.96 * 2 = 3.92" }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import scipy.stats as stats\nimport numpy as np\nci = stats.t.interval(0.95, df=99, loc=20, scale=5/np.sqrt(100))\nprint(f'95% CI: {ci}')"
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m5-case-1",
+      "moduleId": "module-5",
+      "difficulty": "kolay",
+      "title": { "tr": "BioLab: İlaç Etki Süresi Güven Aralığı", "en": "BioLab: Drug Efficacy Confidence Interval" },
+      "businessQuestion": {
+        "tr": "BioLab firmasında n = 400 hasta üzerinde yapılan testte yeni vitamin takviyesinin emilim süresi ortalaması X̄ = 50 dakika ve standart sapması s = 10 dakika ölçülmüştür. %95 güven seviyesinde (Z = 1.96) emilim süresinin hata payı (Margin of Error) kaçtır?",
+        "en": "In a study of n = 400 patients at BioLab, average supplement absorption time was X̄ = 50 minutes with s = 10 minutes. At 95% confidence level (Z = 1.96), what is the Margin of Error?"
+      },
+      "dataset": {
+        "columns": ["Parametre", "Değer"],
+        "rows": [
+          ["Örneklem (n)", "400 hasta"],
+          ["Ortalama (X̄)", "50 dakika"],
+          ["Std Sapma (s)", "10 dakika"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: SE = 10 / √400 = 10 / 20 = 0.5.", "en": "Step 1: SE = 10 / √400 = 10 / 20 = 0.5." },
+        { "tr": "2. Adım: Hata Payı = 1.96 * 0.5 = 0.98 dakika.", "en": "Step 2: Margin of Error = 1.96 * 0.5 = 0.98 minutes." }
+      ],
+      "expectedApproach": {
+        "tr": "Hata payı 0.98 dakikadır. Gerçek ana kütle ortalaması %95 ihtimalle (49.02, 50.98) dakika aralığındadır.",
+        "en": "Margin of Error is 0.98 minutes. True population mean lies within (49.02, 50.98) minutes with 95% confidence."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m5-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Hata Payı (Margin of Error) kaçtır?", "en": "What is the Margin of Error?" },
+          "correctAnswer": 0.98,
+          "explanation": { "tr": "1.96 * (10 / 20) = 0.98", "en": "1.96 * (10 / 20) = 0.98" }
+        }
+      ]
+    }
+  ]
+}

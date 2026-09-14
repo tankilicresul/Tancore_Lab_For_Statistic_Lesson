@@ -1,0 +1,91 @@
+{
+  "id": "module-9",
+  "order": 9,
+  "title": { "tr": "ANOVA & Kategorik Veri", "en": "ANOVA & Categorical Data Analysis" },
+  "description": {
+    "tr": "Tek Yönlü ANOVA (One-Way ANOVA), F-testi ve Ki-Kare (Chi-Square) uyum/bağımsızlık testi. 3 farklı reklam kampanyasını karşılaştırma vakası.",
+    "en": "One-Way ANOVA, F-test, and Chi-Square goodness-of-fit / independence test. 3 ad campaigns comparison case."
+  },
+  "iconName": "PieChart",
+  "lessons": [
+    {
+      "id": "m9-l1",
+      "moduleId": "module-9",
+      "order": 1,
+      "title": { "tr": "Tek Yönlü ANOVA (F-Testi)", "en": "One-Way ANOVA (F-Test)" },
+      "conceptCard": {
+        "tr": "ANOVA (Varyans Analizi), 3 veya daha fazla grubun ortalamaları arasında istatistiksel olarak anlamlı bir fark olup olmadığını tek bir F-testi ile inceler. Tek tek t-testi yapmak Tip I hatayı (yanlış pozitif) artırır.",
+        "en": "ANOVA (Analysis of Variance) evaluates whether population means of 3 or more groups differ significantly using an F-test. Running multiple pairwise t-tests inflation increases Type I error."
+      },
+      "companyExample": {
+        "tr": "MediaImpact ajansı 3 farklı reklam stratejisini (A: Video, B: Banner, C: Influencer) karşılaştırıyor. 3 grubun harcama başı dönüşümleri için F-istatistiği = 5.82, p-değeri = 0.007 çıkmıştır. p < 0.05 olduğu için en az bir reklam türünün ortalaması diğerlerinden farklıdır.",
+        "en": "MediaImpact agency compares 3 ad strategies (A: Video, B: Banner, C: Influencer). F-statistic = 5.82, p-value = 0.007. Since p < 0.05, at least one campaign strategy yields significantly different average ROI."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "between-group variance",
+          "explanation_tr": "Grupların ortalamaları arasındaki varyans.",
+          "explanation_en": "Variance among group means.",
+          "exampleSentence_en": "High between-group variance indicates distinct group performances."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m9-l1-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "3 ayrı grubun ortalamalarını karşılaştırırken t-testi yerine neden ANOVA tercih edilir?", "en": "Why is ANOVA preferred over multiple t-tests when comparing 3 group means?" },
+          "options": [
+            { "tr": "Tip I Hata (Alfa enflasyonu) oluşmasını önlemek için", "en": "To prevent Type I error rate inflation" },
+            { "tr": "ANOVA yapması daha kolay olduğu için", "en": "Because ANOVA is easier to compute" }
+          ],
+          "correctAnswer": "Tip I Hata (Alfa enflasyonu) oluşmasını önlemek için",
+          "explanation": { "tr": "Çoklu t-testleri toplam hata olasılığını katlar, ANOVA bunu kontrol eder.", "en": "Multiple t-tests accumulate Type I error rates, ANOVA controls overall alpha." }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "from scipy import stats\nf_stat, p_val = stats.f_oneway(group_a, group_b, group_c)\nprint(f'F: {f_stat:.2f}, p: {p_val:.4f}')"
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m9-case-1",
+      "moduleId": "module-9",
+      "difficulty": "kolay",
+      "title": { "tr": "MediaImpact: 3 Kampanya ANOVA Sonucu", "en": "MediaImpact: 3 Campaign ANOVA Result" },
+      "businessQuestion": {
+        "tr": "MediaImpact 3 reklam seçeneği için ANOVA testi yapmış ve F = 4.12, p-değeri = 0.021 elde etmiştir. alpha = 0.05 seviyesinde sonuç nasıl yorumlanır?",
+        "en": "MediaImpact ran an ANOVA across 3 ad creatives yielding F = 4.12, p-value = 0.021. How is this interpreted at alpha = 0.05?"
+      },
+      "dataset": {
+        "columns": ["Kampanya Türü", "Örneklem (n)", "Ortalama Dönüşüm ($)"],
+        "rows": [
+          ["Kampanya A (Video)", "30", "120"],
+          ["Kampanya B (Banner)", "30", "95"],
+          ["Kampanya C (Social)", "30", "135"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: p-değerini (0.021) 0.05 ile karşılaştır.", "en": "Step 1: Compare p-value (0.021) with 0.05." },
+        { "tr": "2. Adım: 0.021 < 0.05 olduğu için H0 reddedilir; en az bir kampanya farklıdır.", "en": "Step 2: Since 0.021 < 0.05, reject H0; at least one campaign differs." }
+      ],
+      "expectedApproach": {
+        "tr": "0.021 < 0.05 olduğundan 3 kampanya arasında performans farkı anlamlıdır.",
+        "en": "0.021 < 0.05 indicates a statistically significant difference among 3 campaigns."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m9-case-1-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "H0 hipotezi reddedilir mi?", "en": "Is H0 rejected?" },
+          "options": [
+            { "tr": "Evet (H0 reddedilir, anlamlı fark var)", "en": "Yes (Reject H0, significant difference)" },
+            { "tr": "Hayır (H0 reddedilemez)", "en": "No (Fail to reject H0)" }
+          ],
+          "correctAnswer": "Evet (H0 reddedilir, anlamlı fark var)",
+          "explanation": { "tr": "p = 0.021 < 0.05 olduğu için H0 reddedilir.", "en": "p = 0.021 < 0.05, so H0 is rejected." }
+        }
+      ]
+    }
+  ]
+}

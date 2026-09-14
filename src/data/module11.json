@@ -1,0 +1,90 @@
+{
+  "id": "module-11",
+  "order": 11,
+  "title": { "tr": "Kapstone: Uçtan Uca Case", "en": "Capstone: End-to-End Case Study" },
+  "description": {
+    "tr": "Tüm istatistiksel kavramları birleştiren büyük bitirme projesi. 'Kıdemli Veri Analisti İşe Alım Vakası' (Kaggle e-ticaret veri seti alt kümesi).",
+    "en": "Comprehensive capstone project integrating all statistical concepts. 'Senior Data Analyst Hiring Case' (Kaggle e-commerce subset)."
+  },
+  "iconName": "Trophy",
+  "lessons": [
+    {
+      "id": "m11-l1",
+      "moduleId": "module-11",
+      "order": 1,
+      "title": { "tr": "Veri Analitiği Süreç Özeti", "en": "Data Analytics Workflow Summary" },
+      "conceptCard": {
+        "tr": "Gerçek iş dünyasında bir veri analitiği projesi şu adımlardan oluşur: (1) Tanımlayıcı istatistik ve keşifsel analiz (EDA), (2) Hipotez testleri ve A/B doğrulama, (3) Tahminleme modelleri (Regresyon / Zaman Serisi), (4) İş kararı ve yönetici özeti sunumu.",
+        "en": "Real-world data analytics workflow follows 4 steps: (1) Descriptive statistics & EDA, (2) Hypothesis testing & A/B validation, (3) Predictive modeling (Regression / Time Series), (4) Business decision & executive reporting."
+      },
+      "companyExample": {
+        "tr": "TechCorp global e-ticaret şirketi işe alım sürecinde aday analistlere 100 siparişlik gerçek Kaggle alt kümesi vererek 3 aşamalı soru soruyor: Dağılım kontrolü, A/B testi anlamlılığı ve satış regresyon tahmini.",
+        "en": "TechCorp global e-commerce presents candidates with a 100-row Kaggle subset to evaluate: Distribution checks, A/B test significance, and sales regression forecasting."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "exploratory data analysis (EDA)",
+          "explanation_tr": "Veri setini görselleştirerek ve özet istatistiklerle tanıma aşaması.",
+          "explanation_en": "Initial phase of analyzing data sets to summarize their main characteristics.",
+          "exampleSentence_en": "Always start a project with EDA."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m11-l1-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Bir veri projesinde ilk olarak hangi adım yapılmalıdır?", "en": "Which step should be performed first in a data analytics project?" },
+          "options": [
+            { "tr": "Keşifsel Veri Analizi (EDA) ve Tanımlayıcı İstatistikler", "en": "Exploratory Data Analysis (EDA) and Descriptive Statistics" },
+            { "tr": "Karmaşık Derin Öğrenme modelleri kurmak", "en": "Build complex deep learning models immediately" }
+          ],
+          "correctAnswer": "Keşifsel Veri Analizi (EDA) ve Tanımlayıcı İstatistikler",
+          "explanation": { "tr": "Veriyi anlamak için her zaman tanımlayıcı istatistikler ve EDA ile başlanır.", "en": "Projects always begin with descriptive stats and EDA to understand data distributions." }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import pandas as pd\ndf = pd.read_csv('ecommerce_data.csv')\nprint(df.describe())"
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m11-case-1",
+      "moduleId": "module-11",
+      "difficulty": "zor",
+      "title": { "tr": "TechCorp: Kıdemli Veri Analisti İşe Alım Vakası", "en": "TechCorp: Senior Data Analyst Hiring Case" },
+      "businessQuestion": {
+        "tr": "Tebrikler! StatLingo bitirme projesine ulaştınız. TechCorp yöneticileri önünüze 5 müşteri segmentinin verilerini getirdi. Göreviniz: (1) En yüksek varyansa sahip segmenti belirlemek, (2) Yeni ödeme arayüzü A/B testi p-değerini (0.018) yorumlamak, (3) Pazarlama regresyon denklemi Y = 100 + 4*X ile 25 birimlik reklam harcamasının getirisini hesaplamak.",
+        "en": "Congratulations! You reached the StatLingo Capstone. TechCorp executives present data for 5 customer segments. Your task: (1) Identify segment with highest variance, (2) Interpret A/B test p-value (0.018), (3) Calculate revenue for 25 units of ad spend using Y = 100 + 4*X."
+      },
+      "dataset": {
+        "columns": ["Segment", "Ortalama Sepet ($)", "Std Sapma ($)", "Kullanıcı Sayısı"],
+        "rows": [
+          ["Enterprise", 450, 120, 500],
+          ["SMB", 180, 25, 2000],
+          ["B2C Premium", 120, 15, 5000],
+          ["B2C Standard", 65, 8, 15000],
+          ["Freemium", 15, 3, 30000]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Varyansı s² = std_dev² formülüyle karşılaştır (Enterprise std dev 120 en yüksek!).", "en": "Step 1: Compare variance s² = std_dev² (Enterprise std dev 120 is highest!)." },
+        { "tr": "2. Adım: p = 0.018 < 0.05 olduğundan A/B testi anlamlıdır, yeni arayüz onaylanır.", "en": "Step 2: Since p = 0.018 < 0.05, A/B test is significant, new UI approved." },
+        { "tr": "3. Adım: Regresyon tahmini: Y = 100 + 4 * 25 = 100 + 100 = 200 $.", "en": "Step 3: Regression prediction: Y = 100 + 4 * 25 = 100 + 100 = $200." }
+      ],
+      "expectedApproach": {
+        "tr": "Enterprise segmenti en yüksek varyans ($14,400) ile en riskli gruptur. A/B testi %95 güvenle başarılıdır. 25 birim reklam harcaması $200 ciro tahmini verir.",
+        "en": "Enterprise segment has highest variance ($14,400) and risk. A/B test is successful with 95% confidence. $25 ad spend yields $200 predicted revenue."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m11-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "X = 25 birim reklam harcaması için tahmin edilen ciro kaçtır ($)?", "en": "What is predicted revenue for X = 25 units of ad spend ($)?" },
+          "correctAnswer": 200,
+          "explanation": { "tr": "100 + 4 * 25 = 200", "en": "100 + 4 * 25 = 200" }
+        }
+      ]
+    }
+  ]
+}

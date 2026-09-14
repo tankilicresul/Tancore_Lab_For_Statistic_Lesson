@@ -1,0 +1,84 @@
+{
+  "id": "module-10",
+  "order": 10,
+  "title": { "tr": "Zaman Serisi Temelleri", "en": "Time Series Fundamentals" },
+  "description": {
+    "tr": "Trend, mevsimsellik (seasonality), durağanlık (stationarity) ve hareketli ortalama (Moving Average). Aylık satış tahmini vakası.",
+    "en": "Trend, seasonality, stationarity, and moving averages. Monthly sales forecasting case."
+  },
+  "iconName": "Clock",
+  "lessons": [
+    {
+      "id": "m10-l1",
+      "moduleId": "module-10",
+      "order": 1,
+      "title": { "tr": "Hareketli Ortalama (Moving Average)", "en": "Moving Average (MA)" },
+      "conceptCard": {
+        "tr": "Hareketli Ortalama (MA), zaman serisindeki rastgele gürültüyü (noise) yumuşatmak ve genel trendi ortaya çıkarmak için son k dönemin ortalamasını alır. 3 dönemlik MA (MA3), son 3 gözlemin ortalamasıdır.",
+        "en": "Moving Average (MA) smooths out short-term random noise to reveal underlying trends by averaging the most recent k periods. A 3-period MA (MA3) averages the last 3 data points."
+      },
+      "companyExample": {
+        "tr": "RetailCo mağazasının son 3 aydaki satışları (bin TL): Ocak: 100, Şubat: 120, Mart: 110. Nisan ayı için 3-Aylık Hareketli Ortalama tahmini = (100 + 120 + 110) / 3 = 110 bin TL'dir.",
+        "en": "RetailCo monthly sales ($1k): Jan: 100, Feb: 120, Mar: 110. The 3-month Moving Average forecast for April = (100 + 120 + 110) / 3 = 110 ($1k)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "seasonality",
+          "explanation_tr": "Yılın belirli dönemlerinde düzenli olarak tekrarlanan dalgalanmalar.",
+          "explanation_en": "Patterns that repeat at regular seasonal intervals.",
+          "exampleSentence_en": "Ice cream sales show strong summer seasonality."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m10-l1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Son 3 ayın satışları 200, 240, 220 bin TL ise 3 aylık hareketli ortalama tahmini kaçtır?", "en": "If last 3 months sales are 200, 240, 220 ($1k), what is the 3-month MA forecast?" },
+          "correctAnswer": 220,
+          "explanation": { "tr": "(200 + 240 + 220) / 3 = 660 / 3 = 220", "en": "(200 + 240 + 220) / 3 = 660 / 3 = 220" }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import pandas as pd\ndf['MA_3'] = df['sales'].rolling(window=3).mean()"
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m10-case-1",
+      "moduleId": "module-10",
+      "difficulty": "kolay",
+      "title": { "tr": "RetailCo: Aylık Hareketli Ortalama Tahmini", "en": "RetailCo: Monthly Moving Average Forecast" },
+      "businessQuestion": {
+        "tr": "RetailCo son 4 ayın satış verilerine sahiptir: Mayıs: 150, Haziran: 180, Temmuz: 210, Ağustos: 240 (bin TL). Eylül ayı için 3-Dönemlik Hareketli Ortalama (MA3) tahmini kaç bin TL olur?",
+        "en": "RetailCo has sales for last 4 months: May: 150, Jun: 180, Jul: 210, Aug: 240 ($1k). What is the 3-period Moving Average (MA3) forecast for September?"
+      },
+      "dataset": {
+        "columns": ["Ay", "Satış (bin TL)"],
+        "rows": [
+          ["Mayıs", 150],
+          ["Haziran", 180],
+          ["Temmuz", 210],
+          ["Ağustos", 240]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Son 3 ayı belirle: Haziran (180), Temmuz (210), Ağustos (240).", "en": "Step 1: Identify last 3 periods: Jun (180), Jul (210), Aug (240)." },
+        { "tr": "2. Adım: Ortalamasını al: (180 + 210 + 240) / 3 = 630 / 3 = 210 bin TL.", "en": "Step 2: Average them: (180 + 210 + 240) / 3 = 630 / 3 = 210 ($1k)." }
+      ],
+      "expectedApproach": {
+        "tr": "Eylül ayı MA3 tahmini 210 bin TL'dir.",
+        "en": "MA3 forecast for September is 210 ($1k)."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m10-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Eylül ayı MA3 tahmini kaçtır (bin TL)?", "en": "What is the MA3 forecast for September ($1k)?" },
+          "correctAnswer": 210,
+          "explanation": { "tr": "(180 + 210 + 240) / 3 = 210", "en": "(180 + 210 + 240) / 3 = 210" }
+        }
+      ]
+    }
+  ]
+}
