@@ -1,234 +1,258 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ALL_MODULES } from '../data/modules';
 import { useAppStore } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
-import { Lock, CheckCircle2, ChevronRight, BarChart3, Dices, Activity, Users, ShieldCheck, GitCompare, TrendingUp, Layers, PieChart, Clock, Trophy, Sparkles } from 'lucide-react';
-
-const ICON_MAP: { [key: string]: React.ElementType } = {
-  BarChart3,
-  Dices,
-  Activity,
-  Users,
-  ShieldCheck,
-  GitCompare,
-  TrendingUp,
-  Layers,
-  PieChart,
-  Clock,
-  Trophy,
-};
+import { Lock, CheckCircle2, Trophy, Sparkles, BookOpen, Star, Play, Award, HelpCircle } from 'lucide-react';
+import { Lesson, CaseExam, Module } from '../types/stats';
 
 interface HomePageProps {
   onSelectLesson: (lessonId: string) => void;
   onSelectCaseExam: (caseId: string) => void;
 }
 
+// Node item in the Duolingo path sequence
+interface PathNodeItem {
+  id: string;
+  type: 'lesson' | 'case';
+  title: string;
+  order: number;
+  isCompleted: boolean;
+  isUnlocked: boolean;
+  lesson?: Lesson;
+  caseExam?: CaseExam;
+  module: Module;
+}
+
 export const HomePage: React.FC<HomePageProps> = ({ onSelectLesson, onSelectCaseExam }) => {
   const { language, unlockedModules, completedLessons, completedCaseExams } = useAppStore();
+  const [selectedNode, setSelectedNode] = useState<PathNodeItem | null>(null);
+
+  // S-Curve horizontal offsets for nodes in sequence: Center, Right, Far Right, Right, Center, Left, Far Left, Left...
+  const getXOffsetClass = (index: number) => {
+    const pattern = [
+      'self-center',
+      'translate-x-6 sm:translate-x-12',
+      'translate-x-10 sm:translate-x-20',
+      'translate-x-6 sm:translate-x-12',
+      'self-center',
+      '-translate-x-6 sm:-translate-x-12',
+      '-translate-x-10 sm:-translate-x-20',
+      '-translate-x-6 sm:-translate-x-12',
+    ];
+    return pattern[index % pattern.length];
+  };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 font-sans">
-      {/* Hero Banner with TanCoreLab Electric Orange Theme */}
-      <div className="relative mb-10 p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-[#ff7a00]/10 via-[#ff7a00]/5 to-[#ff7a00]/10 border border-[#ff7a00]/30 shadow-xs overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#ff7a00]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative z-10 max-w-2xl">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] text-xs font-black border border-[#ff7a00]/30 mb-4 tracking-wide uppercase">
-            <Sparkles className="w-4 h-4 text-[#ff7a00] fill-[#ff7a00]/20" />
-            <span>{language === 'tr' ? 'Etkileşimli İstatistik Öğrenme' : 'Interactive Statistics Learning'}</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tight mb-4">
-            {language === 'tr'
-              ? 'Gerçek Şirket Case’leriyle İstatistikte Ustalaş'
-              : 'Master Statistics through Real Company Cases'}
-          </h1>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium mb-6">
-            {language === 'tr'
-              ? 'Formül ezberi yok. Duolingo tarzı 6 adımlık mikro-dersler, canlı interaktif grafikler ve gerçek şirket vakalarıyla ilerle.'
-              : 'No formula memorization. Learn through Duolingo-style 6-step micro-lessons, live interactive charts, and real company cases.'}
-          </p>
+    <div className="max-w-2xl mx-auto px-4 py-6 font-sans">
+      {/* Top Welcome Banner */}
+      <div className="relative mb-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm text-center overflow-hidden">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-[#ff7a00]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#ff7a00]/10 text-[#ff7a00] text-xs font-black border border-[#ff7a00]/30 mb-2 uppercase">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>{language === 'tr' ? 'Öğrenme Yolu' : 'Learning Path'}</span>
         </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          {language === 'tr' ? 'İstatistik Öğrenme Haritası' : 'Statistics Learning Path'}
+        </h1>
+        <p className="text-xs text-slate-500 font-medium mt-1">
+          {language === 'tr'
+            ? 'Duolingo tarzı adım adım ilerle, vaka sınavlarını çöz ve üst seviye kilitleri aç!'
+            : 'Progress step-by-step Duolingo-style, solve cases, and unlock higher modules!'}
+        </p>
       </div>
 
-      {/* Curriculum Modules Header */}
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
-            {language === 'tr' ? 'Müfredat Haritası (11 Modül)' : 'Curriculum Map (11 Modules)'}
-          </h2>
-          <p className="text-xs text-slate-500 font-medium">
-            {language === 'tr'
-              ? 'Tamamlanan dersler yeni modül kilitlerini açar'
-              : 'Completed lessons unlock subsequent modules'}
-          </p>
-        </div>
-      </div>
+      {/* Modules Flow */}
+      <div className="space-y-12">
+        {ALL_MODULES.map((module, mIdx) => {
+          const isModuleUnlocked = unlockedModules.includes(module.id);
 
-      <div className="space-y-6">
-        {ALL_MODULES.map((module) => {
-          const isUnlocked = unlockedModules.includes(module.id);
-          const IconComp = module.iconName && ICON_MAP[module.iconName] ? ICON_MAP[module.iconName] : BarChart3;
+          // Flatten lessons + case exams into a unified sequential path list for this module
+          const pathNodes: PathNodeItem[] = [
+            ...module.lessons.map((l) => ({
+              id: l.id,
+              type: 'lesson' as const,
+              title: getLocalized(l.title, language),
+              order: l.order,
+              isCompleted: completedLessons.includes(l.id),
+              isUnlocked: isModuleUnlocked,
+              lesson: l,
+              module,
+            })),
+            ...module.caseExams.map((c, cIdx) => ({
+              id: c.id,
+              type: 'case' as const,
+              title: getLocalized(c.title, language),
+              order: module.lessons.length + cIdx + 1,
+              isCompleted: completedCaseExams.includes(c.id),
+              isUnlocked: isModuleUnlocked,
+              caseExam: c,
+              module,
+            })),
+          ];
 
-          // Calculate progress percentage
-          const totalItems = module.lessons.length + module.caseExams.length;
-          const completedCount =
-            module.lessons.filter((l) => completedLessons.includes(l.id)).length +
-            module.caseExams.filter((c) => completedCaseExams.includes(c.id)).length;
-          const progressPercent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
+          // Determine active next node in module
+          let activeFound = false;
 
           return (
-            <div
-              key={module.id}
-              className={`rounded-3xl border transition-all duration-300 overflow-hidden ${
-                isUnlocked
-                  ? 'bg-white border-slate-200 hover:border-[#ff7a00]/40 shadow-xs'
-                  : 'bg-slate-100/60 border-slate-200 opacity-60'
-              }`}
-            >
-              {/* Module Header */}
-              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-start space-x-4">
-                  <div
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${
-                      isUnlocked
-                        ? 'bg-[#ff7a00] text-white shadow-md shadow-[#ff7a00]/20'
-                        : 'bg-slate-200 text-slate-400'
-                    }`}
-                  >
-                    {isUnlocked ? <IconComp className="w-7 h-7 stroke-[2.5]" /> : <Lock className="w-7 h-7" />}
-                  </div>
-
+            <div key={module.id} className="relative">
+              {/* Module Header Card (Duolingo Banner) */}
+              <div
+                className={`sticky top-16 z-30 p-5 rounded-3xl mb-8 border transition-all shadow-md ${
+                  isModuleUnlocked
+                    ? 'bg-[#ff7a00] text-white border-[#ff7a00] shadow-[#ff7a00]/20'
+                    : 'bg-slate-200 text-slate-500 border-slate-300'
+                }`}
+              >
+                <div className="flex items-center justify-between">
                   <div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xs font-black uppercase tracking-widest text-[#ff7a00] font-mono">
-                        {language === 'tr' ? `Modül ${module.order}` : `Module ${module.order}`}
-                      </span>
-                      {progressPercent === 100 && (
-                        <span className="flex items-center text-[10px] font-extrabold text-[#ff7a00] bg-[#ff7a00]/15 px-2.5 py-0.5 rounded-full border border-[#ff7a00]/30">
-                          <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-[#ff7a00]" />
-                          {language === 'tr' ? 'Tamamlandı' : 'Completed'}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="text-lg font-extrabold text-slate-900 mt-0.5 tracking-tight">
+                    <span className="text-[11px] font-black uppercase tracking-widest opacity-90 font-mono">
+                      {language === 'tr' ? `BÖLÜM ${module.order}` : `SECTION ${module.order}`}
+                    </span>
+                    <h2 className="text-lg font-black tracking-tight leading-snug">
                       {getLocalized(module.title, language)}
-                    </h3>
-                    <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium line-clamp-2">
+                    </h2>
+                    <p className="text-xs opacity-90 font-medium line-clamp-1 mt-0.5">
                       {getLocalized(module.description, language)}
                     </p>
                   </div>
-                </div>
 
-                {/* Progress bar */}
-                {isUnlocked && (
-                  <div className="sm:w-44 shrink-0">
-                    <div className="flex justify-between text-xs font-bold text-slate-700 mb-1.5">
-                      <span>{language === 'tr' ? 'İlerleme' : 'Progress'}</span>
-                      <span className="font-mono text-[#ff7a00] font-bold">{progressPercent}%</span>
-                    </div>
-                    <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
-                      <div
-                        className="h-full bg-[#ff7a00] transition-all duration-500"
-                        style={{ width: `${progressPercent}%` }}
-                      />
-                    </div>
+                  <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
+                    {isModuleUnlocked ? <BookOpen className="w-5 h-5 text-white" /> : <Lock className="w-5 h-5 text-slate-500" />}
                   </div>
-                )}
+                </div>
               </div>
 
-              {/* Module Content List (Lessons & Case Exams) */}
-              {isUnlocked && (
-                <div className="p-6 bg-slate-50/70 grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {/* Micro-lessons list */}
-                  <div>
-                    <h4 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-3">
-                      {language === 'tr' ? 'Mikro-Dersler' : 'Micro-Lessons'} ({module.lessons.length})
-                    </h4>
-                    <div className="space-y-2.5">
-                      {module.lessons.map((lesson) => {
-                        const isDone = completedLessons.includes(lesson.id);
-                        return (
-                          <button
-                            key={lesson.id}
-                            onClick={() => onSelectLesson(lesson.id)}
-                            className="w-full p-3.5 rounded-2xl bg-white hover:bg-[#ff7a00]/5 border border-slate-200 hover:border-[#ff7a00] flex items-center justify-between text-left transition-all group shadow-2xs"
-                          >
-                            <div className="flex items-center space-x-3">
-                              <div
-                                className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs font-bold font-mono ${
-                                  isDone
-                                    ? 'bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/30'
-                                    : 'bg-slate-100 text-slate-500'
-                                }`}
-                              >
-                                {isDone ? <CheckCircle2 className="w-4 h-4 text-[#ff7a00]" /> : lesson.order}
-                              </div>
-                              <span className="text-xs font-bold text-slate-800 group-hover:text-[#ff7a00] transition-colors">
-                                {getLocalized(lesson.title, language)}
-                              </span>
-                            </div>
-                            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7a00] transition-colors" />
-                          </button>
-                        );
-                      })}
+              {/* S-Curve Path Nodes */}
+              <div className="relative flex flex-col items-center py-4 space-y-6">
+                {/* SVG Connecting Snake Path Line */}
+                <div className="absolute top-4 bottom-4 w-1 bg-slate-200 -z-10 rounded-full" />
+
+                {pathNodes.map((node, nIdx) => {
+                  let isCurrentTarget = false;
+                  if (isModuleUnlocked && !node.isCompleted && !activeFound) {
+                    isCurrentTarget = true;
+                    activeFound = true;
+                  }
+
+                  const offsetClass = getXOffsetClass(nIdx);
+
+                  return (
+                    <div
+                      key={node.id}
+                      className={`relative flex flex-col items-center transition-all duration-300 ${offsetClass}`}
+                    >
+                      {/* Floating 'BAŞLA / START' Badge for current active target */}
+                      {isCurrentTarget && (
+                        <div className="absolute -top-9 z-20 animate-bounce">
+                          <div className="bg-[#ff7a00] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg flex items-center space-x-1 border border-white">
+                            <Play className="w-3 h-3 fill-white" />
+                            <span>{language === 'tr' ? 'BAŞLA' : 'START'}</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 3D Duolingo Circular Level Button */}
+                      <button
+                        onClick={() => {
+                          if (!node.isUnlocked) return;
+                          setSelectedNode(node);
+                        }}
+                        className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center transition-all duration-200 active:translate-y-1 ${
+                          node.isCompleted
+                            ? 'bg-[#ff7a00] text-white shadow-[0_6px_0_0_#cc6100] hover:bg-[#e56d00]'
+                            : isCurrentTarget
+                            ? 'bg-[#ff7a00] text-white shadow-[0_8px_0_0_#cc6100] ring-4 ring-[#ff7a00]/30 animate-pulse'
+                            : node.isUnlocked
+                            ? 'bg-amber-100 text-[#ff7a00] border-2 border-[#ff7a00] shadow-[0_6px_0_0_#fdba74]'
+                            : 'bg-slate-200 text-slate-400 shadow-[0_6px_0_0_#cbd5e1] cursor-not-allowed'
+                        }`}
+                      >
+                        {/* Inner Ring */}
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white/40 flex items-center justify-center">
+                          {node.isCompleted ? (
+                            <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white stroke-[2.5]" />
+                          ) : node.type === 'case' ? (
+                            <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[2.5]" />
+                          ) : isCurrentTarget ? (
+                            <Star className="w-7 h-7 sm:w-9 sm:h-9 text-white fill-white stroke-[2.5]" />
+                          ) : node.isUnlocked ? (
+                            <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-[#ff7a00]" />
+                          ) : (
+                            <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-slate-400" />
+                          )}
+                        </div>
+                      </button>
+
+                      {/* Node Label Below */}
+                      <span className="mt-2 text-[11px] font-extrabold text-slate-700 bg-white/90 backdrop-blur-sm px-2.5 py-0.5 rounded-full border border-slate-200 shadow-2xs max-w-[140px] truncate text-center">
+                        {node.type === 'case' ? `🏆 ${node.title}` : node.title}
+                      </span>
                     </div>
-                  </div>
-
-                  {/* Case Exams list */}
-                  <div>
-                    <h4 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                      <Trophy className="w-3.5 h-3.5 text-[#ff7a00]" />
-                      <span>{language === 'tr' ? 'Şirket Vaka Sınavları (Case Exams)' : 'Company Case Exams'}</span>
-                    </h4>
-                    <div className="space-y-2.5">
-                      {module.caseExams.map((caseExam) => {
-                        const isCaseDone = completedCaseExams.includes(caseExam.id);
-                        const difficultyColor =
-                          caseExam.difficulty === 'kolay'
-                            ? 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20'
-                            : caseExam.difficulty === 'orta'
-                            ? 'bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30'
-                            : 'bg-rose-500/10 text-rose-700 border-rose-500/20';
-
-                        return (
-                          <button
-                            key={caseExam.id}
-                            onClick={() => onSelectCaseExam(caseExam.id)}
-                            className="w-full p-3.5 rounded-2xl bg-white hover:bg-[#ff7a00]/5 border border-slate-200 hover:border-[#ff7a00] flex items-center justify-between text-left transition-all group shadow-2xs"
-                          >
-                            <div className="flex items-center space-x-3">
-                              <div
-                                className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs font-bold ${
-                                  isCaseDone
-                                    ? 'bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/30'
-                                    : 'bg-[#ff7a00]/10 text-[#ff7a00] border border-[#ff7a00]/20'
-                                }`}
-                              >
-                                {isCaseDone ? <CheckCircle2 className="w-4 h-4 text-[#ff7a00]" /> : <Trophy className="w-3.5 h-3.5 text-[#ff7a00]" />}
-                              </div>
-                              <div>
-                                <span className="text-xs font-bold text-slate-800 group-hover:text-[#ff7a00] transition-colors block">
-                                  {getLocalized(caseExam.title, language)}
-                                </span>
-                              </div>
-                            </div>
-
-                            <div className="flex items-center space-x-2">
-                              <span className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full border ${difficultyColor}`}>
-                                {caseExam.difficulty}
-                              </span>
-                              <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7a00] transition-colors" />
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              )}
+                  );
+                })}
+              </div>
             </div>
           );
         })}
       </div>
+
+      {/* Duolingo Floating Detail Card Modal upon clicking a Node */}
+      {selectedNode && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-fade-in">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl relative">
+            <button
+              onClick={() => setSelectedNode(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold text-lg"
+            >
+              ✕
+            </button>
+
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shadow-md">
+                {selectedNode.type === 'case' ? <Trophy className="w-6 h-6" /> : <BookOpen className="w-6 h-6" />}
+              </div>
+              <div>
+                <span className="text-[10px] font-black uppercase text-[#ff7a00] tracking-widest font-mono">
+                  {selectedNode.type === 'case' ? 'ŞİRKET VAKA SINAVI' : `DERS ${selectedNode.order}`}
+                </span>
+                <h3 className="text-base font-black text-slate-900 leading-tight">
+                  {selectedNode.title}
+                </h3>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 font-medium leading-relaxed mb-6">
+              {selectedNode.type === 'case'
+                ? selectedNode.caseExam
+                  ? getLocalized(selectedNode.caseExam.businessQuestion, language)
+                  : ''
+                : selectedNode.lesson
+                ? getLocalized(selectedNode.lesson.conceptCard, language)
+                : ''}
+            </p>
+
+            <button
+              onClick={() => {
+                const node = selectedNode;
+                setSelectedNode(null);
+                if (node.type === 'lesson') {
+                  onSelectLesson(node.id);
+                } else {
+                  onSelectCaseExam(node.id);
+                }
+              }}
+              className="w-full py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2"
+            >
+              <Play className="w-4 h-4 fill-white" />
+              <span>
+                {selectedNode.isCompleted
+                  ? language === 'tr' ? 'TEKRAR İNCELE' : 'REPLAY'
+                  : language === 'tr' ? 'BAŞLA (+15 XP)' : 'START (+15 XP)'}
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
