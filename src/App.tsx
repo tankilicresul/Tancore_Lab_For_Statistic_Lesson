@@ -33,7 +33,7 @@ export const App: React.FC = () => {
   const caseData = selectedCaseId ? getCaseExamById(selectedCaseId) : undefined;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col selection:bg-amber-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col selection:bg-[#ff7a00] selection:text-white">
       {/* Sticky Navigation Header */}
       <XpStreakBar />
 
@@ -65,7 +65,7 @@ export const App: React.FC = () => {
 
       {/* Footer */}
       <footer className="border-t border-slate-200 bg-white py-6 px-4 text-center text-xs text-slate-500 font-medium">
-        <p>StatLingo — Step-by-Step Statistics & Business Analytics Platform</p>
+        <p>TanCoreLab — Step-by-Step Statistics & Business Analytics Platform</p>
       </footer>
     </div>
   );

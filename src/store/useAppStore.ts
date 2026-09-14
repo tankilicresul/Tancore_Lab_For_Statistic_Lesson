@@ -124,7 +124,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       },
     }),
     {
-      name: 'statlingo-user-storage',
+      name: 'tancorelab-user-storage',
     }
   )
 );

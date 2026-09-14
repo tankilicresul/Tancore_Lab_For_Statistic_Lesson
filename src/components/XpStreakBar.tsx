@@ -17,7 +17,7 @@ export const XpStreakBar: React.FC = () => {
     <>
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 py-3 font-sans shadow-xs">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          {/* Logo matching Image 2 (TanCoreLab Electric Orange Circle + White Ring + Lightning Bolt) */}
+          {/* TanCoreLab Brand Logo & Name */}
           <a href="#" className="flex items-center space-x-3 group">
             <div className="w-10 h-10 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-md shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform p-1">
               <div className="w-full h-full rounded-full border-2 border-white flex items-center justify-center">
@@ -26,9 +26,9 @@ export const XpStreakBar: React.FC = () => {
             </div>
             <div>
               <span className="text-xl font-black text-slate-900 tracking-tight">
-                StatLingo
+                TanCoreLab
               </span>
-              <span className="hidden sm:inline-block ml-2 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30 tracking-wider uppercase">
+              <span className="hidden sm:inline-block ml-2 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30 tracking-wider uppercase">
                 PRO
               </span>
             </div>
