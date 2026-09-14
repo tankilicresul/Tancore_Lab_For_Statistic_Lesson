@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { Flame, Trophy, Globe, RotateCcw, Zap } from 'lucide-react';
 import { BadgesModal } from './BadgesModal';
@@ -6,6 +6,20 @@ import { BadgesModal } from './BadgesModal';
 export const XpStreakBar: React.FC = () => {
   const { language, toggleLanguage, xp, streak, resetProgress, unlockedBadges } = useAppStore();
   const [showBadges, setShowBadges] = useState(false);
+  const [isLogoSpinning, setIsLogoSpinning] = useState(false);
+
+  // Trigger logo spin animation every 5 seconds (accelerating start, rapid deceleration stop)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsLogoSpinning(true);
+      const timer = setTimeout(() => {
+        setIsLogoSpinning(false);
+      }, 1300);
+      return () => clearTimeout(timer);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleReset = () => {
     if (window.confirm(language === 'tr' ? 'Tüm ilerlemenizi sıfırlamak istediğinize emin misiniz?' : 'Are you sure you want to reset all progress?')) {
@@ -17,9 +31,13 @@ export const XpStreakBar: React.FC = () => {
     <>
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 py-3 font-sans shadow-xs">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          {/* TanCoreLab Brand Logo & Name */}
+          {/* TanCoreLab Brand Logo & Name with 5s Spinning Animation */}
           <a href="#" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-md shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform p-1">
+            <div
+              className={`w-10 h-10 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-md shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform p-1 ${
+                isLogoSpinning ? 'animate-logo-spin' : ''
+              }`}
+            >
               <div className="w-full h-full rounded-full border-2 border-white flex items-center justify-center">
                 <Zap className="w-4 h-4 text-white fill-white stroke-[2.5]" />
               </div>
