@@ -9,20 +9,20 @@
 }
 
 body {
-  background-color: #0b0f17;
-  color: #ffffff;
+  background-color: #f8fafc;
+  color: #0f172a;
 }
 
-/* Custom scrollbars with warm yellow-orange touch */
+/* Custom scrollbars for Light theme */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0b0f17;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
