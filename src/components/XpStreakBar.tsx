@@ -57,9 +57,6 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({ onGoHome }) => {
               <span className="text-xl font-black text-slate-900 tracking-tight">
                 TanCoreLab
               </span>
-              <span className="hidden sm:inline-block ml-2 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30 tracking-wider uppercase">
-                PRO
-              </span>
             </div>
           </a>
 
