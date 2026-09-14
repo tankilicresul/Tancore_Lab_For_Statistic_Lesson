@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { mean, median, mode, variance, stdDev, bayesRule, binomialPMF, poissonPMF, normalPDF } from '../utils/stats';
+import { mean, median, mode, variance, stdDev, bayesRule, normalPDF } from '../utils/stats';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Sliders, RefreshCw, Calculator, TrendingUp } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
@@ -28,13 +28,6 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
   const [normMean, setNormMean] = useState<number>(100);
   const [normStd, setNormStd] = useState<number>(15);
 
-  // State for Binomial
-  const [binomN, setBinomN] = useState<number>(10);
-  const [binomP, setBinomP] = useState<number>(0.2);
-
-  // State for Poisson
-  const [poissonLambda, setPoissonLambda] = useState<number>(5);
-
   const handleAddDataPoint = () => {
     const num = parseFloat(inputVal);
     if (!isNaN(num)) {
@@ -56,7 +49,6 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
     const currentMean = mean(dataPoints);
     const currentMedian = median(dataPoints);
     const currentModes = mode(dataPoints);
-    const currentVar = variance(dataPoints);
     const currentStd = stdDev(dataPoints);
 
     // Chart dataset
@@ -68,45 +60,45 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
     }));
 
     return (
-      <div className="my-6 p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
-              <Calculator className="w-5 h-5" />
+      <div className="my-6 p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl font-sans">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center space-x-3">
+            <div className="p-2.5 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/30">
+              <Calculator className="w-5 h-5 stroke-[2.2]" />
             </div>
             <div>
-              <h4 className="text-base font-bold text-white">
+              <h4 className="text-base font-extrabold text-white tracking-tight">
                 {language === 'tr' ? 'İnteraktif Hesaplama Laboratuvarı' : 'Interactive Calculation Lab'}
               </h4>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-400 font-medium">
                 {language === 'tr' ? 'Sayıları değiştir, canlı grafik ve istatistikleri gözlemle' : 'Modify numbers and observe live stats & graphs'}
               </p>
             </div>
           </div>
           <button
             onClick={handleResetData}
-            className="flex items-center space-x-1 text-xs font-semibold text-slate-400 hover:text-white bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700 transition-colors"
+            className="flex items-center space-x-1.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 px-3.5 py-1.5 rounded-xl border border-slate-700 transition-colors"
           >
-            <RefreshCw className="w-3.5 h-3.5" />
+            <RefreshCw className="w-3.5 h-3.5 text-amber-400" />
             <span>{language === 'tr' ? 'Sıfırla' : 'Reset'}</span>
           </button>
         </div>
 
         {/* Data inputs list */}
-        <div className="mb-4">
-          <label className="text-xs font-semibold text-slate-400 block mb-1.5">
+        <div className="mb-5">
+          <label className="text-xs font-bold text-amber-400 block mb-2 tracking-wide">
             {language === 'tr' ? 'Veri Seti Sayıları:' : 'Dataset Values:'}
           </label>
-          <div className="flex flex-wrap gap-2 mb-2">
+          <div className="flex flex-wrap gap-2 mb-3">
             {dataPoints.map((val, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center space-x-1 px-3 py-1 rounded-xl bg-slate-800 border border-slate-700 text-sm font-mono font-bold text-indigo-300"
+                className="inline-flex items-center space-x-1 px-3 py-1 rounded-xl bg-slate-950 border border-amber-500/30 text-sm font-mono font-bold text-amber-300 shadow-sm"
               >
                 <span>{val}</span>
                 <button
                   onClick={() => handleRemoveDataPoint(idx)}
-                  className="text-slate-500 hover:text-rose-400 ml-1 text-xs"
+                  className="text-slate-500 hover:text-rose-400 ml-1.5 text-xs font-bold"
                   title="Sil"
                 >
                   ×
@@ -121,42 +113,42 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
               placeholder={language === 'tr' ? 'Yeni sayı ekle...' : 'Add new number...'}
-              className="px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-sm font-mono text-white focus:outline-none focus:border-indigo-500 w-44"
+              className="px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm font-mono text-white focus:outline-none focus:border-amber-500 w-48 font-medium"
               onKeyDown={(e) => e.key === 'Enter' && handleAddDataPoint()}
             />
             <button
               onClick={handleAddDataPoint}
-              className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition-colors"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl transition-colors shadow-md shadow-amber-500/20 uppercase tracking-wide"
             >
               {language === 'tr' ? 'Ekle' : 'Add'}
             </button>
           </div>
         </div>
 
-        {/* Dynamic Metric Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-          <div className="p-3 rounded-2xl bg-slate-950 border border-indigo-500/30">
-            <span className="text-[11px] font-semibold text-indigo-400 block mb-0.5">Mean (Ortalama)</span>
-            <span className="text-xl font-extrabold text-white font-mono">{currentMean}</span>
+        {/* Dynamic Metric Cards (45% Amber/Orange + 35% Crisp White) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-amber-500/30">
+            <span className="text-[11px] font-extrabold text-amber-400 block mb-0.5 tracking-wide">Mean (Ortalama)</span>
+            <span className="text-2xl font-black text-white font-mono">{currentMean}</span>
           </div>
 
-          <div className="p-3 rounded-2xl bg-slate-950 border border-emerald-500/30">
-            <span className="text-[11px] font-semibold text-emerald-400 block mb-0.5">Median (Medyan)</span>
-            <span className="text-xl font-extrabold text-white font-mono">{currentMedian}</span>
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-amber-500/30">
+            <span className="text-[11px] font-extrabold text-amber-400 block mb-0.5 tracking-wide">Median (Medyan)</span>
+            <span className="text-2xl font-black text-white font-mono">{currentMedian}</span>
           </div>
 
-          <div className="p-3 rounded-2xl bg-slate-950 border border-amber-500/30">
-            <span className="text-[11px] font-semibold text-amber-400 block mb-0.5">Mode (Mod)</span>
-            <span className="text-xl font-extrabold text-white font-mono">{currentModes.join(', ')}</span>
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-amber-500/30">
+            <span className="text-[11px] font-extrabold text-amber-400 block mb-0.5 tracking-wide">Mode (Mod)</span>
+            <span className="text-2xl font-black text-white font-mono">{currentModes.join(', ')}</span>
           </div>
 
-          <div className="p-3 rounded-2xl bg-slate-950 border border-rose-500/30">
-            <span className="text-[11px] font-semibold text-rose-400 block mb-0.5">Std Dev (Std Sapma)</span>
-            <span className="text-xl font-extrabold text-white font-mono">{currentStd}</span>
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-amber-500/30">
+            <span className="text-[11px] font-extrabold text-amber-400 block mb-0.5 tracking-wide">Std Dev (Std Sapma)</span>
+            <span className="text-2xl font-black text-white font-mono">{currentStd}</span>
           </div>
         </div>
 
-        {/* Live Recharts Visualization */}
+        {/* Live Recharts Visualization with Warm Amber Bars */}
         <div className="h-56 w-full pt-2">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData}>
@@ -164,9 +156,9 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
               <XAxis dataKey="name" stroke="#64748b" />
               <YAxis stroke="#64748b" />
               <Tooltip
-                contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', color: '#fff' }}
+                contentStyle={{ backgroundColor: '#0b0f17', borderColor: '#f59e0b', borderRadius: '12px', color: '#fff', fontFamily: 'Poppins' }}
               />
-              <Bar dataKey="Değer" fill="#6366f1" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="Değer" fill="#f59e0b" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -179,18 +171,20 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
     const posterior = bayesRule(priorA, pBGivenA, pBGivenNotA);
 
     return (
-      <div className="my-6 p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-        <div className="flex items-center space-x-2 mb-4">
-          <Sliders className="w-5 h-5 text-indigo-400" />
-          <h4 className="text-base font-bold text-white">
+      <div className="my-6 p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl font-sans">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="p-2 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30">
+            <Sliders className="w-5 h-5" />
+          </div>
+          <h4 className="text-base font-extrabold text-white tracking-tight">
             {language === 'tr' ? 'Bayes Teoremi Simülatörü' : 'Bayes Theorem Simulator'}
           </h4>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-          <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1">
-              Ön Olasılık P(Spam): {(priorA * 100).toFixed(0)}%
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+            <label className="text-xs font-bold text-slate-200 block mb-1.5">
+              Ön Olasılık P(Spam): <span className="text-amber-400 font-mono">{(priorA * 100).toFixed(0)}%</span>
             </label>
             <input
               type="range"
@@ -199,13 +193,13 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
               step="0.01"
               value={priorA}
               onChange={(e) => setPriorA(parseFloat(e.target.value))}
-              className="w-full accent-indigo-500"
+              className="w-full accent-amber-500"
             />
           </div>
 
-          <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1">
-              P('ÜCRETSİZ' | Spam): {(pBGivenA * 100).toFixed(0)}%
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+            <label className="text-xs font-bold text-slate-200 block mb-1.5">
+              P('FREE' | Spam): <span className="text-amber-400 font-mono">{(pBGivenA * 100).toFixed(0)}%</span>
             </label>
             <input
               type="range"
@@ -214,13 +208,13 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
               step="0.01"
               value={pBGivenA}
               onChange={(e) => setPBGivenA(parseFloat(e.target.value))}
-              className="w-full accent-emerald-500"
+              className="w-full accent-amber-500"
             />
           </div>
 
-          <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1">
-              P('ÜCRETSİZ' | Normal): {(pBGivenNotA * 100).toFixed(0)}%
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+            <label className="text-xs font-bold text-slate-200 block mb-1.5">
+              P('FREE' | Normal): <span className="text-amber-400 font-mono">{(pBGivenNotA * 100).toFixed(0)}%</span>
             </label>
             <input
               type="range"
@@ -229,15 +223,17 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
               step="0.01"
               value={pBGivenNotA}
               onChange={(e) => setPBGivenNotA(parseFloat(e.target.value))}
-              className="w-full accent-rose-500"
+              className="w-full accent-amber-500"
             />
           </div>
         </div>
 
         {/* Result Card */}
-        <div className="p-4 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 text-center">
-          <span className="text-xs text-indigo-300 block font-medium">Güncellenmiş Sonsal Olasılık P(Spam | 'ÜCRETSİZ')</span>
-          <span className="text-3xl font-extrabold text-amber-400 font-mono">{(posterior * 100).toFixed(1)}%</span>
+        <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/15 border border-amber-500/40 text-center shadow-lg">
+          <span className="text-xs text-amber-200 font-bold uppercase tracking-wider block mb-1">
+            Güncellenmiş Sonsal Olasılık P(Spam | 'FREE')
+          </span>
+          <span className="text-4xl font-black text-amber-400 font-mono tracking-tight">{(posterior * 100).toFixed(1)}%</span>
         </div>
       </div>
     );
@@ -254,18 +250,20 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
     }
 
     return (
-      <div className="my-6 p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-        <div className="flex items-center space-x-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-indigo-400" />
-          <h4 className="text-base font-bold text-white">
+      <div className="my-6 p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl font-sans">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="p-2 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30">
+            <TrendingUp className="w-5 h-5" />
+          </div>
+          <h4 className="text-base font-extrabold text-white tracking-tight">
             {language === 'tr' ? 'Normal Dağılım Çan Eğrisi' : 'Normal Distribution Bell Curve'}
           </h4>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1">
-              Ortalama (µ): {normMean}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+            <label className="text-xs font-bold text-slate-200 block mb-1.5">
+              Ortalama (µ): <span className="text-amber-400 font-mono">{normMean}</span>
             </label>
             <input
               type="range"
@@ -273,12 +271,12 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
               max="150"
               value={normMean}
               onChange={(e) => setNormMean(parseInt(e.target.value, 10))}
-              className="w-full accent-indigo-500"
+              className="w-full accent-amber-500"
             />
           </div>
-          <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1">
-              Standart Sapma (σ): {normStd}
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+            <label className="text-xs font-bold text-slate-200 block mb-1.5">
+              Standart Sapma (σ): <span className="text-amber-400 font-mono">{normStd}</span>
             </label>
             <input
               type="range"
@@ -286,7 +284,7 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
               max="30"
               value={normStd}
               onChange={(e) => setNormStd(parseInt(e.target.value, 10))}
-              className="w-full accent-emerald-500"
+              className="w-full accent-amber-500"
             />
           </div>
         </div>
@@ -298,9 +296,9 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
               <XAxis dataKey="x" stroke="#64748b" />
               <YAxis stroke="#64748b" />
               <Tooltip
-                contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', color: '#fff' }}
+                contentStyle={{ backgroundColor: '#0b0f17', borderColor: '#f59e0b', borderRadius: '12px', color: '#fff', fontFamily: 'Poppins' }}
               />
-              <Line type="monotone" dataKey="Olasılık" stroke="#818cf8" strokeWidth={3} dot={false} />
+              <Line type="monotone" dataKey="Olasılık" stroke="#f59e0b" strokeWidth={3} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -308,6 +306,5 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
     );
   }
 
-  // Default fallback interactive
   return null;
 };

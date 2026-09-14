@@ -32,8 +32,8 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
     // Trigger confetti celebration
     try {
       confetti({
-        particleCount: 100,
-        spread: 70,
+        particleCount: 120,
+        spread: 80,
         origin: { y: 0.6 },
       });
     } catch {
@@ -42,18 +42,18 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 animate-fade-in">
+    <div className="max-w-4xl mx-auto px-4 py-8 font-sans animate-fade-in">
       {/* Top Breadcrumb Navigation */}
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={onBack}
-          className="flex items-center space-x-2 text-sm font-bold text-slate-400 hover:text-white bg-slate-900 px-4 py-2 rounded-2xl border border-slate-800 transition-colors"
+          className="flex items-center space-x-2 text-sm font-bold text-slate-300 hover:text-white bg-slate-900 px-4 py-2 rounded-2xl border border-slate-800 transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4 text-amber-400" />
           <span>{language === 'tr' ? 'Modül Listesine Dön' : 'Back to Modules'}</span>
         </button>
 
-        <div className="flex items-center space-x-2 text-xs font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1.5 rounded-full border border-indigo-500/20">
+        <div className="flex items-center space-x-2 text-xs font-extrabold text-amber-300 bg-amber-500/10 px-3.5 py-1.5 rounded-full border border-amber-500/30">
           <span>{getLocalized(module.title, language)}</span>
           <span>•</span>
           <span>{language === 'tr' ? `Ders ${lesson.order}` : `Lesson ${lesson.order}`}</span>
@@ -62,38 +62,38 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
 
       {/* Lesson Main Header */}
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight mb-3">
           {getLocalized(lesson.title, language)}
         </h1>
-        <div className="h-1 w-20 bg-gradient-to-r from-indigo-500 to-emerald-400 rounded-full" />
+        <div className="h-1.5 w-24 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" />
       </div>
 
       {/* STEP 1: Concept Card (Kavram Kartı) */}
       <div className="mb-6 p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl relative">
-        <div className="flex items-center space-x-3 mb-3 text-indigo-400">
-          <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
-            <Lightbulb className="w-5 h-5" />
+        <div className="flex items-center space-x-3 mb-3 text-amber-400">
+          <div className="p-2.5 rounded-2xl bg-amber-500/15 border border-amber-500/30">
+            <Lightbulb className="w-5 h-5 stroke-[2.2]" />
           </div>
-          <h3 className="text-sm font-extrabold uppercase tracking-wider">
+          <h3 className="text-sm font-black uppercase tracking-widest text-amber-400">
             {language === 'tr' ? '1. Kavram Kartı' : '1. Concept Card'}
           </h3>
         </div>
-        <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-medium">
+        <p className="text-sm sm:text-base text-white leading-relaxed font-medium">
           {getLocalized(lesson.conceptCard, language)}
         </p>
       </div>
 
       {/* STEP 2: Company Example (Şirket Örneği) */}
-      <div className="mb-6 p-6 rounded-3xl bg-gradient-to-br from-slate-900 to-slate-950 border border-emerald-500/20 shadow-xl">
-        <div className="flex items-center space-x-3 mb-3 text-emerald-400">
-          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-            <Building2 className="w-5 h-5" />
+      <div className="mb-6 p-6 rounded-3xl bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-900 border border-amber-500/30 shadow-xl">
+        <div className="flex items-center space-x-3 mb-3 text-amber-400">
+          <div className="p-2.5 rounded-2xl bg-amber-500/15 border border-amber-500/30">
+            <Building2 className="w-5 h-5 stroke-[2.2]" />
           </div>
-          <h3 className="text-sm font-extrabold uppercase tracking-wider">
+          <h3 className="text-sm font-black uppercase tracking-widest text-amber-400">
             {language === 'tr' ? '2. Gerçek Şirket Örneği' : '2. Real Company Example'}
           </h3>
         </div>
-        <p className="text-sm sm:text-base text-emerald-100/90 leading-relaxed font-medium">
+        <p className="text-sm sm:text-base text-amber-100 leading-relaxed font-medium">
           {getLocalized(lesson.companyExample, language)}
         </p>
       </div>
@@ -107,9 +107,9 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
       {/* STEP 4: Mini Questions (Sorular) */}
       {lesson.questions && lesson.questions.length > 0 && (
         <div className="my-8 space-y-6">
-          <div className="flex items-center space-x-2 text-amber-400 mb-2">
-            <HelpCircle className="w-5 h-5" />
-            <h3 className="text-sm font-extrabold uppercase tracking-wider">
+          <div className="flex items-center space-x-2.5 text-amber-400 mb-2">
+            <HelpCircle className="w-5 h-5 stroke-[2.2]" />
+            <h3 className="text-sm font-black uppercase tracking-widest">
               {language === 'tr' ? '4. Mini Kavrama Sorusu' : '4. Mini Check Questions'}
             </h3>
           </div>
@@ -128,13 +128,13 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
                 key={q.id}
                 className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl"
               >
-                <p className="text-base font-bold text-white mb-4">
+                <p className="text-base font-extrabold text-white mb-4 leading-snug">
                   {getLocalized(q.prompt, language)}
                 </p>
 
                 {/* Multiple Choice Options */}
                 {q.type === 'multiple_choice' && q.options && (
-                  <div className="space-y-2.5 mb-4">
+                  <div className="space-y-3 mb-4">
                     {q.options.map((opt, oIdx) => {
                       const optText = getLocalized(opt, language);
                       const isSelected = userAnswer === optText;
@@ -144,10 +144,10 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
                           key={oIdx}
                           disabled={isSubmitted}
                           onClick={() => setSelectedAnswers({ ...selectedAnswers, [q.id]: optText })}
-                          className={`w-full p-4 rounded-2xl border text-left font-semibold text-sm transition-all ${
+                          className={`w-full p-4 rounded-2xl border text-left font-bold text-sm transition-all ${
                             isSelected
-                              ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-lg'
-                              : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
+                              ? 'bg-amber-500/20 border-amber-500 text-white shadow-lg shadow-amber-500/10'
+                              : 'bg-slate-950/80 border-slate-800 text-slate-200 hover:border-slate-700'
                           }`}
                         >
                           {optText}
@@ -168,7 +168,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
                         setSelectedAnswers({ ...selectedAnswers, [q.id]: e.target.value })
                       }
                       placeholder={language === 'tr' ? 'Sayısal cevabınızı girin...' : 'Enter numerical answer...'}
-                      className="w-full sm:w-64 p-3 rounded-2xl bg-slate-950 border border-slate-800 text-white font-mono text-base focus:outline-none focus:border-indigo-500"
+                      className="w-full sm:w-64 p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-white font-mono text-base focus:outline-none focus:border-amber-500 font-bold"
                     />
                   </div>
                 )}
@@ -178,7 +178,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
                   <button
                     disabled={userAnswer === undefined || String(userAnswer).trim() === ''}
                     onClick={() => handleAnswerSubmit(q.id)}
-                    className="px-5 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold text-sm transition-colors"
+                    className="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-amber-500/20"
                   >
                     {language === 'tr' ? 'Cevabı Kontrol Et' : 'Check Answer'}
                   </button>
@@ -186,19 +186,19 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
                   <div
                     className={`p-4 rounded-2xl border mt-3 ${
                       isCorrect
-                        ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-200'
+                        ? 'bg-amber-500/10 border-amber-500/40 text-amber-200'
                         : 'bg-rose-950/40 border-rose-500/40 text-rose-200'
                     }`}
                   >
-                    <div className="flex items-center space-x-2 font-bold mb-1">
+                    <div className="flex items-center space-x-2 font-black mb-1">
                       {isCorrect ? (
                         <>
-                          <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                          <CheckCircle2 className="w-5 h-5 text-amber-400" />
                           <span>{language === 'tr' ? 'Doğru Cevap! (+15 XP)' : 'Correct Answer! (+15 XP)'}</span>
                         </>
                       ) : (
                         <>
-                          <span className="text-rose-400">✕</span>
+                          <span className="text-rose-400 font-black">✕</span>
                           <span>
                             {language === 'tr'
                               ? `Yanlış. Doğru cevap: ${q.correctAnswer}`
@@ -207,7 +207,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
                         </>
                       )}
                     </div>
-                    <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                    <p className="text-xs text-slate-300 mt-1 leading-relaxed font-medium">
                       {getLocalized(q.explanation, language)}
                     </p>
                   </div>
@@ -225,16 +225,16 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
       <RealWorldBox data={lesson.realWorldBox} />
 
       {/* Finish Lesson Banner & Action Button */}
-      <div className="mt-10 p-6 rounded-3xl bg-slate-900 border border-slate-800 text-center shadow-2xl">
-        <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gradient-to-tr from-indigo-600 to-emerald-400 flex items-center justify-center text-white shadow-lg">
-          <Trophy className="w-6 h-6" />
+      <div className="mt-10 p-8 rounded-3xl bg-slate-900 border border-slate-800 text-center shadow-2xl">
+        <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-400 flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/20">
+          <Trophy className="w-7 h-7 stroke-[2.5]" />
         </div>
-        <h3 className="text-lg font-extrabold text-white mb-1">
+        <h3 className="text-xl font-black text-white mb-1 tracking-tight">
           {isCompleted
             ? language === 'tr' ? 'Bu Dersi Tamamladın!' : 'Lesson Completed!'
             : language === 'tr' ? 'Dersi Tamamla & XP Kazan' : 'Complete Lesson & Earn XP'}
         </h3>
-        <p className="text-xs text-slate-400 mb-5">
+        <p className="text-xs text-slate-400 mb-6 font-medium">
           {language === 'tr'
             ? 'Tebrikler! Kavramı ve gerçek hayat kullanımını inceledin.'
             : 'Great job! You reviewed the concept and real-world tools.'}
@@ -242,9 +242,9 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
 
         <button
           onClick={handleFinishLesson}
-          className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-emerald-500 hover:from-indigo-500 hover:to-emerald-400 text-white font-extrabold text-sm shadow-xl shadow-indigo-500/20 transition-all flex items-center justify-center space-x-2 mx-auto"
+          className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-sm uppercase tracking-wider shadow-xl shadow-amber-500/25 transition-all flex items-center justify-center space-x-2 mx-auto"
         >
-          <Sparkles className="w-4 h-4" />
+          <Sparkles className="w-4 h-4 fill-slate-950" />
           <span>
             {isCompleted
               ? language === 'tr' ? 'Tamamlandı (Tekrar Oyna)' : 'Completed (Replay)'

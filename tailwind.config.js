@@ -6,21 +6,23 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+      },
       colors: {
-        brand: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          500: '#0284c7',
-          600: '#0284c7',
-          700: '#0369a1',
+        warmgold: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          400: '#fbbf24',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
         },
-        statgreen: {
-          500: '#22c55e',
-          600: '#16a34a',
-        },
-        statpurple: {
-          500: '#a855f7',
-          600: '#9333ea',
+        brandorange: {
+          400: '#fb923c',
+          500: '#f97316',
+          600: '#ea580c',
         }
       }
     },
