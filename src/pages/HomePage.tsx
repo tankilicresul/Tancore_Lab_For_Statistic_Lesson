@@ -167,18 +167,34 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectLesson, onSelectCase
                             : 'bg-slate-200 text-slate-400 shadow-[0_6px_0_0_#cbd5e1] cursor-not-allowed'
                         }`}
                       >
-                        {/* Inner Ring */}
-                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white/40 flex items-center justify-center">
+                        {/* Inner Ring with High-Contrast Border */}
+                        <div
+                          className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 flex items-center justify-center ${
+                            node.isCompleted || isCurrentTarget
+                              ? 'border-white/40'
+                              : node.isUnlocked
+                              ? 'border-[#ff7a00]/30'
+                              : 'border-slate-300'
+                          }`}
+                        >
                           {node.isCompleted ? (
                             <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white stroke-[2.5]" />
-                          ) : node.type === 'case' ? (
-                            <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[2.5]" />
                           ) : isCurrentTarget ? (
-                            <Star className="w-7 h-7 sm:w-9 sm:h-9 text-white fill-white stroke-[2.5]" />
+                            node.type === 'case' ? (
+                              <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[2.5]" />
+                            ) : (
+                              <Star className="w-7 h-7 sm:w-9 sm:h-9 text-white fill-white stroke-[2.5]" />
+                            )
                           ) : node.isUnlocked ? (
-                            <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-[#ff7a00]" />
+                            node.type === 'case' ? (
+                              <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-[#ff7a00] stroke-[2.5]" />
+                            ) : (
+                              <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-[#ff7a00] stroke-[2.5]" />
+                            )
+                          ) : node.type === 'case' ? (
+                            <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-slate-400 stroke-[2.5]" />
                           ) : (
-                            <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-slate-400" />
+                            <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-slate-400 stroke-[2.5]" />
                           )}
                         </div>
                       </button>
