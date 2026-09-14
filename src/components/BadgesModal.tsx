@@ -43,8 +43,8 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({ onClose }) => {
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center">
-              <Trophy className="w-5 h-5 text-amber-600" />
+            <div className="w-10 h-10 rounded-2xl bg-[#ff7a00]/15 border border-[#ff7a00]/30 flex items-center justify-center">
+              <Trophy className="w-5 h-5 text-[#ff7a00]" />
             </div>
             <div>
               <h2 className="text-xl font-bold text-slate-900 tracking-tight">
@@ -73,14 +73,14 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({ onClose }) => {
                 key={badge.id}
                 className={`flex items-start space-x-4 p-4 rounded-2xl border transition-all ${
                   isUnlocked
-                    ? 'bg-amber-500/5 border-amber-300 text-slate-900 shadow-xs'
+                    ? 'bg-[#ff7a00]/5 border-[#ff7a00]/30 text-slate-900 shadow-xs'
                     : 'bg-slate-50 border-slate-200 text-slate-400 opacity-60'
                 }`}
               >
                 <div
                   className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${
                     isUnlocked
-                      ? 'bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-400 text-white shadow-md shadow-amber-500/20'
+                      ? 'bg-[#ff7a00] text-white shadow-md shadow-[#ff7a00]/20'
                       : 'bg-slate-200 text-slate-400'
                   }`}
                 >
@@ -93,8 +93,8 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({ onClose }) => {
                       {badge.title[language]}
                     </h3>
                     {isUnlocked && (
-                      <span className="flex items-center text-[10px] font-extrabold text-amber-700 bg-amber-500/15 px-2.5 py-0.5 rounded-full border border-amber-500/30">
-                        <CheckCircle2 className="w-3 h-3 mr-1 text-amber-600" />
+                      <span className="flex items-center text-[10px] font-extrabold text-[#ff7a00] bg-[#ff7a00]/15 px-2.5 py-0.5 rounded-full border border-[#ff7a00]/30">
+                        <CheckCircle2 className="w-3 h-3 mr-1 text-[#ff7a00]" />
                         {language === 'tr' ? 'Kazanıldı' : 'Unlocked'}
                       </span>
                     )}

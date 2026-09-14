@@ -26,7 +26,7 @@ export const RealWorldBox: React.FC<RealWorldBoxProps> = ({ data }) => {
     <div className="my-6 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs font-sans">
       {/* Header */}
       <div className="flex items-center space-x-3 mb-4">
-        <div className="p-2.5 rounded-2xl bg-amber-500/15 text-amber-700 border border-amber-500/30">
+        <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30">
           <Terminal className="w-5 h-5 stroke-[2.2]" />
         </div>
         <div>
@@ -46,7 +46,7 @@ export const RealWorldBox: React.FC<RealWorldBoxProps> = ({ data }) => {
         {data.excelFormula && (
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
             <div className="flex items-center justify-between mb-2">
-              <span className="flex items-center space-x-2 text-xs font-bold text-amber-700">
+              <span className="flex items-center space-x-2 text-xs font-bold text-[#ff7a00]">
                 <FileSpreadsheet className="w-4 h-4" />
                 <span>Excel Formülü</span>
               </span>
@@ -54,11 +54,11 @@ export const RealWorldBox: React.FC<RealWorldBoxProps> = ({ data }) => {
                 onClick={() => handleCopy(data.excelFormula!, 'excel')}
                 className="flex items-center space-x-1.5 text-[11px] font-semibold text-slate-500 hover:text-slate-900 transition-colors"
               >
-                {copiedKey === 'excel' ? <Check className="w-3.5 h-3.5 text-amber-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedKey === 'excel' ? <Check className="w-3.5 h-3.5 text-[#ff7a00]" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedKey === 'excel' ? 'Kopyalandı' : 'Kopyala'}</span>
               </button>
             </div>
-            <pre className="font-mono text-xs text-amber-300 bg-slate-900 p-3 rounded-xl overflow-x-auto border border-slate-800 font-medium">
+            <pre className="font-mono text-xs text-orange-300 bg-slate-900 p-3 rounded-xl overflow-x-auto border border-slate-800 font-medium">
               {data.excelFormula}
             </pre>
           </div>
@@ -68,7 +68,7 @@ export const RealWorldBox: React.FC<RealWorldBoxProps> = ({ data }) => {
         {data.pythonCode && (
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
             <div className="flex items-center justify-between mb-2">
-              <span className="flex items-center space-x-2 text-xs font-bold text-amber-700">
+              <span className="flex items-center space-x-2 text-xs font-bold text-[#ff7a00]">
                 <Code2 className="w-4 h-4" />
                 <span>Python Kodu (pandas / scipy)</span>
               </span>
@@ -76,11 +76,11 @@ export const RealWorldBox: React.FC<RealWorldBoxProps> = ({ data }) => {
                 onClick={() => handleCopy(data.pythonCode!, 'python')}
                 className="flex items-center space-x-1.5 text-[11px] font-semibold text-slate-500 hover:text-slate-900 transition-colors"
               >
-                {copiedKey === 'python' ? <Check className="w-3.5 h-3.5 text-amber-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedKey === 'python' ? <Check className="w-3.5 h-3.5 text-[#ff7a00]" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedKey === 'python' ? 'Kopyalandı' : 'Kopyala'}</span>
               </button>
             </div>
-            <pre className="font-mono text-xs text-amber-200 bg-slate-900 p-3 rounded-xl overflow-x-auto border border-slate-800 font-medium">
+            <pre className="font-mono text-xs text-orange-200 bg-slate-900 p-3 rounded-xl overflow-x-auto border border-slate-800 font-medium">
               {data.pythonCode}
             </pre>
           </div>
@@ -90,7 +90,7 @@ export const RealWorldBox: React.FC<RealWorldBoxProps> = ({ data }) => {
         {data.sqlQuery && (
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
             <div className="flex items-center justify-between mb-2">
-              <span className="flex items-center space-x-2 text-xs font-bold text-amber-700">
+              <span className="flex items-center space-x-2 text-xs font-bold text-[#ff7a00]">
                 <Database className="w-4 h-4" />
                 <span>SQL Sorgusu</span>
               </span>
@@ -98,11 +98,11 @@ export const RealWorldBox: React.FC<RealWorldBoxProps> = ({ data }) => {
                 onClick={() => handleCopy(data.sqlQuery!, 'sql')}
                 className="flex items-center space-x-1.5 text-[11px] font-semibold text-slate-500 hover:text-slate-900 transition-colors"
               >
-                {copiedKey === 'sql' ? <Check className="w-3.5 h-3.5 text-amber-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedKey === 'sql' ? <Check className="w-3.5 h-3.5 text-[#ff7a00]" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedKey === 'sql' ? 'Kopyalandı' : 'Kopyala'}</span>
               </button>
             </div>
-            <pre className="font-mono text-xs text-amber-300 bg-slate-900 p-3 rounded-xl overflow-x-auto border border-slate-800 font-medium">
+            <pre className="font-mono text-xs text-orange-300 bg-slate-900 p-3 rounded-xl overflow-x-auto border border-slate-800 font-medium">
               {data.sqlQuery}
             </pre>
           </div>
@@ -111,7 +111,7 @@ export const RealWorldBox: React.FC<RealWorldBoxProps> = ({ data }) => {
         {/* Power BI Note */}
         {data.powerBiNote && (
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-            <div className="flex items-center space-x-2 text-xs font-bold text-amber-700 mb-2">
+            <div className="flex items-center space-x-2 text-xs font-bold text-[#ff7a00] mb-2">
               <BarChart className="w-4 h-4" />
               <span>Power BI Notu</span>
             </div>

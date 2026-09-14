@@ -49,11 +49,11 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
           onClick={onBack}
           className="flex items-center space-x-2 text-sm font-bold text-slate-700 hover:text-slate-900 bg-white px-4 py-2 rounded-2xl border border-slate-200 shadow-2xs transition-colors"
         >
-          <ArrowLeft className="w-4 h-4 text-amber-600" />
+          <ArrowLeft className="w-4 h-4 text-[#ff7a00]" />
           <span>{language === 'tr' ? 'Modül Listesine Dön' : 'Back to Modules'}</span>
         </button>
 
-        <div className="flex items-center space-x-2 text-xs font-extrabold text-amber-800 bg-amber-500/10 px-3.5 py-1.5 rounded-full border border-amber-500/30">
+        <div className="flex items-center space-x-2 text-xs font-extrabold text-[#ff7a00] bg-[#ff7a00]/10 px-3.5 py-1.5 rounded-full border border-[#ff7a00]/30">
           <span>{getLocalized(module.title, language)}</span>
           <span>•</span>
           <span>{language === 'tr' ? `Ders ${lesson.order}` : `Lesson ${lesson.order}`}</span>
@@ -65,16 +65,16 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-3">
           {getLocalized(lesson.title, language)}
         </h1>
-        <div className="h-1.5 w-24 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" />
+        <div className="h-1.5 w-24 bg-[#ff7a00] rounded-full" />
       </div>
 
       {/* STEP 1: Concept Card (Kavram Kartı) */}
       <div className="mb-6 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs relative">
-        <div className="flex items-center space-x-3 mb-3 text-amber-700">
-          <div className="p-2.5 rounded-2xl bg-amber-500/15 border border-amber-500/30">
+        <div className="flex items-center space-x-3 mb-3 text-[#ff7a00]">
+          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 border border-[#ff7a00]/30">
             <Lightbulb className="w-5 h-5 stroke-[2.2]" />
           </div>
-          <h3 className="text-sm font-black uppercase tracking-widest text-amber-800">
+          <h3 className="text-sm font-black uppercase tracking-widest text-[#ff7a00]">
             {language === 'tr' ? '1. Kavram Kartı' : '1. Concept Card'}
           </h3>
         </div>
@@ -84,12 +84,12 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
       </div>
 
       {/* STEP 2: Company Example (Şirket Örneği) */}
-      <div className="mb-6 p-6 rounded-3xl bg-amber-500/5 border border-amber-200 shadow-xs">
-        <div className="flex items-center space-x-3 mb-3 text-amber-700">
-          <div className="p-2.5 rounded-2xl bg-amber-500/15 border border-amber-500/30">
+      <div className="mb-6 p-6 rounded-3xl bg-[#ff7a00]/5 border border-[#ff7a00]/25 shadow-xs">
+        <div className="flex items-center space-x-3 mb-3 text-[#ff7a00]">
+          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 border border-[#ff7a00]/30">
             <Building2 className="w-5 h-5 stroke-[2.2]" />
           </div>
-          <h3 className="text-sm font-black uppercase tracking-widest text-amber-800">
+          <h3 className="text-sm font-black uppercase tracking-widest text-[#ff7a00]">
             {language === 'tr' ? '2. Gerçek Şirket Örneği' : '2. Real Company Example'}
           </h3>
         </div>
@@ -107,8 +107,8 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
       {/* STEP 4: Mini Questions (Sorular) */}
       {lesson.questions && lesson.questions.length > 0 && (
         <div className="my-8 space-y-6">
-          <div className="flex items-center space-x-2.5 text-amber-800 mb-2">
-            <HelpCircle className="w-5 h-5 stroke-[2.2] text-amber-600" />
+          <div className="flex items-center space-x-2.5 text-[#ff7a00] mb-2">
+            <HelpCircle className="w-5 h-5 stroke-[2.2] text-[#ff7a00]" />
             <h3 className="text-sm font-black uppercase tracking-widest">
               {language === 'tr' ? '4. Mini Kavrama Sorusu' : '4. Mini Check Questions'}
             </h3>
@@ -146,8 +146,8 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
                           onClick={() => setSelectedAnswers({ ...selectedAnswers, [q.id]: optText })}
                           className={`w-full p-4 rounded-2xl border text-left font-bold text-sm transition-all ${
                             isSelected
-                              ? 'bg-amber-500/15 border-amber-500 text-amber-900 shadow-xs'
-                              : 'bg-slate-50 border-slate-200 text-slate-800 hover:border-amber-300'
+                              ? 'bg-[#ff7a00]/15 border-[#ff7a00] text-[#ff7a00] shadow-xs'
+                              : 'bg-slate-50 border-slate-200 text-slate-800 hover:border-[#ff7a00]/40'
                           }`}
                         >
                           {optText}
@@ -168,7 +168,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
                         setSelectedAnswers({ ...selectedAnswers, [q.id]: e.target.value })
                       }
                       placeholder={language === 'tr' ? 'Sayısal cevabınızı girin...' : 'Enter numerical answer...'}
-                      className="w-full sm:w-64 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-mono text-base focus:outline-none focus:border-amber-500 font-bold"
+                      className="w-full sm:w-64 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-mono text-base focus:outline-none focus:border-[#ff7a00] font-bold"
                     />
                   </div>
                 )}
@@ -178,7 +178,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
                   <button
                     disabled={userAnswer === undefined || String(userAnswer).trim() === ''}
                     onClick={() => handleAnswerSubmit(q.id)}
-                    className="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-amber-500/20"
+                    className="px-6 py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-[#ff7a00]/20"
                   >
                     {language === 'tr' ? 'Cevabı Kontrol Et' : 'Check Answer'}
                   </button>
@@ -186,14 +186,14 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
                   <div
                     className={`p-4 rounded-2xl border mt-3 ${
                       isCorrect
-                        ? 'bg-amber-500/10 border-amber-300 text-amber-900'
+                        ? 'bg-[#ff7a00]/10 border-[#ff7a00]/30 text-[#ff7a00]'
                         : 'bg-rose-50 border-rose-200 text-rose-800'
                     }`}
                   >
                     <div className="flex items-center space-x-2 font-black mb-1">
                       {isCorrect ? (
                         <>
-                          <CheckCircle2 className="w-5 h-5 text-amber-600" />
+                          <CheckCircle2 className="w-5 h-5 text-[#ff7a00]" />
                           <span>{language === 'tr' ? 'Doğru Cevap! (+15 XP)' : 'Correct Answer! (+15 XP)'}</span>
                         </>
                       ) : (
@@ -226,7 +226,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
 
       {/* Finish Lesson Banner & Action Button */}
       <div className="mt-10 p-8 rounded-3xl bg-white border border-slate-200 text-center shadow-xs">
-        <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-400 flex items-center justify-center text-white shadow-lg shadow-amber-500/20">
+        <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-[#ff7a00] flex items-center justify-center text-white shadow-lg shadow-[#ff7a00]/20">
           <Trophy className="w-7 h-7 stroke-[2.5]" />
         </div>
         <h3 className="text-xl font-black text-slate-900 mb-1 tracking-tight">
@@ -242,7 +242,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
 
         <button
           onClick={handleFinishLesson}
-          className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 hover:from-amber-400 hover:to-orange-400 text-white font-black text-sm uppercase tracking-wider shadow-xl shadow-amber-500/25 transition-all flex items-center justify-center space-x-2 mx-auto"
+          className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-xl shadow-[#ff7a00]/25 transition-all flex items-center justify-center space-x-2 mx-auto"
         >
           <Sparkles className="w-4 h-4 fill-white" />
           <span>

@@ -11,18 +11,16 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
-        warmgold: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          400: '#fbbf24',
-          500: '#f59e0b',
-          600: '#d97706',
-          700: '#b45309',
-        },
-        brandorange: {
-          400: '#fb923c',
-          500: '#f97316',
-          600: '#ea580c',
+        tancore: {
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#ff8c1a',
+          500: '#ff7a00', // Vibrant TanCoreLab Orange from image
+          600: '#e56d00',
+          700: '#cc6100',
+          800: '#994900',
         }
       }
     },

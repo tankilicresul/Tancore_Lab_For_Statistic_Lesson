@@ -23,7 +23,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
     caseExam.difficulty === 'kolay'
       ? 'bg-emerald-500/15 text-emerald-800 border-emerald-500/30'
       : caseExam.difficulty === 'orta'
-      ? 'bg-amber-500/15 text-amber-800 border-amber-500/30'
+      ? 'bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30'
       : 'bg-rose-500/15 text-rose-800 border-rose-500/30';
 
   const handleAnswerSubmit = (qId: string) => {
@@ -55,7 +55,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
           onClick={onBack}
           className="flex items-center space-x-2 text-sm font-bold text-slate-700 hover:text-slate-900 bg-white px-4 py-2 rounded-2xl border border-slate-200 shadow-2xs transition-colors"
         >
-          <ArrowLeft className="w-4 h-4 text-amber-600" />
+          <ArrowLeft className="w-4 h-4 text-[#ff7a00]" />
           <span>{language === 'tr' ? 'Modül Listesine Dön' : 'Back to Modules'}</span>
         </button>
 
@@ -68,19 +68,19 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
 
       {/* Case Header */}
       <div className="mb-8">
-        <div className="flex items-center space-x-2 text-xs font-black uppercase tracking-widest text-amber-700 mb-2">
-          <Trophy className="w-4 h-4 text-amber-600" />
+        <div className="flex items-center space-x-2 text-xs font-black uppercase tracking-widest text-[#ff7a00] mb-2">
+          <Trophy className="w-4 h-4 text-[#ff7a00]" />
           <span>{language === 'tr' ? 'Şirket Vaka Sınavı (Case Exam)' : 'Company Case Exam'}</span>
         </div>
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-3">
           {getLocalized(caseExam.title, language)}
         </h1>
-        <div className="h-1.5 w-24 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" />
+        <div className="h-1.5 w-24 bg-[#ff7a00] rounded-full" />
       </div>
 
       {/* Business Question Box */}
       <div className="mb-6 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-xs">
-        <h3 className="text-xs font-black text-amber-800 uppercase tracking-widest mb-3">
+        <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-3">
           {language === 'tr' ? 'İş Vakası & Problem Tanımı' : 'Business Question & Case Problem'}
         </h3>
         <p className="text-sm sm:text-base text-slate-800 leading-relaxed font-medium">
@@ -90,8 +90,8 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
 
       {/* Dataset Preview Table */}
       <div className="mb-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs">
-        <div className="flex items-center space-x-2.5 text-amber-800 mb-4">
-          <Table className="w-5 h-5 stroke-[2.2] text-amber-600" />
+        <div className="flex items-center space-x-2.5 text-[#ff7a00] mb-4">
+          <Table className="w-5 h-5 stroke-[2.2] text-[#ff7a00]" />
           <h3 className="text-xs font-black uppercase tracking-widest">
             {language === 'tr' ? 'Vaka Veri Seti' : 'Case Dataset'}
           </h3>
@@ -99,7 +99,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
 
         <div className="overflow-x-auto rounded-2xl border border-slate-200">
           <table className="w-full text-left text-xs sm:text-sm">
-            <thead className="bg-amber-500/10 text-amber-900 font-extrabold uppercase tracking-wider border-b border-amber-200">
+            <thead className="bg-[#ff7a00]/10 text-[#ff7a00] font-extrabold uppercase tracking-wider border-b border-[#ff7a00]/20">
               <tr>
                 {caseExam.dataset.columns.map((col, cIdx) => (
                   <th key={cIdx} className="p-3.5">
@@ -110,7 +110,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
             </thead>
             <tbody className="divide-y divide-slate-100 bg-white font-mono">
               {caseExam.dataset.rows.map((row, rIdx) => (
-                <tr key={rIdx} className="hover:bg-amber-50/40 transition-colors">
+                <tr key={rIdx} className="hover:bg-[#ff7a00]/5 transition-colors">
                   {row.map((cell, cIdx) => (
                     <td key={cIdx} className="p-3.5 text-slate-800 font-medium">
                       {cell}
@@ -125,7 +125,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
 
       {/* Guided Steps */}
       <div className="mb-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs">
-        <h3 className="text-xs font-black text-amber-800 uppercase tracking-widest mb-4">
+        <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-4">
           {language === 'tr' ? 'Adım Adım Yol Haritası (Guided Steps)' : 'Step-by-Step Guided Roadmap'}
         </h3>
         <div className="space-y-3">
@@ -143,8 +143,8 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
       {/* Solution Questions */}
       {caseExam.solutionQuestions && caseExam.solutionQuestions.length > 0 && (
         <div className="my-8 space-y-6">
-          <div className="flex items-center space-x-2.5 text-amber-800 mb-2">
-            <HelpCircle className="w-5 h-5 stroke-[2.2] text-amber-600" />
+          <div className="flex items-center space-x-2.5 text-[#ff7a00] mb-2">
+            <HelpCircle className="w-5 h-5 stroke-[2.2] text-[#ff7a00]" />
             <h3 className="text-xs font-black uppercase tracking-widest">
               {language === 'tr' ? 'Vaka Çözüm Soruları' : 'Case Solution Questions'}
             </h3>
@@ -182,8 +182,8 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
                           onClick={() => setSelectedAnswers({ ...selectedAnswers, [q.id]: optText })}
                           className={`w-full p-4 rounded-2xl border text-left font-bold text-sm transition-all ${
                             isSelected
-                              ? 'bg-amber-500/15 border-amber-500 text-amber-900 shadow-xs'
-                              : 'bg-slate-50 border-slate-200 text-slate-800 hover:border-amber-300'
+                              ? 'bg-[#ff7a00]/15 border-[#ff7a00] text-[#ff7a00] shadow-xs'
+                              : 'bg-slate-50 border-slate-200 text-slate-800 hover:border-[#ff7a00]/40'
                           }`}
                         >
                           {optText}
@@ -204,7 +204,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
                         setSelectedAnswers({ ...selectedAnswers, [q.id]: e.target.value })
                       }
                       placeholder={language === 'tr' ? 'Sayısal cevabınızı girin...' : 'Enter numerical answer...'}
-                      className="w-full sm:w-64 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-mono text-base focus:outline-none focus:border-amber-500 font-bold"
+                      className="w-full sm:w-64 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-mono text-base focus:outline-none focus:border-[#ff7a00] font-bold"
                     />
                   </div>
                 )}
@@ -214,7 +214,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
                   <button
                     disabled={userAnswer === undefined || String(userAnswer).trim() === ''}
                     onClick={() => handleAnswerSubmit(q.id)}
-                    className="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-amber-500/20"
+                    className="px-6 py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-[#ff7a00]/20"
                   >
                     {language === 'tr' ? 'Cevabı Kontrol Et' : 'Check Answer'}
                   </button>
@@ -222,14 +222,14 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
                   <div
                     className={`p-4 rounded-2xl border mt-3 ${
                       isCorrect
-                        ? 'bg-amber-500/10 border-amber-300 text-amber-900'
+                        ? 'bg-[#ff7a00]/10 border-[#ff7a00]/30 text-[#ff7a00]'
                         : 'bg-rose-50 border-rose-200 text-rose-800'
                     }`}
                   >
                     <div className="flex items-center space-x-2 font-black mb-1">
                       {isCorrect ? (
                         <>
-                          <CheckCircle2 className="w-5 h-5 text-amber-600" />
+                          <CheckCircle2 className="w-5 h-5 text-[#ff7a00]" />
                           <span>{language === 'tr' ? 'Doğru Çözüm!' : 'Correct Solution!'}</span>
                         </>
                       ) : (
@@ -256,9 +256,9 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
 
       {/* Expected Approach Box (Reveals upon finishing or clicking toggle) */}
       {(showExpectedApproach || isCompleted) && (
-        <div className="my-8 p-6 rounded-3xl bg-amber-500/10 border border-amber-300 shadow-xs animate-fade-in">
-          <div className="flex items-center space-x-2 text-amber-800 mb-3">
-            <CheckCircle2 className="w-6 h-6 stroke-[2.2] text-amber-600" />
+        <div className="my-8 p-6 rounded-3xl bg-[#ff7a00]/10 border border-[#ff7a00]/30 shadow-xs animate-fade-in">
+          <div className="flex items-center space-x-2 text-[#ff7a00] mb-3">
+            <CheckCircle2 className="w-6 h-6 stroke-[2.2] text-[#ff7a00]" />
             <h3 className="text-base font-extrabold text-slate-900">
               {language === 'tr' ? 'Örnek Yönetici Özet Yaklaşımı (Expected Approach)' : 'Executive Summary Approach'}
             </h3>
@@ -271,7 +271,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
 
       {/* Finish Case Exam Action Banner */}
       <div className="mt-10 p-8 rounded-3xl bg-white border border-slate-200 text-center shadow-xs">
-        <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-400 flex items-center justify-center text-white shadow-lg shadow-amber-500/20">
+        <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-[#ff7a00] flex items-center justify-center text-white shadow-lg shadow-[#ff7a00]/20">
           <Trophy className="w-7 h-7 stroke-[2.5]" />
         </div>
         <h3 className="text-xl font-black text-slate-900 mb-1 tracking-tight">
@@ -281,14 +281,14 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
         </h3>
         <p className="text-xs text-slate-500 mb-6 font-medium">
           {language === 'tr'
-            ? 'Vaka sınavını başarıyla tamamlayarak +50 XP kazanın ve sonraki modülın kilidini açın.'
+            ? 'Vaka sınavını başarıyla tamamlayarak +50 XP kazanın ve sonraki modülün kilidini açın.'
             : 'Complete the case exam to earn +50 XP and unlock the next module.'}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={handleFinishCase}
-            className="px-10 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 hover:from-amber-400 hover:to-orange-400 text-white font-black text-sm uppercase tracking-wider shadow-xl shadow-amber-500/25 transition-all flex items-center justify-center space-x-2"
+            className="px-10 py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-xl shadow-[#ff7a00]/25 transition-all flex items-center justify-center space-x-2"
           >
             <Sparkles className="w-4 h-4 fill-white" />
             <span>
@@ -303,7 +303,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
               onClick={() => setShowExpectedApproach(true)}
               className="px-6 py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm border border-slate-200 transition-colors flex items-center space-x-2"
             >
-              <Eye className="w-4 h-4 text-amber-600" />
+              <Eye className="w-4 h-4 text-[#ff7a00]" />
               <span>{language === 'tr' ? 'Yönetici Özetini Gör' : 'Show Approach'}</span>
             </button>
           )}
