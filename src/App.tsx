@@ -35,7 +35,7 @@ export const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col selection:bg-[#ff7a00] selection:text-white">
       {/* Sticky Navigation Header */}
-      <XpStreakBar />
+      <XpStreakBar onGoHome={handleBackToHome} />
 
       {/* Main Page Body */}
       <main className="flex-1 pb-16">

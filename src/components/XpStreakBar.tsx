@@ -3,7 +3,11 @@ import { useAppStore } from '../store/useAppStore';
 import { Flame, Trophy, Globe, RotateCcw, Zap } from 'lucide-react';
 import { BadgesModal } from './BadgesModal';
 
-export const XpStreakBar: React.FC = () => {
+interface XpStreakBarProps {
+  onGoHome?: () => void;
+}
+
+export const XpStreakBar: React.FC<XpStreakBarProps> = ({ onGoHome }) => {
   const { language, toggleLanguage, xp, streak, resetProgress, unlockedBadges } = useAppStore();
   const [showBadges, setShowBadges] = useState(false);
   const [isLogoSpinning, setIsLogoSpinning] = useState(false);
@@ -32,7 +36,14 @@ export const XpStreakBar: React.FC = () => {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 py-3 font-sans shadow-xs">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           {/* TanCoreLab Brand Logo & Name with 5s Spinning Animation */}
-          <a href="#" className="flex items-center space-x-3 group">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              onGoHome?.();
+            }}
+            className="flex items-center space-x-3 group cursor-pointer"
+          >
             <div
               className={`w-10 h-10 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-md shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform p-1 ${
                 isLogoSpinning ? 'animate-logo-spin' : ''
