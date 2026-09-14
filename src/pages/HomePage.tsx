@@ -111,7 +111,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectLesson, onSelectCase
                     <h2 className="text-lg font-black tracking-tight leading-snug">
                       {getLocalized(module.title, language)}
                     </h2>
-                    <p className="text-xs opacity-90 font-medium line-clamp-1 mt-0.5">
+                    <p className="text-xs opacity-90 font-medium mt-0.5">
                       {getLocalized(module.description, language)}
                     </p>
                   </div>
@@ -184,7 +184,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectLesson, onSelectCase
                       </button>
 
                       {/* Node Label Below */}
-                      <span className="mt-2 text-[11px] font-extrabold text-slate-700 bg-white/90 backdrop-blur-sm px-2.5 py-0.5 rounded-full border border-slate-200 shadow-2xs max-w-[140px] truncate text-center">
+                      <span className="mt-2 text-[11px] font-extrabold text-slate-700 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-2xl border border-slate-200 shadow-2xs max-w-[200px] sm:max-w-[240px] text-center leading-tight whitespace-normal break-words">
                         {node.type === 'case' ? `🏆 ${node.title}` : node.title}
                       </span>
                     </div>
