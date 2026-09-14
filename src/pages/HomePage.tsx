@@ -178,23 +178,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectLesson, onSelectCase
                           }`}
                         >
                           {node.isCompleted ? (
-                            <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white stroke-[2.5]" />
+                            <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white stroke-[1.75]" />
                           ) : isCurrentTarget ? (
                             node.type === 'case' ? (
-                              <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[2.5]" />
+                              <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[1.75]" />
                             ) : (
-                              <Star className="w-7 h-7 sm:w-9 sm:h-9 text-white fill-white stroke-[2.5]" />
+                              <Star className="w-7 h-7 sm:w-9 sm:h-9 text-white fill-white stroke-[1.75]" />
                             )
                           ) : node.isUnlocked ? (
                             node.type === 'case' ? (
-                              <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-[#ff7a00] stroke-[2.5]" />
+                              <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-[#ff7a00] stroke-[1.75]" />
                             ) : (
-                              <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-[#ff7a00] stroke-[2.5]" />
+                              <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-[#ff7a00] stroke-[1.75]" />
                             )
                           ) : node.type === 'case' ? (
-                            <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-slate-400 stroke-[2.5]" />
+                            <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-slate-400 stroke-[1.75]" />
                           ) : (
-                            <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-slate-400 stroke-[2.5]" />
+                            <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-slate-400 stroke-[1.75]" />
                           )}
                         </div>
                       </button>

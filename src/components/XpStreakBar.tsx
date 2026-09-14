@@ -46,7 +46,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({ onGoHome }) => {
               }`}
             >
               <div className="w-full h-full rounded-full border-2 border-white flex items-center justify-center">
-                <Zap className="w-4 h-4 text-white fill-white stroke-[2.5]" />
+                <Zap className="w-4 h-4 text-white fill-white stroke-[1.75]" />
               </div>
             </div>
             <div>
@@ -99,7 +99,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({ onGoHome }) => {
               className="p-2 rounded-xl bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border border-[#ff7a00]/40 transition-colors shadow-xs"
               title={language === 'tr' ? 'Profilim & Performansım' : 'My Profile'}
             >
-              <User className="w-5 h-5 stroke-[2.5]" />
+              <User className="w-5 h-5 stroke-[1.75]" />
             </button>
           </div>
         </div>
