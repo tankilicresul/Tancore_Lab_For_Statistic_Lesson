@@ -2,8 +2,62 @@ import React, { useState } from 'react';
 import { ALL_MODULES } from '../data/modules';
 import { useAppStore } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
-import { Lock, CheckCircle2, Trophy, Sparkles, BookOpen, Star, Play } from 'lucide-react';
+import {
+  Lock,
+  CheckCircle2,
+  Trophy,
+  Sparkles,
+  BookOpen,
+  Star,
+  Play,
+  PawPrint,
+  Cat,
+  Rabbit,
+  Dog,
+  Bird,
+  Turtle,
+  Fish,
+  Flame,
+  Target,
+  Crown,
+} from 'lucide-react';
 import { Lesson, CaseExam, Module } from '../types/stats';
+
+export const getModuleMascotIcon = (moduleOrder: number, isUnlocked: boolean) => {
+  const iconColorClass = isUnlocked ? 'text-white' : 'text-slate-500';
+  const strokeClass = 'w-6 h-6 stroke-[2]';
+
+  if (!isUnlocked) {
+    return <Lock className={`w-5 h-5 ${iconColorClass}`} />;
+  }
+
+  switch (moduleOrder) {
+    case 1:
+      return <PawPrint className={`${strokeClass} ${iconColorClass}`} />;
+    case 2:
+      return <Cat className={`${strokeClass} ${iconColorClass}`} />;
+    case 3:
+      return <Rabbit className={`${strokeClass} ${iconColorClass}`} />;
+    case 4:
+      return <Dog className={`${strokeClass} ${iconColorClass}`} />;
+    case 5:
+      return <Bird className={`${strokeClass} ${iconColorClass}`} />;
+    case 6:
+      return <Turtle className={`${strokeClass} ${iconColorClass}`} />;
+    case 7:
+      return <Fish className={`${strokeClass} ${iconColorClass}`} />;
+    case 8:
+      return <Flame className={`${strokeClass} ${iconColorClass}`} />;
+    case 9:
+      return <Target className={`${strokeClass} ${iconColorClass}`} />;
+    case 10:
+      return <Sparkles className={`${strokeClass} ${iconColorClass}`} />;
+    case 11:
+      return <Crown className={`${strokeClass} ${iconColorClass}`} />;
+    default:
+      return <PawPrint className={`${strokeClass} ${iconColorClass}`} />;
+  }
+};
 
 interface HomePageProps {
   onSelectLesson: (lessonId: string) => void;
@@ -230,8 +284,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </p>
                   </div>
 
-                  <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
-                    {isModuleUnlocked ? <BookOpen className="w-5 h-5 text-white" /> : <Lock className="w-5 h-5 text-slate-500" />}
+                  <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shrink-0 shadow-xs">
+                    {getModuleMascotIcon(module.order, isModuleUnlocked)}
                   </div>
                 </div>
               </div>
