@@ -59,20 +59,20 @@ export const getModuleMascotIcon = (moduleOrder: number, isUnlocked: boolean) =>
   }
 };
 
-export const getNodeAnimalIcon = (moduleOrder: number, colorClass: string) => {
+export const getNodeAnimalIcon = (subStepIndex: number, colorClass: string) => {
   const iconClass = `w-7 h-7 sm:w-9 sm:h-9 ${colorClass} stroke-[1.75]`;
 
-  if (moduleOrder <= 3) {
-    // En Kolay Seviyeler (Modül 1-3): Tavşan 🐰
+  if (subStepIndex === 1) {
+    // 1. Alt Konu / Adım (En Kolay): Tavşan 🐰
     return <Rabbit className={iconClass} />;
-  } else if (moduleOrder <= 6) {
-    // Orta Zorluk (Modül 4-6): Kedi 🐱
+  } else if (subStepIndex === 2) {
+    // 2. Alt Konu / Adım (Orta Zorluk): Kedi 🐱
     return <Cat className={iconClass} />;
-  } else if (moduleOrder <= 9) {
-    // Orta Üstü Zorluk (Modül 7-9): Pati / Kanguru 🐾
+  } else if (subStepIndex === 3) {
+    // 3. Alt Konu / Adım (Orta Üstü Zorluk): Pati / Kanguru 🐾
     return <PawPrint className={iconClass} />;
   } else {
-    // En Zor / Usta Seviyeler (Modül 10-11): Köpek / Aslan 🐶
+    // 4. veya 5. Alt Konu / Adım (En Zor / Zirve): Köpek / Aslan 🐶
     return <Dog className={iconClass} />;
   }
 };
