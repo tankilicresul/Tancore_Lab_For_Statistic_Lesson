@@ -364,23 +364,27 @@ export const HomePage: React.FC<HomePageProps> = ({
                           }`}
                         >
                           {node.isCompleted ? (
-                            <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white stroke-[1.75]" />
+                            node.type === 'case' ? (
+                              <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[1.75]" />
+                            ) : (
+                              getNodeAnimalIcon(node.order, 'text-white')
+                            )
                           ) : isCurrentTarget ? (
                             node.type === 'case' ? (
                               <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[1.75]" />
                             ) : (
-                              <Star className="w-7 h-7 sm:w-9 sm:h-9 text-white fill-white stroke-[1.75]" />
+                              getNodeAnimalIcon(node.order, 'text-white')
                             )
                           ) : node.isUnlocked ? (
                             node.type === 'case' ? (
                               <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-[#ff7a00] stroke-[1.75]" />
                             ) : (
-                              getNodeAnimalIcon(node.module.order, 'text-[#ff7a00]')
+                              getNodeAnimalIcon(node.order, 'text-[#ff7a00]')
                             )
                           ) : node.type === 'case' ? (
                             <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-slate-400 stroke-[1.75]" />
                           ) : (
-                            getNodeAnimalIcon(node.module.order, 'text-slate-400')
+                            getNodeAnimalIcon(node.order, 'text-slate-400')
                           )}
                         </div>
                       </button>
