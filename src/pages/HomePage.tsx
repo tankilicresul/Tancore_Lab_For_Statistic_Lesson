@@ -29,8 +29,64 @@ export const HomePage: React.FC<HomePageProps> = ({
   onSelectCaseExam,
   onStartPlacementTest,
 }) => {
-  const { language, unlockedModules, completedLessons, completedCaseExams } = useAppStore();
+  const {
+    language,
+    unlockedModules,
+    completedLessons,
+    completedCaseExams,
+    xp,
+    userProfile,
+  } = useAppStore();
   const [selectedNode, setSelectedNode] = useState<PathNodeItem | null>(null);
+
+  // Derive dynamic user first name
+  const firstName = userProfile?.fullName
+    ? userProfile.fullName.trim().split(' ')[0]
+    : language === 'tr'
+    ? 'Resul'
+    : 'Resul';
+
+  // Current highest unlocked module title
+  const latestModuleId = unlockedModules[unlockedModules.length - 1] || 'module-1';
+  const latestModule = ALL_MODULES.find((m) => m.id === latestModuleId) || ALL_MODULES[0];
+  const latestModuleTitle = getLocalized(latestModule.title, language);
+
+  // Find next active uncompleted topic across unlocked modules
+  let nextTopicItem: { title: string; concept: string } | null = null;
+  for (const module of ALL_MODULES) {
+    if (!unlockedModules.includes(module.id)) continue;
+
+    for (const l of module.lessons) {
+      if (!completedLessons.includes(l.id)) {
+        nextTopicItem = {
+          title: getLocalized(l.title, language),
+          concept: getLocalized(l.conceptCard, language),
+        };
+        break;
+      }
+    }
+    if (nextTopicItem) break;
+
+    for (const c of module.caseExams) {
+      if (!completedCaseExams.includes(c.id)) {
+        nextTopicItem = {
+          title: getLocalized(c.title, language),
+          concept: getLocalized(c.businessQuestion, language),
+        };
+        break;
+      }
+    }
+    if (nextTopicItem) break;
+  }
+
+  // Fallback if all unlocked items are completed
+  if (!nextTopicItem) {
+    const firstLesson = ALL_MODULES[0].lessons[0];
+    nextTopicItem = {
+      title: getLocalized(firstLesson.title, language),
+      concept: getLocalized(firstLesson.conceptCard, language),
+    };
+  }
 
   // S-Curve horizontal offsets for nodes in sequence (authentic Duolingo vertical snake path)
   const getXOffsetClass = (index: number) => {
@@ -49,27 +105,65 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 font-sans">
-      {/* Top Welcome Banner */}
-      <div className="relative mb-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs text-center overflow-hidden">
-        <div className="absolute top-0 right-0 w-48 h-48 bg-[#ff7a00]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] text-xs font-black border border-[#ff7a00]/30 mb-2 uppercase">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>{language === 'tr' ? 'Öğrenme Yolu' : 'Learning Path'}</span>
+      {/* Top Welcome Banner with Personalized Speech Greeting */}
+      <div className="relative mb-8 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-sm overflow-hidden text-left">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff7a00]/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="w-11 h-11 rounded-2xl bg-[#ff7a00] text-white font-black text-xl flex items-center justify-center shadow-md shadow-[#ff7a00]/30 shrink-0">
+            {firstName.charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] text-[10px] font-black border border-[#ff7a00]/30 uppercase tracking-wider mb-0.5">
+              <Sparkles className="w-3 h-3" />
+              <span>{language === 'tr' ? 'Kişisel İstatistik Rehberi' : 'Personal Stats Guide'}</span>
+            </div>
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              {language === 'tr' ? `Selam ${firstName}! 👋` : `Hi ${firstName}! 👋`}
+            </h1>
+          </div>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-          {language === 'tr' ? 'İstatistik Öğrenme Haritası' : 'Statistics Learning Path'}
-        </h1>
-        <p className="text-xs text-slate-500 font-medium mt-1">
-          {language === 'tr'
-            ? 'Duolingo tarzı adım adım ilerle, vaka sınavlarını çöz ve üst seviye kilitleri aç!'
-            : 'Progress step-by-step Duolingo-style, solve cases, and unlock higher modules!'}
-        </p>
+
+        {/* Dynamic Personal Progress & Next Topic Speech Box */}
+        <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed shadow-2xs">
+          <p>
+            {language === 'tr' ? (
+              <>
+                Bugüne kadar <strong className="text-slate-900 font-extrabold">Modül {latestModule.order}: {latestModuleTitle}</strong> seviyesine kadar gelip toplam <strong className="text-[#ff7a00] font-black">{xp} XP</strong> topladın! 🎯
+              </>
+            ) : (
+              <>
+                So far you have reached <strong className="text-slate-900 font-extrabold">Module {latestModule.order}: {latestModuleTitle}</strong> and earned <strong className="text-[#ff7a00] font-black">{xp} XP</strong>! 🎯
+              </>
+            )}
+          </p>
+
+          <p className="pt-2 border-t border-slate-200/60">
+            {language === 'tr' ? (
+              <>
+                Sıradaki konumuz <strong className="text-slate-900 font-extrabold">{nextTopicItem.title}</strong>: <em>"{nextTopicItem.concept}"</em>
+                <br />
+                <span className="font-extrabold text-[#ff7a00] inline-block mt-1.5">
+                  Haydi haritada sıradaki konunun ikonuna bas, çalışmaya başlayalım! 🚀
+                </span>
+              </>
+            ) : (
+              <>
+                Our next topic is <strong className="text-slate-900 font-extrabold">{nextTopicItem.title}</strong>: <em>"{nextTopicItem.concept}"</em>
+                <br />
+                <span className="font-extrabold text-[#ff7a00] inline-block mt-1.5">
+                  Let's click the next topic icon on the map to start studying! 🚀
+                </span>
+              </>
+            )}
+          </p>
+        </div>
 
         {/* Placement Test CTA */}
-        <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-center">
+        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-center">
           <button
             onClick={onStartPlacementTest}
-            className="flex items-center space-x-2 px-5 py-2.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/30 group"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-5 py-2.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/25 group"
           >
             <Sparkles className="w-4 h-4 fill-white group-hover:rotate-12 transition-transform" />
             <span>
