@@ -390,7 +390,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                       </button>
 
                       {/* Node Label Below */}
-                      <span className="mt-2 text-[11px] font-extrabold text-slate-700 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-2xl border border-slate-200 shadow-2xs max-w-[200px] sm:max-w-[240px] text-center leading-tight whitespace-normal break-words">
+                      <span className="mt-2 text-[11px] font-extrabold text-slate-700 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-2xl border border-slate-200 shadow-2xs max-w-[240px] sm:max-w-[300px] text-center leading-tight whitespace-nowrap truncate">
                         {node.type === 'case' ? `🏆 ${node.title}` : node.title}
                       </span>
                     </div>
