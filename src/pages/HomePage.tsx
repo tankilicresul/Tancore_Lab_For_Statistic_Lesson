@@ -29,13 +29,13 @@ export const SpiderIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.75"
+    strokeWidth="1.5"
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
   >
-    <ellipse cx="12" cy="15" rx="3.5" ry="4.5" />
-    <circle cx="12" cy="8.5" r="2" />
+    <ellipse cx="12" cy="15" rx="3" ry="4" />
+    <circle cx="12" cy="8.5" r="1.8" />
     <path d="M 9.5 8 C 6.5 5.5, 3.5 6.5, 2.5 9.5" />
     <path d="M 9 11.5 C 5.5 10, 3 11.5, 2 14.5" />
     <path d="M 9 14.5 C 5.5 15, 3 17, 2.5 20" />
@@ -53,22 +53,25 @@ export const CaseExamIcon: React.FC<{ className?: string }> = ({ className }) =>
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.75"
+    strokeWidth="1.5"
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
   >
-    <rect x="3" y="2.5" width="13" height="19" rx="2" />
-    <line x1="6" y1="6" x2="11" y2="6" strokeWidth="2" />
-    <circle cx="6" cy="10" r="0.8" />
-    <line x1="8.5" y1="10" x2="12" y2="10" />
-    <circle cx="6" cy="13.5" r="0.8" />
-    <line x1="8.5" y1="13.5" x2="11" y2="13.5" />
-    <circle cx="6" cy="17" r="0.8" />
-    <line x1="8.5" y1="17" x2="10" y2="17" />
-    <path d="M 10 18.5 L 20.5 8 L 17.5 5 L 7 15.5 L 7 18.5 Z" fill="currentColor" fillOpacity="0.2" />
-    <path d="M 10 18.5 L 20.5 8 L 17.5 5 L 7 15.5 L 7 18.5 Z" />
-    <path d="M 16 6.5 L 19 9.5" />
+    {/* Exam Document Outline */}
+    <rect x="3.5" y="2.5" width="13" height="19" rx="2" />
+    
+    {/* Exam Title Line */}
+    <line x1="6.5" y1="6" x2="13.5" y2="6" strokeWidth="1.75" />
+    
+    {/* Checklist lines */}
+    <line x1="6.5" y1="9.5" x2="13.5" y2="9.5" />
+    <line x1="6.5" y1="13" x2="11.5" y2="13" />
+    <line x1="6.5" y1="16.5" x2="10.5" y2="16.5" />
+
+    {/* Thin Pencil Writing on Exam Sheet */}
+    <path d="M 14 20 L 21 13 L 18.5 10.5 L 11.5 17.5 L 11.5 20 Z" />
+    <line x1="16.5" y1="12.5" x2="19" y2="15" />
   </svg>
 );
 
