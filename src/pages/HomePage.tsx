@@ -23,6 +23,55 @@ import {
 } from 'lucide-react';
 import { Lesson, CaseExam, Module } from '../types/stats';
 
+export const SpiderIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <ellipse cx="12" cy="15" rx="3.5" ry="4.5" />
+    <circle cx="12" cy="8.5" r="2" />
+    <path d="M 9.5 8 C 6.5 5.5, 3.5 6.5, 2.5 9.5" />
+    <path d="M 9 11.5 C 5.5 10, 3 11.5, 2 14.5" />
+    <path d="M 9 14.5 C 5.5 15, 3 17, 2.5 20" />
+    <path d="M 9.5 17.5 C 7 19.5, 5 21, 4.5 23" />
+    <path d="M 14.5 8 C 17.5 5.5, 20.5 6.5, 21.5 9.5" />
+    <path d="M 15 11.5 C 18.5 10, 21 11.5, 22 14.5" />
+    <path d="M 15 14.5 C 18.5 15, 21 17, 21.5 20" />
+    <path d="M 14.5 17.5 C 17 19.5, 19 21, 19.5 23" />
+  </svg>
+);
+
+export const CaseExamIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <rect x="3" y="2.5" width="13" height="19" rx="2" />
+    <line x1="6" y1="6" x2="11" y2="6" strokeWidth="2" />
+    <circle cx="6" cy="10" r="0.8" />
+    <line x1="8.5" y1="10" x2="12" y2="10" />
+    <circle cx="6" cy="13.5" r="0.8" />
+    <line x1="8.5" y1="13.5" x2="11" y2="13.5" />
+    <circle cx="6" cy="17" r="0.8" />
+    <line x1="8.5" y1="17" x2="10" y2="17" />
+    <path d="M 10 18.5 L 20.5 8 L 17.5 5 L 7 15.5 L 7 18.5 Z" fill="currentColor" fillOpacity="0.2" />
+    <path d="M 10 18.5 L 20.5 8 L 17.5 5 L 7 15.5 L 7 18.5 Z" />
+    <path d="M 16 6.5 L 19 9.5" />
+  </svg>
+);
+
 export const getModuleMascotIcon = (moduleOrder: number, isUnlocked: boolean) => {
   const iconColorClass = isUnlocked ? 'text-white' : 'text-slate-500';
   const strokeClass = 'w-6 h-6 stroke-[2]';
@@ -69,8 +118,8 @@ export const getNodeAnimalIcon = (subStepIndex: number, colorClass: string) => {
     // 2. Alt Konu / Adım (Orta Zorluk): Kedi 🐱
     return <Cat className={iconClass} />;
   } else if (subStepIndex === 3) {
-    // 3. Alt Konu / Adım (Orta Üstü Zorluk): Pati / Kanguru 🐾
-    return <PawPrint className={iconClass} />;
+    // 3. Alt Konu / Adım (Orta Üstü Zorluk): Örümcek 🕷️
+    return <SpiderIcon className={iconClass} />;
   } else {
     // 4. veya 5. Alt Konu / Adım (En Zor / Zirve): Köpek / Aslan 🐶
     return <Dog className={iconClass} />;
@@ -365,24 +414,24 @@ export const HomePage: React.FC<HomePageProps> = ({
                         >
                           {node.isCompleted ? (
                             node.type === 'case' ? (
-                              <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[1.75]" />
+                              <CaseExamIcon className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[1.75]" />
                             ) : (
                               getNodeAnimalIcon(node.order, 'text-white')
                             )
                           ) : isCurrentTarget ? (
                             node.type === 'case' ? (
-                              <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[1.75]" />
+                              <CaseExamIcon className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[1.75]" />
                             ) : (
                               getNodeAnimalIcon(node.order, 'text-white')
                             )
                           ) : node.isUnlocked ? (
                             node.type === 'case' ? (
-                              <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-[#ff7a00] stroke-[1.75]" />
+                              <CaseExamIcon className="w-7 h-7 sm:w-9 sm:h-9 text-[#ff7a00] stroke-[1.75]" />
                             ) : (
                               getNodeAnimalIcon(node.order, 'text-[#ff7a00]')
                             )
                           ) : node.type === 'case' ? (
-                            <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-slate-400 stroke-[1.75]" />
+                            <CaseExamIcon className="w-7 h-7 sm:w-9 sm:h-9 text-slate-400 stroke-[1.75]" />
                           ) : (
                             getNodeAnimalIcon(node.order, 'text-slate-400')
                           )}
@@ -391,7 +440,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                       {/* Node Label Below */}
                       <span className="mt-2 text-[11px] font-extrabold text-slate-700 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-2xl border border-slate-200 shadow-2xs max-w-[240px] sm:max-w-[300px] text-center leading-tight whitespace-nowrap truncate">
-                        {node.type === 'case' ? `🏆 ${node.title}` : node.title}
+                        {node.title}
                       </span>
                     </div>
                   );
@@ -415,7 +464,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-12 h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shadow-md">
-                {selectedNode.type === 'case' ? <Trophy className="w-6 h-6" /> : getNodeAnimalIcon(selectedNode.order, 'text-white')}
+                {selectedNode.type === 'case' ? <CaseExamIcon className="w-6 h-6" /> : getNodeAnimalIcon(selectedNode.order, 'text-white')}
               </div>
               <div>
                 <span className="text-[10px] font-black uppercase text-[#ff7a00] tracking-widest font-mono">
