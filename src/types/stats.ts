@@ -90,3 +90,10 @@ export interface UserState {
   unlockedBadges: string[];
   userProfile: UserProfile;
 }
+
+export interface PlacementTestResult {
+  score: number;
+  totalQuestions: number;
+  recommendedModuleId: string;
+  recommendedModuleOrder: number;
+}

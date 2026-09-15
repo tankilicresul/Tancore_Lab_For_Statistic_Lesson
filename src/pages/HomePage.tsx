@@ -8,6 +8,7 @@ import { Lesson, CaseExam, Module } from '../types/stats';
 interface HomePageProps {
   onSelectLesson: (lessonId: string) => void;
   onSelectCaseExam: (caseId: string) => void;
+  onStartPlacementTest: () => void;
 }
 
 // Node item in the Duolingo path sequence
@@ -23,7 +24,11 @@ interface PathNodeItem {
   module: Module;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ onSelectLesson, onSelectCaseExam }) => {
+export const HomePage: React.FC<HomePageProps> = ({
+  onSelectLesson,
+  onSelectCaseExam,
+  onStartPlacementTest,
+}) => {
   const { language, unlockedModules, completedLessons, completedCaseExams } = useAppStore();
   const [selectedNode, setSelectedNode] = useState<PathNodeItem | null>(null);
 
@@ -59,6 +64,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectLesson, onSelectCase
             ? 'Duolingo tarzı adım adım ilerle, vaka sınavlarını çöz ve üst seviye kilitleri aç!'
             : 'Progress step-by-step Duolingo-style, solve cases, and unlock higher modules!'}
         </p>
+
+        {/* Placement Test CTA */}
+        <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-center">
+          <button
+            onClick={onStartPlacementTest}
+            className="flex items-center space-x-2 px-5 py-2.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/30 group"
+          >
+            <Sparkles className="w-4 h-4 fill-white group-hover:rotate-12 transition-transform" />
+            <span>
+              {language === 'tr'
+                ? 'İstatistik Seviyeni Biliyor musun? Seviye Belirleme Sınavına Gir 🚀'
+                : 'Know Your Stats Level? Take Placement Test 🚀'}
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* Modules Flow */}

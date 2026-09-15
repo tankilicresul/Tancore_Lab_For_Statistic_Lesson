@@ -3,10 +3,11 @@ import { XpStreakBar } from './components/XpStreakBar';
 import { HomePage } from './pages/HomePage';
 import { LessonPage } from './pages/LessonPage';
 import { CaseExamPage } from './pages/CaseExamPage';
+import { PlacementTestPage } from './pages/PlacementTestPage';
 import { getLessonById, getCaseExamById } from './data/modules';
 
 export const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<'home' | 'lesson' | 'caseExam'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'lesson' | 'caseExam' | 'placementTest'>('home');
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
 
@@ -19,6 +20,11 @@ export const App: React.FC = () => {
   const handleSelectCaseExam = (caseId: string) => {
     setSelectedCaseId(caseId);
     setCurrentView('caseExam');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleStartPlacementTest = () => {
+    setCurrentView('placementTest');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -43,6 +49,7 @@ export const App: React.FC = () => {
           <HomePage
             onSelectLesson={handleSelectLesson}
             onSelectCaseExam={handleSelectCaseExam}
+            onStartPlacementTest={handleStartPlacementTest}
           />
         )}
 
@@ -60,6 +67,10 @@ export const App: React.FC = () => {
             module={caseData.module}
             onBack={handleBackToHome}
           />
+        )}
+
+        {currentView === 'placementTest' && (
+          <PlacementTestPage onBackToHome={handleBackToHome} />
         )}
       </main>
 

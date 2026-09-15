@@ -10,6 +10,7 @@ interface AppStoreActions {
   checkAndUpdateStreak: () => void;
   resetProgress: () => void;
   updateUserProfile: (profile: Partial<UserProfile>) => void;
+  unlockUpToModule: (targetModuleId: string) => void;
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -128,6 +129,25 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           unlockedModules: newUnlockedModules,
           xp: newXp,
           unlockedBadges: newBadges,
+        });
+
+        get().checkAndUpdateStreak();
+      },
+
+      unlockUpToModule: (targetModuleId: string) => {
+        const targetOrder = parseInt(targetModuleId.replace('module-', ''), 10) || 1;
+        const modulesToUnlock: string[] = [];
+        for (let i = 1; i <= targetOrder; i++) {
+          modulesToUnlock.push(`module-${i}`);
+        }
+
+        const state = get();
+        const updatedUnlocked = Array.from(new Set([...state.unlockedModules, ...modulesToUnlock]));
+        const bonusXp = state.xp + 150;
+
+        set({
+          unlockedModules: updatedUnlocked,
+          xp: bonusXp,
         });
 
         get().checkAndUpdateStreak();
