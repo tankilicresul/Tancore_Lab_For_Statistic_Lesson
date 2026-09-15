@@ -59,6 +59,24 @@ export const getModuleMascotIcon = (moduleOrder: number, isUnlocked: boolean) =>
   }
 };
 
+export const getNodeAnimalIcon = (moduleOrder: number, colorClass: string) => {
+  const iconClass = `w-7 h-7 sm:w-9 sm:h-9 ${colorClass} stroke-[1.75]`;
+
+  if (moduleOrder <= 3) {
+    // En Kolay Seviyeler (Modül 1-3): Tavşan 🐰
+    return <Rabbit className={iconClass} />;
+  } else if (moduleOrder <= 6) {
+    // Orta Zorluk (Modül 4-6): Kedi 🐱
+    return <Cat className={iconClass} />;
+  } else if (moduleOrder <= 9) {
+    // Orta Üstü Zorluk (Modül 7-9): Pati / Kanguru 🐾
+    return <PawPrint className={iconClass} />;
+  } else {
+    // En Zor / Usta Seviyeler (Modül 10-11): Köpek / Aslan 🐶
+    return <Dog className={iconClass} />;
+  }
+};
+
 interface HomePageProps {
   onSelectLesson: (lessonId: string) => void;
   onSelectCaseExam: (caseId: string) => void;
@@ -357,12 +375,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                             node.type === 'case' ? (
                               <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-[#ff7a00] stroke-[1.75]" />
                             ) : (
-                              <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-[#ff7a00] stroke-[1.75]" />
+                              getNodeAnimalIcon(node.module.order, 'text-[#ff7a00]')
                             )
                           ) : node.type === 'case' ? (
                             <Trophy className="w-7 h-7 sm:w-9 sm:h-9 text-slate-400 stroke-[1.75]" />
                           ) : (
-                            <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-slate-400 stroke-[1.75]" />
+                            getNodeAnimalIcon(node.module.order, 'text-slate-400')
                           )}
                         </div>
                       </button>
@@ -393,7 +411,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-12 h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shadow-md">
-                {selectedNode.type === 'case' ? <Trophy className="w-6 h-6" /> : <BookOpen className="w-6 h-6" />}
+                {selectedNode.type === 'case' ? <Trophy className="w-6 h-6" /> : getNodeAnimalIcon(selectedNode.module.order, 'text-white')}
               </div>
               <div>
                 <span className="text-[10px] font-black uppercase text-[#ff7a00] tracking-widest font-mono">
