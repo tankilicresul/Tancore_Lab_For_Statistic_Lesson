@@ -34,7 +34,7 @@ export interface Lesson {
   title: LocalizedText;
   conceptCard: LocalizedText;
   companyExample: LocalizedText;
-  interactiveType?: "mean_median_mode" | "variance_stddev" | "probability_coin" | "bayes_rule" | "normal_dist" | "binomial_dist" | "poisson_dist" | "sample_size" | "confidence_interval" | "hypothesis_z_t" | "correlation_regression";
+  interactiveType?: "mean_median_mode" | "variance_stddev" | "probability_coin" | "bayes_rule" | "normal_dist" | "binomial_dist" | "poisson_dist" | "sample_size" | "confidence_interval" | "hypothesis_z_t" | "correlation_regression" | "probability_lab" | "monte_carlo_clt" | "bayes_visualizer" | "markov_chain";
   interactiveInitialData?: number[];
   vocabTerms: VocabTerm[];
   questions: Question[];

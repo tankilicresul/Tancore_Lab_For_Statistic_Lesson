@@ -5,6 +5,11 @@
 @layer base {
   html, body {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+    -ms-hyphens: none !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
   }
 }
 

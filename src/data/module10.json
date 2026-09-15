@@ -188,6 +188,72 @@
           "explanation": { "tr": "(400 + 500 + 600) / 3 = 500", "en": "(400 + 500 + 600) / 3 = 500" }
         }
       ]
+    },
+    {
+      "id": "m10-case-2",
+      "moduleId": "module-10",
+      "difficulty": "orta",
+      "title": { "tr": "DataPulse: Ki-Kare Bağımsızlık Testi (Chi-Square)", "en": "DataPulse: Chi-Square Test of Independence" },
+      "businessQuestion": {
+        "tr": "Kategorik Veri Bağımsızlık Vakası: I = 2 satır ve J = 3 sütundan oluşan bir çapraz tabloda, H0: İki kategorik değişken bağımsızdır hipotezi test ediliyor. Serbestlik derecesi df = (I - 1) * (J - 1) kaçtır?",
+        "en": "Categorical Data Independence Case: For a 2x3 contingency table (I = 2 rows, J = 3 columns), what is degrees of freedom df = (I - 1) * (J - 1)?"
+      },
+      "dataset": {
+        "columns": ["Kategori", "Seçenek 1", "Seçenek 2", "Seçenek 3"],
+        "rows": [
+          ["Grup A", "15", "25", "10"],
+          ["Grup B", "25", "15", "10"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: df = (2 - 1) * (3 - 1) = 1 * 2 = 2.", "en": "Step 1: df = (2 - 1) * (3 - 1) = 1 * 2 = 2." }
+      ],
+      "expectedApproach": {
+        "tr": "Ki-kare testi için serbestlik derecesi df = 2 olarak hesaplanır.",
+        "en": "Degrees of freedom for Chi-Square test is calculated as df = 2."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m10-case-2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Serbestlik derecesi (df) kaçtır?", "en": "What is the degrees of freedom (df)?" },
+          "correctAnswer": 2,
+          "explanation": { "tr": "(2 - 1) * (3 - 1) = 1 * 2 = 2", "en": "(2 - 1) * (3 - 1) = 1 * 2 = 2" }
+        }
+      ]
+    },
+    {
+      "id": "m10-case-3",
+      "moduleId": "module-10",
+      "difficulty": "zor",
+      "title": { "tr": "RetailCo: Beklenen Hücre Değeri Eij < 5 Birleştirme", "en": "RetailCo: Expected Cell Value Eij < 5 Merging" },
+      "businessQuestion": {
+        "tr": "Ki-Kare Varsayımı Uyarısı: Ki-kare testi varsayımlarına göre her bir hücredeki beklenen sıklık Eij en az kaç olmalıdır? Eğer Eij < 5 ise ne yapılmalıdır?",
+        "en": "Chi-Square Assumption Rule: What is minimum required expected frequency Eij per cell for Chi-Square? What if Eij < 5?"
+      },
+      "dataset": {
+        "columns": ["Varsayım Kriteri", "Kritik Eij Değeri", "Gerekli Eylem"],
+        "rows": [
+          ["Minimum Beklenen Sıklık", "Eij ≥ 5", "Sağlanmazsa Satır/Sütun Birleştir"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Ki-kare varsayımı Eij ≥ 5 gerektirir.", "en": "Step 1: Chi-Square assumption requires Eij ≥ 5." },
+        { "tr": "2. Adım: 5'ten küçük hücreler varsa komşu satır veya sütunlar birleştirilir.", "en": "Step 2: If Eij < 5, merge adjacent rows or columns." }
+      ],
+      "expectedApproach": {
+        "tr": "Minimum Eij ≥ 5 olmalıdır, aksi halde satır/sütun birleştirilir.",
+        "en": "Minimum Eij ≥ 5 required, otherwise merge rows/columns."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m10-case-3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Minimum beklenen hücre değeri (Eij) kaç olmalıdır?", "en": "What is the minimum expected cell value (Eij)?" },
+          "correctAnswer": 5,
+          "explanation": { "tr": "Eij ≥ 5 olmalıdır.", "en": "Eij must be ≥ 5." }
+        }
+      ]
     }
   ]
 }

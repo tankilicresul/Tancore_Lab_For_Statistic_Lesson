@@ -184,6 +184,81 @@
           "explanation": { "tr": "1.96 * 10 = 19.6", "en": "1.96 * 10 = 19.6" }
         }
       ]
+    },
+    {
+      "id": "m5-case-2",
+      "moduleId": "module-5",
+      "difficulty": "orta",
+      "title": { "tr": "VoltPower: Batarya Kapasite CI vs PI vs TI Analizi", "en": "VoltPower: Battery Capacity CI vs PI vs TI Analysis" },
+      "businessQuestion": {
+        "tr": "Pil Üretim Vakası: Kalite standardı batarya kapasitesinin (137, 143) Ah aralığında olmasını gerektiriyor. n = 20 pilden oluşan örneklemde x̄ = 138.47 Ah ve s = 2.66 Ah bulunuyor. 95% Güven Aralığı (137.23, 139.71) çıkmaktadır. Popülasyon hedef ortalaması µ = 140 Ah olduğuna göre bu üretim süreci hedeflenen ortalamayı karşılıyor mu?",
+        "en": "Battery Production Case: Quality standard requires (137, 143) Ah. For n = 20 batteries, x̄ = 138.47 Ah and s = 2.66 Ah. 95% CI is (137.23, 139.71). Does the process satisfy the target mean level µ = 140 Ah?"
+      },
+      "dataset": {
+        "columns": ["Metrik", "Örneklem Değeri", "Hedef Standardı"],
+        "rows": [
+          ["Ortalama (x̄ / µ)", "138.47 Ah", "140.0 Ah"],
+          ["Varyans (s² / σ²)", "7.08 (Ah)²", "4.0 (Ah)²"],
+          ["95% CI Ortalaması", "(137.23, 139.71)", "140.0 Ah İçermiyor"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: 95% CI = (137.23, 139.71) aralığını incele.", "en": "Step 1: Inspect 95% CI = (137.23, 139.71)." },
+        { "tr": "2. Adım: Hedef değer olan 140 Ah bu aralığın tamamen dışındadır.", "en": "Step 2: Target value 140 Ah lies completely outside this interval." },
+        { "tr": "3. Adım: Dolayısıyla üretim süreci 140 Ah hedefini karşılamamaktadır.", "en": "Step 3: Hence, the process fails to meet the target mean of 140 Ah." }
+      ],
+      "expectedApproach": {
+        "tr": "CI aralığı 140 Ah değerini içermediği için süreç tasarım hedefini sağlamaz.",
+        "en": "Since the CI does not contain 140 Ah, the process fails the target design."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m5-case-2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "95% Güven Aralığı (137.23, 139.71) hedeflenen 140 Ah ortalamasını karşılıyor mu?", "en": "Does the 95% CI (137.23, 139.71) contain the target 140 Ah mean?" },
+          "options": [
+            { "tr": "Hayır, 140 Ah aralığın dışındadır ve süreç hedefi karşılamaz", "en": "No, 140 Ah is outside the interval and fails target" },
+            { "tr": "Evet, 140 Ah aralığın içindedir", "en": "Yes, 140 Ah is inside" }
+          ],
+          "correctAnswer": "Hayır, 140 Ah aralığın dışındadır ve süreç hedefi karşılamaz",
+          "explanation": { "tr": "140.0 > 139.71 olduğu için hedeflenen ortalama sağlanamamıştır.", "en": "Since 140.0 > 139.71, the target mean is not met." }
+        }
+      ]
+    },
+    {
+      "id": "m5-case-3",
+      "moduleId": "module-5",
+      "difficulty": "zor",
+      "title": { "tr": "DataPulse: Agresti-Coull Oran Güven Aralığı", "en": "DataPulse: Agresti-Coull Proportion CI" },
+      "businessQuestion": {
+        "tr": "Gelişmiş Oran Yaklaşımı (Agresti-Coull): n = 10 aboneden X = 2 tanesi premium pakete geçmiştir. Geleneksel p̂ = 2/10 = 0.20 yerine Agresti-Coull p̃ = (X+2)/(n+4) ve ñ = n+4 kullanılarak hesaplanan düzeltilmiş p̃ oranı kaçtır?",
+        "en": "Advanced Proportion Approach (Agresti-Coull): For n = 10 users with X = 2 premium upgrades, what is the adjusted proportion p̃ = (X+2)/(n+4)?"
+      },
+      "dataset": {
+        "columns": ["Parametre", "Geleneksel Değer", "Agresti-Coull Düzeltilmiş"],
+        "rows": [
+          ["Başarı Sayısı (X)", "2", "2 + 2 = 4"],
+          ["Örneklem (n)", "10", "10 + 4 = 14"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: ñ = n + 4 = 10 + 4 = 14.", "en": "Step 1: ñ = n + 4 = 10 + 4 = 14." },
+        { "tr": "2. Adım: X̃ = X + 2 = 2 + 2 = 4.", "en": "Step 2: X̃ = X + 2 = 2 + 2 = 4." },
+        { "tr": "3. Adım: p̃ = 4 / 14 = 0.2857.", "en": "Step 3: p̃ = 4 / 14 = 0.2857." }
+      ],
+      "expectedApproach": {
+        "tr": "Agresti-Coull düzeltilmiş oran p̃ = 4/14 = 0.2857 (yaklaşık %28.6) olarak bulunur.",
+        "en": "Agresti-Coull adjusted proportion is p̃ = 4/14 = 0.2857 (~28.6%)."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m5-case-3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Düzeltilmiş p̃ oranı kaçtır? (2 basamak yuvarlayın)", "en": "What is the adjusted p̃ proportion? (round to 2 decimals)" },
+          "correctAnswer": 0.29,
+          "explanation": { "tr": "4 / 14 = 0.2857 -> 0.29", "en": "4 / 14 = 0.2857 -> 0.29" }
+        }
+      ]
     }
   ]
 }

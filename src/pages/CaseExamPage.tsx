@@ -2,22 +2,45 @@ import React, { useState } from 'react';
 import { CaseExam, Module } from '../types/stats';
 import { getLocalized } from '../utils/localization';
 import { useAppStore } from '../store/useAppStore';
-import { ArrowLeft, Trophy, CheckCircle2, Table, HelpCircle, Eye, Sparkles, AlertCircle } from 'lucide-react';
+import { getNextTopicItem } from '../data/modules';
+import { ArrowLeft, Trophy, CheckCircle2, Table, HelpCircle, Eye, Sparkles, AlertCircle, ArrowRight, Home, RefreshCw } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface CaseExamPageProps {
   caseExam: CaseExam;
   module: Module;
   onBack: () => void;
+  onSelectNextTopic?: (nextId: string, nextType: 'lesson' | 'case') => void;
+  onBackToHomeWithScroll?: (lastId: string) => void;
 }
 
-export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, onBack }) => {
+export const CaseExamPage: React.FC<CaseExamPageProps> = ({
+  caseExam,
+  module,
+  onBack,
+  onSelectNextTopic,
+  onBackToHomeWithScroll,
+}) => {
   const { language, completeCaseExam, completedCaseExams } = useAppStore();
 
   const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: string]: string | number }>({});
   const [submittedQuestions, setSubmittedQuestions] = useState<{ [questionId: string]: boolean }>({});
   const [showExpectedApproach, setShowExpectedApproach] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(completedCaseExams.includes(caseExam.id));
+
+  const nextTopic = getNextTopicItem(caseExam.id);
+
+  const triggerConfetti = () => {
+    try {
+      confetti({
+        particleCount: 140,
+        spread: 90,
+        origin: { y: 0.6 },
+      });
+    } catch {
+      // fallback
+    }
+  };
 
   const difficultyColor =
     caseExam.difficulty === 'kolay'
@@ -67,23 +90,23 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
       </div>
 
       {/* Case Header */}
-      <div className="mb-8">
+      <div className="mb-6">
         <div className="flex items-center space-x-2 text-xs font-black uppercase tracking-widest text-[#ff7a00] mb-2">
           <Trophy className="w-4 h-4 text-[#ff7a00]" />
           <span>{language === 'tr' ? 'Şirket Vaka Sınavı (Case Exam)' : 'Company Case Exam'}</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-3">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight mb-2">
           {getLocalized(caseExam.title, language)}
         </h1>
-        <div className="h-1.5 w-24 bg-[#ff7a00] rounded-full" />
+        <div className="h-1.5 w-20 bg-[#ff7a00] rounded-full" />
       </div>
 
       {/* Business Question Box */}
-      <div className="mb-6 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-xs">
-        <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-3">
+      <div className="mb-5 p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-xs">
+        <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-2.5">
           {language === 'tr' ? 'İş Vakası & Problem Tanımı' : 'Business Question & Case Problem'}
         </h3>
-        <p className="text-sm sm:text-base text-slate-800 leading-relaxed font-medium">
+        <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
           {getLocalized(caseExam.businessQuestion, language)}
         </p>
       </div>
@@ -270,38 +293,86 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({ caseExam, module, on
       )}
 
       {/* Finish Case Exam Action Banner */}
-      <div className="mt-10 p-8 rounded-3xl bg-white border border-slate-200 text-center shadow-xs">
+      <div className="mt-10 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 text-center shadow-xs">
         <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-[#ff7a00] flex items-center justify-center text-white shadow-lg shadow-[#ff7a00]/20">
           <Trophy className="w-7 h-7 stroke-[2.5]" />
         </div>
         <h3 className="text-xl font-black text-slate-900 mb-1 tracking-tight">
           {isCompleted
-            ? language === 'tr' ? 'Bu Case Exam’i Tamamladın!' : 'Case Exam Completed!'
-            : language === 'tr' ? 'Case Exam’i Tamamla & Yeni Modül Kilidini Aç' : 'Complete Case Exam & Unlock Next Module'}
+            ? language === 'tr' ? 'Vaka Sınavını Harika Bir Şekilde Tamamladın!' : 'Case Exam Successfully Completed!'
+            : language === 'tr' ? 'Case Exam’i Tamamla & XP Kazan' : 'Complete Case Exam & Earn XP'}
         </h3>
         <p className="text-xs text-slate-500 mb-6 font-medium">
           {language === 'tr'
-            ? 'Vaka sınavını başarıyla tamamlayarak +50 XP kazanın ve sonraki modülün kilidini açın.'
-            : 'Complete the case exam to earn +50 XP and unlock the next module.'}
+            ? 'Vaka sınavını başarıyla tamamlayarak +50 XP kazandın.'
+            : 'Completed the case exam to earn +50 XP.'}
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          {/* First Time Completion Trigger */}
+          {!isCompleted && (
+            <button
+              onClick={() => {
+                completeCaseExam(caseExam.id, module.id, 50);
+                setIsCompleted(true);
+                setShowExpectedApproach(true);
+                triggerConfetti();
+              }}
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-[#ff7a00]/25 transition-all flex items-center justify-center space-x-2"
+            >
+              <Sparkles className="w-4 h-4 fill-white" />
+              <span>{language === 'tr' ? 'Vaka Sınavını Tamamla (+50 XP)' : 'Complete Case Exam (+50 XP)'}</span>
+            </button>
+          )}
+
+          {/* Next Topic Button */}
+          {nextTopic && (
+            <button
+              onClick={() => {
+                if (!isCompleted) {
+                  completeCaseExam(caseExam.id, module.id, 50);
+                  setIsCompleted(true);
+                }
+                if (onSelectNextTopic) {
+                  onSelectNextTopic(nextTopic.id, nextTopic.type);
+                }
+              }}
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-[#ff7a00]/25 transition-all flex items-center justify-center space-x-2"
+            >
+              <span>
+                {language === 'tr'
+                  ? `Sıradaki Konu: ${getLocalized(nextTopic.title, language)}`
+                  : `Next: ${getLocalized(nextTopic.title, language)}`}
+              </span>
+              <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+            </button>
+          )}
+
+          {/* Back to Home with Scroll */}
           <button
-            onClick={handleFinishCase}
-            className="px-10 py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-xl shadow-[#ff7a00]/25 transition-all flex items-center justify-center space-x-2"
+            onClick={() => (onBackToHomeWithScroll ? onBackToHomeWithScroll(caseExam.id) : onBack())}
+            className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider border border-slate-200 transition-colors flex items-center justify-center space-x-2"
           >
-            <Sparkles className="w-4 h-4 fill-white" />
-            <span>
-              {isCompleted
-                ? language === 'tr' ? 'Tamamlandı (Tekrar İncele)' : 'Completed (Review)'
-                : language === 'tr' ? 'Vaka Sınavını Tamamla (+50 XP)' : 'Complete Case Exam (+50 XP)'}
-            </span>
+            <Home className="w-4 h-4 text-[#ff7a00]" />
+            <span>{language === 'tr' ? 'Ana Sayfa (Haritada Göster)' : 'Home (Show on Map)'}</span>
           </button>
+
+          {/* Replay Confetti */}
+          {isCompleted && (
+            <button
+              onClick={triggerConfetti}
+              className="w-full sm:w-auto px-5 py-4 rounded-2xl bg-orange-50 hover:bg-orange-100 text-[#ff7a00] font-bold text-xs border border-orange-200 transition-colors flex items-center justify-center space-x-1.5"
+              title={language === 'tr' ? 'Kutlamayı Tekrar Başlat' : 'Replay Celebration'}
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>{language === 'tr' ? 'Tekrar Kutla' : 'Replay'}</span>
+            </button>
+          )}
 
           {!showExpectedApproach && (
             <button
               onClick={() => setShowExpectedApproach(true)}
-              className="px-6 py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm border border-slate-200 transition-colors flex items-center space-x-2"
+              className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-200 transition-colors flex items-center justify-center space-x-2"
             >
               <Eye className="w-4 h-4 text-[#ff7a00]" />
               <span>{language === 'tr' ? 'Yönetici Özetini Gör' : 'Show Approach'}</span>

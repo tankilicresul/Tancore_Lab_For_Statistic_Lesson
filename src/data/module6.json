@@ -111,10 +111,10 @@
           "type": "multiple_choice",
           "prompt": { "tr": "p-değeri = 0.01 ve α = 0.05 ise karar ne olur?", "en": "If p-value = 0.01 and α = 0.05, what decision is made?" },
           "options": [
-            { "tr": "H0 reddedilir (Sonuç anlamlıdır)", "en": "Reject H0 (Result is significant)" },
-            { "tr": "H0 reddedilemez", "en": "Fail to reject H0" }
+            { "tr": "H0 Reddedilir (Reject H0)", "en": "Reject H0" },
+            { "tr": "H0 Reddedilemez (Cannot Reject H0)", "en": "Cannot Reject H0" }
           ],
-          "correctAnswer": "H0 reddedilir (Sonuç anlamlıdır)",
+          "correctAnswer": "H0 Reddedilir (Reject H0)",
           "explanation": { "tr": "0.01 < 0.05 olduğu için H0 reddedilir.", "en": "Since 0.01 < 0.05, H0 is rejected." }
         }
       ]
@@ -193,6 +193,80 @@
           ],
           "correctAnswer": "H0 reddedilir, yeni buton uygulamaya alınır",
           "explanation": { "tr": "p-değeri (0.01) < 0.05 olduğundan değişim istatistiksel olarak anlamlıdır.", "en": "Since p (0.01) < 0.05, difference is statistically significant." }
+        }
+      ]
+    },
+    {
+      "id": "m6-case-2",
+      "moduleId": "module-6",
+      "difficulty": "orta",
+      "title": { "tr": "SmokeTech & PopCorn: Tip I (α) ve Tip II (β) Hata Analizi", "en": "SmokeTech & PopCorn: Type I (α) and Type II (β) Error Analysis" },
+      "businessQuestion": {
+        "tr": "Tütün Ürünleri Kalite Kontrol Vakası: Standart üretimde ortalama nikotin içeriği µ0 = 1.2 mg olmalıdır. Kalite denetçisi H0: µ = 1.2 mg ve H1: µ > 1.2 mg hipotezini test ediyor. Eğer gerçek nikotin 1.2 mg iken yanlışlıkla ürün grubunu imha kararı verilirse (H0 reddedilirse), bu ne tür bir hatadır?",
+        "en": "Tobacco Product Quality Control Case: Nicotine target is µ0 = 1.2 mg. Auditor tests H0: µ = 1.2 vs H1: µ > 1.2. If the true nicotine is 1.2 mg but H0 is rejected, what type of error is committed?"
+      },
+      "dataset": {
+        "columns": ["Gerçek Durum", "Karar: H0 Kabul", "Karar: H0 Red (İmha)"],
+        "rows": [
+          ["H0 Doğru (µ = 1.2 mg)", "Doğru Karar (1 - α)", "Tip I Hata (α)"],
+          ["H0 Yanlış (µ > 1.2 mg)", "Tip II Hata (β)", "Doğru Karar Güç (1 - β)"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Gerçekte H0 doğru iken (µ = 1.2 mg) H0'ı reddetmek Tip I Hata'dır.", "en": "Step 1: Rejecting a true H0 is a Type I Error." },
+        { "tr": "2. Adım: Tip I hata olasılığı α (anlamlılık düzeyi) ile belirlenir.", "en": "Step 2: Type I error probability is defined by α." }
+      ],
+      "expectedApproach": {
+        "tr": "Gerçekte doğru olan sıfır hipotezinin reddedilmesi Tip I Hata (Producer's Risk) olarak tanımlanır.",
+        "en": "Rejecting a true null hypothesis is defined as a Type I Error (Producer's Risk)."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m6-case-2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Gerçekte H0 doğru iken H0'ın reddedilmesi hangi tür hatadır?", "en": "What error is committed when a true H0 is rejected?" },
+          "options": [
+            { "tr": "Tip I Hata (α)", "en": "Type I Error (α)" },
+            { "tr": "Tip II Hata (β)", "en": "Type II Error (β)" }
+          ],
+          "correctAnswer": "Tip I Hata (α)",
+          "explanation": { "tr": "Doğru olan sıfır hipotezini reddetmek Tip I hatadır.", "en": "Rejecting a true null hypothesis is a Type I error." }
+        }
+      ]
+    },
+    {
+      "id": "m6-case-3",
+      "moduleId": "module-6",
+      "difficulty": "zor",
+      "title": { "tr": "BioPharm: Tek Örneklem t-Testi & Anlamlılık İstatistiği", "en": "BioPharm: One-Sample t-Test & Significance Statistic" },
+      "businessQuestion": {
+        "tr": "Biyofarma Laboratuvar Vakası: n = 16 deneyde ortalama aktif madde x̄ = 48.5 mg, s = 4.0 mg ölçülmüştür. Hedef µ0 = 50.0 mg olduğuna göre, t0 test istatistiği t0 = (x̄ - µ0) / (s / √n) değeri kaçtır?",
+        "en": "Biopharm Lab Case: For n = 16, x̄ = 48.5 mg and s = 4.0 mg. Target µ0 = 50.0 mg. What is the t0 test statistic t0 = (x̄ - µ0) / (s / √n)?"
+      },
+      "dataset": {
+        "columns": ["Parametre", "Örneklem Değeri"],
+        "rows": [
+          ["Örneklem Boyutu (n)", "16"],
+          ["Örneklem Ortalaması (x̄)", "48.5 mg"],
+          ["Örneklem Std Dev (s)", "4.0 mg"],
+          ["Hedef Ortalama (µ0)", "50.0 mg"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: SE = s / √n = 4.0 / √16 = 4.0 / 4 = 1.0 mg.", "en": "Step 1: SE = s / √n = 4.0 / √16 = 4.0 / 4 = 1.0 mg." },
+        { "tr": "2. Adım: t0 = (48.5 - 50.0) / 1.0 = -1.50.", "en": "Step 2: t0 = (48.5 - 50.0) / 1.0 = -1.50." }
+      ],
+      "expectedApproach": {
+        "tr": "t0 test istatistiği -1.50 olarak hesaplanır.",
+        "en": "The t0 test statistic is calculated as -1.50."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m6-case-3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "t0 test istatistiği kaçtır?", "en": "What is the t0 test statistic?" },
+          "correctAnswer": -1.5,
+          "explanation": { "tr": "(48.5 - 50.0) / (4.0 / 4) = -1.5", "en": "(48.5 - 50.0) / (4.0 / 4) = -1.5" }
         }
       ]
     }

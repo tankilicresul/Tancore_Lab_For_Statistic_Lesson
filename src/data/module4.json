@@ -184,6 +184,76 @@
           "explanation": { "tr": "20 / √100 = 20 / 10 = 2", "en": "20 / √100 = 20 / 10 = 2" }
         }
       ]
+    },
+    {
+      "id": "m4-case-2",
+      "moduleId": "module-4",
+      "difficulty": "orta",
+      "title": { "tr": "EcoQuality: PM10 Hava Kirliliği & CLT Analizi", "en": "EcoQuality: PM10 Air Quality & CLT Analysis" },
+      "businessQuestion": {
+        "tr": "Çevre Mühendisliği Çalışması: Bir şehirdeki günlük PM10 parçacık konsantrasyonunun popülasyon standart sapması σ = 15 µg/m³'tür. 36 günlük rastgele ölçüm yapıldığında (n = 36), örneklem ortalamasının Standart Hatası kaç µg/m³ olur ve ölçüm ortalamasının popülasyon ortalamasından en fazla 4.9 µg/m³ sapma olasılığı nedir?",
+        "en": "Environmental Study: Daily PM10 particle concentration has population std dev σ = 15 µg/m³. For n = 36 daily measurements, what is the Standard Error of sample mean, and what is the probability that sample mean is within 4.9 µg/m³ of the true mean?"
+      },
+      "dataset": {
+        "columns": ["Ölçüm Sayısı (n)", "Popülasyon Std Dev (σ)", "İstenen Sapma (E)"],
+        "rows": [
+          ["36 Gün", "15 µg/m³", "± 4.9 µg/m³"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: SE = σ / √n = 15 / √36 = 15 / 6 = 2.5 µg/m³.", "en": "Step 1: SE = σ / √n = 15 / √36 = 15 / 6 = 2.5 µg/m³." },
+        { "tr": "2. Adım: Z skoru hesabı: Z = E / SE = 4.9 / 2.5 = 1.96.", "en": "Step 2: Z score calculation: Z = E / SE = 4.9 / 2.5 = 1.96." },
+        { "tr": "3. Adım: P(-1.96 ≤ Z ≤ 1.96) = 0.95 (%95 olasılık).", "en": "Step 3: P(-1.96 ≤ Z ≤ 1.96) = 0.95 (95% probability)." }
+      ],
+      "expectedApproach": {
+        "tr": "SE = 2.5 µg/m³ olup %95 olasılıkla örneklem ortalaması ana kütle ortalamasından ±4.9 µg/m³ dahilinde kalır.",
+        "en": "SE = 2.5 µg/m³, with 95% probability the sample mean stays within ±4.9 µg/m³ of population mean."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m4-case-2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Örneklem ortalamasının Standart Hatası (SE) kaçtır?", "en": "What is the Standard Error (SE) of the sample mean?" },
+          "correctAnswer": 2.5,
+          "explanation": { "tr": "15 / √36 = 15 / 6 = 2.5", "en": "15 / √36 = 15 / 6 = 2.5" }
+        }
+      ]
+    },
+    {
+      "id": "m4-case-3",
+      "moduleId": "module-4",
+      "difficulty": "zor",
+      "title": { "tr": "TechCorp: Optimum Örneklem Boyutu Tasarımı", "en": "TechCorp: Optimum Sample Size Design" },
+      "businessQuestion": {
+        "tr": "TechCorp kalite yönetim ekibi, çip üretim sürelerindeki ortalama hatayı %99 güven düzeyinde (z* = 2.576) en fazla ±0.5 milisaniye (E = 0.5) olarak tutmak istemektedir. Geçmiş süreçlerden σ = 2.0 ms olduğu bilindiğine göre, gerekli minimum örneklem boyutu n kaçtır?",
+        "en": "TechCorp Quality team wants a 99% confidence level (z* = 2.576) with a margin of error of at most ±0.5 ms (E = 0.5). Given σ = 2.0 ms, what is the minimum required sample size n?"
+      },
+      "dataset": {
+        "columns": ["Parametre", "Değer"],
+        "rows": [
+          ["Güven Düzeyi (%99 Z*)", "2.576"],
+          ["Kabul Edilebilir Hata (E)", "0.5 ms"],
+          ["Proses Std Dev (σ)", "2.0 ms"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Formül: n = (z* · σ / E)².", "en": "Step 1: Formula: n = (z* · σ / E)²." },
+        { "tr": "2. Adım: n = (2.576 · 2.0 / 0.5)² = (10.304)² = 106.17.", "en": "Step 2: n = (2.576 · 2.0 / 0.5)² = (10.304)² = 106.17." },
+        { "tr": "3. Adım: Yukarı yuvarla: n ≥ 107 çip.", "en": "Step 3: Round up: n ≥ 107 chips." }
+      ],
+      "expectedApproach": {
+        "tr": "Gerekli minimum örneklem büyüklüğü n = 107 olarak hesaplanır.",
+        "en": "Minimum required sample size is calculated as n = 107."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m4-case-3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Gerekli minimum örneklem büyüklüğü (n) kaçtır?", "en": "What is the minimum required sample size (n)?" },
+          "correctAnswer": 107,
+          "explanation": { "tr": "(2.576 * 2.0 / 0.5)^2 = 106.17 -> yukarı yuvarlayınca 107", "en": "(2.576 * 2.0 / 0.5)^2 = 106.17 -> rounded up to 107" }
+        }
+      ]
     }
   ]
 }

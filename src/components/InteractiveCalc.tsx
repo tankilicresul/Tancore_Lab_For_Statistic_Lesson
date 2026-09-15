@@ -3,6 +3,7 @@ import { mean, median, mode, variance, stdDev, bayesRule, normalPDF } from '../u
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Sliders, RefreshCw, Calculator, TrendingUp } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
+import { ProbabilityLab } from './ProbabilityLab';
 
 interface InteractiveCalcProps {
   type?: string;
@@ -14,6 +15,22 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
   initialData = [10, 12, 12, 15, 9, 50],
 }) => {
   const { language } = useAppStore();
+
+  if (type === 'probability_lab') {
+    return <ProbabilityLab defaultTab="distributions" />;
+  }
+  if (type === 'monte_carlo_clt' || type === 'probability_coin') {
+    return <ProbabilityLab defaultTab="montecarlo" />;
+  }
+  if (type === 'bayes_visualizer' || type === 'bayes_rule') {
+    return <ProbabilityLab defaultTab="bayes" />;
+  }
+  if (type === 'binomial_dist' || type === 'poisson_dist' || type === 'normal_dist') {
+    return <ProbabilityLab defaultTab="distributions" />;
+  }
+  if (type === 'markov_chain') {
+    return <ProbabilityLab defaultTab="markov" />;
+  }
 
   // State for raw data list
   const [dataPoints, setDataPoints] = useState<number[]>(initialData);
@@ -306,5 +323,281 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
     );
   }
 
+  // Probability Coin Flip Interactive
+  if (type === 'probability_coin') {
+    return (
+      <div className="my-6 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs font-sans">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30">
+            <Calculator className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <h4 className="text-base font-extrabold text-slate-900 tracking-tight">
+              {language === 'tr' ? 'Olasılık & Parapara Atış Simülatörü' : 'Probability & Coin Flip Simulator'}
+            </h4>
+            <p className="text-xs text-slate-500 font-medium">
+              {language === 'tr' ? 'Büyük Sayılar Yasası (Law of Large Numbers) Deneyi' : 'Law of Large Numbers Experiment'}
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+          <div className="p-4 rounded-2xl bg-orange-50 border border-orange-200 text-center">
+            <span className="text-xs font-bold text-slate-700 block mb-1">Teorik Olasılık P(Tura)</span>
+            <span className="text-3xl font-black text-[#ff7a00] font-mono">%50.0</span>
+          </div>
+          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-center">
+            <span className="text-xs font-bold text-slate-700 block mb-1">Empirik Olasılık (1,000 Atış)</span>
+            <span className="text-3xl font-black text-amber-700 font-mono">%49.8</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Binomial Distribution Interactive
+  if (type === 'binomial_dist') {
+    const nVal = 20;
+    const pVal = 0.4;
+    const binomialPoints = [];
+    for (let k = 0; k <= nVal; k++) {
+      // nCr * p^k * (1-p)^(n-k)
+      let comb = 1;
+      for (let i = 1; i <= k; i++) comb = (comb * (nVal - i + 1)) / i;
+      const prob = comb * Math.pow(pVal, k) * Math.pow(1 - pVal, nVal - k);
+      binomialPoints.push({ k: `k=${k}`, Olasılık: parseFloat(prob.toFixed(4)) });
+    }
+
+    return (
+      <div className="my-6 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs font-sans">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30">
+            <TrendingUp className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <h4 className="text-base font-extrabold text-slate-900 tracking-tight">
+              {language === 'tr' ? 'Binomial Dağılım Grafiği (n=20, p=0.4)' : 'Binomial Distribution PMF (n=20, p=0.4)'}
+            </h4>
+            <p className="text-xs text-slate-500 font-medium">
+              E(X) = n·p = 8.0, Var(X) = n·p·(1-p) = 4.8
+            </p>
+          </div>
+        </div>
+
+        <div className="h-56 w-full pt-2">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={binomialPoints}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="k" stroke="#64748b" />
+              <YAxis stroke="#64748b" />
+              <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#ff7a00', borderRadius: '12px' }} />
+              <Bar dataKey="Olasılık" fill="#ff7a00" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    );
+  }
+
+  // Poisson Distribution Interactive
+  if (type === 'poisson_dist') {
+    const lambdaVal = 4;
+    const poissonPoints = [];
+    let fact = 1;
+    for (let k = 0; k <= 12; k++) {
+      if (k > 0) fact *= k;
+      const prob = (Math.exp(-lambdaVal) * Math.pow(lambdaVal, k)) / fact;
+      poissonPoints.push({ k: `k=${k}`, Olasılık: parseFloat(prob.toFixed(4)) });
+    }
+
+    return (
+      <div className="my-6 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs font-sans">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30">
+            <TrendingUp className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <h4 className="text-base font-extrabold text-slate-900 tracking-tight">
+              {language === 'tr' ? 'Poisson Dağılımı (λ=4.0 Geliş/Saat)' : 'Poisson Distribution (λ=4.0 arrivals/hr)'}
+            </h4>
+            <p className="text-xs text-slate-500 font-medium">
+              E(X) = λ = 4.0, Var(X) = λ = 4.0
+            </p>
+          </div>
+        </div>
+
+        <div className="h-56 w-full pt-2">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={poissonPoints}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="k" stroke="#64748b" />
+              <YAxis stroke="#64748b" />
+              <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#ff7a00', borderRadius: '12px' }} />
+              <Bar dataKey="Olasılık" fill="#ff7a00" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    );
+  }
+
+  // Sample Size & CLT Calculator
+  if (type === 'sample_size') {
+    return (
+      <div className="my-6 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs font-sans">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30">
+            <Calculator className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <h4 className="text-base font-extrabold text-slate-900 tracking-tight">
+              {language === 'tr' ? 'Örneklem Boyutu (Sample Size) & CLT Hesaplayıcı' : 'Sample Size & CLT Calculator'}
+            </h4>
+            <p className="text-xs text-slate-500 font-medium">
+              n = (z_α/2 · σ / E)² formülü ile gerekli örneklem hacmi
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <span className="text-[11px] font-extrabold text-slate-600 block mb-0.5">%95 Güven için Z</span>
+            <span className="text-xl font-black text-slate-900 font-mono">1.96</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <span className="text-[11px] font-extrabold text-slate-600 block mb-0.5">Kabul Edilebilir Hata (E)</span>
+            <span className="text-xl font-black text-slate-900 font-mono">± 2.0</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-[#ff7a00]/10 border border-[#ff7a00]/30">
+            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">Gerekli Örneklem (n)</span>
+            <span className="text-xl font-black text-[#ff7a00] font-mono">n ≥ 97</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Confidence / Prediction / Tolerance Interval Calculator (CI vs PI vs TI)
+  if (type === 'confidence_interval') {
+    return (
+      <div className="my-6 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs font-sans">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30">
+            <Calculator className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <h4 className="text-base font-extrabold text-slate-900 tracking-tight">
+              {language === 'tr' ? 'Güven (CI), Tahmin (PI) ve Tolerans (TI) Aralıkları' : 'CI vs PI vs TI Calculator'}
+            </h4>
+            <p className="text-xs text-slate-500 font-medium">
+              Kitle Ortalaması (µ), Tekil Gelecek Değer (X_n+1) ve Kitle Kapsamı
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+          <div className="p-4 rounded-2xl bg-orange-50 border border-orange-200">
+            <span className="text-xs font-black text-[#ff7a00] block mb-1">95% Confidence Interval (CI)</span>
+            <span className="text-base font-bold text-slate-900 font-mono">(137.23, 139.71)</span>
+            <span className="text-[10px] text-slate-500 block mt-1">Popülasyon ortalaması µ için</span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200">
+            <span className="text-xs font-black text-amber-700 block mb-1">95% Prediction Interval (PI)</span>
+            <span className="text-base font-bold text-slate-900 font-mono">(135.16, 141.78)</span>
+            <span className="text-[10px] text-slate-500 block mt-1">Gelecek tekil pil X_n+1 için</span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-100 border border-slate-200">
+            <span className="text-xs font-black text-slate-800 block mb-1">95% TI for 90% Coverage</span>
+            <span className="text-base font-bold text-slate-900 font-mono">(123.32, 153.62)</span>
+            <span className="text-[10px] text-slate-500 block mt-1">Ürünlerin %90'ını kapsama</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Hypothesis Testing Z / T Calculator
+  if (type === 'hypothesis_z_t') {
+    return (
+      <div className="my-6 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs font-sans">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30">
+            <Calculator className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <h4 className="text-base font-extrabold text-slate-900 tracking-tight">
+              {language === 'tr' ? 'Hipotez Testi İstatistik Hesabı (Z / T Skoru & P-Value)' : 'Hypothesis Test Calculator (Z/T & P-Value)'}
+            </h4>
+            <p className="text-xs text-slate-500 font-medium">
+              H0: µ = 140.0 vs H1: µ ≠ 140.0 (α = 0.05)
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <span className="text-[11px] font-extrabold text-slate-600 block mb-0.5">Test İstatistiği (t0)</span>
+            <span className="text-xl font-black text-slate-900 font-mono">-2.57</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <span className="text-[11px] font-extrabold text-slate-600 block mb-0.5">Kritik Değer t_α/2,19</span>
+            <span className="text-xl font-black text-slate-900 font-mono">± 2.093</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-[#ff7a00]/10 border border-[#ff7a00]/30">
+            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">P-Value</span>
+            <span className="text-xl font-black text-[#ff7a00] font-mono">0.0187</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+            <span className="text-[11px] font-extrabold text-emerald-700 block mb-0.5">Karar</span>
+            <span className="text-sm font-black text-emerald-800 uppercase">Reject H0</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Correlation & Regression Calculator
+  if (type === 'correlation_regression') {
+    return (
+      <div className="my-6 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs font-sans">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30">
+            <TrendingUp className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <h4 className="text-base font-extrabold text-slate-900 tracking-tight">
+              {language === 'tr' ? 'Regresyon & Korelasyon Analizi (SLR / MLR)' : 'Regression & Correlation Analysis'}
+            </h4>
+            <p className="text-xs text-slate-500 font-medium">
+              Fitted Model: ŷ = b0 + b1·x, ANOVA Tablosu & Düzeltilmiş R²
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <span className="text-[11px] font-extrabold text-slate-600 block mb-0.5">Korelasyon (r_xy)</span>
+            <span className="text-xl font-black text-slate-900 font-mono">0.912</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <span className="text-[11px] font-extrabold text-slate-600 block mb-0.5">Belirtlilik (R²)</span>
+            <span className="text-xl font-black text-slate-900 font-mono">%83.2</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-orange-50 border border-orange-200">
+            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">Düzeltilmiş R² (Adj R²)</span>
+            <span className="text-xl font-black text-[#ff7a00] font-mono">%81.8</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+            <span className="text-[11px] font-extrabold text-emerald-700 block mb-0.5">Model ANOVA F</span>
+            <span className="text-xl font-black text-emerald-800 font-mono">F = 44.5*</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return null;
 };
+

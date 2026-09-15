@@ -1,0 +1,146 @@
+{
+  "id": "module-13",
+  "order": 13,
+  "title": { "tr": "Kombinatorik & Sayma Yöntemleri", "en": "Combinatorics & Counting Methods" },
+  "description": {
+    "tr": "Çarpım kuralı, permütasyon P(n,k), kombinasyon C(n,k), faktöriyel ve binom katsayıları.",
+    "en": "Multiplication rule, permutations P(n,k), combinations C(n,k), factorials, and binomial coefficients."
+  },
+  "iconName": "Calculator",
+  "lessons": [
+    {
+      "id": "m13-l1",
+      "moduleId": "module-13",
+      "order": 1,
+      "difficulty": "basit",
+      "title": { "tr": "Temel Sayma İlkesi & Faktöriyel", "en": "Basic Counting Principle & Factorial" },
+      "conceptCard": {
+        "tr": "Sayma ilkesi, bir işlem k aşamadan oluşuyorsa toplam olası sonuç sayısının her aşamadaki seçenek sayılarının çarpımı olduğunu belirtir. n elemanın sıralama sayısı n! faktöriyel ile hesaplanır.",
+        "en": "The counting principle states that for a process of k stages, total outcomes equals the product of choices at each stage. Ordering n elements equals n! factorial."
+      },
+      "companyExample": {
+        "tr": "CyberPass şifre jeneratörü 4 haneli PIN kodu oluştururken her haneye 0-9 arası 10 rakam seçebilir. Toplam olası PIN kodu sayısı = 10 * 10 * 10 * 10 = 10,000 adettir.",
+        "en": "CyberPass PIN generator picks 4 digits from 0-9. Total possible PINs = 10 * 10 * 10 * 10 = 10,000."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "counting principle",
+          "explanation_tr": "Aşamalı seçimlerde toplam seçenek sayısını bulma kuralı.",
+          "explanation_en": "Rule to find total outcomes in multi-stage choices.",
+          "exampleSentence_en": "The multiplication counting principle determines password complexity."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m13-l1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "5 kişinin yan yana bir sıraya dizilme olası kaç farklı şekli vardır (5!)?", "en": "How many ways can 5 people line up in a row (5!)?" },
+          "correctAnswer": 120,
+          "explanation": { "tr": "5! = 5 * 4 * 3 * 2 * 1 = 120.", "en": "5! = 5 * 4 * 3 * 2 * 1 = 120." }
+        }
+      ]
+    },
+    {
+      "id": "m13-l2",
+      "moduleId": "module-13",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "Permütasyon (Sıralı Seçim)", "en": "Permutations (Ordered Selection)" },
+      "conceptCard": {
+        "tr": "Permütasyon, n adet elemandan r tanesinin SIRA ÖNEMLİ OLARAK seçilip dizilmesidir. Formül: P(n, r) = n! / (n - r)!.",
+        "en": "Permutation is selecting r objects from n where ORDER MATTERS. Formula: P(n, r) = n! / (n - r)!."
+      },
+      "companyExample": {
+        "tr": "CyberPass yarıştığı 8 aday arasından 1., 2. ve 3. dereceye girecek şifreleme algoritmalarını seçecektir. P(8, 3) = 8 * 7 * 6 = 336 farklı sıralama seçeneği vardır.",
+        "en": "CyberPass awards 1st, 2nd, 3rd places out of 8 algorithms. P(8,3) = 8 * 7 * 6 = 336."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "permutation",
+          "explanation_tr": "Sıranın önemli olduğu seçim dizilimi.",
+          "explanation_en": "An ordered arrangement of objects.",
+          "exampleSentence_en": "Permutations account for positional order."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m13-l2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "P(6, 2) kaçtır?", "en": "What is P(6, 2)?" },
+          "correctAnswer": 30,
+          "explanation": { "tr": "6 * 5 = 30.", "en": "6 * 5 = 30." }
+        }
+      ]
+    },
+    {
+      "id": "m13-l3",
+      "moduleId": "module-13",
+      "order": 3,
+      "difficulty": "orta",
+      "title": { "tr": "Kombinasyon (Sırasız Grup Seçimi)", "en": "Combinations (Unordered Selection)" },
+      "conceptCard": {
+        "tr": "Kombinasyon, n adet elemandan r tanesinin SIRA ÖNEMSİZ OLARAK seçilip grup oluşturulmasıdır. Formül: C(n, r) = n! / [r! (n - r)!].",
+        "en": "Combination is selecting r objects from n where ORDER DOES NOT MATTER. Formula: C(n, r) = n! / [r! (n - r)!]."
+      },
+      "companyExample": {
+        "tr": "CyberPass 10 kişilik yazılım ekibinden 3 kişilik bir siber güvenlik komitesi seçecektir. Sıra önemsiz olduğu için C(10, 3) = (10 * 9 * 8) / (3 * 2 * 1) = 120 komite kurulabilir.",
+        "en": "CyberPass selects 3 reps out of 10 for a committee. C(10, 3) = 120 possible teams."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "combination",
+          "explanation_tr": "Sıranın önemsiz olduğu alt küme seçimi.",
+          "explanation_en": "A selection of items where order is ignored.",
+          "exampleSentence_en": "Combinations count committee formations."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m13-l3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "C(5, 2) kaçtır?", "en": "What is C(5, 2)?" },
+          "correctAnswer": 10,
+          "explanation": { "tr": "(5 * 4) / 2 = 10.", "en": "(5 * 4) / 2 = 10." }
+        }
+      ]
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m13-case-1",
+      "moduleId": "module-13",
+      "difficulty": "orta",
+      "title": { "tr": "CyberPass: Şifre Kombinasyon ve Güvenlik Analizi", "en": "CyberPass: Password Combinatorics & Security Analysis" },
+      "businessQuestion": {
+        "tr": "CyberPass kullanıcı şifrelerinin kırılma süresini inceliyor. 6 haneli bir şifrede sadece küçük harfler (26 adet) kullanılırsa C(26,6) yerine kaç adet olası şifre 26^6 üretilebilir?",
+        "en": "CyberPass evaluates 6-character lowercase passwords (26 letters). What is total 26^6 combination count?"
+      },
+      "dataset": {
+        "columns": ["Şifre Tipi", "Karakter Kümesi", "Uzunluk"],
+        "rows": [
+          ["Sadece Harf", "26", "6"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Her hane için 26 seçenek vardır.", "en": "Step 1: 26 choices per slot." },
+        { "tr": "2. Adım: 26^6 = 308,915,776.", "en": "Step 2: 26^6 = 308,915,776." }
+      ],
+      "expectedApproach": {
+        "tr": "Şifre uzunluğunu 6'dan 8'e çıkarmak kombinasyon sayısını milyarlara katlayarak brute-force saldırılarını engeller.",
+        "en": "Increasing length from 6 to 8 exponentiates combinations into billions, mitigating brute-force attacks."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m13-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "4 elemanlı kümeden seçilecek 2 elemanlı alt küme sayısı C(4,2) kaçtır?", "en": "What is C(4,2)?" },
+          "correctAnswer": 6,
+          "explanation": { "tr": "(4 * 3) / 2 = 6.", "en": "(4 * 3) / 2 = 6." }
+        }
+      ]
+    }
+  ]
+}

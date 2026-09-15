@@ -1,0 +1,148 @@
+{
+  "id": "module-14",
+  "order": 14,
+  "title": { "tr": "Koşullu Olasılık & Bayes Teoremi", "en": "Conditional Probability & Bayes Theorem" },
+  "description": {
+    "tr": "Koşullu olasılık P(A|B), bağımsız olaylar, Toplam Olasılık Yasası ve Bayes Teoremi. Medikal test ve spam filtresi teşhis vakaları.",
+    "en": "Conditional probability P(A|B), independent events, Law of Total Probability, and Bayes Theorem. Medical diagnostic & spam filter cases."
+  },
+  "iconName": "GitMerge",
+  "lessons": [
+    {
+      "id": "m14-l1",
+      "moduleId": "module-14",
+      "order": 1,
+      "difficulty": "basit",
+      "title": { "tr": "Koşullu Olasılık & Olayların Bağımsızlığı", "en": "Conditional Probability & Event Independence" },
+      "conceptCard": {
+        "tr": "Koşullu olasılık, B olayının gerçekleştiği bilindiğinde A olayının gerçekleşme olasılığıdır: P(A|B) = P(A ∩ B) / P(B). İki olay bağımsızsa P(A|B) = P(A) olur.",
+        "en": "Conditional probability measures event A given event B occurred: P(A|B) = P(A ∩ B) / P(B). If independent, P(A|B) = P(A)."
+      },
+      "companyExample": {
+        "tr": "CyberPass spam filtresinde, gelen e-postanın 'Hediye' kelimesini içerme olasılığı P(Hediye) = 0.20'dir. Hem spam hem 'Hediye' içerme olasılığı P(Spam ∩ Hediye) = 0.15'tir. 'Hediye' içeren bir e-postanın spam olma olasılığı P(Spam|Hediye) = 0.15 / 0.20 = 0.75 (%75)'tir.",
+        "en": "CyberPass spam filter finds P(Gift) = 0.20 and P(Spam ∩ Gift) = 0.15. Thus P(Spam|Gift) = 0.15 / 0.20 = 0.75 (75%)."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "conditional probability",
+          "explanation_tr": "Bir olayın başka bir olayın gerçekleşmiş olması koşulu altındaki olasılığı.",
+          "explanation_en": "Probability of an event given that another event has occurred.",
+          "exampleSentence_en": "Conditional probability is fundamental to Bayesian statistics."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m14-l1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "P(A ∩ B) = 0.12 ve P(B) = 0.40 ise P(A|B) kaçtır?", "en": "If P(A ∩ B) = 0.12 and P(B) = 0.40, what is P(A|B)?" },
+          "correctAnswer": 0.3,
+          "explanation": { "tr": "P(A|B) = 0.12 / 0.40 = 0.30.", "en": "P(A|B) = 0.12 / 0.40 = 0.30." }
+        }
+      ]
+    },
+    {
+      "id": "m14-l2",
+      "moduleId": "module-14",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "Toplam Olasılık Yasası", "en": "Law of Total Probability" },
+      "conceptCard": {
+        "tr": "Tüm uzay B1, B2, ..., Bn gibi ayrık parçalara bölünmüşse, herhangi bir A olayının olasılığı her parçadaki koşullu olasılıkların ağırlıklı toplamıdır: P(A) = ∑ P(A|Bi) * P(Bi).",
+        "en": "If the sample space is partitioned into disjoint B1, B2, ..., Bn, then P(A) = ∑ P(A|Bi) * P(Bi)."
+      },
+      "companyExample": {
+        "tr": "CyberPass sunucu isteklerinin %60'ı Sunucu A'dan, %40'ı Sunucu B'den geçer. Sunucu A'daki hata oranı %1, Sunucu B'deki hata oranı %3'tür. Toplam sistem hata oranı P(Hata) = (0.01 * 0.60) + (0.03 * 0.40) = 0.006 + 0.012 = 0.018 (%1.8).",
+        "en": "Server A handles 60% with 1% error; Server B handles 40% with 3% error. Total error = (0.01*0.60) + (0.03*0.40) = 1.8%."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "law of total probability",
+          "explanation_tr": "Bir olayın olasılığını ayrık alt durumların ağırlıklı toplamı olarak hesaplama kuralı.",
+          "explanation_en": "Rule calculating total probability by summing conditional probabilities over partitions.",
+          "exampleSentence_en": "The law of total probability simplifies complex multi-source risks."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m14-l2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "İki grubun ağırlıkları %70 ve %30, başarı oranları %80 ve %50 ise genel başarı oranı nedir (% olarak)?", "en": "Groups weighted 70% and 30% have success rates 80% and 50%. What is total success rate (%)?" },
+          "correctAnswer": 71,
+          "explanation": { "tr": "(0.80 * 0.70) + (0.50 * 0.30) = 0.56 + 0.15 = 0.71 (%71).", "en": "(0.80 * 0.70) + (0.50 * 0.30) = 0.56 + 0.15 = 0.71 (71%)." }
+        }
+      ]
+    },
+    {
+      "id": "m14-l3",
+      "moduleId": "module-14",
+      "order": 3,
+      "difficulty": "ileri",
+      "title": { "tr": "Bayes Teoremi & Prior / Posterior Analizi", "en": "Bayes Theorem & Prior/Posterior Analysis" },
+      "conceptCard": {
+        "tr": "Bayes Teoremi, yeni bir kanıt (evidence) elde edildiğinde hipotezin olasılığını güncellememizi sağlar: P(A|B) = [P(B|A) * P(A)] / P(B). Prior (Önsel) olasılık, kanıt ile Posterior (Sonral) olasılığa dönüşür.",
+        "en": "Bayes Theorem updates hypothesis probability upon evidence: P(A|B) = [P(B|A) * P(A)] / P(B), turning Prior into Posterior."
+      },
+      "companyExample": {
+        "tr": "Sistemde siber saldırı olasılığı P(Saldırı) = 0.01'dir. Alarm sistemi saldırı varken %95 doğrulukla (Sensitivite), saldırı yokken %5 yanlış alarm (False Positive) veriyor. Alarm çaldığında gerçekten saldırı olma olasılığı P(Saldırı|Alarm) ≈ %16.1'dir.",
+        "en": "Prior attack P(Attack) = 0.01. Sensitivity = 0.95, False positive = 0.05. Posterior P(Attack|Alarm) ≈ 16.1%."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "prior probability",
+          "explanation_tr": "Yeni bir veri/kanıt gözlemlenmeden önceki başlangıç inanç olasılığı.",
+          "explanation_en": "Initial probability belief before observing new evidence.",
+          "exampleSentence_en": "Prior probability is updated to posterior via Bayes rule."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m14-l3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "P(A) = 0.10, P(B|A) = 0.80 ve P(B) = 0.20 ise P(A|B) kaçtır?", "en": "If P(A) = 0.10, P(B|A) = 0.80, and P(B) = 0.20, what is P(A|B)?" },
+          "correctAnswer": 0.4,
+          "explanation": { "tr": "P(A|B) = (0.80 * 0.10) / 0.20 = 0.08 / 0.20 = 0.40.", "en": "P(A|B) = (0.80 * 0.10) / 0.20 = 0.08 / 0.20 = 0.40." }
+        }
+      ]
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m14-case-1",
+      "moduleId": "module-14",
+      "difficulty": "orta",
+      "title": { "tr": "CyberPass: Yanlış Pozitif Alarm ve Bayes Teoremi Analizi", "en": "CyberPass: False Positive Alarms & Bayes Theorem Analysis" },
+      "businessQuestion": {
+        "tr": "CyberPass güvenlik duvarında nadir siber sızmalar (%1 sıklık) için alarm sistemi kuruldu. Doğruluk %90, yanlış alarm %10 ise alarm verildiğinde sızmanın gerçek olma olasılığı nedir?",
+        "en": "CyberPass security firewall detects 1% rare intrusions. Sensitivity = 90%, False Positive = 10%. What is true intrusion probability when alarm triggers?"
+      },
+      "dataset": {
+        "columns": ["Metrik", "Değer"],
+        "rows": [
+          ["Prior P(Sızma)", "%1 (0.01)"],
+          ["Duyarlılık P(Alarm|Sızma)", "%90 (0.90)"],
+          ["Yanlış Alarm P(Alarm|Normal)", "%10 (0.10)"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: P(Alarm) = (0.90 * 0.01) + (0.10 * 0.99) = 0.009 + 0.099 = 0.108.", "en": "Step 1: Total P(Alarm) = 0.108." },
+        { "tr": "2. Adım: P(Sızma|Alarm) = 0.009 / 0.108 = 0.0833 (%8.33).", "en": "Step 2: P(Intrusion|Alarm) = 8.33%." }
+      ],
+      "expectedApproach": {
+        "tr": "Nadir olaylarda yüksek duyarlılık olsa dahi yanlış alarm oranı yüksekse pozitif tahmin değeri düşük çıkar (Bayes Yanılsaması).",
+        "en": "In rare events, even high sensitivity yields low precision if false positive rate is notable (Base rate fallacy)."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m14-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "P(Sızma|Alarm) yüzde kaçtır (en yakın tam sayı)?", "en": "What is P(Intrusion|Alarm) in percent (nearest integer)?" },
+          "correctAnswer": 8,
+          "explanation": { "tr": "0.009 / 0.108 ≈ %8.33 -> 8.", "en": "0.009 / 0.108 ≈ 8.33% -> 8." }
+        }
+      ]
+    }
+  ]
+}

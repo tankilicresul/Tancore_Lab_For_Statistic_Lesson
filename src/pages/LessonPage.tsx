@@ -8,28 +8,39 @@ import { InteractiveCalc } from '../components/InteractiveCalc';
 import { ArrowLeft, CheckCircle2, HelpCircle, Building2, Lightbulb, Trophy, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
+import { ConceptDiagram } from '../components/ConceptDiagram';
+
+import { getNextTopicItem } from '../data/modules';
+import { ArrowRight, Home, RefreshCw } from 'lucide-react';
+
 interface LessonPageProps {
   lesson: Lesson;
   module: Module;
   onBack: () => void;
+  onSelectNextTopic?: (nextId: string, nextType: 'lesson' | 'case') => void;
+  onBackToHomeWithScroll?: (lastId: string) => void;
 }
 
-export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }) => {
+export const LessonPage: React.FC<LessonPageProps> = ({
+  lesson,
+  module,
+  onBack,
+  onSelectNextTopic,
+  onBackToHomeWithScroll,
+}) => {
   const { language, completeLesson, completedLessons } = useAppStore();
 
   const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: string]: string | number }>({});
   const [submittedQuestions, setSubmittedQuestions] = useState<{ [questionId: string]: boolean }>({});
   const [isCompleted, setIsCompleted] = useState<boolean>(completedLessons.includes(lesson.id));
 
+  const nextTopic = getNextTopicItem(lesson.id);
+
   const handleAnswerSubmit = (qId: string) => {
     setSubmittedQuestions({ ...submittedQuestions, [qId]: true });
   };
 
-  const handleFinishLesson = () => {
-    completeLesson(lesson.id, module.id, 15);
-    setIsCompleted(true);
-
-    // Trigger confetti celebration
+  const triggerConfetti = () => {
     try {
       confetti({
         particleCount: 120,
@@ -37,8 +48,14 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
         origin: { y: 0.6 },
       });
     } catch {
-      // fallback if confetti fails
+      // fallback
     }
+  };
+
+  const handleFinishLesson = () => {
+    completeLesson(lesson.id, module.id, 15);
+    setIsCompleted(true);
+    triggerConfetti();
   };
 
   return (
@@ -46,11 +63,11 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
       {/* Top Breadcrumb Navigation */}
       <div className="flex items-center justify-between mb-6">
         <button
-          onClick={onBack}
+          onClick={() => (onBackToHomeWithScroll ? onBackToHomeWithScroll(lesson.id) : onBack())}
           className="flex items-center space-x-2 text-sm font-bold text-slate-700 hover:text-slate-900 bg-white px-4 py-2 rounded-2xl border border-slate-200 shadow-2xs transition-colors"
         >
           <ArrowLeft className="w-4 h-4 text-[#ff7a00]" />
-          <span>{language === 'tr' ? 'Modül Listesine Dön' : 'Back to Modules'}</span>
+          <span>{language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}</span>
         </button>
 
         <div className="flex items-center space-x-2 text-xs font-extrabold text-[#ff7a00] bg-[#ff7a00]/10 px-3.5 py-1.5 rounded-full border border-[#ff7a00]/30">
@@ -61,39 +78,42 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
       </div>
 
       {/* Lesson Main Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-3">
+      <div className="mb-6">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight mb-2">
           {getLocalized(lesson.title, language)}
         </h1>
-        <div className="h-1.5 w-24 bg-[#ff7a00] rounded-full" />
+        <div className="h-1.5 w-20 bg-[#ff7a00] rounded-full" />
       </div>
 
       {/* STEP 1: Concept Card (Kavram Kartı) */}
-      <div className="mb-6 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs relative">
-        <div className="flex items-center space-x-3 mb-3 text-[#ff7a00]">
-          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 border border-[#ff7a00]/30">
-            <Lightbulb className="w-5 h-5 stroke-[2.2]" />
+      <div className="mb-5 p-5 rounded-3xl bg-white border border-slate-200 shadow-xs relative">
+        <div className="flex items-center space-x-3 mb-2.5 text-[#ff7a00]">
+          <div className="p-2 rounded-2xl bg-[#ff7a00]/15 border border-[#ff7a00]/30">
+            <Lightbulb className="w-4 h-4 stroke-[2.2]" />
           </div>
-          <h3 className="text-sm font-black uppercase tracking-widest text-[#ff7a00]">
+          <h3 className="text-xs font-black uppercase tracking-widest text-[#ff7a00]">
             {language === 'tr' ? '1. Kavram Kartı' : '1. Concept Card'}
           </h3>
         </div>
-        <p className="text-sm sm:text-base text-slate-800 leading-relaxed font-medium">
+        <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
           {getLocalized(lesson.conceptCard, language)}
         </p>
       </div>
 
+      {/* STEP 1.5: High-Quality Visual Concept Diagram (Grafik & Görsel Şema) */}
+      <ConceptDiagram moduleId={module.id} lessonId={lesson.id} />
+
       {/* STEP 2: Company Example (Şirket Örneği) */}
-      <div className="mb-6 p-6 rounded-3xl bg-[#ff7a00]/5 border border-[#ff7a00]/25 shadow-xs">
-        <div className="flex items-center space-x-3 mb-3 text-[#ff7a00]">
-          <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 border border-[#ff7a00]/30">
-            <Building2 className="w-5 h-5 stroke-[2.2]" />
+      <div className="mb-5 p-5 rounded-3xl bg-[#ff7a00]/5 border border-[#ff7a00]/25 shadow-xs">
+        <div className="flex items-center space-x-3 mb-2.5 text-[#ff7a00]">
+          <div className="p-2 rounded-2xl bg-[#ff7a00]/15 border border-[#ff7a00]/30">
+            <Building2 className="w-4 h-4 stroke-[2.2]" />
           </div>
-          <h3 className="text-sm font-black uppercase tracking-widest text-[#ff7a00]">
+          <h3 className="text-xs font-black uppercase tracking-widest text-[#ff7a00]">
             {language === 'tr' ? '2. Gerçek Şirket Örneği' : '2. Real Company Example'}
           </h3>
         </div>
-        <p className="text-sm sm:text-base text-slate-900 leading-relaxed font-medium">
+        <p className="text-xs sm:text-sm text-slate-900 leading-relaxed font-medium">
           {getLocalized(lesson.companyExample, language)}
         </p>
       </div>
@@ -224,33 +244,76 @@ export const LessonPage: React.FC<LessonPageProps> = ({ lesson, module, onBack }
       {/* STEP 6: Real World Tool Box */}
       <RealWorldBox data={lesson.realWorldBox} />
 
-      {/* Finish Lesson Banner & Action Button */}
-      <div className="mt-10 p-8 rounded-3xl bg-white border border-slate-200 text-center shadow-xs">
+      {/* Finish Lesson Banner & Action Buttons */}
+      <div className="mt-10 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 text-center shadow-xs">
         <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-[#ff7a00] flex items-center justify-center text-white shadow-lg shadow-[#ff7a00]/20">
           <Trophy className="w-7 h-7 stroke-[2.5]" />
         </div>
         <h3 className="text-xl font-black text-slate-900 mb-1 tracking-tight">
           {isCompleted
-            ? language === 'tr' ? 'Bu Dersi Tamamladın!' : 'Lesson Completed!'
+            ? language === 'tr' ? 'Bu Dersi Harika Bir Şekilde Tamamladın!' : 'Lesson Successfully Completed!'
             : language === 'tr' ? 'Dersi Tamamla & XP Kazan' : 'Complete Lesson & Earn XP'}
         </h3>
         <p className="text-xs text-slate-500 mb-6 font-medium">
           {language === 'tr'
-            ? 'Tebrikler! Kavramı ve gerçek hayat kullanımını inceledin.'
-            : 'Great job! You reviewed the concept and real-world tools.'}
+            ? 'Tebrikler! Kavramı, grafik şemasını ve gerçek şirket uygulamasını inceledin.'
+            : 'Great job! You reviewed the concept, visual diagram, and real-world tools.'}
         </p>
 
-        <button
-          onClick={handleFinishLesson}
-          className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-xl shadow-[#ff7a00]/25 transition-all flex items-center justify-center space-x-2 mx-auto"
-        >
-          <Sparkles className="w-4 h-4 fill-white" />
-          <span>
-            {isCompleted
-              ? language === 'tr' ? 'Tamamlandı (Tekrar Oyna)' : 'Completed (Replay)'
-              : language === 'tr' ? 'Dersi Tamamla (+15 XP)' : 'Complete Lesson (+15 XP)'}
-          </span>
-        </button>
+        {/* Action Buttons Group */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          {/* First Time Completion Trigger */}
+          {!isCompleted && (
+            <button
+              onClick={handleFinishLesson}
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-[#ff7a00]/25 transition-all flex items-center justify-center space-x-2"
+            >
+              <Sparkles className="w-4 h-4 fill-white" />
+              <span>{language === 'tr' ? 'Dersi Tamamla (+15 XP)' : 'Complete Lesson (+15 XP)'}</span>
+            </button>
+          )}
+
+          {/* Next Topic Button */}
+          {nextTopic && (
+            <button
+              onClick={() => {
+                if (!isCompleted) handleFinishLesson();
+                if (onSelectNextTopic) {
+                  onSelectNextTopic(nextTopic.id, nextTopic.type);
+                }
+              }}
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-[#ff7a00]/25 transition-all flex items-center justify-center space-x-2"
+            >
+              <span>
+                {language === 'tr'
+                  ? `Sıradaki Konu: ${getLocalized(nextTopic.title, language)}`
+                  : `Next: ${getLocalized(nextTopic.title, language)}`}
+              </span>
+              <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+            </button>
+          )}
+
+          {/* Back to Home with Scroll */}
+          <button
+            onClick={() => (onBackToHomeWithScroll ? onBackToHomeWithScroll(lesson.id) : onBack())}
+            className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider border border-slate-200 transition-colors flex items-center justify-center space-x-2"
+          >
+            <Home className="w-4 h-4 text-[#ff7a00]" />
+            <span>{language === 'tr' ? 'Ana Sayfa (Haritada Göster)' : 'Home (Show on Map)'}</span>
+          </button>
+
+          {/* Replay Confetti */}
+          {isCompleted && (
+            <button
+              onClick={triggerConfetti}
+              className="w-full sm:w-auto px-5 py-4 rounded-2xl bg-orange-50 hover:bg-orange-100 text-[#ff7a00] font-bold text-xs border border-orange-200 transition-colors flex items-center justify-center space-x-1.5"
+              title={language === 'tr' ? 'Kutlamayı Tekrar Başlat' : 'Replay Celebration'}
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>{language === 'tr' ? 'Tekrar Kutla' : 'Replay'}</span>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

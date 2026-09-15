@@ -1,0 +1,147 @@
+{
+  "id": "module-15",
+  "order": 15,
+  "title": { "tr": "Poisson Süreci & Nadir Olaylar", "en": "Poisson Process & Rare Events" },
+  "description": {
+    "tr": "Zaman içinde sabit λ oranıyla gerçekleşen varışlar, Poisson olasılık formülü P(X=k) ve olaylar arası bekleme süresi ilişkisi.",
+    "en": "Arrivals with fixed rate λ over time, Poisson probability formula P(X=k), and inter-arrival time relationship."
+  },
+  "iconName": "Clock",
+  "lessons": [
+    {
+      "id": "m15-l1",
+      "moduleId": "module-15",
+      "order": 1,
+      "difficulty": "orta",
+      "title": { "tr": "Poisson Dağılımı & Oran Parametresi λ", "en": "Poisson Distribution & Rate Parameter λ" },
+      "conceptCard": {
+        "tr": "Poisson dağılımı, sabit bir zaman veya mekan aralığında nadir olayların kaç kez gerçekleştiğini modeller. Formül: P(X=k) = (λ^k * e^-λ) / k!. Hem beklenen değer hem varyans λ'ya eşittir.",
+        "en": "Poisson models count of independent rare events in fixed intervals: P(X=k) = (λ^k * e^-λ) / k!. Mean and variance both equal λ."
+      },
+      "companyExample": {
+        "tr": "CyberPass web sitesine saatte ortalama λ = 4 hata bildirimi gelmektedir. Bir sonraki saat hiç hata gelmeme olasılığı P(X=0) = e^(-4) ≈ 0.0183 (%1.83)'tür.",
+        "en": "CyberPass receives mean λ = 4 bug reports per hour. Probability of 0 bugs in next hour = e^-4 ≈ 1.83%."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "poisson process",
+          "explanation_tr": "Olayların birbirinden bağımsız ve sabit bir Oran (λ) ile zaman içinde gerçekleştiği stokastik süreç.",
+          "explanation_en": "Stochastic process where events occur independently at a constant average rate λ.",
+          "exampleSentence_en": "Server requests often follow a Poisson process."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m15-l1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Ortalaması λ = 5 olan Poisson dağılımının varyansı kaçtır?", "en": "What is the variance of a Poisson distribution with mean λ = 5?" },
+          "correctAnswer": 5,
+          "explanation": { "tr": "Poisson dağılımında Varyans = λ = 5.", "en": "In Poisson distribution, Variance = λ = 5." }
+        }
+      ]
+    },
+    {
+      "id": "m15-l2",
+      "moduleId": "module-15",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "Bekleme Süreleri & Üstel Dağılım İlişkisi", "en": "Inter-Arrival Times & Exponential Relation" },
+      "conceptCard": {
+        "tr": "Poisson sürecinde ardışık olaylar arasındaki bekleme süresi (T) Üstel Dağılıma uyar. Ortalama bekleme süresi E[T] = 1/λ'dır. En belirgin özelliği 'hafızasızlık' (memorylessness) ilkesidir.",
+        "en": "In a Poisson process, time T between events follows an Exponential distribution with mean E[T] = 1/λ and memorylessness."
+      },
+      "companyExample": {
+        "tr": "CyberPass güvenlik sistemine her saat ortalama 6 sızma girişimi olmaktadır (λ = 6/saat). İki sızma arasındaki ortalama bekleme süresi 1/6 saat = 10 dakikadır.",
+        "en": "CyberPass experiences 6 intrusion attempts/hr (λ = 6). Average time between attempts = 1/6 hr = 10 minutes."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "memorylessness",
+          "explanation_tr": "Geçmişte geçen sürenin gelecekteki bekleme olasılığını etkilememesi özelliği.",
+          "explanation_en": "Property where elapsed time does not affect remaining waiting time probability.",
+          "exampleSentence_en": "Exponential distributions possess memorylessness."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m15-l2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Dakikada ortalama λ = 2 çağrı gelen çağrı merkezinde ortalama bekleme süresi kaç saniyedir?", "en": "With λ = 2 calls per minute, what is the mean waiting time in seconds?" },
+          "correctAnswer": 30,
+          "explanation": { "tr": "E[T] = 1 / 2 dakika = 0.5 dakika = 30 saniye.", "en": "E[T] = 1 / 2 min = 0.5 min = 30 seconds." }
+        }
+      ]
+    },
+    {
+      "id": "m15-l3",
+      "moduleId": "module-15",
+      "order": 3,
+      "difficulty": "ileri",
+      "title": { "tr": "Nadir Olaylar & Binom-Poisson Yaklaşımı", "en": "Rare Events & Binomial-Poisson Approximation" },
+      "conceptCard": {
+        "tr": "n sayısı büyük (n ≥ 20) ve p olasılığı küçük (p ≤ 0.05) olduğunda, Binom(n, p) dağılımı λ = n * p olan Poisson(λ) dağılımı ile çok yakın bir şekilde modellenebilir.",
+        "en": "For large n (n ≥ 20) and small p (p ≤ 0.05), Binomial(n, p) is approximated by Poisson(λ = n * p)."
+      },
+      "companyExample": {
+        "tr": "CyberPass 10,000 üretilen güvenlik çipini test ediyor. Hatalı çip oranı p = 0.0003'tür. λ = 10000 * 0.0003 = 3 ortalamalı Poisson dağılımı ile tam hesaplama pratikleşir.",
+        "en": "Testing 10,000 chips with defect rate p = 0.0003 yields λ = 10000 * 0.0003 = 3 for Poisson approximation."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "poisson approximation",
+          "explanation_tr": "Büyük n ve küçük p durumunda Binom hesabı yerine Poisson kullanımı.",
+          "explanation_en": "Using Poisson distribution in place of Binomial when n is large and p is small.",
+          "exampleSentence_en": "Poisson approximation simplifies binomial computations for rare events."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m15-l3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "n = 1000 ve p = 0.004 için Poisson yaklaşım parametresi λ kaçtır?", "en": "What is the Poisson parameter λ for n = 1000 and p = 0.004?" },
+          "correctAnswer": 4,
+          "explanation": { "tr": "λ = n * p = 1000 * 0.004 = 4.", "en": "λ = n * p = 1000 * 0.004 = 4." }
+        }
+      ]
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m15-case-1",
+      "moduleId": "module-15",
+      "difficulty": "orta",
+      "title": { "tr": "CyberPass: Sunucu İstek Trafiği & Kapasite Analizi", "en": "CyberPass: Server Traffic & Capacity Analysis" },
+      "businessQuestion": {
+        "tr": "CyberPass kimlik doğrulama sunucusuna saniyede ortalama λ = 2 istek gelmektedir. Sunucunun çökmemesi için aynı saniyede 0 istek gelme olasılığı P(X=0) ile en az 1 istek gelme olasılığı P(X≥1) analizi yapılmalıdır.",
+        "en": "CyberPass server handles average λ = 2 requests/sec. Calculate P(X=0) and P(X≥1)."
+      },
+      "dataset": {
+        "columns": ["Metrik", "Değer"],
+        "rows": [
+          ["Ortalama Oran λ", "2 istek/sn"],
+          ["e^(-2)", "0.1353"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: P(X=0) = (2^0 * e^-2) / 0! = e^-2 ≈ 0.135 ( %13.5 ).", "en": "Step 1: P(X=0) = e^-2 ≈ 0.135 ( 13.5% )." },
+        { "tr": "2. Adım: P(X≥1) = 1 - P(X=0) = 1 - 0.135 = 0.865 (%86.5).", "en": "Step 2: P(X≥1) = 1 - 0.135 = 0.865 (86.5%)." }
+      ],
+      "expectedApproach": {
+        "tr": "Poisson modellemesi, sunucuların anlık aşırı yüklenme (burst) risklerini doğru tahmin etmek için kuyruk teorisinde temel teşkil eder.",
+        "en": "Poisson modeling underpins queuing theory for accurately evaluating server overload burst risks."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m15-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "P(X≥1) yüzdesi en yakın tam sayı olarak kaçtır?", "en": "What is P(X≥1) in percent (nearest integer)?" },
+          "correctAnswer": 87,
+          "explanation": { "tr": "1 - 0.1353 = 0.8647 -> %86.47 ≈ %87.", "en": "1 - 0.1353 = 0.8647 -> 86.47% ≈ 87." }
+        }
+      ]
+    }
+  ]
+}

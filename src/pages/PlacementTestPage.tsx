@@ -20,7 +20,7 @@ import {
 import confetti from 'canvas-confetti';
 
 interface PlacementTestPageProps {
-  onBackToHome: () => void;
+  onBackToHome: (targetNodeId?: string) => void;
 }
 
 export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHome }) => {
@@ -74,7 +74,9 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
 
   const handleConfirmPlacement = (targetModId: string) => {
     unlockUpToModule(targetModId);
-    onBackToHome();
+    const mod = ALL_MODULES.find((m) => m.id === targetModId);
+    const firstLessonId = mod?.lessons[0]?.id;
+    onBackToHome(firstLessonId);
   };
 
   const currentAnswer = selectedAnswers[currentQuestion.id];
@@ -84,7 +86,7 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
       {/* Navigation Header */}
       <div className="flex items-center justify-between mb-6">
         <button
-          onClick={onBackToHome}
+          onClick={() => onBackToHome()}
           className="flex items-center space-x-2 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors bg-white px-3.5 py-2 rounded-xl border border-slate-200"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -122,8 +124,8 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
         </div>
 
         {/* Question Prompt */}
-        <div className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug tracking-tight">
+        <div className="mb-6">
+          <h2 className="text-lg sm:text-xl font-black text-slate-900 leading-snug tracking-tight">
             {getLocalized(currentQuestion.prompt, language)}
           </h2>
         </div>
@@ -228,7 +230,7 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
                     <h3 className="text-lg font-black text-white leading-tight">
                       {getLocalized(recommendedModule.title, language)}
                     </h3>
-                    <p className="text-xs text-slate-300 font-medium line-clamp-1 mt-0.5">
+                    <p className="text-xs text-slate-300 font-medium leading-relaxed mt-0.5">
                       {getLocalized(recommendedModule.description, language)}
                     </p>
                   </div>

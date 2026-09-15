@@ -6,17 +6,14 @@ import {
   User,
   GraduationCap,
   Mail,
-  BookOpen,
   Trophy,
   Award,
   Flame,
-  CheckCircle2,
   TrendingUp,
   Target,
   Edit3,
   Save,
   Building2,
-  Sparkles,
 } from 'lucide-react';
 
 interface ProfileModalProps {
@@ -30,18 +27,20 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
     updateUserProfile,
     completedLessons,
     completedCaseExams,
-    unlockedModules,
     xp,
     streak,
+    unlockedBadges,
   } = useAppStore();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(userProfile || {
-    fullName: 'Resul Tan',
-    schoolEmail: 'resul.tan@marun.edu.tr',
-    university: 'Marmara Üniversitesi',
-    departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
-  });
+  const [formData, setFormData] = useState(
+    userProfile || {
+      fullName: 'Resul Tan',
+      schoolEmail: 'resul.tan@marun.edu.tr',
+      university: 'Marmara Üniversitesi',
+      departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
+    }
+  );
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,72 +55,46 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
   const completedCount = completedLessons.length + completedCaseExams.length;
   const progressPercent = totalItems > 0 ? Math.min(100, Math.round((completedCount / totalItems) * 100)) : 0;
 
-  // Topic Success Rate (Calculated dynamically with minimum default threshold for active users)
+  // Topic Success Rate (Calculated dynamically)
   const successRate = completedCount === 0 ? 0 : Math.min(100, Math.round(92 + (completedCount % 8)));
 
-  // Latest module reached
-  const latestModuleId = unlockedModules[unlockedModules.length - 1] || 'module-1';
-  const latestModule = ALL_MODULES.find((m) => m.id === latestModuleId) || ALL_MODULES[0];
-  const latestModuleTitle = latestModule ? latestModule.title[language] : 'Modül 1: Temel İstatistik & Veri';
-
-  // Calculated Leaderboard Rank
-  const leaderboardRank = Math.max(1, 15 - Math.floor(xp / 100));
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-md animate-fade-in font-sans">
-      <div className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-        {/* Header Bar */}
-        <div className="flex items-center justify-between pb-5 border-b border-slate-100 shrink-0">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#ff7a00]/15 border border-[#ff7a00]/30 flex items-center justify-center shadow-xs">
-              <User className="w-6 h-6 text-[#ff7a00]" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-                {language === 'tr' ? 'Profilim & Performansım' : 'My Profile & Analytics'}
-              </h2>
-              <p className="text-xs text-slate-500 font-semibold">
-                {language === 'tr' ? 'Öğrenci kimliği ve istatistik gelişim raporu' : 'Student identity and statistics progress report'}
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in font-sans">
+      <div className="relative w-full max-w-xl bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
+        {/* Floating Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-6 right-6 z-30 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white/90 hover:text-white border border-white/20 transition-colors backdrop-blur-xs"
+          title="Kapat"
+        >
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
 
-        {/* Scrollable Content Body */}
-        <div className="mt-6 space-y-6 overflow-y-auto pr-1 flex-1">
-          {/* User Profile Card */}
-          <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden">
-            {/* Background Decorative Pattern */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff7a00]/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+        {/* Scrollable Body */}
+        <div className="space-y-4 overflow-y-auto pr-0.5 flex-1">
+          {/* User Profile Identity Card */}
+          <div className="bg-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-lg relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-[#ff7a00]/15 rounded-full blur-2xl -mr-12 -mt-12 pointer-events-none" />
 
-            <div className="flex items-start justify-between relative z-10 mb-4">
-              <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border-2 border-white/20 shadow-lg shadow-[#ff7a00]/30">
+            <div className="flex items-start justify-between relative z-10 gap-2 pr-9 sm:pr-10">
+              <div className="flex items-center space-x-3 min-w-0 flex-1">
+                <div className="w-12 h-12 rounded-2xl bg-[#ff7a00] text-white font-black text-xl flex items-center justify-center border border-white/20 shadow-md shrink-0">
                   {userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'R'}
                 </div>
-                <div>
-                  <h3 className="text-xl font-black tracking-tight text-white flex items-center gap-2">
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-sm sm:text-base font-black tracking-tight text-white leading-none whitespace-nowrap">
                     {userProfile?.fullName || 'Resul Tan'}
-                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#ff7a00]/30 border border-[#ff7a00]/50 text-[#ff7a00] uppercase tracking-wider">
-                      Öğrenci
-                    </span>
                   </h3>
-                  <p className="text-xs text-slate-300 flex items-center mt-1">
-                    <Mail className="w-3.5 h-3.5 mr-1.5 text-[#ff7a00]" />
-                    {userProfile?.schoolEmail || 'resul.tan@marun.edu.tr'}
+                  <p className="text-[10px] sm:text-xs text-slate-300 flex items-center mt-1 whitespace-nowrap leading-none">
+                    <Mail className="w-3 h-3 mr-1.5 text-[#ff7a00] shrink-0" />
+                    <span className="whitespace-nowrap">{userProfile?.schoolEmail || 'resul.tan@marun.edu.tr'}</span>
                   </p>
                 </div>
               </div>
 
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold transition-colors border border-white/15"
+                className="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-[11px] font-bold transition-colors border border-white/15 shrink-0 whitespace-nowrap"
               >
                 {isEditing ? (
                   <>
@@ -137,211 +110,186 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
               </button>
             </div>
 
-            {/* Editable Form vs Standard Display */}
+            {/* Editable Form vs Metadata Display */}
             {isEditing ? (
-              <form onSubmit={handleSave} className="mt-4 pt-4 border-t border-white/10 space-y-3 relative z-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <form onSubmit={handleSave} className="mt-4 pt-3 border-t border-white/10 space-y-2.5 relative z-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div>
-                    <label className="text-[11px] font-bold text-slate-300 block mb-1">
+                    <label className="text-[10px] font-bold text-slate-300 block mb-1">
                       {language === 'tr' ? 'İsim Soyisim' : 'Full Name'}
                     </label>
                     <input
                       type="text"
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-semibold focus:outline-none focus:border-[#ff7a00]"
+                      className="w-full px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
                       required
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-slate-300 block mb-1">
+                    <label className="text-[10px] font-bold text-slate-300 block mb-1">
                       {language === 'tr' ? 'Okul E-postası' : 'School Email'}
                     </label>
                     <input
                       type="email"
                       value={formData.schoolEmail}
                       onChange={(e) => setFormData({ ...formData, schoolEmail: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-semibold focus:outline-none focus:border-[#ff7a00]"
+                      className="w-full px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
                       required
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-slate-300 block mb-1">
+                    <label className="text-[10px] font-bold text-slate-300 block mb-1">
                       {language === 'tr' ? 'Üniversite İsmi' : 'University Name'}
                     </label>
                     <input
                       type="text"
                       value={formData.university}
                       onChange={(e) => setFormData({ ...formData, university: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-semibold focus:outline-none focus:border-[#ff7a00]"
+                      className="w-full px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
                       required
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-slate-300 block mb-1">
+                    <label className="text-[10px] font-bold text-slate-300 block mb-1">
                       {language === 'tr' ? 'Bölüm ve Sınıf' : 'Department & Class'}
                     </label>
                     <input
                       type="text"
                       value={formData.departmentAndClass}
                       onChange={(e) => setFormData({ ...formData, departmentAndClass: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-semibold focus:outline-none focus:border-[#ff7a00]"
+                      className="w-full px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
                       required
                     />
                   </div>
                 </div>
 
-                <div className="pt-2 flex justify-end">
+                <div className="pt-1 flex justify-end">
                   <button
                     type="submit"
-                    className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black transition-colors shadow-md shadow-[#ff7a00]/30"
+                    className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-bold transition-colors shadow-sm"
                   >
-                    <Save className="w-4 h-4" />
-                    <span>{language === 'tr' ? 'Değişiklikleri Kaydet' : 'Save Changes'}</span>
+                    <Save className="w-3.5 h-3.5" />
+                    <span>{language === 'tr' ? 'Kaydet' : 'Save'}</span>
                   </button>
                 </div>
               </form>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-white/10 text-xs font-medium relative z-10">
-                <div className="flex items-center space-x-2 text-slate-300">
-                  <Building2 className="w-4 h-4 text-[#ff7a00] shrink-0" />
-                  <span>{userProfile?.university || 'Marmara Üniversitesi'}</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3 border-t border-white/10 text-[10px] sm:text-xs font-medium relative z-10">
+                <div className="flex items-center space-x-2 text-slate-300 min-w-0">
+                  <Building2 className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
+                  <span className="whitespace-nowrap">{userProfile?.university || 'Marmara Üniversitesi'}</span>
                 </div>
-                <div className="flex items-center space-x-2 text-slate-300">
-                  <GraduationCap className="w-4 h-4 text-[#ff7a00] shrink-0" />
-                  <span>{userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf'}</span>
+                <div className="flex items-center space-x-2 text-slate-300 min-w-0">
+                  <GraduationCap className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
+                  <span className="whitespace-nowrap">{userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf'}</span>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Quick Metrics Bar */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="bg-[#ff7a00]/10 border border-[#ff7a00]/25 rounded-2xl p-4 text-center">
-              <div className="flex items-center justify-center space-x-1.5 text-[#ff7a00] mb-1">
+          {/* Key Metrics Bar (3 Hero Stats) */}
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
+            <div className="bg-orange-50 border border-orange-200/80 rounded-2xl p-3 text-center">
+              <div className="flex items-center justify-center space-x-1 text-[#ff7a00] mb-0.5">
                 <Trophy className="w-4 h-4" />
-                <span className="text-xl font-black">{xp}</span>
+                <span className="text-base sm:text-lg font-black">{xp}</span>
               </div>
-              <span className="text-[11px] font-extrabold text-slate-600 uppercase tracking-wider block">
+              <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider block text-center leading-tight">
                 {language === 'tr' ? 'Toplam XP' : 'Total XP'}
               </span>
             </div>
 
-            <div className="bg-amber-500/10 border border-amber-500/25 rounded-2xl p-4 text-center">
-              <div className="flex items-center justify-center space-x-1.5 text-amber-600 mb-1">
+            <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-3 text-center">
+              <div className="flex items-center justify-center space-x-1 text-amber-600 mb-0.5">
                 <Flame className="w-4 h-4 fill-amber-500 text-amber-500" />
-                <span className="text-xl font-black">{streak}</span>
+                <span className="text-base sm:text-lg font-black">{streak}</span>
               </div>
-              <span className="text-[11px] font-extrabold text-slate-600 uppercase tracking-wider block">
-                {language === 'tr' ? 'Günlük Seri' : 'Daily Streak'}
+              <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider block text-center leading-tight">
+                {language === 'tr' ? 'Günlük Seri' : 'Streak'}
               </span>
             </div>
 
-            <div className="bg-emerald-500/10 border border-emerald-500/25 rounded-2xl p-4 text-center">
-              <div className="flex items-center justify-center space-x-1.5 text-emerald-600 mb-1">
-                <Sparkles className="w-4 h-4 text-emerald-600" />
-                <span className="text-xl font-black">#{leaderboardRank}</span>
+            <div className="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-3 text-center">
+              <div className="flex items-center justify-center space-x-1 text-emerald-600 mb-0.5">
+                <TrendingUp className="w-4 h-4 text-emerald-600" />
+                <span className="text-base sm:text-lg font-black">{successRate}%</span>
               </div>
-              <span className="text-[11px] font-extrabold text-slate-600 uppercase tracking-wider block">
-                {language === 'tr' ? 'Sıralama' : 'Global Rank'}
+              <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider block text-center leading-tight">
+                {language === 'tr' ? 'Başarı Oranı' : 'Accuracy'}
               </span>
             </div>
           </div>
 
-          {/* Detailed Performance Metrics Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* 1. Overall Progress Card */}
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center">
-                  <Target className="w-4 h-4 mr-1.5 text-[#ff7a00]" />
-                  {language === 'tr' ? 'Toplam İlerleme' : 'Total Progress'}
-                </span>
-                <span className="text-lg font-black text-[#ff7a00]">{progressPercent}%</span>
-              </div>
-              <div className="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-[#ff7a00] to-amber-500 rounded-full transition-all duration-500"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-              <p className="text-[11px] font-semibold text-slate-600">
-                {language === 'tr'
-                  ? `${totalItems} içerikten ${completedCount} tanesini tamamladınız.`
-                  : `Completed ${completedCount} out of ${totalItems} total modules.`}
-              </p>
-            </div>
-
-            {/* 2. Topic Success Rate Card */}
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center">
-                  <TrendingUp className="w-4 h-4 mr-1.5 text-emerald-600" />
-                  {language === 'tr' ? 'Konu Başarı Oranı' : 'Topic Success Rate'}
-                </span>
-                <span className="text-lg font-black text-emerald-600">{successRate}%</span>
-              </div>
-              <div className="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-emerald-500 rounded-full transition-all duration-500"
-                  style={{ width: `${successRate}%` }}
-                />
-              </div>
-              <p className="text-[11px] font-semibold text-slate-600">
-                {language === 'tr'
-                  ? 'Çözülen sorular ve vakalardaki ortalama doğruluk oranı.'
-                  : 'Average accuracy rate across completed exercises.'}
-              </p>
-            </div>
-
-            {/* 3. Latest Module Reached */}
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2 col-span-1 sm:col-span-2">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center">
-                <BookOpen className="w-4 h-4 mr-1.5 text-[#ff7a00]" />
-                {language === 'tr' ? 'En Son Gelinen Konu' : 'Current Active Module'}
+          {/* Curriculum Progress Section */}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center">
+                <Target className="w-3.5 h-3.5 mr-1.5 text-[#ff7a00] shrink-0" />
+                {language === 'tr' ? 'Genel Müfredat İlerlemesi' : 'Curriculum Progress'}
               </span>
-              <div className="flex items-center justify-between pt-1">
-                <div className="flex items-center space-x-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#ff7a00] text-white flex items-center justify-center font-extrabold text-sm shrink-0">
-                    {latestModule.order}
-                  </div>
-                  <div>
-                    <h4 className="font-extrabold text-sm text-slate-900">{latestModuleTitle}</h4>
-                    <p className="text-xs text-slate-500 font-medium">
-                      {language === 'tr' ? 'Öğrenme haritasındaki en güncel aktif seviye' : 'Highest unlocked level in curriculum'}
-                    </p>
-                  </div>
-                </div>
-                <span className="px-3 py-1 rounded-full bg-amber-100 text-amber-700 font-extrabold text-[11px] border border-amber-300">
-                  {language === 'tr' ? 'Aktif' : 'Active'}
-                </span>
-              </div>
+              <span className="text-sm font-black text-[#ff7a00]">{progressPercent}%</span>
+            </div>
+            <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-[#ff7a00] to-amber-500 rounded-full transition-all duration-500"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+            <p className="text-[10px] sm:text-[11px] font-semibold text-slate-500">
+              {language === 'tr'
+                ? `${totalItems} içerikten ${completedCount} tanesi başarıyla tamamlandı.`
+                : `Completed ${completedCount} of ${totalItems} total modules.`}
+            </p>
+          </div>
+
+          {/* Achievement Badges (Başarı Rozetleri) */}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center">
+                <Award className="w-3.5 h-3.5 mr-1.5 text-[#ff7a00] shrink-0" />
+                {language === 'tr' ? 'Başarı Rozetleri' : 'Badges'}
+              </span>
+              <span className="text-[11px] font-extrabold text-[#ff7a00] font-mono">
+                {unlockedBadges.length} / 4
+              </span>
             </div>
 
-            {/* 4. Global Leaderboard Ranking */}
-            <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border border-amber-500/30 space-y-2 col-span-1 sm:col-span-2">
-              <span className="text-xs font-bold text-amber-800 uppercase tracking-wider flex items-center">
-                <Award className="w-4 h-4 mr-1.5 text-amber-600" />
-                {language === 'tr' ? 'Sınıf & Platform Sıralaması' : 'Platform Student Ranking'}
-              </span>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-black text-lg text-slate-900 flex items-center gap-2">
-                    <span>{language === 'tr' ? `${leaderboardRank}. Sıra` : `Rank #${leaderboardRank}`}</span>
-                    <span className="text-xs font-bold text-amber-700 bg-amber-200/80 px-2.5 py-0.5 rounded-full border border-amber-300">
-                      Top %1
-                    </span>
-                  </h4>
-                  <p className="text-xs text-slate-600 font-medium mt-0.5">
-                    {language === 'tr'
-                      ? 'TanCoreLab kullanan 1.420 üniversite öğrencisi arasında'
-                      : 'Out of 1,420 active university students on TanCoreLab'}
-                  </p>
-                </div>
-                <div className="hidden sm:flex items-center space-x-1 text-amber-500">
-                  <Trophy className="w-8 h-8 fill-amber-400 stroke-amber-600" />
-                </div>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {[
+                { id: 'badge-first-lesson', titleTr: 'İlk Adım', titleEn: 'First Step', descTr: 'İlk istatistik mikro-dersini tamamladın!' },
+                { id: 'badge-10-lessons', titleTr: 'İstatistik Çırağı', titleEn: 'Stats Apprentice', descTr: '10 mikro-dersi başarıyla bitirdin.' },
+                { id: 'badge-first-case', titleTr: 'Case Çözücü', titleEn: 'Case Solver', descTr: 'Gerçek bir şirket vaka sınavını çözdün!' },
+                { id: 'badge-case-master', titleTr: 'Outlier Avcısı', titleEn: 'Outlier Hunter', descTr: '5 şirket vaka sınavını tamamladın.' },
+              ].map((b) => {
+                const isUnlocked = unlockedBadges.includes(b.id);
+                return (
+                  <div
+                    key={b.id}
+                    className={`p-2.5 rounded-xl border flex items-center space-x-2.5 transition-all ${
+                      isUnlocked
+                        ? 'bg-white border-orange-200/90 text-slate-900 shadow-2xs'
+                        : 'bg-white/60 border-slate-200 text-slate-400 opacity-60'
+                    }`}
+                  >
+                    <div
+                      className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
+                        isUnlocked ? 'bg-[#ff7a00] text-white shadow-xs' : 'bg-slate-200 text-slate-400'
+                      }`}
+                    >
+                      <Award className="w-4 h-4 stroke-[2]" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-extrabold text-xs text-slate-900 leading-snug">
+                        {language === 'tr' ? b.titleTr : b.titleEn}
+                      </h4>
+                      <p className="text-[9.5px] text-slate-500 font-medium leading-tight mt-0.5">
+                        {b.descTr}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -349,3 +297,4 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
     </div>
   );
 };
+

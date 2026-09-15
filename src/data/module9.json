@@ -196,6 +196,79 @@
           "explanation": { "tr": "p (0.003) < 0.05 olduğu için kampanya başarıları arasında anlamlı fark vardır.", "en": "Since p (0.003) < 0.05, there is a significant difference among campaigns." }
         }
       ]
+    },
+    {
+      "id": "m9-case-2",
+      "moduleId": "module-9",
+      "difficulty": "orta",
+      "title": { "tr": "TechCorp: Full vs Reduced Model Kısmi F-Testi", "en": "TechCorp: Full vs Reduced Model Partial F-Test" },
+      "businessQuestion": {
+        "tr": "Çoklu Regresyon Model Karşılaştırma Vakası: Tam model p = 4 bağımsız değişken içerirken (SSE_full = 100), k = 2 değişken içeren indirgenmiş modelin SSE_reduced = 160'tır. n = 25 gözlem için partial F-test istatistiği f = [(SSE_reduced - SSE_full)/(p-k)] / [SSE_full/(n-p-1)] kaçtır?",
+        "en": "Multiple Regression Model Comparison Case: Full model with p = 4 predictors has SSE_full = 100, reduced model with k = 2 predictors has SSE_reduced = 160. For n = 25 observations, what is the partial F statistic f?"
+      },
+      "dataset": {
+        "columns": ["Model", "Bağımsız Değişken Sayısı", "SSE", "Serbestlik Derecesi Hata"],
+        "rows": [
+          ["Full Model (p=4)", "4", "100", "n - p - 1 = 20"],
+          ["Reduced Model (k=2)", "2", "160", "n - k - 1 = 22"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Pay = (SSE_reduced - SSE_full) / (p - k) = (160 - 100) / (4 - 2) = 60 / 2 = 30.", "en": "Step 1: Numerator = (160 - 100) / (4 - 2) = 60 / 2 = 30." },
+        { "tr": "2. Adım: Payda = SSE_full / (n - p - 1) = 100 / (25 - 4 - 1) = 100 / 20 = 5.0.", "en": "Step 2: Denominator = 100 / (25 - 4 - 1) = 100 / 20 = 5.0." },
+        { "tr": "3. Adım: f = 30 / 5.0 = 6.00.", "en": "Step 3: f = 30 / 5.0 = 6.00." }
+      ],
+      "expectedApproach": {
+        "tr": "Kısmi F-istatistiği f = 6.00 hesaplanır.",
+        "en": "Partial F-statistic is calculated as f = 6.00."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m9-case-2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Kısmi (Partial) F-istatistiği f kaçtır?", "en": "What is the partial F-statistic f?" },
+          "correctAnswer": 6,
+          "explanation": { "tr": "[(160 - 100) / 2] / [100 / 20] = 30 / 5 = 6.0", "en": "[(160 - 100) / 2] / [100 / 20] = 30 / 5 = 6.0" }
+        }
+      ]
+    },
+    {
+      "id": "m9-case-3",
+      "moduleId": "module-9",
+      "difficulty": "zor",
+      "title": { "tr": "DataVal: Mallows' Cp & Model Seçim Analizi", "en": "DataVal: Mallows' Cp & Model Selection Analysis" },
+      "businessQuestion": {
+        "tr": "Model Seçimi Değerlendirme Kriteri: Model A için Mallows' Cp = 3.1 (k=3 parametre), Model B için Cp = 8.5 (k=3 parametre) bulunmıştır. 'Best' model seçimi için hangi model tercih edilmelidir?",
+        "en": "Model Selection Evaluation Criteria: Model A has Mallows' Cp = 3.1 (k=3), Model B has Cp = 8.5 (k=3). Which model should be preferred?"
+      },
+      "dataset": {
+        "columns": ["Aday Model", "Parametre Sayısı (k)", "Mallows' Cp İstatistiği", "Model Yanlılığı (Bias)"],
+        "rows": [
+          ["Model A", "3", "3.1", "Düşük Yanlılık (Cp ≈ k)"],
+          ["Model B", "3", "8.5", "Yüksek Yanlılık"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Mallows' Cp kriterine göre daha küçük Cp değeri (ve Cp ≈ k olan) tercih edilir.", "en": "Step 1: Lower Mallows' Cp (with Cp ≈ k) is preferred." },
+        { "tr": "2. Adım: 3.1 < 8.5 olduğu için Model A tercih edilir.", "en": "Step 2: Since 3.1 < 8.5, Model A is selected." }
+      ],
+      "expectedApproach": {
+        "tr": "Daha düşük Mallows' Cp değerine sahip Model A tercih edilmelidir.",
+        "en": "Model A with lower Mallows' Cp should be chosen."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m9-case-3-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Hangi model tercih edilmelidir?", "en": "Which model should be selected?" },
+          "options": [
+            { "tr": "Model A (Daha düşük Cp = 3.1)", "en": "Model A (Lower Cp = 3.1)" },
+            { "tr": "Model B (Daha yüksek Cp = 8.5)", "en": "Model B (Higher Cp = 8.5)" }
+          ],
+          "correctAnswer": "Model A (Daha düşük Cp = 3.1)",
+          "explanation": { "tr": "Mallows' Cp değeri düştükçe ve k katsayısına yaklaştıkça model kalitesi artar.", "en": "Lower Mallows' Cp closer to parameter count k indicates better fit." }
+        }
+      ]
     }
   ]
 }

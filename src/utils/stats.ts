@@ -42,42 +42,26 @@ export function stdDev(numbers: number[], isSample = true): number {
   return Number(Math.sqrt(v).toFixed(2));
 }
 
-export function factorial(n: number): number {
-  if (n < 0) return 0;
-  if (n === 0 || n === 1) return 1;
-  let res = 1;
-  for (let i = 2; i <= n; i++) res *= i;
-  return res;
-}
-
-export function combinations(n: number, k: number): number {
-  if (k < 0 || k > n) return 0;
-  return factorial(n) / (factorial(k) * factorial(n - k));
-}
-
-export function bayesRule(priorA: number, pBGivenA: number, pBGivenNotA: number): number {
-  const priorNotA = 1 - priorA;
-  const totalB = (pBGivenA * priorA) + (pBGivenNotA * priorNotA);
-  if (totalB === 0) return 0;
-  return Number(((pBGivenA * priorA) / totalB).toFixed(4));
-}
-
-export function binomialPMF(k: number, n: number, p: number): number {
-  if (k < 0 || k > n) return 0;
-  const comb = combinations(n, k);
-  const prob = comb * Math.pow(p, k) * Math.pow(1 - p, n - k);
-  return Number(prob.toFixed(4));
-}
-
-export function poissonPMF(k: number, lambda: number): number {
-  if (k < 0) return 0;
-  const prob = (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k);
-  return Number(prob.toFixed(4));
-}
-
-export function normalPDF(x: number, m: number, s: number): number {
-  if (s <= 0) return 0;
-  const exponent = -Math.pow(x - m, 2) / (2 * Math.pow(s, 2));
-  const denom = s * Math.sqrt(2 * Math.PI);
-  return Number((Math.exp(exponent) / denom).toFixed(4));
-}
+// Re-export high precision probability utilities from probability core
+export {
+  factorial,
+  combinations,
+  permutations,
+  bayesRule,
+  binomialPMF,
+  binomialCDF,
+  poissonPMF,
+  poissonCDF,
+  normalPDF,
+  normalCDF,
+  normalPPF,
+  standardNormalPPF,
+  getPValueZ,
+  getPValueT,
+  getCriticalZ,
+  getCriticalT,
+  fullBayesAnalysis,
+  runCLTSimulation,
+  simulateCoinFlips,
+  simulateDiceRolls,
+} from './probability';

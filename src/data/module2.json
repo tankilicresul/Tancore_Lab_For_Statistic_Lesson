@@ -161,6 +161,48 @@
           "explanation": { "tr": "0.3 * 0.4 = 0.12", "en": "0.3 * 0.4 = 0.12" }
         }
       ]
+    },
+    {
+      "id": "m2-l5",
+      "moduleId": "module-2",
+      "order": 5,
+      "difficulty": "zor",
+      "title": { "tr": "Markov Zincirleri ve Durağan Denge", "en": "Markov Chains & Steady-State Behavior" },
+      "conceptCard": {
+        "tr": "Markov zincirleri, gelecekteki durumun sadece bir önceki duruma bağlı olduğu stokastik süreçlerdir (Belleksizlik Özelliği). Geçiş matrisi P ile n-adım sonraki durum olasılıkları P^n ve uzun vadedeki kararlı denge (π* P = π*) hesaplanır.",
+        "en": "Markov chains are stochastic processes where future state depends only on the present state (Memoryless property). Using transition matrix P, n-step probabilities P^n and long-term steady-state equilibrium π* are derived."
+      },
+      "companyExample": {
+        "tr": "Netflix abonelik tutundurma analizinde: Aktif bir abonenin gelecek ay aktif kalma olasılığı %85 (Aktif -> Aktif), iptal etme olasılığı %15'tir. İptal eden abonenin tekrar başlama olasılığı %10'dur. Uzun vadeli aktif müşteri oranı Markov zinciri dengesi ile %40.0 olarak hesaplanır.",
+        "en": "In Netflix subscription retention: An active subscriber stays active next month with 85% probability, and churns with 15%. A churned subscriber resubscribes with 10% probability. Long-term active customer ratio converges to 40.0% via Markov equilibrium."
+      },
+      "interactiveType": "markov_chain",
+      "vocabTerms": [
+        {
+          "term_en": "transition matrix",
+          "explanation_tr": "Durumlar arası geçiş olasılıklarını içeren kare matris (P).",
+          "explanation_en": "A square matrix P containing transition probabilities between states.",
+          "exampleSentence_en": "The transition matrix P summarizes state migration rates."
+        },
+        {
+          "term_en": "stationary distribution",
+          "explanation_tr": "Markov zincirinin uzun vadede ulaştığı kararlı denge olasılık vektörü (π*).",
+          "explanation_en": "The long-term equilibrium probability vector π* of a Markov chain.",
+          "exampleSentence_en": "The stationary distribution shows 60% churn and 40% active."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m2-l5-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Bir Markov zincirinde geçiş matrisi P = [[0.8, 0.2], [0.3, 0.7]] ise, 1. durumun uzun vadeli durağan denge olasılığı π1 kaçtır?", "en": "If a Markov chain transition matrix P = [[0.8, 0.2], [0.3, 0.7]], what is the long-term stationary probability π1?" },
+          "correctAnswer": 0.6,
+          "explanation": { "tr": "π1 = 0.8*π1 + 0.3*π2 ve π1 + π2 = 1. Buradan 0.2*π1 = 0.3*(1 - π1) => 0.5*π1 = 0.3 => π1 = 0.6 (%60).", "en": "π1 = 0.8*π1 + 0.3*π2 and π1 + π2 = 1. Solving gives 0.2*π1 = 0.3*(1 - π1) => 0.5*π1 = 0.3 => π1 = 0.6 (60%)." }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import numpy as np\n\nP = np.array([[0.85, 0.15], [0.10, 0.90]])\n# Compute P^50 matrix power for long-term equilibrium\nP_50 = np.linalg.matrix_power(P, 50)\nprint('Stationary Matrix P^50:\\n', P_50)"
+      }
     }
   ],
   "caseExams": [

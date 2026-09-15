@@ -199,6 +199,76 @@
           "explanation": { "tr": "100 + 4 * 25 = 200", "en": "100 + 4 * 25 = 200" }
         }
       ]
+    },
+    {
+      "id": "m11-case-2",
+      "moduleId": "module-11",
+      "difficulty": "orta",
+      "title": { "tr": "VoltPower: İki Popülasyon Varyans Eşitliği F-Testi", "en": "VoltPower: Two Population Variance Equality F-Test" },
+      "businessQuestion": {
+        "tr": "İki Popülasyon Varyans Eşitliği Vakası: İki farklı hat üretimi pil dayanıklılığında s1² = 18.0 ve s2² = 6.0 bulunmuştur. H0: σ1² = σ2² hipotezi için F-istatistiği F = s1² / s2² kaçtır?",
+        "en": "Two Population Variance Equality Case: Two battery production lines have s1² = 18.0 and s2² = 6.0. What is F test statistic F = s1² / s2² for H0: σ1² = σ2²?"
+      },
+      "dataset": {
+        "columns": ["Üretim Hattı", "Örneklem Varyansı (s²)", "Örneklem Sayısı (n)"],
+        "rows": [
+          ["Hat 1", "18.0", "n1 = 11"],
+          ["Hat 2", "6.0", "n2 = 11"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: F = s1² / s2² = 18.0 / 6.0 = 3.00.", "en": "Step 1: F = s1² / s2² = 18.0 / 6.0 = 3.00." }
+      ],
+      "expectedApproach": {
+        "tr": "F test istatistiği F = 3.00 olarak hesaplanır.",
+        "en": "F test statistic is calculated as F = 3.00."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m11-case-3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "F test istatistiği kaçtır?", "en": "What is the F test statistic?" },
+          "correctAnswer": 3,
+          "explanation": { "tr": "18.0 / 6.0 = 3.0", "en": "18.0 / 6.0 = 3.0" }
+        }
+      ]
+    },
+    {
+      "id": "m11-case-3",
+      "moduleId": "module-11",
+      "difficulty": "zor",
+      "title": { "tr": "TanCoreLab Final Capstone: Süreç Optimizasyonu", "en": "TanCoreLab Final Capstone: Process Optimization" },
+      "businessQuestion": {
+        "tr": "Tebrikler! TanCoreLab İstatistik Final Capstone Vakasına ulaştınız. Üretim hattında n = 40 parçanın ölçümünde x̄ = 100.0 mm, s = 2.0 mm bulunmuştur. %95 Güven Düzeyinde (t_0.025,39 = 2.023) Popülasyon Ortalamasının Güven Aralığı Alt Sınırı (x̄ - t* · s / √n) kaçtır? (√40 = 6.325)",
+        "en": "Congratulations! You reached the TanCoreLab Statistics Final Capstone. For n = 40 parts, x̄ = 100.0 mm, s = 2.0 mm. For 95% Confidence (t* = 2.023), what is the lower limit of CI (x̄ - t* · s / √n)? (√40 = 6.325)"
+      },
+      "dataset": {
+        "columns": ["Parametre", "Örneklem Değeri"],
+        "rows": [
+          ["Örneklem Boyutu (n)", "40"],
+          ["Örneklem Ortalaması (x̄)", "100.0 mm"],
+          ["Örneklem Std Dev (s)", "2.0 mm"],
+          ["Kritik t Değeri (95%)", "2.023"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: SE = 2.0 / √40 = 2.0 / 6.325 = 0.3162 mm.", "en": "Step 1: SE = 2.0 / √40 = 2.0 / 6.325 = 0.3162 mm." },
+        { "tr": "2. Adım: Margin of Error E = 2.023 * 0.3162 = 0.64 mm.", "en": "Step 2: Margin of Error E = 2.023 * 0.3162 = 0.64 mm." },
+        { "tr": "3. Adım: Alt Sınır = 100.0 - 0.64 = 99.36 mm.", "en": "Step 3: Lower Limit = 100.0 - 0.64 = 99.36 mm." }
+      ],
+      "expectedApproach": {
+        "tr": "Güven Aralığı Alt Sınırı 99.36 mm olarak hesaplanır.",
+        "en": "Lower limit of CI is calculated as 99.36 mm."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m11-case-3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Güven Aralığı Alt Sınırı (mm) kaçtır? (2 basamak yuvarlayın)", "en": "What is the lower limit of CI (mm)? (round to 2 decimals)" },
+          "correctAnswer": 99.36,
+          "explanation": { "tr": "100.0 - (2.023 * 2.0 / 6.325) = 100.0 - 0.64 = 99.36 mm", "en": "100.0 - (2.023 * 2.0 / 6.325) = 100.0 - 0.64 = 99.36 mm" }
+        }
+      ]
     }
   ]
 }

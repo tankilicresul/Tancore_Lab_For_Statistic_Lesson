@@ -27,7 +27,7 @@ const INITIAL_STATE: UserState = {
   lastActiveDate: new Date().toISOString().split('T')[0],
   completedLessons: [],
   completedCaseExams: [],
-  unlockedModules: ['module-1'],
+  unlockedModules: ['module-1', 'module-2'],
   unlockedBadges: [],
   userProfile: DEFAULT_PROFILE,
 };

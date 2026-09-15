@@ -184,6 +184,73 @@
           "explanation": { "tr": "200 + 1000 - 60 = 1140 Bin TL", "en": "200 + 1000 - 60 = 1140" }
         }
       ]
+    },
+    {
+      "id": "m8-case-2",
+      "moduleId": "module-8",
+      "difficulty": "orta",
+      "title": { "tr": "MarketPulse: Regresyon ANOVA Tablosu & R² Hesabı", "en": "MarketPulse: Regression ANOVA Table & R² Calculation" },
+      "businessQuestion": {
+        "tr": "Regresyon Analizi Uygulama Sorusu: Tek değişkenli regresyon analizinde Toplam Kareler Toplamı SST = 500 ve Regresyon Kareler Toplamı SSR = 400 bulunmuştur. Belirtlilik Katsayısı R² = SSR / SST kaçtır ve Hata Kareler Toplamı (SSE) kaç kalır?",
+        "en": "Regression Analysis Practical Question: For SLR, Total Sum of Squares SST = 500, Regression Sum of Squares SSR = 400. What is Coefficient of Determination R² = SSR / SST, and what is SSE?"
+      },
+      "dataset": {
+        "columns": ["Kareler Toplamı Türü", "Kısaltma", "Değer"],
+        "rows": [
+          ["Toplam Kareler Toplamı", "SST", "500"],
+          ["Regresyon Kareler Toplamı", "SSR", "400"],
+          ["Hata Kareler Toplamı", "SSE", "SST - SSR = 100"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: SSE = SST - SSR = 500 - 400 = 100.", "en": "Step 1: SSE = SST - SSR = 500 - 400 = 100." },
+        { "tr": "2. Adım: R² = SSR / SST = 400 / 500 = 0.80 (%80).", "en": "Step 2: R² = SSR / SST = 400 / 500 = 0.80 (80%)." }
+      ],
+      "expectedApproach": {
+        "tr": "R² = 0.80 olup model bağımlı değişkendeki varyasyonun %80'ini açıklamaktadır.",
+        "en": "R² = 0.80, model explains 80% of the variance."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m8-case-2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Belirtlilik Katsayısı (R²) kaçtır?", "en": "What is the Coefficient of Determination (R²)?" },
+          "correctAnswer": 0.8,
+          "explanation": { "tr": "400 / 500 = 0.80", "en": "400 / 500 = 0.80" }
+        }
+      ]
+    },
+    {
+      "id": "m8-case-3",
+      "moduleId": "module-8",
+      "difficulty": "zor",
+      "title": { "tr": "AutoAnalytics: Eğim Katsayısı b1 için t-Testi", "en": "AutoAnalytics: Slope Coefficient b1 t-Test" },
+      "businessQuestion": {
+        "tr": "Regresyon Katsayıları Formül Kılavuzu: Araç ağırlığı ile yakıt tüketimi arasındaki regresyon katsayısı b1 = 4.0 ve bu eğim katsayısının standart hatası sb1 = 0.80 hesaplanmıştır. H0: β1 = 0 hipotezi için t0 = b1 / sb1 istatistiği kaçtır?",
+        "en": "Regression Coefficients Formula Guide: Slope coefficient b1 = 4.0, standard error sb1 = 0.80. What is t0 test statistic t0 = b1 / sb1 for H0: β1 = 0?"
+      },
+      "dataset": {
+        "columns": ["Katsayı", "Tahmin Değeri (b1)", "Standart Hata (sb1)"],
+        "rows": [
+          ["Eğim (b1)", "4.0", "0.80"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: t0 = b1 / sb1 = 4.0 / 0.80 = 5.00.", "en": "Step 1: t0 = b1 / sb1 = 4.0 / 0.80 = 5.00." }
+      ],
+      "expectedApproach": {
+        "tr": "t0 test istatistiği 5.00 hesaplanır. Eğim istatistiksel olarak anlamlı şekilde 0'dan farklıdır.",
+        "en": "t0 test statistic is calculated as 5.00. Slope is statistically significantly different from zero."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m8-case-3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "t0 test istatistiği kaçtır?", "en": "What is the t0 test statistic?" },
+          "correctAnswer": 5,
+          "explanation": { "tr": "4.0 / 0.80 = 5.0", "en": "4.0 / 0.80 = 5.0" }
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,148 @@
+{
+  "id": "module-16",
+  "order": 16,
+  "title": { "tr": "Sürekli Olasılık Dağılımları", "en": "Continuous Probability Distributions" },
+  "description": {
+    "tr": "Olasılık yoğunluk fonksiyonu (PDF), kümülatif dağılım fonksiyonu (CDF), Düzgün Dağılım, Normal Dağılım N(μ, σ²) ve Z-skoru dönüşümleri.",
+    "en": "Probability density function (PDF), cumulative distribution function (CDF), Uniform, Normal N(μ, σ²), and Z-score transforms."
+  },
+  "iconName": "TrendingUp",
+  "lessons": [
+    {
+      "id": "m16-l1",
+      "moduleId": "module-16",
+      "order": 1,
+      "difficulty": "basit",
+      "title": { "tr": "Olasılık Yoğunluk Fonksiyonu (PDF) & Düzgün Dağılım", "en": "PDF & Uniform Distribution" },
+      "conceptCard": {
+        "tr": "Sürekli değişkenlerde tek bir noktanın olasılığı P(X = x) = 0'dır; olasılık bir aralıktaki alan (integral) olarak bulunur. Düzgün Dağılım U(a, b) için PDF = 1 / (b - a)'dır.",
+        "en": "For continuous variables, P(X = x) = 0; probability is calculated as area under PDF. For Uniform U(a, b), PDF = 1 / (b - a)."
+      },
+      "companyExample": {
+        "tr": "CyberPass veri indirme süresi [10 sn, 50 sn] aralığında Düzgün dağılmaktadır. Sürenin 20 sn ile 30 sn arasında olma olasılığı (30 - 20) / (50 - 10) = 10 / 40 = 0.25 (%25)'tir.",
+        "en": "Download time is Uniform [10s, 50s]. Probability between 20s and 30s = (30 - 20) / (50 - 10) = 0.25 (25%)."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "probability density function",
+          "explanation_tr": "Sürekli rastlantı değişkeninin belirli bir aralıkta alma olasılığının alanla temsil edildiği fonksiyon (PDF).",
+          "explanation_en": "Function representing relative likelihood of a continuous random variable (PDF).",
+          "exampleSentence_en": "Integrating the PDF yields cumulative probability."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m16-l1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "U(0, 20) düzgün dağılımında P(5 ≤ X ≤ 15) olasılığı kaçtır?", "en": "In U(0, 20) uniform distribution, what is P(5 ≤ X ≤ 15)?" },
+          "correctAnswer": 0.5,
+          "explanation": { "tr": "(15 - 5) / (20 - 0) = 10 / 20 = 0.50.", "en": "(15 - 5) / (20 - 0) = 10 / 20 = 0.50." }
+        }
+      ]
+    },
+    {
+      "id": "m16-l2",
+      "moduleId": "module-16",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "Normal Dağılım & 68-95-99.7 Kuralı", "en": "Normal Distribution & Empirical Rule" },
+      "conceptCard": {
+        "tr": "Normal Dağılım N(μ, σ²), ortalama μ etrafında simetrik çan eğrisidir. 68-95-99.7 kuralına göre verilerin %68'i μ ± 1σ, %95'i μ ± 2σ ve %99.7'si μ ± 3σ aralığındadır.",
+        "en": "Normal distribution N(μ, σ²) is symmetric around mean μ. Empirical rule: 68% within μ ± 1σ, 95% within μ ± 2σ, 99.7% within μ ± 3σ."
+      },
+      "companyExample": {
+        "tr": "CyberPass kullanıcı oturum süreleri μ = 60 dk, σ = 10 dk ile Normal dağılmaktadır. Oturum sürelerinin %95'i 40 dk (60-2*10) ile 80 dk (60+2*10) arasında değişir.",
+        "en": "User session duration N(μ=60, σ=10). 95% of session durations lie between 40 min and 80 min."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "empirical rule",
+          "explanation_tr": "Normal dağılımda verilerin 1, 2 ve 3 standart sapma aralıklarındaki yüzdelerini (%68-%95-%99.7) ifade eden kural.",
+          "explanation_en": "Rule stating 68%, 95%, 99.7% of data fall within 1, 2, 3 standard deviations in Normal distribution.",
+          "exampleSentence_en": "The empirical rule provides quick estimates for normally distributed data."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m16-l2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "N(100, 15^2) dağılımında verilerin yaklaşık %68'i hangi iki değer arasındadır? (Alt sınırı yazınız: μ - σ)", "en": "In N(100, 15^2), ~68% of data lies between what lower bound (μ - σ)?" },
+          "correctAnswer": 85,
+          "explanation": { "tr": "μ - 1σ = 100 - 15 = 85.", "en": "μ - 1σ = 100 - 15 = 85." }
+        }
+      ]
+    },
+    {
+      "id": "m16-l3",
+      "moduleId": "module-16",
+      "order": 3,
+      "difficulty": "ileri",
+      "title": { "tr": "Standart Normal Dağılım & Z-Skoru", "en": "Standard Normal Distribution & Z-Score" },
+      "conceptCard": {
+        "tr": "Herhangi bir X ~ N(μ, σ²) değişkeni Z = (X - μ) / σ formülü ile N(0, 1) standart normal dağılıma ölçeklenir. Z-skoru, bir değerin ortalamadan kaç standart sapma uzakta olduğunu söyler.",
+        "en": "Transform X ~ N(μ, σ²) via Z = (X - μ) / σ to N(0, 1). Z-score counts how many standard deviations a value is from mean."
+      },
+      "companyExample": {
+        "tr": "CyberPass şüpheli işlem kontrolünde, kullanıcının işlem miktarı X = 350 TL'dir. Normal kullanım μ = 200 TL, σ = 50 TL ise Z = (350 - 200)/50 = +3.0 çıkar. Z > 3 olduğundan şüpheli işlem alarmı verilir.",
+        "en": "User transaction X = 350 (μ=200, σ=50). Z = (350 - 200)/50 = +3.0. High Z-score triggers fraud alert."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "z-score",
+          "explanation_tr": "Bir ölçümün ortalamadan standart sapma cinsinden ne kadar uzakta olduğunu gösteren boyutsuz değer.",
+          "explanation_en": "Dimensionless score measuring standard deviations a data point lies from the mean.",
+          "exampleSentence_en": "Z-scores identify statistical outliers in anomaly detection."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m16-l3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "μ = 50, σ = 10 olan bir dağılımda X = 75 için Z-skoru kaçtır?", "en": "In a distribution with μ = 50, σ = 10, what is Z-score for X = 75?" },
+          "correctAnswer": 2.5,
+          "explanation": { "tr": "Z = (75 - 50) / 10 = 25 / 10 = 2.5.", "en": "Z = (75 - 50) / 10 = 25 / 10 = 2.5." }
+        }
+      ]
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m16-case-1",
+      "moduleId": "module-16",
+      "difficulty": "orta",
+      "title": { "tr": "CyberPass: Z-Skoru Tabanlı Siber Anomali Tespiti", "en": "CyberPass: Z-Score Based Cyber Anomaly Detection" },
+      "businessQuestion": {
+        "tr": "CyberPass sunucu giriş denemesi sıklığı μ = 100/dakika ve σ = 20/dakika olan Normal dağılıma uymaktadır. Dakikada X = 160 giriş yapılan bir ip adresi tespit edildi. Z-skorunu hesaplayıp anomali durumunu değerlendiriniz.",
+        "en": "Login attempt frequency follows N(μ=100, σ=20). An IP registers X = 160 logins/min. Calculate Z-score and evaluate anomaly."
+      },
+      "dataset": {
+        "columns": ["Parametre", "Değer"],
+        "rows": [
+          ["Ortalama μ", "100 giriş/dk"],
+          ["Standart Sapma σ", "20 giriş/dk"],
+          ["Gözlemlenen X", "160 giriş/dk"]
+        ]
+      },
+      "guidedSteps": [
+        { "tr": "1. Adım: Z = (160 - 100) / 20 = 60 / 20 = 3.0.", "en": "Step 1: Z = (160 - 100) / 20 = 3.0." },
+        { "tr": "2. Adım: Z = +3.0 değeri %99.7 güven aralığının ötesindedir ve %0.13 olasılıkla gerçekleşir (Brute force saldırısı).", "en": "Step 2: Z = +3.0 lies beyond 99.7% bounds (p < 0.0013, brute force attack)." }
+      ],
+      "expectedApproach": {
+        "tr": "Sürekli verilerde Z-skoru eşikleri (örneğin |Z| > 3) otomatik anomali ve siber saldırı tespitinde kritik role sahiptir.",
+        "en": "Z-score thresholds (|Z| > 3) play a critical role in automated continuous data anomaly and attack detection."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m16-case-1-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Tespit edilen IP adresi için Z-skoru kaçtır?", "en": "What is the Z-score for the detected IP address?" },
+          "correctAnswer": 3,
+          "explanation": { "tr": "Z = (160 - 100) / 20 = 3.0.", "en": "Z = (160 - 100) / 20 = 3.0." }
+        }
+      ]
+    }
+  ]
+}
