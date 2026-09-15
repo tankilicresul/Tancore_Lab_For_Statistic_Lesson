@@ -3,45 +3,150 @@
   "order": 5,
   "title": { "tr": "Güven Aralıkları", "en": "Confidence Intervals" },
   "description": {
-    "tr": "Nokta tahmini, %95-%99 Güven Aralıkları (CI) ve örneklem boyutu belirleme. İlaç etkinliği ve medikal cihaz kalite raporu vakaları.",
-    "en": "Point estimation, 95%-99% Confidence Intervals (CI), and sample size determination. Drug efficacy & medical device quality cases."
+    "tr": "Nokta tahmini, güven düzeyi (%95, %99) ve t-dağılımı. İlaç etki süresi ve klinik deney güven aralığı vakası.",
+    "en": "Point estimation, confidence level (95%, 99%), and t-distribution. Drug efficacy trial confidence interval case."
   },
-  "iconName": "ShieldCheck",
+  "iconName": "Shield",
   "lessons": [
     {
       "id": "m5-l1",
       "moduleId": "module-5",
       "order": 1,
-      "title": { "tr": "%95 Güven Aralığı Hesabı", "en": "95% Confidence Interval Calculation" },
+      "difficulty": "basit",
+      "title": { "tr": "Nokta Tahmini & Hata Payı", "en": "Point Estimate & Margin of Error" },
       "conceptCard": {
-        "tr": "Güven Aralığı (CI), bilinmeyen ana kütle parametresinin belirli bir güven düzeyiyle (%95) düşmesinin beklendiği değer aralığıdır. Formül: CI = X̄ ± (Z * SE). %95 güven düzeyi için Z = 1.96'dır.",
-        "en": "A Confidence Interval (CI) is an estimated range likely to contain the true population parameter. Formula: CI = X̄ ± (Z * SE). For 95% confidence, Z = 1.96."
+        "tr": "Nokta tahmini ana kütle parametresini tek sayı ile tahmin eder. Güven aralığı ise [Nokta Tahmini ± Hata Payı] şeklinde bir aralık sunar.",
+        "en": "Point estimate predicts a parameter with a single value. Confidence interval provides [Point Estimate ± Margin of Error]."
       },
       "companyExample": {
-        "tr": "BioLab ilaç şirketinde yeni bir ağrı kesicinin etki süresi test edilmiş, n = 100 hastada ortalama etki başlama süresi X̄ = 20 dakika, standart sapma s = 5 dakika bulunmuştur. %95 Güven Aralığı: 20 ± 1.96 * (5 / √100) = 20 ± 0.98 = (19.02, 20.98) dakika.",
-        "en": "At BioLab pharma, a painkiller's onset time was tested in n = 100 patients, yielding mean X̄ = 20 min, std dev s = 5 min. 95% CI: 20 ± 1.96 * (5 / √100) = 20 ± 0.98 = (19.02, 20.98) minutes."
+        "tr": "BioLab ilaç şirketinde ortalama etki süresi 300 dakika ± 10 dakika hata payı ile ifade edilir.",
+        "en": "BioLab expresses mean drug duration as 300 minutes ± 10 minutes margin of error."
       },
       "interactiveType": "confidence_interval",
       "vocabTerms": [
         {
-          "term_en": "margin of error (ME)",
-          "explanation_tr": "Hata payı: ME = Z * (s / √n).",
-          "explanation_en": "Margin of error: ME = Z * (s / √n).",
-          "exampleSentence_en": "The survey has a margin of error of ±3%."
+          "term_en": "point estimate",
+          "explanation_tr": "Ana kütle parametresi için en iyi tek değer tahmini.",
+          "explanation_en": "Best single-value estimate for a population parameter.",
+          "exampleSentence_en": "Sample mean is the point estimate of population mean."
         }
       ],
       "questions": [
         {
           "id": "m5-l1-q1",
-          "type": "numeric",
-          "prompt": { "tr": "Ortalama X̄ = 50, SE = 2 ve %95 Güven Düzeyi (Z = 1.96) için Hata Payı (Margin of Error) yaklaşık kaçtır?", "en": "If mean X̄ = 50, SE = 2, and Z = 1.96 for 95% CI, what is the approximate Margin of Error?" },
-          "correctAnswer": 3.92,
-          "explanation": { "tr": "ME = 1.96 * 2 = 3.92", "en": "ME = 1.96 * 2 = 3.92" }
+          "type": "multiple_choice",
+          "prompt": { "tr": "Güven aralığı neleri birleştirir?", "en": "What does a confidence interval combine?" },
+          "options": [
+            { "tr": "Nokta Tahmini ± Hata Payı", "en": "Point Estimate ± Margin of Error" },
+            { "tr": "Sadece maksimum değer", "en": "Only the maximum value" }
+          ],
+          "correctAnswer": "Nokta Tahmini ± Hata Payı",
+          "explanation": { "tr": "Aralık = Nokta tahmini etrafındaki simetrik hata sınırıdır.", "en": "Interval = symmetric error bounds around point estimate." }
+        }
+      ]
+    },
+    {
+      "id": "m5-l2",
+      "moduleId": "module-5",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "%95 ve %99 Güven Aralıkları", "en": "95% & 99% Confidence Intervals" },
+      "conceptCard": {
+        "tr": "%95 güven düzeyi z* = 1.96 kullanır. %99 güven düzeyi z* = 2.58 kullanır. Güven düzeyi arttıkça aralık genişler.",
+        "en": "95% confidence level uses z* = 1.96. 99% uses z* = 2.58. Higher confidence yields a wider interval."
+      },
+      "companyExample": {
+        "tr": "BioLab %95 güven aralığını [280, 320] TL bulurken, %99 güven aralığını [270, 330] TL olarak hesaplar.",
+        "en": "BioLab finds 95% CI is [280, 320], whereas 99% CI widens to [270, 330]."
+      },
+      "interactiveType": "confidence_interval",
+      "vocabTerms": [
+        {
+          "term_en": "confidence level",
+          "explanation_tr": "Aralığın gerçek parametreyi içerme olasılığı.",
+          "explanation_en": "The probability that the interval contains the true parameter.",
+          "exampleSentence_en": "We use a 95% confidence level."
         }
       ],
-      "realWorldBox": {
-        "pythonCode": "import scipy.stats as stats\nimport numpy as np\nci = stats.t.interval(0.95, df=99, loc=20, scale=5/np.sqrt(100))\nprint(f'95% CI: {ci}')"
-      }
+      "questions": [
+        {
+          "id": "m5-l2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Güven düzeyi %95'ten %99'a çıkarılırsa aralık genişliği nasıl değişir?", "en": "How does interval width change when confidence level goes from 95% to 99%?" },
+          "options": [
+            { "tr": "Genişler (Daha güvenli ama daha geniş)", "en": "Widens (More confident but wider bounds)" },
+            { "tr": "Daralır", "en": "Narrows" }
+          ],
+          "correctAnswer": "Genişler (Daha güvenli ama daha geniş)",
+          "explanation": { "tr": "Yüksek kesinlik için daha geniş z* kritik değeri gerekir.", "en": "Higher certainty requires a larger z* critical value." }
+        }
+      ]
+    },
+    {
+      "id": "m5-l3",
+      "moduleId": "module-5",
+      "order": 3,
+      "difficulty": "orta-ustu",
+      "title": { "tr": "t-Dağılımı ile Güven Aralığı", "en": "Student's t-Distribution CIs" },
+      "conceptCard": {
+        "tr": "Ana kütle standart sapması σ bilinmediğinde ve örneklem n < 30 olduğunda Z yerine Student's t-dağılımı kullanılır. Serbestlik derecesi df = n - 1'dir.",
+        "en": "When population std dev σ is unknown and n < 30, Student's t-distribution is used with degrees of freedom df = n - 1."
+      },
+      "companyExample": {
+        "tr": "BioLab 15 hastalıklı klinik deneyde σ bilinmediği için t-tablosu kritik değerini kullanır.",
+        "en": "BioLab uses the t-table critical value for a trial of n=15 patients with unknown σ."
+      },
+      "interactiveType": "confidence_interval",
+      "vocabTerms": [
+        {
+          "term_en": "degrees of freedom",
+          "explanation_tr": "İstatistikte serbestçe değişebilen gözlem sayısı (df = n - 1).",
+          "explanation_en": "Number of independent values that can vary (df = n - 1).",
+          "exampleSentence_en": "Sample of size 15 has 14 degrees of freedom."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m5-l3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "n = 16 kişilik bir örneklem için t-dağılımı serbestlik derecesi (df) kaçtır?", "en": "What are the degrees of freedom (df) for n = 16?" },
+          "correctAnswer": 15,
+          "explanation": { "tr": "df = n - 1 = 16 - 1 = 15", "en": "df = n - 1 = 16 - 1 = 15" }
+        }
+      ]
+    },
+    {
+      "id": "m5-l4",
+      "moduleId": "module-5",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Oranlar için Güven Aralığı", "en": "CIs for Proportions" },
+      "conceptCard": {
+        "tr": "Kategorik oran p̂ için güven aralığı SE = √(p̂(1-p̂)/n) formülü ile hesaplanır.",
+        "en": "For categorical proportions p̂, confidence interval uses SE = √(p̂(1-p̂)/n)."
+      },
+      "companyExample": {
+        "tr": "BioLab ilaç başarı oranını p̂ = 0.80 (%80) ve %95 CI = [%74, %86] olarak raporlar.",
+        "en": "BioLab reports drug success rate p̂ = 0.80 (80%) with 95% CI = [74%, 86%]."
+      },
+      "interactiveType": "confidence_interval",
+      "vocabTerms": [
+        {
+          "term_en": "proportion",
+          "explanation_tr": "Belirli bir özelliğe sahip olanların toplam içindeki oranı.",
+          "explanation_en": "The ratio of items with a specific characteristic to total items.",
+          "exampleSentence_en": "Sample proportion p̂ is 0.80."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m5-l4-q1",
+          "type": "numeric",
+          "prompt": { "tr": "p̂ = 0.50 ve n = 100 ise p̂(1-p̂) kaçtır?", "en": "If p̂ = 0.50 and n = 100, what is p̂(1-p̂)?" },
+          "correctAnswer": 0.25,
+          "explanation": { "tr": "0.50 * 0.50 = 0.25", "en": "0.50 * 0.50 = 0.25" }
+        }
+      ]
     }
   ],
   "caseExams": [
@@ -51,32 +156,32 @@
       "difficulty": "kolay",
       "title": { "tr": "BioLab: İlaç Etki Süresi Güven Aralığı", "en": "BioLab: Drug Efficacy Confidence Interval" },
       "businessQuestion": {
-        "tr": "BioLab firmasında n = 400 hasta üzerinde yapılan testte yeni vitamin takviyesinin emilim süresi ortalaması X̄ = 50 dakika ve standart sapması s = 10 dakika ölçülmüştür. %95 güven seviyesinde (Z = 1.96) emilim süresinin hata payı (Margin of Error) kaçtır?",
-        "en": "In a study of n = 400 patients at BioLab, average supplement absorption time was X̄ = 50 minutes with s = 10 minutes. At 95% confidence level (Z = 1.96), what is the Margin of Error?"
+        "tr": "BioLab yeni bir ağrı kesicinin etki süresini test etmek için n = 100 hastada klinik deney yapıyor. Örneklem ortalaması x̄ = 300 dakika ve Standart Hata SE = 10 dakika çıkıyor. %95 Güven Düzeyi için (z* = 1.96) Hata Payı (Margin of Error) kaç dakikadır?",
+        "en": "BioLab tests a new painkiller on n = 100 patients. Sample mean x̄ = 300 min and SE = 10 min. For 95% Confidence (z* = 1.96), what is the Margin of Error in minutes?"
       },
       "dataset": {
         "columns": ["Parametre", "Değer"],
         "rows": [
-          ["Örneklem (n)", "400 hasta"],
-          ["Ortalama (X̄)", "50 dakika"],
-          ["Std Sapma (s)", "10 dakika"]
+          ["Örneklem Ortalaması (x̄)", "300 dk"],
+          ["Standart Hata (SE)", "10 dk"],
+          ["Z Kritik Değeri (%95)", "1.96"]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: SE = 10 / √400 = 10 / 20 = 0.5.", "en": "Step 1: SE = 10 / √400 = 10 / 20 = 0.5." },
-        { "tr": "2. Adım: Hata Payı = 1.96 * 0.5 = 0.98 dakika.", "en": "Step 2: Margin of Error = 1.96 * 0.5 = 0.98 minutes." }
+        { "tr": "1. Adım: Hata Payı formülünü uygula: E = z* * SE.", "en": "Step 1: Apply Margin of Error formula: E = z* * SE." },
+        { "tr": "2. Adım: E = 1.96 * 10 = 19.6 dakika.", "en": "Step 2: E = 1.96 * 10 = 19.6 minutes." }
       ],
       "expectedApproach": {
-        "tr": "Hata payı 0.98 dakikadır. Gerçek ana kütle ortalaması %95 ihtimalle (49.02, 50.98) dakika aralığındadır.",
-        "en": "Margin of Error is 0.98 minutes. True population mean lies within (49.02, 50.98) minutes with 95% confidence."
+        "tr": "Hata Payı E = 19.6 dakikadır. %95 Güven Aralığı [280.4, 319.6] dakika aralığıdır.",
+        "en": "Margin of Error E = 19.6 min. The 95% Confidence Interval is [280.4, 319.6] minutes."
       },
       "solutionQuestions": [
         {
           "id": "m5-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Hata Payı (Margin of Error) kaçtır?", "en": "What is the Margin of Error?" },
-          "correctAnswer": 0.98,
-          "explanation": { "tr": "1.96 * (10 / 20) = 0.98", "en": "1.96 * (10 / 20) = 0.98" }
+          "prompt": { "tr": "Hata Payı (Margin of Error) kaç dakikadır?", "en": "What is the Margin of Error in minutes?" },
+          "correctAnswer": 19.6,
+          "explanation": { "tr": "1.96 * 10 = 19.6", "en": "1.96 * 10 = 19.6" }
         }
       ]
     }

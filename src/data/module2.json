@@ -12,6 +12,7 @@
       "id": "m2-l1",
       "moduleId": "module-2",
       "order": 1,
+      "difficulty": "basit",
       "title": { "tr": "Temel Olasılık Kuralları", "en": "Basic Probability Rules" },
       "conceptCard": {
         "tr": "Olasılık, bir olayın gerçekleşme şansını 0 ile 1 (veya %0 ile %100) arasında ifade eder. İki bağımsız olayın aynı anda gerçekleşme olasılığı (Kesişim) çarpma kuralı ile hesaplanır.",
@@ -54,6 +55,7 @@
       "id": "m2-l2",
       "moduleId": "module-2",
       "order": 2,
+      "difficulty": "orta",
       "title": { "tr": "Koşullu Olasılık (Conditional Probability)", "en": "Conditional Probability" },
       "conceptCard": {
         "tr": "Koşullu olasılık, P(A|B), B olayının gerçekleştiği bilindiğinde A olayının olma olasılığıdır. Formül: P(A|B) = P(A ve B) / P(B).",
@@ -85,6 +87,7 @@
       "id": "m2-l3",
       "moduleId": "module-2",
       "order": 3,
+      "difficulty": "orta-ustu",
       "title": { "tr": "Bayes Teoremi (Bayes' Rule)", "en": "Bayes' Theorem" },
       "conceptCard": {
         "tr": "Bayes Teoremi, yeni kanıtlar elde edildikçe bir hipotezin olasılığını güncellememizi sağlar. P(A|B) = [P(B|A) * P(A)] / P(B). Yapay zeka ve dolandırıcılık tespitinde temel taşıdır.",
@@ -125,6 +128,39 @@
       "realWorldBox": {
         "pythonCode": "def bayes(p_A, p_B_given_A, p_B_given_notA):\n    p_notA = 1 - p_A\n    p_B = (p_B_given_A * p_A) + (p_B_given_notA * p_notA)\n    return (p_B_given_A * p_A) / p_B\n\nprint(bayes(0.10, 0.80, 0.05))"
       }
+    },
+    {
+      "id": "m2-l4",
+      "moduleId": "module-2",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Bağımsız Olaylar ve Örneklem Uzayı", "en": "Independent Events & Sample Space" },
+      "conceptCard": {
+        "tr": "Bir olayın gerçekleşmesi diğer olayın olasılığını etkilemiyorsa bu iki olay bağımsızdır. Tüm olası durumların kümesine örneklem uzayı (S) adı verilir.",
+        "en": "If the occurrence of one event does not affect the probability of another, they are independent. The set of all possible outcomes is called the sample space (S)."
+      },
+      "companyExample": {
+        "tr": "Finansal risk analizinde iki farklı ülkedeki sunucu kesintilerinin bağımsızlığı incelenir.",
+        "en": "In financial risk analysis, the independence of server outages across two regions is evaluated."
+      },
+      "interactiveType": "probability_coin",
+      "vocabTerms": [
+        {
+          "term_en": "mutually exclusive",
+          "explanation_tr": "Aynı anda gerçekleşmesi imkansız olaylar.",
+          "explanation_en": "Events that cannot happen at the same time.",
+          "exampleSentence_en": "Rolling a 2 and a 5 on a single die roll are mutually exclusive."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m2-l4-q1",
+          "type": "numeric",
+          "prompt": { "tr": "P(A)=0.3 ve P(B)=0.4 bağımsız ise P(A ∩ B) kaçtır?", "en": "If P(A)=0.3 and P(B)=0.4 are independent, what is P(A ∩ B)?" },
+          "correctAnswer": 0.12,
+          "explanation": { "tr": "0.3 * 0.4 = 0.12", "en": "0.3 * 0.4 = 0.12" }
+        }
+      ]
     }
   ],
   "caseExams": [

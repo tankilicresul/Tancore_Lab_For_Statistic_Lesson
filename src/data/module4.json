@@ -12,40 +12,141 @@
       "id": "m4-l1",
       "moduleId": "module-4",
       "order": 1,
-      "title": { "tr": "Merkezi Limit Teoremi (CLT)", "en": "Central Limit Theorem (CLT)" },
+      "difficulty": "basit",
+      "title": { "tr": "Rastgele Örnekleme & Ana Kütle", "en": "Random Sampling & Population" },
       "conceptCard": {
-        "tr": "Merkezi Limit Teoremi, ana kütle hangi dağılıma sahip olursa olsun (n >= 30 olmak şartıyla), alınan rastgele örneklemlerin ortalamalarının dağılımının Normal Dağılıma yaklaşacağını söyler.",
-        "en": "The Central Limit Theorem states that regardless of the population distribution, the distribution of sample means approaches a Normal distribution as sample size n >= 30."
+        "tr": "Ana kütle (popülasyon) ilgilenilen tüm bireylerin kümesidir. Örneklem ise bu kütleden seçilen temsil edici küçük gruptur.",
+        "en": "Population is the entire group of interest. Sample is a smaller representative subset selected from the population."
       },
       "companyExample": {
-        "tr": "SurveyPulse şirketi, 50,000 kullanıcılı bir platformda harcama tutarlarının aşırı çarpık (skewed) olduğunu görüyor. Ancak her biri 50 kullanıcıdan oluşan 100 farklı rastgele örneklem aldığında, bu örneklem ortalamalarının mükemmel bir çan eğrisi (Normal) oluşturduğunu kanıtlıyor.",
-        "en": "SurveyPulse observes that spending amounts across 50,000 platform users are heavily skewed. However, taking 100 random samples of size n=50 yields sample means that form a clean bell curve."
+        "tr": "SurveyPulse şirketi 1,000,000 aktif kullanıcısından rastgele 1,000 kişi seçerek anket uygular.",
+        "en": "SurveyPulse selects 1,000 random users out of 1,000,000 active users to conduct a survey."
       },
       "interactiveType": "sample_size",
       "vocabTerms": [
         {
-          "term_en": "standard error (SE)",
-          "explanation_tr": "Örneklem ortalamasının standart sapması: SE = σ / √n.",
-          "explanation_en": "Standard deviation of the sample mean distribution: SE = σ / √n.",
-          "exampleSentence_en": "Increasing sample size n decreases standard error."
+          "term_en": "random sampling",
+          "explanation_tr": "Her elemanın seçilme şansının eşit olduğu tarafsız seçim yöntemi.",
+          "explanation_en": "Unbiased selection method where every element has an equal chance.",
+          "exampleSentence_en": "Random sampling ensures survey validity."
         }
       ],
       "questions": [
         {
           "id": "m4-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Örneklem büyüklüğü n arttıkça Standart Hata (SE) nasıl değişir?", "en": "How does Standard Error (SE) change as sample size n increases?" },
+          "prompt": { "tr": "Rastgele örneklemenin en temel amacı nedir?", "en": "What is the primary goal of random sampling?" },
           "options": [
-            { "tr": "Azalır (Örneklem ortalaması daha hassaslaşır)", "en": "Decreases (Sample mean becomes more precise)" },
-            { "tr": "Artar", "en": "Increases" }
+            { "tr": "Ana kütleyi tarafsız şekilde temsil etmek", "en": "To represent the population without bias" },
+            { "tr": "Sadece en aktif kullanıcıları seçmek", "en": "To select only the most active users" }
           ],
-          "correctAnswer": "Azalır (Örneklem ortalaması daha hassaslaşır)",
-          "explanation": { "tr": "SE = σ / √n formülünde n paydada olduğu için n büyüdükçe SE küçülür.", "en": "In SE = σ / √n, since n is in denominator, larger n yields smaller SE." }
+          "correctAnswer": "Ana kütleyi tarafsız şekilde temsil etmek",
+          "explanation": { "tr": "Rastgele seçim yanlılığı önler ve temsil kabiliyetini artırır.", "en": "Random selection prevents bias and increases representativeness." }
+        }
+      ]
+    },
+    {
+      "id": "m4-l2",
+      "moduleId": "module-4",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "Örneklem Dağılımı & Standart Hata", "en": "Sampling Distribution & Standard Error" },
+      "conceptCard": {
+        "tr": "Örneklem ortalamasının standart sapmasına Standart Hata (SE) denir: SE = σ / √n. Örneklem büyüklüğü n arttıkça Standart Hata küçülür.",
+        "en": "The standard deviation of sample means is called Standard Error (SE): SE = σ / √n. As sample size n increases, SE decreases."
+      },
+      "companyExample": {
+        "tr": "SurveyPulse 100 kişilik örneklemler aldığında Standart Hata 2 TL iken, n=400 olduğunda SE = 1 TL'ye düşer.",
+        "en": "For n=100, Standard Error is $2. Increasing to n=400 drops SE to $1."
+      },
+      "interactiveType": "sample_size",
+      "vocabTerms": [
+        {
+          "term_en": "standard error",
+          "explanation_tr": "Örneklem ortalamalarının değişkenlik ölçüsü.",
+          "explanation_en": "A measure of variability among sample means.",
+          "exampleSentence_en": "Larger sample sizes reduce standard error."
         }
       ],
-      "realWorldBox": {
-        "pythonCode": "import numpy as np\nse = 15.0 / np.sqrt(100)\nprint(f'Standard Error: {se}')"
-      }
+      "questions": [
+        {
+          "id": "m4-l2-q1",
+          "type": "numeric",
+          "prompt": { "tr": "σ = 20 ve n = 100 ise Standart Hata (SE) kaçtır?", "en": "If σ = 20 and n = 100, what is SE?" },
+          "correctAnswer": 2,
+          "explanation": { "tr": "20 / √100 = 20 / 10 = 2", "en": "20 / √100 = 2" }
+        }
+      ]
+    },
+    {
+      "id": "m4-l3",
+      "moduleId": "module-4",
+      "order": 3,
+      "difficulty": "orta-ustu",
+      "title": { "tr": "Merkezi Limit Teoremi (CLT)", "en": "Central Limit Theorem (CLT)" },
+      "conceptCard": {
+        "tr": "Merkezi Limit Teoremi, ana kütle hangi dağılıma sahip olursa olsun (n >= 30 olmak şartıyla), alınan örneklemlerin ortalamalarının dağılımının Normal Dağılıma yaklaşacağını söyler.",
+        "en": "The Central Limit Theorem states that regardless of population distribution, sample means approach a Normal distribution as n >= 30."
+      },
+      "companyExample": {
+        "tr": "Aşırı sağa yatık e-ticaret harcama verilerinden n=50 kişilik örneklemler çekildiğinde ortalamalar çan eğrisi oluşturur.",
+        "en": "Even with heavily skewed e-commerce order amounts, taking n=50 samples yields normal sample means."
+      },
+      "interactiveType": "sample_size",
+      "vocabTerms": [
+        {
+          "term_en": "Central Limit Theorem",
+          "explanation_tr": "Örneklem ortalamalarının normalliğe yakınsama kuralı.",
+          "explanation_en": "The rule that sample means converge to normality.",
+          "exampleSentence_en": "CLT allows Z-tests even on non-normal populations."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m4-l3-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "CLT kuralına göre n kaçtan büyük olduğunda normallik varsayımı güçlenir?", "en": "According to CLT, for what n does normality assumption hold?" },
+          "options": [
+            { "tr": "n >= 30", "en": "n >= 30" },
+            { "tr": "n >= 5", "en": "n >= 5" }
+          ],
+          "correctAnswer": "n >= 30",
+          "explanation": { "tr": "İstatistikte genelde n >= 30 eşik kabul edilir.", "en": "In statistics n >= 30 is the general threshold." }
+        }
+      ]
+    },
+    {
+      "id": "m4-l4",
+      "moduleId": "module-4",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Yeterli Örneklem Büyüklüğü (n ≥ 30 Rule)", "en": "Sample Size Determination" },
+      "conceptCard": {
+        "tr": "Hedeflenen hata payı (E) ve güven düzeyine göre gereken minimum örneklem büyüklüğü n = (Z * σ / E)² formülü ile hesaplanır.",
+        "en": "The required minimum sample size for a target margin of error (E) is n = (Z * σ / E)²."
+      },
+      "companyExample": {
+        "tr": "SurveyPulse %95 güvenle 2 TL hata payı elde etmek için en az 100 kullanıcıya ulaşmalıdır.",
+        "en": "To achieve a $2 margin of error at 95% confidence, SurveyPulse must survey at least 100 users."
+      },
+      "interactiveType": "sample_size",
+      "vocabTerms": [
+        {
+          "term_en": "margin of error",
+          "explanation_tr": "Tahminin etrafındaki kabul edilebilir sapma miktarı.",
+          "explanation_en": "Acceptable bounds of error around an estimate.",
+          "exampleSentence_en": "The poll has a ±3% margin of error."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m4-l4-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Örneklem büyüklüğü 4 katına çıkarsa Standart Hata kaç katına düşer?", "en": "If sample size quadruples, by what factor does SE drop?" },
+          "correctAnswer": 2,
+          "explanation": { "tr": "√4 = 2 olduğu için SE yarıya düşer.", "en": "√4 = 2, so SE decreases by half." }
+        }
+      ]
     }
   ],
   "caseExams": [

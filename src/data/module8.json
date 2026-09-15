@@ -3,48 +3,150 @@
   "order": 8,
   "title": { "tr": "Çoklu Regresyon & Model Değerlendirme", "en": "Multiple Regression & Model Evaluation" },
   "description": {
-    "tr": "Çoklu doğrusal regresyon, çoklu doğrusallık (multicollinearity / VIF), Düzeltilmiş R² (Adjusted R²). Emlak fiyat tahmin modeli vakası.",
-    "en": "Multiple linear regression, multicollinearity (VIF), Adjusted R². Real estate price valuation model case."
+    "tr": "Çok değişkenli regresyon, Düzeltilmiş R², Çoklu doğrusallık (VIF) ve kalıntı analizi. Emlak fiyat tahmin modeli vakası.",
+    "en": "Multivariable regression, Adjusted R², Multicollinearity (VIF), and residual analysis. Real estate pricing equation case."
   },
-  "iconName": "Layers",
+  "iconName": "BarChart2",
   "lessons": [
     {
       "id": "m8-l1",
       "moduleId": "module-8",
       "order": 1,
-      "title": { "tr": "Düzeltilmiş R² ve VIF", "en": "Adjusted R² and Multicollinearity (VIF)" },
+      "difficulty": "basit",
+      "title": { "tr": "Çok Değişkenli Regresyon Mantığı", "en": "Multiple Regression Concept" },
       "conceptCard": {
-        "tr": "Çoklu regresyonda modele anlamsız bağımsız değişkenler eklendikçe standart R² yapay olarak artar. Düzeltilmiş R² (Adjusted R²), değişken sayısına ceza uygulayarak gerçek açıklayıcılığı gösterir. VIF > 5 veya 10 ise bağımsız değişkenler arasında yüksek çoklu doğrusallık (multicollinearity) vardır.",
-        "en": "In multiple regression, standard R² artificially increases as more features are added. Adjusted R² penalizes adding non-informative variables. A VIF > 5 or 10 indicates high multicollinearity among features."
+        "tr": "Çoklu regresyon, birden fazla bağımsız değişkenin (X1, X2, X3) tek bir bağımlı değişkeni (Y) tahmin etmesini sağlar: y = b0 + b1*X1 + b2*X2.",
+        "en": "Multiple regression models one dependent variable Y using multiple independent predictors (X1, X2, X3): y = b0 + b1*X1 + b2*X2."
       },
       "companyExample": {
-        "tr": "EstateVal emlak değerleme şirketinde ev fiyatı (Y) = Metrekare (X1) + Oda Sayısı (X2) + Bina Yaşı (X3) modeli kuruluyor. Metrekare ile Oda Sayısı arasında VIF = 8.5 çıkması iki değişkenin birbiriyle yüksek ilişkili olduğunu ve katsayı tahminlerini bozduğunu gösterir.",
-        "en": "At EstateVal real estate analytics, house price (Y) is modeled by Square Meters (X1), Bedrooms (X2), and Age (X3). A VIF = 8.5 between SqM and Bedrooms signals high multicollinearity distorting coefficient estimates."
+        "tr": "EstateVal emlak platformu konut fiyatını (Y) tahmin ederken metrekare (X1), oda sayısı (X2) ve bina yaşını (X3) birlikte modele ekler.",
+        "en": "EstateVal models house price Y using area (X1), rooms (X2), and building age (X3)."
       },
+      "interactiveType": "correlation_regression",
       "vocabTerms": [
         {
-          "term_en": "multicollinearity",
-          "explanation_tr": "Bağımsız değişkenlerin birbirleriyle yüksek korelasyonlu olması durumu.",
-          "explanation_en": "High correlation among independent variables in a multiple regression.",
-          "exampleSentence_en": "High multicollinearity causes unstable regression coefficients."
+          "term_en": "multiple regression",
+          "explanation_tr": "Birden fazla tahmin edici değişken içeren regresyon.",
+          "explanation_en": "Regression involving multiple predictor variables.",
+          "exampleSentence_en": "Multiple regression improves prediction accuracy."
         }
       ],
       "questions": [
         {
           "id": "m8-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Çoklu regresyonda modele gereksiz bir değişken eklendiğinde hangisi düşer?", "en": "Which metric penalizes adding useless variables to a multiple regression model?" },
+          "prompt": { "tr": "Çoklu regresyonun basit regresyondan temel farkı nedir?", "en": "What is the key difference of multiple regression?" },
           "options": [
-            { "tr": "Düzeltilmiş R² (Adjusted R²)", "en": "Adjusted R²" },
-            { "tr": "Standart R²", "en": "Standard R²" }
+            { "tr": "Birden fazla bağımsız değişken kullanılması", "en": "Uses multiple independent variables" },
+            { "tr": "Sadece 1 veri noktası içermesi", "en": "Contains only 1 data point" }
           ],
-          "correctAnswer": "Düzeltilmiş R² (Adjusted R²)",
-          "explanation": { "tr": "Standart R² asla düşmez, fakat Düzeltilmiş R² anlamsız değişken eklendiğinde ceza alıp düşer.", "en": "Standard R² never decreases, whereas Adjusted R² decreases if an uninformative feature is added." }
+          "correctAnswer": "Birden fazla bağımsız değişken kullanılması",
+          "explanation": { "tr": "Birden fazla X değişkeni aynı anda modele eklenir.", "en": "Multiple X predictors are included simultaneously." }
+        }
+      ]
+    },
+    {
+      "id": "m8-l2",
+      "moduleId": "module-8",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "Düzeltilmiş R² (Adjusted R²)", "en": "Adjusted R-Squared" },
+      "conceptCard": {
+        "tr": "Modele gereksiz değişken eklendikçe standart R² hep artar veya sabit kalır. Düzeltilmiş R² ise gereksiz değişkenler için cezalandırma yapar.",
+        "en": "Standard R² always increases when adding predictors. Adjusted R² penalizes adding useless variables."
+      },
+      "companyExample": {
+        "tr": "EstateVal anlamsız bir değişken (örneğin ev sahibinin en sevdiği renk) eklediğinde standart R² hafif artarken Düzeltilmiş R² düşer.",
+        "en": "Adding an irrelevant feature increases plain R² slightly, but decreases Adjusted R²."
+      },
+      "interactiveType": "correlation_regression",
+      "vocabTerms": [
+        {
+          "term_en": "Adjusted R-squared",
+          "explanation_tr": "Değişken sayısına göre düzeltilmiş model açıklama gücü.",
+          "explanation_en": "R-squared adjusted for the number of predictors.",
+          "exampleSentence_en": "Use Adjusted R-squared when comparing models with different numbers of features."
         }
       ],
-      "realWorldBox": {
-        "pythonCode": "import statsmodels.api as sm\nmodel = sm.OLS(y, X).fit()\nprint(model.summary())"
-      }
+      "questions": [
+        {
+          "id": "m8-l2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Farklı sayıda değişkene sahip iki regresyon modelini karşılaştırırken hangisi kullanılır?", "en": "Which metric compares models with different numbers of predictors?" },
+          "options": [
+            { "tr": "Düzeltilmiş R² (Adjusted R²)", "en": "Adjusted R-squared" },
+            { "tr": "Sadece Örneklem Sayısı n", "en": "Only sample size n" }
+          ],
+          "correctAnswer": "Düzeltilmiş R² (Adjusted R²)",
+          "explanation": { "tr": "Düzeltilmiş R² eklenen değişken sayısını cezalandırarak adil kıyas sağlar.", "en": "Adjusted R-squared penalizes extra features for fair comparison." }
+        }
+      ]
+    },
+    {
+      "id": "m8-l3",
+      "moduleId": "module-8",
+      "order": 3,
+      "difficulty": "orta-ustu",
+      "title": { "tr": "Çoklu Doğrusallık (VIF)", "en": "Multicollinearity & VIF" },
+      "conceptCard": {
+        "tr": "Bağımsız değişkenlerin kendi aralarında yüksek korelasyona sahip olması Çoklu Doğrusallık (Multicollinearity) yaratır. VIF > 5 veya 10 ise sorun var demektir.",
+        "en": "High correlation among independent variables causes Multicollinearity. VIF > 5 or 10 indicates a problem."
+      },
+      "companyExample": {
+        "tr": "Ev alanı (m²) ile oda sayısının korelasyonu %95 ise modelde VIF yüksek çıkar ve katsayılar kararsızlaşır.",
+        "en": "High correlation between area and room count causes high VIF, making regression coefficients unstable."
+      },
+      "interactiveType": "correlation_regression",
+      "vocabTerms": [
+        {
+          "term_en": "VIF (Variance Inflation Factor)",
+          "explanation_tr": "Çoklu doğrusallık derecesini ölçen katsayı.",
+          "explanation_en": "Metric quantifying multicollinearity in regression.",
+          "exampleSentence_en": "VIF above 10 calls for feature removal."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m8-l3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "VIF değerinin kaçın üzerinde olması ciddi çoklu doğrusallık uyarısıdır?", "en": "A VIF value above what threshold signals serious multicollinearity?" },
+          "correctAnswer": 5,
+          "explanation": { "tr": "VIF > 5 (veya 10) değişkenler arası yüksek korelasyon uyarısıdır.", "en": "VIF > 5 or 10 warns of high correlation between predictors." }
+        }
+      ]
+    },
+    {
+      "id": "m8-l4",
+      "moduleId": "module-8",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Kalıntı (Residual) Analizi & Model Doğrulama", "en": "Residual Analysis & Validation" },
+      "conceptCard": {
+        "tr": "Kalıntı (Hata) = Gerçek Y - Tahmin Edilen Y. İyi bir regresyon modelinde kalıntılar rastgele dağılmalı ve ortalaması 0 olmalıdır.",
+        "en": "Residual = Actual Y - Predicted Y. A good model has residuals randomly distributed around zero."
+      },
+      "companyExample": {
+        "tr": "EstateVal model hatalarını grafiğe döktüğünde kalıntıların rasgele dağıldığını doğrular.",
+        "en": "EstateVal verifies model residual plot shows random scatter around zero."
+      },
+      "interactiveType": "correlation_regression",
+      "vocabTerms": [
+        {
+          "term_en": "residual",
+          "explanation_tr": "Gerçek değer ile model tahmini arasındaki fark (hata).",
+          "explanation_en": "Difference between actual value and model prediction.",
+          "exampleSentence_en": "Residuals should be normally distributed."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m8-l4-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Gerçek Y = 120 ve Tahmin Y = 115 ise Kalıntı (Residual) kaçtır?", "en": "If Actual Y = 120 and Predicted Y = 115, what is the Residual?" },
+          "correctAnswer": 5,
+          "explanation": { "tr": "120 - 115 = 5", "en": "120 - 115 = 5" }
+        }
+      ]
     }
   ],
   "caseExams": [
@@ -54,33 +156,32 @@
       "difficulty": "kolay",
       "title": { "tr": "EstateVal: Emlak Fiyat Tahmin Denklemi", "en": "EstateVal: Property Price Prediction Equation" },
       "businessQuestion": {
-        "tr": "EstateVal modeli: Fiyat (bin $) = 50 + 1.2 * Metrekare + 15 * OdaSayisi - 2 * BinaYasi. 100 m², 3 odalı ve 5 yıllık bir evin tahmin fiyatı kaç bin $'dır?",
-        "en": "EstateVal model: Price ($1k) = 50 + 1.2 * SqM + 15 * Bedrooms - 2 * Age. What is the predicted price for a 100 m², 3-bedroom, 5-year-old house in $1k?"
+        "tr": "EstateVal şirketi çoklu regresyon analizi ile Konut Fiyatı (Bin TL) = 200 + 10 * (Metrekare m²) - 15 * (Bina Yaşı Yıl) modelini geliştirmiştir. 100 m² büyüklüğünde ve 4 yaşında olan bir dairenin tahmin edilen fiyatı (Bin TL) kaçtır?",
+        "en": "EstateVal derived Price ($k) = 200 + 10 * (Area m²) - 15 * (Age years). What is the predicted price ($k) for a 100 m² apartment that is 4 years old?"
       },
       "dataset": {
-        "columns": ["Değişken", "Katsayı"],
+        "columns": ["Özellik", "Katsayı", "Değer"],
         "rows": [
-          ["Sabit (Intercept)", "50"],
-          ["Metrekare (X1)", "+1.2"],
-          ["Oda Sayısı (X2)", "+15.0"],
-          ["Bina Yaşı (X3)", "-2.0"]
+          ["Kesişim (b0)", "200", "1"],
+          ["Metrekare (X1)", "10", "100 m²"],
+          ["Bina Yaşı (X2)", "-15", "4 yıl"]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Formülde yerine yaz: 50 + (1.2 * 100) + (15 * 3) - (2 * 5).", "en": "Step 1: Substitute: 50 + (1.2 * 100) + (15 * 3) - (2 * 5)." },
-        { "tr": "2. Adım: 50 + 120 + 45 - 10 = 205 bin $.", "en": "Step 2: 50 + 120 + 45 - 10 = 205 ($1k)." }
+        { "tr": "1. Adım: Fiyat = 200 + 10*(100) - 15*(4).", "en": "Step 1: Price = 200 + 10*(100) - 15*(4)." },
+        { "tr": "2. Adım: 200 + 1000 - 60 = 1140 Bin TL.", "en": "Step 2: 200 + 1000 - 60 = 1140." }
       ],
       "expectedApproach": {
-        "tr": "Tahmin edilen fiyat 205 bin $'dır.",
-        "en": "Predicted price is 205 ($1k)."
+        "tr": "Tahmin Edilen Fiyat = 1,140 Bin TL (1.14 Milyon TL)'dir.",
+        "en": "Predicted Price = $1,140k."
       },
       "solutionQuestions": [
         {
           "id": "m8-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Tahmini ev fiyatı kaçtır (bin $)?", "en": "What is the predicted home price ($1k)?" },
-          "correctAnswer": 205,
-          "explanation": { "tr": "50 + 120 + 45 - 10 = 205", "en": "50 + 120 + 45 - 10 = 205" }
+          "prompt": { "tr": "Tahmin edilen daire fiyatı (Bin TL) kaçtır?", "en": "What is the predicted price ($k)?" },
+          "correctAnswer": 1140,
+          "explanation": { "tr": "200 + 1000 - 60 = 1140 Bin TL", "en": "200 + 1000 - 60 = 1140" }
         }
       ]
     }

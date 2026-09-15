@@ -3,8 +3,8 @@
   "order": 7,
   "title": { "tr": "Korelasyon & Basit Regresyon", "en": "Correlation & Simple Regression" },
   "description": {
-    "tr": "Pearson korelasyon katsayısı (r), basit doğrusal regresyon (Y = β0 + β1*X) ve R² açıklayıcılık katsayısı. Pazarlama harcaması ve satış ilişkisi vakası.",
-    "en": "Pearson correlation coefficient (r), simple linear regression (Y = β0 + β1*X), and R² coefficient of determination. Marketing spend vs sales case."
+    "tr": "Pearson korelasyonu (r), doğrusal regresyon denklemi (y = ax + b), R² ve tahmin. Reklam harcaması satış tahmini vakası.",
+    "en": "Pearson correlation (r), linear regression equation (y = ax + b), R², and forecasting. Ad spend sales prediction case."
   },
   "iconName": "TrendingUp",
   "lessons": [
@@ -12,36 +12,141 @@
       "id": "m7-l1",
       "moduleId": "module-7",
       "order": 1,
-      "title": { "tr": "Korelasyon katsayısı r ve R²", "en": "Correlation Coefficient r and R²" },
+      "difficulty": "basit",
+      "title": { "tr": "Saçılım Grafiği (Scatter Plot) & Yön", "en": "Scatter Plots & Direction" },
       "conceptCard": {
-        "tr": "Korelasyon katsayısı r, iki değişken arasındaki doğrusal ilişkinin yönünü ve gücünü -1 ile +1 arasında ölçer. R² (Belirtlilik Katsayısı), bağımlı değişkendeki varyansın yüzde kaçının bağımsız değişken tarafından açıklandığını gösterir (R² = r²).",
-        "en": "The correlation coefficient r measures the strength and direction of a linear relationship between -1 and +1. R² (coefficient of determination) shows the percentage of variance explained by the independent variable (R² = r²)."
+        "tr": "İki nicel değişken arasındaki ilişkiyi görselleştirmek için Saçılım Grafiği (Scatter Plot) kullanılır. Veriler yukarı doğru eğimliyse pozitif, aşağı doğruysa negatif ilişkidir.",
+        "en": "Scatter plots visualize the relationship between two quantitative variables. Upward slope indicates positive correlation; downward indicates negative."
       },
       "companyExample": {
-        "tr": "AdTechX dijital pazarlama ajansında 10 kampanya için reklam harcaması (X) ile üretilen satış (Y) arasındaki korelasyon r = 0.90 ölçülmüştür. R² = 0.90² = 0.81 (%81). Bu, satışlardaki değişimin %81'inin reklam harcamasıyla açıklandığını gösterir.",
-        "en": "AdTechX digital agency measures correlation r = 0.90 between ad spend (X) and sales (Y) across 10 campaigns. R² = 0.90² = 0.81 (81%). This indicates 81% of sales variation is explained by ad spend."
+        "tr": "AdTechX dijital pazarlama ajansı reklam harcaması (X) arttıkça web sitesi ziyaretlerinin (Y) arttığını saçılım grafiğinde görür.",
+        "en": "AdTechX sees a positive trend in scatter plot as ad spend (X) increases with web visits (Y)."
       },
       "interactiveType": "correlation_regression",
       "vocabTerms": [
         {
-          "term_en": "coefficient of determination (R²)",
-          "explanation_tr": "Modelin veriyi açıklama oranı (0 ile 1 arasında).",
-          "explanation_en": "Proportion of variance in the dependent variable explained by the model.",
-          "exampleSentence_en": "An R² of 0.81 indicates a strong predictive model."
+          "term_en": "scatter plot",
+          "explanation_tr": "İki nicel değişkenin grafikteki nokta dağılımı.",
+          "explanation_en": "Graph displaying pairs of values as points.",
+          "exampleSentence_en": "Scatter plot shows a positive linear trend."
         }
       ],
       "questions": [
         {
           "id": "m7-l1-q1",
-          "type": "numeric",
-          "prompt": { "tr": "r = 0.80 ise R² değeri kaçtır?", "en": "If r = 0.80, what is the R² value?" },
-          "correctAnswer": 0.64,
-          "explanation": { "tr": "R² = 0.80 * 0.80 = 0.64", "en": "R² = 0.80 * 0.80 = 0.64" }
+          "type": "multiple_choice",
+          "prompt": { "tr": "X arttıkça Y de artıyorsa ilişki türü nedir?", "en": "If Y increases as X increases, what is the correlation?" },
+          "options": [
+            { "tr": "Pozitif İlişki", "en": "Positive Correlation" },
+            { "tr": "Negatif İlişki", "en": "Negative Correlation" }
+          ],
+          "correctAnswer": "Pozitif İlişki",
+          "explanation": { "tr": "Aynı yönde hareket pozitif korelasyondur.", "en": "Moving in same direction means positive correlation." }
+        }
+      ]
+    },
+    {
+      "id": "m7-l2",
+      "moduleId": "module-7",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "Pearson Korelasyon Katsayısı (r)", "en": "Pearson Correlation Coefficient (r)" },
+      "conceptCard": {
+        "tr": "Pearson katsayısı r, -1 ile +1 arasında değer alır. r = +1 mükemmel pozitif, r = -1 mükemmel negatif, r = 0 ise doğrusal ilişki yok demektir.",
+        "en": "Pearson r ranges from -1 to +1. r = +1 is perfect positive, r = -1 is perfect negative, r = 0 means no linear relationship."
+      },
+      "companyExample": {
+        "tr": "AdTechX reklam bütçesi ile satışlar arasında r = 0.85 gibi güçlü pozitif bir ilişki hesaplar.",
+        "en": "AdTechX computes a strong positive correlation r = 0.85 between ad budget and sales."
+      },
+      "interactiveType": "correlation_regression",
+      "vocabTerms": [
+        {
+          "term_en": "correlation coefficient",
+          "explanation_tr": "Doğrusal ilişkinin yönü ve gücünü gösteren -1 ile +1 arasındaki sayı.",
+          "explanation_en": "Number between -1 and +1 describing strength and direction.",
+          "exampleSentence_en": "Correlation r of 0.85 indicates a strong positive relation."
         }
       ],
-      "realWorldBox": {
-        "pythonCode": "import scipy.stats as stats\nr, p_val = stats.pearsonr(spend, sales)\nprint(f'r: {r:.2f}, R2: {r**2:.2f}')"
-      }
+      "questions": [
+        {
+          "id": "m7-l2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "r = -0.90 değeri neyi ifade eder?", "en": "What does r = -0.90 indicate?" },
+          "options": [
+            { "tr": "Güçlü negatif doğrusal ilişki", "en": "Strong negative linear relationship" },
+            { "tr": "Zayıf pozitif ilişki", "en": "Weak positive relationship" }
+          ],
+          "correctAnswer": "Güçlü negatif doğrusal ilişki",
+          "explanation": { "tr": "-1'e yakın değerler güçlü negatif ilişkiyi gösterir.", "en": "Values close to -1 show a strong negative relationship." }
+        }
+      ]
+    },
+    {
+      "id": "m7-l3",
+      "moduleId": "module-7",
+      "order": 3,
+      "difficulty": "orta-ustu",
+      "title": { "tr": "Doğrusal Regresyon Denklemi (y = ax + b)", "en": "Linear Regression Equation" },
+      "conceptCard": {
+        "tr": "Basit regresyon denklemi y = a + bx şeklindedir. a = y-kesişimi (intercept), b = eğimdir (slope). Bağlantı ile gelecek değerleri tahmin edebiliriz.",
+        "en": "Simple regression equation is y = a + bx, where a is intercept and b is slope. Allows prediction of future values."
+      },
+      "companyExample": {
+        "tr": "AdTechX modelinde Satış = 50 + 4 * (Reklam Harcaması) denklemi kurulur. 10 bin $ reklam harcanırsa satış = 50 + 40 = 90 bin $ tahmin edilir.",
+        "en": "AdTechX models Sales = 50 + 4*(AdSpend). Spending $10k predicts sales of 50 + 40 = $90k."
+      },
+      "interactiveType": "correlation_regression",
+      "vocabTerms": [
+        {
+          "term_en": "slope",
+          "explanation_tr": "X 1 birim arttığında Y'de beklenen değişim (b).",
+          "explanation_en": "Expected change in Y per unit increase in X (b).",
+          "exampleSentence_en": "Slope b indicates marginal increase."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m7-l3-q1",
+          "type": "numeric",
+          "prompt": { "tr": "y = 20 + 3x denkleminde x = 10 ise y kaçtır?", "en": "In y = 20 + 3x, if x = 10, what is y?" },
+          "correctAnswer": 50,
+          "explanation": { "tr": "20 + 3(10) = 50", "en": "20 + 3(10) = 50" }
+        }
+      ]
+    },
+    {
+      "id": "m7-l4",
+      "moduleId": "module-7",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Belirtme Katsayısı (R²)", "en": "Coefficient of Determination (R²)" },
+      "conceptCard": {
+        "tr": "R² (R-kare), bağımlı değişkendeki değişimin yüzde kaçının bağımsız değişken tarafından açıklandığını gösterir (R² = r²).",
+        "en": "R² represents the percentage of variance in dependent variable explained by independent variable (R² = r²)."
+      },
+      "companyExample": {
+        "tr": "r = 0.90 ise R² = 0.81 (%81)'dir. Satışlardaki değişimin %81'i reklam bütçesi ile açıklanır.",
+        "en": "If r = 0.90, R² = 0.81 (81%). 81% of sales variation is explained by ad budget."
+      },
+      "interactiveType": "correlation_regression",
+      "vocabTerms": [
+        {
+          "term_en": "R-squared",
+          "explanation_tr": "Regresyon modelinin açıklama gücü katsayısı.",
+          "explanation_en": "Proportion of variance explained by model.",
+          "exampleSentence_en": "R-squared of 0.81 shows strong fit."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m7-l4-q1",
+          "type": "numeric",
+          "prompt": { "tr": "r = 0.80 ise R² kaçtır?", "en": "If r = 0.80, what is R²?" },
+          "correctAnswer": 0.64,
+          "explanation": { "tr": "0.80 * 0.80 = 0.64 (%64)", "en": "0.80 * 0.80 = 0.64" }
+        }
+      ]
     }
   ],
   "caseExams": [
@@ -51,33 +156,33 @@
       "difficulty": "kolay",
       "title": { "tr": "AdTechX: Reklam Harcaması Satış Tahmini", "en": "AdTechX: Ad Spend Sales Prediction" },
       "businessQuestion": {
-        "tr": "AdTechX basit regresyon modeli kurmuştur: Satış (bin TL) = 15 + 3.5 * Harcama (bin TL). Gelecek ay 10 bin TL reklam harcaması yapılırsa tahmin edilen satış kaç bin TL olur?",
-        "en": "AdTechX fit a simple regression model: Sales ($1k) = 15 + 3.5 * Spend ($1k). If ad spend next month is $10k, what is the predicted sales in $1k?"
+        "tr": "AdTechX ajansı müşterisi için kurduğu regresyon modelinde Satış (Bin TL) = 100 + 5 * (Reklam Bütçesi Bin TL) denklemini elde etmiştir. Korelasyon katsayısı r = 0.90'dır. Müşteri 10 Bin TL reklam harcaması yaparsa tahmin edilen Satış (Bin TL) kaç olur?",
+        "en": "AdTechX models Sales ($k) = 100 + 5 * (AdSpend $k) with correlation r = 0.90. If ad spend is $10k, what is predicted Sales ($k)?"
       },
       "dataset": {
-        "columns": ["Ay", "Reklam Harcaması (bin TL)", "Gerçekleşen Satış (bin TL)"],
+        "columns": ["Ay", "Reklam Harcaması (Bin TL)", "Satış (Bin TL)"],
         "rows": [
-          [1, 2, 22],
-          [2, 4, 29],
-          [3, 6, 36],
-          [4, 8, 43]
+          ["Ocak", "2", "110"],
+          ["Şubat", "4", "120"],
+          ["Mart", "6", "130"],
+          ["Nisan", "8", "140"]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Regresyon denkleminde X yerine 10 koy.", "en": "Step 1: Substitute X = 10 into regression equation." },
-        { "tr": "2. Adım: Satış = 15 + 3.5 * 10 = 15 + 35 = 50 bin TL.", "en": "Step 2: Sales = 15 + 3.5 * 10 = 15 + 35 = 50 ($1k)." }
+        { "tr": "1. Adım: Regresyon denkleminde X yerine 10 koy.", "en": "Step 1: Substitute X = 10 into equation." },
+        { "tr": "2. Adım: Y = 100 + 5 * (10) = 100 + 50 = 150 Bin TL.", "en": "Step 2: Y = 100 + 5 * (10) = 150." }
       ],
       "expectedApproach": {
-        "tr": "Tahmin edilen satış 50 bin TL'dir.",
-        "en": "Predicted sales is 50 ($1k)."
+        "tr": "Tahmin edilen Satış = 150 Bin TL'dir.",
+        "en": "Predicted Sales = $150k."
       },
       "solutionQuestions": [
         {
           "id": "m7-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Tahmini satış tutarı kaçtır (bin TL)?", "en": "What is the predicted sales figure ($1k)?" },
-          "correctAnswer": 50,
-          "explanation": { "tr": "15 + 3.5 * 10 = 50", "en": "15 + 3.5 * 10 = 50" }
+          "prompt": { "tr": "Tahmin edilen Satış (Bin TL) kaçtır?", "en": "What is predicted Sales ($k)?" },
+          "correctAnswer": 150,
+          "explanation": { "tr": "100 + 5 * 10 = 150", "en": "100 + 5 * 10 = 150" }
         }
       ]
     }

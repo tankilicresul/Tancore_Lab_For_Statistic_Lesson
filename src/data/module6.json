@@ -3,8 +3,8 @@
   "order": 6,
   "title": { "tr": "Hipotez Testi", "en": "Hypothesis Testing" },
   "description": {
-    "tr": "Sıfır hipotezi (H0), alternatif hipotez (H1), p-değeri, Tip I ve Tip II hatalar, Z-testi ve T-testi. Web sitesi A/B testi dönüşüm vakası.",
-    "en": "Null hypothesis (H0), alternative hypothesis (H1), p-value, Type I & II errors, Z-test, and T-test. Website A/B test conversion case."
+    "tr": "Sıfır hipotezi (H0), alternatif hipotez (H1), p-değeri ve z/t testleri. Web A/B testi buton dönüşüm oranı vakası.",
+    "en": "Null hypothesis (H0), alternative hypothesis (H1), p-value, and z/t tests. Web A/B testing conversion rate case."
   },
   "iconName": "GitCompare",
   "lessons": [
@@ -12,46 +12,149 @@
       "id": "m6-l1",
       "moduleId": "module-6",
       "order": 1,
-      "title": { "tr": "p-değeri ve Hipotez Kararı", "en": "p-value and Decision Rule" },
+      "difficulty": "basit",
+      "title": { "tr": "Sıfır (H0) ve Alternatif (H1) Hipotezler", "en": "Null & Alternative Hypotheses" },
       "conceptCard": {
-        "tr": "Sıfır Hipotezi (H0) durumun değişmediğini iddia eder. p-değeri, H0 doğruyken elde ettiğimiz sonucun tesadüfen çıkma olasılığıdır. Eğer p < 0.05 ise H0 reddedilir; fark istatistiksel olarak anlamlıdır (statistically significant).",
-        "en": "The Null Hypothesis (H0) claims no change. The p-value is the probability of obtaining test results at least as extreme, assuming H0 is true. If p < 0.05, we reject H0; the difference is statistically significant."
+        "tr": "H0 (Sıfır Hipotezi) varsayılan durumdur ('Fark yoktur'). H1 (Alternatif Hipotez) ise kanıtlamaya çalıştığımız iddiadır ('Fark vardır').",
+        "en": "H0 (Null Hypothesis) represents the default status quo ('No effect'). H1 (Alternative) represents the claim we seek to prove ('Effect exists')."
       },
       "companyExample": {
-        "tr": "WebOptima şirketi yeni yeşil satın alma butonunu (Varyasyon B) 10,000 kullanıcıda test etti. Dönüşüm oranı B %3.2, eski mavi buton %2.5 çıktı. Z-testi sonucunda p-değeri = 0.003 bulundu. p < 0.05 olduğu için 'Yeni yeşil buton dönüşümü anlamlı şekilde artırmıştır' kararı verilir.",
-        "en": "WebOptima tested a new green checkout button (Variant B) on 10,000 users. Conversion B was 3.2% vs old blue button 2.5%. Z-test yielded p-value = 0.003. Since p < 0.05, H0 is rejected: 'Green button significantly increased conversions'."
+        "tr": "WebOptima A/B testinde H0: 'Yeni turuncu buton ile eski buton arasında dönüşüm farkı yoktur'. H1: 'Yeni buton dönüşümü artırır'.",
+        "en": "In WebOptima A/B test, H0: 'No conversion difference between orange and old button'. H1: 'New button increases conversion'."
       },
       "interactiveType": "hypothesis_z_t",
       "vocabTerms": [
         {
-          "term_en": "null hypothesis (H0)",
-          "explanation_tr": "Etki veya fark olmadığını savunan varsayılan hipotez.",
-          "explanation_en": "The default hypothesis that there is no effect or difference.",
-          "exampleSentence_en": "H0 states that design A and B have equal conversion rates."
-        },
-        {
-          "term_en": "statistically significant",
-          "explanation_tr": "Sonucun şans eseri ortaya çıkamayacak kadar güçlü olması (p < alpha).",
-          "explanation_en": "Results unlikely to occur by chance alone (p < alpha).",
-          "exampleSentence_en": "The A/B test showed a statistically significant improvement."
+          "term_en": "null hypothesis",
+          "explanation_tr": "Değişim veya etki olmadığını savunan varsayılan hipotez (H0).",
+          "explanation_en": "Default claim assuming no effect or difference (H0).",
+          "exampleSentence_en": "We test whether to reject the null hypothesis."
         }
       ],
       "questions": [
         {
           "id": "m6-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Bir A/B testinde p-değeri = 0.012 ve anlamlılık düzeyi alpha = 0.05 ise ne karar verilir?", "en": "In an A/B test with p-value = 0.012 and significance level alpha = 0.05, what is the decision?" },
+          "prompt": { "tr": "A/B testinde H0 genellikle neyi ifade eder?", "en": "What does H0 usually state in an A/B test?" },
           "options": [
-            { "tr": "H0 Reddedilir (Fark istatistiksel olarak anlamlıdır)", "en": "Reject H0 (Difference is statistically significant)" },
-            { "tr": "H0 Reddedilemez (Fark anlamsızdır)", "en": "Fail to reject H0 (Difference is not significant)" }
+            { "tr": "İki sürüm arasında anlamlı fark olmadığını", "en": "That there is no significant difference between versions" },
+            { "tr": "Yeni sürümün %100 daha iyi olduğunu", "en": "That the new version is 100% better" }
           ],
-          "correctAnswer": "H0 Reddedilir (Fark istatistiksel olarak anlamlıdır)",
-          "explanation": { "tr": "p (0.012) < 0.05 olduğu için H0 reddedilir.", "en": "Since p (0.012) < 0.05, we reject H0." }
+          "correctAnswer": "İki sürüm arasında anlamlı fark olmadığını",
+          "explanation": { "tr": "H0 = Fark yoktur veya değişim rastlantısaldır.", "en": "H0 = No effect or difference is random noise." }
+        }
+      ]
+    },
+    {
+      "id": "m6-l2",
+      "moduleId": "module-6",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "Tip 1 (Alfa) ve Tip 2 (Beta) Hataları", "en": "Type I & Type II Errors" },
+      "conceptCard": {
+        "tr": "Tip 1 Hata (α): Gerçekte doğru olan H0'ı yanlışlıkla reddetmek (Yanlış Pozitif). Tip 2 Hata (β): Gerçekte yanlış olan H0'ı reddedememek (Yanlış Negatif).",
+        "en": "Type I Error (α): Rejecting a true H0 (False Positive). Type II Error (β): Failing to reject a false H0 (False Negative)."
+      },
+      "companyExample": {
+        "tr": "WebOptima hiç etki etmeyen bir butonu etki ediyor sanıp canlıya alırsa Tip 1 Hata yapmış olur.",
+        "en": "If WebOptima deploys an ineffective button believing it worked, a Type I error occurs."
+      },
+      "interactiveType": "hypothesis_z_t",
+      "vocabTerms": [
+        {
+          "term_en": "Type I error",
+          "explanation_tr": "Yanlış alarm (False Positive) hatası.",
+          "explanation_en": "False positive error rate (α).",
+          "exampleSentence_en": "Alpha is set to 0.05 to control Type I error."
         }
       ],
-      "realWorldBox": {
-        "pythonCode": "from scipy import stats\nz_stat, p_val = stats.ttest_ind(group_a, group_b)\nprint(f'p-value: {p_val:.4f}')"
-      }
+      "questions": [
+        {
+          "id": "m6-l2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "α = 0.05 neyi ifade eder?", "en": "What does α = 0.05 represent?" },
+          "options": [
+            { "tr": "%5 Tip 1 Hata yapma riski toleransı", "en": "5% tolerance for Type I error risk" },
+            { "tr": "%5 başarı oranı", "en": "5% success rate" }
+          ],
+          "correctAnswer": "%5 Tip 1 Hata yapma riski toleransı",
+          "explanation": { "tr": "Anlamlılık düzeyi α, kabul edilen maksimum Tip 1 hata riskidir.", "en": "Alpha is the maximum allowable Type I error risk." }
+        }
+      ]
+    },
+    {
+      "id": "m6-l3",
+      "moduleId": "module-6",
+      "order": 3,
+      "difficulty": "orta-ustu",
+      "title": { "tr": "p-değeri ve Karar Kriterleri", "en": "p-value & Decision Rules" },
+      "conceptCard": {
+        "tr": "p-değeri, H0 doğruyken mevcut örneklem sonucunu elde etme olasılığıdır. p-değeri < α (örn. 0.05) ise H0 reddedilir; sonuç istatistiksel olarak anlamlıdır.",
+        "en": "p-value is the probability of obtaining sample data if H0 were true. If p < α (e.g. 0.05), reject H0; result is statistically significant."
+      },
+      "companyExample": {
+        "tr": "WebOptima A/B testinde p = 0.02 bulunur. 0.02 < 0.05 olduğu için H0 reddedilir ve turuncu buton seçilir.",
+        "en": "WebOptima finds p = 0.02. Since 0.02 < 0.05, H0 is rejected and the new button is chosen."
+      },
+      "interactiveType": "hypothesis_z_t",
+      "vocabTerms": [
+        {
+          "term_en": "p-value",
+          "explanation_tr": "H0 altında verinin ortaya çıkma olasılığı.",
+          "explanation_en": "Probability of observing data under H0.",
+          "exampleSentence_en": "If p-value is low, H0 must go."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m6-l3-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "p-değeri = 0.01 ve α = 0.05 ise karar ne olur?", "en": "If p-value = 0.01 and α = 0.05, what decision is made?" },
+          "options": [
+            { "tr": "H0 reddedilir (Sonuç anlamlıdır)", "en": "Reject H0 (Result is significant)" },
+            { "tr": "H0 reddedilemez", "en": "Fail to reject H0" }
+          ],
+          "correctAnswer": "H0 reddedilir (Sonuç anlamlıdır)",
+          "explanation": { "tr": "0.01 < 0.05 olduğu için H0 reddedilir.", "en": "Since 0.01 < 0.05, H0 is rejected." }
+        }
+      ]
+    },
+    {
+      "id": "m6-l4",
+      "moduleId": "module-6",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Tek ve Çift Yönlü Testler", "en": "One-Tailed vs Two-Tailed Tests" },
+      "conceptCard": {
+        "tr": "Tek yönlü test sadece bir yöndeki değişimi arar (A > B). Çift yönlü test ise herhangi bir farkı arar (A ≠ B).",
+        "en": "One-tailed test looks for direction (A > B). Two-tailed test looks for any difference (A ≠ B)."
+      },
+      "companyExample": {
+        "tr": "Yeni butonun dönüşümü kesinlikle artıracağı iddia ediliyorsa tek yönlü test kullanılır.",
+        "en": "If predicting new button strictly increases conversion, a one-tailed test is applied."
+      },
+      "interactiveType": "hypothesis_z_t",
+      "vocabTerms": [
+        {
+          "term_en": "two-tailed test",
+          "explanation_tr": "Her iki yöndeki sapmayı da inceleyen test.",
+          "explanation_en": "Test examining deviations in both directions.",
+          "exampleSentence_en": "Two-tailed test splits alpha into two tails."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m6-l4-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "'Yeni tasarım eskisinden FARKLIDIR' hipotezi hangi testtir?", "en": "'New design is DIFFERENT from old' is which test?" },
+          "options": [
+            { "tr": "Çift Yönlü Test (Two-Tailed)", "en": "Two-Tailed Test" },
+            { "tr": "Tek Yönlü Test (One-Tailed)", "en": "One-Tailed Test" }
+          ],
+          "correctAnswer": "Çift Yönlü Test (Two-Tailed)",
+          "explanation": { "tr": "Yön belirtmeden sadece fark arandığı için çift yönlüdür.", "en": "Since no direction is specified, it is two-tailed." }
+        }
+      ]
     }
   ],
   "caseExams": [
@@ -61,35 +164,35 @@
       "difficulty": "kolay",
       "title": { "tr": "WebOptima: A/B Testi Buton Dönüşüm Kararı", "en": "WebOptima: Button Conversion A/B Test Decision" },
       "businessQuestion": {
-        "tr": "WebOptima sitesinde A/B testi yapılmış ve t-istatistiği = 2.45, p-değeri = 0.014 elde edilmiştir. Şirket yönetimi alpha = 0.05 seviyesinde karar vermek istemektedir. H0 reddedilmeli midir?",
-        "en": "WebOptima ran an A/B test resulting in t-statistic = 2.45, p-value = 0.014. Management uses alpha = 0.05. Should H0 be rejected?"
+        "tr": "WebOptima şirketi e-ticaret sepet sayfasında 'Hemen Satın Al' butonunu yeşilden naranciye rengine değiştirmiştir. 1,000 kullanıcıda yapılan A/B testinde hesaplanan z-istatistiği = 2.33 ve p-değeri = 0.01 olarak bulunmuştur. Şirketin anlamlılık düzeyi α = 0.05 olduğuna göre H0 reddedilmeli midir?",
+        "en": "WebOptima tested a new orange button against green on 1,000 users. Test yields z = 2.33 and p-value = 0.01. At α = 0.05, should H0 be rejected?"
       },
       "dataset": {
-        "columns": ["Grup", "Örneklem (n)", "Dönüşüm Oranı"],
+        "columns": ["Sürüm", "Dönüşüm Oranı", "z-Skoru", "p-Değeri"],
         "rows": [
-          ["Kontrol (A)", "5000", "%2.5"],
-          ["Varyasyon (B)", "5000", "%3.2"]
+          ["A (Eski Yeşil)", "%4.0", "-", "-"],
+          ["B (Yeni Turuncu)", "%6.5", "2.33", "0.01"]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: p-değerini (0.014) alpha düzeyi (0.05) ile karşılaştır.", "en": "Step 1: Compare p-value (0.014) with alpha (0.05)." },
-        { "tr": "2. Adım: 0.014 < 0.05 olduğu için H0 reddedilir.", "en": "Step 2: Since 0.014 < 0.05, reject H0." }
+        { "tr": "1. Adım: p-değeri (0.01) ile α (0.05) değerlerini karşılaştır.", "en": "Step 1: Compare p-value (0.01) with α (0.05)." },
+        { "tr": "2. Adım: 0.01 < 0.05 olduğu için Sıfır Hipotezi (H0) reddedilir.", "en": "Step 2: Since 0.01 < 0.05, reject Null Hypothesis H0." }
       ],
       "expectedApproach": {
-        "tr": "p = 0.014 < 0.05 olduğundan H0 reddedilir. Varyasyon B'nin dönüşüm oranı istatistiksel olarak anlamlı derecede daha yüksektir.",
-        "en": "p = 0.014 < 0.05, so reject H0. Variant B has a statistically significantly higher conversion rate."
+        "tr": "p-değeri < α olduğundan H0 reddedilir. Yeni turuncu buton dönüşüm oranını istatistiksel olarak anlamlı düzeyde artırmıştır.",
+        "en": "Since p < α, reject H0. The new orange button significantly increases conversion rate."
       },
       "solutionQuestions": [
         {
           "id": "m6-case-1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "H0 hipotezi hakkındaki karar nedir?", "en": "What is the decision regarding H0?" },
+          "prompt": { "tr": "Karar ne olmalıdır?", "en": "What is the decision?" },
           "options": [
-            { "tr": "H0 Reddedilir", "en": "Reject H0" },
-            { "tr": "H0 Reddedilemez", "en": "Fail to reject H0" }
+            { "tr": "H0 reddedilir, yeni buton uygulamaya alınır", "en": "Reject H0, deploy new button" },
+            { "tr": "H0 reddedilemez, eski buton kalır", "en": "Fail to reject H0, keep old button" }
           ],
-          "correctAnswer": "H0 Reddedilir",
-          "explanation": { "tr": "0.014 < 0.05 olduğu için H0 reddedilir.", "en": "0.014 < 0.05, so reject H0." }
+          "correctAnswer": "H0 reddedilir, yeni buton uygulamaya alınır",
+          "explanation": { "tr": "p-değeri (0.01) < 0.05 olduğundan değişim istatistiksel olarak anlamlıdır.", "en": "Since p (0.01) < 0.05, difference is statistically significant." }
         }
       ]
     }

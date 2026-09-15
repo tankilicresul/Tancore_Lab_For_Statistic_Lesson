@@ -415,7 +415,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-12 h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shadow-md">
-                {selectedNode.type === 'case' ? <Trophy className="w-6 h-6" /> : getNodeAnimalIcon(selectedNode.module.order, 'text-white')}
+                {selectedNode.type === 'case' ? <Trophy className="w-6 h-6" /> : getNodeAnimalIcon(selectedNode.order, 'text-white')}
               </div>
               <div>
                 <span className="text-[10px] font-black uppercase text-[#ff7a00] tracking-widest font-mono">

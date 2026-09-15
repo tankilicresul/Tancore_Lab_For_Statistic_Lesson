@@ -12,6 +12,7 @@
       "id": "m1-l1",
       "moduleId": "module-1",
       "order": 1,
+      "difficulty": "basit",
       "title": { "tr": "Ortalama (Mean)", "en": "Mean (Average)" },
       "conceptCard": {
         "tr": "Ortalama, bir veri grubundaki tüm sayıları toplayıp adet sayısına bölerek bulunur. Bir grubun 'tipik' değerini özetler.",
@@ -56,6 +57,7 @@
       "id": "m1-l2",
       "moduleId": "module-1",
       "order": 2,
+      "difficulty": "orta",
       "title": { "tr": "Medyan (Median)", "en": "Median" },
       "conceptCard": {
         "tr": "Medyan, veriyi küçükten büyüğe sıraladığında ortada kalan değerdir. Veri sayısı çift ise, ortadaki iki değerin ortalaması alınır. Medyan, outlier'lardan mean kadar etkilenmez.",
@@ -103,6 +105,7 @@
       "id": "m1-l3",
       "moduleId": "module-1",
       "order": 3,
+      "difficulty": "orta-ustu",
       "title": { "tr": "Mod (Mode)", "en": "Mode" },
       "conceptCard": {
         "tr": "Mod, bir veri grubunda en sık tekrar eden değerdir. Kategorik veriler için özellikle faydalıdır (örn. en çok satılan ürün rengi).",
@@ -136,6 +139,7 @@
       "id": "m1-l4",
       "moduleId": "module-1",
       "order": 4,
+      "difficulty": "zor",
       "title": { "tr": "Varyans ve Standart Sapma", "en": "Variance and Standard Deviation" },
       "conceptCard": {
         "tr": "Varyans, verilerin ortalamadan ne kadar uzakta olduğunu (yayılımını) ölçer. Her farkın karesi alınıp ortalaması hesaplanır. Standart sapma, varyansın kareköküdür ve orijinal birimle aynı birimdedir, bu yüzden yorumlaması daha kolaydır.",

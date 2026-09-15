@@ -3,48 +3,158 @@
   "order": 9,
   "title": { "tr": "ANOVA & Kategorik Veri", "en": "ANOVA & Categorical Data Analysis" },
   "description": {
-    "tr": "Tek Yönlü ANOVA (One-Way ANOVA), F-testi ve Ki-Kare (Chi-Square) uyum/bağımsızlık testi. 3 farklı reklam kampanyasını karşılaştırma vakası.",
-    "en": "One-Way ANOVA, F-test, and Chi-Square goodness-of-fit / independence test. 3 ad campaigns comparison case."
+    "tr": "Tek yönlü ANOVA (F-testi), gruplar arası/grup içi varyans, Ki-Kare testi ve Post-Hoc analizleri. 3 reklam kampanyasının satış etkisi vakası.",
+    "en": "One-Way ANOVA (F-test), between/within variance, Chi-Square test, and Post-Hoc analyses. 3 ad campaigns sales effect case."
   },
-  "iconName": "PieChart",
+  "iconName": "Layers",
   "lessons": [
     {
       "id": "m9-l1",
       "moduleId": "module-9",
       "order": 1,
-      "title": { "tr": "Tek Yönlü ANOVA (F-Testi)", "en": "One-Way ANOVA (F-Test)" },
+      "difficulty": "basit",
+      "title": { "tr": "3+ Grup Karşılaştırması & F-Testi", "en": "3+ Group Comparison & F-Test" },
       "conceptCard": {
-        "tr": "ANOVA (Varyans Analizi), 3 veya daha fazla grubun ortalamaları arasında istatistiksel olarak anlamlı bir fark olup olmadığını tek bir F-testi ile inceler. Tek tek t-testi yapmak Tip I hatayı (yanlış pozitif) artırır.",
-        "en": "ANOVA (Analysis of Variance) evaluates whether population means of 3 or more groups differ significantly using an F-test. Running multiple pairwise t-tests inflation increases Type I error."
+        "tr": "3 veya daha fazla grubun ortalamalarını aynı anda karşılaştırmak için t-testi yerine ANOVA kullanılır. Tek tek t-testi yapmak Tip 1 Hata (α) oranını şişirir.",
+        "en": "ANOVA compares means across 3+ groups simultaneously. Running multiple t-tests inflates the overall Type 1 error rate."
       },
       "companyExample": {
-        "tr": "MediaImpact ajansı 3 farklı reklam stratejisini (A: Video, B: Banner, C: Influencer) karşılaştırıyor. 3 grubun harcama başı dönüşümleri için F-istatistiği = 5.82, p-değeri = 0.007 çıkmıştır. p < 0.05 olduğu için en az bir reklam türünün ortalaması diğerlerinden farklıdır.",
-        "en": "MediaImpact agency compares 3 ad strategies (A: Video, B: Banner, C: Influencer). F-statistic = 5.82, p-value = 0.007. Since p < 0.05, at least one campaign strategy yields significantly different average ROI."
+        "tr": "MediaImpact ajansı TV, Dijital ve Radyo adlı 3 farklı reklam kanalının ortalama satış katkılarını tek seferde ANOVA ile kıyaslar.",
+        "en": "MediaImpact evaluates sales lift across 3 ad channels (TV, Digital, Radio) using one ANOVA test."
       },
+      "interactiveType": "hypothesis_z_t",
       "vocabTerms": [
         {
-          "term_en": "between-group variance",
-          "explanation_tr": "Grupların ortalamaları arasındaki varyans.",
-          "explanation_en": "Variance among group means.",
-          "exampleSentence_en": "High between-group variance indicates distinct group performances."
+          "term_en": "ANOVA",
+          "explanation_tr": "Analysis of Variance - Varyans Analizi.",
+          "explanation_en": "Statistical method comparing means across 3+ groups.",
+          "exampleSentence_en": "ANOVA helps compare three marketing campaigns."
         }
       ],
       "questions": [
         {
           "id": "m9-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "3 ayrı grubun ortalamalarını karşılaştırırken t-testi yerine neden ANOVA tercih edilir?", "en": "Why is ANOVA preferred over multiple t-tests when comparing 3 group means?" },
+          "prompt": { "tr": "Neden 3 grup için t-testi yerine ANOVA tercih edilir?", "en": "Why choose ANOVA over t-tests for 3 groups?" },
           "options": [
-            { "tr": "Tip I Hata (Alfa enflasyonu) oluşmasını önlemek için", "en": "To prevent Type I error rate inflation" },
-            { "tr": "ANOVA yapması daha kolay olduğu için", "en": "Because ANOVA is easier to compute" }
+            { "tr": "Tip 1 Hata oranının şişmesini önlemek için", "en": "To prevent Type I error rate inflation" },
+            { "tr": "t-testi sadece 1 kişide çalıştığı için", "en": "Because t-tests work only on 1 person" }
           ],
-          "correctAnswer": "Tip I Hata (Alfa enflasyonu) oluşmasını önlemek için",
-          "explanation": { "tr": "Çoklu t-testleri toplam hata olasılığını katlar, ANOVA bunu kontrol eder.", "en": "Multiple t-tests accumulate Type I error rates, ANOVA controls overall alpha." }
+          "correctAnswer": "Tip 1 Hata oranının şişmesini önlemek için",
+          "explanation": { "tr": "Birden çok ikili test yapmak birleşik alfa hatasını artırır.", "en": "Multiple pairwise tests increase cumulative alpha error." }
+        }
+      ]
+    },
+    {
+      "id": "m9-l2",
+      "moduleId": "module-9",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "Tek Yönlü ANOVA (One-Way ANOVA)", "en": "One-Way ANOVA" },
+      "conceptCard": {
+        "tr": "Tek yönlü ANOVA'da F-istatistiği = (Gruplar Arası Varyans) / (Grup İçi Varyans) şeklinde hesaplanır. F ne kadar büyükse gruplar arası fark o kadar belirgindir.",
+        "en": "In One-Way ANOVA, F-ratio = (Between-Group Variance) / (Within-Group Variance). Larger F indicates distinct group means."
+      },
+      "companyExample": {
+        "tr": "MediaImpact 3 kampanya arasındaki varyansın grup içi rastgele sapmadan 5 kat büyük (F = 5.2) olduğunu hesaplar.",
+        "en": "MediaImpact calculates an F-ratio of 5.2, showing campaign differences exceed random noise."
+      },
+      "interactiveType": "hypothesis_z_t",
+      "vocabTerms": [
+        {
+          "term_en": "F-ratio",
+          "explanation_tr": "ANOVA test istatistiği oranı.",
+          "explanation_en": "ANOVA test statistic ratio of variances.",
+          "exampleSentence_en": "A high F-ratio leads to rejecting the null hypothesis."
         }
       ],
-      "realWorldBox": {
-        "pythonCode": "from scipy import stats\nf_stat, p_val = stats.f_oneway(group_a, group_b, group_c)\nprint(f'F: {f_stat:.2f}, p: {p_val:.4f}')"
-      }
+      "questions": [
+        {
+          "id": "m9-l2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "ANOVA Sıfır Hipotezi (H0) neyi savunur?", "en": "What does H0 state in ANOVA?" },
+          "options": [
+            { "tr": "Tüm grupların ortalamalarının birbirine eşit olduğunu", "en": "All group means are equal" },
+            { "tr": "Tüm grupların birbirinden tamamen farklı olduğunu", "en": "All group means are totally different" }
+          ],
+          "correctAnswer": "Tüm grupların ortalamalarının birbirine eşit olduğunu",
+          "explanation": { "tr": "H0: µ1 = µ2 = µ3 (Tüm grup ortalamaları eşittir).", "en": "H0: µ1 = µ2 = µ3 (All group means are equal)." }
+        }
+      ]
+    },
+    {
+      "id": "m9-l3",
+      "moduleId": "module-9",
+      "order": 3,
+      "difficulty": "orta-ustu",
+      "title": { "tr": "Ki-Kare (Chi-Square) Bağımsızlık Testi", "en": "Chi-Square Test of Independence" },
+      "conceptCard": {
+        "tr": "İki kategorik değişken arasındaki bağımsızlığı test etmek için Ki-Kare (χ²) testi kullanılır. Çapraz tablolarda (Contingency tables) gözlenen ve beklenen frekanslar kıyaslanır.",
+        "en": "Chi-Square (χ²) test evaluates independence between two categorical variables using observed vs expected frequencies."
+      },
+      "companyExample": {
+        "tr": "MediaImpact müşteri cinsiyeti (Erkek/Kadın) ile tercih edilen ürün kategorisi (Elektronik/Moda) arasındaki ilişkiyi Ki-Kare ile analiz eder.",
+        "en": "MediaImpact analyzes gender vs product category preference using Chi-Square."
+      },
+      "interactiveType": "hypothesis_z_t",
+      "vocabTerms": [
+        {
+          "term_en": "Chi-Square test",
+          "explanation_tr": "Kategorik verilerin bağımsızlık testi.",
+          "explanation_en": "Test of independence for categorical variables.",
+          "exampleSentence_en": "Chi-square test revealed a significant association."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m9-l3-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Ki-Kare testi hangi veri türünde kullanılır?", "en": "Which data type is analyzed with Chi-Square?" },
+          "options": [
+            { "tr": "Kategorik (Frekans/Sayım) Veriler", "en": "Categorical (Frequency/Count) Data" },
+            { "tr": "Sadece zaman serisi verileri", "en": "Only time series data" }
+          ],
+          "correctAnswer": "Kategorik (Frekans/Sayım) Veriler",
+          "explanation": { "tr": "Ki-Kare testi nitel/kategorik değişkenlerin frekans sayılarını karşılaştırır.", "en": "Chi-Square tests frequency counts of categorical variables." }
+        }
+      ]
+    },
+    {
+      "id": "m9-l4",
+      "moduleId": "module-9",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Post-Hoc Testleri (Tukey HSD)", "en": "Post-Hoc Pairwise Tests" },
+      "conceptCard": {
+        "tr": "ANOVA sonucu H0 reddedildiğinde, HANGİ spesifik grupların birbirinden farklı olduğunu anlamak için Tukey HSD gibi Post-Hoc testleri uygulanır.",
+        "en": "When ANOVA rejects H0, Post-Hoc tests (like Tukey HSD) determine WHICH specific groups differ."
+      },
+      "companyExample": {
+        "tr": "ANOVA 'fark var' dedikten sonra Tukey HSD ikili karşılaştırması Dijital Kampanya'nın TV'den anlamlı derecede yüksek olduğunu gösterir.",
+        "en": "Tukey HSD post-hoc test proves Digital Campaign significantly outperforms TV."
+      },
+      "interactiveType": "hypothesis_z_t",
+      "vocabTerms": [
+        {
+          "term_en": "Tukey HSD",
+          "explanation_tr": "Gruplar arası ikili farkları tespit eden ikincil test.",
+          "explanation_en": "Post-hoc test detecting specific pairwise group differences.",
+          "exampleSentence_en": "Tukey HSD identified the winning campaign."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m9-l4-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Post-Hoc testleri ne zaman yapılır?", "en": "When are Post-Hoc tests performed?" },
+          "options": [
+            { "tr": "ANOVA testi anlamlı çıkıp H0 reddedildikten sonra", "en": "After ANOVA is significant and H0 is rejected" },
+            { "tr": "Hiçbir test yapılmadan önce", "en": "Before running any initial test" }
+          ],
+          "correctAnswer": "ANOVA testi anlamlı çıkıp H0 reddedildikten sonra",
+          "explanation": { "tr": "Post-Hoc detaylı grup kaynak farkını bulmak için ANOVA sonrasında yapılır.", "en": "Post-Hoc follows a significant ANOVA to pinpoint group differences." }
+        }
+      ]
     }
   ],
   "caseExams": [
@@ -54,36 +164,36 @@
       "difficulty": "kolay",
       "title": { "tr": "MediaImpact: 3 Kampanya ANOVA Sonucu", "en": "MediaImpact: 3 Campaign ANOVA Result" },
       "businessQuestion": {
-        "tr": "MediaImpact 3 reklam seçeneği için ANOVA testi yapmış ve F = 4.12, p-değeri = 0.021 elde etmiştir. alpha = 0.05 seviyesinde sonuç nasıl yorumlanır?",
-        "en": "MediaImpact ran an ANOVA across 3 ad creatives yielding F = 4.12, p-value = 0.021. How is this interpreted at alpha = 0.05?"
+        "tr": "MediaImpact ajansı TV, Sosyal Medya ve Arama Motoru adlarıyla 3 farklı pazarlama kampanyası yürütmüştür. 3 grubun satış ortalamaları karşılaştırıldığında hesaplanan F-istatistiği = 6.25 ve p-değeri = 0.003 olarak bulunmuştur. Anlamlılık düzeyi α = 0.05 olduğuna göre kampanya performansları eşit midir?",
+        "en": "MediaImpact ran 3 campaigns (TV, Social, Search). ANOVA yields F = 6.25 and p = 0.003. At α = 0.05, are campaign performances equal?"
       },
       "dataset": {
-        "columns": ["Kampanya Türü", "Örneklem (n)", "Ortalama Dönüşüm ($)"],
+        "columns": ["Kampanya", "Örneklem n", "Ortalama Satış Lift (TL)", "F-İstatistiği", "p-Değeri"],
         "rows": [
-          ["Kampanya A (Video)", "30", "120"],
-          ["Kampanya B (Banner)", "30", "95"],
-          ["Kampanya C (Social)", "30", "135"]
+          ["1. TV", "30", "120 TL", "6.25", "0.003"],
+          ["2. Sosyal Medya", "30", "150 TL", "-", "-"],
+          ["3. Arama Motoru", "30", "180 TL", "-", "-"]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: p-değerini (0.021) 0.05 ile karşılaştır.", "en": "Step 1: Compare p-value (0.021) with 0.05." },
-        { "tr": "2. Adım: 0.021 < 0.05 olduğu için H0 reddedilir; en az bir kampanya farklıdır.", "en": "Step 2: Since 0.021 < 0.05, reject H0; at least one campaign differs." }
+        { "tr": "1. Adım: p-değeri (0.003) ile α (0.05) karşılaştır.", "en": "Step 1: Compare p-value (0.003) with α (0.05)." },
+        { "tr": "2. Adım: 0.003 < 0.05 olduğu için H0 (Tüm ortalamalar eşittir) reddedilir.", "en": "Step 2: Since 0.003 < 0.05, reject H0 (All means equal)." }
       ],
       "expectedApproach": {
-        "tr": "0.021 < 0.05 olduğundan 3 kampanya arasında performans farkı anlamlıdır.",
-        "en": "0.021 < 0.05 indicates a statistically significant difference among 3 campaigns."
+        "tr": "H0 reddedilir. Kampanyalar arasında istatistiksel olarak anlamlı performans farkı vardır.",
+        "en": "Reject H0. There is a statistically significant performance difference among campaigns."
       },
       "solutionQuestions": [
         {
           "id": "m9-case-1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "H0 hipotezi reddedilir mi?", "en": "Is H0 rejected?" },
+          "prompt": { "tr": "Karar ne olmalıdır?", "en": "What is the decision?" },
           "options": [
-            { "tr": "Evet (H0 reddedilir, anlamlı fark var)", "en": "Yes (Reject H0, significant difference)" },
-            { "tr": "Hayır (H0 reddedilemez)", "en": "No (Fail to reject H0)" }
+            { "tr": "H0 reddedilir, kampanyalar eşit değildir", "en": "Reject H0, campaigns are not equal" },
+            { "tr": "H0 reddedilemez, tüm kampanyalar eşittir", "en": "Fail to reject H0, all campaigns equal" }
           ],
-          "correctAnswer": "Evet (H0 reddedilir, anlamlı fark var)",
-          "explanation": { "tr": "p = 0.021 < 0.05 olduğu için H0 reddedilir.", "en": "p = 0.021 < 0.05, so H0 is rejected." }
+          "correctAnswer": "H0 reddedilir, kampanyalar eşit değildir",
+          "explanation": { "tr": "p (0.003) < 0.05 olduğu için kampanya başarıları arasında anlamlı fark vardır.", "en": "Since p (0.003) < 0.05, there is a significant difference among campaigns." }
         }
       ]
     }

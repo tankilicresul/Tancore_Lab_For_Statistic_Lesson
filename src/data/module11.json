@@ -12,6 +12,7 @@
       "id": "m11-l1",
       "moduleId": "module-11",
       "order": 1,
+      "difficulty": "basit",
       "title": { "tr": "Veri Analitiği Süreç Özeti", "en": "Data Analytics Workflow Summary" },
       "conceptCard": {
         "tr": "Gerçek iş dünyasında bir veri analitiği projesi şu adımlardan oluşur: (1) Tanımlayıcı istatistik ve keşifsel analiz (EDA), (2) Hipotez testleri ve A/B doğrulama, (3) Tahminleme modelleri (Regresyon / Zaman Serisi), (4) İş kararı ve yönetici özeti sunumu.",
@@ -44,6 +45,119 @@
       ],
       "realWorldBox": {
         "pythonCode": "import pandas as pd\ndf = pd.read_csv('ecommerce_data.csv')\nprint(df.describe())"
+      }
+    },
+    {
+      "id": "m11-l2",
+      "moduleId": "module-11",
+      "order": 2,
+      "difficulty": "orta",
+      "title": { "tr": "Segment Bazlı EDA ve Varyans Analizi", "en": "Segment-Based EDA & Variance Analysis" },
+      "conceptCard": {
+        "tr": "Farklı müşteri segmentlerinin harcama tutarları ve varyansları karşılaştırarak en yüksek dalgalanmaya (riske) sahip müşteri grubu belirlenir.",
+        "en": "Comparing spending amounts and variances across customer segments helps identify the customer group with highest volatility (risk)."
+      },
+      "companyExample": {
+        "tr": "TechCorp müşteri tabanını Enterprise, SMB ve B2C olarak böler. Enterprise grubunun standart sapması ($120) en yüksektir.",
+        "en": "TechCorp segments customers into Enterprise, SMB, and B2C. The Enterprise group has the highest standard deviation ($120)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "segmentation variance",
+          "explanation_tr": "Segmentler arasındaki varyans ve saçılım farkı.",
+          "explanation_en": "The difference in variance and spread between data segments.",
+          "exampleSentence_en": "Enterprise accounts exhibit higher variance."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m11-l2-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "Standart sapması 120 olan Enterprise segmentinin varyansı s² kaçtır?", "en": "What is the variance s² of the Enterprise segment with standard deviation 120?" },
+          "options": [
+            { "tr": "14,400", "en": "14,400" },
+            { "tr": "240", "en": "240" }
+          ],
+          "correctAnswer": "14,400",
+          "explanation": { "tr": "Varyans = std_dev² = 120² = 14,400.", "en": "Variance = std_dev² = 120² = 14,400." }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "df.groupby('Segment')['OrderValue'].agg(['mean', 'std', 'var'])"
+      }
+    },
+    {
+      "id": "m11-l3",
+      "moduleId": "module-11",
+      "order": 3,
+      "difficulty": "orta-ustu",
+      "title": { "tr": "A/B Test Doğrulaması ve p-Değeri Kararı", "en": "A/B Testing Validation & p-Value Decision" },
+      "conceptCard": {
+        "tr": "Yeni tasarlanan ödeme sayfasının dönüşüm oranındaki artışın şans eseri mi yoksa gerçek bir iyileşme mi olduğunu t-testi ve p-değeri ile doğruluyoruz.",
+        "en": "We validate whether the conversion increase in the new checkout page is due to random chance or a real improvement using t-tests and p-values."
+      },
+      "companyExample": {
+        "tr": "TechCorp A/B testinde p = 0.018 olarak bulunmuştur. Alfa (%5) seviyesine göre H0 reddedilir ve yeni arayüz yayına alınır.",
+        "en": "In TechCorp's A/B test, p = 0.018. Comparing against alpha = 0.05, H0 is rejected and the new checkout is launched."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "p-value threshold",
+          "explanation_tr": "İstatistiksel anlamlılık sınırı (genellikle 0.05).",
+          "explanation_en": "Statistical significance threshold (typically 0.05).",
+          "exampleSentence_en": "p-value of 0.018 is below the 0.05 threshold."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m11-l3-q1",
+          "type": "multiple_choice",
+          "prompt": { "tr": "p-değeri 0.018 ve alfa 0.05 ise A/B testi sonucu nedir?", "en": "If p-value is 0.018 and alpha is 0.05, what is the A/B test result?" },
+          "options": [
+            { "tr": "H0 reddedilir, değişim istatistiksel olarak anlamlıdır", "en": "Reject H0, change is statistically significant" },
+            { "tr": "H0 reddedilemez, değişim şans eseridir", "en": "Fail to reject H0, change is due to chance" }
+          ],
+          "correctAnswer": "H0 reddedilir, değişim istatistiksel olarak anlamlıdır",
+          "explanation": { "tr": "0.018 < 0.05 olduğundan H0 reddedilir.", "en": "Since 0.018 < 0.05, H0 is rejected." }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "from scipy import stats\nstats.ttest_ind(group_a, group_b)"
+      }
+    },
+    {
+      "id": "m11-l4",
+      "moduleId": "module-11",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Tahminleme Modeli ve Yönetici Sunumu", "en": "Predictive Modeling & Executive Reporting" },
+      "conceptCard": {
+        "tr": "Doğrusal regresyon denklemi (Y = b0 + b1*X) kullanılarak pazarlama bütçesinin getireceği tahmini ciro hesaplanır ve yönetime stratejik rapor sunulur.",
+        "en": "Using linear regression (Y = b0 + b1*X), predicted revenue for marketing budgets is calculated and reported to executive stakeholders."
+      },
+      "companyExample": {
+        "tr": "TechCorp regresyon denklemi Y = 100 + 4*X olarak modellenmiştir. X=25 birim reklam harcaması yapıldığında tahmin edilen ciro $200 olur.",
+        "en": "TechCorp's model is Y = 100 + 4*X. Spending X=25 units on ads predicts revenue of $200."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "executive dashboard",
+          "explanation_tr": "Yöneticiler için hazırlanan yüksek seviyeli metrik ekranı.",
+          "explanation_en": "High-level metric screen created for business executives.",
+          "exampleSentence_en": "Present findings on an executive dashboard."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m11-l4-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Y = 100 + 4*X denkleminde X=25 için tahmin edilen Y değeri kaçtır?", "en": "In Y = 100 + 4*X equation, what is predicted Y for X=25?" },
+          "correctAnswer": 200,
+          "explanation": { "tr": "100 + 4 * 25 = 100 + 100 = 200", "en": "100 + 4 * 25 = 100 + 100 = 200" }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import statsmodels.api as sm\nmodel = sm.OLS(y, X).fit()\nprint(model.summary())"
       }
     }
   ],

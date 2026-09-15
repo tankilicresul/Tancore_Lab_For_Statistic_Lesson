@@ -30,6 +30,7 @@ export interface Lesson {
   id: string;
   moduleId: string;
   order: number;
+  difficulty?: "basit" | "orta" | "orta-ustu" | "zor";
   title: LocalizedText;
   conceptCard: LocalizedText;
   companyExample: LocalizedText;

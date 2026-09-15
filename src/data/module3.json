@@ -12,6 +12,7 @@
       "id": "m3-l1",
       "moduleId": "module-3",
       "order": 1,
+      "difficulty": "basit",
       "title": { "tr": "Binom Dağılımı (Binomial Distribution)", "en": "Binomial Distribution" },
       "conceptCard": {
         "tr": "Binom dağılımı, sabit n sayıda bağımsız denemede k kere başarı elde etme olasılığını modeller. Her denemenin sadece 2 olası sonucu vardır (başarılı/başarısız) ve başarı olasılığı p sabittir.",
@@ -56,8 +57,9 @@
     },
     {
       "id": "m3-l2",
-      "moduleId": "module-2",
+      "moduleId": "module-3",
       "order": 2,
+      "difficulty": "orta",
       "title": { "tr": "Poisson Dağılımı (Poisson Distribution)", "en": "Poisson Distribution" },
       "conceptCard": {
         "tr": "Poisson dağılımı, belirli bir zaman veya mekan aralığında nadir olayların kaç kez gerçekleşeceğini modeller (örn. 1 saatte gelen çağrı sayısı). Tek parametresi ortalama oran lambda (λ)'dır.",
@@ -98,6 +100,7 @@
       "id": "m3-l3",
       "moduleId": "module-3",
       "order": 3,
+      "difficulty": "orta-ustu",
       "title": { "tr": "Normal Dağılım ve Z-Skoru", "en": "Normal Distribution and Z-Score" },
       "conceptCard": {
         "tr": "Normal (Gauss) dağılımı, çan eğrisi şeklinde simetrik bir sürekli dağılımdır. Doğadaki ve iş dünyasındaki birçok ölçüm normal dağılır. Z-skoru, bir değerin ortalamadan kaç standart sapma uzakta olduğunu gösterir: Z = (X - µ) / σ.",
@@ -135,6 +138,39 @@
         "excelFormula": "=NORM.DAĞ(420; 300; 60; DOĞRU)  (EN: =NORM.DIST(420, 300, 60, TRUE))",
         "pythonCode": "from scipy.stats import norm\nz = (420 - 300) / 60\npercentile = norm.cdf(z)\nprint(f'Z: {z}, Percentile: {percentile:.4f}')"
       }
+    },
+    {
+      "id": "m3-l4",
+      "moduleId": "module-3",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Sürekli Dağılımlar & Standart Normal Eğri", "en": "Continuous Distributions & Standard Normal Curve" },
+      "conceptCard": {
+        "tr": "Sürekli olasılık dağılımlarında belirli bir tek noktanın olasılığı sıfırdır; olasılıklar eğri altındaki alan (entegral) ile hesaplanır. Çan eğrisi altında kalan toplam alan her zaman 1 (%100)'dir.",
+        "en": "In continuous distributions, the probability of any exact point is zero; probabilities are calculated as area under the curve. Total area under the bell curve is always 1 (100%)."
+      },
+      "companyExample": {
+        "tr": "CallCenterDirect çağrı merkezinde 3 dakika ile 5 dakika arasında süren çağrıların oranı entegral alanı ile hesaplanır.",
+        "en": "In CallCenterDirect call center, the proportion of calls lasting between 3 and 5 minutes is calculated via area under the curve."
+      },
+      "interactiveType": "normal_dist",
+      "vocabTerms": [
+        {
+          "term_en": "probability density function",
+          "explanation_tr": "Sürekli değişkenlerde olasılık yoğunluğunu gösteren fonksiyon (PDF).",
+          "explanation_en": "A function that describes the relative likelihood of a continuous random variable (PDF).",
+          "exampleSentence_en": "The height of the PDF curve shows relative probability density."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m3-l4-q1",
+          "type": "numeric",
+          "prompt": { "tr": "Standart Normal Eğri (Z Dağılımı) altındaki toplam alan kaçtır?", "en": "What is the total area under the Standard Normal Curve?" },
+          "correctAnswer": 1,
+          "explanation": { "tr": "Normal eğri altındaki toplam olasılık alanı tam olarak 1.0 (%100)'dir.", "en": "Total area under any probability density function is 1.0." }
+        }
+      ]
     }
   ],
   "caseExams": [
