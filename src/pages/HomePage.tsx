@@ -25,6 +25,7 @@ import {
   Calendar,
   Database,
   Compass,
+  GraduationCap,
 } from 'lucide-react';
 
 interface CourseTrack {
@@ -60,6 +61,43 @@ const COURSES_DATA: CourseTrack[] = [
     badgeStyle: 'bg-orange-100 text-[#ff7a00] border-orange-200/80',
     cardStyle: 'border-orange-200/90 hover:border-[#ff7a00] bg-gradient-to-b from-orange-50/70 via-white to-orange-50/30 hover:from-orange-50 hover:to-orange-100/60 shadow-xs hover:shadow-lg hover:-translate-y-1',
     glowColor: 'bg-[#ff7a00]/10',
+  },
+  {
+    code: 'INDR 252',
+    name: {
+      tr: 'Uygulamalı İstatistik',
+      en: 'Applied Statistics',
+    },
+    desc: {
+      tr: 'Parametrik istatistik, güven aralıkları, hipotez testleri, uyum iyiliği, basit/çoklu regresyon ve kalite kontrol uygulamaları.',
+      en: 'Parametric estimation, confidence intervals, hypothesis testing, distribution fitting, simple/multiple regression & quality control.',
+    },
+    status: 'active',
+    track: 'statistics',
+    icon: BarChart3,
+    iconBg: 'bg-slate-900 text-white shadow-md',
+    badge: { tr: '8 Modül', en: '8 Modules' },
+    badgeStyle: 'bg-slate-100 text-slate-700 border-slate-200',
+    cardStyle: 'border-slate-200 hover:border-[#ff7a00] bg-gradient-to-b from-slate-50/70 via-white to-orange-50/20 hover:from-orange-50 hover:to-orange-100/60 shadow-xs hover:shadow-lg hover:-translate-y-1',
+    glowColor: 'bg-slate-900/5',
+  },
+  {
+    code: 'INDR 100',
+    name: {
+      tr: 'Endüstri Mühendisliğine Giriş',
+      en: 'Introduction to Industrial Engineering',
+    },
+    desc: {
+      tr: 'Endüstri mühendisliği kavramları, sistem analizi ve modelleme temelleri, üretim ve hizmet sistemleri, bilgisayar ve programlama uygulamaları.',
+      en: 'Introduction to industrial engineering concepts, fundamentals of systems analysis and modeling, production and service systems.',
+    },
+    status: 'in_design',
+    icon: GraduationCap,
+    iconBg: 'bg-amber-600 text-white shadow-md shadow-amber-600/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-amber-100 text-amber-800 border-amber-200/80',
+    cardStyle: 'border-amber-200/70 bg-gradient-to-b from-amber-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-amber-500/10',
   },
   {
     code: 'INDR 201',
@@ -114,25 +152,6 @@ const COURSES_DATA: CourseTrack[] = [
     badgeStyle: 'bg-indigo-100 text-indigo-700 border-indigo-200/80',
     cardStyle: 'border-indigo-200/70 bg-gradient-to-b from-indigo-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
     glowColor: 'bg-indigo-500/10',
-  },
-  {
-    code: 'INDR 252',
-    name: {
-      tr: 'Uygulamalı İstatistik',
-      en: 'Applied Statistics',
-    },
-    desc: {
-      tr: 'Parametrik istatistik, güven aralıkları, hipotez testleri, uyum iyiliği, basit/çoklu regresyon ve kalite kontrol uygulamaları.',
-      en: 'Parametric estimation, confidence intervals, hypothesis testing, distribution fitting, simple/multiple regression & quality control.',
-    },
-    status: 'active',
-    track: 'statistics',
-    icon: BarChart3,
-    iconBg: 'bg-slate-900 text-white shadow-md',
-    badge: { tr: '8 Modül', en: '8 Modules' },
-    badgeStyle: 'bg-slate-100 text-slate-700 border-slate-200',
-    cardStyle: 'border-slate-200 hover:border-[#ff7a00] bg-gradient-to-b from-slate-50/70 via-white to-orange-50/20 hover:from-orange-50 hover:to-orange-100/60 shadow-xs hover:shadow-lg hover:-translate-y-1',
-    glowColor: 'bg-slate-900/5',
   },
   {
     code: 'INDR 262',
