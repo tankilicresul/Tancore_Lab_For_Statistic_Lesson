@@ -64,7 +64,11 @@ export const LessonPage: React.FC<LessonPageProps> = ({
     setIsNextLoading(true);
 
     setTimeout(() => {
-      if (!isCompleted) handleFinishLesson();
+      // Only orientation intro lessons without test questions auto-complete on continue
+      if (lesson.isOrientation && !isCompleted) {
+        completeLesson(lesson.id, module.id, 15);
+        setIsCompleted(true);
+      }
       if (onSelectNextTopic) {
         onSelectNextTopic(nextTopic.id, nextTopic.type);
       }
@@ -75,18 +79,31 @@ export const LessonPage: React.FC<LessonPageProps> = ({
   const handleAnswerSubmit = (qId: string) => {
     setSubmittedQuestions((prev) => ({ ...prev, [qId]: true }));
     const q = lesson.questions?.find((item) => item.id === qId);
-    const userAnswer = selectedAnswers[qId];
-    const isCorrect =
-      q &&
-      (typeof q.correctAnswer === 'number'
-        ? parseFloat(String(userAnswer)) === q.correctAnswer
-        : String(userAnswer).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase());
+    if (!q) return;
 
-    if (isCorrect || !q) {
+    const userAnswer = selectedAnswers[qId];
+    let isCorrect = false;
+
+    if (typeof q.correctAnswer === 'number') {
+      const parsedUser = parseFloat(String(userAnswer).replace(',', '.').trim());
+      isCorrect =
+        !isNaN(parsedUser) &&
+        (Math.abs(parsedUser - q.correctAnswer) <= 0.01 || parsedUser === q.correctAnswer);
+    } else {
+      isCorrect =
+        String(userAnswer).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase();
+    }
+
+    if (isCorrect) {
       completeLesson(lesson.id, module.id, 15);
       setIsCompleted(true);
       triggerConfetti();
     }
+  };
+
+  const handleRetryQuestion = (qId: string) => {
+    setSubmittedQuestions((prev) => ({ ...prev, [qId]: false }));
+    setSelectedAnswers((prev) => ({ ...prev, [qId]: '' }));
   };
 
   const triggerConfetti = () => {
@@ -99,12 +116,6 @@ export const LessonPage: React.FC<LessonPageProps> = ({
     } catch {
       // fallback
     }
-  };
-
-  const handleFinishLesson = () => {
-    completeLesson(lesson.id, module.id, 15);
-    setIsCompleted(true);
-    triggerConfetti();
   };
 
   // Dedicated Orientation / Roadmap view for the first introductory lesson
@@ -305,11 +316,11 @@ export const LessonPage: React.FC<LessonPageProps> = ({
       />
 
       {/* STEP 4: Mini Questions (Sorular) */}
-      {lesson.questions && lesson.questions.length > 0 && (
-        <div className="my-8 rounded-3xl bg-white border border-slate-200 overflow-hidden shadow-xs">
+      {lesson.questions && lesson.questions.length > 0 && (        {/* ACCORDION 4: Question & Practice */}
+        <div id="lesson-question-box" className="my-8 rounded-3xl bg-white border border-slate-200 overflow-hidden shadow-xs">
           <button
             onClick={() => setIsQuestionsOpen(!isQuestionsOpen)}
-            className="w-full p-5 sm:p-6 flex items-center justify-between hover:bg-slate-50/80 transition-colors text-left focus:outline-none"
+            className="w-full p-5 sm:p-6 flex items-center justify-between hover:bg-slate-50/80 transition-colors text-left focus:outline-none cursor-pointer"
           >
             <div className="flex items-center space-x-3 min-w-0">
               <div className="p-2.5 rounded-2xl bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30 shrink-0">
@@ -318,14 +329,14 @@ export const LessonPage: React.FC<LessonPageProps> = ({
               <div className="min-w-0">
                 <div className="flex items-center space-x-2">
                   <h3 className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#ff7a00]">
-                    {language === 'tr' ? '4. Mini Kavrama Soruları' : '4. Mini Check Questions'}
+                    {language === 'tr' ? '4. Mini Kavrama Sorusu' : '4. Mini Check Question'}
                   </h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-                    {lesson.questions.length} {language === 'tr' ? 'Soru' : 'Questions'}
+                  <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-orange-100 text-[#ff7a00] border border-orange-200">
+                    +15 XP
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 font-medium truncate mt-0.5">
-                  {language === 'tr' ? 'Bilgilerini test et ve XP kazan' : 'Test your knowledge & earn XP'}
+                  {language === 'tr' ? 'Soruyu doğru yanıtlayarak +15 XP kazan' : 'Answer correctly to earn +15 XP'}
                 </p>
               </div>
             </div>
@@ -343,11 +354,19 @@ export const LessonPage: React.FC<LessonPageProps> = ({
               {lesson.questions.map((q) => {
                 const isSubmitted = submittedQuestions[q.id];
                 const userAnswer = selectedAnswers[q.id];
-                const isCorrect =
-                  isSubmitted &&
-                  (typeof q.correctAnswer === 'number'
-                    ? parseFloat(String(userAnswer)) === q.correctAnswer
-                    : String(userAnswer).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase());
+                let isCorrect = false;
+
+                if (isSubmitted) {
+                  if (typeof q.correctAnswer === 'number') {
+                    const parsedUser = parseFloat(String(userAnswer).replace(',', '.').trim());
+                    isCorrect =
+                      !isNaN(parsedUser) &&
+                      (Math.abs(parsedUser - q.correctAnswer) <= 0.01 || parsedUser === q.correctAnswer);
+                  } else {
+                    isCorrect =
+                      String(userAnswer).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase();
+                  }
+                }
 
                 return (
                   <div
@@ -368,9 +387,9 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                           return (
                             <button
                               key={oIdx}
-                              disabled={isSubmitted}
+                              disabled={isSubmitted && isCorrect}
                               onClick={() => setSelectedAnswers({ ...selectedAnswers, [q.id]: optText })}
-                              className={`w-full p-4 rounded-2xl border text-left font-bold text-sm transition-all break-words ${
+                              className={`w-full p-4 rounded-2xl border text-left font-bold text-sm transition-all break-words cursor-pointer ${
                                 isSelected
                                   ? 'bg-[#ff7a00]/15 border-[#ff7a00] text-[#ff7a00] shadow-xs'
                                   : 'bg-white border-slate-200 text-slate-800 hover:border-[#ff7a00]/40'
@@ -388,7 +407,8 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                       <div className="mb-4">
                         <input
                           type="number"
-                          disabled={isSubmitted}
+                          step="any"
+                          disabled={isSubmitted && isCorrect}
                           value={userAnswer !== undefined ? String(userAnswer) : ''}
                           onChange={(e) =>
                             setSelectedAnswers({ ...selectedAnswers, [q.id]: e.target.value })
@@ -406,34 +426,47 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                         onClick={() => handleAnswerSubmit(q.id)}
                         className="px-6 py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-[#ff7a00]/20 cursor-pointer"
                       >
-                        {language === 'tr' ? 'Kontrol Et (+15 XP)' : 'Check Answer (+15 XP)'}
+                        {language === 'tr' ? 'Cevabı Gönder (+15 XP)' : 'Submit Answer (+15 XP)'}
                       </button>
                     ) : (
                       <div
                         className={`p-4 rounded-2xl border mt-3 ${
                           isCorrect
-                            ? 'bg-[#ff7a00]/10 border-[#ff7a00]/30 text-[#ff7a00]'
-                            : 'bg-rose-50 border-rose-200 text-rose-800'
+                            ? 'bg-emerald-50/80 border-emerald-200 text-emerald-900'
+                            : 'bg-rose-50 border-rose-200 text-rose-900'
                         }`}
                       >
-                        <div className="flex items-center space-x-2 font-black mb-1">
-                          {isCorrect ? (
-                            <>
-                              <CheckCircle2 className="w-5 h-5 text-[#ff7a00]" />
-                              <span>{language === 'tr' ? 'Doğru Cevap! (+15 XP)' : 'Correct Answer! (+15 XP)'}</span>
-                            </>
-                          ) : (
-                            <>
-                              <span className="text-rose-600 font-black">✕</span>
-                              <span>
-                                {language === 'tr'
-                                  ? `Yanlış. Doğru cevap: ${q.correctAnswer}`
-                                  : `Incorrect. Correct answer: ${q.correctAnswer}`}
-                              </span>
-                            </>
+                        <div className="flex items-center justify-between gap-3 mb-2">
+                          <div className="flex items-center space-x-2 font-black">
+                            {isCorrect ? (
+                              <>
+                                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                                <span className="text-emerald-700">
+                                  {language === 'tr' ? 'Tebrikler, Doğru Cevap! (+15 XP)' : 'Congratulations, Correct! (+15 XP)'}
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <span className="text-rose-600 font-black text-base">✕</span>
+                                <span className="text-rose-700">
+                                  {language === 'tr' ? 'Yanlış Cevap' : 'Incorrect Answer'}
+                                </span>
+                              </>
+                            )}
+                          </div>
+
+                          {!isCorrect && (
+                            <button
+                              onClick={() => handleRetryQuestion(q.id)}
+                              className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-[11px] uppercase tracking-wider transition-all cursor-pointer shadow-xs active:scale-95 flex items-center space-x-1"
+                            >
+                              <RefreshCw className="w-3 h-3" />
+                              <span>{language === 'tr' ? 'Tekrar Dene' : 'Try Again'}</span>
+                            </button>
                           )}
                         </div>
-                        <div className="text-xs text-slate-700 mt-1 leading-relaxed font-medium">
+
+                        <div className="text-xs text-slate-700 mt-2 leading-relaxed font-medium">
                           <MathFormulaText text={getLocalized(q.explanation, language)} />
                         </div>
                       </div>
@@ -454,34 +487,62 @@ export const LessonPage: React.FC<LessonPageProps> = ({
 
       {/* Finish Lesson Banner & Action Buttons */}
       <div className="mt-10 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 text-center shadow-xs">
-        <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[#ff7a00] flex items-center justify-center text-white shadow-lg shadow-[#ff7a00]/20">
+        <div
+          className={`w-14 h-14 mx-auto mb-4 rounded-full flex items-center justify-center text-white shadow-lg transition-colors ${
+            isCompleted
+              ? 'bg-emerald-500 shadow-emerald-500/20'
+              : 'bg-[#ff7a00] shadow-[#ff7a00]/20'
+          }`}
+        >
           {isCompleted ? (
             <PartyPopper className="w-7 h-7 stroke-[2.2]" />
           ) : (
             <HelpCircle className="w-7 h-7 stroke-[2.2]" />
           )}
         </div>
+
         <h3 className="text-xl font-black text-slate-900 mb-1 tracking-tight">
           {isCompleted
-            ? language === 'tr' ? 'Dersi Başarıyla Tamamladın!' : 'Lesson Successfully Completed!'
-            : language === 'tr' ? 'Dersi Tamamla & XP Kazan' : 'Complete Lesson & Earn XP'}
+            ? language === 'tr'
+              ? '🎉 Dersi Başarıyla Tamamladın!'
+              : '🎉 Lesson Successfully Completed!'
+            : language === 'tr'
+              ? 'Dersi Tamamlamak ve +15 XP Kazanmak İçin Soruyu Doğru Çöz'
+              : 'Answer Question Correctly to Complete & Earn +15 XP'}
         </h3>
-        <p className="text-xs text-slate-500 mb-6 font-medium">
+
+        <p className="text-xs text-slate-500 mb-6 font-medium max-w-lg mx-auto">
           {isCompleted
             ? language === 'tr'
-              ? 'Ders sorularını başarıyla yanıtlayarak +15 XP kazandınız.'
-              : 'You earned +15 XP by completing the lesson.'
+              ? 'Ders sorusunu doğru yanıtlayarak +15 XP kazandınız.'
+              : 'You earned +15 XP by answering the lesson question correctly.'
             : language === 'tr'
-              ? 'Ders içindeki soruları yanıtlayarak +15 XP kazanabilirsin.'
-              : 'Answer the questions to earn +15 XP.'}
+              ? 'XP kazanmak ve bu dersi tamamlamak için yukarıdaki kavrama sorusunu doğru çözmeniz gerekmektedir.'
+              : 'You must answer the practice question above correctly to complete this lesson and earn +15 XP.'}
         </p>
+
+        {!isCompleted && (
+          <div className="mb-6">
+            <button
+              onClick={() => {
+                setIsQuestionsOpen(true);
+                const el = document.getElementById('lesson-question-box');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="px-6 py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white font-black text-xs uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/25 cursor-pointer active:scale-95 inline-flex items-center space-x-2"
+            >
+              <HelpCircle className="w-4 h-4" />
+              <span>{language === 'tr' ? 'Soruyu Doğru Çöz (+15 XP Kazan)' : 'Solve Question to Earn +15 XP'}</span>
+            </button>
+          </div>
+        )}
 
         {/* Action Buttons Group: Ana Sayfa - Yönetici Özeti - Sıradaki Konu */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           {/* 1. Back to Home */}
           <button
             onClick={() => (onBackToHomeWithScroll ? onBackToHomeWithScroll(lesson.id) : onBack())}
-            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs tracking-wide border border-slate-200 transition-colors flex items-center justify-center space-x-2"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs tracking-wide border border-slate-200 transition-colors flex items-center justify-center space-x-2 cursor-pointer"
           >
             <Home className="w-4 h-4 text-[#ff7a00]" />
             <span>{language === 'tr' ? 'Ana Sayfa' : 'Home'}</span>
@@ -490,7 +551,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
           {/* 2. Yönetici Özeti */}
           <button
             onClick={() => (onBackToHomeWithScroll ? onBackToHomeWithScroll(lesson.id) : onBack())}
-            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs tracking-wide border border-slate-200 transition-colors flex items-center justify-center space-x-2"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs tracking-wide border border-slate-200 transition-colors flex items-center justify-center space-x-2 cursor-pointer"
           >
             <Eye className="w-4 h-4 text-[#ff7a00]" />
             <span>{language === 'tr' ? 'Yönetici Özeti' : 'Executive Summary'}</span>
@@ -501,7 +562,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
             <button
               disabled={isNextLoading}
               onClick={handleNextTopicClick}
-              className={`w-full sm:w-auto px-7 py-3.5 rounded-2xl font-bold text-xs tracking-wide border transition-all flex items-center justify-center space-x-2 ${
+              className={`w-full sm:w-auto px-7 py-3.5 rounded-2xl font-bold text-xs tracking-wide border transition-all flex items-center justify-center space-x-2 cursor-pointer ${
                 isNextLoading
                   ? 'bg-[#ff7a00] text-white border-[#ff7a00] shadow-lg shadow-[#ff7a00]/20'
                   : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200'
