@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { XpStreakBar } from './components/XpStreakBar';
 import { AuthLandingScreen } from './components/AuthLandingScreen';
 import { HomePage, CourseTrack } from './pages/HomePage';
@@ -57,6 +57,67 @@ export const App: React.FC = () => {
         console.warn('Profile sync error:', err);
       });
   }, [userProfile?.schoolEmail]);
+
+  // ── Swipe-back edge gesture ──────────────────────────────────────────────
+  // Captures left-edge (right-to-left) OR right-edge (left-to-right) swipes
+  // that originate within 30px of the screen border and navigates back one step.
+  const swipeTouchRef = useRef<{ startX: number; startY: number } | null>(null);
+
+  useEffect(() => {
+    const EDGE_THRESHOLD = 30; // px from screen edge to start the swipe zone
+    const MIN_SWIPE_X = 60;    // minimum horizontal distance to count as a swipe
+    const MAX_SWIPE_Y = 80;    // maximum vertical drift (to exclude scroll gestures)
+
+    const onTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      const fromLeftEdge = touch.clientX <= EDGE_THRESHOLD;
+      const fromRightEdge = touch.clientX >= window.innerWidth - EDGE_THRESHOLD;
+      if (fromLeftEdge || fromRightEdge) {
+        swipeTouchRef.current = { startX: touch.clientX, startY: touch.clientY };
+      } else {
+        swipeTouchRef.current = null;
+      }
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (!swipeTouchRef.current) return;
+      const touch = e.changedTouches[0];
+      const dx = touch.clientX - swipeTouchRef.current.startX;
+      const dy = touch.clientY - swipeTouchRef.current.startY;
+      swipeTouchRef.current = null;
+
+      // Must be mostly horizontal and meet minimum distance
+      if (Math.abs(dy) > MAX_SWIPE_Y || Math.abs(dx) < MIN_SWIPE_X) return;
+
+      // Right-to-left from right edge OR left-to-right from left edge → go back
+      const isBackSwipe =
+        (dx > 0 && e.changedTouches[0].clientX - dx <= EDGE_THRESHOLD) || // left-edge → swipe right = back
+        (dx < 0 && e.changedTouches[0].clientX - dx >= window.innerWidth - EDGE_THRESHOLD); // right-edge → swipe left = back
+
+      if (!isBackSwipe) return;
+
+      // Navigate to the previous screen in the hierarchy
+      const view = useAppStore.getState().currentView;
+      if (view === 'lesson' || view === 'caseExam' || view === 'placementTest') {
+        useAppStore.getState().setCurrentView('course');
+        useAppStore.getState().setSelectedLessonId(null);
+        useAppStore.getState().setSelectedCaseId(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (view === 'course' || view === 'profile') {
+        useAppStore.getState().setCurrentView('home');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      // If view === 'home', let the browser/OS handle the back gesture naturally
+    };
+
+    document.addEventListener('touchstart', onTouchStart, { passive: true });
+    document.addEventListener('touchend', onTouchEnd, { passive: true });
+    return () => {
+      document.removeEventListener('touchstart', onTouchStart);
+      document.removeEventListener('touchend', onTouchEnd);
+    };
+  }, []);
+  // ────────────────────────────────────────────────────────────────────────
 
   // If user is not authenticated or not verified, display full-screen Auth Onboarding Screen
   if (!isAuthenticated || !isVerified) {

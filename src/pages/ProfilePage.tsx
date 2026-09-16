@@ -233,8 +233,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans space-y-6 animate-fade-in">
       {/* User Profile Identity Card */}
-      <div className="bg-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff7a00]/15 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+      <div className="bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] rounded-3xl p-5 sm:p-6 text-white shadow-xl relative overflow-hidden border border-amber-300/60">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+        <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-yellow-300/25 rounded-full blur-2xl pointer-events-none" />
+
 
         <div className="flex items-center justify-between relative z-10 gap-3">
           <div className="flex items-center space-x-3.5 min-w-0 flex-1">
@@ -280,7 +282,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
             ) : (
               <button
                 onClick={() => logout()}
-                className="p-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition-colors cursor-pointer"
+                className="p-2 rounded-xl bg-white/20 hover:bg-rose-500/40 text-white hover:text-rose-100 border border-white/30 transition-colors cursor-pointer"
                 title={language === 'tr' ? 'Çıkış Yap' : 'Sign Out'}
               >
                 <LogOut className="w-4 h-4" />
@@ -408,43 +410,43 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
             </div>
           </form>
         ) : (
-          <div className="mt-4 pt-4 border-t border-white/10 space-y-3.5 relative z-10">
+          <div className="mt-4 pt-4 border-t border-white/30 space-y-3.5 relative z-10">
             <div className="space-y-2 text-xs sm:text-sm font-medium">
-              <div className="flex items-center space-x-2.5 text-slate-300 min-w-0">
-                <Building2 className="w-4 h-4 text-[#ff7a00] shrink-0" />
+              <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
+                <Building2 className="w-4 h-4 text-white shrink-0" />
                 <span className="truncate">{userProfile?.university || 'Marmara Üniversitesi'}</span>
               </div>
-              <div className="flex items-center space-x-2.5 text-slate-300 min-w-0">
-                <GraduationCap className="w-4 h-4 text-[#ff7a00] shrink-0" />
+              <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
+                <GraduationCap className="w-4 h-4 text-white shrink-0" />
                 <span className="truncate">{userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf'}</span>
               </div>
-              <div className="flex items-center space-x-2.5 text-slate-300 min-w-0">
-                <Mail className="w-4 h-4 text-[#ff7a00] shrink-0" />
+              <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
+                <Mail className="w-4 h-4 text-white shrink-0" />
                 <span className="truncate">{userProfile?.schoolEmail || (language === 'tr' ? 'Giriş yapılmadı' : 'Not signed in')}</span>
               </div>
             </div>
 
             {/* Bottom Row: Edit button on Bottom-Left, Leaderboard rank button on Bottom-Right */}
-            <div className="flex items-center justify-between gap-2.5 pt-2.5 border-t border-white/10">
+            <div className="flex items-center justify-between gap-2.5 pt-2.5 border-t border-white/30">
               <button
                 onClick={() => setIsEditing(true)}
-                className="flex items-center space-x-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/10 hover:bg-white/20 hover:border-white/30 border border-white/15 text-xs sm:text-sm font-black transition-all shadow-xs shrink-0 whitespace-nowrap cursor-pointer text-white group hover:scale-[1.02] active:scale-[0.98]"
+                className="flex items-center space-x-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/20 hover:bg-white/30 border border-white/30 text-xs sm:text-sm font-black transition-all shadow-xs shrink-0 whitespace-nowrap cursor-pointer text-white group hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#ff7a00] group-hover:rotate-12 transition-transform" />
+                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white group-hover:rotate-12 transition-transform" />
                 <span>{language === 'tr' ? 'Düzenle' : 'Edit'}</span>
               </button>
 
               <button
                 onClick={() => setIsLeaderboardOpen(!isLeaderboardOpen)}
-                className="flex items-center space-x-2 px-4 sm:px-4.5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500/25 to-orange-500/25 hover:from-amber-500/40 hover:to-orange-500/40 text-amber-300 border border-amber-400/50 text-xs sm:text-sm font-black transition-all shadow-md group shrink-0 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="flex items-center space-x-2 px-4 sm:px-4.5 py-2 sm:py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white border border-white/30 text-xs sm:text-sm font-black transition-all shadow-md group shrink-0 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
                 title="Genel Sıralamayı Gör"
               >
-                <Trophy className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+                <Trophy className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
                 <span>{userRank}. {language === 'tr' ? 'Sıra' : 'Rank'}</span>
                 {isLeaderboardOpen ? (
-                  <ChevronUp className="w-4 h-4 text-amber-300 stroke-[2.5]" />
+                  <ChevronUp className="w-4 h-4 text-white stroke-[2.5]" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-amber-300 stroke-[2.5]" />
+                  <ChevronDown className="w-4 h-4 text-white stroke-[2.5]" />
                 )}
               </button>
             </div>
