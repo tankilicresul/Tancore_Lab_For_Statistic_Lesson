@@ -26,6 +26,7 @@ export const AvatarCropModal: React.FC<AvatarCropModalProps> = ({
 
   const imgRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pinchRef = useRef<{ initialDist: number; initialZoom: number } | null>(null);
 
   // Dynamic responsive viewport size calculation
   useEffect(() => {
@@ -112,9 +113,48 @@ export const AvatarCropModal: React.FC<AvatarCropModalProps> = ({
     setIsDragging(false);
   };
 
-  // Touch drag handlers
+  // Touch drag and pinch-to-zoom handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 1) {
+      setIsDragging(true);
+      pinchRef.current = null;
+      setDragStart({
+        x: e.touches[0].clientX - offset.x,
+        y: e.touches[0].clientY - offset.y,
+      });
+    } else if (e.touches.length === 2) {
+      setIsDragging(false);
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      pinchRef.current = { initialDist: dist, initialZoom: zoom };
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 1 && isDragging) {
+      const newX = e.touches[0].clientX - dragStart.x;
+      const newY = e.touches[0].clientY - dragStart.y;
+      setOffset(clampOffset(newX, newY, renderedWidth, renderedHeight, viewportSize));
+    } else if (e.touches.length === 2 && pinchRef.current) {
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      if (pinchRef.current.initialDist > 0) {
+        const factor = dist / pinchRef.current.initialDist;
+        handleZoomChange(pinchRef.current.initialZoom * factor);
+      }
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (e.touches.length === 0) {
+      setIsDragging(false);
+      pinchRef.current = null;
+    } else if (e.touches.length === 1) {
+      pinchRef.current = null;
       setIsDragging(true);
       setDragStart({
         x: e.touches[0].clientX - offset.x,
@@ -123,15 +163,10 @@ export const AvatarCropModal: React.FC<AvatarCropModalProps> = ({
     }
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || e.touches.length !== 1) return;
-    const newX = e.touches[0].clientX - dragStart.x;
-    const newY = e.touches[0].clientY - dragStart.y;
-    setOffset(clampOffset(newX, newY, renderedWidth, renderedHeight, viewportSize));
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    const delta = e.deltaY * -0.0015;
+    handleZoomChange(zoom + delta);
   };
 
   // Reset to original center
@@ -227,6 +262,7 @@ export const AvatarCropModal: React.FC<AvatarCropModalProps> = ({
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            onWheel={handleWheel}
           >
             {/* The Image */}
             <img

@@ -293,29 +293,29 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
         {isEditing ? (
           <form onSubmit={handleSave} className="mt-5 pt-4 border-t border-white/10 space-y-4 relative z-10">
             {/* Profil Fotoğrafı Düzenleme Bölümü */}
-            <div className="flex items-center space-x-3.5 p-3 rounded-2xl bg-white/5 border border-white/10">
-              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border border-white/20 shadow-md shrink-0 overflow-hidden relative">
+            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3.5 p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 min-w-[64px] min-h-[64px] max-w-[64px] max-h-[64px] sm:max-w-[80px] sm:max-h-[80px] rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border border-white/20 shadow-md shrink-0 overflow-hidden relative">
                 {isUploadingAvatar ? (
                   <Loader2 className="w-6 h-6 animate-spin text-white" />
                 ) : userProfile?.avatarUrl ? (
-                  <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                  <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-2xl" />
                 ) : (
                   userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
                 )}
               </div>
 
-              <div className="flex-1 min-w-0 space-y-1.5">
-                <p className="text-xs font-bold text-slate-200">
+              <div className="flex-1 min-w-0 space-y-2 text-center sm:text-left w-full">
+                <p className="text-xs sm:text-sm font-bold text-slate-200">
                   {language === 'tr' ? 'Profil Fotoğrafı' : 'Profile Picture'}
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isUploadingAvatar}
-                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-[11px] font-black transition-all shadow-sm cursor-pointer disabled:opacity-50"
+                    className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black transition-all shadow-md shadow-[#ff7a00]/30 cursor-pointer disabled:opacity-50 active:scale-95"
                   >
-                    <Camera className="w-3.5 h-3.5" />
+                    <Camera className="w-4 h-4" />
                     <span>{language === 'tr' ? 'Fotoğraf Seç / Çek' : 'Choose / Take Photo'}</span>
                   </button>
 
@@ -329,7 +329,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                         updateUserProfile({ avatarUrl: undefined });
                         setFormData((prev) => ({ ...prev, avatarUrl: undefined }));
                       }}
-                      className="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 text-[11px] font-bold transition-colors border border-white/15 cursor-pointer"
+                      className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 text-xs font-bold transition-colors border border-white/15 cursor-pointer active:scale-95"
                     >
                       {language === 'tr' ? 'Kaldır' : 'Remove'}
                     </button>
