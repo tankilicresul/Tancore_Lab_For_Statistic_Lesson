@@ -241,14 +241,16 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
         <div className="flex items-center justify-between relative z-10 gap-3">
           <div className="flex items-center space-x-3.5 min-w-0 flex-1">
             <div
-              className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border-2 border-white/30 shadow-lg shrink-0 overflow-hidden relative"
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/25 text-white font-black text-2xl flex items-center justify-center border-2 border-white/50 shadow-lg shrink-0 overflow-hidden relative"
             >
               {isUploadingAvatar ? (
                 <Loader2 className="w-6 h-6 animate-spin text-white" />
               ) : userProfile?.avatarUrl ? (
                 <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-              ) : (
+              ) : isAuthenticated ? (
                 userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
+              ) : (
+                '👤'
               )}
             </div>
             <input
@@ -258,15 +260,24 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
               accept="image/*"
               className="hidden"
             />
-            <div className="min-w-0 flex-1 flex items-center">
+            <div className="min-w-0 flex-1">
               <h2 className="text-xl xs:text-2xl sm:text-3xl font-black tracking-tight text-white leading-none truncate flex items-center gap-2">
-                <span className="truncate">{userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}</span>
+                <span className="truncate">
+                  {isAuthenticated
+                    ? (userProfile?.fullName || (language === 'tr' ? 'Kullanıcı' : 'User'))
+                    : (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}
+                </span>
                 {isVerified && (
                   <span title="Doğrulanmış Hesap">
-                    <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400 shrink-0 inline-block" />
+                    <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-300 shrink-0 inline-block" />
                   </span>
                 )}
               </h2>
+              {!isAuthenticated && (
+                <p className="text-white/75 text-[11px] font-semibold mt-0.5 leading-none">
+                  {language === 'tr' ? 'Kayıt olmadan geziyorsunuz' : 'Browsing as guest'}
+                </p>
+              )}
             </div>
           </div>
 
@@ -274,10 +285,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
             {!isAuthenticated ? (
               <button
                 onClick={onOpenAuth}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black transition-colors shadow-xs cursor-pointer"
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white/25 hover:bg-white/35 text-white text-xs font-black transition-colors border border-white/40 cursor-pointer"
               >
                 <UserCheck className="w-4 h-4" />
-                <span>{language === 'tr' ? 'Giriş Yap' : 'Sign In'}</span>
+                <span>{language === 'tr' ? 'Kayıt Ol / Giriş' : 'Sign Up / In'}</span>
               </button>
             ) : (
               <button
@@ -723,6 +734,31 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
           </div>
         )}
       </div>
+
+      {/* Guest CTA Card: shown only when not authenticated */}
+      {!isAuthenticated && (
+        <div className="bg-white border-2 border-[#ff7a00]/40 rounded-3xl p-5 sm:p-6 shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-100 rounded-full blur-2xl -mr-8 -mt-8 pointer-events-none" />
+          <div className="relative z-10 flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex-1 text-center sm:text-left">
+              <h3 className="text-base font-black text-slate-900 tracking-tight mb-1">
+                {language === 'tr' ? '🎓 İlerlemeni Kaydet ve Tüm Modülleri Aç' : '🎓 Save Your Progress & Unlock All Modules'}
+              </h3>
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                {language === 'tr'
+                  ? 'Ücretsiz kayıt ol; XP kazan, rozet topla, liderlik tablosuna gir ve Tanco ile sınırsız sohbet et!'
+                  : 'Sign up free — earn XP, collect badges, join the leaderboard, and chat with Tanco unlimited!'}
+              </p>
+            </div>
+            <button
+              onClick={onOpenAuth}
+              className="shrink-0 px-5 py-2.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-md shadow-[#ff7a00]/30 transition-all cursor-pointer active:scale-95 whitespace-nowrap"
+            >
+              {language === 'tr' ? 'Ücretsiz Kayıt Ol' : 'Sign Up Free'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Key Metrics Bar (3 Hero Stats) */}
       <div className="grid grid-cols-3 gap-2.5 sm:gap-3">

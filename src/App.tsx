@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { XpStreakBar } from './components/XpStreakBar';
-import { AuthLandingScreen } from './components/AuthLandingScreen';
 import { HomePage, CourseTrack } from './pages/HomePage';
 import { CoursePage } from './pages/CoursePage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -9,7 +8,8 @@ import { CaseExamPage } from './pages/CaseExamPage';
 import { PlacementTestPage } from './pages/PlacementTestPage';
 import { TancoChatModal } from './components/TancoChatModal';
 import { FloatingTancoButton } from './components/FloatingTancoButton';
-import { getLessonById, getCaseExamById, getModuleById } from './data/modules';
+import { GuestGateModal } from './components/GuestGateModal';
+import { getLessonById, getCaseExamById } from './data/modules';
 import { useAppStore } from './store/useAppStore';
 import { getLocalized } from './utils/localization';
 import { fetchUserProfileFromSupabase } from './lib/supabase';
@@ -36,6 +36,16 @@ export const App: React.FC = () => {
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
   const [selectedInDesignCourse, setSelectedInDesignCourse] = useState<CourseTrack | null>(null);
 
+  // Guest session: track how many distinct lessons/cases have been opened this session
+  // Stored in sessionStorage so it resets on new tab/browser close (but persists on refresh)
+  const [showGuestGate, setShowGuestGate] = useState(false);
+  const getGuestViewCount = () => {
+    try { return parseInt(sessionStorage.getItem('tanco_guest_views') || '0', 10); } catch { return 0; }
+  };
+  const incrementGuestViewCount = () => {
+    try { sessionStorage.setItem('tanco_guest_views', String(getGuestViewCount() + 1)); } catch {}
+  };
+
   // Automatically sync profile details from Supabase cloud so registered name is always present
   useEffect(() => {
     const email = userProfile?.schoolEmail;
@@ -59,14 +69,12 @@ export const App: React.FC = () => {
   }, [userProfile?.schoolEmail]);
 
   // ── Swipe-back edge gesture ──────────────────────────────────────────────
-  // Captures left-edge (right-to-left) OR right-edge (left-to-right) swipes
-  // that originate within 30px of the screen border and navigates back one step.
   const swipeTouchRef = useRef<{ startX: number; startY: number } | null>(null);
 
   useEffect(() => {
-    const EDGE_THRESHOLD = 30; // px from screen edge to start the swipe zone
-    const MIN_SWIPE_X = 60;    // minimum horizontal distance to count as a swipe
-    const MAX_SWIPE_Y = 80;    // maximum vertical drift (to exclude scroll gestures)
+    const EDGE_THRESHOLD = 30;
+    const MIN_SWIPE_X = 60;
+    const MAX_SWIPE_Y = 80;
 
     const onTouchStart = (e: TouchEvent) => {
       const touch = e.touches[0];
@@ -86,17 +94,14 @@ export const App: React.FC = () => {
       const dy = touch.clientY - swipeTouchRef.current.startY;
       swipeTouchRef.current = null;
 
-      // Must be mostly horizontal and meet minimum distance
       if (Math.abs(dy) > MAX_SWIPE_Y || Math.abs(dx) < MIN_SWIPE_X) return;
 
-      // Right-to-left from right edge OR left-to-right from left edge → go back
       const isBackSwipe =
-        (dx > 0 && e.changedTouches[0].clientX - dx <= EDGE_THRESHOLD) || // left-edge → swipe right = back
-        (dx < 0 && e.changedTouches[0].clientX - dx >= window.innerWidth - EDGE_THRESHOLD); // right-edge → swipe left = back
+        (dx > 0 && e.changedTouches[0].clientX - dx <= EDGE_THRESHOLD) ||
+        (dx < 0 && e.changedTouches[0].clientX - dx >= window.innerWidth - EDGE_THRESHOLD);
 
       if (!isBackSwipe) return;
 
-      // Navigate to the previous screen in the hierarchy
       const view = useAppStore.getState().currentView;
       if (view === 'lesson' || view === 'caseExam' || view === 'placementTest') {
         useAppStore.getState().setCurrentView('course');
@@ -107,7 +112,6 @@ export const App: React.FC = () => {
         useAppStore.getState().setCurrentView('home');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-      // If view === 'home', let the browser/OS handle the back gesture naturally
     };
 
     document.addEventListener('touchstart', onTouchStart, { passive: true });
@@ -119,31 +123,52 @@ export const App: React.FC = () => {
   }, []);
   // ────────────────────────────────────────────────────────────────────────
 
-  // If user is not authenticated or not verified, display full-screen Auth Onboarding Screen
-  if (!isAuthenticated || !isVerified) {
-    return <AuthLandingScreen onSuccess={() => setCurrentView('home')} />;
-  }
+  // Guest-aware lesson/case opener
+  // Authenticated users: always open. Guests: first lesson free, second triggers GuestGateModal.
+  const openLessonOrCase = (
+    type: 'lesson' | 'case',
+    id: string
+  ) => {
+    if (isAuthenticated && isVerified) {
+      // Authenticated: full access
+      if (type === 'lesson') {
+        setSelectedLessonId(id);
+        setSelectedCaseId(null);
+        setCurrentView('lesson');
+      } else {
+        setSelectedCaseId(id);
+        setSelectedLessonId(null);
+        setCurrentView('caseExam');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
 
-  const handleSelectLesson = (lessonId: string) => {
-    setSelectedLessonId(lessonId);
-    setSelectedCaseId(null);
-    setCurrentView('lesson');
+    // Guest: allow the very first view, gate the second+
+    const count = getGuestViewCount();
+    if (count >= 1) {
+      setShowGuestGate(true);
+      return;
+    }
+
+    incrementGuestViewCount();
+    if (type === 'lesson') {
+      setSelectedLessonId(id);
+      setSelectedCaseId(null);
+      setCurrentView('lesson');
+    } else {
+      setSelectedCaseId(id);
+      setSelectedLessonId(null);
+      setCurrentView('caseExam');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSelectCaseExam = (caseId: string) => {
-    setSelectedCaseId(caseId);
-    setSelectedLessonId(null);
-    setCurrentView('caseExam');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const handleSelectLesson = (lessonId: string) => openLessonOrCase('lesson', lessonId);
+  const handleSelectCaseExam = (caseId: string) => openLessonOrCase('case', caseId);
 
   const handleSelectNextTopic = (nextId: string, nextType: 'lesson' | 'case') => {
-    if (nextType === 'lesson') {
-      handleSelectLesson(nextId);
-    } else {
-      handleSelectCaseExam(nextId);
-    }
+    openLessonOrCase(nextType, nextId);
   };
 
   const handleStartPlacementTest = () => {
@@ -257,6 +282,7 @@ export const App: React.FC = () => {
         {currentView === 'profile' && (
           <ProfilePage
             onGoHome={handleBackToHome}
+            onOpenAuth={() => setShowGuestGate(true)}
           />
         )}
 
@@ -288,6 +314,11 @@ export const App: React.FC = () => {
       {/* Tanco Assistant Chat Modal & Floating Launcher */}
       <TancoChatModal />
       <FloatingTancoButton />
+
+      {/* Guest Gate Modal: shown when unauthenticated user tries to access 2nd lesson/case */}
+      {showGuestGate && (
+        <GuestGateModal onClose={() => setShowGuestGate(false)} />
+      )}
     </div>
   );
 };
