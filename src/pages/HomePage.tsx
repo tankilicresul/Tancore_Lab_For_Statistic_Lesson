@@ -199,39 +199,6 @@ export const HomePage: React.FC<HomePageProps> = ({
           </button>
         </div>
       </div>
-
-      {/* Quick Performance & Overview Cards */}
-      <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
-        <div className="bg-orange-50 border border-orange-200/80 rounded-2xl p-3 text-center">
-          <div className="flex items-center justify-center space-x-1 text-[#ff7a00] mb-0.5">
-            <Trophy className="w-4 h-4" />
-            <span className="text-sm sm:text-base font-black">{xp}</span>
-          </div>
-          <span className="text-[9.5px] sm:text-[10px] font-extrabold text-slate-600 uppercase tracking-wider block text-center leading-tight">
-            {language === 'tr' ? 'Toplam XP' : 'Total XP'}
-          </span>
-        </div>
-
-        <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-3 text-center">
-          <div className="flex items-center justify-center space-x-1 text-amber-600 mb-0.5">
-            <Flame className="w-4 h-4 fill-amber-500 text-amber-500" />
-            <span className="text-sm sm:text-base font-black">{streak}</span>
-          </div>
-          <span className="text-[9.5px] sm:text-[10px] font-extrabold text-slate-600 uppercase tracking-wider block text-center leading-tight">
-            {language === 'tr' ? 'Günlük Seri' : 'Streak'}
-          </span>
-        </div>
-
-        <div className="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-3 text-center">
-          <div className="flex items-center justify-center space-x-1 text-emerald-600 mb-0.5">
-            <TrendingUp className="w-4 h-4 text-emerald-600" />
-            <span className="text-sm sm:text-base font-black">{completedCount}</span>
-          </div>
-          <span className="text-[9.5px] sm:text-[10px] font-extrabold text-slate-600 uppercase tracking-wider block text-center leading-tight">
-            {language === 'tr' ? 'Tamamlanan' : 'Completed'}
-          </span>
-        </div>
-      </div>
     </div>
   );
 };
