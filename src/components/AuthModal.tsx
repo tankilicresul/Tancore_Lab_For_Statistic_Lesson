@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore, isValidStudentEmail } from '../store/useAppStore';
 import { sendEmailOtp, verifyEmailOtp } from '../lib/supabase';
 import { UserProfile } from '../types/stats';
@@ -323,32 +323,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </div>
         )}
 
-        {/* Header Banner */}
-        <div className="text-center mb-5">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#ff7a00]/10 text-[#ff7a00] border border-[#ff7a00]/25 shadow-inner mb-2.5">
-            {step === 'otp' ? (
+        {/* Header Banner - Only for OTP verification */}
+        {step === 'otp' && (
+          <div className="text-center mb-5">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#ff7a00]/10 text-[#ff7a00] border border-[#ff7a00]/25 shadow-inner mb-2.5">
               <KeyRound className="w-6 h-6 stroke-[2] animate-bounce" />
-            ) : activeTab === 'login' ? (
-              <LogIn className="w-6 h-6 stroke-[2]" />
-            ) : (
-              <ShieldCheck className="w-6 h-6 stroke-[2]" />
-            )}
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              {language === 'tr' ? 'E-posta Kodunu Doğrula' : 'Verify Email Code'}
+            </h2>
+            <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
+              {language === 'tr'
+                ? `${formData.schoolEmail} adresine gelen 6 haneli kodu aşağıya giriniz.`
+                : `Enter the 6-digit code sent to ${formData.schoolEmail}`}
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            {step === 'otp'
-              ? (language === 'tr' ? 'E-posta Kodunu Doğrula' : 'Verify Email Code')
-              : activeTab === 'login'
-              ? (language === 'tr' ? 'Hesabınıza Giriş Yapın' : 'Sign In to Your Account')
-              : (language === 'tr' ? 'Ücretsiz Hesap Oluşturun' : 'Create Free Account')}
-          </h2>
-          <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
-            {step === 'otp'
-              ? (language === 'tr' ? `${formData.schoolEmail} adresine gelen 6 haneli kodu aşağıya giriniz.` : `Enter the 6-digit code sent to ${formData.schoolEmail}`)
-              : activeTab === 'login'
-              ? (language === 'tr' ? 'Okul e-postanız ve şifrenizle giriş yapın, kaldığınız yerden devam edin.' : 'Log in with your university email and password.')
-              : (language === 'tr' ? 'Bilgilerinizi girin, e-posta onay koduyla hemen tam erişim kazanın.' : 'Enter your details to receive an email verification code.')}
-          </p>
-        </div>
+        )}
 
         {/* Error / Success Notifications */}
         {errorMessage && (
