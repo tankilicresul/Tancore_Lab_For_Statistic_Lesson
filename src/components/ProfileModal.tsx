@@ -152,21 +152,15 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                   accept="image/*"
                   className="hidden"
                 />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center space-x-1.5">
-                    <h3 className="text-sm sm:text-base font-black tracking-tight text-white leading-none whitespace-nowrap truncate">
-                      {userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}
-                    </h3>
+                <div className="min-w-0 flex-1 flex items-center">
+                  <h3 className="text-base sm:text-xl font-black tracking-tight text-white leading-tight truncate flex items-center gap-1.5">
+                    <span>{userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}</span>
                     {isVerified && (
                       <span title="Doğrulanmış Hesap">
-                        <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 inline-block" />
                       </span>
                     )}
-                  </div>
-                  <p className="text-[10px] sm:text-xs text-slate-300 flex items-center mt-1 whitespace-nowrap leading-none truncate">
-                    <Mail className="w-3 h-3 mr-1.5 text-[#ff7a00] shrink-0" />
-                    <span className="whitespace-nowrap truncate">{userProfile?.schoolEmail || (language === 'tr' ? 'Giriş yapılmadı' : 'Not signed in')}</span>
-                  </p>
+                  </h3>
                 </div>
               </div>
 
@@ -276,6 +270,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                   <div className="flex items-center space-x-2 text-slate-300 min-w-0">
                     <GraduationCap className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
                     <span className="truncate">{userProfile?.departmentAndClass || (language === 'tr' ? 'Bölüm belirtilmedi' : 'No department specified')}</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-slate-300 min-w-0">
+                    <Mail className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
+                    <span className="truncate">{userProfile?.schoolEmail || (language === 'tr' ? 'Giriş yapılmadı' : 'Not signed in')}</span>
                   </div>
                 </div>
 

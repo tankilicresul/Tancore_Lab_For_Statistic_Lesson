@@ -177,7 +177,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
       <div className="bg-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff7a00]/15 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
 
-        <div className="flex items-start justify-between relative z-10 gap-3">
+        <div className="flex items-center justify-between relative z-10 gap-3">
           <div className="flex items-center space-x-3.5 min-w-0 flex-1">
             <div
               className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border border-white/20 shadow-lg shrink-0 overflow-hidden relative"
@@ -197,21 +197,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
               accept="image/*"
               className="hidden"
             />
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center space-x-2">
-                <h2 className="text-base sm:text-xl font-black tracking-tight text-white leading-tight truncate">
-                  {userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}
-                </h2>
+            <div className="min-w-0 flex-1 flex items-center">
+              <h2 className="text-lg sm:text-2xl font-black tracking-tight text-white leading-tight truncate flex items-center gap-2">
+                <span>{userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}</span>
                 {isVerified && (
                   <span title="Doğrulanmış Hesap">
-                    <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 shrink-0" />
+                    <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 inline-block" />
                   </span>
                 )}
-              </div>
-              <p className="text-xs sm:text-sm text-slate-300 flex items-center mt-1 truncate">
-                <Mail className="w-3.5 h-3.5 mr-1.5 text-[#ff7a00] shrink-0" />
-                <span className="truncate">{userProfile?.schoolEmail || (language === 'tr' ? 'Giriş yapılmadı' : 'Not signed in')}</span>
-              </p>
+              </h2>
             </div>
           </div>
 
@@ -356,7 +350,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
           </form>
         ) : (
           <div className="mt-4 pt-4 border-t border-white/10 space-y-3.5 relative z-10">
-            <div className="space-y-2 text-xs font-medium">
+            <div className="space-y-2 text-xs sm:text-sm font-medium">
               <div className="flex items-center space-x-2.5 text-slate-300 min-w-0">
                 <Building2 className="w-4 h-4 text-[#ff7a00] shrink-0" />
                 <span className="truncate">{userProfile?.university || 'Marmara Üniversitesi'}</span>
@@ -364,6 +358,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
               <div className="flex items-center space-x-2.5 text-slate-300 min-w-0">
                 <GraduationCap className="w-4 h-4 text-[#ff7a00] shrink-0" />
                 <span className="truncate">{userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf'}</span>
+              </div>
+              <div className="flex items-center space-x-2.5 text-slate-300 min-w-0">
+                <Mail className="w-4 h-4 text-[#ff7a00] shrink-0" />
+                <span className="truncate">{userProfile?.schoolEmail || (language === 'tr' ? 'Giriş yapılmadı' : 'Not signed in')}</span>
               </div>
             </div>
 
