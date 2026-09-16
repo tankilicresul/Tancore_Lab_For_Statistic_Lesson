@@ -41,7 +41,6 @@ export const TancoChatModal: React.FC = () => {
     isTancoChatOpen,
     setIsTancoChatOpen,
     userProfile,
-    startTancoTour,
   } = useAppStore();
 
   const [inputMessage, setInputMessage] = useState('');
@@ -282,17 +281,6 @@ export const TancoChatModal: React.FC = () => {
         {/* Quick Prompts Suggestions */}
         {messages.length <= 2 && !isTyping && (
           <div className="px-3.5 py-2 bg-slate-100/80 border-t border-slate-200/80 overflow-x-auto whitespace-nowrap scrollbar-none flex gap-1.5 shrink-0">
-            {/* Quick Tour Trigger inside Chat */}
-            <button
-              onClick={() => {
-                setIsTancoChatOpen(false);
-                startTancoTour();
-              }}
-              className="px-2.5 py-1 rounded-xl bg-orange-100 border border-orange-200/90 text-[10.5px] font-bold text-[#ff7a00] hover:bg-orange-200 transition-all shadow-2xs shrink-0 cursor-pointer text-left flex items-center space-x-1"
-            >
-              <span>🚀</span>
-              <span>{language === 'tr' ? '1 Dk Tanıtım Turu' : '1-Min Tour'}</span>
-            </button>
             {(language === 'tr' ? QUICK_PROMPTS.tr : QUICK_PROMPTS.en).map((prompt, idx) => (
               <button
                 key={idx}

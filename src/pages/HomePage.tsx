@@ -314,7 +314,6 @@ export const HomePage: React.FC<HomePageProps> = ({
     language,
     userProfile,
     setIsTancoChatOpen,
-    startTancoTour,
   } = useAppStore();
 
   // Format student greeting name according to user rule:
@@ -370,18 +369,6 @@ export const HomePage: React.FC<HomePageProps> = ({
               <span className="text-[10px] sm:text-[11px] font-medium text-slate-500">
                 {language === 'tr' ? 'Öğretim Asistanı' : 'Teaching Assistant'}
               </span>
-            </div>
-
-            {/* Quick Tour Trigger Button */}
-            <div className="ml-auto">
-              <button
-                onClick={startTancoTour}
-                className="flex items-center space-x-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-orange-50 hover:bg-orange-100 border border-orange-200/90 text-[#ff7a00] text-[11px] sm:text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer active:scale-95"
-                title={language === 'tr' ? 'Tanco ile 1 Dakikalık Tanıtım Turu' : '1-Minute Tour with Tanco'}
-              >
-                <Sparkles className="w-3.5 h-3.5 stroke-[2.5]" />
-                <span>{language === 'tr' ? 'Tanıtım Turu' : 'Quick Tour'}</span>
-              </button>
             </div>
           </div>
         </div>
