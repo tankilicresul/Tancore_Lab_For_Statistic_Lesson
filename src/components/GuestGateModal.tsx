@@ -11,10 +11,12 @@ interface GuestGateModalProps {
 export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
   const { language } = useAppStore();
   const [showAuth, setShowAuth] = useState(false);
+  const [authInitialTab, setAuthInitialTab] = useState<'login' | 'register'>('register');
 
   if (showAuth) {
     return (
       <AuthModal
+        initialTab={authInitialTab}
         onClose={() => {
           setShowAuth(false);
           onClose();
@@ -63,14 +65,20 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
             ))}
           </div>
           <button
-            onClick={() => setShowAuth(true)}
+            onClick={() => {
+              setAuthInitialTab('register');
+              setShowAuth(true);
+            }}
             className="w-full py-3.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-95"
           >
             <UserPlus className="w-4 h-4" />
             <span>{isTr ? 'Ücretsiz Kayıt Ol' : 'Sign Up Free'}</span>
           </button>
           <button
-            onClick={() => setShowAuth(true)}
+            onClick={() => {
+              setAuthInitialTab('login');
+              setShowAuth(true);
+            }}
             className="w-full py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-black text-sm transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-95 border border-slate-200"
           >
             <LogIn className="w-4 h-4" />
@@ -84,3 +92,4 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
     </div>
   );
 };
+
