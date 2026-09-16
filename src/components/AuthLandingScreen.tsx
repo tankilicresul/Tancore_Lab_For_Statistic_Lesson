@@ -187,44 +187,32 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full blur-2xl pointer-events-none" />
 
           {/* Top Brand Info */}
-          <div className="relative z-10 space-y-4">
-            <div className="flex items-center space-x-3 mb-6">
+          <div className="relative z-10 my-auto space-y-6">
+            <div className="flex items-center space-x-3">
               <div
-                className={`w-11 h-11 rounded-full bg-white text-[#ff7a00] shadow-lg flex items-center justify-center p-1.5 shrink-0 ${
+                className={`w-12 h-12 rounded-full bg-white text-[#ff7a00] shadow-lg flex items-center justify-center p-2 shrink-0 ${
                   isLogoSpinning ? 'animate-logo-spin' : ''
                 }`}
               >
-                <Zap className="w-6 h-6 fill-[#ff7a00] stroke-[2]" />
+                <Zap className="w-6.5 h-6.5 fill-[#ff7a00] stroke-[2]" />
               </div>
-              <span className="text-2xl sm:text-3xl font-black tracking-tight text-white font-sans">
+              <span className="text-3xl font-black tracking-tight text-white font-sans">
                 TanCoreLab
               </span>
             </div>
 
-            <h2 className="text-lg sm:text-2xl font-black tracking-tight leading-snug text-white">
-              {language === 'tr'
-                ? 'Üniversiteliler İçin İstatistik & Olasılık Platformu'
-                : 'Statistics & Probability for Students'}
-            </h2>
-
-            <p className="text-xs sm:text-sm text-orange-100 font-medium leading-relaxed">
-              {language === 'tr'
-                ? 'Mikro-dersler, canlı simülatörler ve gerçek şirket vaka sınavları ile istatistik dersini kolayca tamamlayın.'
-                : 'Master university statistics & probability with micro-lessons, live calculators, and business case exams.'}
-            </p>
-
-            {/* Key Feature Bullets (Clean & Simplified) */}
-            <div className="pt-3 space-y-2.5">
-              <div className="flex items-center space-x-2.5 text-xs sm:text-sm font-bold text-orange-50">
-                <Sparkles className="w-4 h-4 text-amber-300 shrink-0" />
+            {/* Only the 3 Icons and Text */}
+            <div className="space-y-4 pt-2">
+              <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
+                <Sparkles className="w-5 h-5 text-amber-300 shrink-0" />
                 <span>{language === 'tr' ? '16 İnteraktif Modül & Canlı Simülatör' : '16 Interactive Modules & Calculators'}</span>
               </div>
-              <div className="flex items-center space-x-2.5 text-xs sm:text-sm font-bold text-orange-50">
-                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
+              <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
+                <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
                 <span>{language === 'tr' ? 'Gerçek Şirket Vaka Sınavları (Case Exams)' : 'Real Business Case Exams'}</span>
               </div>
-              <div className="flex items-center space-x-2.5 text-xs sm:text-sm font-bold text-orange-50">
-                <ShieldCheck className="w-4 h-4 text-orange-200 shrink-0" />
+              <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
+                <ShieldCheck className="w-5 h-5 text-orange-200 shrink-0" />
                 <span>{language === 'tr' ? 'Doğrulanmış Öğrenci Profili & Sıralama' : 'Verified Student Profile & Ranking'}</span>
               </div>
             </div>

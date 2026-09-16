@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/resul-tankilic",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
