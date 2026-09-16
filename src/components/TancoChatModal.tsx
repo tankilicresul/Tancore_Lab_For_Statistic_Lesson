@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
 import { formatStudentGreetingName } from '../utils/localization';
@@ -179,36 +179,80 @@ export const TancoChatModal: React.FC = () => {
     }
   }, [messages, isTancoChatOpen, isTyping]);
 
-  // Handle Speech-to-Text Setup
+  const isListeningRef = useRef(false);
+  const baseTextBeforeListeningRef = useRef('');
+
+  // Handle Continuous Speech-to-Text Setup
   useEffect(() => {
     const SpeechRecognition =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
+      recognition.continuous = true;
+      recognition.interimResults = true;
       recognition.lang = language === 'tr' ? 'tr-TR' : 'en-US';
 
       recognition.onresult = (event: any) => {
-        const transcript = event.results?.[0]?.[0]?.transcript;
-        if (transcript) {
-          setInputMessage((prev) => (prev ? `${prev} ${transcript}` : transcript));
+        let finalTranscript = '';
+        let interimTranscript = '';
+
+        for (let i = 0; i < event.results.length; ++i) {
+          const res = event.results[i];
+          if (res.isFinal) {
+            finalTranscript += res[0].transcript + ' ';
+          } else {
+            interimTranscript += res[0].transcript;
+          }
         }
-        setIsListening(false);
+
+        const base = baseTextBeforeListeningRef.current ? `${baseTextBeforeListeningRef.current} ` : '';
+        const fullText = (base + finalTranscript + interimTranscript).trim();
+        setInputMessage(fullText);
       };
 
-      recognition.onerror = () => {
-        setIsListening(false);
+      recognition.onerror = (event: any) => {
+        if (event.error !== 'no-speech') {
+          console.warn('Speech recognition error:', event.error);
+        }
       };
 
       recognition.onend = () => {
-        setIsListening(false);
+        // Keep listening continuous unless user explicitly pressed the stop button
+        if (isListeningRef.current) {
+          try {
+            recognition.start();
+          } catch (e) {
+            // Already active or starting
+          }
+        } else {
+          setIsListening(false);
+        }
       };
 
       speechRecognitionRef.current = recognition;
     }
+
+    return () => {
+      if (speechRecognitionRef.current) {
+        isListeningRef.current = false;
+        try {
+          speechRecognitionRef.current.stop();
+        } catch (e) {}
+      }
+    };
   }, [language]);
+
+  // Stop listening when chat modal closes
+  useEffect(() => {
+    if (!isTancoChatOpen && isListeningRef.current) {
+      isListeningRef.current = false;
+      setIsListening(false);
+      try {
+        speechRecognitionRef.current?.stop();
+      } catch (e) {}
+    }
+  }, [isTancoChatOpen]);
 
   const toggleVoiceInput = () => {
     if (!speechRecognitionRef.current) {
@@ -217,12 +261,17 @@ export const TancoChatModal: React.FC = () => {
     }
 
     if (isListening) {
-      speechRecognitionRef.current.stop();
+      isListeningRef.current = false;
       setIsListening(false);
+      try {
+        speechRecognitionRef.current.stop();
+      } catch (e) {}
     } else {
       try {
-        speechRecognitionRef.current.start();
+        baseTextBeforeListeningRef.current = inputMessage.trim();
+        isListeningRef.current = true;
         setIsListening(true);
+        speechRecognitionRef.current.start();
       } catch (e) {
         console.warn('Speech recognition start error:', e);
       }
@@ -256,6 +305,15 @@ export const TancoChatModal: React.FC = () => {
     const currentImage = selectedImage;
 
     if ((!query && !currentImage) || isTyping) return;
+
+    // Stop voice listening when sending message
+    if (isListeningRef.current) {
+      isListeningRef.current = false;
+      setIsListening(false);
+      try {
+        speechRecognitionRef.current?.stop();
+      } catch (e) {}
+    }
 
     // 3-second Anti-Spam Rate Limit Cooldown
     const now = Date.now();
