@@ -11,6 +11,7 @@ Bu dosya, kullanıcıların Tanco AI ile sohbet ederken ilettikleri teknik aksak
 | No | Tarih & Saat | Kullanıcı | Bulunduğu Ekran / Ders | Bildirilen Problem Özeti | Öncelik | Durum |
 |:---|:---|:---|:---|:---|:---|:---|
 | *Örnek* | *2026-09-16 23:30* | *sistem_test* | *Sistem Başlatma* | *Otomatik hata tespit mekanizması devrede.* | *Düşük* | *Çözüldü* |
+| 2 | 2026-09-16 23:55 | rtankilic22@ku.edu.tr | Seviye Tespit Sınavı | Seviye tespit sınavı soruları istatistik yerine olasılık müfredatına uyarlandı. | Yüksek | Çözüldü |
 
 ---
 
@@ -22,3 +23,10 @@ Bu dosya, kullanıcıların Tanco AI ile sohbet ederken ilettikleri teknik aksak
 - **Ekran:** Tanco AI Sohbet Motoru
 - **Açıklama:** Kullanıcılar sohbet içerisinde problem bildirdiğinde Tanco AI ve backend otomatik olarak tespit edip bu dosyaya ve Supabase veritabanına log düşer.
 - **Durum:** ✅ Çözüldü (Aktif)
+
+### [ISSUE-002] Seviye Tespit Sınavı Olasılık Müfredatı Güncellemesi
+- **Tarih:** 2026-09-16 23:55
+- **Kullanıcı:** rtankilic22@ku.edu.tr
+- **Ekran:** Seviye Tespit Sınavı (`PlacementTestPage.tsx`)
+- **Açıklama:** Sınav içerisindeki istatistik (regresyon, anova vb.) soruları tamamen Kombinatorik, Olasılık Aksiyomları, Bayes Teoremi, Binom/Poisson/Üstel Dağılımlar, Beklenen Değer/Varyans, PDF normalizasyonu ve Markov Zincirleri konularına uyarlandı.
+- **Durum:** ✅ Çözüldü (Canlıda)

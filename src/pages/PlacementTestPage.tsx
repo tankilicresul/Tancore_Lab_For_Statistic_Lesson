@@ -57,18 +57,32 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
   // Calculate score & recommended module placement
   let correctAnswersCount = 0;
   PLACEMENT_QUESTIONS.forEach((q) => {
-    if (selectedAnswers[q.id] === q.correctAnswer) {
+    const selected = selectedAnswers[q.id];
+    if (!selected) return;
+
+    if (selected === q.correctAnswer) {
       correctAnswersCount++;
+    } else if (q.options) {
+      const matchedOpt = q.options.find(
+        (opt) => (typeof opt === 'string' ? opt : getLocalized(opt, language)) === selected
+      );
+      if (matchedOpt) {
+        const trVal = typeof matchedOpt === 'string' ? matchedOpt : matchedOpt.tr;
+        const enVal = typeof matchedOpt === 'string' ? matchedOpt : matchedOpt.en;
+        if (q.correctAnswer === trVal || q.correctAnswer === enVal) {
+          correctAnswersCount++;
+        }
+      }
     }
   });
 
   const getRecommendedModule = (score: number) => {
-    if (score <= 1) return ALL_MODULES[0]; // Module 1
-    if (score <= 3) return ALL_MODULES[2]; // Module 3
-    if (score <= 5) return ALL_MODULES[4]; // Module 5
-    if (score <= 7) return ALL_MODULES[6]; // Module 7
-    if (score <= 9) return ALL_MODULES[8]; // Module 9
-    return ALL_MODULES[10]; // Module 11
+    if (score <= 1) return ALL_MODULES.find((m) => m.id === 'module-13') || ALL_MODULES[0];
+    if (score <= 3) return ALL_MODULES.find((m) => m.id === 'module-2') || ALL_MODULES[1];
+    if (score <= 5) return ALL_MODULES.find((m) => m.id === 'module-14') || ALL_MODULES[2];
+    if (score <= 7) return ALL_MODULES.find((m) => m.id === 'module-3') || ALL_MODULES[3];
+    if (score <= 9) return ALL_MODULES.find((m) => m.id === 'module-15') || ALL_MODULES[4];
+    return ALL_MODULES.find((m) => m.id === 'module-12') || ALL_MODULES[11];
   };
 
   const recommendedModule = getRecommendedModule(correctAnswersCount);
