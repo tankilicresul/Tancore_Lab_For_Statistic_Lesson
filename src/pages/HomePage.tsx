@@ -325,10 +325,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="flex items-center space-x-3.5 sm:space-x-4 mb-4">
           <TanCoreMascotAvatar size="lg" className="shadow-md shadow-[#ff7a00]/20 hover:scale-105 transition-transform shrink-0" />
           <div className="flex flex-col items-start min-w-0">
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] font-mono">
-              TANCORE LAB • TEACHING ASSISTANT
-            </span>
-            <h1 className="text-base sm:text-xl font-black text-slate-900 tracking-tight leading-snug mt-0.5">
+            <h1 className="text-base sm:text-xl font-black text-slate-900 tracking-tight leading-snug">
               <span>
                 {language === 'tr'
                   ? `Selam ${studentDisplayName}! Ben Tanco, senin TA'yin olacağım.`
@@ -339,16 +336,11 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
 
         {/* Speech Box */}
-        <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4.5 space-y-2 text-[11.5px] sm:text-xs text-slate-700 leading-relaxed shadow-2xs relative">
+        <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4.5 text-[11.5px] sm:text-xs text-slate-700 leading-relaxed shadow-2xs relative">
           <p className="font-medium text-slate-800">
             {language === 'tr'
-              ? "Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman ulaşabilirsin."
-              : "I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. Feel free to reach out anytime."}
-          </p>
-          <p className="pt-2 border-t border-slate-200/70 text-[10.5px] sm:text-[11.5px] text-slate-500 font-medium">
-            {language === 'tr'
-              ? "Aşağıdaki derslerden dilediğini seçerek öğrenme yoluna başlayabilirsin."
-              : "Select any of the courses below to explore your interactive path."}
+              ? "Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman profilime tıklayarak ulaşabilirsin."
+              : "I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. You can reach me anytime by clicking on my profile."}
           </p>
         </div>
       </div>
