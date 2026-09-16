@@ -294,7 +294,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             createdAt: new Date().toISOString(),
           };
 
-          const userXp = remoteProfile?.xp ?? 450;
+          const userXp = remoteProfile?.xp ?? 0;
           const userStreak = remoteProfile?.streak ?? 1;
           const unlockedModules = remoteProfile?.unlocked_modules && remoteProfile.unlocked_modules.length > 0
             ? remoteProfile.unlocked_modules
@@ -363,7 +363,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           userProfile: loggedInProfile,
           isAuthenticated: true,
           isVerified: true,
-          xp: account.xp || 450,
+          xp: account.xp || 0,
           streak: account.streak || 1,
           unlockedModules: account.unlockedModules || ['module-1', 'module-2'],
         });
@@ -433,10 +433,14 @@ export const useAppStore = create<UserState & AppStoreActions>()(
 
       checkAndUpdateStreak: () => {
         const today = new Date().toISOString().split('T')[0];
-        const lastActive = get().lastActiveDate;
+        const state = get();
+        const lastActive = state.lastActiveDate;
 
         if (!lastActive) {
           set({ lastActiveDate: today, streak: 1 });
+          if (state.userProfile?.schoolEmail) {
+            saveUserProfileToSupabase({ ...state.userProfile, streak: 1, xp: state.xp, completedLessons: state.completedLessons.length + state.completedCaseExams.length });
+          }
           return;
         }
 
@@ -446,9 +450,16 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         if (diffDays === 1) {
-          set((state) => ({ streak: state.streak + 1, lastActiveDate: today }));
+          const newStreak = state.streak + 1;
+          set({ streak: newStreak, lastActiveDate: today });
+          if (state.userProfile?.schoolEmail) {
+            saveUserProfileToSupabase({ ...state.userProfile, streak: newStreak, xp: state.xp, completedLessons: state.completedLessons.length + state.completedCaseExams.length });
+          }
         } else if (diffDays > 1) {
           set({ streak: 1, lastActiveDate: today });
+          if (state.userProfile?.schoolEmail) {
+            saveUserProfileToSupabase({ ...state.userProfile, streak: 1, xp: state.xp, completedLessons: state.completedLessons.length + state.completedCaseExams.length });
+          }
         }
       },
 
@@ -499,6 +510,16 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedLessons: newCompleted,
           completedCaseExams: state.completedCaseExams,
         });
+
+        // Sync updated stats to profiles table
+        if (state.userProfile?.schoolEmail) {
+          saveUserProfileToSupabase({
+            ...state.userProfile,
+            xp: newXp,
+            streak: state.streak,
+            completedLessons: newCompleted.length + state.completedCaseExams.length,
+          });
+        }
       },
 
       completeCaseExam: (caseId, moduleId, xpEarned = 25) => {
@@ -540,6 +561,16 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedLessons: state.completedLessons,
           completedCaseExams: newCompleted,
         });
+
+        // Sync updated stats to profiles table
+        if (state.userProfile?.schoolEmail) {
+          saveUserProfileToSupabase({
+            ...state.userProfile,
+            xp: newXp,
+            streak: state.streak,
+            completedLessons: state.completedLessons.length + newCompleted.length,
+          });
+        }
       },
 
       unlockUpToModule: (targetModuleId) => {

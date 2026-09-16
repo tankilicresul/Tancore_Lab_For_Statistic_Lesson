@@ -82,10 +82,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
             departmentAndClass: p.department_and_class || '',
             avatarEmoji: p.avatar_emoji || '👨‍🎓',
             avatarUrl: p.avatar_url || undefined,
-            xp: typeof p.xp === 'number' ? p.xp : 450,
+            xp: typeof p.xp === 'number' ? p.xp : 0,
             streak: typeof p.streak === 'number' ? p.streak : 1,
             rank: idx + 1,
-            level: Math.floor((typeof p.xp === 'number' ? p.xp : 450) / 100) + 1,
+            level: Math.floor((typeof p.xp === 'number' ? p.xp : 0) / 100) + 1,
             completedCount: typeof p.completed_lessons === 'number' ? p.completed_lessons : 0,
             unlockedBadges: Array.isArray(p.unlocked_badges) ? p.unlocked_badges : ['badge-first-lesson'],
           }));
@@ -132,7 +132,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
           saveUserProfileToSupabase({
             ...userProfile,
             avatarUrl: res.url,
-            xp: xp || 450,
+            xp: xp || 0,
             streak: streak || 1,
             completedLessons: completedLessons.length + completedCaseExams.length,
           });
@@ -153,7 +153,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
         ...userProfile,
         ...formData,
         avatarUrl: userProfile?.avatarUrl,
-        xp: xp || 450,
+        xp: xp || 0,
         streak: streak || 1,
         completedLessons: completedLessons.length + completedCaseExams.length,
       });
@@ -168,8 +168,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
   const completedCount = completedLessons.length + completedCaseExams.length;
   const progressPercent = totalItems > 0 ? Math.min(100, Math.round((completedCount / totalItems) * 100)) : 0;
 
-  // Topic Success Rate (Calculated dynamically)
-  const successRate = completedCount === 0 ? 0 : Math.min(100, Math.round(92 + (completedCount % 8)));
+  // Topic Success Rate: real completion percentage
+  const successRate = totalItems > 0 ? Math.min(100, Math.round((completedCount / totalItems) * 100)) : 0;
 
   // Real Leaderboard Calculation (Strictly Real Data, No Mock Users)
   const allProfilesMap = new Map<string, PublicProfile>();
@@ -200,10 +200,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
       departmentAndClass: userProfile.departmentAndClass || '',
       avatarEmoji: userProfile.avatarEmoji || '👨‍🎓',
       avatarUrl: userProfile.avatarUrl || existing?.avatarUrl || undefined,
-      xp: xp ?? existing?.xp ?? 450,
+      xp: xp ?? existing?.xp ?? 0,
       streak: streak ?? existing?.streak ?? 1,
       rank: 1,
-      level: Math.floor((xp || 450) / 100) + 1,
+      level: Math.floor((xp || 0) / 100) + 1,
       completedCount: completedLessons.length + completedCaseExams.length,
       unlockedBadges: unlockedBadges && unlockedBadges.length > 0 ? unlockedBadges : ['badge-first-lesson'],
     });
@@ -659,10 +659,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                     departmentAndClass: userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
                     avatarEmoji: userProfile?.avatarEmoji || '👨‍🎓',
                     avatarUrl: userProfile?.avatarUrl,
-                    xp: xp || 450,
-                    streak: streak || 3,
+                    xp: xp || 0,
+                    streak: streak || 1,
                     rank: userRank,
-                    level: Math.floor((xp || 450) / 100) + 1,
+                    level: Math.floor((xp || 0) / 100) + 1,
                     completedCount: completedCount,
                     unlockedBadges: unlockedBadges,
                   })
@@ -695,7 +695,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
 
                 <div className="flex items-center space-x-1 text-amber-300 text-xs font-black shrink-0">
                   <span className="text-cyan-400 font-serif">◆</span>
-                  <span>{(xp || 450).toLocaleString('tr-TR')} XP</span>
+                  <span>{(xp || 0).toLocaleString('tr-TR')} XP</span>
                 </div>
               </div>
 

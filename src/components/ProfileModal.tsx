@@ -437,10 +437,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                         university: userProfile?.university || 'Marmara Üniversitesi',
                         departmentAndClass: userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
                         avatarEmoji: userProfile?.avatarEmoji || '👨‍🎓',
-                        xp: xp || 450,
-                        streak: streak || 3,
+                        xp: xp || 0,
+                        streak: streak || 1,
                         rank: userRank,
-                        level: Math.floor((xp || 450) / 100) + 1,
+                        level: Math.floor((xp || 0) / 100) + 1,
                         completedCount: completedCount,
                         unlockedBadges: unlockedBadges,
                       })
@@ -468,7 +468,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
 
                     <div className="flex items-center space-x-1 text-amber-300 text-xs font-black shrink-0">
                       <span className="text-cyan-400 font-serif">◆</span>
-                      <span>{(xp || 450).toLocaleString('tr-TR')} XP</span>
+                      <span>{(xp || 0).toLocaleString('tr-TR')} XP</span>
                     </div>
                   </div>
                 </div>
