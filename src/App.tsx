@@ -123,14 +123,15 @@ export const App: React.FC = () => {
   }, []);
   // ────────────────────────────────────────────────────────────────────────
 
-  // Guest-aware lesson/case opener
-  // Authenticated users: always open. Guests: first lesson free, second triggers GuestGateModal.
+  // Guest-aware lesson/case opener:
+  // Authenticated users: full access.
+  // Guests: can freely work on any lesson and case in the 1st module of each course (module-1 for Statistics, module-2 for Probability).
+  // When attempting to access Module 2 or higher, GuestGateModal is automatically shown.
   const openLessonOrCase = (
     type: 'lesson' | 'case',
     id: string
   ) => {
     if (isAuthenticated && isVerified) {
-      // Authenticated: full access
       if (type === 'lesson') {
         setSelectedLessonId(id);
         setSelectedCaseId(null);
@@ -144,14 +145,25 @@ export const App: React.FC = () => {
       return;
     }
 
-    // Guest: allow the very first view, gate the second+
-    const count = getGuestViewCount();
-    if (count >= 1) {
+    // Check which module this topic belongs to
+    let topicModuleId = '';
+    if (type === 'lesson') {
+      const data = getLessonById(id);
+      topicModuleId = data?.module.id || '';
+    } else {
+      const data = getCaseExamById(id);
+      topicModuleId = data?.module.id || '';
+    }
+
+    // 1st module for Probability track is 'module-2'
+    // 1st module for Statistics track is 'module-1'
+    const isFirstModule = topicModuleId === 'module-1' || topicModuleId === 'module-2';
+
+    if (!isFirstModule) {
       setShowGuestGate(true);
       return;
     }
 
-    incrementGuestViewCount();
     if (type === 'lesson') {
       setSelectedLessonId(id);
       setSelectedCaseId(null);
@@ -172,6 +184,10 @@ export const App: React.FC = () => {
   };
 
   const handleStartPlacementTest = () => {
+    if (!isAuthenticated || !isVerified) {
+      setShowGuestGate(true);
+      return;
+    }
     setCurrentView('placementTest');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -276,6 +292,7 @@ export const App: React.FC = () => {
             onBackToHome={handleBackToHome}
             scrollToNodeId={scrollToNodeId}
             onStartPlacementTest={handleStartPlacementTest}
+            onGuestGateRequired={() => setShowGuestGate(true)}
           />
         )}
 

@@ -148,6 +148,7 @@ interface CoursePageProps {
   onBackToHome: () => void;
   scrollToNodeId?: string | null;
   onStartPlacementTest?: () => void;
+  onGuestGateRequired?: () => void;
 }
 
 interface PathNodeItem {
@@ -173,8 +174,9 @@ export const CoursePage: React.FC<CoursePageProps> = ({
   onBackToHome,
   scrollToNodeId,
   onStartPlacementTest,
+  onGuestGateRequired,
 }) => {
-  const { language, unlockedModules, completedLessons, completedCaseExams, setIsTancoChatOpen } = useAppStore();
+  const { language, unlockedModules, completedLessons, completedCaseExams, isAuthenticated, isVerified, setIsTancoChatOpen } = useAppStore();
   const [selectedNode, setSelectedNode] = useState<PathNodeItem | null>(null);
 
   // If viewing an in-design course, render dedicated placeholder view
@@ -434,11 +436,13 @@ export const CoursePage: React.FC<CoursePageProps> = ({
         {activeModulesList.map((module, trackIdx) => {
           const isModuleUnlocked =
             trackIdx === 0 ||
-            unlockedModules.includes(module.id) ||
-            module.id === latestUnlockedModule.id ||
-            module.lessons.some((l) => l.id === globalTargetNodeId) ||
-            module.caseExams.some((c) => c.id === globalTargetNodeId) ||
-            module.lessons.some((l) => completedLessons.includes(l.id));
+            (Boolean(isAuthenticated && isVerified) && (
+              unlockedModules.includes(module.id) ||
+              module.id === latestUnlockedModule.id ||
+              module.lessons.some((l) => l.id === globalTargetNodeId) ||
+              module.caseExams.some((c) => c.id === globalTargetNodeId) ||
+              module.lessons.some((l) => completedLessons.includes(l.id))
+            ));
           const trackModuleOrder = trackIdx + 1;
 
           const lessons = module.lessons || [];
@@ -534,6 +538,14 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                     <p className="text-xs sm:text-sm opacity-90 font-medium mt-1 leading-relaxed">
                       {getLocalized(module.description, language)}
                     </p>
+                    {!isModuleUnlocked && (!isAuthenticated || !isVerified) && (
+                      <button
+                        onClick={onGuestGateRequired}
+                        className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white hover:bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer"
+                      >
+                        <span>🔒 {language === 'tr' ? '2. Modül için ücretsiz kayıt olun' : 'Sign up to unlock Module 2+'}</span>
+                      </button>
+                    )}
                   </div>
 
                   <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shrink-0 shadow-xs">
@@ -586,7 +598,12 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
                       <button
                         onClick={() => {
-                          if (!node.isUnlocked) return;
+                          if (!node.isUnlocked) {
+                            if (!isAuthenticated || !isVerified) {
+                              onGuestGateRequired?.();
+                            }
+                            return;
+                          }
                           setSelectedNode(node);
                         }}
                         className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center transition-all duration-200 active:translate-y-1 ${

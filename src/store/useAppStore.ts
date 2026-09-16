@@ -138,6 +138,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
 
       registerAccountAndSendOtp: (accountInput, simulatedCode) => {
         const email = accountInput.schoolEmail?.trim().toLowerCase() || '';
+        const currentStore = get();
         const newAccount: RegisteredAccount = {
           schoolEmail: email,
           fullName: accountInput.fullName?.trim() || 'Öğrenci',
@@ -145,13 +146,14 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           departmentAndClass: accountInput.departmentAndClass?.trim() || 'Endüstri Mühendisliği - 3. Sınıf',
           password: accountInput.password || '',
           avatarEmoji: accountInput.avatarEmoji || '👨‍🎓',
+          avatarUrl: accountInput.avatarUrl || currentStore.userProfile?.avatarUrl || undefined,
           isVerified: false,
-          xp: 15,
-          streak: 1,
-          completedLessons: [],
-          completedCaseExams: [],
-          unlockedModules: ['module-1', 'module-2'],
-          unlockedBadges: [],
+          xp: Math.max(15, currentStore.xp || 15),
+          streak: Math.max(1, currentStore.streak || 1),
+          completedLessons: currentStore.completedLessons || [],
+          completedCaseExams: currentStore.completedCaseExams || [],
+          unlockedModules: currentStore.unlockedModules || ['module-1', 'module-2'],
+          unlockedBadges: currentStore.unlockedBadges || [],
         };
 
         set((state) => {
@@ -175,6 +177,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
               university: newAccount.university,
               departmentAndClass: newAccount.departmentAndClass,
               avatarEmoji: newAccount.avatarEmoji,
+              avatarUrl: newAccount.avatarUrl,
               isVerified: false,
               password: newAccount.password,
             },
@@ -198,8 +201,12 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const accIdx = accounts.findIndex((a) => a.schoolEmail.toLowerCase() === pendingEmail);
 
         let activeProfile: UserProfile;
-        let userXp = state.xp || 15;
-        let userStreak = state.streak || 1;
+        const currentCompletedLessons = state.completedLessons || [];
+        const currentCompletedCases = state.completedCaseExams || [];
+        const currentBadges = state.unlockedBadges || [];
+        const currentUnlockedModules = state.unlockedModules || ['module-1', 'module-2'];
+        let userXp = Math.max(15, state.xp || 15);
+        let userStreak = Math.max(1, state.streak || 1);
 
         if (accIdx >= 0) {
           accounts[accIdx].isVerified = true;
@@ -210,11 +217,16 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             university: accounts[accIdx].university,
             departmentAndClass: accounts[accIdx].departmentAndClass,
             avatarEmoji: accounts[accIdx].avatarEmoji || '👨‍🎓',
+            avatarUrl: accounts[accIdx].avatarUrl || state.userProfile?.avatarUrl || undefined,
             isVerified: true,
             createdAt: new Date().toISOString(),
           };
-          userXp = accounts[accIdx].xp;
-          userStreak = accounts[accIdx].streak;
+          userXp = Math.max(accounts[accIdx].xp || 0, userXp);
+          userStreak = Math.max(accounts[accIdx].streak || 1, userStreak);
+          accounts[accIdx].xp = userXp;
+          accounts[accIdx].streak = userStreak;
+          accounts[accIdx].completedLessons = Array.from(new Set([...(accounts[accIdx].completedLessons || []), ...currentCompletedLessons]));
+          accounts[accIdx].completedCaseExams = Array.from(new Set([...(accounts[accIdx].completedCaseExams || []), ...currentCompletedCases]));
         } else {
           activeProfile = {
             id: `usr_${pendingEmail}`,
@@ -223,6 +235,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             university: state.userProfile.university || 'Marmara Üniversitesi',
             departmentAndClass: state.userProfile.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
             avatarEmoji: state.userProfile.avatarEmoji || '👨‍🎓',
+            avatarUrl: state.userProfile?.avatarUrl || undefined,
             isVerified: true,
             createdAt: new Date().toISOString(),
           };
@@ -235,6 +248,10 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           isVerified: true,
           xp: userXp,
           streak: userStreak,
+          completedLessons: currentCompletedLessons,
+          completedCaseExams: currentCompletedCases,
+          unlockedBadges: currentBadges,
+          unlockedModules: currentUnlockedModules,
           userAccounts: accounts,
         };
 
@@ -244,13 +261,32 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           userProfile: activeProfile,
           isAuthenticated: true,
           isVerified: true,
+          xp: userXp,
+          streak: userStreak,
+          completedLessons: currentCompletedLessons,
+          completedCaseExams: currentCompletedCases,
+          unlockedBadges: currentBadges,
+          unlockedModules: currentUnlockedModules,
           pendingOtpEmail: undefined,
           simulatedOtpCode: undefined,
           registeredUsers: updatedLeaderboard,
           userAccounts: accounts,
         });
 
-        saveUserProfileToSupabase(activeProfile);
+        saveUserProfileToSupabase({
+          ...activeProfile,
+          xp: userXp,
+          streak: userStreak,
+          completedLessons: currentCompletedLessons.length + currentCompletedCases.length,
+        });
+        syncUserProgress({
+          totalXp: userXp,
+          level: Math.floor(userXp / 100) + 1,
+          streak: userStreak,
+          completedLessons: currentCompletedLessons,
+          completedCaseExams: currentCompletedCases,
+        });
+
         return { success: true };
       },
 
@@ -289,16 +325,27 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             university: remoteProfile?.university || 'Üniversite',
             departmentAndClass: remoteProfile?.department_and_class || 'Öğrenci',
             avatarEmoji: remoteProfile?.avatar_emoji || '👨‍🎓',
-            avatarUrl: remoteProfile?.avatar_url || undefined,
+            avatarUrl: remoteProfile?.avatar_url || state.userProfile?.avatarUrl || undefined,
             isVerified: true,
             createdAt: new Date().toISOString(),
           };
 
-          const userXp = remoteProfile?.xp ?? 0;
-          const userStreak = remoteProfile?.streak ?? 1;
-          const unlockedModules = remoteProfile?.unlocked_modules && remoteProfile.unlocked_modules.length > 0
+          // Seamlessly merge guest progress with remote account progress
+          const guestLessons = state.completedLessons || [];
+          const guestCases = state.completedCaseExams || [];
+          const remoteLessonsCount = typeof remoteProfile?.completed_lessons === 'number' ? remoteProfile.completed_lessons : 0;
+          const mergedLessons = Array.from(new Set(guestLessons));
+          const mergedCases = Array.from(new Set(guestCases));
+          const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
+          const guestXp = state.xp || 0;
+          const userXp = Math.max(remoteXp, guestXp, remoteXp + guestXp);
+          const remoteStreak = typeof remoteProfile?.streak === 'number' ? remoteProfile.streak : 1;
+          const userStreak = Math.max(remoteStreak, state.streak || 1);
+
+          const remoteUnlocked = Array.isArray(remoteProfile?.unlocked_modules) && remoteProfile.unlocked_modules.length > 0
             ? remoteProfile.unlocked_modules
-            : (state.unlockedModules && state.unlockedModules.length > 0 ? state.unlockedModules : ['module-1', 'module-2']);
+            : ['module-1', 'module-2'];
+          const unlockedModules = Array.from(new Set([...remoteUnlocked, ...(state.unlockedModules || [])]));
 
           const nextState = {
             ...state,
@@ -307,6 +354,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             isVerified: true,
             xp: userXp,
             streak: userStreak,
+            completedLessons: mergedLessons,
+            completedCaseExams: mergedCases,
             unlockedModules,
           };
 
@@ -318,10 +367,27 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             isVerified: true,
             xp: userXp,
             streak: userStreak,
+            completedLessons: mergedLessons,
+            completedCaseExams: mergedCases,
             unlockedModules,
             pendingOtpEmail: undefined,
             simulatedOtpCode: undefined,
             registeredUsers: updatedUsers,
+          });
+
+          // Sync merged stats to remote
+          saveUserProfileToSupabase({
+            ...loggedInProfile,
+            xp: userXp,
+            streak: userStreak,
+            completedLessons: Math.max(remoteLessonsCount, mergedLessons.length + mergedCases.length),
+          });
+          syncUserProgress({
+            totalXp: userXp,
+            level: Math.floor(userXp / 100) + 1,
+            streak: userStreak,
+            completedLessons: mergedLessons,
+            completedCaseExams: mergedCases,
           });
 
           return { success: true };
@@ -354,18 +420,26 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           university: account.university,
           departmentAndClass: account.departmentAndClass,
           avatarEmoji: account.avatarEmoji || '👨‍🎓',
-          avatarUrl: account.avatarUrl,
+          avatarUrl: account.avatarUrl || state.userProfile?.avatarUrl,
           isVerified: true,
           createdAt: new Date().toISOString(),
         };
+
+        const mergedLessons = Array.from(new Set([...(account.completedLessons || []), ...(state.completedLessons || [])]));
+        const mergedCases = Array.from(new Set([...(account.completedCaseExams || []), ...(state.completedCaseExams || [])]));
+        const userXp = Math.max(account.xp || 0, state.xp || 0, (account.xp || 0) + (state.xp || 0));
+        const userStreak = Math.max(account.streak || 1, state.streak || 1);
+        const unlockedModules = Array.from(new Set([...(account.unlockedModules || ['module-1', 'module-2']), ...(state.unlockedModules || [])]));
 
         set({
           userProfile: loggedInProfile,
           isAuthenticated: true,
           isVerified: true,
-          xp: account.xp || 0,
-          streak: account.streak || 1,
-          unlockedModules: account.unlockedModules || ['module-1', 'module-2'],
+          xp: userXp,
+          streak: userStreak,
+          completedLessons: mergedLessons,
+          completedCaseExams: mergedCases,
+          unlockedModules,
         });
 
         return { success: true };
@@ -413,6 +487,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           selectedLessonId: null,
           selectedCaseId: null,
           customActiveModuleName: null,
+          unlockedModules: ['module-1', 'module-2'],
         });
       },
 
@@ -485,12 +560,15 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           newBadges.push('badge-10-lessons');
         }
 
+        const guestTimestamp = !state.isAuthenticated ? Date.now() : state.guestProgressTimestamp;
+
         const nextState: UserState = {
           ...state,
           completedLessons: newCompleted,
           xp: newXp,
           unlockedModules: newUnlocked,
           unlockedBadges: newBadges,
+          guestProgressTimestamp: guestTimestamp,
         };
 
         const updatedUsers = syncUserInList(nextState);
@@ -500,6 +578,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           xp: newXp,
           unlockedModules: newUnlocked,
           unlockedBadges: newBadges,
+          guestProgressTimestamp: guestTimestamp,
           registeredUsers: updatedUsers,
         });
 
@@ -538,11 +617,14 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           newBadges.push('badge-case-master');
         }
 
+        const guestTimestamp = !state.isAuthenticated ? Date.now() : state.guestProgressTimestamp;
+
         const nextState: UserState = {
           ...state,
           completedCaseExams: newCompleted,
           xp: newXp,
           unlockedBadges: newBadges,
+          guestProgressTimestamp: guestTimestamp,
         };
 
         const updatedUsers = syncUserInList(nextState);
@@ -551,6 +633,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedCaseExams: newCompleted,
           xp: newXp,
           unlockedBadges: newBadges,
+          guestProgressTimestamp: guestTimestamp,
           registeredUsers: updatedUsers,
         });
 
@@ -607,28 +690,42 @@ export const useAppStore = create<UserState & AppStoreActions>()(
     {
       name: 'tancorelab-statsim-v5',
       onRehydrateStorage: () => (state) => {
-        if (state && state.userProfile) {
-          const acc = state.userAccounts?.find(
-            (a) => a.schoolEmail.toLowerCase() === state.userProfile.schoolEmail?.toLowerCase()
-          );
-          if (acc && acc.fullName && !state.userProfile.fullName) {
-            state.userProfile.fullName = acc.fullName;
-          }
-          if (acc && acc.avatarUrl && !state.userProfile.avatarUrl) {
-            state.userProfile.avatarUrl = acc.avatarUrl;
+        if (state) {
+          // 3-day device retention check for unauthenticated guest users
+          if (!state.isAuthenticated && state.guestProgressTimestamp) {
+            const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+            if (Date.now() - state.guestProgressTimestamp > THREE_DAYS_MS) {
+              state.completedLessons = [];
+              state.completedCaseExams = [];
+              state.xp = 0;
+              state.unlockedBadges = [];
+              state.unlockedModules = ['module-1', 'module-2'];
+            }
           }
 
-          // Sync real stats from Supabase on app load
-          if (state.isAuthenticated && state.userProfile.schoolEmail && isSupabaseConfigured) {
-            fetchUserProfileFromSupabase(state.userProfile.schoolEmail).then((remote) => {
-              if (remote) {
-                const store = useAppStore.getState();
-                useAppStore.setState({
-                  xp: typeof remote.xp === 'number' ? remote.xp : store.xp,
-                  streak: typeof remote.streak === 'number' ? remote.streak : store.streak,
-                });
-              }
-            }).catch(() => {});
+          if (state.userProfile) {
+            const acc = state.userAccounts?.find(
+              (a) => a.schoolEmail.toLowerCase() === state.userProfile.schoolEmail?.toLowerCase()
+            );
+            if (acc && acc.fullName && !state.userProfile.fullName) {
+              state.userProfile.fullName = acc.fullName;
+            }
+            if (acc && acc.avatarUrl && !state.userProfile.avatarUrl) {
+              state.userProfile.avatarUrl = acc.avatarUrl;
+            }
+
+            // Sync real stats from Supabase on app load
+            if (state.isAuthenticated && state.userProfile.schoolEmail && isSupabaseConfigured) {
+              fetchUserProfileFromSupabase(state.userProfile.schoolEmail).then((remote) => {
+                if (remote) {
+                  const store = useAppStore.getState();
+                  useAppStore.setState({
+                    xp: typeof remote.xp === 'number' ? remote.xp : store.xp,
+                    streak: typeof remote.streak === 'number' ? remote.streak : store.streak,
+                  });
+                }
+              }).catch(() => {});
+            }
           }
         }
       },

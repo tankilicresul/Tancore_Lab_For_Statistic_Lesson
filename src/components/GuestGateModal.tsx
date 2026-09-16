@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
 import { AuthModal } from './AuthModal';
@@ -44,20 +44,20 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
             <span className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white shadow-xs animate-pulse" />
           </div>
           <h2 className="text-lg sm:text-xl font-black text-white tracking-tight leading-snug relative z-10">
-            {isTr ? 'Devam etmek için üye ol! 🎓' : 'Join to keep going! 🎓'}
+            {isTr ? '2. Modüle Geçmek İçin Üye Ol! 🎓' : 'Sign Up to Unlock Module 2! 🎓'}
           </h2>
-          <p className="mt-1.5 text-white/85 text-xs sm:text-sm font-medium leading-relaxed relative z-10 px-2">
+          <p className="mt-1.5 text-white/90 text-xs sm:text-sm font-medium leading-relaxed relative z-10 px-2">
             {isTr
-              ? "İlk dersi misafir olarak inceledin. Tüm modüllere ve Tanco'ya sınırsız erişmek için ücretsiz kayıt ol!"
-              : 'You explored the first lesson as a guest. Sign up free to unlock all modules and unlimited Tanco access!'}
+              ? "İlk modülü başarıyla deneyimledin. Tüm ilerlemen cihazında saklandı! 2. Modüle ve sonraki tüm konulara devam etmek için ücretsiz kayıt ol veya giriş yap."
+              : 'You explored the first module. Your progress is saved on your device! Sign up free or log in to unlock Module 2 and beyond.'}
           </p>
         </div>
 
         <div className="bg-white px-5 pb-6 pt-4 space-y-3">
           <div className="flex flex-col space-y-1.5 mb-2">
             {(isTr
-              ? ['✅ Tüm modüller ve derslere erişim', '✅ XP, rozet ve liderlik tablosu', '✅ Tanco AI ile sınırsız sohbet', '✅ İlerlemeniz kaydedilir']
-              : ['✅ Access to all modules & lessons', '✅ XP, badges & leaderboard', '✅ Unlimited Tanco AI chat', '✅ Your progress is saved']
+              ? ['✅ İlerlemeniz sıfırlanmaz, hesabınıza aktarılır', '✅ 2. Modül ve tüm ileri düzey konular açılır', '✅ XP, rozet ve liderlik tablosu', '✅ Tanco AI asistan ile sınırsız sohbet']
+              : ['✅ Progress is preserved & transferred to your account', '✅ Unlock Module 2 & all advanced courses', '✅ XP, badges & global leaderboard', '✅ Unlimited Tanco AI assistant']
             ).map((perk, i) => (
               <span key={i} className="text-xs text-slate-700 font-semibold">{perk}</span>
             ))}

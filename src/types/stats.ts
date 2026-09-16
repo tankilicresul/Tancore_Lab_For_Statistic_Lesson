@@ -142,6 +142,7 @@ export interface UserState {
   selectedTrack?: 'probability' | 'statistics';
   customActiveModuleName?: string | null;
   isTancoChatOpen?: boolean;
+  guestProgressTimestamp?: number;
 }
 
 export interface PlacementTestResult {
