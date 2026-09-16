@@ -39,7 +39,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3 sm:py-3.5 font-sans shadow-xs">
         <div className="max-w-6xl mx-auto flex items-center justify-between relative">
-          {/* TanCoreLab Brand Logo */}
+          {/* TancoreLab Brand Logo */}
           <a
             href="#"
             onClick={(e) => {
@@ -59,7 +59,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             </div>
 
             <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-sans">
-              TanCoreLab
+              TancoreLab
             </span>
           </a>
 

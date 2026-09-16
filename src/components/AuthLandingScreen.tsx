@@ -36,7 +36,7 @@ const HIGHLIGHT_ITEMS = [
     badgeEn: '🎓 Live University League',
     titleTr: '40+ Üniversiteden Mühendis ve Analistler',
     titleEn: 'Students from 40+ Top Universities',
-    descTr: 'Koç, İTÜ, ODTÜ, Boğaziçi ve Türkiye\'nin dört bir yanından öğrenciler TanCoreLab liginde yarışıyor.',
+    descTr: 'Koç, İTÜ, ODTÜ, Boğaziçi ve Türkiye\'nin dört bir yanından öğrenciler TancoreLab liginde yarışıyor.',
     descEn: 'Engineers and data analysts from premier universities compete, learn, and climb the live XP leaderboard.',
   },
   {
@@ -484,9 +484,9 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
           </div>
         </div>
 
-        {/* TanCoreLab Brand Title */}
+        {/* TancoreLab Brand Title */}
         <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white font-sans drop-shadow-xs">
-          TanCoreLab
+          TancoreLab
         </h1>
       </div>
 

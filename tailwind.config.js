@@ -17,7 +17,7 @@ export default {
           200: '#fed7aa',
           300: '#fdba74',
           400: '#ff8c1a',
-          500: '#ff7a00', // Vibrant TanCoreLab Orange from image
+          500: '#ff7a00', // Vibrant TancoreLab Orange from image
           600: '#e56d00',
           700: '#cc6100',
           800: '#994900',

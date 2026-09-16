@@ -237,10 +237,10 @@
       "id": "m11-case-3",
       "moduleId": "module-11",
       "difficulty": "zor",
-      "title": { "tr": "TanCoreLab Final Capstone: Süreç Optimizasyonu", "en": "TanCoreLab Final Capstone: Process Optimization" },
+      "title": { "tr": "TancoreLab Final Capstone: Süreç Optimizasyonu", "en": "TancoreLab Final Capstone: Process Optimization" },
       "businessQuestion": {
-        "tr": "Tebrikler! TanCoreLab İstatistik Final Capstone Vakasına ulaştınız. Üretim hattında n = 40 parçanın ölçümünde x̄ = 100.0 mm, s = 2.0 mm bulunmuştur. %95 Güven Düzeyinde (t_0.025,39 = 2.023) Popülasyon Ortalamasının Güven Aralığı Alt Sınırı (x̄ - t* · s / √n) kaçtır? (√40 = 6.325)",
-        "en": "Congratulations! You reached the TanCoreLab Statistics Final Capstone. For n = 40 parts, x̄ = 100.0 mm, s = 2.0 mm. For 95% Confidence (t* = 2.023), what is the lower limit of CI (x̄ - t* · s / √n)? (√40 = 6.325)"
+        "tr": "Tebrikler! TancoreLab İstatistik Final Capstone Vakasına ulaştınız. Üretim hattında n = 40 parçanın ölçümünde x̄ = 100.0 mm, s = 2.0 mm bulunmuştur. %95 Güven Düzeyinde (t_0.025,39 = 2.023) Popülasyon Ortalamasının Güven Aralığı Alt Sınırı (x̄ - t* · s / √n) kaçtır? (√40 = 6.325)",
+        "en": "Congratulations! You reached the TancoreLab Statistics Final Capstone. For n = 40 parts, x̄ = 100.0 mm, s = 2.0 mm. For 95% Confidence (t* = 2.023), what is the lower limit of CI (x̄ - t* · s / √n)? (√40 = 6.325)"
       },
       "dataset": {
         "columns": ["Parametre", "Örneklem Değeri"],
