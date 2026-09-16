@@ -1,8 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 import { UserProfile } from '../types/stats';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const DEFAULT_SUPABASE_URL = 'https://jjbofttymfqjivzzhaly.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqYm9mdHR5bWZxaml2enpoYWx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4NDExODQsImV4cCI6MjEwMDQxNzE4NH0.PjLoA5LDDUtewmFdaRNVPUImSjhM6kLiViHdmVJgk84';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || DEFAULT_SUPABASE_ANON_KEY;
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl &&
@@ -16,17 +19,14 @@ export const supabase = isSupabaseConfigured
   : null;
 
 /**
- * Send OTP Code via email using Supabase Auth (or simulated code fallback if not configured)
+ * Send OTP Code via email using Supabase Auth
  */
 export async function sendEmailOtp(
   email: string,
   metadata?: { fullName?: string; university?: string; departmentAndClass?: string; password?: string }
 ): Promise<{ success: boolean; simulatedCode?: string; error?: string }> {
   if (!supabase || !isSupabaseConfigured) {
-    // Generate an 8-digit random code for simulation mode
-    const simulatedCode = Math.floor(10000000 + Math.random() * 90000000).toString();
-    console.log(`[AUTH SIMULATION] OTP sent to ${email}: ${simulatedCode}`);
-    return { success: true, simulatedCode };
+    return { success: false, error: 'Veritabanı bağlantısı yapılandırılamadı.' };
   }
 
   try {
@@ -41,7 +41,6 @@ export async function sendEmailOtp(
               display_name: metadata.fullName,
               university: metadata.university,
               department_and_class: metadata.departmentAndClass,
-              password: metadata.password,
             }
           : undefined,
       },
@@ -49,89 +48,220 @@ export async function sendEmailOtp(
 
     if (error) {
       console.warn('Supabase Auth OTP error:', error.message);
-      // Fallback to simulation if email service fails or is not enabled in Supabase dashboard
-      const simulatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-      return { success: true, simulatedCode, error: error.message };
+      return { success: false, error: error.message };
     }
 
     return { success: true };
   } catch (err: any) {
     console.error('Error sending OTP:', err);
-    const simulatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-    return { success: true, simulatedCode };
+    return { success: false, error: err.message || 'Onay kodu gönderilemedi.' };
   }
 }
 
 /**
- * Verify 6-digit OTP token entered by the user
+ * Verify OTP token entered by the user
  */
 export async function verifyEmailOtp(
   email: string,
-  token: string,
-  expectedSimulatedCode?: string
+  token: string
 ): Promise<{ success: boolean; user?: any; error?: string }> {
-  // If in simulation mode or fallback code exists
-  if (expectedSimulatedCode) {
-    if (token.trim() === expectedSimulatedCode.trim() || token.trim() === '123456') {
-      return {
-        success: true,
-        user: {
-          id: `usr_${Date.now()}`,
-          email,
-          user_metadata: { email_verified: true },
-        },
-      };
-    } else {
-      return { success: false, error: 'Girdiğiniz 6 haneli doğrulama kodu geçersiz. Lütfen tekrar deneyin.' };
-    }
+  if (!supabase || !isSupabaseConfigured) {
+    return { success: false, error: 'Veritabanı bağlantısı bulunamadı.' };
   }
 
-  if (!supabase || !isSupabaseConfigured) {
-    if (token.trim() === '123456') {
-      return {
-        success: true,
-        user: { id: `usr_${Date.now()}`, email, user_metadata: { email_verified: true } },
-      };
-    }
-    return { success: false, error: 'Doğrulama kodu hatalı. Test kodu: 123456' };
-  }
+  const cleanToken = token.trim();
 
   try {
-    const { data, error } = await supabase.auth.verifyOtp({
-      email,
-      token,
-      type: 'email',
+    // 1. Try 'signup' verification type first
+    let res = await supabase.auth.verifyOtp({
+      email: email.trim().toLowerCase(),
+      token: cleanToken,
+      type: 'signup',
     });
 
-    if (error) {
-      // Allow '123456' as master test code if standard OTP check fails
-      if (token.trim() === '123456') {
-        return {
-          success: true,
-          user: { id: `usr_${Date.now()}`, email },
-        };
-      }
-      return { success: false, error: error.message || 'Geçersiz doğrulama kodu' };
+    // 2. If 'signup' fails, try 'email' type (used for magiclink/otp signin)
+    if (res.error) {
+      res = await supabase.auth.verifyOtp({
+        email: email.trim().toLowerCase(),
+        token: cleanToken,
+        type: 'email',
+      });
     }
 
-    return { success: true, user: data.user };
-  } catch (err: any) {
-    if (token.trim() === '123456') {
-      return { success: true, user: { id: `usr_${Date.now()}`, email } };
+    if (res.error) {
+      return { success: false, error: res.error.message || 'Geçersiz veya süresi dolmuş doğrulama kodu.' };
     }
+
+    return { success: true, user: res.data.user };
+  } catch (err: any) {
     return { success: false, error: err.message || 'Doğrulama hatası oluştu.' };
   }
 }
 
 /**
- * Save / update user profile in Supabase profiles table
+ * Sign Up with email, password and student profile metadata
  */
-export async function saveUserProfileToSupabase(profile: UserProfile & { password?: string; xp?: number; streak?: number; completedLessons?: number }): Promise<void> {
+export async function signUpWithSupabase(
+  email: string,
+  password: string,
+  metadata?: { fullName?: string; university?: string; departmentAndClass?: string }
+): Promise<{ success: boolean; user?: any; session?: any; needsEmailVerification?: boolean; error?: string }> {
+  if (!supabase || !isSupabaseConfigured) {
+    return { success: false, error: 'Veritabanı bağlantısı bulunamadı.' };
+  }
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim().toLowerCase(),
+      password: password.trim(),
+      options: {
+        data: metadata
+          ? {
+              full_name: metadata.fullName,
+              name: metadata.fullName,
+              display_name: metadata.fullName,
+              university: metadata.university,
+              department_and_class: metadata.departmentAndClass,
+            }
+          : undefined,
+      },
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    const needsEmailVerification = !data.session && Boolean(data.user && !data.user.email_confirmed_at);
+    return {
+      success: true,
+      user: data.user,
+      session: data.session,
+      needsEmailVerification,
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Kayıt işlemi başarısız.' };
+  }
+}
+
+/**
+ * Sign In with email and password via Supabase Auth
+ */
+export async function signInWithSupabase(
+  email: string,
+  password: string
+): Promise<{ success: boolean; user?: any; session?: any; errorType?: 'WRONG_PASSWORD' | 'EMAIL_NOT_FOUND' | 'OTHER'; error?: string }> {
+  if (!supabase || !isSupabaseConfigured) {
+    return { success: false, errorType: 'OTHER', error: 'Veritabanı bağlantısı bulunamadı.' };
+  }
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password: password.trim(),
+    });
+
+    if (error) {
+      const msg = error.message.toLowerCase();
+      if (msg.includes('invalid login credentials') || msg.includes('invalid credentials')) {
+        return {
+          success: false,
+          errorType: 'WRONG_PASSWORD',
+          error: 'E-posta veya şifreniz hatalı. Lütfen kontrol edip tekrar deneyin.',
+        };
+      }
+      if (msg.includes('email not confirmed')) {
+        return {
+          success: false,
+          errorType: 'OTHER',
+          error: 'E-posta adresiniz henüz onaylanmamış. Lütfen onay kodunu giriniz.',
+        };
+      }
+      return { success: false, errorType: 'OTHER', error: error.message };
+    }
+
+    return { success: true, user: data.user, session: data.session };
+  } catch (err: any) {
+    return { success: false, errorType: 'OTHER', error: err.message || 'Giriş yapılamadı.' };
+  }
+}
+
+/**
+ * Send real password reset email via Supabase Auth
+ */
+export async function requestPasswordReset(email: string): Promise<{ success: boolean; error?: string }> {
+  if (!supabase || !isSupabaseConfigured) {
+    return { success: false, error: 'Veritabanı bağlantısı bulunamadı.' };
+  }
+
+  try {
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase());
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Şifre sıfırlama kodu gönderilemedi.' };
+  }
+}
+
+/**
+ * Verify password reset OTP token
+ */
+export async function verifyPasswordResetToken(
+  email: string,
+  token: string
+): Promise<{ success: boolean; error?: string }> {
+  if (!supabase || !isSupabaseConfigured) {
+    return { success: false, error: 'Veritabanı bağlantısı bulunamadı.' };
+  }
+
+  try {
+    const { data, error } = await supabase.auth.verifyOtp({
+      email: email.trim().toLowerCase(),
+      token: token.trim(),
+      type: 'recovery',
+    });
+
+    if (error) {
+      return { success: false, error: error.message || 'Geçersiz veya süresi dolmuş kod.' };
+    }
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Kod doğrulanamadı.' };
+  }
+}
+
+/**
+ * Update user password after recovery
+ */
+export async function completePasswordReset(newPassword: string): Promise<{ success: boolean; error?: string }> {
+  if (!supabase || !isSupabaseConfigured) {
+    return { success: false, error: 'Veritabanı bağlantısı bulunamadı.' };
+  }
+
+  try {
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword.trim(),
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Şifre güncellenemedi.' };
+  }
+}
+
+/**
+ * Save / update user profile in Supabase profiles table (Strictly non-sensitive fields)
+ */
+export async function saveUserProfileToSupabase(profile: UserProfile & { xp?: number; streak?: number; completedLessons?: number }): Promise<void> {
   if (!supabase || !isSupabaseConfigured) return;
 
   try {
     const payload: any = {
-      email: profile.schoolEmail,
+      email: profile.schoolEmail.trim().toLowerCase(),
       full_name: profile.fullName,
       university: profile.university,
       department_and_class: profile.departmentAndClass,
@@ -141,9 +271,6 @@ export async function saveUserProfileToSupabase(profile: UserProfile & { passwor
     };
     if (profile.avatarUrl) {
       payload.avatar_url = profile.avatarUrl;
-    }
-    if (profile.password) {
-      payload.password = profile.password;
     }
     if (typeof profile.xp === 'number') {
       payload.xp = profile.xp;

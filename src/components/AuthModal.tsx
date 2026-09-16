@@ -74,31 +74,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
       return;
     }
 
-    // Check for Admin Email Bypass
-    if (emailClean.startsWith('admin@') || emailClean === 'admin@tancorelab.com') {
-      setLoading(true);
-      registerAccountAndSendOtp({
-        fullName: formData.fullName.trim(),
-        schoolEmail: emailClean,
-        university: formData.university.trim() || 'Üniversite',
-        departmentAndClass: formData.departmentAndClass.trim() || 'Öğrenci',
-        avatarEmoji: formData.avatarEmoji || '👨‍🎓',
-      }, '123456');
-      verifyOtpAndActivateAccount('123456');
-
-      setSuccessMessage(
-        language === 'tr'
-          ? '👑 Admin Hesabı Doğrulandı! Giriş Yapılıyor...'
-          : '👑 Admin Account Verified! Logging in...'
-      );
-
-      setTimeout(() => {
-        setLoading(false);
-        onSuccess?.();
-        onClose();
-      }, 600);
-      return;
-    }
 
     setLoading(true);
     try {
@@ -175,7 +150,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
       const res = verifyOtpAndActivateAccount(code);
 
       if (!res.success) {
-        const remoteRes = await verifyEmailOtp(formData.schoolEmail, code, simulatedCode || undefined);
+        const remoteRes = await verifyEmailOtp(formData.schoolEmail, code);
         if (!remoteRes.success) {
           throw new Error(remoteRes.error || (language === 'tr' ? 'Girdiğiniz doğrulama kodu hatalı.' : 'Invalid code.'));
         }

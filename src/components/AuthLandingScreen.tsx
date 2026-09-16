@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore, isValidStudentEmail } from '../store/useAppStore';
-import { sendEmailOtp, verifyEmailOtp } from '../lib/supabase';
+import {
+  sendEmailOtp,
+  verifyEmailOtp,
+  signUpWithSupabase,
+  requestPasswordReset,
+  verifyPasswordResetToken,
+  completePasswordReset,
+} from '../lib/supabase';
+import { LegalTermsModal } from './LegalTermsModal';
 import {
   Zap,
   Mail,
@@ -99,6 +107,11 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   const [forgotOtp, setForgotOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [forgotSuccessMsg, setForgotSuccessMsg] = useState<string | null>(null);
+  const [forgotStep, setForgotStep] = useState<'request' | 'verify'>('request');
+
+  // Legal Modal (KVKK & Terms) State
+  const [showLegalModal, setShowLegalModal] = useState(false);
+  const [legalTab, setLegalTab] = useState<'kvkk' | 'terms' | 'privacy'>('kvkk');
 
   // Logo Spin Animation State (Every 3 Seconds)
   const [isLogoSpinning, setIsLogoSpinning] = useState(false);
@@ -267,62 +280,41 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
       return;
     }
 
-    // Admin bypass: instant verification without OTP
-    if (
-      cleanEmail === 'admin@tancorelab.com' ||
-      cleanEmail.startsWith('admin@')
-    ) {
-      const studentName = fullName.trim();
-      registerAccountAndSendOtp(
-        {
-          schoolEmail: cleanEmail,
-          fullName: studentName,
-          university: university.trim() || 'Üniversite',
-          departmentAndClass: departmentAndClass.trim() || 'Öğrenci',
-          password: password || '123456',
-          avatarEmoji: '👨‍🎓',
-        },
-        '123456'
-      );
-      verifyOtpAndActivateAccount('123456', true);
-      onSuccess?.();
-      return;
-    }
-
     setIsSubmitting(true);
     setOtpDigits(['', '', '', '', '', '', '', '']);
 
     try {
-      // Trigger Supabase email OTP with user metadata so Display name is stored in auth.users
-      const res = await sendEmailOtp(cleanEmail, {
+      // 1. Sign up user via Supabase Auth (bcrypt hashed, secure)
+      const res = await signUpWithSupabase(cleanEmail, password, {
         fullName: fullName.trim(),
         university: university.trim(),
         departmentAndClass: departmentAndClass.trim(),
-        password: password,
       });
 
-      registerAccountAndSendOtp(
-        {
-          schoolEmail: cleanEmail,
-          fullName: fullName.trim(),
-          university: university.trim(),
-          departmentAndClass: departmentAndClass.trim(),
-          password: password,
-          avatarEmoji: '👨‍🎓',
-        },
-        res.simulatedCode
-      );
-
-      if (res.simulatedCode) {
-        setSimulatedCode(res.simulatedCode);
-      } else {
-        setSimulatedCode(null);
+      if (!res.success) {
+        setErrorMessage(res.error || (language === 'tr' ? 'Kayıt işlemi gerçekleştirilemedi.' : 'Registration failed.'));
+        return;
       }
 
-      setStep('otp');
-      setResendTimer(60);
+      registerAccountAndSendOtp({
+        schoolEmail: cleanEmail,
+        fullName: fullName.trim(),
+        university: university.trim(),
+        departmentAndClass: departmentAndClass.trim(),
+        avatarEmoji: '👨‍🎓',
+      });
+
+      // If Supabase requires email verification (sends OTP)
+      if (res.needsEmailVerification) {
+        setStep('otp');
+        setResendTimer(60);
+      } else {
+        // Automatically confirmed
+        verifyOtpAndActivateAccount('', true);
+        onSuccess?.();
+      }
     } catch (err: any) {
-      setErrorMessage(err.message || (language === 'tr' ? 'Onay kodu gönderilemedi. Lütfen tekrar deneyiniz.' : 'Could not send verification code.'));
+      setErrorMessage(err.message || (language === 'tr' ? 'Kayıt işlemi gerçekleştirilemedi.' : 'Registration failed.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -338,9 +330,12 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
 
     try {
       const res = await sendEmailOtp(schoolEmail.trim().toLowerCase());
-      if (res.simulatedCode) setSimulatedCode(res.simulatedCode);
-      setResendTimer(60);
-      setOtpSentMsg(language === 'tr' ? 'Yeni doğrulama kodu e-postanıza gönderildi!' : 'New verification code sent to your email!');
+      if (res.success) {
+        setResendTimer(60);
+        setOtpSentMsg(language === 'tr' ? 'Yeni doğrulama kodu e-postanıza gönderildi!' : 'New verification code sent to your email!');
+      } else {
+        setErrorMessage(res.error || (language === 'tr' ? 'Kod tekrar gönderilemedi.' : 'Could not resend code.'));
+      }
     } catch (err: any) {
       setErrorMessage(err.message || (language === 'tr' ? 'Kod tekrar gönderilemedi.' : 'Could not resend code.'));
     } finally {
@@ -359,7 +354,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     if (token.length < 6) {
       setErrorMessage(
         language === 'tr'
-          ? 'Lütfen 8 haneli onay kodunuzu kutucuklara eksiksiz giriniz.'
+          ? 'Lütfen e-postanıza gelen doğrulama kodunu eksiksiz giriniz.'
           : 'Please enter your complete verification code.'
       );
       return;
@@ -368,15 +363,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     setIsSubmitting(true);
 
     try {
-      // 1. Check local/simulated code first
-      const localRes = verifyOtpAndActivateAccount(token);
-      if (localRes.success) {
-        onSuccess?.();
-        return;
-      }
-
-      // 2. Check remote Supabase verification
-      const remoteRes = await verifyEmailOtp(cleanEmail, token, simulatedCode || undefined);
+      // Remote Supabase verification
+      const remoteRes = await verifyEmailOtp(cleanEmail, token);
       if (remoteRes.success) {
         verifyOtpAndActivateAccount(token, true);
         onSuccess?.();
@@ -393,36 +381,11 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     }
   };
 
-  // Handle Sign In Submission
+  // Handle Sign In Submission (Real bcrypt authentication)
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setShowForgotPassword(false);
-
-    const cleanEmail = schoolEmail.trim().toLowerCase();
-
-    // Admin bypass: instant login without password
-    if (
-      cleanEmail === 'admin@tancorelab.com' ||
-      cleanEmail.startsWith('admin@')
-    ) {
-      const existingAccount = (userAccounts || []).find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
-      const studentName = existingAccount?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student');
-      registerAccountAndSendOtp(
-        {
-          schoolEmail: cleanEmail,
-          fullName: studentName,
-          university: existingAccount?.university || 'Üniversite',
-          departmentAndClass: existingAccount?.departmentAndClass || 'Öğrenci',
-          password: password || '123456',
-          avatarEmoji: existingAccount?.avatarEmoji || '👨‍🎓',
-        },
-        '123456'
-      );
-      verifyOtpAndActivateAccount('123456', true);
-      onSuccess?.();
-      return;
-    }
 
     setIsSubmitting(true);
     try {
@@ -443,23 +406,74 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     }
   };
 
-  // Handle Password Reset Submission
-  const handleResetPasswordSubmit = (e: React.FormEvent) => {
+  // Real Password Reset: Phase 1 - Request Code via Email
+  const handleRequestResetCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+    setForgotSuccessMsg(null);
+
+    const cleanEmail = forgotEmail.trim().toLowerCase();
+    if (!cleanEmail) {
+      setErrorMessage(language === 'tr' ? 'Lütfen kayıtlı e-posta adresinizi giriniz.' : 'Please enter your email.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await requestPasswordReset(cleanEmail);
+      if (res.success) {
+        setForgotStep('verify');
+        setForgotSuccessMsg(
+          language === 'tr'
+            ? 'Şifre sıfırlama kodu e-postanıza gönderildi! Lütfen kodu ve yeni şifrenizi giriniz.'
+            : 'Reset code sent to your email! Please enter the code and new password.'
+        );
+      } else {
+        setErrorMessage(res.error || (language === 'tr' ? 'Şifre sıfırlama kodu gönderilemedi.' : 'Could not send reset code.'));
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Real Password Reset: Phase 2 - Verify Code & Update Password
+  const handleCompleteReset = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    const res = resetPasswordWithOtp(forgotEmail, forgotOtp, newPassword);
-    if (res.success) {
-      setForgotSuccessMsg(res.message || 'Şifreniz sıfırlandı.');
-      setTimeout(() => {
-        setStep('form');
-        setActiveTab('login');
-        setSchoolEmail(forgotEmail);
-        setPassword(newPassword);
-        setForgotSuccessMsg(null);
-      }, 1500);
-    } else {
-      setErrorMessage(res.message || 'Şifre sıfırlanamadı.');
+    if (newPassword.length < 4) {
+      setErrorMessage(language === 'tr' ? 'Yeni şifreniz en az 4 karakter olmalıdır.' : 'Password must be at least 4 characters.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const verifyRes = await verifyPasswordResetToken(forgotEmail.trim().toLowerCase(), forgotOtp.trim());
+      if (!verifyRes.success) {
+        setErrorMessage(verifyRes.error || (language === 'tr' ? 'Geçersiz veya süresi dolmuş kod.' : 'Invalid code.'));
+        return;
+      }
+
+      const updateRes = await completePasswordReset(newPassword);
+      if (updateRes.success) {
+        setForgotSuccessMsg(
+          language === 'tr'
+            ? 'Şifreniz başarıyla güncellendi! Yeni şifrenizle giriş yapabilirsiniz.'
+            : 'Password updated successfully! You can now sign in.'
+        );
+        setTimeout(() => {
+          setStep('form');
+          setActiveTab('login');
+          setSchoolEmail(forgotEmail);
+          setPassword(newPassword);
+          setForgotSuccessMsg(null);
+          setForgotStep('request');
+        }, 1500);
+      } else {
+        setErrorMessage(updateRes.error || (language === 'tr' ? 'Şifre güncellenemedi.' : 'Could not update password.'));
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -613,17 +627,23 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
               </div>
             </div>
           ) : step === 'forgot_password' ? (
-            /* Step 3: Forgot Password Screen */
+            /* Step 3: Real Supabase Forgot Password Screen */
             <div className="space-y-4 animate-fade-in">
               <div className="text-left">
                 <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
-                  {language === 'tr' ? 'ŞİFRE SIFIRLAMA' : 'RESET PASSWORD'}
+                  {language === 'tr' ? 'GÜVENLİ ŞİFRE SIFIRLAMA' : 'SECURE PASSWORD RESET'}
                 </span>
                 <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mt-0.5">
                   {language === 'tr' ? 'Şifremi Unuttum' : 'Forgot Password'}
                 </h3>
                 <p className="text-xs text-slate-600 font-medium mt-1">
-                  Kayıtlı okul e-posta adresinizi ve onay kodunu (123456) girerek şifrenizi yenileyin.
+                  {forgotStep === 'request'
+                    ? (language === 'tr'
+                        ? 'Kayıtlı üniversite e-posta adresinizi giriniz. Size tek kullanımlık sıfırlama kodu göndereceğiz.'
+                        : 'Enter your registered email. We will send a one-time reset code.')
+                    : (language === 'tr'
+                        ? 'E-postanıza gönderilen onay kodunu ve belirlemek istediğiniz yeni şifreyi giriniz.'
+                        : 'Enter the code sent to your email and your new password.')}
                 </p>
               </div>
 
@@ -641,68 +661,111 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                 </div>
               )}
 
-              <form onSubmit={handleResetPasswordSubmit} className="space-y-3">
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Okul E-postası</label>
-                  <input
-                    type="email"
-                    value={forgotEmail}
-                    onChange={(e) => {
-                      setForgotEmail(e.target.value);
-                      handleInputChange();
-                    }}
-                    placeholder={language === 'tr' ? 'E-posta adresiniz' : 'Email address'}
-                    autoComplete="off"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
-                    required
-                  />
-                </div>
+              {forgotStep === 'request' ? (
+                <form onSubmit={handleRequestResetCode} className="space-y-3">
+                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      {language === 'tr' ? 'Okul E-postası' : 'School Email'}
+                    </label>
+                    <input
+                      type="email"
+                      value={forgotEmail}
+                      onChange={(e) => {
+                        setForgotEmail(e.target.value);
+                        handleInputChange();
+                      }}
+                      placeholder={language === 'tr' ? 'ad.soyad@universite.edu.tr' : 'your.email@university.edu'}
+                      autoComplete="off"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
+                      required
+                    />
+                  </div>
 
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
-                    {language === 'tr' ? 'Onay Kodu' : 'Verification Code'}
-                  </label>
-                  <input
-                    type="text"
-                    value={forgotOtp}
-                    onChange={(e) => {
-                      setForgotOtp(e.target.value);
-                      handleInputChange();
-                    }}
-                    placeholder={language === 'tr' ? '6 haneli kod' : '6-digit code'}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
-                    required
-                  />
-                </div>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md cursor-pointer flex items-center justify-center space-x-2 disabled:opacity-75"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>{language === 'tr' ? 'Kod Gönderiliyor...' : 'Sending Code...'}</span>
+                      </>
+                    ) : (
+                      <span>{language === 'tr' ? 'Doğrulama Kodu Gönder' : 'Send Reset Code'}</span>
+                    )}
+                  </button>
+                </form>
+              ) : (
+                <form onSubmit={handleCompleteReset} className="space-y-3">
+                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      {language === 'tr' ? 'E-postadaki Onay Kodu' : 'Verification Code'}
+                    </label>
+                    <input
+                      type="text"
+                      value={forgotOtp}
+                      onChange={(e) => {
+                        setForgotOtp(e.target.value);
+                        handleInputChange();
+                      }}
+                      placeholder={language === 'tr' ? 'E-postanıza gelen kod' : 'Code from email'}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
+                      required
+                    />
+                  </div>
 
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Yeni Şifre</label>
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => {
-                      setNewPassword(e.target.value);
-                      handleInputChange();
-                    }}
-                    placeholder="••••••••"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
-                    required
-                  />
-                </div>
+                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      {language === 'tr' ? 'Yeni Şifre' : 'New Password'}
+                    </label>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => {
+                        setNewPassword(e.target.value);
+                        handleInputChange();
+                      }}
+                      placeholder="••••••••"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
+                      required
+                    />
+                  </div>
 
-                <button
-                  type="submit"
-                  className="w-full py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md cursor-pointer"
-                >
-                  Şifreyi Güncelle
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md cursor-pointer flex items-center justify-center space-x-2 disabled:opacity-75"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>{language === 'tr' ? 'Güncelleniyor...' : 'Updating...'}</span>
+                      </>
+                    ) : (
+                      <span>{language === 'tr' ? 'Şifreyi Güncelle ve Giriş Yap' : 'Save New Password'}</span>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setForgotStep('request')}
+                    className="w-full text-center text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer pt-1"
+                  >
+                    {language === 'tr' ? '← Farklı e-posta veya tekrar kod iste' : '← Try different email'}
+                  </button>
+                </form>
+              )}
 
               <button
-                onClick={() => setStep('form')}
+                onClick={() => {
+                  setStep('form');
+                  setForgotStep('request');
+                  setErrorMessage(null);
+                }}
                 className="w-full text-center text-xs font-bold text-slate-500 hover:text-[#ff7a00] cursor-pointer pt-1"
               >
-                ← Giriş Ekranına Dön
+                ← {language === 'tr' ? 'Giriş Ekranına Dön' : 'Back to Sign In'}
               </button>
             </div>
           ) : (
@@ -905,6 +968,49 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                       </>
                     )}
                   </button>
+
+                  <p className="text-[11px] text-slate-500 text-center mt-2.5 leading-snug">
+                    {language === 'tr' ? (
+                      <>
+                        Kayıt olarak{' '}
+                        <button
+                          type="button"
+                          onClick={() => { setLegalTab('terms'); setShowLegalModal(true); }}
+                          className="font-bold text-[#ff7a00] hover:underline cursor-pointer"
+                        >
+                          Kullanım Koşulları
+                        </button>
+                        {' '}ve{' '}
+                        <button
+                          type="button"
+                          onClick={() => { setLegalTab('kvkk'); setShowLegalModal(true); }}
+                          className="font-bold text-[#ff7a00] hover:underline cursor-pointer"
+                        >
+                          KVKK Aydınlatma Metni
+                        </button>
+                        'ni kabul etmiş olursunuz.
+                      </>
+                    ) : (
+                      <>
+                        By registering, you accept our{' '}
+                        <button
+                          type="button"
+                          onClick={() => { setLegalTab('terms'); setShowLegalModal(true); }}
+                          className="font-bold text-[#ff7a00] hover:underline cursor-pointer"
+                        >
+                          Terms of Service
+                        </button>
+                        {' '}and{' '}
+                        <button
+                          type="button"
+                          onClick={() => { setLegalTab('privacy'); setShowLegalModal(true); }}
+                          className="font-bold text-[#ff7a00] hover:underline cursor-pointer"
+                        >
+                          Privacy Policy
+                        </button>.
+                      </>
+                    )}
+                  </p>
                 </form>
               ) : (
                 /* TAB 2: GİRİŞ YAP (Sign In) */
@@ -1039,6 +1145,13 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
             </div>
           );
         })()}
+
+        {/* Legal Terms Modal (KVKK, Terms of Service, Privacy Policy) */}
+        <LegalTermsModal
+          isOpen={showLegalModal}
+          onClose={() => setShowLegalModal(false)}
+          defaultTab={legalTab}
+        />
       </div>
-    );
-  };
+  );
+};
