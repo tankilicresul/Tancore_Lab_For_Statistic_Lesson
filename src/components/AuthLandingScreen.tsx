@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAppStore, isValidStudentEmail } from '../store/useAppStore';
+import { sendEmailOtp, verifyEmailOtp } from '../lib/supabase';
 import {
   Zap,
   Mail,
@@ -13,6 +14,8 @@ import {
   KeyRound,
   ShieldCheck,
   Sparkles,
+  Loader2,
+  RefreshCw,
 } from 'lucide-react';
 
 interface AuthLandingScreenProps {
@@ -42,7 +45,9 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
 
   // OTP Verification State
   const [otpCode, setOtpCode] = useState('');
-  const [simulatedCode, setSimulatedCode] = useState('123456');
+  const [simulatedCode, setSimulatedCode] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [resendTimer, setResendTimer] = useState(60);
 
   // Error & Status State
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -67,13 +72,24 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     return () => clearInterval(interval);
   }, []);
 
+  // Countdown timer for resending OTP
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (step === 'otp' && resendTimer > 0) {
+      timer = setInterval(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [step, resendTimer]);
+
   // Quick helper to clear errors on input change
   const handleInputChange = () => {
     if (errorMessage) setErrorMessage(null);
   };
 
   // Handle Sign Up Submission
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
@@ -106,36 +122,111 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
       return;
     }
 
-    // Generate random 6-digit verification code
-    const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-    setSimulatedCode(generatedCode);
+    // Admin bypass: instant verification without OTP
+    if (
+      cleanEmail === 'resultankilic.business@gmail.com' ||
+      cleanEmail.startsWith('rtankilic.business') ||
+      cleanEmail.startsWith('admin@') ||
+      cleanEmail === 'admin@tancorelab.com'
+    ) {
+      registerAccountAndSendOtp(
+        {
+          schoolEmail: cleanEmail,
+          fullName: fullName.trim() || 'Resul Tan Kılıç (Admin)',
+          university: university.trim() || 'Koç Üniversitesi',
+          departmentAndClass: departmentAndClass.trim() || 'Kurucu & Yönetici',
+          password: password || 'admin123',
+          avatarEmoji: '👑',
+        },
+        '123456'
+      );
+      verifyOtpAndActivateAccount('123456', true);
+      onSuccess?.();
+      return;
+    }
 
-    // Save account & set pending OTP
-    registerAccountAndSendOtp(
-      {
-        schoolEmail: cleanEmail,
-        fullName: fullName.trim(),
-        university: university.trim(),
-        departmentAndClass: departmentAndClass.trim(),
-        password: password,
-        avatarEmoji: '👨‍🎓',
-      },
-      generatedCode
-    );
+    setIsSubmitting(true);
 
-    setStep('otp');
+    try {
+      // Trigger Supabase email OTP
+      const res = await sendEmailOtp(cleanEmail);
+
+      registerAccountAndSendOtp(
+        {
+          schoolEmail: cleanEmail,
+          fullName: fullName.trim(),
+          university: university.trim(),
+          departmentAndClass: departmentAndClass.trim(),
+          password: password,
+          avatarEmoji: '👨‍🎓',
+        },
+        res.simulatedCode
+      );
+
+      if (res.simulatedCode) {
+        setSimulatedCode(res.simulatedCode);
+      } else {
+        setSimulatedCode(null);
+      }
+
+      setStep('otp');
+      setResendTimer(60);
+    } catch (err: any) {
+      setErrorMessage(err.message || (language === 'tr' ? 'Onay kodu gönderilemedi. Lütfen tekrar deneyiniz.' : 'Could not send verification code.'));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Handle Resending OTP
+  const handleResendOtp = async () => {
+    if (resendTimer > 0 || isSubmitting) return;
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      const res = await sendEmailOtp(schoolEmail.trim().toLowerCase());
+      if (res.simulatedCode) setSimulatedCode(res.simulatedCode);
+      setResendTimer(60);
+    } catch (err: any) {
+      setErrorMessage(err.message || (language === 'tr' ? 'Kod tekrar gönderilemedi.' : 'Could not resend code.'));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Handle OTP Verification Submission
-  const handleOtpSubmit = (e: React.FormEvent) => {
+  const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
+    setIsSubmitting(true);
 
-    const res = verifyOtpAndActivateAccount(otpCode);
-    if (res.success) {
-      onSuccess?.();
-    } else {
-      setErrorMessage(res.message || 'Girdiğiniz doğrulama kodu hatalı.');
+    const cleanEmail = schoolEmail.trim().toLowerCase();
+    const token = otpCode.trim();
+
+    try {
+      // 1. Check local/simulated code first
+      const localRes = verifyOtpAndActivateAccount(token);
+      if (localRes.success) {
+        onSuccess?.();
+        return;
+      }
+
+      // 2. Check remote Supabase verification
+      const remoteRes = await verifyEmailOtp(cleanEmail, token, simulatedCode || undefined);
+      if (remoteRes.success) {
+        verifyOtpAndActivateAccount(token, true);
+        onSuccess?.();
+      } else {
+        setErrorMessage(
+          remoteRes.error ||
+            (language === 'tr' ? 'Girdiğiniz doğrulama kodu hatalı veya süresi dolmuş.' : 'Invalid or expired code.')
+        );
+      }
+    } catch (err: any) {
+      setErrorMessage(err.message || (language === 'tr' ? 'Doğrulama başarısız oldu.' : 'Verification failed.'));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -144,6 +235,31 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     e.preventDefault();
     setErrorMessage(null);
     setShowForgotPassword(false);
+
+    const cleanEmail = schoolEmail.trim().toLowerCase();
+
+    // Admin bypass: instant login without password
+    if (
+      cleanEmail === 'resultankilic.business@gmail.com' ||
+      cleanEmail.startsWith('rtankilic.business') ||
+      cleanEmail.startsWith('admin@') ||
+      cleanEmail === 'admin@tancorelab.com'
+    ) {
+      registerAccountAndSendOtp(
+        {
+          schoolEmail: cleanEmail,
+          fullName: 'Resul Tan Kılıç (Admin)',
+          university: 'Koç Üniversitesi',
+          departmentAndClass: 'Kurucu & Yönetici',
+          password: password || 'admin123',
+          avatarEmoji: '👑',
+        },
+        '123456'
+      );
+      verifyOtpAndActivateAccount('123456', true);
+      onSuccess?.();
+      return;
+    }
 
     const res = loginWithPassword(schoolEmail, password);
 
@@ -249,12 +365,54 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                   />
                 </div>
 
+                <div className="flex items-center justify-between text-xs px-1">
+                  <button
+                    type="button"
+                    onClick={handleResendOtp}
+                    disabled={resendTimer > 0 || isSubmitting}
+                    className={`font-bold transition-colors cursor-pointer flex items-center space-x-1 ${
+                      resendTimer > 0 || isSubmitting
+                        ? 'text-slate-400 cursor-not-allowed'
+                        : 'text-[#ff7a00] hover:underline'
+                    }`}
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${isSubmitting ? 'animate-spin' : ''}`} />
+                    <span>
+                      {resendTimer > 0
+                        ? language === 'tr'
+                          ? `Tekrar Gönder (${resendTimer}s)`
+                          : `Resend Code (${resendTimer}s)`
+                        : language === 'tr'
+                        ? 'Kodu Tekrar Gönder'
+                        : 'Resend Code'}
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setStep('form')}
+                    className="text-slate-500 hover:text-slate-800 font-semibold cursor-pointer"
+                  >
+                    {language === 'tr' ? 'Bilgileri Düzenle' : 'Edit info'}
+                  </button>
+                </div>
+
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-sm font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/30 cursor-pointer flex items-center justify-center space-x-2"
+                  disabled={isSubmitting}
+                  className="w-full py-3.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-sm font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/30 cursor-pointer flex items-center justify-center space-x-2 disabled:opacity-75 disabled:cursor-not-allowed"
                 >
-                  <span>{language === 'tr' ? 'Kodu Onayla ve Başla' : 'Verify & Start'}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span>{language === 'tr' ? 'Doğrulanıyor...' : 'Verifying...'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>{language === 'tr' ? 'Kodu Onayla ve Başla' : 'Verify & Start'}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
                 </button>
               </form>
 
@@ -541,10 +699,20 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 mt-2 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/25 cursor-pointer flex items-center justify-center space-x-2"
+                    disabled={isSubmitting}
+                    className="w-full py-3.5 mt-2 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/25 cursor-pointer flex items-center justify-center space-x-2 disabled:opacity-75 disabled:cursor-not-allowed"
                   >
-                    <span>{language === 'tr' ? 'Kayıt Ol ve Onay Kodunu Al' : 'Sign Up & Get Code'}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>{language === 'tr' ? 'Onay Kodu Gönderiliyor...' : 'Sending Code...'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>{language === 'tr' ? 'Kayıt Ol ve Onay Kodunu Al' : 'Sign Up & Get Code'}</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
                 </form>
               ) : (

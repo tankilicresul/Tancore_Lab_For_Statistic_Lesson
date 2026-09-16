@@ -124,6 +124,7 @@ export async function saveUserProfileToSupabase(profile: UserProfile): Promise<v
         university: profile.university,
         department_and_class: profile.departmentAndClass,
         avatar_emoji: profile.avatarEmoji || '👨‍🎓',
+        avatar_url: profile.avatarUrl || null,
         is_verified: true,
         updated_at: new Date().toISOString(),
       },
@@ -131,6 +132,45 @@ export async function saveUserProfileToSupabase(profile: UserProfile): Promise<v
     );
   } catch (err) {
     console.warn('Supabase profile save warning:', err);
+  }
+}
+
+/**
+ * Upload profile avatar image to Supabase Storage 'avatars' bucket
+ */
+export async function uploadAvatarImage(file: File, userIdentifier: string): Promise<{ success: boolean; url?: string; error?: string }> {
+  if (!supabase || !isSupabaseConfigured) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve({ success: true, url: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  try {
+    const cleanId = userIdentifier.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const fileExt = file.name.split('.').pop() || 'png';
+    const filePath = `${cleanId}/${Date.now()}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.warn('Storage upload error:', uploadError.message);
+      return { success: false, error: uploadError.message };
+    }
+
+    const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
+    return { success: true, url: data.publicUrl };
+  } catch (err: any) {
+    console.error('Avatar upload exception:', err);
+    return { success: false, error: err.message || 'Fotoğraf yüklenemedi.' };
   }
 }
 

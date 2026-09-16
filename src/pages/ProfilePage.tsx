@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { ALL_MODULES } from '../data/modules';
 import { PublicProfile } from '../types/stats';
+import { uploadAvatarImage } from '../lib/supabase';
 import {
   GraduationCap,
   Mail,
@@ -21,6 +22,8 @@ import {
   UserCheck,
   ExternalLink,
   X,
+  Camera,
+  Loader2,
 } from 'lucide-react';
 
 interface ProfilePageProps {
@@ -56,6 +59,32 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
       avatarEmoji: '👨‍🎓',
     }
   );
+
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert(language === 'tr' ? 'Fotoğraf boyutu en fazla 5MB olabilir.' : 'Photo size must be less than 5MB.');
+      return;
+    }
+
+    setIsUploadingAvatar(true);
+    try {
+      const res = await uploadAvatarImage(file, userProfile?.schoolEmail || 'user');
+      if (res.success && res.url) {
+        updateUserProfile({ avatarUrl: res.url });
+      } else {
+        alert(res.error || (language === 'tr' ? 'Fotoğraf yüklenemedi.' : 'Upload failed.'));
+      }
+    } finally {
+      setIsUploadingAvatar(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,9 +167,29 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
 
         <div className="flex items-start justify-between relative z-10 gap-3">
           <div className="flex items-center space-x-3.5 min-w-0 flex-1">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border border-white/20 shadow-lg shrink-0">
-              {userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')}
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border border-white/20 shadow-lg shrink-0 overflow-hidden relative group cursor-pointer"
+              title={language === 'tr' ? 'Profil fotoğrafı yükle' : 'Upload profile picture'}
+            >
+              {isUploadingAvatar ? (
+                <Loader2 className="w-6 h-6 animate-spin text-white" />
+              ) : userProfile?.avatarUrl ? (
+                <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
+              )}
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <Camera className="w-5 h-5 text-white" />
+              </div>
             </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleAvatarFileChange}
+              accept="image/*"
+              className="hidden"
+            />
             <div className="min-w-0 flex-1">
               <div className="flex items-center space-x-2">
                 <h2 className="text-base sm:text-xl font-black tracking-tight text-white leading-tight truncate">

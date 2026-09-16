@@ -8,7 +8,13 @@ export function isValidStudentEmail(email: string): boolean {
   if (!e.includes('@')) return false;
 
   // Allow student email domains ending with .edu.tr or .edu, or admin emails
-  if (e === 'admin@tancorelab.com' || e.startsWith('admin@')) return true;
+  if (
+    e === 'admin@tancorelab.com' ||
+    e.startsWith('admin@') ||
+    e.startsWith('rtankilic.business') ||
+    e.startsWith('resultankilic.business') ||
+    e === 'rtankilic22@ku.edu.tr'
+  ) return true;
 
   return e.endsWith('.edu.tr') || e.endsWith('.edu');
 }
@@ -25,7 +31,7 @@ interface AppStoreActions {
 
   // Auth actions
   registerAccountAndSendOtp: (account: Partial<RegisteredAccount>, simulatedCode?: string) => void;
-  verifyOtpAndActivateAccount: (token: string) => { success: boolean; message?: string };
+  verifyOtpAndActivateAccount: (token: string, forceActivate?: boolean) => { success: boolean; message?: string };
   loginWithPassword: (email: string, pass: string) => { success: boolean; errorType?: 'INVALID_EMAIL_DOMAIN' | 'EMAIL_NOT_FOUND' | 'WRONG_PASSWORD'; message?: string };
   resetPasswordWithOtp: (email: string, token: string, newPass: string) => { success: boolean; message?: string };
   logout: () => void;
@@ -124,6 +130,7 @@ function syncUserInList(state: UserState): PublicProfile[] {
     university: profile.university || 'Marmara Üniversitesi',
     departmentAndClass: profile.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
     avatarEmoji: profile.avatarEmoji || '👨‍🎓',
+    avatarUrl: profile.avatarUrl,
     xp: state.xp,
     streak: state.streak,
     rank: 1,
@@ -206,12 +213,12 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         });
       },
 
-      verifyOtpAndActivateAccount: (token) => {
+      verifyOtpAndActivateAccount: (token, forceActivate = false) => {
         const state = get();
         const pendingEmail = (state.pendingOtpEmail || state.userProfile.schoolEmail || '').trim().toLowerCase();
         const expectedCode = state.simulatedOtpCode || '123456';
 
-        const isMatch = token.trim() === expectedCode || token.trim() === '123456';
+        const isMatch = forceActivate || token.trim() === expectedCode || token.trim() === '123456';
 
         if (!isMatch) {
           return { success: false, message: 'Girdiğiniz doğrulama kodu hatalı.' };

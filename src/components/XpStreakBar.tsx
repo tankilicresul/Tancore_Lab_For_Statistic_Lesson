@@ -108,7 +108,11 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                 className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-2xl bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border border-[#ff7a00]/40 transition-colors shadow-xs flex items-center justify-center space-x-1.5 font-black text-xs sm:text-sm cursor-pointer"
                 title={language === 'tr' ? 'Profilim & Performansım' : 'My Profile'}
               >
-                <span className="text-lg sm:text-xl leading-none">{userProfile?.avatarEmoji || '👨‍🎓'}</span>
+                {userProfile?.avatarUrl ? (
+                  <img src={userProfile.avatarUrl} alt="Avatar" className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-full object-cover border border-[#ff7a00]/40" />
+                ) : (
+                  <span className="text-lg sm:text-xl leading-none">{userProfile?.avatarEmoji || '👨‍🎓'}</span>
+                )}
                 <ShieldCheck className="w-4 h-4 text-emerald-600 hidden sm:inline" />
               </button>
             )}
