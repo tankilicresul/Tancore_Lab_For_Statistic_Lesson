@@ -286,7 +286,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           return {
             success: false,
             errorType: 'INVALID_EMAIL_DOMAIN',
-            message: 'Lütfen geçerli bir üniversite e-posta adresi giriniz (ör: ad.soyad@ku.edu.tr).',
+            message: 'Lütfen geçerli bir üniversite e-posta adresi giriniz (ör: ad.soyad@universite.edu.tr).',
           };
         }
 

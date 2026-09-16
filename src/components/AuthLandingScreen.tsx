@@ -243,7 +243,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                       setOtpCode(e.target.value);
                       handleInputChange();
                     }}
-                    placeholder="123456"
+                    placeholder="------"
                     className="w-full px-4 py-3 text-center tracking-[0.4em] font-mono text-lg font-black rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                     required
                   />
@@ -423,7 +423,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                 <form onSubmit={handleRegisterSubmit} className="space-y-3">
                   <div>
                     <label className="text-xs font-bold text-slate-700 block mb-1">
-                      {language === 'tr' ? 'Okul E-postası (@...edu.tr)' : 'School Email'}
+                      {language === 'tr' ? 'Okul E-postası' : 'School Email'}
                     </label>
                     <div className="relative">
                       <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
@@ -434,7 +434,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           setSchoolEmail(e.target.value);
                           handleInputChange();
                         }}
-                        placeholder="ad.soyad@ku.edu.tr"
+                        placeholder={language === 'tr' ? 'E-posta adresiniz' : 'Your email'}
+                        autoComplete="off"
                         className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                         required
                       />
@@ -454,7 +455,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           setFullName(e.target.value);
                           handleInputChange();
                         }}
-                        placeholder={language === 'tr' ? 'Ad Soyad' : 'Full Name'}
+                        placeholder={language === 'tr' ? 'Adınız ve Soyadınız' : 'Your Full Name'}
+                        autoComplete="off"
                         className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                         required
                       />
@@ -473,7 +475,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           setUniversity(e.target.value);
                           handleInputChange();
                         }}
-                        placeholder="Koç Üniversitesi"
+                        placeholder={language === 'tr' ? 'Üniversiteniz' : 'Your University'}
+                        autoComplete="off"
                         className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                         required
                       />
@@ -490,7 +493,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           setDepartmentAndClass(e.target.value);
                           handleInputChange();
                         }}
-                        placeholder="Endüstri Müh. - 3. Sınıf"
+                        placeholder={language === 'tr' ? 'Bölüm ve sınıfınız' : 'Department & Class'}
+                        autoComplete="off"
                         className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                         required
                       />
@@ -510,6 +514,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           handleInputChange();
                         }}
                         placeholder="••••••••"
+                        autoComplete="new-password"
                         className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                         required
                       />
@@ -527,6 +532,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           handleInputChange();
                         }}
                         placeholder="••••••••"
+                        autoComplete="new-password"
                         className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                         required
                       />
@@ -557,7 +563,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           setSchoolEmail(e.target.value);
                           handleInputChange();
                         }}
-                        placeholder="ad.soyad@ku.edu.tr"
+                        placeholder={language === 'tr' ? 'E-posta adresiniz' : 'Your email'}
+                        autoComplete="off"
                         className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                         required
                       />
@@ -591,6 +598,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           handleInputChange();
                         }}
                         placeholder="••••••••"
+                        autoComplete="current-password"
                         className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                         required
                       />
@@ -613,8 +621,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
         {/* Footer Note */}
         <div className="mt-8 text-center text-[11px] sm:text-xs text-slate-400 font-medium">
           {language === 'tr'
-            ? 'Sadece geçerli üniversite öğrenci e-posta adresleri (ör: @ku.edu.tr) kabul edilir.'
-            : 'Only valid university student emails (e.g. @ku.edu.tr) are accepted.'}
+            ? 'Sadece geçerli üniversite e-posta adresleri kabul edilir.'
+            : 'Only valid university email addresses are accepted.'}
         </div>
       </div>
     </div>
