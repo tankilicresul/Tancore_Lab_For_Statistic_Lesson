@@ -50,11 +50,8 @@ export const HomePage: React.FC<HomePageProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  // Derive dynamic student greeting name from registered fullName
-  const cleanName = (userProfile?.fullName || '').replace(/Resul\s*(Tan\s*Kılıç)?(\s*\(Admin\))?/gi, '').trim();
-  const studentDisplayName = cleanName
-    ? cleanName.split(' ')[0]
-    : (language === 'tr' ? 'Öğrenci' : 'Student');
+  // Derive dynamic student greeting name - exactly as registered by the student
+  const studentDisplayName = userProfile?.fullName?.trim() || (language === 'tr' ? 'Öğrenci' : 'Student');
 
   const totalLessons = ALL_MODULES.reduce((acc, m) => acc + (m.lessons?.length || 0), 0);
   const totalCases = ALL_MODULES.reduce((acc, m) => acc + (m.caseExams?.length || 0), 0);

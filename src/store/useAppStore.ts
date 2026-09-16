@@ -593,11 +593,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
     }),
     {
       name: 'tancorelab-statsim-v5',
-      onRehydrateStorage: () => (state) => {
-        if (state?.userProfile?.fullName && /Resul/i.test(state.userProfile.fullName)) {
-          state.userProfile.fullName = '';
-        }
-      },
     }
   )
 );

@@ -179,7 +179,17 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
 
     const cleanEmail = schoolEmail.trim().toLowerCase();
 
-    // 1. Validate student email domain
+    // 1. Validate full name (mandatory)
+    if (!fullName.trim()) {
+      setErrorMessage(
+        language === 'tr'
+          ? 'Lütfen adınızı ve soyadınızı giriniz.'
+          : 'Please enter your full name.'
+      );
+      return;
+    }
+
+    // 2. Validate student email domain
     if (!isValidStudentEmail(cleanEmail)) {
       setErrorMessage(
         language === 'tr'
@@ -189,7 +199,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
       return;
     }
 
-    // 2. Validate password match
+    // 3. Validate password match
     if (password !== confirmPassword) {
       setErrorMessage(
         language === 'tr'
@@ -211,7 +221,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
       cleanEmail === 'admin@tancorelab.com' ||
       cleanEmail.startsWith('admin@')
     ) {
-      const studentName = fullName.trim() || (language === 'tr' ? 'Öğrenci' : 'Student');
+      const studentName = fullName.trim();
       registerAccountAndSendOtp(
         {
           schoolEmail: cleanEmail,

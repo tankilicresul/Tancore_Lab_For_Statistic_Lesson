@@ -69,15 +69,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
       return;
     }
 
+    if (!formData.fullName.trim()) {
+      setErrorMessage(language === 'tr' ? 'Lütfen Ad Soyad alanını doldurun.' : 'Please enter your full name.');
+      return;
+    }
+
     // Check for Admin Email Bypass
     if (emailClean.startsWith('admin@') || emailClean === 'admin@tancorelab.com') {
       setLoading(true);
       registerAccountAndSendOtp({
-        fullName: formData.fullName.trim() || 'TanCore Admin',
+        fullName: formData.fullName.trim(),
         schoolEmail: emailClean,
-        university: formData.university.trim() || 'Marmara Üniversitesi',
-        departmentAndClass: formData.departmentAndClass.trim() || 'Sistem Yöneticisi',
-        avatarEmoji: formData.avatarEmoji || '👑',
+        university: formData.university.trim() || 'Üniversite',
+        departmentAndClass: formData.departmentAndClass.trim() || 'Öğrenci',
+        avatarEmoji: formData.avatarEmoji || '👨‍🎓',
       }, '123456');
       verifyOtpAndActivateAccount('123456');
 
@@ -92,11 +97,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
         onSuccess?.();
         onClose();
       }, 600);
-      return;
-    }
-
-    if (!formData.fullName.trim()) {
-      setErrorMessage(language === 'tr' ? 'Lütfen Ad Soyad alanını doldurun.' : 'Please enter your full name.');
       return;
     }
 
