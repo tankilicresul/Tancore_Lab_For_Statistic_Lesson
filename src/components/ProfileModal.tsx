@@ -153,11 +153,11 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                   className="hidden"
                 />
                 <div className="min-w-0 flex-1 flex items-center">
-                  <h3 className="text-base sm:text-xl font-black tracking-tight text-white leading-tight truncate flex items-center gap-1.5">
-                    <span>{userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}</span>
+                  <h3 className="text-lg xs:text-xl sm:text-2xl font-black tracking-tight text-white leading-none truncate flex items-center gap-1.5">
+                    <span className="truncate">{userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}</span>
                     {isVerified && (
                       <span title="Doğrulanmış Hesap">
-                        <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 inline-block" />
+                        <ShieldCheck className="w-4.5 h-4.5 text-emerald-400 shrink-0 inline-block" />
                       </span>
                     )}
                   </h3>

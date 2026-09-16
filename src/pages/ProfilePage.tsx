@@ -198,11 +198,11 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
               className="hidden"
             />
             <div className="min-w-0 flex-1 flex items-center">
-              <h2 className="text-lg sm:text-2xl font-black tracking-tight text-white leading-tight truncate flex items-center gap-2">
-                <span>{userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}</span>
+              <h2 className="text-xl xs:text-2xl sm:text-3xl font-black tracking-tight text-white leading-none truncate flex items-center gap-2">
+                <span className="truncate">{userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}</span>
                 {isVerified && (
                   <span title="Doğrulanmış Hesap">
-                    <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 inline-block" />
+                    <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400 shrink-0 inline-block" />
                   </span>
                 )}
               </h2>
