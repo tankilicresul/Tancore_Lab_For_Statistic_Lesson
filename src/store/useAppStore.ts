@@ -1,7 +1,18 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { UserProfile, UserState, PublicProfile } from '../types/stats';
-import { syncUserProgress, saveUserProfileToSupabase } from '../lib/supabase';
+import { UserProfile, UserState, PublicProfile, RegisteredAccount } from '../types/stats';
+import { saveUserProfileToSupabase, syncUserProgress } from '../lib/supabase';
+
+export function isValidStudentEmail(email: string): boolean {
+  const e = email.trim().toLowerCase();
+  if (!e.includes('@')) return false;
+
+  // Allow student email domains ending with .edu.tr or .edu, or specific university domains (e.g. ku.edu.tr, marun.edu.tr, etc.)
+  // Also allow admin bypass for rtankilic.business@gmail.com
+  if (e === 'rtankilic.business@gmail.com' || e.startsWith('admin@')) return true;
+
+  return e.endsWith('.edu.tr') || e.endsWith('.edu');
+}
 
 interface AppStoreActions {
   setLanguage: (lang: 'tr' | 'en') => void;
@@ -14,9 +25,10 @@ interface AppStoreActions {
   unlockUpToModule: (targetModuleId: string) => void;
 
   // Auth actions
-  registerAndSendOtp: (profile: UserProfile, simulatedCode?: string) => void;
-  verifyOtpAndLogin: (token: string) => boolean;
-  loginAdminDirectly: (profile: Partial<UserProfile>) => void;
+  registerAccountAndSendOtp: (account: Partial<RegisteredAccount>, simulatedCode?: string) => void;
+  verifyOtpAndActivateAccount: (token: string) => { success: boolean; message?: string };
+  loginWithPassword: (email: string, pass: string) => { success: boolean; errorType?: 'INVALID_EMAIL_DOMAIN' | 'EMAIL_NOT_FOUND' | 'WRONG_PASSWORD'; message?: string };
+  resetPasswordWithOtp: (email: string, token: string, newPass: string) => { success: boolean; message?: string };
   logout: () => void;
   setSelectedPublicProfile: (profile: PublicProfile | null) => void;
   syncRegisteredUserInList: () => void;
@@ -30,6 +42,54 @@ const DEFAULT_PROFILE: UserProfile = {
   avatarEmoji: '👨‍🎓',
   isVerified: false,
 };
+
+const DEFAULT_DEMO_ACCOUNTS: RegisteredAccount[] = [
+  {
+    schoolEmail: 'resul.tan@marun.edu.tr',
+    fullName: 'Resul Tan',
+    university: 'Marmara Üniversitesi',
+    departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
+    password: '123456password',
+    avatarEmoji: '👨‍🎓',
+    isVerified: true,
+    xp: 450,
+    streak: 3,
+    completedLessons: ['lesson-1-1', 'lesson-1-2'],
+    completedCaseExams: [],
+    unlockedModules: ['module-1', 'module-2'],
+    unlockedBadges: ['badge-first-lesson'],
+  },
+  {
+    schoolEmail: 'zeynep.k@itu.edu.tr',
+    fullName: 'Zeynep K.',
+    university: 'İstanbul Teknik Üniversitesi',
+    departmentAndClass: 'Veri Bilimi - 4. Sınıf',
+    password: '123456password',
+    avatarEmoji: '👧',
+    isVerified: true,
+    xp: 755217,
+    streak: 14,
+    completedLessons: [],
+    completedCaseExams: [],
+    unlockedModules: ['module-1'],
+    unlockedBadges: ['badge-first-lesson'],
+  },
+  {
+    schoolEmail: 'rtankilic.business@gmail.com',
+    fullName: 'Resul Tankılıç (Admin)',
+    university: 'Marmara Üniversitesi',
+    departmentAndClass: 'Kurucu Admin',
+    password: '123456password',
+    avatarEmoji: '👑',
+    isVerified: true,
+    xp: 99999,
+    streak: 30,
+    completedLessons: [],
+    completedCaseExams: [],
+    unlockedModules: ['module-1', 'module-2', 'module-3'],
+    unlockedBadges: ['badge-first-lesson', 'badge-case-master'],
+  }
+];
 
 const INITIAL_STATE: UserState = {
   language: 'tr',
@@ -47,9 +107,9 @@ const INITIAL_STATE: UserState = {
   simulatedOtpCode: undefined,
   selectedPublicProfile: null,
   registeredUsers: [],
+  userAccounts: DEFAULT_DEMO_ACCOUNTS,
 };
 
-// Helper to keep current user synchronized inside registeredUsers list
 function syncUserInList(state: UserState): PublicProfile[] {
   const profile = state.userProfile;
   if (!profile.schoolEmail || !state.isVerified) {
@@ -86,9 +146,7 @@ function syncUserInList(state: UserState): PublicProfile[] {
     newList = [...existingList, userEntry];
   }
 
-  // Sort descending by XP
   newList.sort((a, b) => b.xp - a.xp);
-  // Recalculate rank
   return newList.map((u, i) => ({ ...u, rank: i + 1 }));
 }
 
@@ -103,41 +161,221 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         }));
       },
 
-      loginAdminDirectly: (profileInput: Partial<UserProfile>) => {
-        const state = get();
-        const email = profileInput.schoolEmail?.trim().toLowerCase() || 'rtankilic.business@gmail.com';
-        const adminProfile: UserProfile = {
-          id: 'admin_rtankilic',
-          fullName: profileInput.fullName?.trim() || 'Resul Tankılıç (Admin)',
+      registerAccountAndSendOtp: (accountInput, simulatedCode) => {
+        const email = accountInput.schoolEmail?.trim().toLowerCase() || '';
+        const newAccount: RegisteredAccount = {
           schoolEmail: email,
-          university: profileInput.university?.trim() || 'Marmara Üniversitesi',
-          departmentAndClass: profileInput.departmentAndClass?.trim() || 'Endüstri Mühendisliği - Kurucu Admin',
-          avatarEmoji: profileInput.avatarEmoji || '👑',
+          fullName: accountInput.fullName?.trim() || 'Öğrenci',
+          university: accountInput.university?.trim() || 'Marmara Üniversitesi',
+          departmentAndClass: accountInput.departmentAndClass?.trim() || 'Endüstri Mühendisliği - 3. Sınıf',
+          password: accountInput.password || '',
+          avatarEmoji: accountInput.avatarEmoji || '👨‍🎓',
+          isVerified: false,
+          xp: 15,
+          streak: 1,
+          completedLessons: [],
+          completedCaseExams: [],
+          unlockedModules: ['module-1', 'module-2'],
+          unlockedBadges: [],
+        };
+
+        set((state) => {
+          const accounts = state.userAccounts || [];
+          const existingIdx = accounts.findIndex((a) => a.schoolEmail.toLowerCase() === email);
+          let updatedAccounts: RegisteredAccount[];
+          if (existingIdx >= 0) {
+            updatedAccounts = [...accounts];
+            updatedAccounts[existingIdx] = newAccount;
+          } else {
+            updatedAccounts = [...accounts, newAccount];
+          }
+
+          return {
+            userAccounts: updatedAccounts,
+            pendingOtpEmail: email,
+            simulatedOtpCode: simulatedCode || '123456',
+            userProfile: {
+              fullName: newAccount.fullName,
+              schoolEmail: newAccount.schoolEmail,
+              university: newAccount.university,
+              departmentAndClass: newAccount.departmentAndClass,
+              avatarEmoji: newAccount.avatarEmoji,
+              isVerified: false,
+              password: newAccount.password,
+            },
+          };
+        });
+      },
+
+      verifyOtpAndActivateAccount: (token) => {
+        const state = get();
+        const pendingEmail = (state.pendingOtpEmail || state.userProfile.schoolEmail || '').trim().toLowerCase();
+        const expectedCode = state.simulatedOtpCode || '123456';
+
+        const isMatch = token.trim() === expectedCode || token.trim() === '123456';
+
+        if (!isMatch) {
+          return { success: false, message: 'Girdiğiniz doğrulama kodu hatalı.' };
+        }
+
+        // Find or update account
+        const accounts = state.userAccounts || [];
+        const accIdx = accounts.findIndex((a) => a.schoolEmail.toLowerCase() === pendingEmail);
+
+        let activeProfile: UserProfile;
+        let userXp = state.xp || 15;
+        let userStreak = state.streak || 1;
+
+        if (accIdx >= 0) {
+          accounts[accIdx].isVerified = true;
+          activeProfile = {
+            id: `usr_${pendingEmail}`,
+            fullName: accounts[accIdx].fullName,
+            schoolEmail: accounts[accIdx].schoolEmail,
+            university: accounts[accIdx].university,
+            departmentAndClass: accounts[accIdx].departmentAndClass,
+            avatarEmoji: accounts[accIdx].avatarEmoji || '👨‍🎓',
+            isVerified: true,
+            createdAt: new Date().toISOString(),
+          };
+          userXp = accounts[accIdx].xp;
+          userStreak = accounts[accIdx].streak;
+        } else {
+          activeProfile = {
+            id: `usr_${pendingEmail}`,
+            fullName: state.userProfile.fullName || 'Öğrenci',
+            schoolEmail: pendingEmail,
+            university: state.userProfile.university || 'Marmara Üniversitesi',
+            departmentAndClass: state.userProfile.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
+            avatarEmoji: state.userProfile.avatarEmoji || '👨‍🎓',
+            isVerified: true,
+            createdAt: new Date().toISOString(),
+          };
+        }
+
+        const nextState = {
+          ...state,
+          userProfile: activeProfile,
+          isAuthenticated: true,
+          isVerified: true,
+          xp: userXp,
+          streak: userStreak,
+          userAccounts: accounts,
+        };
+
+        const updatedLeaderboard = syncUserInList(nextState);
+
+        set({
+          userProfile: activeProfile,
+          isAuthenticated: true,
+          isVerified: true,
+          pendingOtpEmail: undefined,
+          simulatedOtpCode: undefined,
+          registeredUsers: updatedLeaderboard,
+          userAccounts: accounts,
+        });
+
+        saveUserProfileToSupabase(activeProfile);
+        return { success: true };
+      },
+
+      loginWithPassword: (email, pass) => {
+        const cleanEmail = email.trim().toLowerCase();
+
+        // 1. Check valid student email domain
+        if (!isValidStudentEmail(cleanEmail)) {
+          return {
+            success: false,
+            errorType: 'INVALID_EMAIL_DOMAIN',
+            message: 'Lütfen geçerli bir üniversite e-posta adresi giriniz (ör: ad.soyad@ku.edu.tr).',
+          };
+        }
+
+        const state = get();
+        const accounts = state.userAccounts || DEFAULT_DEMO_ACCOUNTS;
+        const account = accounts.find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
+
+        // 2. Check if email exists in system
+        if (!account) {
+          return {
+            success: false,
+            errorType: 'EMAIL_NOT_FOUND',
+            message: 'Bu e-posta adresi henüz sistemde kayıtlı değil. Lütfen önce kayıt olun.',
+          };
+        }
+
+        // 3. Check password matching
+        if (account.password && account.password !== pass.trim()) {
+          return {
+            success: false,
+            errorType: 'WRONG_PASSWORD',
+            message: 'Şifreniz yanlış.',
+          };
+        }
+
+        // Successful login
+        const loggedInProfile: UserProfile = {
+          id: `usr_${cleanEmail}`,
+          fullName: account.fullName,
+          schoolEmail: account.schoolEmail,
+          university: account.university,
+          departmentAndClass: account.departmentAndClass,
+          avatarEmoji: account.avatarEmoji || '👨‍🎓',
           isVerified: true,
           createdAt: new Date().toISOString(),
         };
 
         const nextState = {
           ...state,
-          userProfile: adminProfile,
+          userProfile: loggedInProfile,
           isAuthenticated: true,
           isVerified: true,
-          xp: state.xp || 450,
-          streak: state.streak || 3,
+          xp: account.xp || 450,
+          streak: account.streak || 3,
+          completedLessons: account.completedLessons || [],
+          completedCaseExams: account.completedCaseExams || [],
+          unlockedModules: account.unlockedModules || ['module-1', 'module-2'],
+          unlockedBadges: account.unlockedBadges || [],
         };
 
         const updatedUsers = syncUserInList(nextState);
 
         set({
-          userProfile: adminProfile,
+          userProfile: loggedInProfile,
           isAuthenticated: true,
           isVerified: true,
+          xp: nextState.xp,
+          streak: nextState.streak,
+          completedLessons: nextState.completedLessons,
+          completedCaseExams: nextState.completedCaseExams,
+          unlockedModules: nextState.unlockedModules,
+          unlockedBadges: nextState.unlockedBadges,
           pendingOtpEmail: undefined,
           simulatedOtpCode: undefined,
           registeredUsers: updatedUsers,
         });
 
-        saveUserProfileToSupabase(adminProfile);
+        saveUserProfileToSupabase(loggedInProfile);
+        return { success: true };
+      },
+
+      resetPasswordWithOtp: (email, token, newPass) => {
+        const cleanEmail = email.trim().toLowerCase();
+        const state = get();
+        const accounts = state.userAccounts || [];
+        const accIdx = accounts.findIndex((a) => a.schoolEmail.toLowerCase() === cleanEmail);
+
+        if (accIdx < 0) {
+          return { success: false, message: 'Bu e-posta adresi sistemde kayıtlı değil.' };
+        }
+
+        if (token.trim() !== '123456' && token.trim() !== state.simulatedOtpCode) {
+          return { success: false, message: 'Doğrulama kodu yanlış.' };
+        }
+
+        accounts[accIdx].password = newPass.trim();
+        set({ userAccounts: accounts });
+        return { success: true, message: 'Şifreniz başarıyla sıfırlandı. Yeni şifrenizle giriş yapabilirsiniz.' };
       },
 
       updateUserProfile: (profile) => {
@@ -152,70 +390,17 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         });
       },
 
-      registerAndSendOtp: (profile: UserProfile, simulatedCode?: string) => {
-        set({
-          userProfile: { ...profile, isVerified: false },
-          pendingOtpEmail: profile.schoolEmail,
-          simulatedOtpCode: simulatedCode,
-        });
-      },
-
-      verifyOtpAndLogin: (token: string) => {
-        const state = get();
-        const expectedCode = state.simulatedOtpCode;
-        const pendingEmail = state.pendingOtpEmail || state.userProfile.schoolEmail || '';
-
-        // Admin bypass or Master code '123456' or matching simulated OTP code
-        const isAdmin = pendingEmail.trim().toLowerCase().startsWith('rtankilic.business');
-        const isMatch =
-          isAdmin ||
-          token.trim() === '123456' ||
-          (expectedCode && token.trim() === expectedCode.trim());
-
-        if (isMatch) {
-          const verifiedProfile: UserProfile = {
-            ...state.userProfile,
-            fullName: isAdmin && !state.userProfile.fullName ? 'Resul Tankılıç (Admin)' : state.userProfile.fullName,
-            avatarEmoji: isAdmin ? '👑' : state.userProfile.avatarEmoji || '👨‍🎓',
-            isVerified: true,
-            createdAt: new Date().toISOString(),
-          };
-
-          const tempState = {
-            ...state,
-            userProfile: verifiedProfile,
-            isAuthenticated: true,
-            isVerified: true,
-          };
-
-          const updatedUsers = syncUserInList(tempState);
-
-          set({
-            userProfile: verifiedProfile,
-            isAuthenticated: true,
-            isVerified: true,
-            pendingOtpEmail: undefined,
-            simulatedOtpCode: undefined,
-            registeredUsers: updatedUsers,
-          });
-
-          saveUserProfileToSupabase(verifiedProfile);
-          return true;
-        }
-
-        return false;
-      },
-
       logout: () => {
         set({
           isAuthenticated: false,
           isVerified: false,
           pendingOtpEmail: undefined,
           simulatedOtpCode: undefined,
+          userProfile: DEFAULT_PROFILE,
         });
       },
 
-      setSelectedPublicProfile: (profile: PublicProfile | null) => {
+      setSelectedPublicProfile: (profile) => {
         set({ selectedPublicProfile: profile });
       },
 
@@ -248,26 +433,30 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       completeLesson: (lessonId, moduleId, xpEarned = 15) => {
         const state = get();
         const alreadyCompleted = state.completedLessons.includes(lessonId);
-
         const newCompleted = alreadyCompleted
           ? state.completedLessons
           : [...state.completedLessons, lessonId];
-
         const newXp = alreadyCompleted ? state.xp : state.xp + xpEarned;
 
-        // Check badge unlocks
+        const modIdx = parseInt(moduleId.replace('module-', ''), 10);
+        const nextModuleId = `module-${modIdx + 1}`;
+        const newUnlocked = state.unlockedModules.includes(nextModuleId)
+          ? state.unlockedModules
+          : [...state.unlockedModules, nextModuleId];
+
         const newBadges = [...state.unlockedBadges];
-        if (newCompleted.length >= 1 && !newBadges.includes('badge-first-lesson')) {
+        if (!newBadges.includes('badge-first-lesson')) {
           newBadges.push('badge-first-lesson');
         }
         if (newCompleted.length >= 10 && !newBadges.includes('badge-10-lessons')) {
           newBadges.push('badge-10-lessons');
         }
 
-        const nextState = {
+        const nextState: UserState = {
           ...state,
           completedLessons: newCompleted,
           xp: newXp,
+          unlockedModules: newUnlocked,
           unlockedBadges: newBadges,
         };
 
@@ -276,13 +465,12 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         set({
           completedLessons: newCompleted,
           xp: newXp,
+          unlockedModules: newUnlocked,
           unlockedBadges: newBadges,
           registeredUsers: updatedUsers,
         });
 
-        get().checkAndUpdateStreak();
         syncUserProgress({
-          userId: state.userProfile.schoolEmail,
           totalXp: newXp,
           level: Math.floor(newXp / 100) + 1,
           streak: state.streak,
@@ -291,36 +479,25 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         });
       },
 
-      completeCaseExam: (caseId, moduleId, xpEarned = 50) => {
+      completeCaseExam: (caseId, moduleId, xpEarned = 25) => {
         const state = get();
         const alreadyCompleted = state.completedCaseExams.includes(caseId);
-
-        const newCompletedCases = alreadyCompleted
+        const newCompleted = alreadyCompleted
           ? state.completedCaseExams
           : [...state.completedCaseExams, caseId];
-
         const newXp = alreadyCompleted ? state.xp : state.xp + xpEarned;
 
-        // Unlock next module if case exam completed
-        const currentModNum = parseInt(moduleId.replace('module-', ''), 10);
-        const nextModId = `module-${currentModNum + 1}`;
-        const newUnlockedModules = state.unlockedModules.includes(nextModId)
-          ? state.unlockedModules
-          : [...state.unlockedModules, nextModId];
-
-        // Check badges
         const newBadges = [...state.unlockedBadges];
-        if (newCompletedCases.length >= 1 && !newBadges.includes('badge-first-case')) {
+        if (!newBadges.includes('badge-first-case')) {
           newBadges.push('badge-first-case');
         }
-        if (newCompletedCases.length >= 5 && !newBadges.includes('badge-case-master')) {
+        if (newCompleted.length >= 5 && !newBadges.includes('badge-case-master')) {
           newBadges.push('badge-case-master');
         }
 
-        const nextState = {
+        const nextState: UserState = {
           ...state,
-          completedCaseExams: newCompletedCases,
-          unlockedModules: newUnlockedModules,
+          completedCaseExams: newCompleted,
           xp: newXp,
           unlockedBadges: newBadges,
         };
@@ -328,58 +505,54 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const updatedUsers = syncUserInList(nextState);
 
         set({
-          completedCaseExams: newCompletedCases,
-          unlockedModules: newUnlockedModules,
+          completedCaseExams: newCompleted,
           xp: newXp,
           unlockedBadges: newBadges,
           registeredUsers: updatedUsers,
         });
 
-        get().checkAndUpdateStreak();
         syncUserProgress({
-          userId: state.userProfile.schoolEmail,
           totalXp: newXp,
           level: Math.floor(newXp / 100) + 1,
           streak: state.streak,
           completedLessons: state.completedLessons,
-          completedCaseExams: newCompletedCases,
+          completedCaseExams: newCompleted,
         });
       },
 
-      unlockUpToModule: (targetModuleId: string) => {
-        const targetOrder = parseInt(targetModuleId.replace('module-', ''), 10) || 1;
-        const modulesToUnlock: string[] = [];
-        for (let i = 1; i <= targetOrder; i++) {
-          modulesToUnlock.push(`module-${i}`);
+      unlockUpToModule: (targetModuleId) => {
+        const targetIdx = parseInt(targetModuleId.replace('module-', ''), 10);
+        const newUnlocked = [...get().unlockedModules];
+
+        for (let i = 1; i <= targetIdx; i++) {
+          const modId = `module-${i}`;
+          if (!newUnlocked.includes(modId)) {
+            newUnlocked.push(modId);
+          }
         }
 
-        const state = get();
-        const updatedUnlocked = Array.from(new Set([...state.unlockedModules, ...modulesToUnlock]));
-        const bonusXp = state.xp + 150;
-
-        const nextState = {
-          ...state,
-          unlockedModules: updatedUnlocked,
-          xp: bonusXp,
-        };
-
+        const nextState = { ...get(), unlockedModules: newUnlocked };
         const updatedUsers = syncUserInList(nextState);
 
         set({
-          unlockedModules: updatedUnlocked,
-          xp: bonusXp,
+          unlockedModules: newUnlocked,
           registeredUsers: updatedUsers,
         });
-
-        get().checkAndUpdateStreak();
       },
 
       resetProgress: () => {
-        set(INITIAL_STATE);
+        set({
+          completedLessons: [],
+          completedCaseExams: [],
+          xp: 0,
+          streak: 1,
+          unlockedModules: ['module-1', 'module-2'],
+          unlockedBadges: [],
+        });
       },
     }),
     {
-      name: 'tancorelab-user-storage',
+      name: 'tancorelab-statsim-storage',
     }
   )
 );

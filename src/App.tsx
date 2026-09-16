@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { XpStreakBar } from './components/XpStreakBar';
+import { AuthLandingScreen } from './components/AuthLandingScreen';
 import { HomePage } from './pages/HomePage';
 import { CoursePage } from './pages/CoursePage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -11,13 +12,18 @@ import { useAppStore } from './store/useAppStore';
 import { getLocalized } from './utils/localization';
 
 export const App: React.FC = () => {
-  const { language } = useAppStore();
+  const { language, isAuthenticated, isVerified } = useAppStore();
   const [currentView, setCurrentView] = useState<'home' | 'course' | 'profile' | 'lesson' | 'caseExam' | 'placementTest'>('home');
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
   const [customActiveModuleName, setCustomActiveModuleName] = useState<string | null>(null);
   const [selectedTrack, setSelectedTrack] = useState<'probability' | 'statistics'>('probability');
+
+  // If user is not authenticated or not verified, display full-screen Auth Onboarding Screen
+  if (!isAuthenticated || !isVerified) {
+    return <AuthLandingScreen onSuccess={() => setCurrentView('home')} />;
+  }
 
   const handleSelectLesson = (lessonId: string) => {
     const data = getLessonById(lessonId);

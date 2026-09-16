@@ -25,7 +25,7 @@ interface AuthModalProps {
 const AVATAR_OPTIONS = ['👨‍🎓', '👩‍🎓', '👨‍💻', '👩‍💻', '👨‍🔬', '👩‍🔬', '🚀', '⚡', '📊', '🧠'];
 
 export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
-  const { language, registerAndSendOtp, verifyOtpAndLogin, loginAdminDirectly, userProfile } = useAppStore();
+  const { language, registerAccountAndSendOtp, verifyOtpAndActivateAccount, userProfile } = useAppStore();
 
   const [step, setStep] = useState<'register' | 'otp'>('register');
   const [loading, setLoading] = useState(false);
@@ -72,13 +72,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
     // Check for Admin Email Bypass (starts with rtankilic.business)
     if (emailClean.startsWith('rtankilic.business')) {
       setLoading(true);
-      loginAdminDirectly({
+      registerAccountAndSendOtp({
         fullName: formData.fullName.trim() || 'Resul Tankılıç (Admin)',
         schoolEmail: emailClean,
         university: formData.university.trim() || 'Marmara Üniversitesi',
         departmentAndClass: formData.departmentAndClass.trim() || 'Endüstri Mühendisliği - Kurucu Admin',
         avatarEmoji: formData.avatarEmoji || '👑',
-      });
+      }, '123456');
+      verifyOtpAndActivateAccount('123456');
 
       setSuccessMessage(
         language === 'tr'
@@ -109,7 +110,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
         setSimulatedCode(null);
       }
 
-      registerAndSendOtp(formData, res.simulatedCode);
+      registerAccountAndSendOtp(formData, res.simulatedCode);
 
       setStep('otp');
       setResendTimer(60);
@@ -171,9 +172,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
 
     try {
       // Check local store verification & Supabase verification helper
-      const verifiedLocal = verifyOtpAndLogin(code);
+      const res = verifyOtpAndActivateAccount(code);
 
-      if (!verifiedLocal) {
+      if (!res.success) {
         const remoteRes = await verifyEmailOtp(formData.schoolEmail, code, simulatedCode || undefined);
         if (!remoteRes.success) {
           throw new Error(remoteRes.error || (language === 'tr' ? 'Girdiğiniz doğrulama kodu hatalı.' : 'Invalid code.'));
@@ -200,7 +201,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
     try {
       const res = await sendEmailOtp(formData.schoolEmail);
       if (res.simulatedCode) setSimulatedCode(res.simulatedCode);
-      registerAndSendOtp(formData, res.simulatedCode);
+      registerAccountAndSendOtp(formData, res.simulatedCode);
       setResendTimer(60);
       setSuccessMessage(language === 'tr' ? 'Yeni kod tekrar gönderildi.' : 'New code sent.');
     } catch (err: any) {
