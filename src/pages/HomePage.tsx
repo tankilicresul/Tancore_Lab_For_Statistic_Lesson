@@ -407,8 +407,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
               </div>
 
-              {/* Middle content: Title & Description */}
-              <div className="relative z-10 pt-2 sm:pt-3 flex-1 flex flex-col justify-center text-left min-h-0 overflow-hidden">
+              {/* Middle content: Title & Description (Top Aligned) */}
+              <div className="relative z-10 pt-2 sm:pt-2.5 flex-1 flex flex-col justify-start text-left min-h-0 overflow-hidden">
                 <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug line-clamp-2">
                   {title}
                 </h3>
@@ -458,8 +458,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </div>
                 </div>
 
-                {/* Middle content: Title & Description */}
-                <div className="relative z-10 pt-2 sm:pt-3 flex-1 flex flex-col justify-center text-left min-h-0 overflow-hidden">
+                {/* Middle content: Title & Description (Top Aligned) */}
+                <div className="relative z-10 pt-2 sm:pt-2.5 flex-1 flex flex-col justify-start text-left min-h-0 overflow-hidden">
                   <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors leading-snug line-clamp-2">
                     {title}
                   </h3>
