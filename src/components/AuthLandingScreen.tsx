@@ -48,6 +48,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   const [simulatedCode, setSimulatedCode] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resendTimer, setResendTimer] = useState(60);
+  const [otpSentMsg, setOtpSentMsg] = useState<string | null>(null);
 
   // Error & Status State
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -86,12 +87,14 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   // Quick helper to clear errors on input change
   const handleInputChange = () => {
     if (errorMessage) setErrorMessage(null);
+    if (otpSentMsg) setOtpSentMsg(null);
   };
 
   // Handle Sign Up Submission
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
+    setOtpSentMsg(null);
 
     const cleanEmail = schoolEmail.trim().toLowerCase();
 
@@ -183,11 +186,13 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     if (resendTimer > 0 || isSubmitting) return;
     setIsSubmitting(true);
     setErrorMessage(null);
+    setOtpSentMsg(null);
 
     try {
       const res = await sendEmailOtp(schoolEmail.trim().toLowerCase());
       if (res.simulatedCode) setSimulatedCode(res.simulatedCode);
       setResendTimer(60);
+      setOtpSentMsg(language === 'tr' ? 'Yeni doğrulama kodu e-postanıza gönderildi!' : 'New verification code sent to your email!');
     } catch (err: any) {
       setErrorMessage(err.message || (language === 'tr' ? 'Kod tekrar gönderilemedi.' : 'Could not resend code.'));
     } finally {
@@ -339,6 +344,13 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                 </p>
               </div>
 
+              {otpSentMsg && (
+                <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center space-x-2 animate-fade-in">
+                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                  <span>{otpSentMsg}</span>
+                </div>
+              )}
+
               {errorMessage && (
                 <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center space-x-2 animate-shake">
                   <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
@@ -365,38 +377,6 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                   />
                 </div>
 
-                <div className="flex items-center justify-between text-xs px-1">
-                  <button
-                    type="button"
-                    onClick={handleResendOtp}
-                    disabled={resendTimer > 0 || isSubmitting}
-                    className={`font-bold transition-colors cursor-pointer flex items-center space-x-1 ${
-                      resendTimer > 0 || isSubmitting
-                        ? 'text-slate-400 cursor-not-allowed'
-                        : 'text-[#ff7a00] hover:underline'
-                    }`}
-                  >
-                    <RefreshCw className={`w-3.5 h-3.5 ${isSubmitting ? 'animate-spin' : ''}`} />
-                    <span>
-                      {resendTimer > 0
-                        ? language === 'tr'
-                          ? `Tekrar Gönder (${resendTimer}s)`
-                          : `Resend Code (${resendTimer}s)`
-                        : language === 'tr'
-                        ? 'Kodu Tekrar Gönder'
-                        : 'Resend Code'}
-                    </span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setStep('form')}
-                    className="text-slate-500 hover:text-slate-800 font-semibold cursor-pointer"
-                  >
-                    {language === 'tr' ? 'Bilgileri Düzenle' : 'Edit info'}
-                  </button>
-                </div>
-
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -416,12 +396,37 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                 </button>
               </form>
 
-              <button
-                onClick={() => setStep('form')}
-                className="w-full text-center text-xs font-bold text-slate-500 hover:text-[#ff7a00] cursor-pointer pt-2"
-              >
-                {language === 'tr' ? '← Form Bilgilerine Geri Dön' : '← Back to Form'}
-              </button>
+              {/* Yeni Kod İste (Request New Code) Dedicated Section */}
+              <div className="pt-2 flex flex-col items-center space-y-3">
+                <button
+                  type="button"
+                  onClick={handleResendOtp}
+                  disabled={resendTimer > 0 || isSubmitting}
+                  className={`w-full py-3 rounded-2xl border text-xs font-bold transition-all flex items-center justify-center space-x-2 cursor-pointer ${
+                    resendTimer > 0 || isSubmitting
+                      ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed'
+                      : 'bg-white hover:bg-orange-50/80 text-[#ff7a00] border-orange-200 shadow-xs'
+                  }`}
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isSubmitting ? 'animate-spin' : ''}`} />
+                  <span>
+                    {resendTimer > 0
+                      ? language === 'tr'
+                        ? `Yeni Kod İste (${resendTimer} sn bekleyin)`
+                        : `Request New Code (Wait ${resendTimer}s)`
+                      : language === 'tr'
+                      ? '📩 Yeni Kod İste'
+                      : '📩 Request New Code'}
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => setStep('form')}
+                  className="text-center text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer pt-1 transition-colors"
+                >
+                  {language === 'tr' ? '← Form Bilgilerine Geri Dön' : '← Back to Form'}
+                </button>
+              </div>
             </div>
           ) : step === 'forgot_password' ? (
             /* Step 3: Forgot Password Screen */
