@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
+import { formatStudentGreetingName } from '../utils/localization';
 import {
   X,
   Send,
@@ -46,7 +47,7 @@ export const TancoChatModal: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [showMediaNotice, setShowMediaNotice] = useState<string | null>(null);
 
-  const studentName = userProfile?.fullName?.trim() || (language === 'tr' ? 'Öğrenci' : 'Student');
+  const studentName = formatStudentGreetingName(userProfile?.fullName, language === 'tr' ? 'Öğrenci' : 'Student');
 
   const initialGreeting: ChatMessage = {
     id: 'welcome-1',

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ALL_MODULES } from '../data/modules';
 import { useAppStore } from '../store/useAppStore';
-import { getLocalized } from '../utils/localization';
+import { getLocalized, formatStudentGreetingName } from '../utils/localization';
 import { TanCoreMascotAvatar } from '../components/TanCoreMascotAvatar';
 import {
   Zap,
@@ -316,8 +316,9 @@ export const HomePage: React.FC<HomePageProps> = ({
     setIsTancoChatOpen,
   } = useAppStore();
 
-  // Derive dynamic student greeting name - exactly as registered by the student
-  const studentDisplayName = userProfile?.fullName?.trim() || (language === 'tr' ? 'Öğrenci' : 'Student');
+  // Format student greeting name according to user rule:
+  // 1-2 words -> first name; 3+ words -> First letter. Second name
+  const studentDisplayName = formatStudentGreetingName(userProfile?.fullName, language === 'tr' ? 'Öğrenci' : 'Student');
 
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden animate-fade-in space-y-6">
