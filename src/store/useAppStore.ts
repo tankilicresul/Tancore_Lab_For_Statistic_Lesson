@@ -36,8 +36,8 @@ interface AppStoreActions {
 const DEFAULT_PROFILE: UserProfile = {
   fullName: '',
   schoolEmail: '',
-  university: 'Marmara Üniversitesi',
-  departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
+  university: '',
+  departmentAndClass: '',
   avatarEmoji: '👨‍🎓',
   isVerified: false,
 };
@@ -551,7 +551,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       },
     }),
     {
-      name: 'tancorelab-statsim-storage',
+      name: 'tancorelab-statsim-v3',
     }
   )
 );
