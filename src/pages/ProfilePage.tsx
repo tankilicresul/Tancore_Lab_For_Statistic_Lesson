@@ -366,17 +366,18 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
             </div>
 
             {/* Bottom Row: Edit button on Bottom-Left, Leaderboard rank button on Bottom-Right */}
-            <div className="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
+            <div className="flex items-center justify-between gap-2.5 pt-2.5 border-t border-white/10">
               <button
                 onClick={() => setIsEditing(true)}
-                className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold transition-colors border border-white/15 shrink-0 whitespace-nowrap cursor-pointer text-slate-200 hover:text-white"
+                className="flex items-center space-x-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/10 hover:bg-white/20 hover:border-white/30 border border-white/15 text-xs sm:text-sm font-black transition-all shadow-xs shrink-0 whitespace-nowrap cursor-pointer text-white group hover:scale-[1.02] active:scale-[0.98]"
               >
+                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#ff7a00] group-hover:rotate-12 transition-transform" />
                 <span>{language === 'tr' ? 'Düzenle' : 'Edit'}</span>
               </button>
 
               <button
                 onClick={() => setIsLeaderboardOpen(!isLeaderboardOpen)}
-                className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 to-orange-500/25 hover:from-amber-500/40 hover:to-orange-500/40 text-amber-300 border border-amber-400/50 text-xs font-black transition-all shadow-md group shrink-0 cursor-pointer"
+                className="flex items-center space-x-2 px-4 sm:px-4.5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500/25 to-orange-500/25 hover:from-amber-500/40 hover:to-orange-500/40 text-amber-300 border border-amber-400/50 text-xs sm:text-sm font-black transition-all shadow-md group shrink-0 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
                 title="Genel Sıralamayı Gör"
               >
                 <Trophy className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
