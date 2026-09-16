@@ -213,7 +213,7 @@
     {
       "id": "m12-case-1",
       "moduleId": "module-12",
-      "difficulty": "zor",
+      "difficulty": "orta",
       "title": {
         "tr": "CloudPulse: Sunucu Performansı ve Müşteri Terk (Churn) Markov Analizi",
         "en": "CloudPulse: Server Performance & Churn Markov Analysis"
@@ -231,37 +231,33 @@
         "rows": [
           [
             "Aktif Kullanıcı",
-            "0.85",
-            "0.15"
+            "0.80",
+            "0.20"
           ],
           [
             "Churn Kullanıcı",
-            "0.10",
-            "0.90"
+            "0.05",
+            "0.95"
           ]
         ]
       },
       "guidedSteps": [
         {
           "tr": "1. Adım: Durağan denge vektörü denklemi: $$\\boldsymbol{\\pi} P = \\boldsymbol{\\pi} \\implies 0.80 \\pi_1 + 0.05 \\pi_2 = \\pi_1 \\implies 0.05 \\pi_2 = 0.20 \\pi_1 \\implies \\pi_2 = 4 \\pi_1$$",
-          "en": "Step 1: Steady-state equation π1 = 0.85*π1 + 0.10*π2."
+          "en": "Step 1: Steady-state equation π1 = 0.80*π1 + 0.05*π2."
         },
         {
           "tr": "2. Adım: $\\pi_1 + \\pi_2 = 1 \\implies 5 \\pi_1 = 1 \\implies \\pi_1 = 0.20 \\quad (\\%20)$",
-          "en": "Step 2: 0.15*π1 = 0.10*π2 => π2 = 1.5*π1."
+          "en": "Step 2: π1 + 4π1 = 1 => π1 = 0.20."
         },
         {
           "tr": "3. Adım: Toplam Aktif Kullanıcı: $$100,000 \\times 0.20 = 20,000 \\text{ kullanıcı}$$",
-          "en": "Step 3: π1 + π2 = 1 => 2.5*π1 = 1 => π1 = 0.40 (40%)."
-        },
-        {
-          "tr": "4. Adım: 50,000 * 0.40 = 20,000 Aktif Kullanıcı.",
-          "en": "Step 4: 50,000 * 0.40 = 20,000 Active Users."
+          "en": "Step 3: 100,000 * 0.20 = 20,000 Active Users."
         }
       ],
       "expectedApproach": {
-        "tr": "Başlangıçta herkes aktif olsa dahi, yüksek %15 churn oranı sebebiyle uzun vadede aktif müşteri sayısı 20,000'e gerileyecektir. Şirket churn oranını düşürecek ürün geliştirmeleri yapmalıdır.",
-        "en": "Even with 100% initial active users, high 15% churn forces long-term active users down to 20,000. CloudPulse must focus on churn reduction."
+        "tr": "Başlangıçta herkes aktif olsa dahi, yüksek churn oranı sebebiyle uzun vadede aktif müşteri sayısı 20,000'e gerileyecektir. Şirket churn oranını düşürecek ürün geliştirmeleri yapmalıdır.",
+        "en": "Even with high initial users, churn forces long-term active users down to 20,000."
       },
       "solutionQuestions": [
         {
@@ -274,7 +270,138 @@
           "correctAnswer": 20000,
           "explanation": {
             "tr": "$$100,000 \\times 0.20 = 20,000$$",
-            "en": "50,000 * 0.40 = 20,000 active users."
+            "en": "100,000 * 0.20 = 20,000 active users."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m12-case-2",
+      "moduleId": "module-12",
+      "difficulty": "kolay",
+      "title": {
+        "tr": "FinTechPay: Kredi Risk Derecelendirmesi ve Geçiş Matrisi",
+        "en": "FinTechPay: Credit Rating & Transition Matrix"
+      },
+      "businessQuestion": {
+        "tr": "FinTechPay mikro kredi müşterilerini 'İyi' ($S_1$) ve 'Riskli' ($S_2$) olarak iki grupta izlemektedir. İyi bir müşterinin gelecek ay İyi kalma olasılığı $p_{11} = 0.85$, Riskli bir müşterinin Riskli kalma olasılığı $p_{22} = 0.70$'dir. Bir müşterinin Riskli iken İyi duruma geçme olasılığı $p_{21}$ kaçtır?",
+        "en": "FinTechPay tracks borrowers as Good (S1) and Risky (S2). p11 = 0.85, p22 = 0.70. What is p21 (transition from Risky to Good)?"
+      },
+      "dataset": {
+        "columns": [
+          "Durum",
+          "S1 (İyi) Geçiş",
+          "S2 (Riskli) Geçiş"
+        ],
+        "rows": [
+          [
+            "S1 (İyi)",
+            "0.85",
+            "0.15"
+          ],
+          [
+            "S2 (Riskli)",
+            "?",
+            "0.70"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Stokastik matrislerde her satır toplamı 1 olmalıdır: $$p_{21} + p_{22} = 1$$",
+          "en": "Step 1: Row sum rule: p21 + p22 = 1."
+        },
+        {
+          "tr": "2. Adım: $$p_{21} = 1 - 0.70 = 0.30$$",
+          "en": "Step 2: p21 = 1 - 0.70 = 0.30."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Stokastik matris satır kuralı uygulanarak eksik geçiş olasılığı doğrudan tespit edilir.",
+        "en": "Apply row stochasticity to solve for the missing transition probability."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m12-case-2-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Riskli durumdan İyi duruma geçiş olasılığı $p_{21}$ kaçtır?",
+            "en": "What is the transition probability p21?"
+          },
+          "correctAnswer": 0.3,
+          "explanation": {
+            "tr": "$$p_{21} = 1 - p_{22} = 1 - 0.70 = 0.30$$",
+            "en": "p21 = 1 - 0.70 = 0.30"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m12-case-3",
+      "moduleId": "module-12",
+      "difficulty": "zor",
+      "title": {
+        "tr": "RoboPlant: Yutucu Durum (Absorbing State) ve Arıza Analizi",
+        "en": "RoboPlant: Absorbing State & Breakdown Analysis"
+      },
+      "businessQuestion": {
+        "tr": "RoboPlant üretim hattında robotlar 3 durumda bulunur: $S_1$ (Çalışıyor), $S_2$ (Hafif Aşınma), $S_3$ (Hurda/Arıza - Yutucu Durum). $S_3$ durumuna giren bir robot hurdaya ayrılmakta ve geri dönememektedir ($p_{33} = 1$). $S_1$ durumundaki bir robotun bir adımda $S_3$ (hurda) olma olasılığı $0.05$, $S_2$'ye geçme olasılığı $0.25$, $S_1$'de kalma olasılığı kaçtır?",
+        "en": "RoboPlant robots operate in 3 states: S1 (Active), S2 (Wear), S3 (Scrap/Absorbing). S3 is absorbing (p33 = 1). For S1, p13 = 0.05, p12 = 0.25. What is p11?"
+      },
+      "dataset": {
+        "columns": [
+          "Başlangıç Durumu",
+          "S1 (Aktif)",
+          "S2 (Aşınma)",
+          "S3 (Hurda - Yutucu)"
+        ],
+        "rows": [
+          [
+            "S1",
+            "?",
+            "0.25",
+            "0.05"
+          ],
+          [
+            "S2",
+            "0.10",
+            "0.60",
+            "0.30"
+          ],
+          [
+            "S3",
+            "0.00",
+            "0.00",
+            "1.00"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Satır 1 için toplam kuralı: $$p_{11} + p_{12} + p_{13} = 1$$",
+          "en": "Step 1: Row sum: p11 + p12 + p13 = 1."
+        },
+        {
+          "tr": "2. Adım: $$p_{11} = 1 - (0.25 + 0.05) = 1 - 0.30 = 0.70$$",
+          "en": "Step 2: p11 = 1 - 0.30 = 0.70."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Yutucu Markov zincirlerinde geçiş matrisi kanonik formda yazılarak yutulma süreleri ve arıza riskleri analiz edilir.",
+        "en": "Absorbing chains allow calculating time to absorption and breakdown risk."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m12-case-3-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Robotun $S_1$ durumunda kalma olasılığı $p_{11}$ kaçtır?",
+            "en": "What is the probability p11 of staying in S1?"
+          },
+          "correctAnswer": 0.7,
+          "explanation": {
+            "tr": "$$p_{11} = 1 - (0.25 + 0.05) = 0.70$$",
+            "en": "p11 = 1 - 0.30 = 0.70"
           }
         }
       ]

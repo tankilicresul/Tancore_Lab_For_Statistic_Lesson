@@ -184,14 +184,14 @@
     {
       "id": "m13-case-1",
       "moduleId": "module-13",
-      "difficulty": "orta",
+      "difficulty": "kolay",
       "title": {
         "tr": "CyberPass: Şifre Kombinasyon ve Güvenlik Analizi",
         "en": "CyberPass: Password Combinatorics & Security Analysis"
       },
       "businessQuestion": {
-        "tr": "CyberPass kullanıcı şifrelerinin kırılma süresini inceliyor. 6 haneli bir şifrede sadece küçük harfler (26 adet) kullanılırsa C(26,6) yerine kaç adet olası şifre 26^6 üretilebilir?",
-        "en": "CyberPass evaluates 6-character lowercase passwords (26 letters). What is total 26^6 combination count?"
+        "tr": "CyberPass güvenlik sisteminde 4 basamaklı sadece rakamlardan ($0-9$) oluşan PIN kodları üretilmektedir. Rakamları tekrarsız kaç farklı PIN kodu oluşturulabilir? (Permütasyon: $P(10, 4)$)",
+        "en": "CyberPass creates 4-digit PINs from digits 0-9 without repetition. How many distinct PINs can be formed? (P(10, 4))"
       },
       "dataset": {
         "columns": [
@@ -201,38 +201,159 @@
         ],
         "rows": [
           [
-            "Sadece Harf",
-            "26",
-            "6"
+            "Rakam PIN",
+            "10 (0-9)",
+            "4"
           ]
         ]
       },
       "guidedSteps": [
         {
-          "tr": "1. Adım: Her hane için 26 seçenek vardır.",
-          "en": "Step 1: 26 choices per slot."
+          "tr": "1. Adım: Sıralama önemli ve tekrarsız olduğundan permütasyon formülü kullanılır: $$P(10, 4) = \\frac{10!}{(10-4)!} = 10 \\times 9 \\times 8 \\times 7$$",
+          "en": "Step 1: P(10,4) = 10 * 9 * 8 * 7."
         },
         {
-          "tr": "2. Adım: 26^6 = 308,915,776.",
-          "en": "Step 2: 26^6 = 308,915,776."
+          "tr": "2. Adım: $$10 \\times 9 \\times 8 \\times 7 = 5040$$",
+          "en": "Step 2: 5040."
         }
       ],
       "expectedApproach": {
-        "tr": "Şifre uzunluğunu 6'dan 8'e çıkarmak kombinasyon sayısını milyarlara katlayarak brute-force saldırılarını engeller.",
-        "en": "Increasing length from 6 to 8 exponentiates combinations into billions, mitigating brute-force attacks."
+        "tr": "Sıralı seçim problemlerinde permütasyon hesaplaması yapılarak olası varyasyon uzayı belirlenir.",
+        "en": "Permutations determine the sample space size for ordered selections without replacement."
       },
       "solutionQuestions": [
         {
           "id": "m13-case-1-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$4$ elemanlı bir kümeden seçilecek $2$ elemanlı alt küme sayısı $\\binom{4}{2}$ kaçtır?",
-            "en": "What is C(4,2)?"
+            "tr": "Rakamları tekrarsız 4 basamaklı PIN sayısı kaçtır?",
+            "en": "What is the number of 4-digit PINs without repetition?"
           },
-          "correctAnswer": 6,
+          "correctAnswer": 5040,
           "explanation": {
-            "tr": "$$\\binom{4}{2} = \\frac{4 \\times 3}{2 \\times 1} = 6$$",
-            "en": "(4 * 3) / 2 = 6."
+            "tr": "$$P(10, 4) = 10 \\times 9 \\times 8 \\times 7 = 5040$$",
+            "en": "P(10, 4) = 5040"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m13-case-2",
+      "moduleId": "module-13",
+      "difficulty": "orta",
+      "title": {
+        "tr": "DataTeam: 10 Analistten 4 Kişilik Proje Ekibi Seçimi",
+        "en": "DataTeam: Selecting a 4-Person Project Team from 10 Analysts"
+      },
+      "businessQuestion": {
+        "tr": "DataPulse şirketinde 10 kıdemli veri analisti arasından yeni bir yapay zekâ projesine 4 kişilik bir çalışma grubu seçilecektir. Sıralama önemsiz olduğuna göre kaç farklı ekip oluşturulabilir? (Kombinasyon: $\\binom{10}{4}$)",
+        "en": "DataPulse needs to select a 4-person working group from 10 senior analysts. In how many ways can this team be chosen? (C(10,4))"
+      },
+      "dataset": {
+        "columns": [
+          "Havuz",
+          "Seçilecek Kişi Sayısı",
+          "Seçim Türü"
+        ],
+        "rows": [
+          [
+            "10 Analist",
+            "4 Kişi",
+            "Sırasız (Kombinasyon)"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Kombinasyon Formülü: $$\\binom{n}{r} = \\frac{n!}{r!(n-r)!} \\implies \\binom{10}{4} = \\frac{10 \\times 9 \\times 8 \\times 7}{4 \\times 3 \\times 2 \\times 1}$$",
+          "en": "Step 1: C(10,4) = (10*9*8*7)/(4*3*2*1)."
+        },
+        {
+          "tr": "2. Adım: $$\\binom{10}{4} = \\frac{5040}{24} = 210$$",
+          "en": "Step 2: 5040 / 24 = 210."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Sıralamanın önemsiz olduğu grup ve komite seçimlerinde kombinasyon uygulanır.",
+        "en": "Combinations apply when group membership order does not matter."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m13-case-2-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$\\binom{10}{4}$ kombinasyon sonucu kaçtır?",
+            "en": "What is C(10,4)?"
+          },
+          "correctAnswer": 210,
+          "explanation": {
+            "tr": "$$\\binom{10}{4} = \\frac{10 \\times 9 \\times 8 \\times 7}{24} = 210$$",
+            "en": "C(10,4) = 210"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m13-case-3",
+      "moduleId": "module-13",
+      "difficulty": "zor",
+      "title": {
+        "tr": "FinAlg: Kısıtlı Portföy Seçimi ve Binom Özdeşliği",
+        "en": "FinAlg: Constrained Portfolio Selection & Binomial Identity"
+      },
+      "businessQuestion": {
+        "tr": "FinAlg fon yöneticisi 6 hisse senedi ve 4 tahvil arasından 2 hisse senedi ve 1 tahvil seçerek 3 varlıklı bir portföy kurmak istiyor. Çarpma kuralı ve kombinasyon ile kaç farklı portföy oluşturulabilir? ($\\binom{6}{2} \\times \\binom{4}{1}$)",
+        "en": "FinAlg manages 6 stocks and 4 bonds. It wants to choose 2 stocks and 1 bond for a 3-asset portfolio. How many different portfolios can be formed? (C(6,2) * C(4,1))"
+      },
+      "dataset": {
+        "columns": [
+          "Varlık Türü",
+          "Toplam Mevcut",
+          "Seçilecek Adet"
+        ],
+        "rows": [
+          [
+            "Hisse Senedi",
+            "6",
+            "2"
+          ],
+          [
+            "Tahvil",
+            "4",
+            "1"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Hisse seçimi: $$\\binom{6}{2} = \\frac{6 \\times 5}{2 \\times 1} = 15$$",
+          "en": "Step 1: C(6,2) = 15."
+        },
+        {
+          "tr": "2. Adım: Tahvil seçimi: $$\\binom{4}{1} = 4$$",
+          "en": "Step 2: C(4,1) = 4."
+        },
+        {
+          "tr": "3. Adım: Çarpma kuralı ile toplam portföy sayısı: $$15 \\times 4 = 60$$",
+          "en": "Step 3: Total = 15 * 4 = 60."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Bağımsız alt gruplardan yapılan seçimlerde her bir grubun kombinasyon sayısı çarpılarak birleşik seçim uzayı hesaplanır.",
+        "en": "Multiply combinations across independent categories to compute joint portfolio outcomes."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m13-case-3-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Oluşturulabilecek farklı portföy sayısı kaçtır?",
+            "en": "How many different portfolios can be created?"
+          },
+          "correctAnswer": 60,
+          "explanation": {
+            "tr": "$$\\binom{6}{2} \\times \\binom{4}{1} = 15 \\times 4 = 60$$",
+            "en": "C(6,2) * C(4,1) = 15 * 4 = 60"
           }
         }
       ]

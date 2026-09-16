@@ -68,14 +68,10 @@ export function getAllSequentialTopics(): SequentialTopicNode[] {
     const lessons = mod.lessons || [];
     const cases = mod.caseExams || [];
 
-    if (lessons[0]) topics.push({ id: lessons[0].id, type: 'lesson', title: lessons[0].title, module: mod });
-    if (lessons[1]) topics.push({ id: lessons[1].id, type: 'lesson', title: lessons[1].title, module: mod });
-    if (cases[0]) topics.push({ id: cases[0].id, type: 'case', title: cases[0].title, module: mod });
-
-    for (let i = 2; i < lessons.length; i++) {
+    for (let i = 0; i < lessons.length; i++) {
       topics.push({ id: lessons[i].id, type: 'lesson', title: lessons[i].title, module: mod });
     }
-    for (let c = 1; c < cases.length; c++) {
+    for (let c = 0; c < cases.length; c++) {
       topics.push({ id: cases[c].id, type: 'case', title: cases[c].title, module: mod });
     }
   }

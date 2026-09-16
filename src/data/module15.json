@@ -184,14 +184,72 @@
     {
       "id": "m15-case-1",
       "moduleId": "module-15",
+      "difficulty": "kolay",
+      "title": {
+        "tr": "CallCenter: Müşteri Temsilcisi Çağrı Geliş Oranı ve Boşluk Analizi",
+        "en": "CallCenter: Support Call Arrival Rate & Idle Probability"
+      },
+      "businessQuestion": {
+        "tr": "CallCenter destek hattına dakikada ortalama $\\lambda = 1$ çağrı gelmektedir ($e^{-1} \\approx 0.368$). Herhangi bir 1 dakikalık zaman diliminde hiç çağrı gelmeme olasılığı $P(X = 0)$ yaklaşık yüzde kaçtır (en yakın tam sayı)?",
+        "en": "A call center receives λ = 1 calls per minute (e^-1 ≈ 0.368). What is the percentage probability of 0 calls in a 1-minute window (nearest integer)?"
+      },
+      "dataset": {
+        "columns": [
+          "Metrik",
+          "Değer"
+        ],
+        "rows": [
+          [
+            "Ortalama Oran λ",
+            "1 çağrı/dakika"
+          ],
+          [
+            "e^(-1)",
+            "0.3679"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Poisson formülü: $$P(X = 0) = \\frac{\\lambda^0 e^{-\\lambda}}{0!} = e^{-1} \\approx 0.3679$$",
+          "en": "Step 1: P(X=0) = e^-1 ≈ 0.3679."
+        },
+        {
+          "tr": "2. Adım: Yüzdeye çevir: $$0.3679 \\times 100 \\approx \\%37$$",
+          "en": "Step 2: 0.3679 * 100 ≈ 37%."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Poisson dağılımında $k=0$ olayı bekleme süresinin $t$ süresinden uzun sürme olasılığına ($e^{-\\lambda t}$) eşittir.",
+        "en": "In Poisson processes, P(X=0) matches the exponential tail probability of waiting longer than time t."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m15-case-1-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$P(X = 0)$ yüzdesi kaçtır (en yakın tam sayı)?",
+            "en": "What is P(X=0) in percent (nearest integer)?"
+          },
+          "correctAnswer": 37,
+          "explanation": {
+            "tr": "$$e^{-1} \\approx 0.3679 \\implies \\%37$$",
+            "en": "e^-1 ≈ 0.3679 -> 37%"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m15-case-2",
+      "moduleId": "module-15",
       "difficulty": "orta",
       "title": {
         "tr": "CyberPass: Sunucu İstek Trafiği & Kapasite Analizi",
         "en": "CyberPass: Server Traffic & Capacity Analysis"
       },
       "businessQuestion": {
-        "tr": "CyberPass kimlik doğrulama sunucusuna saniyede ortalama λ = 2 istek gelmektedir. Sunucunun çökmemesi için aynı saniyede 0 istek gelme olasılığı P(X=0) ile en az 1 istek gelme olasılığı P(X≥1) analizi yapılmalıdır.",
-        "en": "CyberPass server handles average λ = 2 requests/sec. Calculate P(X=0) and P(X≥1)."
+        "tr": "CyberPass kimlik doğrulama sunucusuna saniyede ortalama λ = 2 istek gelmektedir ($e^{-2} \\approx 0.1353$). Aynı saniyede en az 1 istek gelme olasılığı P(X≥1) yüzdesi kaçtır (en yakın tam sayı)?",
+        "en": "CyberPass server handles average λ = 2 requests/sec (e^-2 ≈ 0.1353). Calculate P(X≥1) in percent (nearest integer)."
       },
       "dataset": {
         "columns": [
@@ -212,20 +270,20 @@
       "guidedSteps": [
         {
           "tr": "1. Adım: $P(X = 0) = \\frac{2^0 e^{-2}}{0!} = e^{-2} \\approx 0.1353 \\quad (\\%13.53)$",
-          "en": "Step 1: P(X=0) = e^-2 ≈ 0.135 ( 13.5% )."
+          "en": "Step 1: P(X=0) = e^-2 ≈ 0.1353 ( 13.5% )."
         },
         {
-          "tr": "2. Adım: $P(X \\ge 1) = 1 - P(X = 0) = 1 - 0.1353 = 0.8647 \\quad (\\%86.47)$",
-          "en": "Step 2: P(X≥1) = 1 - 0.135 = 0.865 (86.5%)."
+          "tr": "2. Adım: $P(X \\ge 1) = 1 - P(X = 0) = 1 - 0.1353 = 0.8647 \\quad (\\%86.47 \\implies \\%87)$",
+          "en": "Step 2: P(X≥1) = 1 - 0.1353 = 0.8647 (86.5% -> 87%)."
         }
       ],
       "expectedApproach": {
-        "tr": "Poisson modellemesi, sunucuların anlık aşırı yüklenme (burst) risklerini doğru tahmin etmek için kuyruk teorisinde temel teşkil eder.",
+        "tr": "Poisson modellemesi, sunucuların anlık aşırı yüklenme risklerini doğru tahmin etmek için kuyruk teorisinde temel teşkil eder.",
         "en": "Poisson modeling underpins queuing theory for accurately evaluating server overload burst risks."
       },
       "solutionQuestions": [
         {
-          "id": "m15-case-1-q1",
+          "id": "m15-case-2-q1",
           "type": "numeric",
           "prompt": {
             "tr": "$P(X \\ge 1)$ yüzdesi en yakın tam sayı olarak kaçtır?",
@@ -234,7 +292,69 @@
           "correctAnswer": 87,
           "explanation": {
             "tr": "$$1 - 0.1353 = 0.8647 \\approx \\%87 \\implies 87$$",
-            "en": "1 - 0.1353 = 0.8647 -> 86.47% ≈ 87."
+            "en": "1 - 0.1353 = 0.8647 -> 86.47% ≈ 87"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m15-case-3",
+      "moduleId": "module-15",
+      "difficulty": "zor",
+      "title": {
+        "tr": "DataCenter: Bulut Altyapısı Nadir Arızalar ve Poisson Toplanabilirlik",
+        "en": "DataCenter: Cloud Infrastructure Rare Outages & Additivity"
+      },
+      "businessQuestion": {
+        "tr": "DataCenter bulut kümesinde 3 bağımsız veri merkezinin saatlik arıza oranları $\\lambda_1 = 0.2$, $\\lambda_2 = 0.3$, $\\lambda_3 = 0.5$ arıza/saattir. Poisson toplanabilirlik ilkesine göre tüm kümenin toplam saatlik beklenen arıza sayısı $\\lambda_{\\text{toplam}}$ kaçtır?",
+        "en": "In DataCenter cloud cluster, three datacenters have failure rates λ1 = 0.2, λ2 = 0.3, λ3 = 0.5 failures/hour. By Poisson additivity, what is total λ_total?"
+      },
+      "dataset": {
+        "columns": [
+          "Veri Merkezi",
+          "Saatlik Arıza Oranı λ"
+        ],
+        "rows": [
+          [
+            "DC-1 (Frankfurt)",
+            "0.2"
+          ],
+          [
+            "DC-2 (Dublin)",
+            "0.3"
+          ],
+          [
+            "DC-3 (Virginia)",
+            "0.5"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Bağımsız Poisson süreçlerinin toplamı yine bir Poisson sürecidir ve oranlar toplanır: $$\\lambda_{\\text{toplam}} = \\lambda_1 + \\lambda_2 + \\lambda_3$$",
+          "en": "Step 1: Sum independent Poisson rates: λ_total = λ1 + λ2 + λ3."
+        },
+        {
+          "tr": "2. Adım: $$\\lambda_{\\text{toplam}} = 0.2 + 0.3 + 0.5 = 1.0 \\text{ arıza/saat}$$",
+          "en": "Step 2: 0.2 + 0.3 + 0.5 = 1.0."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Bağımsız Poisson süreçleri birleştirildiğinde toplam oran parametresi doğrudan alt bileşenlerin parametreleri toplamına eşit olur.",
+        "en": "Merging independent Poisson processes results in a new Poisson process with the sum of individual arrival rates."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m15-case-3-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Tüm kümenin toplam arıza oranı $\\lambda_{\\text{toplam}}$ kaçtır?",
+            "en": "What is total λ_total?"
+          },
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$$\\lambda_{\\text{toplam}} = 0.2 + 0.3 + 0.5 = 1.0$$",
+            "en": "0.2 + 0.3 + 0.5 = 1.0"
           }
         }
       ]

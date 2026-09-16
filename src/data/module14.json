@@ -194,13 +194,83 @@
     {
       "id": "m14-case-1",
       "moduleId": "module-14",
+      "difficulty": "kolay",
+      "title": {
+        "tr": "MedTech: Biyomedikal Tarama Testi ve Koşullu Olasılık",
+        "en": "MedTech: Biomedical Screening & Conditional Probability"
+      },
+      "businessQuestion": {
+        "tr": "MedTech laboratuvarında 1000 kişilik grupta 50 kişide hastalık ($H$) mevcuttur. Test uygulandığında hasta olan 50 kişiden 45'i pozitif ($+$), sağlıklı 950 kişiden 95'i yanlış pozitif ($+$) sonuç vermiştir. Testi pozitif çıkan bir kişinin gerçekten hasta olma olasılığı $P(H \\mid +)$ kaçtır? ($\\frac{45}{45+95}$)",
+        "en": "In a group of 1000 people, 50 have disease H. 45 diseased test positive (+), and 95 healthy test false positive (+). What is P(H | +)?"
+      },
+      "dataset": {
+        "columns": [
+          "Durum",
+          "Test Pozitif (+)",
+          "Test Negatif (-)",
+          "Toplam"
+        ],
+        "rows": [
+          [
+            "Hasta (H)",
+            "45",
+            "5",
+            "50"
+          ],
+          [
+            "Sağlıklı (H')",
+            "95",
+            "855",
+            "950"
+          ],
+          [
+            "Toplam",
+            "140",
+            "860",
+            "1000"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Toplam Pozitif Test Sayısı: $$45 + 95 = 140$$",
+          "en": "Step 1: Total positive tests = 45 + 95 = 140."
+        },
+        {
+          "tr": "2. Adım: Koşullu Olasılık Formülü: $$P(H \\mid +) = \\frac{P(H \\cap +)}{P(+)} = \\frac{45}{140} \\approx 0.3214 \\quad (\\%32.14)$$",
+          "en": "Step 2: P(H|+) = 45 / 140 ≈ 32.1%."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Hastalık yaygınlığı düşük olduğunda test duyarlılığı yüksek olsa dahi pozitif tahmin değeri beklenenden düşük çıkar (Taban Oran Yanılsaması).",
+        "en": "When base prevalence is low, false positives suppress the precision despite high sensitivity."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m14-case-1-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Testi pozitif çıkan toplam kişi sayısı ($P(+)$ paydası) kaçtır?",
+            "en": "What is the total number of positive test results?"
+          },
+          "correctAnswer": 140,
+          "explanation": {
+            "tr": "$$45 + 95 = 140$$",
+            "en": "45 + 95 = 140"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m14-case-2",
+      "moduleId": "module-14",
       "difficulty": "orta",
       "title": {
         "tr": "CyberPass: Yanlış Pozitif Alarm ve Bayes Teoremi Analizi",
         "en": "CyberPass: False Positive Alarms & Bayes Theorem Analysis"
       },
       "businessQuestion": {
-        "tr": "CyberPass güvenlik duvarında nadir siber sızmalar (%1 sıklık) için alarm sistemi kuruldu. Doğruluk %90, yanlış alarm %10 ise alarm verildiğinde sızmanın gerçek olma olasılığı nedir?",
+        "tr": "CyberPass güvenlik duvarında nadir siber sızmalar (%1 sıklık) için alarm sistemi kuruldu. Doğruluk %90, yanlış alarm %10 ise alarm verildiğinde sızmanın gerçek olma olasılığı yüzde kaçtır (en yakın tam sayı)?",
         "en": "CyberPass security firewall detects 1% rare intrusions. Sensitivity = 90%, False Positive = 10%. What is true intrusion probability when alarm triggers?"
       },
       "dataset": {
@@ -239,7 +309,7 @@
       },
       "solutionQuestions": [
         {
-          "id": "m14-case-1-q1",
+          "id": "m14-case-2-q1",
           "type": "numeric",
           "prompt": {
             "tr": "$P(\\text{Sızma} \\mid \\text{Alarm})$ yüzde kaçtır (en yakın tam sayı)?",
@@ -248,7 +318,68 @@
           "correctAnswer": 8,
           "explanation": {
             "tr": "$$\\frac{0.009}{0.108} \\approx \\%8.33 \\implies 8$$",
-            "en": "0.009 / 0.108 ≈ 8.33% -> 8."
+            "en": "0.009 / 0.108 ≈ 8.33% -> 8"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m14-case-3",
+      "moduleId": "module-14",
+      "difficulty": "zor",
+      "title": {
+        "tr": "FraudDetect: Bankacılık Şüpheli Transfer ve Çoklu Bayes Güncellemesi",
+        "en": "FraudDetect: Banking Fraud & Multi-Stage Bayesian Update"
+      },
+      "businessQuestion": {
+        "tr": "FraudDetect sisteminde bir para transferinin dolandırıcılık ($F$) olma önsel (prior) olasılığı $P(F) = 0.02$'dir. Sistemde iki bağımsız şüpheli gösterge tespit edilmiştir: Yurtdışı IP ($E_1$) ve Gece Yarısı İşlemi ($E_2$). Olabilirlik oranları çarpımı ile güncellenen posterior payı $0.02 \\times 10 \\times 5 = 1.0$, normal işlem payı $0.98 \\times 1 \\times 1 = 0.98$'dir. Normalleştirilmiş posterior olasılık $\\frac{1.0}{1.0 + 0.98}$ yaklaşık yüzde kaçtır?",
+        "en": "In FraudDetect, prior P(Fraud) = 0.02. Indicators E1 and E2 update the likelihood ratio. Posterior numerator = 1.0, normal numerator = 0.98. What is normalized P(Fraud|E1,E2) in percent (approx)?"
+      },
+      "dataset": {
+        "columns": [
+          "Metrik",
+          "Dolandırıcılık (F)",
+          "Normal (F')"
+        ],
+        "rows": [
+          [
+            "Prior Olasılık",
+            "0.02",
+            "0.98"
+          ],
+          [
+            "Olabilirlik Çarpanı",
+            "50x",
+            "1x"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Bayes Formülü: $$P(F \\mid E) = \\frac{P(E \\mid F) P(F)}{P(E \\mid F) P(F) + P(E \\mid F') P(F')} = \\frac{1.0}{1.0 + 0.98} = \\frac{1.0}{1.98}$$",
+          "en": "Step 1: Bayes formula: 1.0 / (1.0 + 0.98) = 1.0 / 1.98."
+        },
+        {
+          "tr": "2. Adım: $$\\frac{1.0}{1.98} \\approx 0.505 \\quad (\\%50.5 \\implies \\%51)$$",
+          "en": "Step 2: 1.0 / 1.98 ≈ 50.5%."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Birden çok şüpheli kanıt birleştiğinde önsel %2 olan dolandırıcılık riski %51'in üzerine fırlayarak otomatik bloklama kararı aldırır.",
+        "en": "Combining multiple pieces of evidence raises the posterior risk from 2% to over 50%, triggering automatic fraud blocks."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m14-case-3-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Güncellenmiş dolandırıcılık riski yüzde kaçtır (en yakın tam sayı)?",
+            "en": "What is the updated fraud risk in percent (nearest integer)?"
+          },
+          "correctAnswer": 51,
+          "explanation": {
+            "tr": "$$\\frac{1.0}{1.98} \\approx \\%50.5 \\implies 51$$",
+            "en": "1.0 / 1.98 ≈ 50.5% -> 51"
           }
         }
       ]

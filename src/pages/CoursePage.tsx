@@ -31,6 +31,8 @@ import {
   Zap,
   Loader2,
   Send,
+  Check,
+  ChevronRight,
 } from 'lucide-react';
 import { Lesson, CaseExam, Module } from '../types/stats';
 import { CourseTrack } from './HomePage';
@@ -159,8 +161,9 @@ interface PathNodeItem {
   isCompleted: boolean;
   isUnlocked: boolean;
   lesson?: Lesson;
-  caseExam?: CaseExam;
   module: Module;
+  completedCasesCount?: number;
+  totalCasesCount?: number;
 }
 
 const PROBABILITY_MODULE_IDS = ['module-2', 'module-13', 'module-14', 'module-3', 'module-15', 'module-16', 'module-4', 'module-12'];
@@ -178,6 +181,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 }) => {
   const { language, unlockedModules, completedLessons, completedCaseExams, isAuthenticated, isVerified, setIsTancoChatOpen } = useAppStore();
   const [selectedNode, setSelectedNode] = useState<PathNodeItem | null>(null);
+  const [selectedCaseHubModule, setSelectedCaseHubModule] = useState<Module | null>(null);
 
   // If viewing an in-design course, render dedicated placeholder view
   if (inDesignCourse) {
@@ -276,44 +280,56 @@ export const CoursePage: React.FC<CoursePageProps> = ({
     .map((id) => ALL_MODULES.find((m) => m.id === id))
     .filter((m): m is Module => m !== undefined);
 
-  // Unlocked modules
-  const unlockedActiveModules = activeModulesList.filter(
-    (m, idx) =>
-      idx === 0 ||
-      unlockedModules.includes(m.id) ||
-      m.lessons.some((l) => completedLessons.includes(l.id))
-  );
+  // Check if a module is unlocked
+  const isModuleUnlockedCheck = (module: Module, trackIdx: number): boolean => {
+    if (trackIdx === 0) return true;
+    if (!isAuthenticated || !isVerified) return false;
+
+    if (unlockedModules.includes(module.id)) return true;
+
+    // Check if the previous module in track has all lessons completed AND at least 1 case completed
+    const prevModule = activeModulesList[trackIdx - 1];
+    if (prevModule) {
+      const allPrevLessonsDone = prevModule.lessons.every((l) => completedLessons.includes(l.id));
+      const anyPrevCaseDone = prevModule.caseExams.some((c) => completedCaseExams.includes(c.id));
+      if (allPrevLessonsDone && anyPrevCaseDone) return true;
+    }
+
+    // Check if user already started lessons or cases in this module
+    if (module.lessons.some((l) => completedLessons.includes(l.id))) return true;
+    if (module.caseExams.some((c) => completedCaseExams.includes(c.id))) return true;
+
+    return false;
+  };
+
+  const unlockedActiveModules = activeModulesList.filter((m, idx) => isModuleUnlockedCheck(m, idx));
 
   const latestUnlockedModule =
     unlockedActiveModules[unlockedActiveModules.length - 1] || activeModulesList[0];
 
   // Determine global target node ID
   const getGlobalTargetNodeId = (): string => {
-    if (unlockedActiveModules.length === 0) return activeModulesList[0]?.lessons[0]?.id || 'm1-l1';
+    if (unlockedActiveModules.length === 0) return activeModulesList[0]?.lessons[0]?.id || 'm1-l0';
 
-    for (let mIdx = unlockedActiveModules.length - 1; mIdx >= 0; mIdx--) {
+    for (let mIdx = 0; mIdx < unlockedActiveModules.length; mIdx++) {
       const mod = unlockedActiveModules[mIdx];
       const lessons = mod.lessons || [];
       const cases = mod.caseExams || [];
-      const modNodes: { id: string; isCompleted: boolean }[] = [];
 
-      if (lessons[0]) modNodes.push({ id: lessons[0].id, isCompleted: completedLessons.includes(lessons[0].id) });
-      if (lessons[1]) modNodes.push({ id: lessons[1].id, isCompleted: completedLessons.includes(lessons[1].id) });
-      if (cases[0]) modNodes.push({ id: cases[0].id, isCompleted: completedCaseExams.includes(cases[0].id) });
-      for (let i = 2; i < lessons.length; i++) {
-        modNodes.push({ id: lessons[i].id, isCompleted: completedLessons.includes(lessons[i].id) });
-      }
-      for (let c = 1; c < cases.length; c++) {
-        modNodes.push({ id: cases[c].id, isCompleted: completedCaseExams.includes(cases[c].id) });
+      // 1. Check if any lesson is not completed
+      const uncompletedLesson = lessons.find((l) => !completedLessons.includes(l.id));
+      if (uncompletedLesson) {
+        return uncompletedLesson.id;
       }
 
-      const firstUncompleted = modNodes.find((n) => !n.isCompleted);
-      if (firstUncompleted) {
-        return firstUncompleted.id;
+      // 2. If all lessons completed, check if at least one case is completed
+      const anyCaseDone = cases.some((c) => completedCaseExams.includes(c.id));
+      if (!anyCaseDone && cases.length > 0) {
+        return `${mod.id}-cases`;
       }
     }
 
-    return latestUnlockedModule.lessons[0]?.id || 'm1-l1';
+    return latestUnlockedModule.lessons[0]?.id || 'm1-l0';
   };
 
   const globalTargetNodeId = getGlobalTargetNodeId();
@@ -397,84 +413,45 @@ export const CoursePage: React.FC<CoursePageProps> = ({
       {/* Modules Flow */}
       <div className="space-y-12">
         {activeModulesList.map((module, trackIdx) => {
-          const isModuleUnlocked =
-            trackIdx === 0 ||
-            (Boolean(isAuthenticated && isVerified) && (
-              unlockedModules.includes(module.id) ||
-              module.id === latestUnlockedModule.id ||
-              module.lessons.some((l) => l.id === globalTargetNodeId) ||
-              module.caseExams.some((c) => c.id === globalTargetNodeId) ||
-              module.lessons.some((l) => completedLessons.includes(l.id))
-            ));
+          const isModuleUnlocked = isModuleUnlockedCheck(module, trackIdx);
           const trackModuleOrder = trackIdx + 1;
 
           const lessons = module.lessons || [];
           const cases = module.caseExams || [];
+          const isAnyCaseCompleted = cases.some((c) => completedCaseExams.includes(c.id));
+          const completedCasesCount = cases.filter((c) => completedCaseExams.includes(c.id)).length;
 
-          const interleavedNodes: PathNodeItem[] = [];
+          // 1. All lessons strictly in sequential order (Intro -> Basic Core -> Advanced)
+          const pathNodes: PathNodeItem[] = [];
 
-          if (lessons[0])
-            interleavedNodes.push({
-              id: lessons[0].id,
+          lessons.forEach((lesson, lIdx) => {
+            pathNodes.push({
+              id: lesson.id,
               type: 'lesson',
-              title: getLocalized(lessons[0].title, language),
-              order: 1,
-              isCompleted: completedLessons.includes(lessons[0].id),
+              title: getLocalized(lesson.title, language),
+              order: lIdx + 1,
+              isCompleted: completedLessons.includes(lesson.id),
               isUnlocked: isModuleUnlocked,
-              lesson: lessons[0],
+              lesson,
               module,
             });
-          if (lessons[1])
-            interleavedNodes.push({
-              id: lessons[1].id,
-              type: 'lesson',
-              title: getLocalized(lessons[1].title, language),
-              order: 2,
-              isCompleted: completedLessons.includes(lessons[1].id),
-              isUnlocked: isModuleUnlocked,
-              lesson: lessons[1],
-              module,
-            });
+          });
 
-          if (cases[0])
-            interleavedNodes.push({
-              id: cases[0].id,
+          // 2. Single Capstone Case node at the END of the module
+          if (cases.length > 0) {
+            pathNodes.push({
+              id: `${module.id}-cases`,
               type: 'case',
-              title: getLocalized(cases[0].title, language),
-              order: 3,
-              isCompleted: completedCaseExams.includes(cases[0].id),
+              title: language === 'tr' ? 'Şirket Vaka Sınavları' : 'Company Case Studies',
+              order: lessons.length + 1,
+              isCompleted: isAnyCaseCompleted,
               isUnlocked: isModuleUnlocked,
-              caseExam: cases[0],
               module,
-            });
-
-          for (let i = 2; i < lessons.length; i++) {
-            interleavedNodes.push({
-              id: lessons[i].id,
-              type: 'lesson',
-              title: getLocalized(lessons[i].title, language),
-              order: interleavedNodes.length + 1,
-              isCompleted: completedLessons.includes(lessons[i].id),
-              isUnlocked: isModuleUnlocked,
-              lesson: lessons[i],
-              module,
+              completedCasesCount,
+              totalCasesCount: cases.length,
             });
           }
 
-          for (let c = 1; c < cases.length; c++) {
-            interleavedNodes.push({
-              id: cases[c].id,
-              type: 'case',
-              title: getLocalized(cases[c].title, language),
-              order: interleavedNodes.length + 1,
-              isCompleted: completedCaseExams.includes(cases[c].id),
-              isUnlocked: isModuleUnlocked,
-              caseExam: cases[c],
-              module,
-            });
-          }
-
-          const pathNodes = interleavedNodes;
           const totalNodesCount = pathNodes.length;
           const completedNodesCount = pathNodes.filter((n) => n.isCompleted).length;
           const progressPercent =
@@ -506,7 +483,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                         onClick={onGuestGateRequired}
                         className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white hover:bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer"
                       >
-                        <span>🔒 {language === 'tr' ? '2. Modül için ücretsiz kayıt olun' : 'Sign up to unlock Module 2+'}</span>
+                        <span>🔒 {language === 'tr' ? '2. Modül ve sonrası için ücretsiz kayıt olun' : 'Sign up to unlock Module 2+'}</span>
                       </button>
                     )}
                   </div>
@@ -521,7 +498,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                     <div className="flex items-center justify-between text-xs font-bold mb-1">
                       <span className="opacity-90">
                         {language === 'tr'
-                          ? `${completedNodesCount}/${totalNodesCount} Adım Tamamlandı`
+                          ? `${completedNodesCount}/${totalNodesCount} Aşama Tamamlandı`
                           : `${completedNodesCount}/${totalNodesCount} Steps Completed`}
                       </span>
                       <span className="font-mono">{progressPercent}%</span>
@@ -567,10 +544,22 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                             }
                             return;
                           }
-                          setSelectedNode(node);
+                          if (node.type === 'case') {
+                            setSelectedCaseHubModule(node.module);
+                          } else {
+                            setSelectedNode(node);
+                          }
                         }}
                         className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center transition-all duration-200 active:translate-y-1 ${
-                          node.isCompleted
+                          node.type === 'case'
+                            ? node.isCompleted
+                              ? 'bg-gradient-to-tr from-amber-500 to-[#ff7a00] text-white shadow-[0_6px_0_0_#b35300] hover:brightness-110 ring-4 ring-amber-300/40'
+                              : isCurrentTarget
+                              ? 'bg-gradient-to-tr from-amber-500 to-[#ff7a00] text-white shadow-[0_8px_0_0_#b35300] ring-4 ring-amber-400/50 animate-pulse'
+                              : node.isUnlocked
+                              ? 'bg-amber-50 text-[#ff7a00] border-2 border-amber-500 shadow-[0_6px_0_0_#fed7aa]'
+                              : 'bg-slate-200 text-slate-400 shadow-[0_6px_0_0_#cbd5e1] cursor-not-allowed'
+                            : node.isCompleted
                             ? 'bg-[#ff7a00] text-white shadow-[0_6px_0_0_#cc6100] hover:bg-[#e56d00]'
                             : isCurrentTarget
                             ? 'bg-[#ff7a00] text-white shadow-[0_8px_0_0_#cc6100] ring-4 ring-[#ff7a00]/30 animate-pulse'
@@ -584,30 +573,26 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                             node.isCompleted || isCurrentTarget
                               ? 'border-white/40'
                               : node.isUnlocked
-                              ? 'border-[#ff7a00]/30'
+                              ? node.type === 'case' ? 'border-amber-400/50' : 'border-[#ff7a00]/30'
                               : 'border-slate-300'
                           }`}
                         >
-                          {node.isCompleted ? (
-                            node.type === 'case' ? (
-                              <CaseExamIcon className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[1.75]" />
-                            ) : (
-                              getNodeAnimalIcon(node.order, 'text-white')
-                            )
+                          {node.type === 'case' ? (
+                            <Trophy
+                              className={`w-7 h-7 sm:w-9 sm:h-9 ${
+                                node.isCompleted || isCurrentTarget
+                                  ? 'text-white'
+                                  : node.isUnlocked
+                                  ? 'text-[#ff7a00]'
+                                  : 'text-slate-400'
+                              } stroke-[2]`}
+                            />
+                          ) : node.isCompleted ? (
+                            getNodeAnimalIcon(node.order, 'text-white')
                           ) : isCurrentTarget ? (
-                            node.type === 'case' ? (
-                              <CaseExamIcon className="w-7 h-7 sm:w-9 sm:h-9 text-white stroke-[1.75]" />
-                            ) : (
-                              getNodeAnimalIcon(node.order, 'text-white')
-                            )
+                            getNodeAnimalIcon(node.order, 'text-white')
                           ) : node.isUnlocked ? (
-                            node.type === 'case' ? (
-                              <CaseExamIcon className="w-7 h-7 sm:w-9 sm:h-9 text-[#ff7a00] stroke-[1.75]" />
-                            ) : (
-                              getNodeAnimalIcon(node.order, 'text-[#ff7a00]')
-                            )
-                          ) : node.type === 'case' ? (
-                            <CaseExamIcon className="w-7 h-7 sm:w-9 sm:h-9 text-slate-400 stroke-[1.75]" />
+                            getNodeAnimalIcon(node.order, 'text-[#ff7a00]')
                           ) : (
                             getNodeAnimalIcon(node.order, 'text-slate-400')
                           )}
@@ -618,14 +603,26 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                         <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-extrabold text-slate-800 bg-white/95 backdrop-blur-sm px-2.5 sm:px-3 py-1 rounded-2xl border border-slate-200 shadow-2xs text-center leading-none whitespace-nowrap mb-0.5">
                           {node.title}
                         </span>
-                        <span className="text-[9px] font-black uppercase tracking-wider text-[#ff7a00] bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-md">
+                        <span
+                          className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${
+                            node.type === 'case'
+                              ? node.isCompleted
+                                ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                                : 'text-amber-700 bg-amber-50 border-amber-200'
+                              : 'text-[#ff7a00] bg-orange-50 border-orange-200'
+                          }`}
+                        >
                           {node.type === 'case'
-                            ? language === 'tr'
-                              ? `VAKA SINAVI (${node.caseExam?.difficulty.toUpperCase()})`
-                              : `CASE EXAM (${node.caseExam?.difficulty.toUpperCase()})`
+                            ? node.isCompleted
+                              ? language === 'tr'
+                                ? `✓ ${node.completedCasesCount}/${node.totalCasesCount} VAKA ÇÖZÜLDÜ`
+                                : `✓ ${node.completedCasesCount}/${node.totalCasesCount} CASES SOLVED`
+                              : language === 'tr'
+                              ? '🏆 3 VAKA SEÇENEĞİ'
+                              : '🏆 3 CASE OPTIONS'
                             : language === 'tr'
-                            ? `DERS ${node.lesson?.order}`
-                            : `LESSON ${node.lesson?.order}`}
+                            ? `DERS ${node.lesson?.order || node.order}`
+                            : `LESSON ${node.lesson?.order || node.order}`}
                         </span>
                       </div>
                     </div>
@@ -637,8 +634,8 @@ export const CoursePage: React.FC<CoursePageProps> = ({
         })}
       </div>
 
-      {/* Modal Detail Dialog */}
-      {selectedNode && (
+      {/* Lesson Detail Dialog */}
+      {selectedNode && selectedNode.lesson && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-fade-in">
           <div className="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl relative">
             <button
@@ -650,41 +647,22 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-12 h-12 rounded-full bg-[#ff7a00] text-white flex items-center justify-center shadow-md shrink-0">
-                {selectedNode.type === 'case' ? (
-                  <CaseExamIcon className="w-6 h-6" />
-                ) : (
-                  getNodeAnimalIcon(selectedNode.order, 'text-white')
-                )}
+                {getNodeAnimalIcon(selectedNode.order, 'text-white')}
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug break-words mb-0.5">
                   {selectedNode.title}
                 </h3>
                 <span className="text-[10px] font-black uppercase text-[#ff7a00] tracking-widest font-mono block">
-                  {selectedNode.type === 'case' ? 'ŞİRKET VAKA SINAVI' : `DERS ${selectedNode.order}`}
+                  {`DERS ${selectedNode.lesson.order || selectedNode.order}`}
                 </span>
               </div>
             </div>
 
             {(() => {
-              const rawText =
-                selectedNode.type === 'case'
-                  ? selectedNode.caseExam
-                    ? getLocalized(selectedNode.caseExam.businessQuestion, language)
-                    : ''
-                  : selectedNode.lesson
-                  ? getLocalized(selectedNode.lesson.conceptCard, language)
-                  : '';
-
-              const topicFormula = extractTopicFormula(
-                selectedNode.lesson,
-                selectedNode.caseExam,
-                language
-              );
-
-              const displayText = topicFormula
-                ? stripFormulaFromText(rawText, topicFormula)
-                : rawText;
+              const rawText = getLocalized(selectedNode.lesson.conceptCard, language);
+              const topicFormula = extractTopicFormula(selectedNode.lesson, undefined, language);
+              const displayText = topicFormula ? stripFormulaFromText(rawText, topicFormula) : rawText;
 
               return (
                 <>
@@ -706,13 +684,9 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               onClick={() => {
                 const node = selectedNode;
                 setSelectedNode(null);
-                if (node.type === 'lesson') {
-                  onSelectLesson(node.id);
-                } else {
-                  onSelectCaseExam(node.id);
-                }
+                onSelectLesson(node.id);
               }}
-              className="w-full py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2 cursor-pointer"
+              className="w-full py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-98"
             >
               <Play className="w-4 h-4 fill-white" />
               <span>
@@ -721,10 +695,149 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                     ? 'TEKRAR İNCELE'
                     : 'REPLAY'
                   : language === 'tr'
-                  ? 'BAŞLA (+15 XP)'
-                  : 'START (+15 XP)'}
+                  ? 'DERSE BAŞLA (+15 XP)'
+                  : 'START LESSON (+15 XP)'}
               </span>
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* 3-Case Exam Selection Modal */}
+      {selectedCaseHubModule && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
+          <div className="w-full max-w-xl max-h-[90vh] flex flex-col bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden animate-scale-up">
+            {/* Modal Header */}
+            <div className="p-5 sm:p-6 bg-gradient-to-r from-orange-500 via-[#ff7a00] to-amber-500 text-white relative">
+              <button
+                onClick={() => setSelectedCaseHubModule(null)}
+                className="absolute top-4 right-4 text-white/80 hover:text-white font-black text-lg bg-black/10 hover:bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div className="flex items-center space-x-3.5">
+                <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white shadow-inner shrink-0">
+                  <Trophy className="w-6 h-6 stroke-[2.5]" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-orange-100 font-mono">
+                    {language === 'tr' ? 'MODÜL BİTİRME VAKALARI' : 'MODULE CAPSTONE CASES'}
+                  </span>
+                  <h3 className="text-base sm:text-lg font-black text-white leading-tight">
+                    {getLocalized(selectedCaseHubModule.title, language)}
+                  </h3>
+                </div>
+              </div>
+
+              <p className="text-xs text-orange-50 font-medium mt-2 leading-relaxed">
+                {language === 'tr'
+                  ? 'Aşağıdaki 3 gerçek dünya şirket vakasından dilediğini seçip çözebilirsin. En az bir tanesini tamamladığında sonraki modülün kilidi açılır!'
+                  : 'Choose and solve any of the 3 real-world company case studies below. Completing at least one unlocks the next module!'}
+              </p>
+            </div>
+
+            {/* Cases List */}
+            <div className="p-4 sm:p-6 overflow-y-auto space-y-3.5 flex-1 divide-y divide-slate-100">
+              {selectedCaseHubModule.caseExams.map((caseItem, idx) => {
+                const isCaseCompleted = completedCaseExams.includes(caseItem.id);
+                const diffLabel =
+                  caseItem.difficulty === 'kolay'
+                    ? language === 'tr' ? 'Kolay' : 'Easy'
+                    : caseItem.difficulty === 'orta'
+                    ? language === 'tr' ? 'Orta' : 'Medium'
+                    : language === 'tr' ? 'Zor' : 'Hard';
+
+                const diffBadgeColor =
+                  caseItem.difficulty === 'kolay'
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                    : caseItem.difficulty === 'orta'
+                    ? 'bg-orange-50 text-orange-700 border-orange-200'
+                    : 'bg-purple-50 text-purple-700 border-purple-200';
+
+                return (
+                  <div
+                    key={caseItem.id}
+                    className={`pt-3.5 first:pt-0 rounded-2xl p-4 transition-all border ${
+                      isCaseCompleted
+                        ? 'bg-emerald-50/40 border-emerald-200/80 shadow-2xs'
+                        : 'bg-white hover:bg-orange-50/20 border-slate-200 hover:border-orange-300/80 shadow-xs'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+                        <span className="text-[10px] font-black uppercase font-mono px-2 py-0.5 rounded-md bg-slate-900 text-white">
+                          {language === 'tr' ? `Vaka ${idx + 1}` : `Case ${idx + 1}`}
+                        </span>
+                        <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md border ${diffBadgeColor}`}>
+                          {diffLabel}
+                        </span>
+                        {isCaseCompleted ? (
+                          <span className="inline-flex items-center space-x-1 text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300">
+                            <Check className="w-3 h-3 stroke-[3]" />
+                            <span>{language === 'tr' ? 'Tamamlandı (+50 XP)' : 'Completed (+50 XP)'}</span>
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200">
+                            +50 XP
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <h4 className="text-sm sm:text-base font-black text-slate-900 mb-1 leading-snug">
+                      {getLocalized(caseItem.title, language)}
+                    </h4>
+
+                    <div className="text-xs text-slate-600 font-medium line-clamp-2 leading-relaxed mb-3">
+                      <MathFormulaText text={getLocalized(caseItem.businessQuestion, language)} />
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                      <span className="text-[11px] font-bold text-slate-500 font-mono">
+                        {caseItem.solutionQuestions?.length || 1} {language === 'tr' ? 'Soru / Analiz' : 'Question'}
+                      </span>
+
+                      <button
+                        onClick={() => {
+                          const targetCaseId = caseItem.id;
+                          setSelectedCaseHubModule(null);
+                          onSelectCaseExam(targetCaseId);
+                        }}
+                        className={`inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer shadow-xs active:scale-95 ${
+                          isCaseCompleted
+                            ? 'bg-slate-900 hover:bg-slate-800 text-white'
+                            : 'bg-[#ff7a00] hover:bg-[#e66e00] text-white shadow-[#ff7a00]/25'
+                        }`}
+                      >
+                        <Play className="w-3.5 h-3.5 fill-white" />
+                        <span>
+                          {isCaseCompleted
+                            ? language === 'tr' ? 'Tekrar Çöz' : 'Review'
+                            : language === 'tr' ? 'Vakayı Çöz' : 'Solve Case'}
+                        </span>
+                        <ChevronRight className="w-3.5 h-3.5 stroke-[2.5]" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+              <span className="text-xs text-slate-500 font-medium">
+                {language === 'tr'
+                  ? `${selectedCaseHubModule.caseExams.filter((c) => completedCaseExams.includes(c.id)).length}/3 vaka tamamlandı`
+                  : `${selectedCaseHubModule.caseExams.filter((c) => completedCaseExams.includes(c.id)).length}/3 cases completed`}
+              </span>
+              <button
+                onClick={() => setSelectedCaseHubModule(null)}
+                className="px-4 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-black border border-slate-300 transition-all cursor-pointer"
+              >
+                {language === 'tr' ? 'Kapat' : 'Close'}
+              </button>
+            </div>
           </div>
         </div>
       )}

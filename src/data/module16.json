@@ -184,14 +184,76 @@
     {
       "id": "m16-case-1",
       "moduleId": "module-16",
+      "difficulty": "kolay",
+      "title": {
+        "tr": "FabriQuality: Parça Üretim Toleransı ve Z-Skoru",
+        "en": "FabriQuality: Manufacturing Tolerance & Z-Score"
+      },
+      "businessQuestion": {
+        "tr": "FabriQuality üretim bandında üretilen metal millerin çapı $\\mu = 50 \\text{ mm}$ ve $\\sigma = 2 \\text{ mm}$ olan Normal dağılıma uymaktadır. $X = 54 \\text{ mm}$ ölçülen bir mil için standart Z-skoru kaçtır?",
+        "en": "Metal shaft diameters follow N(μ=50 mm, σ=2 mm). What is the standard Z-score for a shaft measured at X = 54 mm?"
+      },
+      "dataset": {
+        "columns": [
+          "Parametre",
+          "Değer"
+        ],
+        "rows": [
+          [
+            "Hedef Ortalama μ",
+            "50 mm"
+          ],
+          [
+            "Standart Sapma σ",
+            "2 mm"
+          ],
+          [
+            "Ölçülen Değer X",
+            "54 mm"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Z-Skoru formülü: $$Z = \\frac{X - \\mu}{\\sigma}$$",
+          "en": "Step 1: Z = (X - μ) / σ."
+        },
+        {
+          "tr": "2. Adım: $$Z = \\frac{54 - 50}{2} = \\frac{4}{2} = 2.0$$",
+          "en": "Step 2: Z = 4 / 2 = 2.0."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Standartlaştırma formülü ile ölçülen fiziksel değer standart normal $Z \\sim \\mathcal{N}(0, 1)$ dağılımına dönüştürülür.",
+        "en": "Standardization maps any normal variable to standard normal Z ~ N(0,1)."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m16-case-1-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Hesaplanan Z-skoru kaçtır?",
+            "en": "What is the calculated Z-score?"
+          },
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "$$Z = \\frac{54 - 50}{2} = 2.0$$",
+            "en": "Z = (54 - 50) / 2 = 2.0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m16-case-2",
+      "moduleId": "module-16",
       "difficulty": "orta",
       "title": {
         "tr": "CyberPass: Z-Skoru Tabanlı Siber Anomali Tespiti",
         "en": "CyberPass: Z-Score Based Cyber Anomaly Detection"
       },
       "businessQuestion": {
-        "tr": "CyberPass sunucu giriş denemesi sıklığı μ = 100/dakika ve σ = 20/dakika olan Normal dağılıma uymaktadır. Dakikada X = 160 giriş yapılan bir ip adresi tespit edildi. Z-skorunu hesaplayıp anomali durumunu değerlendiriniz.",
-        "en": "Login attempt frequency follows N(μ=100, σ=20). An IP registers X = 160 logins/min. Calculate Z-score and evaluate anomaly."
+        "tr": "CyberPass sunucu giriş denemesi sıklığı μ = 100/dakika ve σ = 20/dakika olan Normal dağılıma uymaktadır. Dakikada X = 160 giriş yapılan bir ip adresi tespit edildi. Z-skorunu hesaplayınız.",
+        "en": "Login attempt frequency follows N(μ=100, σ=20). An IP registers X = 160 logins/min. Calculate Z-score."
       },
       "dataset": {
         "columns": [
@@ -229,7 +291,7 @@
       },
       "solutionQuestions": [
         {
-          "id": "m16-case-1-q1",
+          "id": "m16-case-2-q1",
           "type": "numeric",
           "prompt": {
             "tr": "Tespit edilen IP adresi için Z-skoru kaçtır?",
@@ -238,7 +300,69 @@
           "correctAnswer": 3,
           "explanation": {
             "tr": "$$Z = \\frac{160 - 100}{20} = 3.0$$",
-            "en": "Z = (160 - 100) / 20 = 3.0."
+            "en": "Z = (160 - 100) / 20 = 3.0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m16-case-3",
+      "moduleId": "module-16",
+      "difficulty": "zor",
+      "title": {
+        "tr": "DeliverySpeed: Drone Teslimat Süreleri ve CDF Güven Aralığı",
+        "en": "DeliverySpeed: Drone Delivery Times & CDF Coverage"
+      },
+      "businessQuestion": {
+        "tr": "DeliverySpeed teslimat süreleri $\\mu = 30 \\text{ dakika}$ ve $\\sigma = 5 \\text{ dakika}$ olan Normal dağılıma uymaktadır. Şirket 68-95-99.7 kuralına göre teslimatların $\\%95$'inin hangi aralıkta ($\\mu \\pm 2\\sigma$) tamamlanacağını garanti edebilir? Üst teslimat sınır süresi (dakika) kaçtır?",
+        "en": "DeliverySpeed times follow N(μ=30 min, σ=5 min). By the empirical rule, 95% of deliveries fall within μ ± 2σ. What is the upper time limit (minutes)?"
+      },
+      "dataset": {
+        "columns": [
+          "Metrik",
+          "Değer"
+        ],
+        "rows": [
+          [
+            "Ortalama Teslimat μ",
+            "30 dakika"
+          ],
+          [
+            "Standart Sapma σ",
+            "5 dakika"
+          ],
+          [
+            "Hedef Kapsama",
+            "%95 (μ ± 2σ)"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Alt Sınır: $$\\mu - 2\\sigma = 30 - 2(5) = 20 \\text{ dakika}$$",
+          "en": "Step 1: Lower bound = 30 - 2(5) = 20 min."
+        },
+        {
+          "tr": "2. Adım: Üst Sınır: $$\\mu + 2\\sigma = 30 + 2(5) = 40 \\text{ dakika}$$",
+          "en": "Step 2: Upper bound = 30 + 2(5) = 40 min."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Normal dağılımın empirik kuralı sayesinde servis seviyesi taahhütleri (SLA) kesin matematiksel olasılıklarla belirlenir.",
+        "en": "The empirical rule guarantees service level agreements (SLAs) with statistical confidence."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m16-case-3-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Teslimatların %95'inin yetişeceği üst sınır süresi (dakika) kaçtır?",
+            "en": "What is the 95% upper time bound in minutes?"
+          },
+          "correctAnswer": 40,
+          "explanation": {
+            "tr": "$$\\mu + 2\\sigma = 30 + 2(5) = 40 \\text{ dakika}$$",
+            "en": "μ + 2σ = 30 + 10 = 40 min"
           }
         }
       ]
