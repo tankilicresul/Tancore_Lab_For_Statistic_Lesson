@@ -625,6 +625,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                   </button>
                 </form>
               )}
+            </div>
+          )}
         </div>
 
         {/* Footer Note */}
