@@ -5,13 +5,20 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const projectRoot = path.resolve(__dirname, '..');
-const outputDir = path.join(projectRoot, 'gelen_ders_notlari');
+const targetDirs = [
+  path.join(projectRoot, 'gelen_ders_notlari'),
+  'C:\\Projects\\tancorelab\\gelen_ders_notlari',
+  'C:\\Projects\\statsim-ai-lab\\gelen_ders_notlari',
+].filter((d, index, self) => self.indexOf(d) === index);
 
-// Ensure output directory exists
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, { recursive: true });
-}
+targetDirs.forEach(dir => {
+  if (!fs.existsSync(dir)) {
+    try {
+      fs.mkdirSync(dir, { recursive: true });
+    } catch (e) {}
+  }
+});
+
 
 // Supabase configuration
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || 'https://jjbofttymfqjivzzhaly.supabase.co';
@@ -116,7 +123,16 @@ async function syncCourseNotes() {
       }
 
       const buffer = Buffer.from(await blobData.arrayBuffer());
-      fs.writeFileSync(localFilePath, buffer);
+      
+      // Save to all target project folders
+      targetDirs.forEach(dir => {
+        const targetFolder = path.join(dir, subFolder);
+        if (!fs.existsSync(targetFolder)) {
+          fs.mkdirSync(targetFolder, { recursive: true });
+        }
+        fs.writeFileSync(path.join(targetFolder, cleanFileName), buffer);
+      });
+      
       downloadedCount++;
 
       // Log metadata
@@ -168,7 +184,11 @@ async function syncCourseNotes() {
       });
     }
 
-    fs.writeFileSync(manifestPath, mdContent, 'utf-8');
+    targetDirs.forEach(dir => {
+      try {
+        fs.writeFileSync(path.join(dir, 'NOTLAR_OZETI.md'), mdContent, 'utf-8');
+      } catch (e) {}
+    });
   }
 
   console.log('\n=========================================');
