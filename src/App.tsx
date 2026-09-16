@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { XpStreakBar } from './components/XpStreakBar';
 import { HomePage } from './pages/HomePage';
 import { CoursePage } from './pages/CoursePage';
+import { ProfilePage } from './pages/ProfilePage';
 import { LessonPage } from './pages/LessonPage';
 import { CaseExamPage } from './pages/CaseExamPage';
 import { PlacementTestPage } from './pages/PlacementTestPage';
@@ -11,7 +12,7 @@ import { getLocalized } from './utils/localization';
 
 export const App: React.FC = () => {
   const { language } = useAppStore();
-  const [currentView, setCurrentView] = useState<'home' | 'course' | 'lesson' | 'caseExam' | 'placementTest'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'course' | 'profile' | 'lesson' | 'caseExam' | 'placementTest'>('home');
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
@@ -66,6 +67,15 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleOpenProfile = () => {
+    setCurrentView('profile');
+    setSelectedLessonId(null);
+    setSelectedCaseId(null);
+    setScrollToNodeId(null);
+    setCustomActiveModuleName(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleBackToCourse = (targetNodeId?: string) => {
     setCurrentView('course');
     setSelectedLessonId(null);
@@ -108,6 +118,8 @@ export const App: React.FC = () => {
       {/* Sticky Navigation Header */}
       <XpStreakBar
         onGoHome={handleBackToHome}
+        onOpenProfile={handleOpenProfile}
+        currentView={currentView}
         activeModuleName={activeModuleName}
       />
 
@@ -127,6 +139,12 @@ export const App: React.FC = () => {
             onSelectCaseExam={handleSelectCaseExam}
             onBackToHome={handleBackToHome}
             scrollToNodeId={scrollToNodeId}
+          />
+        )}
+
+        {currentView === 'profile' && (
+          <ProfilePage
+            onGoHome={handleBackToHome}
           />
         )}
 

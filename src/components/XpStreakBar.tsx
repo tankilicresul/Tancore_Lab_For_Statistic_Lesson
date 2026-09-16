@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { Flame, Globe, Zap, UserCheck, ShieldCheck, Home } from 'lucide-react';
-import { ProfileModal } from './ProfileModal';
 import { AuthModal } from './AuthModal';
 import { PublicProfileModal } from './PublicProfileModal';
 
 interface XpStreakBarProps {
   onGoHome?: () => void;
+  onOpenProfile?: () => void;
+  currentView?: string;
   activeModuleName?: string;
 }
 
 export const XpStreakBar: React.FC<XpStreakBarProps> = ({
   onGoHome,
+  onOpenProfile,
+  currentView = 'home',
 }) => {
   const { language, toggleLanguage, streak, isAuthenticated, isVerified, userProfile, selectedPublicProfile, setSelectedPublicProfile } = useAppStore();
-  const [showProfile, setShowProfile] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [isLogoSpinning, setIsLogoSpinning] = useState(false);
+
+  const isProfileView = currentView === 'profile';
 
   // Trigger logo spin animation every 3 seconds
   useEffect(() => {
@@ -40,7 +44,6 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              setShowProfile(false);
               onGoHome?.();
             }}
             className="flex items-center space-x-2 sm:space-x-2.5 group cursor-pointer shrink-0 z-10"
@@ -89,10 +92,10 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                 <UserCheck className="w-4 h-4" />
                 <span className="hidden sm:inline">{language === 'tr' ? 'Kayıt Ol' : 'Sign Up'}</span>
               </button>
-            ) : showProfile ? (
+            ) : isProfileView ? (
               /* When Profile is Open: Rightmost Button becomes Home Icon (🏠 Ev İkonu) */
               <button
-                onClick={() => setShowProfile(false)}
+                onClick={onGoHome}
                 className="p-2 sm:p-2.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white transition-all shadow-md shadow-[#ff7a00]/30 flex items-center justify-center cursor-pointer"
                 title={language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
               >
@@ -101,7 +104,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             ) : (
               /* When Profile is Closed: Rightmost Button shows Profile Avatar */
               <button
-                onClick={() => setShowProfile(true)}
+                onClick={onOpenProfile}
                 className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-2xl bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border border-[#ff7a00]/40 transition-colors shadow-xs flex items-center justify-center space-x-1.5 font-black text-xs sm:text-sm cursor-pointer"
                 title={language === 'tr' ? 'Profilim & Performansım' : 'My Profile'}
               >
@@ -112,13 +115,6 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
           </div>
         </div>
       </header>
-
-      {showProfile && (
-        <ProfileModal
-          onClose={() => setShowProfile(false)}
-          onOpenAuth={() => setShowAuth(true)}
-        />
-      )}
 
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
 

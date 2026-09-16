@@ -16,32 +16,33 @@ interface AppStoreActions {
   // Auth actions
   registerAndSendOtp: (profile: UserProfile, simulatedCode?: string) => void;
   verifyOtpAndLogin: (token: string) => boolean;
+  loginAdminDirectly: (profile: Partial<UserProfile>) => void;
   logout: () => void;
   setSelectedPublicProfile: (profile: PublicProfile | null) => void;
   syncRegisteredUserInList: () => void;
 }
 
 const DEFAULT_PROFILE: UserProfile = {
-  fullName: 'Resul Tan',
-  schoolEmail: 'resul.tan@marun.edu.tr',
+  fullName: '',
+  schoolEmail: '',
   university: 'Marmara Üniversitesi',
   departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
   avatarEmoji: '👨‍🎓',
-  isVerified: true,
+  isVerified: false,
 };
 
 const INITIAL_STATE: UserState = {
   language: 'tr',
-  xp: 450,
-  streak: 3,
+  xp: 0,
+  streak: 1,
   lastActiveDate: new Date().toISOString().split('T')[0],
-  completedLessons: ['lesson-1-1', 'lesson-1-2'],
+  completedLessons: [],
   completedCaseExams: [],
   unlockedModules: ['module-1', 'module-2'],
-  unlockedBadges: ['badge-first-lesson'],
+  unlockedBadges: [],
   userProfile: DEFAULT_PROFILE,
-  isAuthenticated: true,
-  isVerified: true,
+  isAuthenticated: false,
+  isVerified: false,
   pendingOtpEmail: undefined,
   simulatedOtpCode: undefined,
   selectedPublicProfile: null,
@@ -51,11 +52,15 @@ const INITIAL_STATE: UserState = {
 // Helper to keep current user synchronized inside registeredUsers list
 function syncUserInList(state: UserState): PublicProfile[] {
   const profile = state.userProfile;
-  const currentEmail = profile.schoolEmail || 'guest@marun.edu.tr';
+  if (!profile.schoolEmail || !state.isVerified) {
+    return state.registeredUsers || [];
+  }
+
+  const currentEmail = profile.schoolEmail.trim().toLowerCase();
 
   const userEntry: PublicProfile = {
     id: profile.id || `usr_${currentEmail}`,
-    fullName: profile.fullName || 'Resul Tan',
+    fullName: profile.fullName || 'Öğrenci',
     schoolEmail: profile.schoolEmail,
     university: profile.university || 'Marmara Üniversitesi',
     departmentAndClass: profile.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
@@ -70,7 +75,7 @@ function syncUserInList(state: UserState): PublicProfile[] {
 
   const existingList = state.registeredUsers || [];
   const existingIdx = existingList.findIndex(
-    (u) => u.schoolEmail === currentEmail || u.fullName === profile.fullName
+    (u) => u.schoolEmail?.toLowerCase() === currentEmail || u.fullName === profile.fullName
   );
 
   let newList: PublicProfile[];
@@ -98,6 +103,43 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         }));
       },
 
+      loginAdminDirectly: (profileInput: Partial<UserProfile>) => {
+        const state = get();
+        const email = profileInput.schoolEmail?.trim().toLowerCase() || 'rtankilic.business@gmail.com';
+        const adminProfile: UserProfile = {
+          id: 'admin_rtankilic',
+          fullName: profileInput.fullName?.trim() || 'Resul Tankılıç (Admin)',
+          schoolEmail: email,
+          university: profileInput.university?.trim() || 'Marmara Üniversitesi',
+          departmentAndClass: profileInput.departmentAndClass?.trim() || 'Endüstri Mühendisliği - Kurucu Admin',
+          avatarEmoji: profileInput.avatarEmoji || '👑',
+          isVerified: true,
+          createdAt: new Date().toISOString(),
+        };
+
+        const nextState = {
+          ...state,
+          userProfile: adminProfile,
+          isAuthenticated: true,
+          isVerified: true,
+          xp: state.xp || 450,
+          streak: state.streak || 3,
+        };
+
+        const updatedUsers = syncUserInList(nextState);
+
+        set({
+          userProfile: adminProfile,
+          isAuthenticated: true,
+          isVerified: true,
+          pendingOtpEmail: undefined,
+          simulatedOtpCode: undefined,
+          registeredUsers: updatedUsers,
+        });
+
+        saveUserProfileToSupabase(adminProfile);
+      },
+
       updateUserProfile: (profile) => {
         set((state) => {
           const updatedProfile = { ...state.userProfile, ...profile };
@@ -121,15 +163,20 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       verifyOtpAndLogin: (token: string) => {
         const state = get();
         const expectedCode = state.simulatedOtpCode;
+        const pendingEmail = state.pendingOtpEmail || state.userProfile.schoolEmail || '';
 
-        // Master bypass code '123456' or matching simulated OTP code
+        // Admin bypass or Master code '123456' or matching simulated OTP code
+        const isAdmin = pendingEmail.trim().toLowerCase().startsWith('rtankilic.business');
         const isMatch =
+          isAdmin ||
           token.trim() === '123456' ||
           (expectedCode && token.trim() === expectedCode.trim());
 
         if (isMatch) {
-          const verifiedProfile = {
+          const verifiedProfile: UserProfile = {
             ...state.userProfile,
+            fullName: isAdmin && !state.userProfile.fullName ? 'Resul Tankılıç (Admin)' : state.userProfile.fullName,
+            avatarEmoji: isAdmin ? '👑' : state.userProfile.avatarEmoji || '👨‍🎓',
             isVerified: true,
             createdAt: new Date().toISOString(),
           };

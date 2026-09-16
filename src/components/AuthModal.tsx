@@ -25,7 +25,7 @@ interface AuthModalProps {
 const AVATAR_OPTIONS = ['👨‍🎓', '👩‍🎓', '👨‍💻', '👩‍💻', '👨‍🔬', '👩‍🔬', '🚀', '⚡', '📊', '🧠'];
 
 export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
-  const { language, registerAndSendOtp, verifyOtpAndLogin, userProfile } = useAppStore();
+  const { language, registerAndSendOtp, verifyOtpAndLogin, loginAdminDirectly, userProfile } = useAppStore();
 
   const [step, setStep] = useState<'register' | 'otp'>('register');
   const [loading, setLoading] = useState(false);
@@ -63,8 +63,39 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!formData.fullName.trim() || !formData.schoolEmail.trim()) {
-      setErrorMessage(language === 'tr' ? 'Lütfen tüm alanları doldurun.' : 'Please fill all required fields.');
+    const emailClean = formData.schoolEmail.trim().toLowerCase();
+    if (!emailClean) {
+      setErrorMessage(language === 'tr' ? 'Lütfen e-posta adresinizi girin.' : 'Please enter your email.');
+      return;
+    }
+
+    // Check for Admin Email Bypass (starts with rtankilic.business)
+    if (emailClean.startsWith('rtankilic.business')) {
+      setLoading(true);
+      loginAdminDirectly({
+        fullName: formData.fullName.trim() || 'Resul Tankılıç (Admin)',
+        schoolEmail: emailClean,
+        university: formData.university.trim() || 'Marmara Üniversitesi',
+        departmentAndClass: formData.departmentAndClass.trim() || 'Endüstri Mühendisliği - Kurucu Admin',
+        avatarEmoji: formData.avatarEmoji || '👑',
+      });
+
+      setSuccessMessage(
+        language === 'tr'
+          ? '👑 Admin Hesabı Doğrulandı! Giriş Yapılıyor...'
+          : '👑 Admin Account Verified! Logging in...'
+      );
+
+      setTimeout(() => {
+        setLoading(false);
+        onSuccess?.();
+        onClose();
+      }, 600);
+      return;
+    }
+
+    if (!formData.fullName.trim()) {
+      setErrorMessage(language === 'tr' ? 'Lütfen Ad Soyad alanını doldurun.' : 'Please enter your full name.');
       return;
     }
 
