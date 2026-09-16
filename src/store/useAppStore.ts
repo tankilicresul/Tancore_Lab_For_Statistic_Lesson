@@ -44,6 +44,7 @@ interface AppStoreActions {
   setSelectedPublicProfile: (profile: PublicProfile | null) => void;
   syncRegisteredUserInList: () => void;
   setIsTancoChatOpen: (open: boolean) => void;
+  addXp: (amount: number) => void;
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -674,6 +675,34 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         set({
           unlockedModules: newUnlocked,
           registeredUsers: updatedUsers,
+        });
+      },
+
+      addXp: (amount: number) => {
+        const state = get();
+        const newXp = (state.xp || 0) + amount;
+        const nextState = { ...state, xp: newXp };
+        const updatedUsers = syncUserInList(nextState);
+
+        set({
+          xp: newXp,
+          registeredUsers: updatedUsers,
+        });
+
+        if (state.userProfile?.schoolEmail) {
+          saveUserProfileToSupabase({
+            ...state.userProfile,
+            xp: newXp,
+            streak: state.streak,
+            completedLessons: state.completedLessons.length + state.completedCaseExams.length,
+          });
+        }
+        syncUserProgress({
+          totalXp: newXp,
+          level: Math.floor(newXp / 100) + 1,
+          streak: state.streak,
+          completedLessons: state.completedLessons,
+          completedCaseExams: state.completedCaseExams,
         });
       },
 

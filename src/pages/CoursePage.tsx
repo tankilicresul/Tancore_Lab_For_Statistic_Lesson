@@ -33,9 +33,11 @@ import {
   Send,
   Check,
   ChevronRight,
+  UploadCloud,
 } from 'lucide-react';
 import { Lesson, CaseExam, Module } from '../types/stats';
 import { CourseTrack } from './HomePage';
+import { UploadCourseNotesModal } from '../components/UploadCourseNotesModal';
 
 export const SpiderIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
@@ -182,6 +184,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
   const { language, unlockedModules, completedLessons, completedCaseExams, isAuthenticated, isVerified, setIsTancoChatOpen } = useAppStore();
   const [selectedNode, setSelectedNode] = useState<PathNodeItem | null>(null);
   const [selectedCaseHubModule, setSelectedCaseHubModule] = useState<Module | null>(null);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
 
   // If viewing an in-design course, render dedicated placeholder view
   if (inDesignCourse) {
@@ -247,28 +250,40 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
           <p className="text-xs sm:text-sm text-slate-600 max-w-md leading-relaxed mb-6 font-medium">
             {isEn
-              ? "We are currently designing this course for you. To support our development or submit your curriculum and topic requests, feel free to write to your assistant Tanco anytime!"
-              : "Bu dersi şu anda sizler için tasarlıyoruz! Bize destek olmak ve müfredat/içerik taleplerinizi iletmek için asistanınız Tanco'ya yazabilirsiniz."}
+              ? "We are currently designing this course for you! You can directly support our engineering team by uploading your university lecture slides, notes, or past exams to fast-track this module."
+              : "Bu dersi sizler için tasarlıyoruz! Üniversitenizdeki ders notlarını, slaytları veya sınav sorularını yükleyerek modülün hızlıca açılmasına doğrudan katkı sağlayabilirsiniz."}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
             <button
-              onClick={() => setIsTancoChatOpen(true)}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/25 cursor-pointer flex items-center justify-center space-x-2 active:scale-95"
+              onClick={() => setIsUploadModalOpen(true)}
+              className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-[#ff7a00] to-amber-500 hover:from-[#e66e00] hover:to-amber-600 text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/25 cursor-pointer flex items-center justify-center space-x-2 active:scale-95"
             >
-              <Send className="w-3.5 h-3.5" />
-              <span>{isEn ? 'Write to Assistant Tanco' : "Asistanınız Tanco'ya Yazın"}</span>
+              <UploadCloud className="w-4 h-4" />
+              <span>
+                {isEn
+                  ? 'Upload Notes, Help Build Module'
+                  : 'Ders Notlarını Yükle, Modülün Gelmesine Yardımcı Ol'}
+              </span>
             </button>
 
             <button
               onClick={onBackToHome}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer flex items-center justify-center space-x-2"
+              className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer flex items-center justify-center space-x-2"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>{isEn ? 'Return to Courses' : 'Ders Listesine Dön'}</span>
             </button>
           </div>
         </div>
+
+        {/* Upload Course Notes Modal */}
+        <UploadCourseNotesModal
+          isOpen={isUploadModalOpen}
+          onClose={() => setIsUploadModalOpen(false)}
+          courseCode={inDesignCourse.code}
+          courseTitle={title}
+        />
       </div>
     );
   }

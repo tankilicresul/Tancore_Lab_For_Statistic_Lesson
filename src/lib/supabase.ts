@@ -539,3 +539,98 @@ export async function clearTancoChatsInSupabase(userIdentifier: string): Promise
   }
 }
 
+export interface UploadedCourseNoteRecord {
+  id?: string;
+  courseCode: string;
+  courseTitle?: string;
+  fileName: string;
+  fileSize: number;
+  fileType: string;
+  fileUrl?: string;
+  uploaderEmail: string;
+  uploaderName: string;
+  noteDescription?: string;
+  createdAt: string;
+}
+
+/**
+ * Upload course notes and study materials to Supabase Storage & Database
+ */
+export async function uploadCourseNoteDocument(
+  file: File,
+  courseCode: string,
+  courseTitle: string,
+  uploaderEmail: string,
+  uploaderName: string,
+  noteDescription?: string
+): Promise<{ success: boolean; record?: UploadedCourseNoteRecord; error?: string }> {
+  try {
+    let publicUrl = '';
+    const cleanCourseCode = courseCode.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const filePath = `${cleanCourseCode}/${Date.now()}_${safeFileName}`;
+
+    if (supabase && isSupabaseConfigured) {
+      // 1. Try uploading to 'course-notes' or 'avatars' storage bucket
+      const bucketName = 'course-notes';
+      const { error: uploadError } = await supabase.storage
+        .from(bucketName)
+        .upload(filePath, file, { upsert: true });
+
+      if (!uploadError) {
+        const { data } = supabase.storage.from(bucketName).getPublicUrl(filePath);
+        publicUrl = data?.publicUrl || '';
+      } else {
+        // Fallback to avatars bucket if course-notes bucket not created yet
+        const { error: fallbackError } = await supabase.storage
+          .from('avatars')
+          .upload(`notes_${filePath}`, file, { upsert: true });
+        if (!fallbackError) {
+          const { data } = supabase.storage.from('avatars').getPublicUrl(`notes_${filePath}`);
+          publicUrl = data?.publicUrl || '';
+        }
+      }
+    }
+
+    const newRecord: UploadedCourseNoteRecord = {
+      id: `note_${Date.now()}`,
+      courseCode,
+      courseTitle,
+      fileName: file.name,
+      fileSize: file.size,
+      fileType: file.type || file.name.split('.').pop() || 'unknown',
+      fileUrl: publicUrl,
+      uploaderEmail: uploaderEmail || 'anonymous',
+      uploaderName: uploaderName || 'Öğrenci',
+      noteDescription: noteDescription || '',
+      createdAt: new Date().toISOString(),
+    };
+
+    // 2. Notify serverless API endpoint (/api/upload-course-note)
+    try {
+      await fetch('/api/upload-course-note', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newRecord),
+      });
+    } catch (apiErr) {
+      console.warn('API sync warning:', apiErr);
+    }
+
+    // 3. Save to local storage cache of uploaded materials
+    try {
+      const existing = JSON.parse(localStorage.getItem('tancorelab_uploaded_notes') || '[]');
+      existing.unshift(newRecord);
+      localStorage.setItem('tancorelab_uploaded_notes', JSON.stringify(existing.slice(0, 50)));
+    } catch (e) {
+      console.warn('LocalStorage save error:', e);
+    }
+
+    return { success: true, record: newRecord };
+  } catch (err: any) {
+    console.error('uploadCourseNoteDocument error:', err);
+    return { success: false, error: err.message || 'Dosya yükleme sırasında bir hata oluştu.' };
+  }
+}
+
+
