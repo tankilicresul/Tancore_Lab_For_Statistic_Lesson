@@ -1,7 +1,10 @@
 {
   "id": "module-12",
   "order": 12,
-  "title": { "tr": "Markov Zincirleri & Stokastik Süreçler", "en": "Markov Chains & Stochastic Processes" },
+  "title": {
+    "tr": "Markov Zincirleri & Stokastik Süreçler",
+    "en": "Markov Chains & Stochastic Processes"
+  },
   "description": {
     "tr": "Ayrık zamanlı Markov zincirleri, durum geçiş matrisi P, n-adım geçiş olasılıkları (P^n), durağan denge vektörü (π*) ve yutucu durumlar.",
     "en": "Discrete-time Markov chains, state transition matrix P, n-step probabilities (P^n), steady-state equilibrium (π*), and absorbing states."
@@ -13,13 +16,16 @@
       "moduleId": "module-12",
       "order": 1,
       "difficulty": "orta",
-      "title": { "tr": "Markov Zinciri & Durum Geçişleri", "en": "Markov Chain & State Transitions" },
+      "title": {
+        "tr": "Markov Zinciri & Durum Geçişleri",
+        "en": "Markov Chain & State Transitions"
+      },
       "conceptCard": {
-        "tr": "Markov zincirleri, bir sistemin gelecekteki durumunun sadece mevcut durumuna bağlı olduğu (geçmişten bağımsız) stokastik süreçlerdir. Geçiş olasılıkları kare bir matriste P = [p_ij] gösterilir ve her satırın toplamı 1.0 olmalıdır.",
-        "en": "Markov chains are stochastic processes where the future state depends solely on the current state (memoryless property). Transition probabilities are represented in a square matrix P = [p_ij], with row sums equal to 1.0."
+        "tr": "Ayrık Zamanlı Markov Zinciri (DTMC), gelecekteki durumun geçmişten bağımsız olarak yalnızca mevcut duruma bağlı olduğu stokastik bir süreçtir (Markovian Özelliği):\n\n$$P(X_{n+1} = j \\mid X_n = i, X_{n-1} = i_{n-1}, \\dots, X_0 = i_0) = P(X_{n+1} = j \\mid X_n = i) = p_{ij}$$\n\nTek Adımlı Geçiş Olasılıkları Matrisi $P = [p_{ij}]$ olup her satır toplamı $1$'e eşittir:\n\n$$\\sum_{j} p_{ij} = 1, \\qquad \\forall i$$",
+        "en": "A Discrete-Time Markov Chain (DTMC) satisfies the Markov property, where the next state depends only on the current state:\n\n$$P(X_{n+1} = j \\mid X_n = i, X_{n-1} = i_{n-1}, \\dots, X_0 = i_0) = P(X_{n+1} = j \\mid X_n = i) = p_{ij}$$\n\nTransition Matrix $P = [p_{ij}]$ with row stochasticity: $\\sum_{j} p_{ij} = 1$."
       },
       "companyExample": {
-        "tr": "CloudPulse SaaS platformunda bir kullanıcının bu ay Aktif kalıp haftaya Aktif devam etme olasılığı %85 (p11 = 0.85), Terk etme (Churn) olasılığı %15'tir (p12 = 0.15). İptal etmiş bir kullanıcının geri dönme olasılığı %10'dur (p21 = 0.10).",
+        "tr": "CloudPulse sunucu izleme sisteminde sunucunun iki durumu vardır: Sağlıklı ($S_1$) ve Arızalı ($S_2$). Sağlıklı bir sunucunun bir sonraki saatte sağlıklı kalma olasılığı $p_{11} = 0.90$, arızaya geçme olasılığı $p_{12} = 0.10$'dur. Geçiş matrisi:\n\n$$P = \\begin{bmatrix} 0.90 & 0.10 \\\\ 0.40 & 0.60 \\end{bmatrix}$$",
         "en": "In CloudPulse SaaS platform, an Active user staying Active next week is 85% (p11 = 0.85), and Churning is 15% (p12 = 0.15). A churned user returning is 10% (p21 = 0.10)."
       },
       "interactiveType": "markov_chain",
@@ -41,9 +47,15 @@
         {
           "id": "m12-l1-q1",
           "type": "numeric",
-          "prompt": { "tr": "2x2 geçiş matrisinde p11 = 0.70 ise, p12 geçiş olasılığı kaçtır?", "en": "In a 2x2 transition matrix, if p11 = 0.70, what is p12?" },
+          "prompt": {
+            "tr": "Bir stokastik geçiş matrisinde $p_{11} = 0.70$ ise, satır toplamı $1$ kuralına göre $p_{12}$ geçiş olasılığı kaçtır?",
+            "en": "In a stochastic transition matrix, if $p_{11} = 0.70$, what is $p_{12}$ by the row sum rule?"
+          },
           "correctAnswer": 0.3,
-          "explanation": { "tr": "Satır toplamı 1 olmalıdır: p12 = 1 - 0.70 = 0.30.", "en": "Row sum must equal 1: p12 = 1 - 0.70 = 0.30." }
+          "explanation": {
+            "tr": "$$p_{12} = 1 - p_{11} = 1 - 0.70 = 0.30$$",
+            "en": "$$p_{12} = 1 - p_{11} = 1 - 0.70 = 0.30$$"
+          }
         }
       ],
       "realWorldBox": {
@@ -55,10 +67,13 @@
       "moduleId": "module-12",
       "order": 2,
       "difficulty": "orta-ustu",
-      "title": { "tr": "n-Adım Geçiş Olasılıkları (Chapman-Kolmogorov)", "en": "n-Step Transitions & Chapman-Kolmogorov" },
+      "title": {
+        "tr": "n-Adım Geçiş Olasılıkları (Chapman-Kolmogorov)",
+        "en": "n-Step Transitions & Chapman-Kolmogorov"
+      },
       "conceptCard": {
-        "tr": "Chapman-Kolmogorov eşitliği, n adım sonra i durumundan j durumuna geçme olasılığının matris üssü P^n ile hesaplanabileceğini söyler. n büyüdükçe P^n matrisinin satırları birbirine eşitlenmeye başlar.",
-        "en": "The Chapman-Kolmogorov equation states that n-step transition probabilities from state i to j equal the matrix power P^n. As n grows, rows of P^n converge to identical vectors."
+        "tr": "Chapman-Kolmogorov Denklemleri, $n$-adım sonraki durum geçiş olasılıklarını hesaplar. $n$-adım geçiş matrisi $P^{(n)}$, tek adımlık geçiş matrisinin $n$. kuvvetine eşittir:\n\n$$P^{(n+m)} = P^{(n)} \\cdot P^{(m)} \\implies P^{(n)} = P^n$$\n\nBaşlangıç durum olasılık vektörü $\\mathbf{v}^{(0)}$ ise $n$ adım sonraki durum dağılımı $\\mathbf{v}^{(n)} = \\mathbf{v}^{(0)} P^n$ formülü ile bulunur.",
+        "en": "Chapman-Kolmogorov Equations establish that $n$-step transition probabilities equal matrix powers:\n\n$$P^{(n)} = P^n, \\qquad \\mathbf{v}^{(n)} = \\mathbf{v}^{(0)} P^n$$"
       },
       "companyExample": {
         "tr": "CloudPulse, bugün Aktif olan bir kullanıcının 5 hafta sonra (n=5) halen Aktif olma olasılığını P^5 matrisini hesaplayarak %48.5 olarak bulur.",
@@ -77,13 +92,25 @@
         {
           "id": "m12-l2-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "2 adım sonraki durum geçiş olasılıkları matrisi nasıl hesaplanır?", "en": "How are 2-step transition probabilities computed?" },
+          "prompt": {
+            "tr": "$2$ adım sonraki durum geçiş olasılıkları matrisi $P^{(2)}$ nasıl hesaplanır?",
+            "en": "How is the 2-step transition probability matrix $P^{(2)}$ calculated?"
+          },
           "options": [
-            { "tr": "P matrisinin kendisiyle çarpılmasıyla (P²)", "en": "By multiplying P by itself (P²)" },
-            { "tr": "P matrisindeki sayıların 2 ile toplanmasıyla", "en": "By adding 2 to numbers in P" }
+            {
+              "tr": "P matrisinin kendisiyle çarpılmasıyla (P²)",
+              "en": "By multiplying P by itself (P²)"
+            },
+            {
+              "tr": "P matrisindeki sayıların 2 ile toplanmasıyla",
+              "en": "By adding 2 to numbers in P"
+            }
           ],
           "correctAnswer": "P matrisinin kendisiyle çarpılmasıyla (P²)",
-          "explanation": { "tr": "Chapman-Kolmogorov denklemine göre 2-adım geçiş matrisi P^2 = P * P'dir.", "en": "According to Chapman-Kolmogorov, 2-step transition matrix is P^2 = P * P." }
+          "explanation": {
+            "tr": "Chapman-Kolmogorov teoremine göre $P^{(2)} = P \\cdot P = P^2$ matris çarpımı ile hesaplanır.",
+            "en": "By the Chapman-Kolmogorov theorem, $P^{(2)} = P \\cdot P = P^2$."
+          }
         }
       ]
     },
@@ -92,13 +119,16 @@
       "moduleId": "module-12",
       "order": 3,
       "difficulty": "zor",
-      "title": { "tr": "Durağan Denge Dağılımı (Steady-State Vector π*)", "en": "Steady-State Distribution & Equilibrium" },
+      "title": {
+        "tr": "Durağan Denge Dağılımı (Steady-State Vector π*)",
+        "en": "Steady-State Distribution & Equilibrium"
+      },
       "conceptCard": {
-        "tr": "Periyodik olmayan ve tek bir tekrarlayan sınıfa sahip Markov zincirleri, başlangıç durumundan bağımsız olarak uzun vadede kararlı bir dengeye (Stationary Vector π*) ulaşır. Denge denklemi: π* P = π* ve ∑ π_i = 1.",
-        "en": "Aperiodic irreducible Markov chains converge to a unique steady-state vector π* regardless of initial state. Equilibrium equation: π* P = π* with ∑ π_i = 1."
+        "tr": "İndirgenemez (irreducible) ve aperiyodik bir Markov zincirinde, zaman $n \\to \\infty$ sonsuza giderken sistem bir Durağan Denge Dağılımına ($\\boldsymbol{\\pi}^*$) ulaşır. Bu durağan denge vektörü şu lineer denklem sistemi ile çözülür:\n\n$$\\boldsymbol{\\pi} P = \\boldsymbol{\\pi} \\qquad \\text{ve} \\qquad \\sum_{i} \\pi_i = 1$$\n\nBurada $\\pi_i$, sistemin uzun vadede $i$. durumda bulunma olasılığını gösterir.",
+        "en": "An irreducible, aperiodic Markov chain converges to a unique stationary steady-state distribution $\\boldsymbol{\\pi}^*$:\n\n$$\\boldsymbol{\\pi} P = \\boldsymbol{\\pi} \\qquad \\text{and} \\qquad \\sum_{i} \\pi_i = 1$$"
       },
       "companyExample": {
-        "tr": "CloudPulse, uzun vadede aktif müşteri oranının π1 = 0.40 (%40.0) ve terk müşteri oranının π2 = 0.60 (%60.0) seviyesinde sabitleneceğini π* P = π* denklemini çözerek hesaplar.",
+        "tr": "Müşteri tutma matrisi $P = \\begin{bmatrix} 0.80 & 0.20 \\\\ 0.30 & 0.70 \\end{bmatrix}$ için $\\pi_1(0.80) + \\pi_2(0.30) = \\pi_1$ ve $\\pi_1 + \\pi_2 = 1$ denklem sistemi çözülür:\n\n$$-0.20 \\pi_1 + 0.30 \\pi_2 = 0 \\implies 2 \\pi_1 = 3 \\pi_2 \\implies \\pi_1 = 0.60, \\quad \\pi_2 = 0.40$$",
         "en": "CloudPulse solves π* P = π* to determine that long-term active users stabilize at 40.0% and churned users at 60.0%."
       },
       "interactiveType": "markov_chain",
@@ -114,9 +144,15 @@
         {
           "id": "m12-l3-q1",
           "type": "numeric",
-          "prompt": { "tr": "P = [[0.8, 0.2], [0.3, 0.7]] matrisinde 1. durumun durağan denge olasılığı π1 kaçtır?", "en": "For P = [[0.8, 0.2], [0.3, 0.7]], what is the stationary probability π1?" },
+          "prompt": {
+            "tr": "$P = \\begin{bmatrix} 0.80 & 0.20 \\\\ 0.30 & 0.70 \\end{bmatrix}$ matrisinde 1. durumun durağan denge olasılığı $\\pi_1$ kaçtır?",
+            "en": "In matrix $P = \\begin{bmatrix} 0.80 & 0.20 \\\\ 0.30 & 0.70 \\end{bmatrix}$, what is the stationary probability $\\pi_1$?"
+          },
           "correctAnswer": 0.6,
-          "explanation": { "tr": "0.2*π1 = 0.3*π2 ve π1 + π2 = 1. Çözüm: π1 = 0.60 (%60).", "en": "0.2*π1 = 0.3*π2 and π1 + π2 = 1. Solution: π1 = 0.60 (60%)." }
+          "explanation": {
+            "tr": "$$\\boldsymbol{\\pi} P = \\boldsymbol{\\pi} \\implies 0.8 \\pi_1 + 0.3(1 - \\pi_1) = \\pi_1 \\implies 0.3 = 0.5 \\pi_1 \\implies \\pi_1 = 0.60$$",
+            "en": "$$\\boldsymbol{\\pi} P = \\boldsymbol{\\pi} \\implies 0.8 \\pi_1 + 0.3(1 - \\pi_1) = \\pi_1 \\implies 0.3 = 0.5 \\pi_1 \\implies \\pi_1 = 0.60$$"
+          }
         }
       ]
     },
@@ -125,10 +161,13 @@
       "moduleId": "module-12",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Yutucu Durumlar ve Yutulma Süreleri (Absorbing Chains)", "en": "Absorbing States & Expected Time to Absorption" },
+      "title": {
+        "tr": "Yutucu Durumlar ve Yutulma Süreleri (Absorbing Chains)",
+        "en": "Absorbing States & Expected Time to Absorption"
+      },
       "conceptCard": {
-        "tr": "Bir durumdan bir daha çıkılamıyorsa (p_ii = 1) o duruma yutucu durum (absorbing state) denir. Yutucu Markov zincirlerinde, geçici durumlardan yutucu duruma ulaşılma olasılığı ve ortalama adımlama süresi matris denklemleriyle çözülür.",
-        "en": "A state with p_ii = 1 is an absorbing state from which the process cannot leave. In absorbing chains, absorption probabilities and mean time to absorption are derived algebraically."
+        "tr": "Yutucu Durum (Absorbing State), bir kez girildiğinde bir daha çıkılamayan durumdur ($p_{ii} = 1$). Geçiş matrisi kanonik forma ayrıştırıldığında:\n\n$$P = \\begin{bmatrix} Q & R \\\\ 0 & I \\end{bmatrix}$$\n\nTemel Matris (Fundamental Matrix): $N = (I - Q)^{-1}$. Yutulmaya kadar geçen ortalama adım sayısı vektörü $\\mathbf{t} = N \\mathbf{1}$ formülü ile elde edilir.",
+        "en": "An absorbing state has $p_{ii} = 1$. The transition matrix in canonical form is $P = \\begin{bmatrix} Q & R \\\\ 0 & I \\end{bmatrix}$. Fundamental matrix is $N = (I - Q)^{-1}$ and mean absorption time is $\\mathbf{t} = N \\mathbf{1}$."
       },
       "companyExample": {
         "tr": "Bir kumarbazın 0 TL veya 100 TL'ye ulaştığında oyunu bitirmesi (yutucu durumlar) veya borç ödeme takibinde iflas durumu yutucu Markov zincirleri ile modellenir.",
@@ -147,13 +186,25 @@
         {
           "id": "m12-l4-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Yutucu durumun (absorbing state) temel özelliği nedir?", "en": "What is the defining property of an absorbing state?" },
+          "prompt": {
+            "tr": "Yutucu durumun (absorbing state) matematiksel temel koşulu nedir?",
+            "en": "What is the defining condition of an absorbing state?"
+          },
           "options": [
-            { "tr": "O duruma girildikten sonra bir daha çıkılamaması (p_ii = 1)", "en": "Once entered, it cannot be left (p_ii = 1)" },
-            { "tr": "O durumun olasılığının sıfır olması", "en": "The state probability being zero" }
+            {
+              "tr": "O duruma girildikten sonra bir daha çıkılamaması (p_ii = 1)",
+              "en": "Once entered, it cannot be left (p_ii = 1)"
+            },
+            {
+              "tr": "O durumun olasılığının sıfır olması",
+              "en": "The state probability being zero"
+            }
           ],
           "correctAnswer": "O duruma girildikten sonra bir daha çıkılamaması (p_ii = 1)",
-          "explanation": { "tr": "Yutucu durumdan başka hiçbir duruma geçiş yoktur (p_ii = 1).", "en": "An absorbing state has zero exit probability (p_ii = 1)." }
+          "explanation": {
+            "tr": "Durumdan çıkış olasılığı $0$, durumun kendi içinde kalma olasılığı $p_{ii} = 1$'dir.",
+            "en": "The probability of transitioning to itself is $p_{ii} = 1$."
+          }
         }
       ]
     }
@@ -163,23 +214,50 @@
       "id": "m12-case-1",
       "moduleId": "module-12",
       "difficulty": "zor",
-      "title": { "tr": "CloudPulse: Sunucu Performansı ve Müşteri Terk (Churn) Markov Analizi", "en": "CloudPulse: Server Performance & Churn Markov Analysis" },
+      "title": {
+        "tr": "CloudPulse: Sunucu Performansı ve Müşteri Terk (Churn) Markov Analizi",
+        "en": "CloudPulse: Server Performance & Churn Markov Analysis"
+      },
       "businessQuestion": {
-        "tr": "CloudPulse SaaS platformunun 50,000 kullanıcısı vardır. Aylık geçiş matrisi P = [[0.85, 0.15], [0.10, 0.90]] (1: Aktif, 2: Churn) olarak tespit edilmiştir. Başlangıçta tüm 50,000 kullanıcı da Aktif'tir. Uzun vadede (durağan dengede) platformda kaç aktif kullanıcı kalacaktır?",
+        "tr": "CloudPulse $100,000$ aktif kullanıcı için müşteri sadakat modelini analiz etmektedir. Kullanıcıların her ay aktif kalma olasılığı $0.80$, inaktif olma olasılığı $0.20$'dir. İnaktif bir kullanıcının geri dönme olasılığı $0.05$'tir ($P = \\begin{bmatrix} 0.80 & 0.20 \\\\ 0.05 & 0.95 \\end{bmatrix}$). Uzun vadeli durağan denge olasılığı $\\pi_{\\text{aktif}} = 0.20$ olduğuna göre uzun vadede aktif kalacak kullanıcı sayısını hesaplayınız.",
         "en": "CloudPulse has 50,000 users. Monthly transition matrix P = [[0.85, 0.15], [0.10, 0.90]] (1: Active, 2: Churn). Initially all 50,000 users are Active. How many active users will remain in the long-run steady-state?"
       },
       "dataset": {
-        "columns": ["Mevcut Durum", "Gelecek Ay Aktif Olasılığı", "Gelecek Ay Churn Olasılığı"],
+        "columns": [
+          "Mevcut Durum",
+          "Gelecek Ay Aktif Olasılığı",
+          "Gelecek Ay Churn Olasılığı"
+        ],
         "rows": [
-          ["Aktif Kullanıcı", "0.85", "0.15"],
-          ["Churn Kullanıcı", "0.10", "0.90"]
+          [
+            "Aktif Kullanıcı",
+            "0.85",
+            "0.15"
+          ],
+          [
+            "Churn Kullanıcı",
+            "0.10",
+            "0.90"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Durağan denge denklemi π1 = 0.85*π1 + 0.10*π2.", "en": "Step 1: Steady-state equation π1 = 0.85*π1 + 0.10*π2." },
-        { "tr": "2. Adım: 0.15*π1 = 0.10*π2 => π2 = 1.5*π1.", "en": "Step 2: 0.15*π1 = 0.10*π2 => π2 = 1.5*π1." },
-        { "tr": "3. Adım: π1 + π2 = 1 => π1 + 1.5*π1 = 2.5*π1 = 1 => π1 = 0.40 (%40).", "en": "Step 3: π1 + π2 = 1 => 2.5*π1 = 1 => π1 = 0.40 (40%)." },
-        { "tr": "4. Adım: 50,000 * 0.40 = 20,000 Aktif Kullanıcı.", "en": "Step 4: 50,000 * 0.40 = 20,000 Active Users." }
+        {
+          "tr": "1. Adım: Durağan denge vektörü denklemi: $$\\boldsymbol{\\pi} P = \\boldsymbol{\\pi} \\implies 0.80 \\pi_1 + 0.05 \\pi_2 = \\pi_1 \\implies 0.05 \\pi_2 = 0.20 \\pi_1 \\implies \\pi_2 = 4 \\pi_1$$",
+          "en": "Step 1: Steady-state equation π1 = 0.85*π1 + 0.10*π2."
+        },
+        {
+          "tr": "2. Adım: $\\pi_1 + \\pi_2 = 1 \\implies 5 \\pi_1 = 1 \\implies \\pi_1 = 0.20 \\quad (\\%20)$",
+          "en": "Step 2: 0.15*π1 = 0.10*π2 => π2 = 1.5*π1."
+        },
+        {
+          "tr": "3. Adım: Toplam Aktif Kullanıcı: $$100,000 \\times 0.20 = 20,000 \\text{ kullanıcı}$$",
+          "en": "Step 3: π1 + π2 = 1 => 2.5*π1 = 1 => π1 = 0.40 (40%)."
+        },
+        {
+          "tr": "4. Adım: 50,000 * 0.40 = 20,000 Aktif Kullanıcı.",
+          "en": "Step 4: 50,000 * 0.40 = 20,000 Active Users."
+        }
       ],
       "expectedApproach": {
         "tr": "Başlangıçta herkes aktif olsa dahi, yüksek %15 churn oranı sebebiyle uzun vadede aktif müşteri sayısı 20,000'e gerileyecektir. Şirket churn oranını düşürecek ürün geliştirmeleri yapmalıdır.",
@@ -189,9 +267,15 @@
         {
           "id": "m12-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Uzun vadede kalan aktif kullanıcı sayısı kaçtır?", "en": "What is the long-term number of active users?" },
+          "prompt": {
+            "tr": "Uzun vadede kalan aktif kullanıcı sayısı kaçtır?",
+            "en": "What is the long-term number of active users?"
+          },
           "correctAnswer": 20000,
-          "explanation": { "tr": "50,000 * 0.40 = 20,000 aktif kullanıcı.", "en": "50,000 * 0.40 = 20,000 active users." }
+          "explanation": {
+            "tr": "$$100,000 \\times 0.20 = 20,000$$",
+            "en": "50,000 * 0.40 = 20,000 active users."
+          }
         }
       ]
     }

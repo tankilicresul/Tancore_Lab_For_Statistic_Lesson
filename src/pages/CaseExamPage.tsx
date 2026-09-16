@@ -3,6 +3,7 @@ import { CaseExam, Module } from '../types/stats';
 import { getLocalized } from '../utils/localization';
 import { useAppStore } from '../store/useAppStore';
 import { getNextTopicItem } from '../data/modules';
+import { MathFormulaText } from '../components/MathFormulaText';
 import { ArrowLeft, Trophy, CheckCircle2, Table, HelpCircle, Eye, Sparkles, AlertCircle, ArrowRight, Home, RefreshCw, PartyPopper, Check, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -140,9 +141,9 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
         <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-2.5">
           {language === 'tr' ? 'İş Vakası & Problem Tanımı' : 'Business Question & Case Problem'}
         </h3>
-        <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
-          {getLocalized(caseExam.businessQuestion, language)}
-        </p>
+        <div className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
+          <MathFormulaText text={getLocalized(caseExam.businessQuestion, language)} />
+        </div>
       </div>
 
       {/* Dataset Preview Table */}
@@ -159,7 +160,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
             <thead className="bg-[#ff7a00]/10 text-[#ff7a00] font-extrabold uppercase tracking-wider border-b border-[#ff7a00]/20">
               <tr>
                 {caseExam.dataset.columns.map((col, cIdx) => (
-                  <th key={cIdx} className="p-3.5">
+                  <th key={cIdx} className="p-3.5 whitespace-nowrap">
                     {col}
                   </th>
                 ))}
@@ -169,7 +170,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
               {caseExam.dataset.rows.map((row, rIdx) => (
                 <tr key={rIdx} className="hover:bg-[#ff7a00]/5 transition-colors">
                   {row.map((cell, cIdx) => (
-                    <td key={cIdx} className="p-3.5 text-slate-800 font-medium">
+                    <td key={cIdx} className="p-3.5 text-slate-800 font-medium whitespace-nowrap">
                       {cell}
                     </td>
                   ))}
@@ -191,7 +192,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
               key={idx}
               className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 font-medium leading-relaxed"
             >
-              {getLocalized(step, language)}
+              <MathFormulaText text={getLocalized(step, language)} />
             </div>
           ))}
         </div>
@@ -221,9 +222,9 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
                 key={q.id}
                 className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs"
               >
-                <p className="text-base font-medium text-[#ff7a00] mb-4 leading-snug">
-                  {getLocalized(q.prompt, language)}
-                </p>
+                <div className="text-base font-medium text-[#ff7a00] mb-4 leading-snug">
+                  <MathFormulaText text={getLocalized(q.prompt, language)} />
+                </div>
 
                 {/* Multiple Choice */}
                 {q.type === 'multiple_choice' && q.options && (
@@ -243,7 +244,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
                               : 'bg-slate-50 border-slate-200 text-slate-800 hover:border-[#ff7a00]/40'
                           }`}
                         >
-                          {optText}
+                          <MathFormulaText text={optText} />
                         </button>
                       );
                     })}
@@ -300,9 +301,9 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
                         </>
                       )}
                     </div>
-                    <p className="text-xs text-slate-700 mt-1 leading-relaxed font-medium">
-                      {getLocalized(q.explanation, language)}
-                    </p>
+                    <div className="text-xs text-slate-700 mt-1 leading-relaxed font-medium">
+                      <MathFormulaText text={getLocalized(q.explanation, language)} />
+                    </div>
                   </div>
                 )}
               </div>
@@ -320,9 +321,9 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
               {language === 'tr' ? 'Örnek Yönetici Özet Yaklaşımı (Expected Approach)' : 'Executive Summary Approach'}
             </h3>
           </div>
-          <p className="text-sm text-slate-800 leading-relaxed font-medium">
-            {getLocalized(caseExam.expectedApproach, language)}
-          </p>
+          <div className="text-sm text-slate-800 leading-relaxed font-medium">
+            <MathFormulaText text={getLocalized(caseExam.expectedApproach, language)} />
+          </div>
         </div>
       )}
 

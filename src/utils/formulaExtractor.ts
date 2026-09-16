@@ -53,7 +53,7 @@ export const extractTopicFormula = (
   const combinedTitle = titleText.toLowerCase();
 
   if (/ortalama|mean/i.test(combinedTitle) && !/standart/i.test(combinedTitle)) {
-    return '\\bar{x} = \\frac{x_1 + x_2 + \\dots + x_n}{n}';
+    return '\\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i';
   }
   if (/medyan|median/i.test(combinedTitle)) {
     return 'x_{\\text{medyan}} = \\text{Ortadaki Değer (Sıralı Veri)}';
@@ -62,10 +62,10 @@ export const extractTopicFormula = (
     return '\\text{Mod} = \\text{En Çok Tekrar Eden Değer}';
   }
   if (/varyans|variance/i.test(combinedTitle)) {
-    return 's^2 = \\frac{\\sum (x_i - \\bar{x})^2}{n - 1}';
+    return 's^2 = \\frac{\\sum_{i=1}^{n} (x_i - \\bar{x})^2}{n - 1}';
   }
   if (/standart sapma|standard deviation/i.test(combinedTitle)) {
-    return 's = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n - 1}}';
+    return 's = \\sqrt{\\frac{\\sum_{i=1}^{n} (x_i - \\bar{x})^2}{n - 1}}';
   }
   if (/standart hata|standard error/i.test(combinedTitle)) {
     return '\\text{SE} = \\frac{\\sigma}{\\sqrt{n}}';
@@ -76,8 +76,11 @@ export const extractTopicFormula = (
   if (/iqr|çeyrekler arası/i.test(combinedTitle)) {
     return '\\text{IQR} = Q_3 - Q_1';
   }
-  if (/bayes|koşullu olasılık|conditional probability/i.test(combinedTitle)) {
+  if (/koşullu olasılık|conditional probability/i.test(combinedTitle)) {
     return 'P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}';
+  }
+  if (/bayes/i.test(combinedTitle)) {
+    return 'P(A \\mid B) = \\frac{P(B \\mid A) \\cdot P(A)}{\\sum P(B \\mid A_i) P(A_i)}';
   }
   if (/binom/i.test(combinedTitle)) {
     return 'P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}';
@@ -85,26 +88,53 @@ export const extractTopicFormula = (
   if (/poisson/i.test(combinedTitle)) {
     return 'P(X = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}';
   }
+  if (/geometrik|geometric/i.test(combinedTitle)) {
+    return 'P(X = k) = (1-p)^{k-1} p';
+  }
+  if (/üstel|exponential/i.test(combinedTitle)) {
+    return 'f(x) = \\lambda e^{-\\lambda x}, \\quad x \\ge 0';
+  }
+  if (/düzgün|uniform/i.test(combinedTitle)) {
+    return 'f(x) = \\frac{1}{b - a}, \\quad a \\le x \\le b';
+  }
+  if (/pdf|yoğunluk|density|sürekli rastgele/i.test(combinedTitle)) {
+    return 'P(a \\le X \\le b) = \\int_{a}^{b} f(x) \\, dx, \\quad \\int_{-\\infty}^{\\infty} f(x) \\, dx = 1';
+  }
+  if (/cdf|birikimli/i.test(combinedTitle)) {
+    return 'F(x) = P(X \\le x) = \\int_{-\\infty}^{x} f(t) \\, dt';
+  }
   if (/normal dağılım|normal distribution|gauss/i.test(combinedTitle)) {
-    return 'f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}';
+    return 'f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} \\exp\\left(-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^{\\!2}\\right)';
   }
   if (/beklenen değer|expected value/i.test(combinedTitle)) {
-    return '\\mathbb{E}[X] = x_1 p_1 + x_2 p_2 + \\dots + x_n p_n';
+    return '\\mathbb{E}[X] = \\int_{-\\infty}^{\\infty} x \\cdot f(x) \\, dx \\quad \\text{veya} \\quad \\sum x_i P(X = x_i)';
+  }
+  if (/markov/i.test(combinedTitle)) {
+    return '\\boldsymbol{\\pi} P = \\boldsymbol{\\pi}, \\quad \\sum_{i} \\pi_i = 1';
+  }
+  if (/kuyruk|queue|m\/m\/1/i.test(combinedTitle)) {
+    return 'L = \\frac{\\lambda}{\\mu - \\lambda}, \\quad W = \\frac{1}{\\mu - \\lambda}';
+  }
+  if (/simplex|doğrusal programlama|linear programming/i.test(combinedTitle)) {
+    return '\\max \\; \\mathbf{c}^T \\mathbf{x} \\quad \\text{s.t.} \\quad A\\mathbf{x} \\le \\mathbf{b}, \\; \\mathbf{x} \\ge \\mathbf{0}';
   }
   if (/korelasyon|correlation|pearson/i.test(combinedTitle)) {
     return 'r = \\frac{\\sum (x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum (x_i - \\bar{x})^2 \\sum (y_i - \\bar{y})^2}}';
   }
   if (/regresyon|regression/i.test(combinedTitle)) {
-    return 'Y = \\beta_0 + \\beta_1 X';
+    return 'Y = \\beta_0 + \\beta_1 X + \\epsilon';
   }
   if (/güven aralığı|confidence interval/i.test(combinedTitle)) {
-    return '\\text{Güven Aralığı} = \\bar{x} \\pm t^* \\cdot \\frac{s}{\\sqrt{n}}';
+    return '\\text{Güven Aralığı} = \\bar{x} \\pm t_{\\alpha/2, \\, n-1} \\cdot \\frac{s}{\\sqrt{n}}';
+  }
+  if (/t-test|hipotez/i.test(combinedTitle)) {
+    return 't = \\frac{\\bar{X} - \\mu_0}{s / \\sqrt{n}}';
   }
   if (/f-test|anova/i.test(combinedTitle)) {
-    return 'F = \\frac{s_1^2}{s_2^2}';
+    return 'F = \\frac{\\text{MS}_{\\text{between}}}{\\text{MS}_{\\text{within}}}';
   }
   if (/ki-kare|chi-square/i.test(combinedTitle)) {
-    return '\\chi^2 = \\sum \\frac{(O_i - E_i)^2}{E_i}';
+    return '\\chi^2 = \\sum_{i=1}^{k} \\frac{(O_i - E_i)^2}{E_i}';
   }
 
   return null;

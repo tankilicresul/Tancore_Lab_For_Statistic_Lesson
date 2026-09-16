@@ -1,7 +1,10 @@
 {
   "id": "module-14",
   "order": 14,
-  "title": { "tr": "Koşullu Olasılık & Bayes Teoremi", "en": "Conditional Probability & Bayes Theorem" },
+  "title": {
+    "tr": "Koşullu Olasılık & Bayes Teoremi",
+    "en": "Conditional Probability & Bayes Theorem"
+  },
   "description": {
     "tr": "Koşullu olasılık P(A|B), bağımsız olaylar, Toplam Olasılık Yasası ve Bayes Teoremi. Medikal test ve spam filtresi teşhis vakaları.",
     "en": "Conditional probability P(A|B), independent events, Law of Total Probability, and Bayes Theorem. Medical diagnostic & spam filter cases."
@@ -13,9 +16,12 @@
       "moduleId": "module-14",
       "order": 1,
       "difficulty": "basit",
-      "title": { "tr": "Koşullu Olasılık & Olayların Bağımsızlığı", "en": "Conditional Probability & Event Independence" },
+      "title": {
+        "tr": "Koşullu Olasılık & Olayların Bağımsızlığı",
+        "en": "Conditional Probability & Event Independence"
+      },
       "conceptCard": {
-        "tr": "Koşullu olasılık, B olayının gerçekleştiği bilindiğinde A olayının gerçekleşme olasılığıdır: P(A|B) = P(A ∩ B) / P(B). İki olay bağımsızsa P(A|B) = P(A) olur.",
+        "tr": "Koşullu Olasılık ve Olayların Bağımsızlığı:\n\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}, \\qquad P(B) > 0$$\n\n$A$ ve $B$ bağımsız ise $P(A \\mid B) = P(A)$ ve $P(A \\cap B) = P(A) \\cdot P(B)$ sağlanır.",
         "en": "Conditional probability measures event A given event B occurred: P(A|B) = P(A ∩ B) / P(B). If independent, P(A|B) = P(A)."
       },
       "companyExample": {
@@ -35,9 +41,15 @@
         {
           "id": "m14-l1-q1",
           "type": "numeric",
-          "prompt": { "tr": "P(A ∩ B) = 0.12 ve P(B) = 0.40 ise P(A|B) kaçtır?", "en": "If P(A ∩ B) = 0.12 and P(B) = 0.40, what is P(A|B)?" },
+          "prompt": {
+            "tr": "$P(A \\cap B) = 0.12$ ve $P(B) = 0.40$ ise koşullu olasılık $P(A \\mid B)$ kaçtır?",
+            "en": "If P(A ∩ B) = 0.12 and P(B) = 0.40, what is P(A|B)?"
+          },
           "correctAnswer": 0.3,
-          "explanation": { "tr": "P(A|B) = 0.12 / 0.40 = 0.30.", "en": "P(A|B) = 0.12 / 0.40 = 0.30." }
+          "explanation": {
+            "tr": "$$P(A \\mid B) = \\frac{0.12}{0.40} = 0.30$$",
+            "en": "P(A|B) = 0.12 / 0.40 = 0.30."
+          }
         }
       ]
     },
@@ -46,9 +58,12 @@
       "moduleId": "module-14",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Toplam Olasılık Yasası", "en": "Law of Total Probability" },
+      "title": {
+        "tr": "Toplam Olasılık Yasası",
+        "en": "Law of Total Probability"
+      },
       "conceptCard": {
-        "tr": "Tüm uzay B1, B2, ..., Bn gibi ayrık parçalara bölünmüşse, herhangi bir A olayının olasılığı her parçadaki koşullu olasılıkların ağırlıklı toplamıdır: P(A) = ∑ P(A|Bi) * P(Bi).",
+        "tr": "Toplam Olasılık Yasası, örneklem uzayını bölen $B_1, \\dots, B_n$ ayrık olaylar ailesi için marjinal olasılığı ağırlıklandırır:\n\n$$P(A) = \\sum_{i=1}^{n} P(A \\mid B_i) \\cdot P(B_i)$$",
         "en": "If the sample space is partitioned into disjoint B1, B2, ..., Bn, then P(A) = ∑ P(A|Bi) * P(Bi)."
       },
       "companyExample": {
@@ -68,9 +83,15 @@
         {
           "id": "m14-l2-q1",
           "type": "numeric",
-          "prompt": { "tr": "İki grubun ağırlıkları %70 ve %30, başarı oranları %80 ve %50 ise genel başarı oranı nedir (% olarak)?", "en": "Groups weighted 70% and 30% have success rates 80% and 50%. What is total success rate (%)?" },
+          "prompt": {
+            "tr": "İki grubun ağırlıkları $\\%70$ ($0.70$) ve $\\%30$ ($0.30$), başarı oranları ise $\\%80$ ($0.80$) ve $\\%50$ ($0.50$) ise toplam başarı oranı yüzde kaçtır?",
+            "en": "Groups weighted 70% and 30% have success rates 80% and 50%. What is total success rate (%)?"
+          },
           "correctAnswer": 71,
-          "explanation": { "tr": "(0.80 * 0.70) + (0.50 * 0.30) = 0.56 + 0.15 = 0.71 (%71).", "en": "(0.80 * 0.70) + (0.50 * 0.30) = 0.56 + 0.15 = 0.71 (71%)." }
+          "explanation": {
+            "tr": "$$P(A) = (0.70)(0.80) + (0.30)(0.50) = 0.56 + 0.15 = 0.71 \\quad (\\%71)$$",
+            "en": "(0.80 * 0.70) + (0.50 * 0.30) = 0.56 + 0.15 = 0.71 (71%)."
+          }
         }
       ]
     },
@@ -79,9 +100,12 @@
       "moduleId": "module-14",
       "order": 3,
       "difficulty": "ileri",
-      "title": { "tr": "Bayes Teoremi & Prior / Posterior Analizi", "en": "Bayes Theorem & Prior/Posterior Analysis" },
+      "title": {
+        "tr": "Bayes Teoremi & Prior / Posterior Analizi",
+        "en": "Bayes Theorem & Prior/Posterior Analysis"
+      },
       "conceptCard": {
-        "tr": "Bayes Teoremi, yeni bir kanıt (evidence) elde edildiğinde hipotezin olasılığını güncellememizi sağlar: P(A|B) = [P(B|A) * P(A)] / P(B). Prior (Önsel) olasılık, kanıt ile Posterior (Sonral) olasılığa dönüşür.",
+        "tr": "Bayes Teoremi, önsel olasılığı (prior) kanıt ile güncelleyerek sonsal olasılığı (posterior) verir:\n\n$$P(A \\mid B) = \\frac{P(B \\mid A) \\cdot P(A)}{P(B)} = \\frac{P(B \\mid A) \\cdot P(A)}{\\sum P(B \\mid A_i) P(A_i)}$$",
         "en": "Bayes Theorem updates hypothesis probability upon evidence: P(A|B) = [P(B|A) * P(A)] / P(B), turning Prior into Posterior."
       },
       "companyExample": {
@@ -101,9 +125,15 @@
         {
           "id": "m14-l3-q1",
           "type": "numeric",
-          "prompt": { "tr": "P(A) = 0.10, P(B|A) = 0.80 ve P(B) = 0.20 ise P(A|B) kaçtır?", "en": "If P(A) = 0.10, P(B|A) = 0.80, and P(B) = 0.20, what is P(A|B)?" },
+          "prompt": {
+            "tr": "$P(A) = 0.10$, $P(B \\mid A) = 0.80$ ve $P(B) = 0.20$ ise $P(A \\mid B)$ kaçtır?",
+            "en": "If P(A) = 0.10, P(B|A) = 0.80, and P(B) = 0.20, what is P(A|B)?"
+          },
           "correctAnswer": 0.4,
-          "explanation": { "tr": "P(A|B) = (0.80 * 0.10) / 0.20 = 0.08 / 0.20 = 0.40.", "en": "P(A|B) = (0.80 * 0.10) / 0.20 = 0.08 / 0.20 = 0.40." }
+          "explanation": {
+            "tr": "$$P(A \\mid B) = \\frac{0.80 \\times 0.10}{0.20} = \\frac{0.08}{0.20} = 0.40$$",
+            "en": "P(A|B) = (0.80 * 0.10) / 0.20 = 0.08 / 0.20 = 0.40."
+          }
         }
       ]
     },
@@ -112,9 +142,12 @@
       "moduleId": "module-14",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Yanlış Pozitifler & Taban Oran Yanılsaması", "en": "False Positives & Base Rate Fallacy" },
+      "title": {
+        "tr": "Yanlış Pozitifler & Taban Oran Yanılsaması",
+        "en": "False Positives & Base Rate Fallacy"
+      },
       "conceptCard": {
-        "tr": "Nadir olaylarda (%1 önsel olasılık), test hassasiyeti %95 olsa dahi yanlış alarm oranı %5 ise pozitif bir sonucun gerçek olma ihtimali düşük kalır. Buna Taban Oran Yanılsaması (Base Rate Fallacy) denir.",
+        "tr": "Taban Oran Yanılsaması (Base Rate Fallacy): Önsel yaygınlığı çok düşük olan ($P(D) \\ll 1$) nadir durumlarda, testin hassasiyeti yüksek olsa dahi pozitif test sonucunun gerçek pozitif olma olasılığı (PPV) düşük çıkabilir:\n\n$$\\text{PPV} = P(D \\mid +) = \\frac{P(+ \\mid D)P(D)}{P(+ \\mid D)P(D) + P(+ \\mid D^c)P(D^c)}$$",
         "en": "In rare events (1% prior), even with 95% sensitivity, a 5% false positive rate causes posterior probability to stay surprisingly low (Base Rate Fallacy)."
       },
       "companyExample": {
@@ -134,13 +167,25 @@
         {
           "id": "m14-l4-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Nadir bir hastalıkta (%1 yaygınlık) test pozitif çıktığında hastalanma olasılığının düşük kalmasının sebebi nedir?", "en": "Why is true disease probability low despite a positive test in rare events?" },
+          "prompt": {
+            "tr": "Nadir bir hastalıkta (%1 yaygınlık) test pozitif çıktığında hastalanma olasılığının düşük kalmasının sebebi nedir?",
+            "en": "Why is true disease probability low despite a positive test in rare events?"
+          },
           "options": [
-            { "tr": "Taban Oran Yanılsaması (Base Rate Fallacy)", "en": "Base Rate Fallacy" },
-            { "tr": "Testin bozuk olması", "en": "Test malfunction" }
+            {
+              "tr": "Taban Oran Yanılsaması (Base Rate Fallacy)",
+              "en": "Base Rate Fallacy"
+            },
+            {
+              "tr": "Testin bozuk olması",
+              "en": "Test malfunction"
+            }
           ],
           "correctAnswer": "Taban Oran Yanılsaması (Base Rate Fallacy)",
-          "explanation": { "tr": "Nadir olaylarda yanlış pozitiflerin sayısı gerçek pozitif sayısını aşabilir.", "en": "In rare events false positives outnumber true positives." }
+          "explanation": {
+            "tr": "Nadir olaylarda yanlış pozitiflerin sayısı gerçek pozitif sayısını aşabilir.",
+            "en": "In rare events false positives outnumber true positives."
+          }
         }
       ]
     }
@@ -150,22 +195,43 @@
       "id": "m14-case-1",
       "moduleId": "module-14",
       "difficulty": "orta",
-      "title": { "tr": "CyberPass: Yanlış Pozitif Alarm ve Bayes Teoremi Analizi", "en": "CyberPass: False Positive Alarms & Bayes Theorem Analysis" },
+      "title": {
+        "tr": "CyberPass: Yanlış Pozitif Alarm ve Bayes Teoremi Analizi",
+        "en": "CyberPass: False Positive Alarms & Bayes Theorem Analysis"
+      },
       "businessQuestion": {
         "tr": "CyberPass güvenlik duvarında nadir siber sızmalar (%1 sıklık) için alarm sistemi kuruldu. Doğruluk %90, yanlış alarm %10 ise alarm verildiğinde sızmanın gerçek olma olasılığı nedir?",
         "en": "CyberPass security firewall detects 1% rare intrusions. Sensitivity = 90%, False Positive = 10%. What is true intrusion probability when alarm triggers?"
       },
       "dataset": {
-        "columns": ["Metrik", "Değer"],
+        "columns": [
+          "Metrik",
+          "Değer"
+        ],
         "rows": [
-          ["Prior P(Sızma)", "%1 (0.01)"],
-          ["Duyarlılık P(Alarm|Sızma)", "%90 (0.90)"],
-          ["Yanlış Alarm P(Alarm|Normal)", "%10 (0.10)"]
+          [
+            "Prior P(Sızma)",
+            "%1 (0.01)"
+          ],
+          [
+            "Duyarlılık P(Alarm|Sızma)",
+            "%90 (0.90)"
+          ],
+          [
+            "Yanlış Alarm P(Alarm|Normal)",
+            "%10 (0.10)"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: P(Alarm) = (0.90 * 0.01) + (0.10 * 0.99) = 0.009 + 0.099 = 0.108.", "en": "Step 1: Total P(Alarm) = 0.108." },
-        { "tr": "2. Adım: P(Sızma|Alarm) = 0.009 / 0.108 = 0.0833 (%8.33).", "en": "Step 2: P(Intrusion|Alarm) = 8.33%." }
+        {
+          "tr": "1. Adım: Toplam Alarm Olasılığı: $$P(\\text{Alarm}) = (0.90)(0.01) + (0.10)(0.99) = 0.009 + 0.099 = 0.108$$",
+          "en": "Step 1: Total P(Alarm) = 0.108."
+        },
+        {
+          "tr": "2. Adım: Bayes Formülü: $$P(\\text{Sızma} \\mid \\text{Alarm}) = \\frac{0.009}{0.108} = 0.0833 \\quad (\\%8.33)$$",
+          "en": "Step 2: P(Intrusion|Alarm) = 8.33%."
+        }
       ],
       "expectedApproach": {
         "tr": "Nadir olaylarda yüksek duyarlılık olsa dahi yanlış alarm oranı yüksekse pozitif tahmin değeri düşük çıkar (Bayes Yanılsaması).",
@@ -175,9 +241,15 @@
         {
           "id": "m14-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "P(Sızma|Alarm) yüzde kaçtır (en yakın tam sayı)?", "en": "What is P(Intrusion|Alarm) in percent (nearest integer)?" },
+          "prompt": {
+            "tr": "$P(\\text{Sızma} \\mid \\text{Alarm})$ yüzde kaçtır (en yakın tam sayı)?",
+            "en": "What is P(Intrusion|Alarm) in percent (nearest integer)?"
+          },
           "correctAnswer": 8,
-          "explanation": { "tr": "0.009 / 0.108 ≈ %8.33 -> 8.", "en": "0.009 / 0.108 ≈ 8.33% -> 8." }
+          "explanation": {
+            "tr": "$$\\frac{0.009}{0.108} \\approx \\%8.33 \\implies 8$$",
+            "en": "0.009 / 0.108 ≈ 8.33% -> 8."
+          }
         }
       ]
     }

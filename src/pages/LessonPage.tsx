@@ -405,9 +405,9 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                     key={q.id}
                     className="p-6 rounded-3xl bg-slate-50/50 border border-slate-200/80 shadow-xs"
                   >
-                    <p className="text-base font-medium text-[#ff7a00] mb-4 leading-snug">
-                      {getLocalized(q.prompt, language)}
-                    </p>
+                    <div className="text-base font-medium text-[#ff7a00] mb-4 leading-snug break-words">
+                      <MathFormulaText text={getLocalized(q.prompt, language)} />
+                    </div>
 
                     {/* Multiple Choice Options */}
                     {q.type === 'multiple_choice' && q.options && (
@@ -421,13 +421,13 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                               key={oIdx}
                               disabled={isSubmitted}
                               onClick={() => setSelectedAnswers({ ...selectedAnswers, [q.id]: optText })}
-                              className={`w-full p-4 rounded-2xl border text-left font-bold text-sm transition-all ${
+                              className={`w-full p-4 rounded-2xl border text-left font-bold text-sm transition-all break-words ${
                                 isSelected
                                   ? 'bg-[#ff7a00]/15 border-[#ff7a00] text-[#ff7a00] shadow-xs'
                                   : 'bg-white border-slate-200 text-slate-800 hover:border-[#ff7a00]/40'
                               }`}
                             >
-                              {optText}
+                              <MathFormulaText text={optText} />
                             </button>
                           );
                         })}
@@ -455,7 +455,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                       <button
                         disabled={userAnswer === undefined || String(userAnswer).trim() === ''}
                         onClick={() => handleAnswerSubmit(q.id)}
-                        className="px-6 py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-[#ff7a00]/20"
+                        className="px-6 py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-[#ff7a00]/20 cursor-pointer"
                       >
                         {language === 'tr' ? 'Kontrol Et (+15 XP)' : 'Check Answer (+15 XP)'}
                       </button>
@@ -484,9 +484,9 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                             </>
                           )}
                         </div>
-                        <p className="text-xs text-slate-700 mt-1 leading-relaxed font-medium">
-                          {getLocalized(q.explanation, language)}
-                        </p>
+                        <div className="text-xs text-slate-700 mt-1 leading-relaxed font-medium">
+                          <MathFormulaText text={getLocalized(q.explanation, language)} />
+                        </div>
                       </div>
                     )}
                   </div>

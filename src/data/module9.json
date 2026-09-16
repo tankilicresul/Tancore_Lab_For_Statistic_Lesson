@@ -1,7 +1,10 @@
 {
   "id": "module-9",
   "order": 9,
-  "title": { "tr": "ANOVA & Kategorik Veri", "en": "ANOVA & Categorical Data Analysis" },
+  "title": {
+    "tr": "ANOVA & Kategorik Veri",
+    "en": "ANOVA & Categorical Data Analysis"
+  },
   "description": {
     "tr": "Tek yönlü ANOVA (F-testi), gruplar arası/grup içi varyans, Ki-Kare testi ve Post-Hoc analizleri. 3 reklam kampanyasının satış etkisi vakası.",
     "en": "One-Way ANOVA (F-test), between/within variance, Chi-Square test, and Post-Hoc analyses. 3 ad campaigns sales effect case."
@@ -13,9 +16,12 @@
       "moduleId": "module-9",
       "order": 1,
       "difficulty": "basit",
-      "title": { "tr": "3+ Grup Karşılaştırması & F-Testi", "en": "3+ Group Comparison & F-Test" },
+      "title": {
+        "tr": "3+ Grup Karşılaştırması & F-Testi",
+        "en": "3+ Group Comparison & F-Test"
+      },
       "conceptCard": {
-        "tr": "3 veya daha fazla grubun ortalamalarını aynı anda karşılaştırmak için t-testi yerine ANOVA kullanılır. Tek tek t-testi yapmak Tip 1 Hata (α) oranını şişirir.",
+        "tr": "Tek Yönlü ANOVA (One-Way ANOVA), $k \\ge 3$ bağımsız grubun anakütle ortalamalarının eşitliğini test eder:\n\n$$H_0: \\mu_1 = \\mu_2 = \\dots = \\mu_k, \\qquad H_1: \\text{En az bir ortalama farklıdır}$$\n\n$F$-Test İstatistiği, Gruplar Arası Varyansın ($\\text{MSB}$) Grup İçi Varyansa ($\\text{MSW}$) oranıdır:\n\n$$F = \\frac{\\text{MSB}}{\\text{MSW}} = \\frac{\\text{SSB} / (k - 1)}{\\text{SSW} / (N - k)}$$",
         "en": "ANOVA compares means across 3+ groups simultaneously. Running multiple t-tests inflates the overall Type 1 error rate."
       },
       "companyExample": {
@@ -35,13 +41,25 @@
         {
           "id": "m9-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Neden 3 grup için t-testi yerine ANOVA tercih edilir?", "en": "Why choose ANOVA over t-tests for 3 groups?" },
+          "prompt": {
+            "tr": "3 veya daha fazla grup ortalamasını karşılaştırırken ikili t-testleri yerine neden ANOVA tercih edilir?",
+            "en": "Why choose ANOVA over t-tests for 3 groups?"
+          },
           "options": [
-            { "tr": "Tip 1 Hata oranının şişmesini önlemek için", "en": "To prevent Type I error rate inflation" },
-            { "tr": "t-testi sadece 1 kişide çalıştığı için", "en": "Because t-tests work only on 1 person" }
+            {
+              "tr": "Tip 1 Hata oranının şişmesini önlemek için",
+              "en": "To prevent Type I error rate inflation"
+            },
+            {
+              "tr": "t-testi sadece 1 kişide çalıştığı için",
+              "en": "Because t-tests work only on 1 person"
+            }
           ],
           "correctAnswer": "Tip 1 Hata oranının şişmesini önlemek için",
-          "explanation": { "tr": "Birden çok ikili test yapmak birleşik alfa hatasını artırır.", "en": "Multiple pairwise tests increase cumulative alpha error." }
+          "explanation": {
+            "tr": "Çoklu ikili test yapmak kümülatif Tip I Hata (Family-wise Error Rate) oranını $\\alpha_{\\text{toplam}} = 1 - (1-\\alpha)^m$ formülü ile aşırı şişirir.",
+            "en": "Multiple pairwise tests increase cumulative alpha error."
+          }
         }
       ]
     },
@@ -50,9 +68,12 @@
       "moduleId": "module-9",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Tek Yönlü ANOVA (One-Way ANOVA)", "en": "One-Way ANOVA" },
+      "title": {
+        "tr": "Tek Yönlü ANOVA (One-Way ANOVA)",
+        "en": "One-Way ANOVA"
+      },
       "conceptCard": {
-        "tr": "Tek yönlü ANOVA'da F-istatistiği = (Gruplar Arası Varyans) / (Grup İçi Varyans) şeklinde hesaplanır. F ne kadar büyükse gruplar arası fark o kadar belirgindir.",
+        "tr": "Tek Yönlü ANOVA (One-Way ANOVA), $k \\ge 3$ bağımsız grubun anakütle ortalamalarının eşitliğini test eder:\n\n$$H_0: \\mu_1 = \\mu_2 = \\dots = \\mu_k, \\qquad H_1: \\text{En az bir ortalama farklıdır}$$\n\n$F$-Test İstatistiği, Gruplar Arası Varyansın ($\\text{MSB}$) Grup İçi Varyansa ($\\text{MSW}$) oranıdır:\n\n$$F = \\frac{\\text{MSB}}{\\text{MSW}} = \\frac{\\text{SSB} / (k - 1)}{\\text{SSW} / (N - k)}$$",
         "en": "In One-Way ANOVA, F-ratio = (Between-Group Variance) / (Within-Group Variance). Larger F indicates distinct group means."
       },
       "companyExample": {
@@ -72,13 +93,25 @@
         {
           "id": "m9-l2-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "ANOVA Sıfır Hipotezi (H0) neyi savunur?", "en": "What does H0 state in ANOVA?" },
+          "prompt": {
+            "tr": "3 veya daha fazla grup ortalamasını karşılaştırırken ikili t-testleri yerine neden ANOVA tercih edilir?",
+            "en": "What does H0 state in ANOVA?"
+          },
           "options": [
-            { "tr": "Tüm grupların ortalamalarının birbirine eşit olduğunu", "en": "All group means are equal" },
-            { "tr": "Tüm grupların birbirinden tamamen farklı olduğunu", "en": "All group means are totally different" }
+            {
+              "tr": "Tüm grupların ortalamalarının birbirine eşit olduğunu",
+              "en": "All group means are equal"
+            },
+            {
+              "tr": "Tüm grupların birbirinden tamamen farklı olduğunu",
+              "en": "All group means are totally different"
+            }
           ],
           "correctAnswer": "Tüm grupların ortalamalarının birbirine eşit olduğunu",
-          "explanation": { "tr": "H0: µ1 = µ2 = µ3 (Tüm grup ortalamaları eşittir).", "en": "H0: µ1 = µ2 = µ3 (All group means are equal)." }
+          "explanation": {
+            "tr": "Çoklu ikili test yapmak kümülatif Tip I Hata (Family-wise Error Rate) oranını $\\alpha_{\\text{toplam}} = 1 - (1-\\alpha)^m$ formülü ile aşırı şişirir.",
+            "en": "H0: µ1 = µ2 = µ3 (All group means are equal)."
+          }
         }
       ]
     },
@@ -87,9 +120,12 @@
       "moduleId": "module-9",
       "order": 3,
       "difficulty": "orta-ustu",
-      "title": { "tr": "Ki-Kare (Chi-Square) Bağımsızlık Testi", "en": "Chi-Square Test of Independence" },
+      "title": {
+        "tr": "Ki-Kare (Chi-Square) Bağımsızlık Testi",
+        "en": "Chi-Square Test of Independence"
+      },
       "conceptCard": {
-        "tr": "İki kategorik değişken arasındaki bağımsızlığı test etmek için Ki-Kare (χ²) testi kullanılır. Çapraz tablolarda (Contingency tables) gözlenen ve beklenen frekanslar kıyaslanır.",
+        "tr": "Ki-Kare ($\\chi^2$) Bağımsızlık Testi, iki kategorik değişken arasındaki ilişkinin anlamlılığını test eder:\n\n$$\\chi^2 = \\sum_{i=1}^{r} \\sum_{j=1}^{c} \\frac{(O_{ij} - E_{ij})^2}{E_{ij}}, \\qquad E_{ij} = \\frac{R_i \\cdot C_j}{N}$$\n\nSerbestlik derecesi: $df = (r - 1)(c - 1)$.",
         "en": "Chi-Square (χ²) test evaluates independence between two categorical variables using observed vs expected frequencies."
       },
       "companyExample": {
@@ -109,13 +145,25 @@
         {
           "id": "m9-l3-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Ki-Kare testi hangi veri türünde kullanılır?", "en": "Which data type is analyzed with Chi-Square?" },
+          "prompt": {
+            "tr": "$2 \\times 3$ boyutlu bir kontenjans tablosunda Ki-Kare testinin serbestlik derecesi ($df = (r-1)(c-1)$) kaçtır?",
+            "en": "Which data type is analyzed with Chi-Square?"
+          },
           "options": [
-            { "tr": "Kategorik (Frekans/Sayım) Veriler", "en": "Categorical (Frequency/Count) Data" },
-            { "tr": "Sadece zaman serisi verileri", "en": "Only time series data" }
+            {
+              "tr": "Kategorik (Frekans/Sayım) Veriler",
+              "en": "Categorical (Frequency/Count) Data"
+            },
+            {
+              "tr": "Sadece zaman serisi verileri",
+              "en": "Only time series data"
+            }
           ],
           "correctAnswer": "Kategorik (Frekans/Sayım) Veriler",
-          "explanation": { "tr": "Ki-Kare testi nitel/kategorik değişkenlerin frekans sayılarını karşılaştırır.", "en": "Chi-Square tests frequency counts of categorical variables." }
+          "explanation": {
+            "tr": "$$df = (2 - 1)(3 - 1) = 1 \\times 2 = 2$$",
+            "en": "Chi-Square tests frequency counts of categorical variables."
+          }
         }
       ]
     },
@@ -124,7 +172,10 @@
       "moduleId": "module-9",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Post-Hoc Testleri (Tukey HSD)", "en": "Post-Hoc Pairwise Tests" },
+      "title": {
+        "tr": "Post-Hoc Testleri (Tukey HSD)",
+        "en": "Post-Hoc Pairwise Tests"
+      },
       "conceptCard": {
         "tr": "ANOVA sonucu H0 reddedildiğinde, HANGİ spesifik grupların birbirinden farklı olduğunu anlamak için Tukey HSD gibi Post-Hoc testleri uygulanır.",
         "en": "When ANOVA rejects H0, Post-Hoc tests (like Tukey HSD) determine WHICH specific groups differ."
@@ -146,13 +197,25 @@
         {
           "id": "m9-l4-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Post-Hoc testleri ne zaman yapılır?", "en": "When are Post-Hoc tests performed?" },
+          "prompt": {
+            "tr": "Post-Hoc testleri ne zaman yapılır?",
+            "en": "When are Post-Hoc tests performed?"
+          },
           "options": [
-            { "tr": "ANOVA testi anlamlı çıkıp H0 reddedildikten sonra", "en": "After ANOVA is significant and H0 is rejected" },
-            { "tr": "Hiçbir test yapılmadan önce", "en": "Before running any initial test" }
+            {
+              "tr": "ANOVA testi anlamlı çıkıp H0 reddedildikten sonra",
+              "en": "After ANOVA is significant and H0 is rejected"
+            },
+            {
+              "tr": "Hiçbir test yapılmadan önce",
+              "en": "Before running any initial test"
+            }
           ],
           "correctAnswer": "ANOVA testi anlamlı çıkıp H0 reddedildikten sonra",
-          "explanation": { "tr": "Post-Hoc detaylı grup kaynak farkını bulmak için ANOVA sonrasında yapılır.", "en": "Post-Hoc follows a significant ANOVA to pinpoint group differences." }
+          "explanation": {
+            "tr": "Post-Hoc detaylı grup kaynak farkını bulmak için ANOVA sonrasında yapılır.",
+            "en": "Post-Hoc follows a significant ANOVA to pinpoint group differences."
+          }
         }
       ]
     }
@@ -162,22 +225,55 @@
       "id": "m9-case-1",
       "moduleId": "module-9",
       "difficulty": "kolay",
-      "title": { "tr": "MediaImpact: 3 Kampanya ANOVA Sonucu", "en": "MediaImpact: 3 Campaign ANOVA Result" },
+      "title": {
+        "tr": "MediaImpact: 3 Kampanya ANOVA Sonucu",
+        "en": "MediaImpact: 3 Campaign ANOVA Result"
+      },
       "businessQuestion": {
-        "tr": "MediaImpact ajansı TV, Sosyal Medya ve Arama Motoru adlarıyla 3 farklı pazarlama kampanyası yürütmüştür. 3 grubun satış ortalamaları karşılaştırıldığında hesaplanan F-istatistiği = 6.25 ve p-değeri = 0.003 olarak bulunmuştur. Anlamlılık düzeyi α = 0.05 olduğuna göre kampanya performansları eşit midir?",
+        "tr": "MediaImpact 3 farklı pazarlama kampanyasının ($k = 3$) dönüşüm oranlarını incelemektedir ($N = 30$). ANOVA tablosunda $\\text{SSB} = 120$ ($df = 2$) ve $\\text{SSW} = 135$ ($df = 27$) hesaplanmıştır. $F$-istatistiğini bulunuz.",
         "en": "MediaImpact ran 3 campaigns (TV, Social, Search). ANOVA yields F = 6.25 and p = 0.003. At α = 0.05, are campaign performances equal?"
       },
       "dataset": {
-        "columns": ["Kampanya", "Örneklem n", "Ortalama Satış Lift (TL)", "F-İstatistiği", "p-Değeri"],
+        "columns": [
+          "Kampanya",
+          "Örneklem n",
+          "Ortalama Satış Lift (TL)",
+          "F-İstatistiği",
+          "p-Değeri"
+        ],
         "rows": [
-          ["1. TV", "30", "120 TL", "6.25", "0.003"],
-          ["2. Sosyal Medya", "30", "150 TL", "-", "-"],
-          ["3. Arama Motoru", "30", "180 TL", "-", "-"]
+          [
+            "1. TV",
+            "30",
+            "120 TL",
+            "6.25",
+            "0.003"
+          ],
+          [
+            "2. Sosyal Medya",
+            "30",
+            "150 TL",
+            "-",
+            "-"
+          ],
+          [
+            "3. Arama Motoru",
+            "30",
+            "180 TL",
+            "-",
+            "-"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: p-değeri (0.003) ile α (0.05) karşılaştır.", "en": "Step 1: Compare p-value (0.003) with α (0.05)." },
-        { "tr": "2. Adım: 0.003 < 0.05 olduğu için H0 (Tüm ortalamalar eşittir) reddedilir.", "en": "Step 2: Since 0.003 < 0.05, reject H0 (All means equal)." }
+        {
+          "tr": "1. Adım: $\\text{MSB} = \\frac{120}{2} = 60$. $\\text{MSW} = \\frac{135}{27} = 5$.",
+          "en": "Step 1: Compare p-value (0.003) with α (0.05)."
+        },
+        {
+          "tr": "2. Adım: $F$-İstatistiği: $$F = \\frac{\\text{MSB}}{\\text{MSW}} = \\frac{60}{5} = 12.0$$",
+          "en": "Step 2: Since 0.003 < 0.05, reject H0 (All means equal)."
+        }
       ],
       "expectedApproach": {
         "tr": "H0 reddedilir. Kampanyalar arasında istatistiksel olarak anlamlı performans farkı vardır.",
@@ -187,13 +283,25 @@
         {
           "id": "m9-case-1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Karar ne olmalıdır?", "en": "What is the decision?" },
+          "prompt": {
+            "tr": "Hesaplanan ANOVA $F$-istatistiği kaçtır?",
+            "en": "What is the decision?"
+          },
           "options": [
-            { "tr": "H0 reddedilir, kampanyalar eşit değildir", "en": "Reject H0, campaigns are not equal" },
-            { "tr": "H0 reddedilemez, tüm kampanyalar eşittir", "en": "Fail to reject H0, all campaigns equal" }
+            {
+              "tr": "H0 reddedilir, kampanyalar eşit değildir",
+              "en": "Reject H0, campaigns are not equal"
+            },
+            {
+              "tr": "H0 reddedilemez, tüm kampanyalar eşittir",
+              "en": "Fail to reject H0, all campaigns equal"
+            }
           ],
           "correctAnswer": "H0 reddedilir, kampanyalar eşit değildir",
-          "explanation": { "tr": "p (0.003) < 0.05 olduğu için kampanya başarıları arasında anlamlı fark vardır.", "en": "Since p (0.003) < 0.05, there is a significant difference among campaigns." }
+          "explanation": {
+            "tr": "$$F = \\frac{60}{5} = 12$$",
+            "en": "Since p (0.003) < 0.05, there is a significant difference among campaigns."
+          }
         }
       ]
     },
@@ -201,22 +309,49 @@
       "id": "m9-case-2",
       "moduleId": "module-9",
       "difficulty": "orta",
-      "title": { "tr": "TechCorp: Full vs Reduced Model Kısmi F-Testi", "en": "TechCorp: Full vs Reduced Model Partial F-Test" },
+      "title": {
+        "tr": "TechCorp: Full vs Reduced Model Kısmi F-Testi",
+        "en": "TechCorp: Full vs Reduced Model Partial F-Test"
+      },
       "businessQuestion": {
         "tr": "Çoklu Regresyon Model Karşılaştırma Vakası: Tam model p = 4 bağımsız değişken içerirken (SSE_full = 100), k = 2 değişken içeren indirgenmiş modelin SSE_reduced = 160'tır. n = 25 gözlem için partial F-test istatistiği f = [(SSE_reduced - SSE_full)/(p-k)] / [SSE_full/(n-p-1)] kaçtır?",
         "en": "Multiple Regression Model Comparison Case: Full model with p = 4 predictors has SSE_full = 100, reduced model with k = 2 predictors has SSE_reduced = 160. For n = 25 observations, what is the partial F statistic f?"
       },
       "dataset": {
-        "columns": ["Model", "Bağımsız Değişken Sayısı", "SSE", "Serbestlik Derecesi Hata"],
+        "columns": [
+          "Model",
+          "Bağımsız Değişken Sayısı",
+          "SSE",
+          "Serbestlik Derecesi Hata"
+        ],
         "rows": [
-          ["Full Model (p=4)", "4", "100", "n - p - 1 = 20"],
-          ["Reduced Model (k=2)", "2", "160", "n - k - 1 = 22"]
+          [
+            "Full Model (p=4)",
+            "4",
+            "100",
+            "n - p - 1 = 20"
+          ],
+          [
+            "Reduced Model (k=2)",
+            "2",
+            "160",
+            "n - k - 1 = 22"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Pay = (SSE_reduced - SSE_full) / (p - k) = (160 - 100) / (4 - 2) = 60 / 2 = 30.", "en": "Step 1: Numerator = (160 - 100) / (4 - 2) = 60 / 2 = 30." },
-        { "tr": "2. Adım: Payda = SSE_full / (n - p - 1) = 100 / (25 - 4 - 1) = 100 / 20 = 5.0.", "en": "Step 2: Denominator = 100 / (25 - 4 - 1) = 100 / 20 = 5.0." },
-        { "tr": "3. Adım: f = 30 / 5.0 = 6.00.", "en": "Step 3: f = 30 / 5.0 = 6.00." }
+        {
+          "tr": "1. Adım: Pay = (SSE_reduced - SSE_full) / (p - k) = (160 - 100) / (4 - 2) = 60 / 2 = 30.",
+          "en": "Step 1: Numerator = (160 - 100) / (4 - 2) = 60 / 2 = 30."
+        },
+        {
+          "tr": "2. Adım: Payda = SSE_full / (n - p - 1) = 100 / (25 - 4 - 1) = 100 / 20 = 5.0.",
+          "en": "Step 2: Denominator = 100 / (25 - 4 - 1) = 100 / 20 = 5.0."
+        },
+        {
+          "tr": "3. Adım: f = 30 / 5.0 = 6.00.",
+          "en": "Step 3: f = 30 / 5.0 = 6.00."
+        }
       ],
       "expectedApproach": {
         "tr": "Kısmi F-istatistiği f = 6.00 hesaplanır.",
@@ -226,9 +361,15 @@
         {
           "id": "m9-case-2-q1",
           "type": "numeric",
-          "prompt": { "tr": "Kısmi (Partial) F-istatistiği f kaçtır?", "en": "What is the partial F-statistic f?" },
+          "prompt": {
+            "tr": "Kısmi (Partial) F-istatistiği f kaçtır?",
+            "en": "What is the partial F-statistic f?"
+          },
           "correctAnswer": 6,
-          "explanation": { "tr": "[(160 - 100) / 2] / [100 / 20] = 30 / 5 = 6.0", "en": "[(160 - 100) / 2] / [100 / 20] = 30 / 5 = 6.0" }
+          "explanation": {
+            "tr": "[(160 - 100) / 2] / [100 / 20] = 30 / 5 = 6.0",
+            "en": "[(160 - 100) / 2] / [100 / 20] = 30 / 5 = 6.0"
+          }
         }
       ]
     },
@@ -236,21 +377,45 @@
       "id": "m9-case-3",
       "moduleId": "module-9",
       "difficulty": "zor",
-      "title": { "tr": "DataVal: Mallows' Cp & Model Seçim Analizi", "en": "DataVal: Mallows' Cp & Model Selection Analysis" },
+      "title": {
+        "tr": "DataVal: Mallows' Cp & Model Seçim Analizi",
+        "en": "DataVal: Mallows' Cp & Model Selection Analysis"
+      },
       "businessQuestion": {
         "tr": "Model Seçimi Değerlendirme Kriteri: Model A için Mallows' Cp = 3.1 (k=3 parametre), Model B için Cp = 8.5 (k=3 parametre) bulunmıştır. 'Best' model seçimi için hangi model tercih edilmelidir?",
         "en": "Model Selection Evaluation Criteria: Model A has Mallows' Cp = 3.1 (k=3), Model B has Cp = 8.5 (k=3). Which model should be preferred?"
       },
       "dataset": {
-        "columns": ["Aday Model", "Parametre Sayısı (k)", "Mallows' Cp İstatistiği", "Model Yanlılığı (Bias)"],
+        "columns": [
+          "Aday Model",
+          "Parametre Sayısı (k)",
+          "Mallows' Cp İstatistiği",
+          "Model Yanlılığı (Bias)"
+        ],
         "rows": [
-          ["Model A", "3", "3.1", "Düşük Yanlılık (Cp ≈ k)"],
-          ["Model B", "3", "8.5", "Yüksek Yanlılık"]
+          [
+            "Model A",
+            "3",
+            "3.1",
+            "Düşük Yanlılık (Cp ≈ k)"
+          ],
+          [
+            "Model B",
+            "3",
+            "8.5",
+            "Yüksek Yanlılık"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Mallows' Cp kriterine göre daha küçük Cp değeri (ve Cp ≈ k olan) tercih edilir.", "en": "Step 1: Lower Mallows' Cp (with Cp ≈ k) is preferred." },
-        { "tr": "2. Adım: 3.1 < 8.5 olduğu için Model A tercih edilir.", "en": "Step 2: Since 3.1 < 8.5, Model A is selected." }
+        {
+          "tr": "1. Adım: Mallows' Cp kriterine göre daha küçük Cp değeri (ve Cp ≈ k olan) tercih edilir.",
+          "en": "Step 1: Lower Mallows' Cp (with Cp ≈ k) is preferred."
+        },
+        {
+          "tr": "2. Adım: 3.1 < 8.5 olduğu için Model A tercih edilir.",
+          "en": "Step 2: Since 3.1 < 8.5, Model A is selected."
+        }
       ],
       "expectedApproach": {
         "tr": "Daha düşük Mallows' Cp değerine sahip Model A tercih edilmelidir.",
@@ -260,13 +425,25 @@
         {
           "id": "m9-case-3-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Hangi model tercih edilmelidir?", "en": "Which model should be selected?" },
+          "prompt": {
+            "tr": "Hangi model tercih edilmelidir?",
+            "en": "Which model should be selected?"
+          },
           "options": [
-            { "tr": "Model A (Daha düşük Cp = 3.1)", "en": "Model A (Lower Cp = 3.1)" },
-            { "tr": "Model B (Daha yüksek Cp = 8.5)", "en": "Model B (Higher Cp = 8.5)" }
+            {
+              "tr": "Model A (Daha düşük Cp = 3.1)",
+              "en": "Model A (Lower Cp = 3.1)"
+            },
+            {
+              "tr": "Model B (Daha yüksek Cp = 8.5)",
+              "en": "Model B (Higher Cp = 8.5)"
+            }
           ],
           "correctAnswer": "Model A (Daha düşük Cp = 3.1)",
-          "explanation": { "tr": "Mallows' Cp değeri düştükçe ve k katsayısına yaklaştıkça model kalitesi artar.", "en": "Lower Mallows' Cp closer to parameter count k indicates better fit." }
+          "explanation": {
+            "tr": "Mallows' Cp değeri düştükçe ve k katsayısına yaklaştıkça model kalitesi artar.",
+            "en": "Lower Mallows' Cp closer to parameter count k indicates better fit."
+          }
         }
       ]
     }

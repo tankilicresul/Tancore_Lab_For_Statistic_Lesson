@@ -3,6 +3,7 @@ import { PLACEMENT_QUESTIONS, PlacementQuestion } from '../data/placementQuestio
 import { ALL_MODULES } from '../data/modules';
 import { useAppStore } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
+import { MathFormulaText } from '../components/MathFormulaText';
 import {
   Sparkles,
   CheckCircle2,
@@ -126,7 +127,7 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
         {/* Question Prompt */}
         <div className="mb-6">
           <h2 className="text-lg sm:text-xl font-black text-slate-900 leading-snug tracking-tight">
-            {getLocalized(currentQuestion.prompt, language)}
+            <MathFormulaText text={getLocalized(currentQuestion.prompt, language)} />
           </h2>
         </div>
 
@@ -157,10 +158,9 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
                     {String.fromCharCode(65 + oIdx)}
                   </div>
                   <span className="font-extrabold text-sm sm:text-base leading-snug">
-                    {optText}
+                    <MathFormulaText text={optText} />
                   </span>
                 </div>
-
                 {isSelected && <Check className="w-5 h-5 text-[#ff7a00] stroke-[3]" />}
               </button>
             );

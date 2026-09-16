@@ -1,7 +1,10 @@
 {
   "id": "module-5",
   "order": 5,
-  "title": { "tr": "Güven Aralıkları", "en": "Confidence Intervals" },
+  "title": {
+    "tr": "Güven Aralıkları",
+    "en": "Confidence Intervals"
+  },
   "description": {
     "tr": "Nokta tahmini, güven düzeyi (%95, %99) ve t-dağılımı. İlaç etki süresi ve klinik deney güven aralığı vakası.",
     "en": "Point estimation, confidence level (95%, 99%), and t-distribution. Drug efficacy trial confidence interval case."
@@ -13,9 +16,12 @@
       "moduleId": "module-5",
       "order": 1,
       "difficulty": "basit",
-      "title": { "tr": "Nokta Tahmini & Hata Payı", "en": "Point Estimate & Margin of Error" },
+      "title": {
+        "tr": "Nokta Tahmini & Hata Payı",
+        "en": "Point Estimate & Margin of Error"
+      },
       "conceptCard": {
-        "tr": "Nokta tahmini bilinmeyen parametreyi tek bir sayı ile tahmin eder. Güven aralığı ise bu tahminin etrafında güvenilir bir alt ve üst sınır aralığı sunar.",
+        "tr": "Güven Aralığı (CI), bilinmeyen anakütle parametresini ($\\mu$ veya $p$) belirli bir $(1-\\alpha)$ güven düzeyinde içeren aralıktır:\n\n$$\\text{Güven Aralığı} = \\text{Nokta Tahmini} \\pm \\text{Hata Payı (Margin of Error)}$$\n\n$$\\bar{X} \\pm Z_{\\alpha/2} \\cdot \\frac{\\sigma}{\\sqrt{n}}$$\n\n$\\%95$ güven düzeyi için kritik $Z$-değeri $Z_{0.025} = 1.96$'dır.",
         "en": "A point estimate predicts a parameter with a single value, while a confidence interval provides a lower and upper range around that estimate."
       },
       "companyExample": {
@@ -35,13 +41,25 @@
         {
           "id": "m5-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Güven aralığı neleri birleştirir?", "en": "What does a confidence interval combine?" },
+          "prompt": {
+            "tr": "$\\%95$ güven düzeyi için iki kuyruklu standart normal kritik $Z$-değeri ($Z_{\\alpha/2}$) kaçtır?",
+            "en": "What does a confidence interval combine?"
+          },
           "options": [
-            { "tr": "Nokta Tahmini ± Hata Payı", "en": "Point Estimate ± Margin of Error" },
-            { "tr": "Sadece maksimum değer", "en": "Only the maximum value" }
+            {
+              "tr": "Nokta Tahmini ± Hata Payı",
+              "en": "Point Estimate ± Margin of Error"
+            },
+            {
+              "tr": "Sadece maksimum değer",
+              "en": "Only the maximum value"
+            }
           ],
           "correctAnswer": "Nokta Tahmini ± Hata Payı",
-          "explanation": { "tr": "Aralık = Nokta tahmini etrafındaki simetrik hata sınırıdır.", "en": "Interval = symmetric error bounds around point estimate." }
+          "explanation": {
+            "tr": "$$1 - \\alpha = 0.95 \\implies \\alpha = 0.05 \\implies Z_{0.025} = 1.96$$",
+            "en": "Interval = symmetric error bounds around point estimate."
+          }
         }
       ]
     },
@@ -50,9 +68,12 @@
       "moduleId": "module-5",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "%95 ve %99 Güven Aralıkları", "en": "95% & 99% Confidence Intervals" },
+      "title": {
+        "tr": "%95 ve %99 Güven Aralıkları",
+        "en": "95% & 99% Confidence Intervals"
+      },
       "conceptCard": {
-        "tr": "Güven düzeyi, tahminimizin gerçek değeri içerme olasılığını gösterir. Kesinlik ve güven arttıkça tahmin aralığının genişliği de artar.",
+        "tr": "Anakütle standart sapması $\\sigma$ bilinmediğinde ve örneklemden $s$ hesaplandığında Student's $t$ dağılımı kullanılır ($df = n-1$ serbestlik derecesi):\n\n$$\\bar{X} \\pm t_{\\alpha/2, \\, n-1} \\cdot \\frac{s}{\\sqrt{n}}$$\n\nÖrneklem büyüklüğü $n \\to \\infty$ arttıkça $t$ dağılımı Standart Normal $Z$ dağılımına yakınsar.",
         "en": "The confidence level indicates how likely the interval contains the true value. Higher confidence levels require a wider interval."
       },
       "companyExample": {
@@ -72,13 +93,25 @@
         {
           "id": "m5-l2-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Güven düzeyi %95'ten %99'a çıkarılırsa aralık genişliği nasıl değişir?", "en": "How does interval width change when confidence level goes from 95% to 99%?" },
+          "prompt": {
+            "tr": "$n = 16$ gözlemden oluşan bir örneklem için Student's t dağılımının serbestlik derecesi ($df = n - 1$) kaçtır?",
+            "en": "How does interval width change when confidence level goes from 95% to 99%?"
+          },
           "options": [
-            { "tr": "Genişler (Daha güvenli ama daha geniş)", "en": "Widens (More confident but wider bounds)" },
-            { "tr": "Daralır", "en": "Narrows" }
+            {
+              "tr": "Genişler (Daha güvenli ama daha geniş)",
+              "en": "Widens (More confident but wider bounds)"
+            },
+            {
+              "tr": "Daralır",
+              "en": "Narrows"
+            }
           ],
           "correctAnswer": "Genişler (Daha güvenli ama daha geniş)",
-          "explanation": { "tr": "Yüksek kesinlik için daha geniş z* kritik değeri gerekir.", "en": "Higher certainty requires a larger z* critical value." }
+          "explanation": {
+            "tr": "$$df = n - 1 = 16 - 1 = 15$$",
+            "en": "Higher certainty requires a larger z* critical value."
+          }
         }
       ]
     },
@@ -87,9 +120,12 @@
       "moduleId": "module-5",
       "order": 3,
       "difficulty": "orta-ustu",
-      "title": { "tr": "t-Dağılımı ile Güven Aralığı", "en": "Student's t-Distribution CIs" },
+      "title": {
+        "tr": "t-Dağılımı ile Güven Aralığı",
+        "en": "Student's t-Distribution CIs"
+      },
       "conceptCard": {
-        "tr": "Kütle standart sapması bilinmediğinde ve küçük örneklemlerle çalışıldığında Standart Normal Dağılım yerine Student's t-dağılımı tercih edilir.",
+        "tr": "Anakütle oranı ($p$) için $(1-\\alpha)$ Güven Aralığı:\n\n$$\\hat{p} \\pm Z_{\\alpha/2} \\cdot \\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$$\n\nBurada $\\hat{p} = \\frac{x}{n}$ örneklem oranı, $\\text{SE}(\\hat{p}) = \\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$ ise standart hatadır.",
         "en": "When the population standard deviation is unknown and sample sizes are small, Student's t-distribution is used instead of the standard normal distribution."
       },
       "companyExample": {
@@ -109,9 +145,15 @@
         {
           "id": "m5-l3-q1",
           "type": "numeric",
-          "prompt": { "tr": "n = 16 kişilik bir örneklem için t-dağılımı serbestlik derecesi (df) kaçtır?", "en": "What are the degrees of freedom (df) for n = 16?" },
+          "prompt": {
+            "tr": "n = 16 kişilik bir örneklem için t-dağılımı serbestlik derecesi (df) kaçtır?",
+            "en": "What are the degrees of freedom (df) for n = 16?"
+          },
           "correctAnswer": 15,
-          "explanation": { "tr": "df = n - 1 = 16 - 1 = 15", "en": "df = n - 1 = 16 - 1 = 15" }
+          "explanation": {
+            "tr": "df = n - 1 = 16 - 1 = 15",
+            "en": "df = n - 1 = 16 - 1 = 15"
+          }
         }
       ]
     },
@@ -120,7 +162,10 @@
       "moduleId": "module-5",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Oranlar için Güven Aralığı", "en": "CIs for Proportions" },
+      "title": {
+        "tr": "Oranlar için Güven Aralığı",
+        "en": "CIs for Proportions"
+      },
       "conceptCard": {
         "tr": "Kategorik verilerde belirli bir özelliğe sahip olanların oranını tahmin etmek için oran güven aralıkları kullanılır.",
         "en": "Confidence intervals for proportions are used to estimate the percentage of a population that possesses a specific characteristic."
@@ -142,9 +187,15 @@
         {
           "id": "m5-l4-q1",
           "type": "numeric",
-          "prompt": { "tr": "p̂ = 0.50 ve n = 100 ise p̂(1-p̂) kaçtır?", "en": "If p̂ = 0.50 and n = 100, what is p̂(1-p̂)?" },
+          "prompt": {
+            "tr": "p̂ = 0.50 ve n = 100 ise p̂(1-p̂) kaçtır?",
+            "en": "If p̂ = 0.50 and n = 100, what is p̂(1-p̂)?"
+          },
           "correctAnswer": 0.25,
-          "explanation": { "tr": "0.50 * 0.50 = 0.25", "en": "0.50 * 0.50 = 0.25" }
+          "explanation": {
+            "tr": "0.50 * 0.50 = 0.25",
+            "en": "0.50 * 0.50 = 0.25"
+          }
         }
       ]
     }
@@ -154,22 +205,43 @@
       "id": "m5-case-1",
       "moduleId": "module-5",
       "difficulty": "kolay",
-      "title": { "tr": "BioLab: İlaç Etki Süresi Güven Aralığı", "en": "BioLab: Drug Efficacy Confidence Interval" },
+      "title": {
+        "tr": "BioLab: İlaç Etki Süresi Güven Aralığı",
+        "en": "BioLab: Drug Efficacy Confidence Interval"
+      },
       "businessQuestion": {
-        "tr": "BioLab yeni bir ağrı kesicinin etki süresini test etmek için n = 100 hastada klinik deney yapıyor. Örneklem ortalaması x̄ = 300 dakika ve Standart Hata SE = 10 dakika çıkıyor. %95 Güven Düzeyi için (z* = 1.96) Hata Payı (Margin of Error) kaç dakikadır?",
+        "tr": "FinLab müşteri memnuniyet skoru için $n = 100$, $\\bar{X} = 80$ puan ve $\\sigma = 10$ bulmuştur. $\\%95$ güven düzeyinde ($Z_{0.025} = 1.96$) anakütle ortalaması için Güven Aralığını $[\\text{Alt}, \\text{Üst}]$ hesaplayınız.",
         "en": "BioLab tests a new painkiller on n = 100 patients. Sample mean x̄ = 300 min and SE = 10 min. For 95% Confidence (z* = 1.96), what is the Margin of Error in minutes?"
       },
       "dataset": {
-        "columns": ["Parametre", "Değer"],
+        "columns": [
+          "Parametre",
+          "Değer"
+        ],
         "rows": [
-          ["Örneklem Ortalaması (x̄)", "300 dk"],
-          ["Standart Hata (SE)", "10 dk"],
-          ["Z Kritik Değeri (%95)", "1.96"]
+          [
+            "Örneklem Ortalaması (x̄)",
+            "300 dk"
+          ],
+          [
+            "Standart Hata (SE)",
+            "10 dk"
+          ],
+          [
+            "Z Kritik Değeri (%95)",
+            "1.96"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Hata Payı formülünü uygula: E = z* * SE.", "en": "Step 1: Apply Margin of Error formula: E = z* * SE." },
-        { "tr": "2. Adım: E = 1.96 * 10 = 19.6 dakika.", "en": "Step 2: E = 1.96 * 10 = 19.6 minutes." }
+        {
+          "tr": "1. Adım: Standart Hata: $$\\text{SE} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{10}{\\sqrt{100}} = 1.0$$",
+          "en": "Step 1: Apply Margin of Error formula: E = z* * SE."
+        },
+        {
+          "tr": "2. Adım: Hata Payı (ME) ve Güven Aralığı: $$\\text{ME} = 1.96 \\times 1.0 = 1.96 \\implies [80 - 1.96, \\, 80 + 1.96] = [78.04, \\, 81.96]$$",
+          "en": "Step 2: E = 1.96 * 10 = 19.6 minutes."
+        }
       ],
       "expectedApproach": {
         "tr": "Hata Payı E = 19.6 dakikadır. %95 Güven Aralığı [280.4, 319.6] dakika aralığıdır.",
@@ -179,9 +251,15 @@
         {
           "id": "m5-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Hata Payı (Margin of Error) kaç dakikadır?", "en": "What is the Margin of Error in minutes?" },
+          "prompt": {
+            "tr": "$\\%95$ Güven Aralığı Hata Payı (ME) kaçtır?",
+            "en": "What is the Margin of Error in minutes?"
+          },
           "correctAnswer": 19.6,
-          "explanation": { "tr": "1.96 * 10 = 19.6", "en": "1.96 * 10 = 19.6" }
+          "explanation": {
+            "tr": "$$\\text{ME} = 1.96 \\times 1.0 = 1.96$$",
+            "en": "1.96 * 10 = 19.6"
+          }
         }
       ]
     },
@@ -189,23 +267,51 @@
       "id": "m5-case-2",
       "moduleId": "module-5",
       "difficulty": "orta",
-      "title": { "tr": "VoltPower: Batarya Kapasite CI vs PI vs TI Analizi", "en": "VoltPower: Battery Capacity CI vs PI vs TI Analysis" },
+      "title": {
+        "tr": "VoltPower: Batarya Kapasite CI vs PI vs TI Analizi",
+        "en": "VoltPower: Battery Capacity CI vs PI vs TI Analysis"
+      },
       "businessQuestion": {
         "tr": "Pil Üretim Vakası: Kalite standardı batarya kapasitesinin (137, 143) Ah aralığında olmasını gerektiriyor. n = 20 pilden oluşan örneklemde x̄ = 138.47 Ah ve s = 2.66 Ah bulunuyor. 95% Güven Aralığı (137.23, 139.71) çıkmaktadır. Popülasyon hedef ortalaması µ = 140 Ah olduğuna göre bu üretim süreci hedeflenen ortalamayı karşılıyor mu?",
         "en": "Battery Production Case: Quality standard requires (137, 143) Ah. For n = 20 batteries, x̄ = 138.47 Ah and s = 2.66 Ah. 95% CI is (137.23, 139.71). Does the process satisfy the target mean level µ = 140 Ah?"
       },
       "dataset": {
-        "columns": ["Metrik", "Örneklem Değeri", "Hedef Standardı"],
+        "columns": [
+          "Metrik",
+          "Örneklem Değeri",
+          "Hedef Standardı"
+        ],
         "rows": [
-          ["Ortalama (x̄ / µ)", "138.47 Ah", "140.0 Ah"],
-          ["Varyans (s² / σ²)", "7.08 (Ah)²", "4.0 (Ah)²"],
-          ["95% CI Ortalaması", "(137.23, 139.71)", "140.0 Ah İçermiyor"]
+          [
+            "Ortalama (x̄ / µ)",
+            "138.47 Ah",
+            "140.0 Ah"
+          ],
+          [
+            "Varyans (s² / σ²)",
+            "7.08 (Ah)²",
+            "4.0 (Ah)²"
+          ],
+          [
+            "95% CI Ortalaması",
+            "(137.23, 139.71)",
+            "140.0 Ah İçermiyor"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: 95% CI = (137.23, 139.71) aralığını incele.", "en": "Step 1: Inspect 95% CI = (137.23, 139.71)." },
-        { "tr": "2. Adım: Hedef değer olan 140 Ah bu aralığın tamamen dışındadır.", "en": "Step 2: Target value 140 Ah lies completely outside this interval." },
-        { "tr": "3. Adım: Dolayısıyla üretim süreci 140 Ah hedefini karşılamamaktadır.", "en": "Step 3: Hence, the process fails to meet the target mean of 140 Ah." }
+        {
+          "tr": "1. Adım: 95% CI = (137.23, 139.71) aralığını incele.",
+          "en": "Step 1: Inspect 95% CI = (137.23, 139.71)."
+        },
+        {
+          "tr": "2. Adım: Hedef değer olan 140 Ah bu aralığın tamamen dışındadır.",
+          "en": "Step 2: Target value 140 Ah lies completely outside this interval."
+        },
+        {
+          "tr": "3. Adım: Dolayısıyla üretim süreci 140 Ah hedefini karşılamamaktadır.",
+          "en": "Step 3: Hence, the process fails to meet the target mean of 140 Ah."
+        }
       ],
       "expectedApproach": {
         "tr": "CI aralığı 140 Ah değerini içermediği için süreç tasarım hedefini sağlamaz.",
@@ -215,13 +321,25 @@
         {
           "id": "m5-case-2-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "95% Güven Aralığı (137.23, 139.71) hedeflenen 140 Ah ortalamasını karşılıyor mu?", "en": "Does the 95% CI (137.23, 139.71) contain the target 140 Ah mean?" },
+          "prompt": {
+            "tr": "95% Güven Aralığı (137.23, 139.71) hedeflenen 140 Ah ortalamasını karşılıyor mu?",
+            "en": "Does the 95% CI (137.23, 139.71) contain the target 140 Ah mean?"
+          },
           "options": [
-            { "tr": "Hayır, 140 Ah aralığın dışındadır ve süreç hedefi karşılamaz", "en": "No, 140 Ah is outside the interval and fails target" },
-            { "tr": "Evet, 140 Ah aralığın içindedir", "en": "Yes, 140 Ah is inside" }
+            {
+              "tr": "Hayır, 140 Ah aralığın dışındadır ve süreç hedefi karşılamaz",
+              "en": "No, 140 Ah is outside the interval and fails target"
+            },
+            {
+              "tr": "Evet, 140 Ah aralığın içindedir",
+              "en": "Yes, 140 Ah is inside"
+            }
           ],
           "correctAnswer": "Hayır, 140 Ah aralığın dışındadır ve süreç hedefi karşılamaz",
-          "explanation": { "tr": "140.0 > 139.71 olduğu için hedeflenen ortalama sağlanamamıştır.", "en": "Since 140.0 > 139.71, the target mean is not met." }
+          "explanation": {
+            "tr": "140.0 > 139.71 olduğu için hedeflenen ortalama sağlanamamıştır.",
+            "en": "Since 140.0 > 139.71, the target mean is not met."
+          }
         }
       ]
     },
@@ -229,22 +347,46 @@
       "id": "m5-case-3",
       "moduleId": "module-5",
       "difficulty": "zor",
-      "title": { "tr": "DataPulse: Agresti-Coull Oran Güven Aralığı", "en": "DataPulse: Agresti-Coull Proportion CI" },
+      "title": {
+        "tr": "DataPulse: Agresti-Coull Oran Güven Aralığı",
+        "en": "DataPulse: Agresti-Coull Proportion CI"
+      },
       "businessQuestion": {
         "tr": "Gelişmiş Oran Yaklaşımı (Agresti-Coull): n = 10 aboneden X = 2 tanesi premium pakete geçmiştir. Geleneksel p̂ = 2/10 = 0.20 yerine Agresti-Coull p̃ = (X+2)/(n+4) ve ñ = n+4 kullanılarak hesaplanan düzeltilmiş p̃ oranı kaçtır?",
         "en": "Advanced Proportion Approach (Agresti-Coull): For n = 10 users with X = 2 premium upgrades, what is the adjusted proportion p̃ = (X+2)/(n+4)?"
       },
       "dataset": {
-        "columns": ["Parametre", "Geleneksel Değer", "Agresti-Coull Düzeltilmiş"],
+        "columns": [
+          "Parametre",
+          "Geleneksel Değer",
+          "Agresti-Coull Düzeltilmiş"
+        ],
         "rows": [
-          ["Başarı Sayısı (X)", "2", "2 + 2 = 4"],
-          ["Örneklem (n)", "10", "10 + 4 = 14"]
+          [
+            "Başarı Sayısı (X)",
+            "2",
+            "2 + 2 = 4"
+          ],
+          [
+            "Örneklem (n)",
+            "10",
+            "10 + 4 = 14"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: ñ = n + 4 = 10 + 4 = 14.", "en": "Step 1: ñ = n + 4 = 10 + 4 = 14." },
-        { "tr": "2. Adım: X̃ = X + 2 = 2 + 2 = 4.", "en": "Step 2: X̃ = X + 2 = 2 + 2 = 4." },
-        { "tr": "3. Adım: p̃ = 4 / 14 = 0.2857.", "en": "Step 3: p̃ = 4 / 14 = 0.2857." }
+        {
+          "tr": "1. Adım: ñ = n + 4 = 10 + 4 = 14.",
+          "en": "Step 1: ñ = n + 4 = 10 + 4 = 14."
+        },
+        {
+          "tr": "2. Adım: X̃ = X + 2 = 2 + 2 = 4.",
+          "en": "Step 2: X̃ = X + 2 = 2 + 2 = 4."
+        },
+        {
+          "tr": "3. Adım: p̃ = 4 / 14 = 0.2857.",
+          "en": "Step 3: p̃ = 4 / 14 = 0.2857."
+        }
       ],
       "expectedApproach": {
         "tr": "Agresti-Coull düzeltilmiş oran p̃ = 4/14 = 0.2857 (yaklaşık %28.6) olarak bulunur.",
@@ -254,9 +396,15 @@
         {
           "id": "m5-case-3-q1",
           "type": "numeric",
-          "prompt": { "tr": "Düzeltilmiş p̃ oranı kaçtır? (2 basamak yuvarlayın)", "en": "What is the adjusted p̃ proportion? (round to 2 decimals)" },
+          "prompt": {
+            "tr": "Düzeltilmiş p̃ oranı kaçtır? (2 basamak yuvarlayın)",
+            "en": "What is the adjusted p̃ proportion? (round to 2 decimals)"
+          },
           "correctAnswer": 0.29,
-          "explanation": { "tr": "4 / 14 = 0.2857 -> 0.29", "en": "4 / 14 = 0.2857 -> 0.29" }
+          "explanation": {
+            "tr": "4 / 14 = 0.2857 -> 0.29",
+            "en": "4 / 14 = 0.2857 -> 0.29"
+          }
         }
       ]
     }

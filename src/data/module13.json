@@ -1,7 +1,10 @@
 {
   "id": "module-13",
   "order": 13,
-  "title": { "tr": "Kombinatorik & Sayma Yöntemleri", "en": "Combinatorics & Counting Methods" },
+  "title": {
+    "tr": "Kombinatorik & Sayma Yöntemleri",
+    "en": "Combinatorics & Counting Methods"
+  },
   "description": {
     "tr": "Çarpım kuralı, permütasyon P(n,k), kombinasyon C(n,k), faktöriyel ve binom katsayıları.",
     "en": "Multiplication rule, permutations P(n,k), combinations C(n,k), factorials, and binomial coefficients."
@@ -13,9 +16,12 @@
       "moduleId": "module-13",
       "order": 1,
       "difficulty": "basit",
-      "title": { "tr": "Temel Sayma İlkesi & Faktöriyel", "en": "Basic Counting Principle & Factorial" },
+      "title": {
+        "tr": "Temel Sayma İlkesi & Faktöriyel",
+        "en": "Basic Counting Principle & Factorial"
+      },
       "conceptCard": {
-        "tr": "Sayma ilkesi, bir işlem k aşamadan oluşuyorsa toplam olası sonuç sayısının her aşamadaki seçenek sayılarının çarpımı olduğunu belirtir. n elemanın sıralama sayısı n! faktöriyel ile hesaplanır.",
+        "tr": "Çarpma Kuralı (Temel Sayma İlkesi): $k$ aşamalı bir süreçte $i$. aşama $n_i$ farklı şekilde gerçekleşebiliyorsa toplam olası durum sayısı:\n\n$$N = n_1 \\times n_2 \\times \\dots \\times n_k$$\n\nFaktöriyel Fonksiyonu: $n$ elemanın yan yana dizilim sayısı $n! = n \\times (n-1) \\times \\dots \\times 2 \\times 1$'dir ($0! = 1$).",
         "en": "The counting principle states that for a process of k stages, total outcomes equals the product of choices at each stage. Ordering n elements equals n! factorial."
       },
       "companyExample": {
@@ -35,9 +41,15 @@
         {
           "id": "m13-l1-q1",
           "type": "numeric",
-          "prompt": { "tr": "5 kişinin yan yana bir sıraya dizilme olası kaç farklı şekli vardır (5!)?", "en": "How many ways can 5 people line up in a row (5!)?" },
+          "prompt": {
+            "tr": "$5$ kişinin yan yana düz bir sıraya dizilme olası farklı şekil sayısı ($5!$) kaçtır?",
+            "en": "How many ways can 5 people line up in a row (5!)?"
+          },
           "correctAnswer": 120,
-          "explanation": { "tr": "5! = 5 * 4 * 3 * 2 * 1 = 120.", "en": "5! = 5 * 4 * 3 * 2 * 1 = 120." }
+          "explanation": {
+            "tr": "$$5! = 5 \\times 4 \\times 3 \\times 2 \\times 1 = 120$$",
+            "en": "5! = 5 * 4 * 3 * 2 * 1 = 120."
+          }
         }
       ]
     },
@@ -46,9 +58,12 @@
       "moduleId": "module-13",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Permütasyon (Sıralı Seçim)", "en": "Permutations (Ordered Selection)" },
+      "title": {
+        "tr": "Permütasyon (Sıralı Seçim)",
+        "en": "Permutations (Ordered Selection)"
+      },
       "conceptCard": {
-        "tr": "Permütasyon, n adet elemandan r tanesinin SIRA ÖNEMLİ OLARAK seçilip dizilmesidir. Formül: P(n, r) = n! / (n - r)!.",
+        "tr": "Permütasyon $P(n, k)$, $n$ farklı eleman arasından $k$ elemanın sırası gözetilerek yapılan diziliş sayısıdır:\n\n$$P(n, k) = \\frac{n!}{(n-k)!} = n(n-1)\\dots(n-k+1)$$\n\nTekrarlı Permütasyon: $n$ elemandan $n_1, n_2, \\dots, n_k$ tanesi özdeş ise dizilim sayısı $\\frac{n!}{n_1! n_2! \\dots n_k!}$'dir.",
         "en": "Permutation is selecting r objects from n where ORDER MATTERS. Formula: P(n, r) = n! / (n - r)!."
       },
       "companyExample": {
@@ -68,9 +83,15 @@
         {
           "id": "m13-l2-q1",
           "type": "numeric",
-          "prompt": { "tr": "P(6, 2) kaçtır?", "en": "What is P(6, 2)?" },
+          "prompt": {
+            "tr": "$P(6, 2) = \\frac{6!}{(6-2)!}$ permütasyon değeri kaçtır?",
+            "en": "What is P(6, 2)?"
+          },
           "correctAnswer": 30,
-          "explanation": { "tr": "6 * 5 = 30.", "en": "6 * 5 = 30." }
+          "explanation": {
+            "tr": "$$P(6, 2) = \\frac{6!}{4!} = 6 \\times 5 = 30$$",
+            "en": "6 * 5 = 30."
+          }
         }
       ]
     },
@@ -79,9 +100,12 @@
       "moduleId": "module-13",
       "order": 3,
       "difficulty": "orta",
-      "title": { "tr": "Kombinasyon (Sırasız Grup Seçimi)", "en": "Combinations (Unordered Selection)" },
+      "title": {
+        "tr": "Kombinasyon (Sırasız Grup Seçimi)",
+        "en": "Combinations (Unordered Selection)"
+      },
       "conceptCard": {
-        "tr": "Kombinasyon, n adet elemandan r tanesinin SIRA ÖNEMSİZ OLARAK seçilip grup oluşturulmasıdır. Formül: C(n, r) = n! / [r! (n - r)!].",
+        "tr": "Kombinasyon $\\binom{n}{k}$, $n$ elemanlı bir kümeden seçilecek $k$ elemanlı sırasız alt kümelerin sayısıdır:\n\n$$\\binom{n}{k} = C(n, k) = \\frac{n!}{k!(n-k)!}$$\n\nSimetri Özelliği: $\\binom{n}{k} = \\binom{n}{n-k}$ ve Toplam Özelliği: $\\sum_{k=0}^{n} \\binom{n}{k} = 2^n$.",
         "en": "Combination is selecting r objects from n where ORDER DOES NOT MATTER. Formula: C(n, r) = n! / [r! (n - r)!]."
       },
       "companyExample": {
@@ -101,9 +125,15 @@
         {
           "id": "m13-l3-q1",
           "type": "numeric",
-          "prompt": { "tr": "C(5, 2) kaçtır?", "en": "What is C(5, 2)?" },
+          "prompt": {
+            "tr": "$\\binom{5}{2} = C(5, 2)$ kombinasyon değeri kaçtır?",
+            "en": "What is C(5, 2)?"
+          },
           "correctAnswer": 10,
-          "explanation": { "tr": "(5 * 4) / 2 = 10.", "en": "(5 * 4) / 2 = 10." }
+          "explanation": {
+            "tr": "$$\\binom{5}{2} = \\frac{5 \\times 4}{2 \\times 1} = 10$$",
+            "en": "(5 * 4) / 2 = 10."
+          }
         }
       ]
     },
@@ -112,9 +142,12 @@
       "moduleId": "module-13",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Binom Katsayıları & Pascal Üçgeni", "en": "Binomial Coefficients & Pascal's Triangle" },
+      "title": {
+        "tr": "Binom Katsayıları & Pascal Üçgeni",
+        "en": "Binomial Coefficients & Pascal's Triangle"
+      },
       "conceptCard": {
-        "tr": "Binom açılımında (a + b)^n terimlerinin katsayıları kombinasyon C(n, k) değerleri ile elde edilir. Pascal üçgeninde her sayı, üstündeki iki sayının toplamına eşittir.",
+        "tr": "Binom Teoremi ve Pascal Özelliği:\n\n$$(x+y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^{n-k} y^k$$\n\nPascal Özdeşliği: $$\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$$",
         "en": "Binomial expansion (a + b)^n coefficients are given by combinations C(n, k). Each number in Pascal's triangle is the sum of the two above it."
       },
       "companyExample": {
@@ -134,9 +167,15 @@
         {
           "id": "m13-l4-q1",
           "type": "numeric",
-          "prompt": { "tr": "C(4, 2) ve C(4, 1) toplamı kaçtır?", "en": "What is C(4, 2) + C(4, 1)?" },
+          "prompt": {
+            "tr": "$\\binom{4}{2} + \\binom{4}{1}$ toplamı Pascal özdeşliğine göre kaça eşittir?",
+            "en": "What is C(4, 2) + C(4, 1)?"
+          },
           "correctAnswer": 10,
-          "explanation": { "tr": "6 + 4 = 10.", "en": "6 + 4 = 10." }
+          "explanation": {
+            "tr": "$$\\binom{4}{2} + \\binom{4}{1} = 6 + 4 = 10 \\quad \\left(=\\binom{5}{2}\\right)$$",
+            "en": "6 + 4 = 10."
+          }
         }
       ]
     }
@@ -146,20 +185,37 @@
       "id": "m13-case-1",
       "moduleId": "module-13",
       "difficulty": "orta",
-      "title": { "tr": "CyberPass: Şifre Kombinasyon ve Güvenlik Analizi", "en": "CyberPass: Password Combinatorics & Security Analysis" },
+      "title": {
+        "tr": "CyberPass: Şifre Kombinasyon ve Güvenlik Analizi",
+        "en": "CyberPass: Password Combinatorics & Security Analysis"
+      },
       "businessQuestion": {
         "tr": "CyberPass kullanıcı şifrelerinin kırılma süresini inceliyor. 6 haneli bir şifrede sadece küçük harfler (26 adet) kullanılırsa C(26,6) yerine kaç adet olası şifre 26^6 üretilebilir?",
         "en": "CyberPass evaluates 6-character lowercase passwords (26 letters). What is total 26^6 combination count?"
       },
       "dataset": {
-        "columns": ["Şifre Tipi", "Karakter Kümesi", "Uzunluk"],
+        "columns": [
+          "Şifre Tipi",
+          "Karakter Kümesi",
+          "Uzunluk"
+        ],
         "rows": [
-          ["Sadece Harf", "26", "6"]
+          [
+            "Sadece Harf",
+            "26",
+            "6"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Her hane için 26 seçenek vardır.", "en": "Step 1: 26 choices per slot." },
-        { "tr": "2. Adım: 26^6 = 308,915,776.", "en": "Step 2: 26^6 = 308,915,776." }
+        {
+          "tr": "1. Adım: Her hane için 26 seçenek vardır.",
+          "en": "Step 1: 26 choices per slot."
+        },
+        {
+          "tr": "2. Adım: 26^6 = 308,915,776.",
+          "en": "Step 2: 26^6 = 308,915,776."
+        }
       ],
       "expectedApproach": {
         "tr": "Şifre uzunluğunu 6'dan 8'e çıkarmak kombinasyon sayısını milyarlara katlayarak brute-force saldırılarını engeller.",
@@ -169,9 +225,15 @@
         {
           "id": "m13-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "4 elemanlı kümeden seçilecek 2 elemanlı alt küme sayısı C(4,2) kaçtır?", "en": "What is C(4,2)?" },
+          "prompt": {
+            "tr": "$4$ elemanlı bir kümeden seçilecek $2$ elemanlı alt küme sayısı $\\binom{4}{2}$ kaçtır?",
+            "en": "What is C(4,2)?"
+          },
           "correctAnswer": 6,
-          "explanation": { "tr": "(4 * 3) / 2 = 6.", "en": "(4 * 3) / 2 = 6." }
+          "explanation": {
+            "tr": "$$\\binom{4}{2} = \\frac{4 \\times 3}{2 \\times 1} = 6$$",
+            "en": "(4 * 3) / 2 = 6."
+          }
         }
       ]
     }

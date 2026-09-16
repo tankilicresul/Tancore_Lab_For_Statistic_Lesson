@@ -1,7 +1,10 @@
 {
   "id": "module-8",
   "order": 8,
-  "title": { "tr": "Çoklu Regresyon & Model Değerlendirme", "en": "Multiple Regression & Model Evaluation" },
+  "title": {
+    "tr": "Çoklu Regresyon & Model Değerlendirme",
+    "en": "Multiple Regression & Model Evaluation"
+  },
   "description": {
     "tr": "Çok değişkenli regresyon, Düzeltilmiş R², Çoklu doğrusallık (VIF) ve kalıntı analizi. Emlak fiyat tahmin modeli vakası.",
     "en": "Multivariable regression, Adjusted R², Multicollinearity (VIF), and residual analysis. Real estate pricing equation case."
@@ -13,9 +16,12 @@
       "moduleId": "module-8",
       "order": 1,
       "difficulty": "basit",
-      "title": { "tr": "Çok Değişkenli Regresyon Mantığı", "en": "Multiple Regression Concept" },
+      "title": {
+        "tr": "Çok Değişkenli Regresyon Mantığı",
+        "en": "Multiple Regression Concept"
+      },
       "conceptCard": {
-        "tr": "Çoklu regresyon, birden fazla bağımsız değişkenin (X1, X2, X3) tek bir bağımlı değişkeni (Y) tahmin etmesini sağlar: y = b0 + b1*X1 + b2*X2.",
+        "tr": "Çoklu Doğrusal Regresyon, bir bağımlı değişkeni ($Y$) birden fazla açıklayıcı değişken ($X_1, X_2, \\dots, X_k$) ile modeller:\n\n$$Y = \\beta_0 + \\beta_1 X_1 + \\beta_2 X_2 + \\dots + \\beta_k X_k + \\epsilon, \\qquad \\epsilon \\sim \\mathcal{N}(0, \\sigma^2)$$\n\nDüzeltilmiş $R^2$ ($R_{\\text{adj}}^2$), modele eklenen değişken sayısının serbestlik derecesi üzerindeki cezasını hesaba katar:\n\n$$R_{\\text{adj}}^2 = 1 - \\left[ \\frac{(1 - R^2)(n - 1)}{n - k - 1} \\right]$$",
         "en": "Multiple regression models one dependent variable Y using multiple independent predictors (X1, X2, X3): y = b0 + b1*X1 + b2*X2."
       },
       "companyExample": {
@@ -35,13 +41,25 @@
         {
           "id": "m8-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Çoklu regresyonun basit regresyondan temel farkı nedir?", "en": "What is the key difference of multiple regression?" },
+          "prompt": {
+            "tr": "Çoklu regresyonda modele anlamsız yeni değişkenler eklendikçe standart $R^2$ ve Düzeltilmiş $R^2_{\\text{adj}}$ nasıl davranır?",
+            "en": "What is the key difference of multiple regression?"
+          },
           "options": [
-            { "tr": "Birden fazla bağımsız değişken kullanılması", "en": "Uses multiple independent variables" },
-            { "tr": "Sadece 1 veri noktası içermesi", "en": "Contains only 1 data point" }
+            {
+              "tr": "Birden fazla bağımsız değişken kullanılması",
+              "en": "Uses multiple independent variables"
+            },
+            {
+              "tr": "Sadece 1 veri noktası içermesi",
+              "en": "Contains only 1 data point"
+            }
           ],
           "correctAnswer": "Birden fazla bağımsız değişken kullanılması",
-          "explanation": { "tr": "Birden fazla X değişkeni aynı anda modele eklenir.", "en": "Multiple X predictors are included simultaneously." }
+          "explanation": {
+            "tr": "Standart $R^2$ asla azalmaz (şişer); Düzeltilmiş $R^2_{\\text{adj}}$ ise ceza katsayısı sebebiyle düşebilir.",
+            "en": "Multiple X predictors are included simultaneously."
+          }
         }
       ]
     },
@@ -50,9 +68,12 @@
       "moduleId": "module-8",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Düzeltilmiş R² (Adjusted R²)", "en": "Adjusted R-Squared" },
+      "title": {
+        "tr": "Düzeltilmiş R² (Adjusted R²)",
+        "en": "Adjusted R-Squared"
+      },
       "conceptCard": {
-        "tr": "Modele gereksiz değişken eklendikçe standart R² hep artar veya sabit kalır. Düzeltilmiş R² ise gereksiz değişkenler için cezalandırma yapar.",
+        "tr": "Çoklu Doğrusallık (Multicollinearity), bağımsız değişkenlerin kendi aralarında yüksek korelasyona sahip olmasıdır. Varyans Şişirme Faktörü ($\\text{VIF}$) ile tespit edilir:\n\n$$\\text{VIF}_j = \\frac{1}{1 - R_j^2}$$\n\nGenel kural olarak $\\text{VIF} > 5$ veya $\\text{VIF} > 10$ ciddi çoklu doğrusallık riskine işaret eder.",
         "en": "Standard R² always increases when adding predictors. Adjusted R² penalizes adding useless variables."
       },
       "companyExample": {
@@ -72,13 +93,25 @@
         {
           "id": "m8-l2-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Farklı sayıda değişkene sahip iki regresyon modelini karşılaştırırken hangisi kullanılır?", "en": "Which metric compares models with different numbers of predictors?" },
+          "prompt": {
+            "tr": "Bir bağımsız değişkenin diğer değişkenlerle regresyonunda $R_j^2 = 0.80$ ise bu değişkenin $\\text{VIF}$ değeri kaçtır?",
+            "en": "Which metric compares models with different numbers of predictors?"
+          },
           "options": [
-            { "tr": "Düzeltilmiş R² (Adjusted R²)", "en": "Adjusted R-squared" },
-            { "tr": "Sadece Örneklem Sayısı n", "en": "Only sample size n" }
+            {
+              "tr": "Düzeltilmiş R² (Adjusted R²)",
+              "en": "Adjusted R-squared"
+            },
+            {
+              "tr": "Sadece Örneklem Sayısı n",
+              "en": "Only sample size n"
+            }
           ],
           "correctAnswer": "Düzeltilmiş R² (Adjusted R²)",
-          "explanation": { "tr": "Düzeltilmiş R² eklenen değişken sayısını cezalandırarak adil kıyas sağlar.", "en": "Adjusted R-squared penalizes extra features for fair comparison." }
+          "explanation": {
+            "tr": "$$\\text{VIF} = \\frac{1}{1 - 0.80} = \\frac{1}{0.20} = 5$$",
+            "en": "Adjusted R-squared penalizes extra features for fair comparison."
+          }
         }
       ]
     },
@@ -87,7 +120,10 @@
       "moduleId": "module-8",
       "order": 3,
       "difficulty": "orta-ustu",
-      "title": { "tr": "Çoklu Doğrusallık (VIF)", "en": "Multicollinearity & VIF" },
+      "title": {
+        "tr": "Çoklu Doğrusallık (VIF)",
+        "en": "Multicollinearity & VIF"
+      },
       "conceptCard": {
         "tr": "Bağımsız değişkenlerin kendi aralarında yüksek korelasyona sahip olması Çoklu Doğrusallık (Multicollinearity) yaratır. VIF > 5 veya 10 ise sorun var demektir.",
         "en": "High correlation among independent variables causes Multicollinearity. VIF > 5 or 10 indicates a problem."
@@ -109,9 +145,15 @@
         {
           "id": "m8-l3-q1",
           "type": "numeric",
-          "prompt": { "tr": "VIF değerinin kaçın üzerinde olması ciddi çoklu doğrusallık uyarısıdır?", "en": "A VIF value above what threshold signals serious multicollinearity?" },
+          "prompt": {
+            "tr": "VIF değerinin kaçın üzerinde olması ciddi çoklu doğrusallık uyarısıdır?",
+            "en": "A VIF value above what threshold signals serious multicollinearity?"
+          },
           "correctAnswer": 5,
-          "explanation": { "tr": "VIF > 5 (veya 10) değişkenler arası yüksek korelasyon uyarısıdır.", "en": "VIF > 5 or 10 warns of high correlation between predictors." }
+          "explanation": {
+            "tr": "VIF > 5 (veya 10) değişkenler arası yüksek korelasyon uyarısıdır.",
+            "en": "VIF > 5 or 10 warns of high correlation between predictors."
+          }
         }
       ]
     },
@@ -120,7 +162,10 @@
       "moduleId": "module-8",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Kalıntı (Residual) Analizi & Model Doğrulama", "en": "Residual Analysis & Validation" },
+      "title": {
+        "tr": "Kalıntı (Residual) Analizi & Model Doğrulama",
+        "en": "Residual Analysis & Validation"
+      },
       "conceptCard": {
         "tr": "Kalıntı (Hata) = Gerçek Y - Tahmin Edilen Y. İyi bir regresyon modelinde kalıntılar rastgele dağılmalı ve ortalaması 0 olmalıdır.",
         "en": "Residual = Actual Y - Predicted Y. A good model has residuals randomly distributed around zero."
@@ -142,9 +187,15 @@
         {
           "id": "m8-l4-q1",
           "type": "numeric",
-          "prompt": { "tr": "Gerçek Y = 120 ve Tahmin Y = 115 ise Kalıntı (Residual) kaçtır?", "en": "If Actual Y = 120 and Predicted Y = 115, what is the Residual?" },
+          "prompt": {
+            "tr": "Gerçek Y = 120 ve Tahmin Y = 115 ise Kalıntı (Residual) kaçtır?",
+            "en": "If Actual Y = 120 and Predicted Y = 115, what is the Residual?"
+          },
           "correctAnswer": 5,
-          "explanation": { "tr": "120 - 115 = 5", "en": "120 - 115 = 5" }
+          "explanation": {
+            "tr": "120 - 115 = 5",
+            "en": "120 - 115 = 5"
+          }
         }
       ]
     }
@@ -154,22 +205,47 @@
       "id": "m8-case-1",
       "moduleId": "module-8",
       "difficulty": "kolay",
-      "title": { "tr": "EstateVal: Emlak Fiyat Tahmin Denklemi", "en": "EstateVal: Property Price Prediction Equation" },
+      "title": {
+        "tr": "EstateVal: Emlak Fiyat Tahmin Denklemi",
+        "en": "EstateVal: Property Price Prediction Equation"
+      },
       "businessQuestion": {
-        "tr": "EstateVal şirketi çoklu regresyon analizi ile Konut Fiyatı (Bin TL) = 200 + 10 * (Metrekare m²) - 15 * (Bina Yaşı Yıl) modelini geliştirmiştir. 100 m² büyüklüğünde ve 4 yaşında olan bir dairenin tahmin edilen fiyatı (Bin TL) kaçtır?",
+        "tr": "PropTech konut fiyat tahmin modelinde $\\hat{Y} = 500 + 15 X_1 + 80 X_2$ denklemini kurmuştur ($X_1$: Metrekare $\\text{m}^2$, $X_2$: Oda Sayısı). $100 \\text{ m}^2$ ve $3$ odalı bir evin tahmini fiyatını hesaplayınız.",
         "en": "EstateVal derived Price ($k) = 200 + 10 * (Area m²) - 15 * (Age years). What is the predicted price ($k) for a 100 m² apartment that is 4 years old?"
       },
       "dataset": {
-        "columns": ["Özellik", "Katsayı", "Değer"],
+        "columns": [
+          "Özellik",
+          "Katsayı",
+          "Değer"
+        ],
         "rows": [
-          ["Kesişim (b0)", "200", "1"],
-          ["Metrekare (X1)", "10", "100 m²"],
-          ["Bina Yaşı (X2)", "-15", "4 yıl"]
+          [
+            "Kesişim (b0)",
+            "200",
+            "1"
+          ],
+          [
+            "Metrekare (X1)",
+            "10",
+            "100 m²"
+          ],
+          [
+            "Bina Yaşı (X2)",
+            "-15",
+            "4 yıl"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Fiyat = 200 + 10*(100) - 15*(4).", "en": "Step 1: Price = 200 + 10*(100) - 15*(4)." },
-        { "tr": "2. Adım: 200 + 1000 - 60 = 1140 Bin TL.", "en": "Step 2: 200 + 1000 - 60 = 1140." }
+        {
+          "tr": "1. Adım: Denklemde Yerine Koyma: $$\\hat{Y} = 500 + 15(100) + 80(3) = 500 + 1500 + 240 = 2240 \\text{ Bin TL}$$",
+          "en": "Step 1: Price = 200 + 10*(100) - 15*(4)."
+        },
+        {
+          "tr": "2. Adım: 200 + 1000 - 60 = 1140 Bin TL.",
+          "en": "Step 2: 200 + 1000 - 60 = 1140."
+        }
       ],
       "expectedApproach": {
         "tr": "Tahmin Edilen Fiyat = 1,140 Bin TL (1.14 Milyon TL)'dir.",
@@ -179,9 +255,15 @@
         {
           "id": "m8-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Tahmin edilen daire fiyatı (Bin TL) kaçtır?", "en": "What is the predicted price ($k)?" },
+          "prompt": {
+            "tr": "Tahmin edilen konut fiyatı (Bin TL) kaçtır?",
+            "en": "What is the predicted price ($k)?"
+          },
           "correctAnswer": 1140,
-          "explanation": { "tr": "200 + 1000 - 60 = 1140 Bin TL", "en": "200 + 1000 - 60 = 1140" }
+          "explanation": {
+            "tr": "$$\\hat{Y} = 500 + 1500 + 240 = 2240$$",
+            "en": "200 + 1000 - 60 = 1140"
+          }
         }
       ]
     },
@@ -189,22 +271,47 @@
       "id": "m8-case-2",
       "moduleId": "module-8",
       "difficulty": "orta",
-      "title": { "tr": "MarketPulse: Regresyon ANOVA Tablosu & R² Hesabı", "en": "MarketPulse: Regression ANOVA Table & R² Calculation" },
+      "title": {
+        "tr": "MarketPulse: Regresyon ANOVA Tablosu & R² Hesabı",
+        "en": "MarketPulse: Regression ANOVA Table & R² Calculation"
+      },
       "businessQuestion": {
         "tr": "Regresyon Analizi Uygulama Sorusu: Tek değişkenli regresyon analizinde Toplam Kareler Toplamı SST = 500 ve Regresyon Kareler Toplamı SSR = 400 bulunmuştur. Belirtlilik Katsayısı R² = SSR / SST kaçtır ve Hata Kareler Toplamı (SSE) kaç kalır?",
         "en": "Regression Analysis Practical Question: For SLR, Total Sum of Squares SST = 500, Regression Sum of Squares SSR = 400. What is Coefficient of Determination R² = SSR / SST, and what is SSE?"
       },
       "dataset": {
-        "columns": ["Kareler Toplamı Türü", "Kısaltma", "Değer"],
+        "columns": [
+          "Kareler Toplamı Türü",
+          "Kısaltma",
+          "Değer"
+        ],
         "rows": [
-          ["Toplam Kareler Toplamı", "SST", "500"],
-          ["Regresyon Kareler Toplamı", "SSR", "400"],
-          ["Hata Kareler Toplamı", "SSE", "SST - SSR = 100"]
+          [
+            "Toplam Kareler Toplamı",
+            "SST",
+            "500"
+          ],
+          [
+            "Regresyon Kareler Toplamı",
+            "SSR",
+            "400"
+          ],
+          [
+            "Hata Kareler Toplamı",
+            "SSE",
+            "SST - SSR = 100"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: SSE = SST - SSR = 500 - 400 = 100.", "en": "Step 1: SSE = SST - SSR = 500 - 400 = 100." },
-        { "tr": "2. Adım: R² = SSR / SST = 400 / 500 = 0.80 (%80).", "en": "Step 2: R² = SSR / SST = 400 / 500 = 0.80 (80%)." }
+        {
+          "tr": "1. Adım: SSE = SST - SSR = 500 - 400 = 100.",
+          "en": "Step 1: SSE = SST - SSR = 500 - 400 = 100."
+        },
+        {
+          "tr": "2. Adım: R² = SSR / SST = 400 / 500 = 0.80 (%80).",
+          "en": "Step 2: R² = SSR / SST = 400 / 500 = 0.80 (80%)."
+        }
       ],
       "expectedApproach": {
         "tr": "R² = 0.80 olup model bağımlı değişkendeki varyasyonun %80'ini açıklamaktadır.",
@@ -214,9 +321,15 @@
         {
           "id": "m8-case-2-q1",
           "type": "numeric",
-          "prompt": { "tr": "Belirtlilik Katsayısı (R²) kaçtır?", "en": "What is the Coefficient of Determination (R²)?" },
+          "prompt": {
+            "tr": "Belirtlilik Katsayısı (R²) kaçtır?",
+            "en": "What is the Coefficient of Determination (R²)?"
+          },
           "correctAnswer": 0.8,
-          "explanation": { "tr": "400 / 500 = 0.80", "en": "400 / 500 = 0.80" }
+          "explanation": {
+            "tr": "400 / 500 = 0.80",
+            "en": "400 / 500 = 0.80"
+          }
         }
       ]
     },
@@ -224,19 +337,33 @@
       "id": "m8-case-3",
       "moduleId": "module-8",
       "difficulty": "zor",
-      "title": { "tr": "AutoAnalytics: Eğim Katsayısı b1 için t-Testi", "en": "AutoAnalytics: Slope Coefficient b1 t-Test" },
+      "title": {
+        "tr": "AutoAnalytics: Eğim Katsayısı b1 için t-Testi",
+        "en": "AutoAnalytics: Slope Coefficient b1 t-Test"
+      },
       "businessQuestion": {
         "tr": "Regresyon Katsayıları Formül Kılavuzu: Araç ağırlığı ile yakıt tüketimi arasındaki regresyon katsayısı b1 = 4.0 ve bu eğim katsayısının standart hatası sb1 = 0.80 hesaplanmıştır. H0: β1 = 0 hipotezi için t0 = b1 / sb1 istatistiği kaçtır?",
         "en": "Regression Coefficients Formula Guide: Slope coefficient b1 = 4.0, standard error sb1 = 0.80. What is t0 test statistic t0 = b1 / sb1 for H0: β1 = 0?"
       },
       "dataset": {
-        "columns": ["Katsayı", "Tahmin Değeri (b1)", "Standart Hata (sb1)"],
+        "columns": [
+          "Katsayı",
+          "Tahmin Değeri (b1)",
+          "Standart Hata (sb1)"
+        ],
         "rows": [
-          ["Eğim (b1)", "4.0", "0.80"]
+          [
+            "Eğim (b1)",
+            "4.0",
+            "0.80"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: t0 = b1 / sb1 = 4.0 / 0.80 = 5.00.", "en": "Step 1: t0 = b1 / sb1 = 4.0 / 0.80 = 5.00." }
+        {
+          "tr": "1. Adım: t0 = b1 / sb1 = 4.0 / 0.80 = 5.00.",
+          "en": "Step 1: t0 = b1 / sb1 = 4.0 / 0.80 = 5.00."
+        }
       ],
       "expectedApproach": {
         "tr": "t0 test istatistiği 5.00 hesaplanır. Eğim istatistiksel olarak anlamlı şekilde 0'dan farklıdır.",
@@ -246,9 +373,15 @@
         {
           "id": "m8-case-3-q1",
           "type": "numeric",
-          "prompt": { "tr": "t0 test istatistiği kaçtır?", "en": "What is the t0 test statistic?" },
+          "prompt": {
+            "tr": "t0 test istatistiği kaçtır?",
+            "en": "What is the t0 test statistic?"
+          },
           "correctAnswer": 5,
-          "explanation": { "tr": "4.0 / 0.80 = 5.0", "en": "4.0 / 0.80 = 5.0" }
+          "explanation": {
+            "tr": "4.0 / 0.80 = 5.0",
+            "en": "4.0 / 0.80 = 5.0"
+          }
         }
       ]
     }

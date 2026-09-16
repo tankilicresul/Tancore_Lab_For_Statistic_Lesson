@@ -1,7 +1,10 @@
 {
   "id": "module-7",
   "order": 7,
-  "title": { "tr": "Korelasyon & Basit Regresyon", "en": "Correlation & Simple Regression" },
+  "title": {
+    "tr": "Korelasyon & Basit Regresyon",
+    "en": "Correlation & Simple Regression"
+  },
   "description": {
     "tr": "Pearson korelasyonu (r), doğrusal regresyon denklemi (y = ax + b), R² ve tahmin. Reklam harcaması satış tahmini vakası.",
     "en": "Pearson correlation (r), linear regression equation (y = ax + b), R², and forecasting. Ad spend sales prediction case."
@@ -13,9 +16,12 @@
       "moduleId": "module-7",
       "order": 1,
       "difficulty": "basit",
-      "title": { "tr": "Saçılım Grafiği (Scatter Plot) & Yön", "en": "Scatter Plots & Direction" },
+      "title": {
+        "tr": "Saçılım Grafiği (Scatter Plot) & Yön",
+        "en": "Scatter Plots & Direction"
+      },
       "conceptCard": {
-        "tr": "İki nicel değişken arasındaki ilişkiyi görselleştirmek için Saçılım Grafiği (Scatter Plot) kullanılır. Veriler yukarı doğru eğimliyse pozitif, aşağı doğruysa negatif ilişkidir.",
+        "tr": "Pearson Korelasyon Katsayısı ($r$), iki sürekli değişken arasındaki doğrusal ilişkinin yönünü ve kuvvetini $-1 \\le r \\le +1$ aralığında ölçer:\n\n$$r = \\frac{\\sum_{i=1}^{n} (x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum_{i=1}^{n} (x_i - \\bar{x})^2 \\sum_{i=1}^{n} (y_i - \\bar{y})^2}} = \\frac{\\text{Cov}(X, Y)}{s_x s_y}$$",
         "en": "Scatter plots visualize the relationship between two quantitative variables. Upward slope indicates positive correlation; downward indicates negative."
       },
       "companyExample": {
@@ -35,13 +41,25 @@
         {
           "id": "m7-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "X arttıkça Y de artıyorsa ilişki türü nedir?", "en": "If Y increases as X increases, what is the correlation?" },
+          "prompt": {
+            "tr": "$r = -0.92$ çıkan bir korelasyon katsayısı değişkenler arasında nasıl bir ilişki olduğunu gösterir?",
+            "en": "If Y increases as X increases, what is the correlation?"
+          },
           "options": [
-            { "tr": "Pozitif İlişki", "en": "Positive Correlation" },
-            { "tr": "Negatif İlişki", "en": "Negative Correlation" }
+            {
+              "tr": "Pozitif İlişki",
+              "en": "Positive Correlation"
+            },
+            {
+              "tr": "Negatif İlişki",
+              "en": "Negative Correlation"
+            }
           ],
           "correctAnswer": "Pozitif İlişki",
-          "explanation": { "tr": "Aynı yönde hareket pozitif korelasyondur.", "en": "Moving in same direction means positive correlation." }
+          "explanation": {
+            "tr": "$-1$'e çok yakın olduğu için güçlü ve ters yönlü (negatif) doğrusal bir ilişkiyi gösterir.",
+            "en": "Moving in same direction means positive correlation."
+          }
         }
       ]
     },
@@ -50,9 +68,12 @@
       "moduleId": "module-7",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Pearson Korelasyon Katsayısı (r)", "en": "Pearson Correlation Coefficient (r)" },
+      "title": {
+        "tr": "Pearson Korelasyon Katsayısı (r)",
+        "en": "Pearson Correlation Coefficient (r)"
+      },
       "conceptCard": {
-        "tr": "Pearson katsayısı r, -1 ile +1 arasında değer alır. r = +1 mükemmel pozitif, r = -1 mükemmel negatif, r = 0 ise doğrusal ilişki yok demektir.",
+        "tr": "Basit Doğrusal Regresyon Modeli, En Küçük Kareler (OLS) yöntemi ile hata kareleri toplamını ($\\text{SSE} = \\sum e_i^2$) minimize eder:\n\n$$\\hat{y} = \\beta_0 + \\beta_1 x$$\n\nEğim ($\\beta_1$) ve Kesişim ($\\beta_0$):\n\n$$\\beta_1 = \\frac{\\text{Cov}(X, Y)}{\\text{Var}(X)} = r \\frac{s_y}{s_x}, \\qquad \\beta_0 = \\bar{y} - \\beta_1 \\bar{x}$$",
         "en": "Pearson r ranges from -1 to +1. r = +1 is perfect positive, r = -1 is perfect negative, r = 0 means no linear relationship."
       },
       "companyExample": {
@@ -72,13 +93,25 @@
         {
           "id": "m7-l2-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "r = -0.90 değeri neyi ifade eder?", "en": "What does r = -0.90 indicate?" },
+          "prompt": {
+            "tr": "Doğrusal regresyon denklemi $\\hat{y} = 15 + 3x$ olan bir modelde $x = 10$ için tahmin edilen $\\hat{y}$ değeri kaçtır?",
+            "en": "What does r = -0.90 indicate?"
+          },
           "options": [
-            { "tr": "Güçlü negatif doğrusal ilişki", "en": "Strong negative linear relationship" },
-            { "tr": "Zayıf pozitif ilişki", "en": "Weak positive relationship" }
+            {
+              "tr": "Güçlü negatif doğrusal ilişki",
+              "en": "Strong negative linear relationship"
+            },
+            {
+              "tr": "Zayıf pozitif ilişki",
+              "en": "Weak positive relationship"
+            }
           ],
           "correctAnswer": "Güçlü negatif doğrusal ilişki",
-          "explanation": { "tr": "-1'e yakın değerler güçlü negatif ilişkiyi gösterir.", "en": "Values close to -1 show a strong negative relationship." }
+          "explanation": {
+            "tr": "$$\\hat{y} = 15 + 3(10) = 15 + 30 = 45$$",
+            "en": "Values close to -1 show a strong negative relationship."
+          }
         }
       ]
     },
@@ -87,9 +120,12 @@
       "moduleId": "module-7",
       "order": 3,
       "difficulty": "orta-ustu",
-      "title": { "tr": "Doğrusal Regresyon Denklemi (y = ax + b)", "en": "Linear Regression Equation" },
+      "title": {
+        "tr": "Doğrusal Regresyon Denklemi (y = ax + b)",
+        "en": "Linear Regression Equation"
+      },
       "conceptCard": {
-        "tr": "Doğrusal regresyon, iki değişken arasındaki ilişki çizgisini kullanarak bağımsız değişkene göre bağımlı değişkenin gelecekteki değerlerini tahmin etmemizi sağlar.",
+        "tr": "Belirleme Katsayısı ($R^2$), bağımlı değişkendeki ($Y$) toplam değişkenliğin ne kadarının bağımsız değişken ($X$) tarafından açıklandığını gösterir:\n\n$$R^2 = 1 - \\frac{\\text{SSE}}{\\text{SST}} = \\frac{\\text{SSR}}{\\text{SST}} = r^2, \\qquad 0 \\le R^2 \\le 1$$",
         "en": "Linear regression uses the trend line between two variables to predict future values of the dependent variable based on the independent variable."
       },
       "companyExample": {
@@ -109,9 +145,15 @@
         {
           "id": "m7-l3-q1",
           "type": "numeric",
-          "prompt": { "tr": "y = 20 + 3x denkleminde x = 10 ise y kaçtır?", "en": "In y = 20 + 3x, if x = 10, what is y?" },
+          "prompt": {
+            "tr": "y = 20 + 3x denkleminde x = 10 ise y kaçtır?",
+            "en": "In y = 20 + 3x, if x = 10, what is y?"
+          },
           "correctAnswer": 50,
-          "explanation": { "tr": "20 + 3(10) = 50", "en": "20 + 3(10) = 50" }
+          "explanation": {
+            "tr": "20 + 3(10) = 50",
+            "en": "20 + 3(10) = 50"
+          }
         }
       ]
     },
@@ -120,7 +162,10 @@
       "moduleId": "module-7",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Belirtme Katsayısı (R²)", "en": "Coefficient of Determination (R²)" },
+      "title": {
+        "tr": "Belirtme Katsayısı (R²)",
+        "en": "Coefficient of Determination (R²)"
+      },
       "conceptCard": {
         "tr": "Belirtme katsayısı (R-kare), bağımlı değişkendeki değişimin yüzde kaçının modelimizdeki bağımsız değişken tarafından açıklandığını gösterir.",
         "en": "The coefficient of determination (R-squared) measures the proportion of variance in the dependent variable explained by the independent variable."
@@ -142,9 +187,15 @@
         {
           "id": "m7-l4-q1",
           "type": "numeric",
-          "prompt": { "tr": "r = 0.80 ise R² kaçtır?", "en": "If r = 0.80, what is R²?" },
+          "prompt": {
+            "tr": "r = 0.80 ise R² kaçtır?",
+            "en": "If r = 0.80, what is R²?"
+          },
           "correctAnswer": 0.64,
-          "explanation": { "tr": "0.80 * 0.80 = 0.64 (%64)", "en": "0.80 * 0.80 = 0.64" }
+          "explanation": {
+            "tr": "0.80 * 0.80 = 0.64 (%64)",
+            "en": "0.80 * 0.80 = 0.64"
+          }
         }
       ]
     }
@@ -154,23 +205,52 @@
       "id": "m7-case-1",
       "moduleId": "module-7",
       "difficulty": "kolay",
-      "title": { "tr": "AdTechX: Reklam Harcaması Satış Tahmini", "en": "AdTechX: Ad Spend Sales Prediction" },
+      "title": {
+        "tr": "AdTechX: Reklam Harcaması Satış Tahmini",
+        "en": "AdTechX: Ad Spend Sales Prediction"
+      },
       "businessQuestion": {
-        "tr": "AdTechX ajansı müşterisi için kurduğu regresyon modelinde Satış (Bin TL) = 100 + 5 * (Reklam Bütçesi Bin TL) denklemini elde etmiştir. Korelasyon katsayısı r = 0.90'dır. Müşteri 10 Bin TL reklam harcaması yaparsa tahmin edilen Satış (Bin TL) kaç olur?",
+        "tr": "AdPulse dijital reklam harcaması ($X$, Bin TL) ile elde edilen satış geliri ($Y$, Bin TL) arasındaki ilişkiyi modellemektedir. Veri analizinde $\\bar{x} = 20$, $\\bar{y} = 100$, eğim $\\beta_1 = 4.0$ bulunmuştur. Kesişim noktası $\\beta_0$ ve $X = 30$ için tahmin edilen geliri hesaplayınız.",
         "en": "AdTechX models Sales ($k) = 100 + 5 * (AdSpend $k) with correlation r = 0.90. If ad spend is $10k, what is predicted Sales ($k)?"
       },
       "dataset": {
-        "columns": ["Ay", "Reklam Harcaması (Bin TL)", "Satış (Bin TL)"],
+        "columns": [
+          "Ay",
+          "Reklam Harcaması (Bin TL)",
+          "Satış (Bin TL)"
+        ],
         "rows": [
-          ["Ocak", "2", "110"],
-          ["Şubat", "4", "120"],
-          ["Mart", "6", "130"],
-          ["Nisan", "8", "140"]
+          [
+            "Ocak",
+            "2",
+            "110"
+          ],
+          [
+            "Şubat",
+            "4",
+            "120"
+          ],
+          [
+            "Mart",
+            "6",
+            "130"
+          ],
+          [
+            "Nisan",
+            "8",
+            "140"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Regresyon denkleminde X yerine 10 koy.", "en": "Step 1: Substitute X = 10 into equation." },
-        { "tr": "2. Adım: Y = 100 + 5 * (10) = 100 + 50 = 150 Bin TL.", "en": "Step 2: Y = 100 + 5 * (10) = 150." }
+        {
+          "tr": "1. Adım: Kesişim Noktası: $$\\beta_0 = \\bar{y} - \\beta_1 \\bar{x} = 100 - 4(20) = 100 - 80 = 20$$",
+          "en": "Step 1: Substitute X = 10 into equation."
+        },
+        {
+          "tr": "2. Adım: $x = 30$ için Tahmin: $$\\hat{y} = 20 + 4(30) = 20 + 120 = 140 \\text{ Bin TL}$$",
+          "en": "Step 2: Y = 100 + 5 * (10) = 150."
+        }
       ],
       "expectedApproach": {
         "tr": "Tahmin edilen Satış = 150 Bin TL'dir.",
@@ -180,9 +260,15 @@
         {
           "id": "m7-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Tahmin edilen Satış (Bin TL) kaçtır?", "en": "What is predicted Sales ($k)?" },
+          "prompt": {
+            "tr": "Model kesişim parametresi $\\beta_0$ kaçtır?",
+            "en": "What is predicted Sales ($k)?"
+          },
           "correctAnswer": 150,
-          "explanation": { "tr": "100 + 5 * 10 = 150", "en": "100 + 5 * 10 = 150" }
+          "explanation": {
+            "tr": "$$\\beta_0 = 100 - 4(20) = 20$$",
+            "en": "100 + 5 * 10 = 150"
+          }
         }
       ]
     },
@@ -190,22 +276,51 @@
       "id": "m7-case-2",
       "moduleId": "module-7",
       "difficulty": "orta",
-      "title": { "tr": "PopCorn & CallCenter: Eşleştirilmiş (Paired) t-Testi Analizi", "en": "PopCorn & CallCenter: Paired t-Test Analysis" },
+      "title": {
+        "tr": "PopCorn & CallCenter: Eşleştirilmiş (Paired) t-Testi Analizi",
+        "en": "PopCorn & CallCenter: Paired t-Test Analysis"
+      },
       "businessQuestion": {
         "tr": "Çağrı Merkezi Operasyon Vakası: n = 9 çağrı merkezi operatörünün yeni eğitim yazılımından ÖNCE ve SONRA işlem süreleri (fark D = X_sonra - X_önce) ölçülmüştür. Örneklem farklarının ortalaması d̄ = -4.0 dakika ve standart sapması sD = 3.0 dakikadır. t0 test istatistiği t0 = d̄ / (sD / √n) kaçtır?",
         "en": "Call Center Operations Case: n = 9 operators measured BEFORE and AFTER training (difference D = X_after - X_before). Mean diff d̄ = -4.0 min, sD = 3.0 min. What is test statistic t0 = d̄ / (sD / √n)?"
       },
       "dataset": {
-        "columns": ["Operatör", "Önce (dk)", "Sonra (dk)", "Fark D (Sonra - Önce)"],
+        "columns": [
+          "Operatör",
+          "Önce (dk)",
+          "Sonra (dk)",
+          "Fark D (Sonra - Önce)"
+        ],
         "rows": [
-          ["Op 1", "18.0", "14.0", "-4.0"],
-          ["Op 2", "20.0", "15.0", "-5.0"],
-          ["Op 3", "16.0", "13.0", "-3.0"]
+          [
+            "Op 1",
+            "18.0",
+            "14.0",
+            "-4.0"
+          ],
+          [
+            "Op 2",
+            "20.0",
+            "15.0",
+            "-5.0"
+          ],
+          [
+            "Op 3",
+            "16.0",
+            "13.0",
+            "-3.0"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: SE(D) = sD / √n = 3.0 / √9 = 3.0 / 3 = 1.0 dk.", "en": "Step 1: SE(D) = sD / √n = 3.0 / √9 = 3.0 / 3 = 1.0 min." },
-        { "tr": "2. Adım: t0 = d̄ / SE(D) = -4.0 / 1.0 = -4.00.", "en": "Step 2: t0 = d̄ / SE(D) = -4.0 / 1.0 = -4.00." }
+        {
+          "tr": "1. Adım: SE(D) = sD / √n = 3.0 / √9 = 3.0 / 3 = 1.0 dk.",
+          "en": "Step 1: SE(D) = sD / √n = 3.0 / √9 = 3.0 / 3 = 1.0 min."
+        },
+        {
+          "tr": "2. Adım: t0 = d̄ / SE(D) = -4.0 / 1.0 = -4.00.",
+          "en": "Step 2: t0 = d̄ / SE(D) = -4.0 / 1.0 = -4.00."
+        }
       ],
       "expectedApproach": {
         "tr": "Eşleştirilmiş t0 istatistiği -4.00 hesaplanır. İşlem süresi istatistiksel olarak anlamlı şekilde azalmıştır.",
@@ -215,9 +330,15 @@
         {
           "id": "m7-case-2-q1",
           "type": "numeric",
-          "prompt": { "tr": "t0 test istatistiği kaçtır?", "en": "What is the t0 test statistic?" },
+          "prompt": {
+            "tr": "t0 test istatistiği kaçtır?",
+            "en": "What is the t0 test statistic?"
+          },
           "correctAnswer": -4,
-          "explanation": { "tr": "-4.0 / (3.0 / 3) = -4.0", "en": "-4.0 / (3.0 / 3) = -4.0" }
+          "explanation": {
+            "tr": "-4.0 / (3.0 / 3) = -4.0",
+            "en": "-4.0 / (3.0 / 3) = -4.0"
+          }
         }
       ]
     },
@@ -225,22 +346,46 @@
       "id": "m7-case-3",
       "moduleId": "module-7",
       "difficulty": "zor",
-      "title": { "tr": "WebOptima: İki Popülasyon Oran Testi & Pooled p̂", "en": "WebOptima: Two-Population Proportion Test & Pooled p̂" },
+      "title": {
+        "tr": "WebOptima: İki Popülasyon Oran Testi & Pooled p̂",
+        "en": "WebOptima: Two-Population Proportion Test & Pooled p̂"
+      },
       "businessQuestion": {
         "tr": "İki Popülasyon Oran Formül Yaklaşımı: m = 100 A grubu kullanıcıdan X = 20 tanesi, n = 100 B grubu kullanıcıdan Y = 40 tanesi dönüşüm yapmıştır. H0: p1 = p2 testi için ortak havuzlanmış oran p̂ = (X+Y)/(m+n) kaçtır?",
         "en": "Two-Population Proportion Formula Approach: m = 100 Group A with X = 20 conversions, n = 100 Group B with Y = 40. What is pooled proportion p̂ = (X+Y)/(m+n)?"
       },
       "dataset": {
-        "columns": ["Grup", "Kullanıcı Sayısı", "Dönüşüm (Başarı)"],
+        "columns": [
+          "Grup",
+          "Kullanıcı Sayısı",
+          "Dönüşüm (Başarı)"
+        ],
         "rows": [
-          ["A Grubu", "m = 100", "X = 20"],
-          ["B Grubu", "n = 100", "Y = 40"]
+          [
+            "A Grubu",
+            "m = 100",
+            "X = 20"
+          ],
+          [
+            "B Grubu",
+            "n = 100",
+            "Y = 40"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Toplam dönüşüm X + Y = 20 + 40 = 60.", "en": "Step 1: Total conversions X + Y = 20 + 40 = 60." },
-        { "tr": "2. Adım: Toplam örneklem m + n = 100 + 100 = 200.", "en": "Step 2: Total sample size m + n = 100 + 100 = 200." },
-        { "tr": "3. Adım: p̂ = 60 / 200 = 0.30 (%30).", "en": "Step 3: p̂ = 60 / 200 = 0.30 (30%)." }
+        {
+          "tr": "1. Adım: Toplam dönüşüm X + Y = 20 + 40 = 60.",
+          "en": "Step 1: Total conversions X + Y = 20 + 40 = 60."
+        },
+        {
+          "tr": "2. Adım: Toplam örneklem m + n = 100 + 100 = 200.",
+          "en": "Step 2: Total sample size m + n = 100 + 100 = 200."
+        },
+        {
+          "tr": "3. Adım: p̂ = 60 / 200 = 0.30 (%30).",
+          "en": "Step 3: p̂ = 60 / 200 = 0.30 (30%)."
+        }
       ],
       "expectedApproach": {
         "tr": "Ortak havuzlanmış oran p̂ = 0.30 olarak hesaplanır.",
@@ -250,9 +395,15 @@
         {
           "id": "m7-case-3-q1",
           "type": "numeric",
-          "prompt": { "tr": "Havuzlanmış oran (p̂) kaçtır?", "en": "What is the pooled proportion (p̂)?" },
+          "prompt": {
+            "tr": "Havuzlanmış oran (p̂) kaçtır?",
+            "en": "What is the pooled proportion (p̂)?"
+          },
           "correctAnswer": 0.3,
-          "explanation": { "tr": "(20 + 40) / (100 + 100) = 60 / 200 = 0.30", "en": "(20 + 40) / (100 + 100) = 60 / 200 = 0.30" }
+          "explanation": {
+            "tr": "(20 + 40) / (100 + 100) = 60 / 200 = 0.30",
+            "en": "(20 + 40) / (100 + 100) = 60 / 200 = 0.30"
+          }
         }
       ]
     }

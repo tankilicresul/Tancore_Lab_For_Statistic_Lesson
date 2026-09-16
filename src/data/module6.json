@@ -1,7 +1,10 @@
 {
   "id": "module-6",
   "order": 6,
-  "title": { "tr": "Hipotez Testi", "en": "Hypothesis Testing" },
+  "title": {
+    "tr": "Hipotez Testi",
+    "en": "Hypothesis Testing"
+  },
   "description": {
     "tr": "Sıfır hipotezi (H0), alternatif hipotez (H1), p-değeri ve z/t testleri. Web A/B testi buton dönüşüm oranı vakası.",
     "en": "Null hypothesis (H0), alternative hypothesis (H1), p-value, and z/t tests. Web A/B testing conversion rate case."
@@ -13,9 +16,12 @@
       "moduleId": "module-6",
       "order": 1,
       "difficulty": "basit",
-      "title": { "tr": "Sıfır (H0) ve Alternatif (H1) Hipotezler", "en": "Null & Alternative Hypotheses" },
+      "title": {
+        "tr": "Sıfır (H0) ve Alternatif (H1) Hipotezler",
+        "en": "Null & Alternative Hypotheses"
+      },
       "conceptCard": {
-        "tr": "H0 (Sıfır Hipotezi) varsayılan durumdur ('Fark yoktur'). H1 (Alternatif Hipotez) ise kanıtlamaya çalıştığımız iddiadır ('Fark vardır').",
+        "tr": "Hipotez testi, bir popülasyon parametresi hakkında kurulan iddiayı verilerle test eder:\n\n$$H_0: \\mu = \\mu_0 \\quad (\\text{Sıfır Hipotezi - Değişim Yok})$$\n$$H_1: \\mu \\ne \\mu_0 \\quad \\text{veya} \\quad H_1: \\mu > \\mu_0 \\quad (\\text{Alternatif Hipotez})$$\n\nTip I Hata ($\\alpha$): $H_0$ doğruyken reddetme olasılığı. Tip II Hata ($\\beta$): $H_0$ yanlışken reddedememe olasılığı. Testin Gücü: $1 - \\beta$.",
         "en": "H0 (Null Hypothesis) represents the default status quo ('No effect'). H1 (Alternative) represents the claim we seek to prove ('Effect exists')."
       },
       "companyExample": {
@@ -35,13 +41,25 @@
         {
           "id": "m6-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "A/B testinde H0 genellikle neyi ifade eder?", "en": "What does H0 usually state in an A/B test?" },
+          "prompt": {
+            "tr": "Sıfır hipotezi ($H_0$) gerçekte doğru olduğu halde reddedilirse hangi tür hata yapılmış olur?",
+            "en": "What does H0 usually state in an A/B test?"
+          },
           "options": [
-            { "tr": "İki sürüm arasında anlamlı fark olmadığını", "en": "That there is no significant difference between versions" },
-            { "tr": "Yeni sürümün %100 daha iyi olduğunu", "en": "That the new version is 100% better" }
+            {
+              "tr": "İki sürüm arasında anlamlı fark olmadığını",
+              "en": "That there is no significant difference between versions"
+            },
+            {
+              "tr": "Yeni sürümün %100 daha iyi olduğunu",
+              "en": "That the new version is 100% better"
+            }
           ],
           "correctAnswer": "İki sürüm arasında anlamlı fark olmadığını",
-          "explanation": { "tr": "H0 = Fark yoktur veya değişim rastlantısaldır.", "en": "H0 = No effect or difference is random noise." }
+          "explanation": {
+            "tr": "Gerçekte doğru olan $H_0$'ın reddedilmesi Tip I Hata ($\\alpha$, Type I Error / Yalancı Pozitif) olarak adlandırılır.",
+            "en": "H0 = No effect or difference is random noise."
+          }
         }
       ]
     },
@@ -50,9 +68,12 @@
       "moduleId": "module-6",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Tip 1 (Alfa) ve Tip 2 (Beta) Hataları", "en": "Type I & Type II Errors" },
+      "title": {
+        "tr": "Tip 1 (Alfa) ve Tip 2 (Beta) Hataları",
+        "en": "Type I & Type II Errors"
+      },
       "conceptCard": {
-        "tr": "Tip 1 Hata (α): Gerçekte doğru olan H0'ı yanlışlıkla reddetmek (Yanlış Pozitif). Tip 2 Hata (β): Gerçekte yanlış olan H0'ı reddedememek (Yanlış Negatif).",
+        "tr": "Tek örneklem Z-testi istatistiği:\n\n$$Z_{\\text{hesap}} = \\frac{\\bar{X} - \\mu_0}{\\frac{\\sigma}{\\sqrt{n}}}$$\n\np-Değeri Kuralı: Eğer $p\\text{-değeri} \\le \\alpha$ ise $H_0$ reddedilir; aksi halde $H_0$ reddedilemez.",
         "en": "Type I Error (α): Rejecting a true H0 (False Positive). Type II Error (β): Failing to reject a false H0 (False Negative)."
       },
       "companyExample": {
@@ -72,13 +93,25 @@
         {
           "id": "m6-l2-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "α = 0.05 neyi ifade eder?", "en": "What does α = 0.05 represent?" },
+          "prompt": {
+            "tr": "Bir hipotez testinde hesaplanan $p\\text{-değeri} = 0.015$ ve anlamlılık düzeyi $\\alpha = 0.05$ ise karar ne olmalıdır?",
+            "en": "What does α = 0.05 represent?"
+          },
           "options": [
-            { "tr": "%5 Tip 1 Hata yapma riski toleransı", "en": "5% tolerance for Type I error risk" },
-            { "tr": "%5 başarı oranı", "en": "5% success rate" }
+            {
+              "tr": "%5 Tip 1 Hata yapma riski toleransı",
+              "en": "5% tolerance for Type I error risk"
+            },
+            {
+              "tr": "%5 başarı oranı",
+              "en": "5% success rate"
+            }
           ],
           "correctAnswer": "%5 Tip 1 Hata yapma riski toleransı",
-          "explanation": { "tr": "Anlamlılık düzeyi α, kabul edilen maksimum Tip 1 hata riskidir.", "en": "Alpha is the maximum allowable Type I error risk." }
+          "explanation": {
+            "tr": "$p = 0.015 \\le \\alpha = 0.05$ olduğundan $H_0$ reddedilir (istatistiksel olarak anlamlı fark vardır).",
+            "en": "Alpha is the maximum allowable Type I error risk."
+          }
         }
       ]
     },
@@ -87,7 +120,10 @@
       "moduleId": "module-6",
       "order": 3,
       "difficulty": "orta-ustu",
-      "title": { "tr": "p-değeri ve Karar Kriterleri", "en": "p-value & Decision Rules" },
+      "title": {
+        "tr": "p-değeri ve Karar Kriterleri",
+        "en": "p-value & Decision Rules"
+      },
       "conceptCard": {
         "tr": "p-değeri, H0 doğruyken mevcut örneklem sonucunu elde etme olasılığıdır. p-değeri < α (örn. 0.05) ise H0 reddedilir; sonuç istatistiksel olarak anlamlıdır.",
         "en": "p-value is the probability of obtaining sample data if H0 were true. If p < α (e.g. 0.05), reject H0; result is statistically significant."
@@ -109,13 +145,25 @@
         {
           "id": "m6-l3-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "p-değeri = 0.01 ve α = 0.05 ise karar ne olur?", "en": "If p-value = 0.01 and α = 0.05, what decision is made?" },
+          "prompt": {
+            "tr": "p-değeri = 0.01 ve α = 0.05 ise karar ne olur?",
+            "en": "If p-value = 0.01 and α = 0.05, what decision is made?"
+          },
           "options": [
-            { "tr": "H0 Reddedilir (Reject H0)", "en": "Reject H0" },
-            { "tr": "H0 Reddedilemez (Cannot Reject H0)", "en": "Cannot Reject H0" }
+            {
+              "tr": "H0 Reddedilir (Reject H0)",
+              "en": "Reject H0"
+            },
+            {
+              "tr": "H0 Reddedilemez (Cannot Reject H0)",
+              "en": "Cannot Reject H0"
+            }
           ],
           "correctAnswer": "H0 Reddedilir (Reject H0)",
-          "explanation": { "tr": "0.01 < 0.05 olduğu için H0 reddedilir.", "en": "Since 0.01 < 0.05, H0 is rejected." }
+          "explanation": {
+            "tr": "0.01 < 0.05 olduğu için H0 reddedilir.",
+            "en": "Since 0.01 < 0.05, H0 is rejected."
+          }
         }
       ]
     },
@@ -124,7 +172,10 @@
       "moduleId": "module-6",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Tek ve Çift Yönlü Testler", "en": "One-Tailed vs Two-Tailed Tests" },
+      "title": {
+        "tr": "Tek ve Çift Yönlü Testler",
+        "en": "One-Tailed vs Two-Tailed Tests"
+      },
       "conceptCard": {
         "tr": "Tek yönlü test sadece bir yöndeki değişimi arar (A > B). Çift yönlü test ise herhangi bir farkı arar (A ≠ B).",
         "en": "One-tailed test looks for direction (A > B). Two-tailed test looks for any difference (A ≠ B)."
@@ -146,13 +197,25 @@
         {
           "id": "m6-l4-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "'Yeni tasarım eskisinden FARKLIDIR' hipotezi hangi testtir?", "en": "'New design is DIFFERENT from old' is which test?" },
+          "prompt": {
+            "tr": "'Yeni tasarım eskisinden FARKLIDIR' hipotezi hangi testtir?",
+            "en": "'New design is DIFFERENT from old' is which test?"
+          },
           "options": [
-            { "tr": "Çift Yönlü Test (Two-Tailed)", "en": "Two-Tailed Test" },
-            { "tr": "Tek Yönlü Test (One-Tailed)", "en": "One-Tailed Test" }
+            {
+              "tr": "Çift Yönlü Test (Two-Tailed)",
+              "en": "Two-Tailed Test"
+            },
+            {
+              "tr": "Tek Yönlü Test (One-Tailed)",
+              "en": "One-Tailed Test"
+            }
           ],
           "correctAnswer": "Çift Yönlü Test (Two-Tailed)",
-          "explanation": { "tr": "Yön belirtmeden sadece fark arandığı için çift yönlüdür.", "en": "Since no direction is specified, it is two-tailed." }
+          "explanation": {
+            "tr": "Yön belirtmeden sadece fark arandığı için çift yönlüdür.",
+            "en": "Since no direction is specified, it is two-tailed."
+          }
         }
       ]
     }
@@ -162,21 +225,45 @@
       "id": "m6-case-1",
       "moduleId": "module-6",
       "difficulty": "kolay",
-      "title": { "tr": "WebOptima: A/B Testi Buton Dönüşüm Kararı", "en": "WebOptima: Button Conversion A/B Test Decision" },
+      "title": {
+        "tr": "WebOptima: A/B Testi Buton Dönüşüm Kararı",
+        "en": "WebOptima: Button Conversion A/B Test Decision"
+      },
       "businessQuestion": {
-        "tr": "WebOptima şirketi e-ticaret sepet sayfasında 'Hemen Satın Al' butonunu yeşilden naranciye rengine değiştirmiştir. 1,000 kullanıcıda yapılan A/B testinde hesaplanan z-istatistiği = 2.33 ve p-değeri = 0.01 olarak bulunmuştur. Şirketin anlamlılık düzeyi α = 0.05 olduğuna göre H0 reddedilmeli midir?",
+        "tr": "OptiCorp yeni algoritmasının sunucu bekleme süresini düşürdüğünü iddia etmektedir ($H_0: \\mu = 50 \\text{ ms}$, $H_1: \\mu < 50 \\text{ ms}$). $n = 64$ testte $\\bar{X} = 47 \\text{ ms}$ ve $\\sigma = 12 \\text{ ms}$ ölçülmüştür. $\\alpha = 0.05$ düzeyinde Z-test istatistiğini ve kararı belirleyiniz.",
         "en": "WebOptima tested a new orange button against green on 1,000 users. Test yields z = 2.33 and p-value = 0.01. At α = 0.05, should H0 be rejected?"
       },
       "dataset": {
-        "columns": ["Sürüm", "Dönüşüm Oranı", "z-Skoru", "p-Değeri"],
+        "columns": [
+          "Sürüm",
+          "Dönüşüm Oranı",
+          "z-Skoru",
+          "p-Değeri"
+        ],
         "rows": [
-          ["A (Eski Yeşil)", "%4.0", "-", "-"],
-          ["B (Yeni Turuncu)", "%6.5", "2.33", "0.01"]
+          [
+            "A (Eski Yeşil)",
+            "%4.0",
+            "-",
+            "-"
+          ],
+          [
+            "B (Yeni Turuncu)",
+            "%6.5",
+            "2.33",
+            "0.01"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: p-değeri (0.01) ile α (0.05) değerlerini karşılaştır.", "en": "Step 1: Compare p-value (0.01) with α (0.05)." },
-        { "tr": "2. Adım: 0.01 < 0.05 olduğu için Sıfır Hipotezi (H0) reddedilir.", "en": "Step 2: Since 0.01 < 0.05, reject Null Hypothesis H0." }
+        {
+          "tr": "1. Adım: Standart Hata: $$\\text{SE} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{12}{\\sqrt{64}} = 1.5$$",
+          "en": "Step 1: Compare p-value (0.01) with α (0.05)."
+        },
+        {
+          "tr": "2. Adım: Z Test İstatistiği: $$Z = \\frac{\\bar{X} - \\mu_0}{\\text{SE}} = \\frac{47 - 50}{1.5} = \\frac{-3}{1.5} = -2.0$$",
+          "en": "Step 2: Since 0.01 < 0.05, reject Null Hypothesis H0."
+        }
       ],
       "expectedApproach": {
         "tr": "p-değeri < α olduğundan H0 reddedilir. Yeni turuncu buton dönüşüm oranını istatistiksel olarak anlamlı düzeyde artırmıştır.",
@@ -186,13 +273,25 @@
         {
           "id": "m6-case-1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Karar ne olmalıdır?", "en": "What is the decision?" },
+          "prompt": {
+            "tr": "Hesaplanan test istatistiği $Z_{\\text{hesap}}$ kaçtır?",
+            "en": "What is the decision?"
+          },
           "options": [
-            { "tr": "H0 reddedilir, yeni buton uygulamaya alınır", "en": "Reject H0, deploy new button" },
-            { "tr": "H0 reddedilemez, eski buton kalır", "en": "Fail to reject H0, keep old button" }
+            {
+              "tr": "H0 reddedilir, yeni buton uygulamaya alınır",
+              "en": "Reject H0, deploy new button"
+            },
+            {
+              "tr": "H0 reddedilemez, eski buton kalır",
+              "en": "Fail to reject H0, keep old button"
+            }
           ],
           "correctAnswer": "H0 reddedilir, yeni buton uygulamaya alınır",
-          "explanation": { "tr": "p-değeri (0.01) < 0.05 olduğundan değişim istatistiksel olarak anlamlıdır.", "en": "Since p (0.01) < 0.05, difference is statistically significant." }
+          "explanation": {
+            "tr": "$$Z = \\frac{47 - 50}{1.5} = -2.0$$",
+            "en": "Since p (0.01) < 0.05, difference is statistically significant."
+          }
         }
       ]
     },
@@ -200,21 +299,42 @@
       "id": "m6-case-2",
       "moduleId": "module-6",
       "difficulty": "orta",
-      "title": { "tr": "SmokeTech & PopCorn: Tip I (α) ve Tip II (β) Hata Analizi", "en": "SmokeTech & PopCorn: Type I (α) and Type II (β) Error Analysis" },
+      "title": {
+        "tr": "SmokeTech & PopCorn: Tip I (α) ve Tip II (β) Hata Analizi",
+        "en": "SmokeTech & PopCorn: Type I (α) and Type II (β) Error Analysis"
+      },
       "businessQuestion": {
         "tr": "Tütün Ürünleri Kalite Kontrol Vakası: Standart üretimde ortalama nikotin içeriği µ0 = 1.2 mg olmalıdır. Kalite denetçisi H0: µ = 1.2 mg ve H1: µ > 1.2 mg hipotezini test ediyor. Eğer gerçek nikotin 1.2 mg iken yanlışlıkla ürün grubunu imha kararı verilirse (H0 reddedilirse), bu ne tür bir hatadır?",
         "en": "Tobacco Product Quality Control Case: Nicotine target is µ0 = 1.2 mg. Auditor tests H0: µ = 1.2 vs H1: µ > 1.2. If the true nicotine is 1.2 mg but H0 is rejected, what type of error is committed?"
       },
       "dataset": {
-        "columns": ["Gerçek Durum", "Karar: H0 Kabul", "Karar: H0 Red (İmha)"],
+        "columns": [
+          "Gerçek Durum",
+          "Karar: H0 Kabul",
+          "Karar: H0 Red (İmha)"
+        ],
         "rows": [
-          ["H0 Doğru (µ = 1.2 mg)", "Doğru Karar (1 - α)", "Tip I Hata (α)"],
-          ["H0 Yanlış (µ > 1.2 mg)", "Tip II Hata (β)", "Doğru Karar Güç (1 - β)"]
+          [
+            "H0 Doğru (µ = 1.2 mg)",
+            "Doğru Karar (1 - α)",
+            "Tip I Hata (α)"
+          ],
+          [
+            "H0 Yanlış (µ > 1.2 mg)",
+            "Tip II Hata (β)",
+            "Doğru Karar Güç (1 - β)"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Gerçekte H0 doğru iken (µ = 1.2 mg) H0'ı reddetmek Tip I Hata'dır.", "en": "Step 1: Rejecting a true H0 is a Type I Error." },
-        { "tr": "2. Adım: Tip I hata olasılığı α (anlamlılık düzeyi) ile belirlenir.", "en": "Step 2: Type I error probability is defined by α." }
+        {
+          "tr": "1. Adım: Gerçekte H0 doğru iken (µ = 1.2 mg) H0'ı reddetmek Tip I Hata'dır.",
+          "en": "Step 1: Rejecting a true H0 is a Type I Error."
+        },
+        {
+          "tr": "2. Adım: Tip I hata olasılığı α (anlamlılık düzeyi) ile belirlenir.",
+          "en": "Step 2: Type I error probability is defined by α."
+        }
       ],
       "expectedApproach": {
         "tr": "Gerçekte doğru olan sıfır hipotezinin reddedilmesi Tip I Hata (Producer's Risk) olarak tanımlanır.",
@@ -224,13 +344,25 @@
         {
           "id": "m6-case-2-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Gerçekte H0 doğru iken H0'ın reddedilmesi hangi tür hatadır?", "en": "What error is committed when a true H0 is rejected?" },
+          "prompt": {
+            "tr": "Gerçekte H0 doğru iken H0'ın reddedilmesi hangi tür hatadır?",
+            "en": "What error is committed when a true H0 is rejected?"
+          },
           "options": [
-            { "tr": "Tip I Hata (α)", "en": "Type I Error (α)" },
-            { "tr": "Tip II Hata (β)", "en": "Type II Error (β)" }
+            {
+              "tr": "Tip I Hata (α)",
+              "en": "Type I Error (α)"
+            },
+            {
+              "tr": "Tip II Hata (β)",
+              "en": "Type II Error (β)"
+            }
           ],
           "correctAnswer": "Tip I Hata (α)",
-          "explanation": { "tr": "Doğru olan sıfır hipotezini reddetmek Tip I hatadır.", "en": "Rejecting a true null hypothesis is a Type I error." }
+          "explanation": {
+            "tr": "Doğru olan sıfır hipotezini reddetmek Tip I hatadır.",
+            "en": "Rejecting a true null hypothesis is a Type I error."
+          }
         }
       ]
     },
@@ -238,23 +370,47 @@
       "id": "m6-case-3",
       "moduleId": "module-6",
       "difficulty": "zor",
-      "title": { "tr": "BioPharm: Tek Örneklem t-Testi & Anlamlılık İstatistiği", "en": "BioPharm: One-Sample t-Test & Significance Statistic" },
+      "title": {
+        "tr": "BioPharm: Tek Örneklem t-Testi & Anlamlılık İstatistiği",
+        "en": "BioPharm: One-Sample t-Test & Significance Statistic"
+      },
       "businessQuestion": {
         "tr": "Biyofarma Laboratuvar Vakası: n = 16 deneyde ortalama aktif madde x̄ = 48.5 mg, s = 4.0 mg ölçülmüştür. Hedef µ0 = 50.0 mg olduğuna göre, t0 test istatistiği t0 = (x̄ - µ0) / (s / √n) değeri kaçtır?",
         "en": "Biopharm Lab Case: For n = 16, x̄ = 48.5 mg and s = 4.0 mg. Target µ0 = 50.0 mg. What is the t0 test statistic t0 = (x̄ - µ0) / (s / √n)?"
       },
       "dataset": {
-        "columns": ["Parametre", "Örneklem Değeri"],
+        "columns": [
+          "Parametre",
+          "Örneklem Değeri"
+        ],
         "rows": [
-          ["Örneklem Boyutu (n)", "16"],
-          ["Örneklem Ortalaması (x̄)", "48.5 mg"],
-          ["Örneklem Std Dev (s)", "4.0 mg"],
-          ["Hedef Ortalama (µ0)", "50.0 mg"]
+          [
+            "Örneklem Boyutu (n)",
+            "16"
+          ],
+          [
+            "Örneklem Ortalaması (x̄)",
+            "48.5 mg"
+          ],
+          [
+            "Örneklem Std Dev (s)",
+            "4.0 mg"
+          ],
+          [
+            "Hedef Ortalama (µ0)",
+            "50.0 mg"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: SE = s / √n = 4.0 / √16 = 4.0 / 4 = 1.0 mg.", "en": "Step 1: SE = s / √n = 4.0 / √16 = 4.0 / 4 = 1.0 mg." },
-        { "tr": "2. Adım: t0 = (48.5 - 50.0) / 1.0 = -1.50.", "en": "Step 2: t0 = (48.5 - 50.0) / 1.0 = -1.50." }
+        {
+          "tr": "1. Adım: SE = s / √n = 4.0 / √16 = 4.0 / 4 = 1.0 mg.",
+          "en": "Step 1: SE = s / √n = 4.0 / √16 = 4.0 / 4 = 1.0 mg."
+        },
+        {
+          "tr": "2. Adım: t0 = (48.5 - 50.0) / 1.0 = -1.50.",
+          "en": "Step 2: t0 = (48.5 - 50.0) / 1.0 = -1.50."
+        }
       ],
       "expectedApproach": {
         "tr": "t0 test istatistiği -1.50 olarak hesaplanır.",
@@ -264,9 +420,15 @@
         {
           "id": "m6-case-3-q1",
           "type": "numeric",
-          "prompt": { "tr": "t0 test istatistiği kaçtır?", "en": "What is the t0 test statistic?" },
+          "prompt": {
+            "tr": "t0 test istatistiği kaçtır?",
+            "en": "What is the t0 test statistic?"
+          },
           "correctAnswer": -1.5,
-          "explanation": { "tr": "(48.5 - 50.0) / (4.0 / 4) = -1.5", "en": "(48.5 - 50.0) / (4.0 / 4) = -1.5" }
+          "explanation": {
+            "tr": "(48.5 - 50.0) / (4.0 / 4) = -1.5",
+            "en": "(48.5 - 50.0) / (4.0 / 4) = -1.5"
+          }
         }
       ]
     }

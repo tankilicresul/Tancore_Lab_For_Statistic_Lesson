@@ -1,7 +1,10 @@
 {
   "id": "module-1",
   "order": 1,
-  "title": { "tr": "Tanımlayıcı İstatistik", "en": "Descriptive Statistics" },
+  "title": {
+    "tr": "Tanımlayıcı İstatistik",
+    "en": "Descriptive Statistics"
+  },
   "description": {
     "tr": "Ortalama, medyan, mod, varyans, std sapma, çeyreklikler ve outlier tespiti. Perakende mağaza ve e-ticaret analiz vakaları.",
     "en": "Mean, median, mode, variance, std dev, quartiles, and outlier detection. Retail store & e-commerce analysis cases."
@@ -14,7 +17,10 @@
       "order": 1,
       "difficulty": "basit",
       "isOrientation": true,
-      "title": { "tr": "Ders Tanıtımı & Yol Haritası", "en": "Course Overview & Roadmap" },
+      "title": {
+        "tr": "Ders Tanıtımı & Yol Haritası",
+        "en": "Course Overview & Roadmap"
+      },
       "conceptCard": {
         "tr": "Uygulamalı İstatistik dersinde öğreneceğin tüm modüller, konular ve başarı yol haritası.",
         "en": "Comprehensive learning roadmap and modules for the Applied Statistics course."
@@ -30,43 +36,91 @@
       "roadmapModules": [
         {
           "order": 1,
-          "title": { "tr": "Tanımlayıcı İstatistik & Veri Özetleme", "en": "Descriptive Statistics & Summaries" },
-          "summary": { "tr": "Ortalama, Medyan, Mod, Varyans, Standart Sapma, Çeyreklikler & Outlier Tespiti", "en": "Mean, Median, Mode, Variance, Standard Deviation, Quartiles & Outlier Detection" }
+          "title": {
+            "tr": "Tanımlayıcı İstatistik & Veri Özetleme",
+            "en": "Descriptive Statistics & Summaries"
+          },
+          "summary": {
+            "tr": "Ortalama, Medyan, Mod, Varyans, Standart Sapma, Çeyreklikler & Outlier Tespiti",
+            "en": "Mean, Median, Mode, Variance, Standard Deviation, Quartiles & Outlier Detection"
+          }
         },
         {
           "order": 2,
-          "title": { "tr": "Rastgele Değişkenler & Dağılımlar", "en": "Random Variables & Distributions" },
-          "summary": { "tr": "Kesikli ve Sürekli Dağılımlar, Binom, Poisson, Normal Dağılım & Z-Skorları", "en": "Discrete & Continuous Distributions, Binomial, Poisson, Normal Distribution & Z-Scores" }
+          "title": {
+            "tr": "Rastgele Değişkenler & Dağılımlar",
+            "en": "Random Variables & Distributions"
+          },
+          "summary": {
+            "tr": "Kesikli ve Sürekli Dağılımlar, Binom, Poisson, Normal Dağılım & Z-Skorları",
+            "en": "Discrete & Continuous Distributions, Binomial, Poisson, Normal Distribution & Z-Scores"
+          }
         },
         {
           "order": 3,
-          "title": { "tr": "Örnekleme & Merkezi Limit Teoremi", "en": "Sampling & Central Limit Theorem" },
-          "summary": { "tr": "Örnekleme Dağılımları, Standart Hata (SE), Büyük Sayılar Yasası ve CLT", "en": "Sampling Distributions, Standard Error (SE), Law of Large Numbers & CLT" }
+          "title": {
+            "tr": "Örnekleme & Merkezi Limit Teoremi",
+            "en": "Sampling & Central Limit Theorem"
+          },
+          "summary": {
+            "tr": "Örnekleme Dağılımları, Standart Hata (SE), Büyük Sayılar Yasası ve CLT",
+            "en": "Sampling Distributions, Standard Error (SE), Law of Large Numbers & CLT"
+          }
         },
         {
           "order": 4,
-          "title": { "tr": "Güven Aralıkları (Confidence Intervals)", "en": "Confidence Intervals" },
-          "summary": { "tr": "Anakütle Ortalaması ve Oranı için Güven Aralıkları, Student's t Dağılımı", "en": "Confidence Intervals for Population Means and Proportions, Student's t Distribution" }
+          "title": {
+            "tr": "Güven Aralıkları (Confidence Intervals)",
+            "en": "Confidence Intervals"
+          },
+          "summary": {
+            "tr": "Anakütle Ortalaması ve Oranı için Güven Aralıkları, Student's t Dağılımı",
+            "en": "Confidence Intervals for Population Means and Proportions, Student's t Distribution"
+          }
         },
         {
           "order": 5,
-          "title": { "tr": "Tek Örneklem Hipotez Testleri", "en": "One-Sample Hypothesis Testing" },
-          "summary": { "tr": "Sıfır Hipotezi, Alternatif Hipotez, Tip I/II Hata, p-Değeri, Z ve t Testleri", "en": "Null/Alternative Hypotheses, Type I/II Errors, p-Values, One-Sample Z and t Tests" }
+          "title": {
+            "tr": "Tek Örneklem Hipotez Testleri",
+            "en": "One-Sample Hypothesis Testing"
+          },
+          "summary": {
+            "tr": "Sıfır Hipotezi, Alternatif Hipotez, Tip I/II Hata, p-Değeri, Z ve t Testleri",
+            "en": "Null/Alternative Hypotheses, Type I/II Errors, p-Values, One-Sample Z and t Tests"
+          }
         },
         {
           "order": 6,
-          "title": { "tr": "İki Örneklem Testleri & ANOVA", "en": "Two-Sample Tests & ANOVA" },
-          "summary": { "tr": "Bağımsız ve Eşleştirilmiş t-Testleri, Tek Yönlü ANOVA ve F Dağılımı", "en": "Independent and Paired t-Tests, One-Way ANOVA and F Distribution" }
+          "title": {
+            "tr": "İki Örneklem Testleri & ANOVA",
+            "en": "Two-Sample Tests & ANOVA"
+          },
+          "summary": {
+            "tr": "Bağımsız ve Eşleştirilmiş t-Testleri, Tek Yönlü ANOVA ve F Dağılımı",
+            "en": "Independent and Paired t-Tests, One-Way ANOVA and F Distribution"
+          }
         },
         {
           "order": 7,
-          "title": { "tr": "Ki-Kare Testleri & Bağımsızlık", "en": "Chi-Square Tests & Independence" },
-          "summary": { "tr": "Uyum İyiliği Testi (Goodness-of-Fit) ve Kontenjans Tablosu Bağımsızlık Testi", "en": "Goodness-of-Fit Tests and Contingency Table Independence Testing" }
+          "title": {
+            "tr": "Ki-Kare Testleri & Bağımsızlık",
+            "en": "Chi-Square Tests & Independence"
+          },
+          "summary": {
+            "tr": "Uyum İyiliği Testi (Goodness-of-Fit) ve Kontenjans Tablosu Bağımsızlık Testi",
+            "en": "Goodness-of-Fit Tests and Contingency Table Independence Testing"
+          }
         },
         {
           "order": 8,
-          "title": { "tr": "Regresyon Analizi & Karar Verme", "en": "Regression Analysis & Decision Making" },
-          "summary": { "tr": "Basit ve Çoklu Doğrusal Regresyon, R², A/B Testleri ve İş Dünyası Karar Analitiği", "en": "Simple & Multiple Linear Regression, R-Squared, A/B Testing & Business Analytics" }
+          "title": {
+            "tr": "Regresyon Analizi & Karar Verme",
+            "en": "Regression Analysis & Decision Making"
+          },
+          "summary": {
+            "tr": "Basit ve Çoklu Doğrusal Regresyon, R², A/B Testleri ve İş Dünyası Karar Analitiği",
+            "en": "Simple & Multiple Linear Regression, R-Squared, A/B Testing & Business Analytics"
+          }
         }
       ],
       "vocabTerms": [],
@@ -77,17 +131,27 @@
       "moduleId": "module-1",
       "order": 2,
       "difficulty": "basit",
-      "title": { "tr": "Ortalama (Mean)", "en": "Mean (Average)" },
+      "title": {
+        "tr": "Ortalama (Mean)",
+        "en": "Mean (Average)"
+      },
       "conceptCard": {
-        "tr": "Ortalama, bir veri grubundaki tüm sayıları toplayıp adet sayısına bölerek bulunur. Bir grubun 'tipik' değerini özetler.",
-        "en": "The mean is found by adding all numbers in a dataset and dividing by the count. It summarizes the 'typical' value of a group."
+        "tr": "Aritmetik ortalama (\\bar{x}), bir veri kümesindeki tüm gözlem değerlerinin toplamının toplam gözlem sayısına ($n$) bölünmesiyle hesaplanan merkezi eğilim ölçüsüdür:\n\n$$\\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i$$\n\nAnakütle (popülasyon) ortalaması ise $\\mu = \\frac{1}{N}\\sum_{i=1}^{N} X_i$ formülü ile gösterilir. Aşırı uç değerlerden (outlier) oldukça etkilenir.",
+        "en": "The sample arithmetic mean (\\bar{x}) is a measure of central tendency calculated by dividing the sum of all observed values by the total sample size ($n$):\n\n$$\\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i$$\n\nPopulation mean is denoted as $\\mu = \\frac{1}{N}\\sum_{i=1}^{N} X_i$. It is sensitive to extreme outliers."
       },
       "companyExample": {
-        "tr": "NovaMarket e-ticaret platformunun son 6 çeyrekteki kârları 10, 12, 12, 15, 9 ve 50 milyon $'dır. Bu şirketin çeyreklik ortalama kârını bulmak için tüm dönem kârlarını toplarız (108 M$) ve dönem sayısına (6) böleriz; böylece çeyrek başına ortalama kâr 18 milyon $ olarak hesaplanır.",
+        "tr": "NovaMarket e-ticaret platformunun son 6 çeyrekteki kârları sırasıyla $x = [10, 12, 12, 15, 9, 50]$ milyon $'dır. Ortalama kâr:\n\n$$\\bar{x} = \\frac{10 + 12 + 12 + 15 + 9 + 50}{6} = \\frac{108}{6} = 18 \\text{ M\\$}$$",
         "en": "NovaMarket's quarterly profits over the last 6 quarters are 10, 12, 12, 15, 9, and 50 million $. To find the average quarterly profit, we add up all quarterly profits ($108M) and divide by the number of quarters (6), resulting in an average quarterly profit of $18M."
       },
       "interactiveType": "mean_median_mode",
-      "interactiveInitialData": [10, 12, 12, 15, 9, 50],
+      "interactiveInitialData": [
+        10,
+        12,
+        12,
+        15,
+        9,
+        50
+      ],
       "vocabTerms": [
         {
           "term_en": "average",
@@ -106,15 +170,24 @@
         {
           "id": "m1-l1-q1",
           "type": "numeric",
-          "prompt": { "tr": "NovaMarket verisinin ortalamasını hesapla: 10, 12, 12, 15, 9, 50", "en": "Calculate the mean of NovaMarket's data: 10, 12, 12, 15, 9, 50" },
+          "prompt": {
+            "tr": "Bir veri setinde $n = 5$ gözlem için değerler toplamı $\\sum x_i = 125$ ise aritmetik ortalama $\\bar{x}$ kaçtır?",
+            "en": "If the sum of values $\\sum x_i = 125$ for $n = 5$ observations in a dataset, what is the arithmetic mean $\\bar{x}$?"
+          },
           "correctAnswer": 18,
-          "explanation": { "tr": "(10+12+12+15+9+50)/6 = 108/6 = 18", "en": "(10+12+12+15+9+50)/6 = 108/6 = 18" }
+          "explanation": {
+            "tr": "$$\\bar{x} = \\frac{\\sum x_i}{n} = \\frac{125}{5} = 25$$",
+            "en": "$$\\bar{x} = \\frac{\\sum x_i}{n} = \\frac{125}{5} = 25$$"
+          }
         }
       ],
       "realWorldBox": {
         "excelFormula": "=ORTALAMA(A1:A6)  (EN: =AVERAGE(A1:A6))",
         "pythonCode": "import statistics\nstatistics.mean([10, 12, 12, 15, 9, 50])",
-        "powerBiNote": { "tr": "Bir kart görselinde 'Ortalama Kâr' ölçüsü olarak eklenir.", "en": "Added as an 'Average Profit' measure in a card visual." }
+        "powerBiNote": {
+          "tr": "Bir kart görselinde 'Ortalama Kâr' ölçüsü olarak eklenir.",
+          "en": "Added as an 'Average Profit' measure in a card visual."
+        }
       }
     },
     {
@@ -122,17 +195,27 @@
       "moduleId": "module-1",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Medyan (Median)", "en": "Median" },
+      "title": {
+        "tr": "Medyan (Median)",
+        "en": "Median"
+      },
       "conceptCard": {
-        "tr": "Medyan, veriyi küçükten büyüğe sıraladığında ortada kalan değerdir. Veri sayısı çift ise, ortadaki iki değerin ortalaması alınır. Medyan, outlier'lardan mean kadar etkilenmez.",
-        "en": "The median is the middle value when data is sorted from smallest to largest. If there is an even count, take the average of the two middle values. The median is less affected by outliers than the mean."
+        "tr": "Medyan ($Q_2$), küçükten büyüğe sıralanmış bir veri setini tam ortadan iki eşit yarıya (%50 alt, %50 üst) ayıran değerdir. Veri sayısı $n$ tek ise medyan $\\frac{n+1}{2}$. sıradaki değer; $n$ çift ise ortadaki iki değerin aritmetik ortalamasıdır:\n\n$$x_{\\text{medyan}} = \\begin{cases} x_{\\left(\\frac{n+1}{2}\\right)}, & n \\text{ tek} \\\\[6pt] \\frac{x_{\\left(\\frac{n}{2}\\right)} + x_{\\left(\\frac{n}{2} + 1\\right)}}{2}, & n \\text{ çift} \\end{cases}$$\n\nUç değerlere (outlier) karşı dayanıklıdır (robust).",
+        "en": "The median ($Q_2$) splits ordered data into two equal halves (50% below, 50% above). For odd $n$, it is the $\\frac{n+1}{2}$-th observation; for even $n$, it is the average of the two middle observations:\n\n$$x_{\\text{median}} = \\begin{cases} x_{\\left(\\frac{n+1}{2}\\right)}, & n \\text{ odd} \\\\[6pt] \\frac{x_{\\left(\\frac{n}{2}\\right)} + x_{\\left(\\frac{n}{2} + 1\\right)}}{2}, & n \\text{ even} \\end{cases}$$\n\nIt is resistant (robust) to outliers."
       },
       "companyExample": {
-        "tr": "NovaMarket'in kâr verilerini küçükten büyüğe sıraladığımızda (9, 10, 12, 12, 15, 50) ortadaki iki değer 12 ve 12 olur. Medyanı bulmak için bu iki değerin ortalamasını alırız: (12 + 12) / 2 = 12 M$. Son çeyrekteki 50 M$'lık aşırı yüksek kâr (outlier) ortalamayı 18'e yükseltirken, medyan bize şirketin tipik çeyreklik performansının 12 M$ olduğunu açıkça gösterir.",
+        "tr": "NovaMarket kârları sıralandığında: $x_{(i)} = [9, 10, 12, 12, 15, 50]$ milyon $'dır. $n = 6$ (çift) olduğundan medyan ortadaki 3. ve 4. değerlerin ortalamasıdır:\n\n$$x_{\\text{medyan}} = \\frac{12 + 12}{2} = 12 \\text{ M\\$}$$",
         "en": "Sorting NovaMarket's profit data from smallest to largest (9, 10, 12, 12, 15, 50), the two middle values are 12 and 12. Taking their average gives a median of $12M. While the $50M outlier inflates the mean to 18, the median clearly shows the company's typical quarterly profit is $12M."
       },
       "interactiveType": "mean_median_mode",
-      "interactiveInitialData": [9, 10, 12, 12, 15, 50],
+      "interactiveInitialData": [
+        9,
+        10,
+        12,
+        12,
+        15,
+        50
+      ],
       "vocabTerms": [
         {
           "term_en": "median",
@@ -151,13 +234,25 @@
         {
           "id": "m1-l2-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Bir yönetici, mağazaların 'tipik' haftalık satışını öğrenmek istiyor ama verilerde 1 tane çok büyük outlier mağaza var. Hangi ölçüyü kullanmalı?", "en": "A manager wants to know the 'typical' weekly sales of stores, but there is one very large outlier store. Which measure should they use?" },
+          "prompt": {
+            "tr": "Sıralı veri seti $x = [4, 7, 10, 14, 18, 22]$ için medyan değeri kaçtır?",
+            "en": "For ordered dataset $x = [4, 7, 10, 14, 18, 22]$, what is the median value?"
+          },
           "options": [
-            { "tr": "Ortalama (Mean)", "en": "Mean" },
-            { "tr": "Medyan (Median)", "en": "Median" }
+            {
+              "tr": "Ortalama (Mean)",
+              "en": "Mean"
+            },
+            {
+              "tr": "Medyan (Median)",
+              "en": "Median"
+            }
           ],
           "correctAnswer": "Medyan (Median)",
-          "explanation": { "tr": "Medyan, outlier'dan mean kadar etkilenmediği için daha 'tipik' bir değer verir.", "en": "The median is less affected by the outlier, giving a more 'typical' value." }
+          "explanation": {
+            "tr": "$n = 6$ (çift) olduğu için ortadaki 3. ($10$) ve 4. ($14$) elemanların ortalaması alınır: $$\\text{Medyan} = \\frac{10 + 14}{2} = 12$$",
+            "en": "Since $n = 6$ (even), we take the average of the 3rd ($10$) and 4th ($14$) elements: $$\\text{Median} = \\frac{10 + 14}{2} = 12$$"
+          }
         }
       ],
       "realWorldBox": {
@@ -170,17 +265,26 @@
       "moduleId": "module-1",
       "order": 3,
       "difficulty": "orta-ustu",
-      "title": { "tr": "Mod (Mode)", "en": "Mode" },
+      "title": {
+        "tr": "Mod (Mode)",
+        "en": "Mode"
+      },
       "conceptCard": {
-        "tr": "Mod, bir veri grubunda en sık tekrar eden değerdir. Kategorik veriler için özellikle faydalıdır (örn. en çok satılan ürün rengi).",
-        "en": "The mode is the most frequently occurring value in a dataset. Especially useful for categorical data (e.g. most-sold product color)."
+        "tr": "Mod (Tepe Değer), bir veri setinde en yüksek frekansa sahip olan (en çok tekrar eden) gözlem değeridir. Bir veri setinde hiç mod olmayabileceği gibi birden fazla mod da (bimodal / multimodal) bulunabilir.\n\n$$\\text{Mod} = \\arg\\max_x \\{ f(x) \\}$$",
+        "en": "The mode is the value that appears with the highest frequency in a dataset. A dataset may have no mode, one mode (unimodal), or multiple modes (bimodal / multimodal):\n\n$$\\text{Mode} = \\arg\\max_x \\{ f(x) \\}$$"
       },
       "companyExample": {
         "tr": "NovaMarket'in 6 çeyreklik kâr verilerinde (10, 12, 12, 15, 9, 50) 12 sayısı iki kez tekrarlanmış, diğer tüm sayılar ise sadece bir kez gerçekleşmiştir. Veri setinde en çok tekrarlanan bu değere Mod denir ve burada Mod = 12 M$'dır.",
         "en": "In NovaMarket's quarterly profit data (10, 12, 12, 15, 9, 50), the number 12 appears twice, while all other numbers appear once. The most frequently occurring value is called the Mode, so Mode = $12M."
       },
       "interactiveType": "mean_median_mode",
-      "interactiveInitialData": [4, 4, 4, 8, 10],
+      "interactiveInitialData": [
+        4,
+        4,
+        4,
+        8,
+        10
+      ],
       "vocabTerms": [
         {
           "term_en": "mode",
@@ -193,9 +297,15 @@
         {
           "id": "m1-l3-q1",
           "type": "numeric",
-          "prompt": { "tr": "Veri: 4, 4, 4, 8, 10. Mod nedir?", "en": "Data: 4, 4, 4, 8, 10. What is the mode?" },
+          "prompt": {
+            "tr": "Gözlem değerleri $x = [3, 8, 8, 8, 12, 14, 14, 20]$ olan veri setinin modu kaçtır?",
+            "en": "What is the mode of the dataset $x = [3, 8, 8, 8, 12, 14, 14, 20]$?"
+          },
           "correctAnswer": 4,
-          "explanation": { "tr": "4 üç kez tekrar ediyor, en sık geçen değer bu.", "en": "4 appears three times, the most frequent value." }
+          "explanation": {
+            "tr": "$8$ sayısı $3$ kez tekrar ederek en yüksek frekansa sahiptir. Dolayısıyla $\\text{Mod} = 8$'dir.",
+            "en": "The number $8$ appears $3$ times, having the highest frequency. Thus, $\\text{Mode} = 8$."
+          }
         }
       ]
     },
@@ -204,17 +314,25 @@
       "moduleId": "module-1",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Varyans ve Standart Sapma", "en": "Variance and Standard Deviation" },
+      "title": {
+        "tr": "Varyans ve Standart Sapma",
+        "en": "Variance and Standard Deviation"
+      },
       "conceptCard": {
-        "tr": "Varyans, verilerin ortalamadan ne kadar uzakta olduğunu (yayılımını) ölçer. Her farkın karesi alınıp ortalaması hesaplanır. Standart sapma, varyansın kareköküdür ve orijinal birimle aynı birimdedir, bu yüzden yorumlaması daha kolaydır.",
-        "en": "Variance measures how spread out the data is from the mean. Each difference from the mean is squared, then averaged. Standard deviation is the square root of variance, expressed in the same unit as the original data, making it easier to interpret."
+        "tr": "Örneklem varyansı ($s^2$) ve standart sapma ($s$), verilerin aritmetik ortalamadan ne kadar saçıldığını ölçen yayılım ölçüleridir:\n\n$$s^2 = \\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2, \\qquad s = \\sqrt{s^2} = \\sqrt{\\frac{\\sum_{i=1}^{n} (x_i - \\bar{x})^2}{n - 1}}$$\n\nBölendeki $n-1$ serbestlik derecesi (Bessel düzeltmesi), örneklem varyansının anakütle varyansına ($\\sigma^2$) yansız bir tahminci (unbiased estimator) olmasını sağlar.",
+        "en": "Sample variance ($s^2$) and standard deviation ($s$) measure the dispersion of data points around the arithmetic mean:\n\n$$s^2 = \\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2, \\qquad s = \\sqrt{s^2} = \\sqrt{\\frac{\\sum_{i=1}^{n} (x_i - \\bar{x})^2}{n - 1}}$$\n\nThe $n-1$ degrees of freedom in the denominator (Bessel's correction) ensures that sample variance is an unbiased estimator of population variance $\\sigma^2$."
       },
       "companyExample": {
         "tr": "Mağaza A'nın haftalık satışları (20, 21, 19, 20 bin $) sürekli ortalama etrafındadır, bu nedenle sapması azdır ve satışları istikrarlıdır. Mağaza B'nin satışları ise (5, 35, 10, 30 bin $) aşırı dalgalıdır. Her iki mağazanın haftalık ortalaması 20 bin $ çıksa da, Mağaza B'nin yüksek standart sapması iş operasyonundaki dalgalanmayı ve riski ortaya koyar.",
         "en": "Store A's weekly sales ($20k, $21k, $19k, $20k) stay close to the mean, meaning low deviation and high stability. Store B's sales ($5k, $35k, $10k, $30k) fluctuate heavily. Although both average $20k per week, Store B's higher standard deviation highlights significant revenue volatility and risk."
       },
       "interactiveType": "variance_stddev",
-      "interactiveInitialData": [20, 21, 19, 20],
+      "interactiveInitialData": [
+        20,
+        21,
+        19,
+        20
+      ],
       "vocabTerms": [
         {
           "term_en": "spread / dispersion",
@@ -233,13 +351,25 @@
         {
           "id": "m1-l4-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Bir yatırımcı, hangi mağazanın 'daha riskli' (öngörülemez) olduğunu anlamak istiyor. Hangi ölçüye bakmalı?", "en": "An investor wants to know which store is 'riskier' (less predictable). Which measure should they look at?" },
+          "prompt": {
+            "tr": "Örneklem varyansı $s^2 = 36$ olarak hesaplanan bir lojistik teslimat süresinin standart sapması $s$ kaçtır?",
+            "en": "If the sample variance of delivery times is $s^2 = 36$, what is the sample standard deviation $s$?"
+          },
           "options": [
-            { "tr": "Ortalama (Mean)", "en": "Mean" },
-            { "tr": "Standart Sapma", "en": "Standard Deviation" }
+            {
+              "tr": "Ortalama (Mean)",
+              "en": "Mean"
+            },
+            {
+              "tr": "Standart Sapma",
+              "en": "Standard Deviation"
+            }
           ],
           "correctAnswer": "Standart Sapma",
-          "explanation": { "tr": "Standart sapma yüksekse veri daha yayılmış/öngörülemezdir — bu risk göstergesidir.", "en": "A higher standard deviation means more spread/unpredictability — a sign of risk." }
+          "explanation": {
+            "tr": "$$s = \\sqrt{s^2} = \\sqrt{36} = 6$$",
+            "en": "$$s = \\sqrt{s^2} = \\sqrt{36} = 6$$"
+          }
         }
       ],
       "realWorldBox": {
@@ -253,27 +383,63 @@
       "id": "m1-case-1",
       "moduleId": "module-1",
       "difficulty": "kolay",
-      "title": { "tr": "CafeLine Zinciri: Haftalık Satış Analizi", "en": "CafeLine Chain: Weekly Sales Analysis" },
+      "title": {
+        "tr": "CafeLine Zinciri: Haftalık Satış Analizi",
+        "en": "CafeLine Chain: Weekly Sales Analysis"
+      },
       "businessQuestion": {
-        "tr": "CafeLine'ın 6 şubesinin geçen haftaki satışları aşağıda. Yönetim, 'tipik' bir şube satışının ne olduğunu ve herhangi bir şubenin normalden farklı davranıp davranmadığını öğrenmek istiyor. Mean, median ve varsa outlier'ı belirleyip kısa bir yorum yaz.",
+        "tr": "NovaMarket son 6 çeyrekteki kâr verilerini analiz etmektedir ($n = 6$, değerler M\\$ cinsinden: $10, 12, 12, 15, 9, 50$). Şirketin çeyreklik kâr performansını özetlemek için ortalama ($\\bar{x}$), medyan ($Q_2$), mod ve yayılım ölçülerini hesaplayınız.",
         "en": "Below are last week's sales for CafeLine's 6 branches. Management wants to know the 'typical' branch sales figure and whether any branch behaves abnormally. Determine the mean, median, and any outlier, then write a short comment."
       },
       "dataset": {
-        "columns": ["Şube", "Haftalık Satış ($)"],
+        "columns": [
+          "Şube",
+          "Haftalık Satış ($)"
+        ],
         "rows": [
-          ["Kızılay", 8200],
-          ["Bahçelievler", 7900],
-          ["Çankaya", 8500],
-          ["Etimesgut", 8100],
-          ["Keçiören", 8000],
-          ["Sincan", 21000]
+          [
+            "Kızılay",
+            8200
+          ],
+          [
+            "Bahçelievler",
+            7900
+          ],
+          [
+            "Çankaya",
+            8500
+          ],
+          [
+            "Etimesgut",
+            8100
+          ],
+          [
+            "Keçiören",
+            8000
+          ],
+          [
+            "Sincan",
+            21000
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Tüm şubelerin ortalamasını hesapla.", "en": "Step 1: Calculate the mean of all branches." },
-        { "tr": "2. Adım: Medyanı hesapla.", "en": "Step 2: Calculate the median." },
-        { "tr": "3. Adım: Mean ile medyan arasındaki farka bak — neden farklılar?", "en": "Step 3: Look at the difference between mean and median — why are they different?" },
-        { "tr": "4. Adım: Hangi şube outlier? Yönetime ne önerirsin?", "en": "Step 4: Which branch is the outlier? What would you recommend to management?" }
+        {
+          "tr": "1. Adım: Aritmetik Ortalama Hesabı: $$\\bar{x} = \\frac{\\sum x_i}{n} = \\frac{10 + 12 + 12 + 15 + 9 + 50}{6} = \\frac{108}{6} = 18 \\text{ M\\$}$$",
+          "en": "Step 1: Calculate the mean of all branches."
+        },
+        {
+          "tr": "2. Adım: Medyan Hesabı: Sıralı veri $[9, 10, 12, 12, 15, 50]$ için ortadaki iki elemanın ortalaması: $$x_{\\text{medyan}} = \\frac{12 + 12}{2} = 12 \\text{ M\\$}$$",
+          "en": "Step 2: Calculate the median."
+        },
+        {
+          "tr": "3. Adım: Mod ve Değerlendirme: En sık tekrar eden değer $\\text{Mod} = 12$'dir. $\\bar{x} = 18$ iken $\\text{Medyan} = 12$ olması, 50 M$'lık aşırı değerin (outlier) ortalamayı yukarı çektiğini gösterir.",
+          "en": "Step 3: Look at the difference between mean and median — why are they different?"
+        },
+        {
+          "tr": "4. Adım: Hangi şube outlier? Yönetime ne önerirsin?",
+          "en": "Step 4: Which branch is the outlier? What would you recommend to management?"
+        }
       ],
       "expectedApproach": {
         "tr": "Mean ≈ 10283$, Medyan = 8150$. Sincan şubesi (21000$) belirgin bir outlier — ya gerçekten çok başarılı bir şube ya da veri girişinde hata olabilir, araştırılmalı. Yönetime 'tipik' şube performansı için medyan baz alınmalı önerisi yapılabilir.",
@@ -283,21 +449,42 @@
         {
           "id": "m1-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Verideki medyan satış tutarı kaçtır ($)?", "en": "What is the median sales figure in the dataset ($)?" },
+          "prompt": {
+            "tr": "NovaMarket veri setinin aritmetik ortalaması $\\bar{x}$ kaçtır (M\\$)?",
+            "en": "What is the median sales figure in the dataset ($)?"
+          },
           "correctAnswer": 8150,
-          "explanation": { "tr": "Sıralı veri: 7900, 8000, 8100, 8200, 8500, 21000. Ortadaki ikisinin ortalaması: (8100 + 8200)/2 = 8150", "en": "Sorted: 7900, 8000, 8100, 8200, 8500, 21000. Average of middle two: (8100 + 8200)/2 = 8150" }
+          "explanation": {
+            "tr": "$$\\bar{x} = \\frac{108}{6} = 18 \\text{ M\\$}$$",
+            "en": "Sorted: 7900, 8000, 8100, 8200, 8500, 21000. Average of middle two: (8100 + 8200)/2 = 8150"
+          }
         },
         {
           "id": "m1-case-1-q2",
           "type": "multiple_choice",
-          "prompt": { "tr": "Hangi şube belirgin bir outlier (aşırı değer) olarak öne çıkmaktadır?", "en": "Which branch stands out as a clear outlier?" },
+          "prompt": {
+            "tr": "Hangi şube belirgin bir outlier (aşırı değer) olarak öne çıkmaktadır?",
+            "en": "Which branch stands out as a clear outlier?"
+          },
           "options": [
-            { "tr": "Çankaya (8500)", "en": "Çankaya (8500)" },
-            { "tr": "Sincan (21000)", "en": "Sincan (21000)" },
-            { "tr": "Kızılay (8200)", "en": "Kızılay (8200)" }
+            {
+              "tr": "Çankaya (8500)",
+              "en": "Çankaya (8500)"
+            },
+            {
+              "tr": "Sincan (21000)",
+              "en": "Sincan (21000)"
+            },
+            {
+              "tr": "Kızılay (8200)",
+              "en": "Kızılay (8200)"
+            }
           ],
           "correctAnswer": "Sincan (21000)",
-          "explanation": { "tr": "Sincan şubesinin 21.000$ satışı diğer tüm şubelerin 2.5 katından fazladır.", "en": "Sincan branch's $21,000 sales is more than 2.5x any other branch." }
+          "explanation": {
+            "tr": "Sincan şubesinin 21.000$ satışı diğer tüm şubelerin 2.5 katından fazladır.",
+            "en": "Sincan branch's $21,000 sales is more than 2.5x any other branch."
+          }
         }
       ]
     },
@@ -305,26 +492,65 @@
       "id": "m1-case-2",
       "moduleId": "module-1",
       "difficulty": "orta",
-      "title": { "tr": "NovaMarket: İki Ürün Kategorisinin Kararlılığı", "en": "NovaMarket: Stability of Two Product Categories" },
+      "title": {
+        "tr": "NovaMarket: İki Ürün Kategorisinin Kararlılığı",
+        "en": "NovaMarket: Stability of Two Product Categories"
+      },
       "businessQuestion": {
-        "tr": "NovaMarket, hangi ürün kategorisine daha fazla stok yatırımı yapacağına karar vermeye çalışıyor. Elektronik ve Giyim kategorilerinin son 5 haftalık satış adetleri aşağıda. Hangi kategori daha 'öngörülebilir' (düşük varyans), hangisi daha 'riskli'?",
+        "tr": "DataPulse e-ticaret platformunda müşteri sepet tutarlarının yayılımı incelenmektedir. Veri setinde $Q_1 = 40 \\text{ TL}$ ve $Q_3 = 100 \\text{ TL}$ olarak tespit edilmiştir. Çeyrekler Açıklığı ($\\text{IQR}$) ve Tukey yöntemine göre üst aykırı değer (outlier) sınırını hesaplayınız.",
         "en": "NovaMarket is deciding which product category to invest more stock in. Below are the last 5 weeks of unit sales for Electronics and Clothing categories. Which category is more 'predictable' (low variance), which is 'riskier'?"
       },
       "dataset": {
-        "columns": ["Hafta", "Elektronik (adet)", "Giyim (adet)"],
+        "columns": [
+          "Hafta",
+          "Elektronik (adet)",
+          "Giyim (adet)"
+        ],
         "rows": [
-          [1, 150, 90],
-          [2, 155, 200],
-          [3, 148, 60],
-          [4, 152, 220],
-          [5, 149, 80]
+          [
+            1,
+            150,
+            90
+          ],
+          [
+            2,
+            155,
+            200
+          ],
+          [
+            3,
+            148,
+            60
+          ],
+          [
+            4,
+            152,
+            220
+          ],
+          [
+            5,
+            149,
+            80
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Her kategori için ortalamayı hesapla.", "en": "Step 1: Calculate the mean for each category." },
-        { "tr": "2. Adım: Her kategori için standart sapmayı hesapla.", "en": "Step 2: Calculate the standard deviation for each category." },
-        { "tr": "3. Adım: İki kategoriyi karşılaştır — hangisi daha kararlı?", "en": "Step 3: Compare the two categories — which is more stable?" },
-        { "tr": "4. Adım: Stok yatırımı için önerini yaz (kararlılık ile risk arasındaki dengeyi düşün).", "en": "Step 4: Write your stock investment recommendation (consider the trade-off between stability and risk)." }
+        {
+          "tr": "1. Adım: Çeyrekler Açıklığı: $$\\text{IQR} = Q_3 - Q_1 = 100 - 40 = 60 \\text{ TL}$$",
+          "en": "Step 1: Calculate the mean for each category."
+        },
+        {
+          "tr": "2. Adım: Üst Aykırı Değer Sınırı: $$\\text{Üst Sınır} = Q_3 + 1.5 \\cdot \\text{IQR} = 100 + 1.5 \\times 60 = 100 + 90 = 190 \\text{ TL}$$",
+          "en": "Step 2: Calculate the standard deviation for each category."
+        },
+        {
+          "tr": "3. Adım: İki kategoriyi karşılaştır — hangisi daha kararlı?",
+          "en": "Step 3: Compare the two categories — which is more stable?"
+        },
+        {
+          "tr": "4. Adım: Stok yatırımı için önerini yaz (kararlılık ile risk arasındaki dengeyi düşün).",
+          "en": "Step 4: Write your stock investment recommendation (consider the trade-off between stability and risk)."
+        }
       ],
       "expectedApproach": {
         "tr": "Elektronik ortalaması ~150.8, std sapması çok düşük (~2.5) — çok kararlı. Giyim ortalaması ~130, std sapması çok yüksek (~65) — öngörülemez. Elektronik'e stok yatırımı daha güvenli, ancak Giyim'in yüksek haftaları fırsat da olabilir; risk toleransına bağlı bir öneri yazılmalı.",
@@ -334,13 +560,25 @@
         {
           "id": "m1-case-2-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Düzenli stok ve tedarik zinciri yönetimi için hangi kategori daha az risklidir?", "en": "Which category carries less risk for predictable inventory and supply chain management?" },
+          "prompt": {
+            "tr": "Tukey çit yöntemine göre üst aykırı değer eşik sınırı ($Q_3 + 1.5 \\cdot \\text{IQR}$) kaçtır?",
+            "en": "Which category carries less risk for predictable inventory and supply chain management?"
+          },
           "options": [
-            { "tr": "Elektronik (Düşük varyans)", "en": "Electronics (Low variance)" },
-            { "tr": "Giyim (Yüksek varyans)", "en": "Clothing (High variance)" }
+            {
+              "tr": "Elektronik (Düşük varyans)",
+              "en": "Electronics (Low variance)"
+            },
+            {
+              "tr": "Giyim (Yüksek varyans)",
+              "en": "Clothing (High variance)"
+            }
           ],
           "correctAnswer": "Elektronik (Düşük varyans)",
-          "explanation": { "tr": "Elektronik haftalık satışı 148-155 arasında çok dar bir bantta değişir, standart sapması düşüktür.", "en": "Electronics weekly sales fluctuate in a tight 148-155 range with low standard deviation." }
+          "explanation": {
+            "tr": "$$\\text{Üst Sınır} = 100 + 1.5(60) = 190$$",
+            "en": "Electronics weekly sales fluctuate in a tight 148-155 range with low standard deviation."
+          }
         }
       ]
     },
@@ -348,29 +586,71 @@
       "id": "m1-case-3",
       "moduleId": "module-1",
       "difficulty": "zor",
-      "title": { "tr": "BrightHome: Müşteri Şikayet Verisinde Gizli Sorun", "en": "BrightHome: A Hidden Problem in Customer Complaint Data" },
+      "title": {
+        "tr": "BrightHome: Müşteri Şikayet Verisinde Gizli Sorun",
+        "en": "BrightHome: A Hidden Problem in Customer Complaint Data"
+      },
       "businessQuestion": {
-        "tr": "BrightHome mobilya şirketi, 8 farklı şehirdeki mağazalarından gelen aylık müşteri şikayet sayılarını incelemek istiyor. Yönetim 'ortalama şikayet sayımız düşük, sorun yok' diyor ama sen veriye daha dikkatli bakıyorsun. Ortalama, medyan, mod ve varyansı birlikte kullanarak, yönetimin bu yorumuna katılıp katılmadığını gerekçeleriyle savun.",
+        "tr": "VoltLogistics kargo teslimat süreleri için $s^2 = 64 \\text{ dk}^2$ ve ortalama $\\bar{x} = 40 \\text{ dk}$ bulmuştur. Teslimat süresinin standart sapmasını ($s$) ve Değişim Katsayısını ($\\text{CV} = \\frac{s}{\\bar{x}} \\times 100$) hesaplayınız.",
         "en": "BrightHome furniture company wants to review monthly customer complaint counts from its 8 city stores. Management says 'our average complaint count is low, there's no problem' but you look at the data more carefully. Using mean, median, mode, and variance together, argue whether you agree with management's statement, with reasoning."
       },
       "dataset": {
-        "columns": ["Şehir", "Aylık Şikayet Sayısı"],
+        "columns": [
+          "Şehir",
+          "Aylık Şikayet Sayısı"
+        ],
         "rows": [
-          ["İstanbul", 3],
-          ["Ankara", 2],
-          ["İzmir", 3],
-          ["Bursa", 2],
-          ["Antalya", 3],
-          ["Adana", 2],
-          ["Konya", 3],
-          ["Trabzon", 48]
+          [
+            "İstanbul",
+            3
+          ],
+          [
+            "Ankara",
+            2
+          ],
+          [
+            "İzmir",
+            3
+          ],
+          [
+            "Bursa",
+            2
+          ],
+          [
+            "Antalya",
+            3
+          ],
+          [
+            "Adana",
+            2
+          ],
+          [
+            "Konya",
+            3
+          ],
+          [
+            "Trabzon",
+            48
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Mean, medyan ve modu hesapla.", "en": "Step 1: Calculate mean, median, and mode." },
-        { "tr": "2. Adım: Mean neden 'düşük görünüyor' olabilir açıkla (Trabzon'un etkisini düşün, ama mean'i tek başına yorumlama).", "en": "Step 2: Explain why the mean might 'look low' (consider Trabzon's effect, but don't interpret mean alone)." },
-        { "tr": "3. Adım: Standart sapmayı yorumla — veri gerçekten 'düşük ve sorunsuz' mu?", "en": "Step 3: Interpret the standard deviation — is the data really 'low and problem-free'?" },
-        { "tr": "4. Adım: Yönetime kısa bir 'yönetici özeti' yaz: katılıyor musun, katılmıyor musun, neden?", "en": "Step 4: Write a short 'executive summary' to management: do you agree or disagree, and why?" }
+        {
+          "tr": "1. Adım: Standart Sapma: $$s = \\sqrt{s^2} = \\sqrt{64} = 8 \\text{ dk}$$",
+          "en": "Step 1: Calculate mean, median, and mode."
+        },
+        {
+          "tr": "2. Adım: Değişim Katsayısı (CV): $$\\text{CV} = \\frac{s}{\\bar{x}} \\times 100 = \\frac{8}{40} \\times 100 = \\%20$$",
+          "en": "Step 2: Explain why the mean might 'look low' (consider Trabzon's effect, but don't interpret mean alone)."
+        },
+        {
+          "tr": "3. Adım: Standart sapmayı yorumla — veri gerçekten 'düşük ve sorunsuz' mu?",
+          "en": "Step 3: Interpret the standard deviation — is the data really 'low and problem-free'?"
+        },
+        {
+          "tr": "4. Adım: Yönetime kısa bir 'yönetici özeti' yaz: katılıyor musun, katılmıyor musun, neden?",
+          "en": "Step 4: Write a short 'executive summary' to management: do you agree or disagree, and why?"
+        }
       ],
       "expectedApproach": {
         "tr": "Mean ≈ 8.25, ama medyan ve mod = 3 — çoğu şehir gayet düşük şikayet sayısına sahip, TEK bir şehir (Trabzon, 48) ortalamayı yukarı çekiyor. Yönetimin 'ortalama düşük' demesi yanıltıcı çünkü Trabzon'da ciddi bir sorun var ve bu mean içinde 'gizleniyor'. Doğru yaklaşım: medyan/modu vurgulamak VE Trabzon'u ayrıca araştırmak. Yönetim kısmen haklı (çoğunluk düşük) ama kritik bir outlier'ı gözden kaçırıyor.",
@@ -380,9 +660,15 @@
         {
           "id": "m1-case-3-q1",
           "type": "numeric",
-          "prompt": { "tr": "Müşteri şikayet sayılarının medyanı kaçtır?", "en": "What is the median of the customer complaint counts?" },
+          "prompt": {
+            "tr": "Teslimat sürelerinin standart sapması $s$ (dakika) kaçtır?",
+            "en": "What is the median of the customer complaint counts?"
+          },
           "correctAnswer": 3,
-          "explanation": { "tr": "Sıralı veri: 2, 2, 2, 3, 3, 3, 3, 48. Ortadaki ikisinin ortalaması: (3+3)/2 = 3", "en": "Sorted: 2, 2, 2, 3, 3, 3, 3, 48. Average of middle two: (3+3)/2 = 3" }
+          "explanation": {
+            "tr": "$$s = \\sqrt{64} = 8 \\text{ dk}$$",
+            "en": "Sorted: 2, 2, 2, 3, 3, 3, 3, 48. Average of middle two: (3+3)/2 = 3"
+          }
         }
       ]
     }

@@ -1,7 +1,10 @@
 {
   "id": "module-16",
   "order": 16,
-  "title": { "tr": "Sürekli Olasılık Dağılımları", "en": "Continuous Probability Distributions" },
+  "title": {
+    "tr": "Sürekli Olasılık Dağılımları",
+    "en": "Continuous Probability Distributions"
+  },
   "description": {
     "tr": "Olasılık yoğunluk fonksiyonu (PDF), kümülatif dağılım fonksiyonu (CDF), Düzgün Dağılım, Normal Dağılım N(μ, σ²) ve Z-skoru dönüşümleri.",
     "en": "Probability density function (PDF), cumulative distribution function (CDF), Uniform, Normal N(μ, σ²), and Z-score transforms."
@@ -13,10 +16,13 @@
       "moduleId": "module-16",
       "order": 1,
       "difficulty": "basit",
-      "title": { "tr": "Olasılık Yoğunluk Fonksiyonu (PDF) & Düzgün Dağılım", "en": "PDF & Uniform Distribution" },
+      "title": {
+        "tr": "Olasılık Yoğunluk Fonksiyonu (PDF) & Düzgün Dağılım",
+        "en": "PDF & Uniform Distribution"
+      },
       "conceptCard": {
-        "tr": "Sürekli değişkenlerde tek bir noktanın olasılığı P(X = x) = 0'dır; olasılık bir aralıktaki alan (integral) olarak bulunur. Düzgün Dağılım U(a, b) için PDF = 1 / (b - a)'dır.",
-        "en": "For continuous variables, P(X = x) = 0; probability is calculated as area under PDF. For Uniform U(a, b), PDF = 1 / (b - a)."
+        "tr": "Sürekli rastgele değişkenlerde tek bir noktanın olasılığı $P(X = x) = 0$'dır; olasılık belirli bir aralıktaki yoğunluk fonksiyonunun integrali ile hesaplanır:\n\n$$P(a \\le X \\le b) = \\int_{a}^{b} f(x)\\,dx, \\qquad \\int_{-\\infty}^{\\infty} f(x)\\,dx = 1$$\n\nSürekli Düzgün Dağılım $X \\sim \\mathcal{U}(a, b)$ için Yoğunluk Fonksiyonu (PDF):\n\n$$f(x) = \\begin{cases} \\frac{1}{b - a}, & a \\le x \\le b \\\\[4pt] 0, & \\text{diğer} \\end{cases}$$\n\nBeklenen değer $\\mathbb{E}[X] = \\frac{a + b}{2}$ ve varyans $\\text{Var}(X) = \\frac{(b - a)^2}{12}$'dir.",
+        "en": "For continuous random variables, point probability is $P(X=x) = 0$; probability is an integral:\n\n$$P(a \\le X \\le b) = \\int_{a}^{b} f(x)\\,dx$$\n\nContinuous Uniform $\\mathcal{U}(a, b)$ has $f(x) = \\frac{1}{b - a}, \\mathbb{E}[X] = \\frac{a+b}{2}, \\text{Var}(X) = \\frac{(b-a)^2}{12}$."
       },
       "companyExample": {
         "tr": "CyberPass veri indirme süresi [10 sn, 50 sn] aralığında Düzgün dağılmaktadır. Sürenin 20 sn ile 30 sn arasında olma olasılığı (30 - 20) / (50 - 10) = 10 / 40 = 0.25 (%25)'tir.",
@@ -35,9 +41,15 @@
         {
           "id": "m16-l1-q1",
           "type": "numeric",
-          "prompt": { "tr": "U(0, 20) düzgün dağılımında P(5 ≤ X ≤ 15) olasılığı kaçtır?", "en": "In U(0, 20) uniform distribution, what is P(5 ≤ X ≤ 15)?" },
+          "prompt": {
+            "tr": "$\\mathcal{U}(0, 20)$ sürekli düzgün dağılımında $P(5 \\le X \\le 15)$ olasılığı $\\int_{5}^{15} \\frac{1}{20}\\,dx$ kaçtır?",
+            "en": "In uniform distribution $\\mathcal{U}(0, 20)$, what is $P(5 \\le X \\le 15)$?"
+          },
           "correctAnswer": 0.5,
-          "explanation": { "tr": "(15 - 5) / (20 - 0) = 10 / 20 = 0.50.", "en": "(15 - 5) / (20 - 0) = 10 / 20 = 0.50." }
+          "explanation": {
+            "tr": "$$P(5 \\le X \\le 15) = \\int_{5}^{15} \\frac{1}{20}\\,dx = \\frac{15 - 5}{20 - 0} = \\frac{10}{20} = 0.50$$",
+            "en": "$$P(5 \\le X \\le 15) = \\frac{15 - 5}{20} = 0.50$$"
+          }
         }
       ]
     },
@@ -46,9 +58,12 @@
       "moduleId": "module-16",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Normal Dağılım & 68-95-99.7 Kuralı", "en": "Normal Distribution & Empirical Rule" },
+      "title": {
+        "tr": "Normal Dağılım & 68-95-99.7 Kuralı",
+        "en": "Normal Distribution & Empirical Rule"
+      },
       "conceptCard": {
-        "tr": "Normal Dağılım N(μ, σ²), ortalama μ etrafında simetrik çan eğrisidir. 68-95-99.7 kuralına göre verilerin %68'i μ ± 1σ, %95'i μ ± 2σ ve %99.7'si μ ± 3σ aralığındadır.",
+        "tr": "Normal Dağılım $X \\sim \\mathcal{N}(\\mu, \\sigma^2)$, ortalama $\\mu$ etrafında simetrik çan eğrisi formunda sürekli bir olasılık dağılımıdır:\n\n$$f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}$$\n\nEmpirik Kural (68-95-99.7):\n\n$$\\begin{aligned} P(\\mu - \\sigma \\le X \\le \\mu + \\sigma) &\\approx \\%68.27 \\\\[4pt] P(\\mu - 2\\sigma \\le X \\le \\mu + 2\\sigma) &\\approx \\%95.45 \\\\[4pt] P(\\mu - 3\\sigma \\le X \\le \\mu + 3\\sigma) &\\approx \\%99.73 \\end{aligned}$$",
         "en": "Normal distribution N(μ, σ²) is symmetric around mean μ. Empirical rule: 68% within μ ± 1σ, 95% within μ ± 2σ, 99.7% within μ ± 3σ."
       },
       "companyExample": {
@@ -68,9 +83,15 @@
         {
           "id": "m16-l2-q1",
           "type": "numeric",
-          "prompt": { "tr": "N(100, 15^2) dağılımında verilerin yaklaşık %68'i hangi iki değer arasındadır? (Alt sınırı yazınız: μ - σ)", "en": "In N(100, 15^2), ~68% of data lies between what lower bound (μ - σ)?" },
+          "prompt": {
+            "tr": "$\\mathcal{N}(100, 15^2)$ dağılımında verilerin yaklaşık $\\%68$'inin bulunduğu $\\mu \\pm \\sigma$ aralığının alt sınırı ($\\mu - \\sigma$) kaçtır?",
+            "en": "In N(100, 15^2), ~68% of data lies between what lower bound (μ - σ)?"
+          },
           "correctAnswer": 85,
-          "explanation": { "tr": "μ - 1σ = 100 - 15 = 85.", "en": "μ - 1σ = 100 - 15 = 85." }
+          "explanation": {
+            "tr": "$$\\text{Alt Sınır} = \\mu - \\sigma = 100 - 15 = 85$$",
+            "en": "μ - 1σ = 100 - 15 = 85."
+          }
         }
       ]
     },
@@ -79,9 +100,12 @@
       "moduleId": "module-16",
       "order": 3,
       "difficulty": "ileri",
-      "title": { "tr": "Standart Normal Dağılım & Z-Skoru", "en": "Standard Normal Distribution & Z-Score" },
+      "title": {
+        "tr": "Standart Normal Dağılım & Z-Skoru",
+        "en": "Standard Normal Distribution & Z-Score"
+      },
       "conceptCard": {
-        "tr": "Herhangi bir X ~ N(μ, σ²) değişkeni Z = (X - μ) / σ formülü ile N(0, 1) standart normal dağılıma ölçeklenir. Z-skoru, bir değerin ortalamadan kaç standart sapma uzakta olduğunu söyler.",
+        "tr": "Standart Normal Dağılım $Z \\sim \\mathcal{N}(0, 1)$:\n\n$$Z = \\frac{X - \\mu}{\\sigma}$$\n\nZ-skoru, bir gözlemin ortalamadan kaç standart sapma ($\\sigma$) uzakta olduğunu standartlaştırır.",
         "en": "Transform X ~ N(μ, σ²) via Z = (X - μ) / σ to N(0, 1). Z-score counts how many standard deviations a value is from mean."
       },
       "companyExample": {
@@ -101,9 +125,15 @@
         {
           "id": "m16-l3-q1",
           "type": "numeric",
-          "prompt": { "tr": "μ = 50, σ = 10 olan bir dağılımda X = 75 için Z-skoru kaçtır?", "en": "In a distribution with μ = 50, σ = 10, what is Z-score for X = 75?" },
+          "prompt": {
+            "tr": "$\\mu = 50$, $\\sigma = 10$ olan bir dağılımda $X = 75$ için Z-skoru ($Z = \\frac{X - \\mu}{\\sigma}$) kaçtır?",
+            "en": "In a distribution with μ = 50, σ = 10, what is Z-score for X = 75?"
+          },
           "correctAnswer": 2.5,
-          "explanation": { "tr": "Z = (75 - 50) / 10 = 25 / 10 = 2.5.", "en": "Z = (75 - 50) / 10 = 25 / 10 = 2.5." }
+          "explanation": {
+            "tr": "$$Z = \\frac{75 - 50}{10} = \\frac{25}{10} = 2.5$$",
+            "en": "Z = (75 - 50) / 10 = 25 / 10 = 2.5."
+          }
         }
       ]
     },
@@ -112,9 +142,12 @@
       "moduleId": "module-16",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Kümülatif Dağılım (CDF) & Alan Hesabı", "en": "Cumulative Distribution (CDF) & Area Calculation" },
+      "title": {
+        "tr": "Kümülatif Dağılım (CDF) & Alan Hesabı",
+        "en": "Cumulative Distribution (CDF) & Area Calculation"
+      },
       "conceptCard": {
-        "tr": "Kümülatif Dağılım Fonksiyonu F(x) = P(X ≤ x), rastlantı değişkeninin x değerinden küçük veya eşit olma birikimli olasılığıdır. Aralıktaki alan P(a ≤ X ≤ b) = F(b) - F(a) ile hesaplanır.",
+        "tr": "Kümülatif Dağılım Fonksiyonu (CDF), $X$'in belirli bir $x$ değerine kadar biriken toplam olasılığıdır:\n\n$$F(x) = P(X \\le x) = \\int_{-\\infty}^{x} f(t)\\,dt, \\qquad f(x) = \\frac{d}{dx}F(x)$$\n\nİki nokta arasındaki alan: $$P(a \\le X \\le b) = F(b) - F(a)$$",
         "en": "Cumulative Distribution Function F(x) = P(X ≤ x) gives cumulative probability. Interval probability P(a ≤ X ≤ b) = F(b) - F(a)."
       },
       "companyExample": {
@@ -134,9 +167,15 @@
         {
           "id": "m16-l4-q1",
           "type": "numeric",
-          "prompt": { "tr": "F(50) = 0.85 ve F(20) = 0.15 ise P(20 ≤ X ≤ 50) kaçtır?", "en": "If F(50) = 0.85 and F(20) = 0.15, what is P(20 ≤ X ≤ 50)?" },
+          "prompt": {
+            "tr": "$F(50) = 0.85$ ve $F(20) = 0.15$ ise $P(20 \\le X \\le 50) = F(50) - F(20)$ kaçtır?",
+            "en": "If F(50) = 0.85 and F(20) = 0.15, what is P(20 ≤ X ≤ 50)?"
+          },
           "correctAnswer": 0.7,
-          "explanation": { "tr": "0.85 - 0.15 = 0.70.", "en": "0.85 - 0.15 = 0.70." }
+          "explanation": {
+            "tr": "$$P(20 \\le X \\le 50) = 0.85 - 0.15 = 0.70$$",
+            "en": "0.85 - 0.15 = 0.70."
+          }
         }
       ]
     }
@@ -146,22 +185,43 @@
       "id": "m16-case-1",
       "moduleId": "module-16",
       "difficulty": "orta",
-      "title": { "tr": "CyberPass: Z-Skoru Tabanlı Siber Anomali Tespiti", "en": "CyberPass: Z-Score Based Cyber Anomaly Detection" },
+      "title": {
+        "tr": "CyberPass: Z-Skoru Tabanlı Siber Anomali Tespiti",
+        "en": "CyberPass: Z-Score Based Cyber Anomaly Detection"
+      },
       "businessQuestion": {
         "tr": "CyberPass sunucu giriş denemesi sıklığı μ = 100/dakika ve σ = 20/dakika olan Normal dağılıma uymaktadır. Dakikada X = 160 giriş yapılan bir ip adresi tespit edildi. Z-skorunu hesaplayıp anomali durumunu değerlendiriniz.",
         "en": "Login attempt frequency follows N(μ=100, σ=20). An IP registers X = 160 logins/min. Calculate Z-score and evaluate anomaly."
       },
       "dataset": {
-        "columns": ["Parametre", "Değer"],
+        "columns": [
+          "Parametre",
+          "Değer"
+        ],
         "rows": [
-          ["Ortalama μ", "100 giriş/dk"],
-          ["Standart Sapma σ", "20 giriş/dk"],
-          ["Gözlemlenen X", "160 giriş/dk"]
+          [
+            "Ortalama μ",
+            "100 giriş/dk"
+          ],
+          [
+            "Standart Sapma σ",
+            "20 giriş/dk"
+          ],
+          [
+            "Gözlemlenen X",
+            "160 giriş/dk"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Z = (160 - 100) / 20 = 60 / 20 = 3.0.", "en": "Step 1: Z = (160 - 100) / 20 = 3.0." },
-        { "tr": "2. Adım: Z = +3.0 değeri %99.7 güven aralığının ötesindedir ve %0.13 olasılıkla gerçekleşir (Brute force saldırısı).", "en": "Step 2: Z = +3.0 lies beyond 99.7% bounds (p < 0.0013, brute force attack)." }
+        {
+          "tr": "1. Adım: Z-Skoru: $$Z = \\frac{160 - 100}{20} = \\frac{60}{20} = 3.0$$",
+          "en": "Step 1: Z = (160 - 100) / 20 = 3.0."
+        },
+        {
+          "tr": "2. Adım: Değerlendirme: $Z = +3.0$ değeri $\\%99.7$ empirik güven aralığının sınırında olup anomali (brute force siber saldırı) alarmı üretir.",
+          "en": "Step 2: Z = +3.0 lies beyond 99.7% bounds (p < 0.0013, brute force attack)."
+        }
       ],
       "expectedApproach": {
         "tr": "Sürekli verilerde Z-skoru eşikleri (örneğin |Z| > 3) otomatik anomali ve siber saldırı tespitinde kritik role sahiptir.",
@@ -171,9 +231,15 @@
         {
           "id": "m16-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Tespit edilen IP adresi için Z-skoru kaçtır?", "en": "What is the Z-score for the detected IP address?" },
+          "prompt": {
+            "tr": "Tespit edilen IP adresi için Z-skoru kaçtır?",
+            "en": "What is the Z-score for the detected IP address?"
+          },
           "correctAnswer": 3,
-          "explanation": { "tr": "Z = (160 - 100) / 20 = 3.0.", "en": "Z = (160 - 100) / 20 = 3.0." }
+          "explanation": {
+            "tr": "$$Z = \\frac{160 - 100}{20} = 3.0$$",
+            "en": "Z = (160 - 100) / 20 = 3.0."
+          }
         }
       ]
     }

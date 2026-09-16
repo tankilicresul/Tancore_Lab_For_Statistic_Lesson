@@ -1,7 +1,10 @@
 {
   "id": "module-4",
   "order": 4,
-  "title": { "tr": "Örnekleme & CLT", "en": "Sampling & Central Limit Theorem" },
+  "title": {
+    "tr": "Örnekleme & CLT",
+    "en": "Sampling & Central Limit Theorem"
+  },
   "description": {
     "tr": "Örnekleme yöntemleri, örnekleme hatası ve Merkezi Limit Teoremi (CLT). Müşteri memnuniyet anketi örneklem büyüklüğü vakası.",
     "en": "Sampling methods, sampling error, and Central Limit Theorem (CLT). Customer satisfaction survey sample size case."
@@ -13,9 +16,12 @@
       "moduleId": "module-4",
       "order": 1,
       "difficulty": "basit",
-      "title": { "tr": "Rastgele Örnekleme & Ana Kütle", "en": "Random Sampling & Population" },
+      "title": {
+        "tr": "Rastgele Örnekleme & Ana Kütle",
+        "en": "Random Sampling & Population"
+      },
       "conceptCard": {
-        "tr": "Ana kütle (popülasyon) ilgilenilen tüm bireylerin kümesidir. Örneklem ise bu kütleden seçilen temsil edici küçük gruptur.",
+        "tr": "Anakütleden çekilen $n$ birimlik rastgele örneklemlerin ortalaması ($\\bar{X}$) bir rastgele değişkendir ve bir Örnekleme Dağılımı oluşturur. Örneklem ortalamasının beklenen değeri anakütle ortalamasına eşittir:\n\n$$\\mathbb{E}[\\bar{X}] = \\mu_{\\bar{X}} = \\mu, \\qquad \\sigma_{\\bar{X}} = \\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$$\n\nBurada $\\text{SE}$ (Standard Error - Standart Hata), örneklem ortalamasının anakütle ortalaması etrafındaki değişkenliğini ifade eder.",
         "en": "Population is the entire group of interest. Sample is a smaller representative subset selected from the population."
       },
       "companyExample": {
@@ -35,13 +41,25 @@
         {
           "id": "m4-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Rastgele örneklemenin en temel amacı nedir?", "en": "What is the primary goal of random sampling?" },
+          "prompt": {
+            "tr": "Standart sapması $\\sigma = 20$ olan bir anakütleden $n = 100$ büyüklüğünde bir örneklem çekildiğinde Standart Hata ($\\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$) kaçtır?",
+            "en": "What is the primary goal of random sampling?"
+          },
           "options": [
-            { "tr": "Ana kütleyi tarafsız şekilde temsil etmek", "en": "To represent the population without bias" },
-            { "tr": "Sadece en aktif kullanıcıları seçmek", "en": "To select only the most active users" }
+            {
+              "tr": "Ana kütleyi tarafsız şekilde temsil etmek",
+              "en": "To represent the population without bias"
+            },
+            {
+              "tr": "Sadece en aktif kullanıcıları seçmek",
+              "en": "To select only the most active users"
+            }
           ],
           "correctAnswer": "Ana kütleyi tarafsız şekilde temsil etmek",
-          "explanation": { "tr": "Rastgele seçim yanlılığı önler ve temsil kabiliyetini artırır.", "en": "Random selection prevents bias and increases representativeness." }
+          "explanation": {
+            "tr": "$$\\text{SE} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{20}{\\sqrt{100}} = \\frac{20}{10} = 2$$",
+            "en": "Random selection prevents bias and increases representativeness."
+          }
         }
       ]
     },
@@ -50,9 +68,12 @@
       "moduleId": "module-4",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Örneklem Dağılımı & Standart Hata", "en": "Sampling Distribution & Standard Error" },
+      "title": {
+        "tr": "Örneklem Dağılımı & Standart Hata",
+        "en": "Sampling Distribution & Standard Error"
+      },
       "conceptCard": {
-        "tr": "Örneklem ortalamasının değişkenlik ölçüsüne Standart Hata denir. Örneklemdeki kişi sayısı arttıkça tahminin Standart Hatası ve yanılma payı azalır.",
+        "tr": "Merkezi Limit Teoremi (CLT), ana kütlenin dağılımı ne olursa olsun (çarpık, düzgün veya bimodal), örneklem hacmi $n \\ge 30$ olduğunda örneklem ortalamaları dağılımının yaklaşık olarak Normal Dağılıma yakınsayacağını garanti eder:\n\n$$\\bar{X} \\xrightarrow{d} \\mathcal{N}\\left(\\mu, \\frac{\\sigma^2}{n}\\right), \\qquad Z = \\frac{\\bar{X} - \\mu}{\\frac{\\sigma}{\\sqrt{n}}} \\sim \\mathcal{N}(0, 1)$$",
         "en": "The standard deviation of sample means is called the Standard Error. As the sample size grows larger, the Standard Error decreases."
       },
       "companyExample": {
@@ -72,9 +93,15 @@
         {
           "id": "m4-l2-q1",
           "type": "numeric",
-          "prompt": { "tr": "σ = 20 ve n = 100 ise Standart Hata (SE) kaçtır?", "en": "If σ = 20 and n = 100, what is SE?" },
+          "prompt": {
+            "tr": "Merkezi Limit Teoremi'nin (CLT) geçerli olması için literatürde genel kabul gören minimum örneklem hacmi ($n$) kaçtır?",
+            "en": "If σ = 20 and n = 100, what is SE?"
+          },
           "correctAnswer": 2,
-          "explanation": { "tr": "20 / √100 = 20 / 10 = 2", "en": "20 / √100 = 2" }
+          "explanation": {
+            "tr": "İstatistikte örneklem ortalamasının normale yaklaşması için genellikle $n \\ge 30$ eşiği yeterli kabul edilir.",
+            "en": "20 / √100 = 2"
+          }
         }
       ]
     },
@@ -83,9 +110,12 @@
       "moduleId": "module-4",
       "order": 3,
       "difficulty": "orta-ustu",
-      "title": { "tr": "Merkezi Limit Teoremi (CLT)", "en": "Central Limit Theorem (CLT)" },
+      "title": {
+        "tr": "Merkezi Limit Teoremi (CLT)",
+        "en": "Central Limit Theorem (CLT)"
+      },
       "conceptCard": {
-        "tr": "Merkezi Limit Teoremi, ana kütle hangi dağılıma sahip olursa olsun, yeterli büyüklükte alınan örneklem ortalamalarının her zaman Normal Dağılıma (Çan Eğrisi) yaklaşacağını belirtir.",
+        "tr": "Büyük Sayılar Yasası (LLN), örneklem büyüklüğü $n \\to \\infty$ arttıkça, örneklem ortalamasının $\\bar{X}_n$ anakütle ortalaması $\\mu$'ye olasılıkta yakınsayacağını ifade eder:\n\n$$P\\left(\\lim_{n \\to \\infty} |\\bar{X}_n - \\mu| < \\epsilon\\right) = 1$$",
         "en": "The Central Limit Theorem states that regardless of the population distribution shape, sample means will approach a Normal distribution for sufficient sample sizes."
       },
       "companyExample": {
@@ -105,13 +135,25 @@
         {
           "id": "m4-l3-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "CLT kuralına göre n kaçtan büyük olduğunda normallik varsayımı güçlenir?", "en": "According to CLT, for what n does normality assumption hold?" },
+          "prompt": {
+            "tr": "CLT kuralına göre n kaçtan büyük olduğunda normallik varsayımı güçlenir?",
+            "en": "According to CLT, for what n does normality assumption hold?"
+          },
           "options": [
-            { "tr": "n >= 30", "en": "n >= 30" },
-            { "tr": "n >= 5", "en": "n >= 5" }
+            {
+              "tr": "n >= 30",
+              "en": "n >= 30"
+            },
+            {
+              "tr": "n >= 5",
+              "en": "n >= 5"
+            }
           ],
           "correctAnswer": "n >= 30",
-          "explanation": { "tr": "İstatistikte genelde n >= 30 eşik kabul edilir.", "en": "In statistics n >= 30 is the general threshold." }
+          "explanation": {
+            "tr": "İstatistikte genelde n >= 30 eşik kabul edilir.",
+            "en": "In statistics n >= 30 is the general threshold."
+          }
         }
       ]
     },
@@ -120,9 +162,12 @@
       "moduleId": "module-4",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Yeterli Örneklem Büyüklüğü (n ≥ 30 Rule)", "en": "Sample Size Determination" },
+      "title": {
+        "tr": "Yeterli Örneklem Büyüklüğü (n ≥ 30 Rule)",
+        "en": "Sample Size Determination"
+      },
       "conceptCard": {
-        "tr": "İstenen hata payı ve güven düzeyine ulaşabilmek için araştırmada kaç kişiye ulaşılması gerektiği örneklem büyüklüğü hesabı ile belirlenir.",
+        "tr": "Örneklem hacmi $n$ arttıkça standart hata $\\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$ küçülür. Standart hatayı yarıya düşürmek için örneklem hacmi $4$ katına çıkarılmalıdır:\n\n$$\\text{SE}_{\\text{yeni}} = \\frac{\\sigma}{\\sqrt{4n}} = \\frac{1}{2} \\frac{\\sigma}{\\sqrt{n}} = \\frac{1}{2} \\text{SE}$$",
         "en": "Sample size determination calculates the minimum number of observations required to achieve a desired confidence level and margin of error."
       },
       "companyExample": {
@@ -142,9 +187,15 @@
         {
           "id": "m4-l4-q1",
           "type": "numeric",
-          "prompt": { "tr": "Örneklem büyüklüğü 4 katına çıkarsa Standart Hata kaç katına düşer?", "en": "If sample size quadruples, by what factor does SE drop?" },
+          "prompt": {
+            "tr": "Örneklem büyüklüğü 4 katına çıkarsa Standart Hata kaç katına düşer?",
+            "en": "If sample size quadruples, by what factor does SE drop?"
+          },
           "correctAnswer": 2,
-          "explanation": { "tr": "√4 = 2 olduğu için SE yarıya düşer.", "en": "√4 = 2, so SE decreases by half." }
+          "explanation": {
+            "tr": "√4 = 2 olduğu için SE yarıya düşer.",
+            "en": "√4 = 2, so SE decreases by half."
+          }
         }
       ]
     }
@@ -154,22 +205,43 @@
       "id": "m4-case-1",
       "moduleId": "module-4",
       "difficulty": "kolay",
-      "title": { "tr": "SurveyPulse: Anket Standart Hatası", "en": "SurveyPulse: Survey Standard Error" },
+      "title": {
+        "tr": "SurveyPulse: Anket Standart Hatası",
+        "en": "SurveyPulse: Survey Standard Error"
+      },
       "businessQuestion": {
-        "tr": "SurveyPulse anketi için ana kütle standart sapması σ = 20 TL'dir. 100 kişiden oluşan bir örneklem alındığında (n = 100), örneklem ortalamasının Standart Hatası (SE) kaçtır?",
+        "tr": "CloudTech veri merkezinde sunucu yanıt sürelerinin ortalaması $\\mu = 150 \\text{ ms}$ ve standart sapması $\\sigma = 40 \\text{ ms}$'dir. $n = 64$ büyüklüğünde bir örneklem çekildiğinde standart hata $\\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$ ve $\\bar{X} = 160 \\text{ ms}$ için Z-istatistiğini hesaplayınız.",
         "en": "For a SurveyPulse survey, population std dev σ = $20. For a sample size n = 100, what is the Standard Error (SE) of the sample mean?"
       },
       "dataset": {
-        "columns": ["Parametre", "Değer"],
+        "columns": [
+          "Parametre",
+          "Değer"
+        ],
         "rows": [
-          ["Standart Sapma (σ)", "20 TL"],
-          ["Örneklem Büyüklüğü (n)", "100 kişi"]
+          [
+            "Standart Sapma (σ)",
+            "20 TL"
+          ],
+          [
+            "Örneklem Büyüklüğü (n)",
+            "100 kişi"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Standart Hata formülünü hatırla: SE = σ / √n.", "en": "Step 1: Recall SE formula: SE = σ / √n." },
-        { "tr": "2. Adım: √100 = 10.", "en": "Step 2: √100 = 10." },
-        { "tr": "3. Adım: SE = 20 / 10 = 2.0.", "en": "Step 3: SE = 20 / 10 = 2.0." }
+        {
+          "tr": "1. Adım: Standart Hata: $$\\text{SE} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{40}{\\sqrt{64}} = \\frac{40}{8} = 5 \\text{ ms}$$",
+          "en": "Step 1: Recall SE formula: SE = σ / √n."
+        },
+        {
+          "tr": "2. Adım: Z-Skoru: $$Z = \\frac{\\bar{X} - \\mu}{\\text{SE}} = \\frac{160 - 150}{5} = \\frac{10}{5} = 2.0$$",
+          "en": "Step 2: √100 = 10."
+        },
+        {
+          "tr": "3. Adım: SE = 20 / 10 = 2.0.",
+          "en": "Step 3: SE = 20 / 10 = 2.0."
+        }
       ],
       "expectedApproach": {
         "tr": "Standart Hata = 2.0 TL'dir. Bu, 100 kişilik örneklem ortalamalarının ana kütle ortalamasından ortalama 2 TL sapacağını gösterir.",
@@ -179,9 +251,15 @@
         {
           "id": "m4-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Standart Hata (SE) kaçtır?", "en": "What is the Standard Error (SE)?" },
+          "prompt": {
+            "tr": "Örneklem ortalaması dağılımının standart hatası $\\text{SE}$ kaçtır?",
+            "en": "What is the Standard Error (SE)?"
+          },
           "correctAnswer": 2,
-          "explanation": { "tr": "20 / √100 = 20 / 10 = 2", "en": "20 / √100 = 20 / 10 = 2" }
+          "explanation": {
+            "tr": "$$\\text{SE} = \\frac{40}{\\sqrt{64}} = 5$$",
+            "en": "20 / √100 = 20 / 10 = 2"
+          }
         }
       ]
     },
@@ -189,21 +267,41 @@
       "id": "m4-case-2",
       "moduleId": "module-4",
       "difficulty": "orta",
-      "title": { "tr": "EcoQuality: PM10 Hava Kirliliği & CLT Analizi", "en": "EcoQuality: PM10 Air Quality & CLT Analysis" },
+      "title": {
+        "tr": "EcoQuality: PM10 Hava Kirliliği & CLT Analizi",
+        "en": "EcoQuality: PM10 Air Quality & CLT Analysis"
+      },
       "businessQuestion": {
         "tr": "Çevre Mühendisliği Çalışması: Bir şehirdeki günlük PM10 parçacık konsantrasyonunun popülasyon standart sapması σ = 15 µg/m³'tür. 36 günlük rastgele ölçüm yapıldığında (n = 36), örneklem ortalamasının Standart Hatası kaç µg/m³ olur ve ölçüm ortalamasının popülasyon ortalamasından en fazla 4.9 µg/m³ sapma olasılığı nedir?",
         "en": "Environmental Study: Daily PM10 particle concentration has population std dev σ = 15 µg/m³. For n = 36 daily measurements, what is the Standard Error of sample mean, and what is the probability that sample mean is within 4.9 µg/m³ of the true mean?"
       },
       "dataset": {
-        "columns": ["Ölçüm Sayısı (n)", "Popülasyon Std Dev (σ)", "İstenen Sapma (E)"],
+        "columns": [
+          "Ölçüm Sayısı (n)",
+          "Popülasyon Std Dev (σ)",
+          "İstenen Sapma (E)"
+        ],
         "rows": [
-          ["36 Gün", "15 µg/m³", "± 4.9 µg/m³"]
+          [
+            "36 Gün",
+            "15 µg/m³",
+            "± 4.9 µg/m³"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: SE = σ / √n = 15 / √36 = 15 / 6 = 2.5 µg/m³.", "en": "Step 1: SE = σ / √n = 15 / √36 = 15 / 6 = 2.5 µg/m³." },
-        { "tr": "2. Adım: Z skoru hesabı: Z = E / SE = 4.9 / 2.5 = 1.96.", "en": "Step 2: Z score calculation: Z = E / SE = 4.9 / 2.5 = 1.96." },
-        { "tr": "3. Adım: P(-1.96 ≤ Z ≤ 1.96) = 0.95 (%95 olasılık).", "en": "Step 3: P(-1.96 ≤ Z ≤ 1.96) = 0.95 (95% probability)." }
+        {
+          "tr": "1. Adım: SE = σ / √n = 15 / √36 = 15 / 6 = 2.5 µg/m³.",
+          "en": "Step 1: SE = σ / √n = 15 / √36 = 15 / 6 = 2.5 µg/m³."
+        },
+        {
+          "tr": "2. Adım: Z skoru hesabı: Z = E / SE = 4.9 / 2.5 = 1.96.",
+          "en": "Step 2: Z score calculation: Z = E / SE = 4.9 / 2.5 = 1.96."
+        },
+        {
+          "tr": "3. Adım: P(-1.96 ≤ Z ≤ 1.96) = 0.95 (%95 olasılık).",
+          "en": "Step 3: P(-1.96 ≤ Z ≤ 1.96) = 0.95 (95% probability)."
+        }
       ],
       "expectedApproach": {
         "tr": "SE = 2.5 µg/m³ olup %95 olasılıkla örneklem ortalaması ana kütle ortalamasından ±4.9 µg/m³ dahilinde kalır.",
@@ -213,9 +311,15 @@
         {
           "id": "m4-case-2-q1",
           "type": "numeric",
-          "prompt": { "tr": "Örneklem ortalamasının Standart Hatası (SE) kaçtır?", "en": "What is the Standard Error (SE) of the sample mean?" },
+          "prompt": {
+            "tr": "Örneklem ortalamasının Standart Hatası (SE) kaçtır?",
+            "en": "What is the Standard Error (SE) of the sample mean?"
+          },
           "correctAnswer": 2.5,
-          "explanation": { "tr": "15 / √36 = 15 / 6 = 2.5", "en": "15 / √36 = 15 / 6 = 2.5" }
+          "explanation": {
+            "tr": "15 / √36 = 15 / 6 = 2.5",
+            "en": "15 / √36 = 15 / 6 = 2.5"
+          }
         }
       ]
     },
@@ -223,23 +327,47 @@
       "id": "m4-case-3",
       "moduleId": "module-4",
       "difficulty": "zor",
-      "title": { "tr": "TechCorp: Optimum Örneklem Boyutu Tasarımı", "en": "TechCorp: Optimum Sample Size Design" },
+      "title": {
+        "tr": "TechCorp: Optimum Örneklem Boyutu Tasarımı",
+        "en": "TechCorp: Optimum Sample Size Design"
+      },
       "businessQuestion": {
         "tr": "TechCorp kalite yönetim ekibi, çip üretim sürelerindeki ortalama hatayı %99 güven düzeyinde (z* = 2.576) en fazla ±0.5 milisaniye (E = 0.5) olarak tutmak istemektedir. Geçmiş süreçlerden σ = 2.0 ms olduğu bilindiğine göre, gerekli minimum örneklem boyutu n kaçtır?",
         "en": "TechCorp Quality team wants a 99% confidence level (z* = 2.576) with a margin of error of at most ±0.5 ms (E = 0.5). Given σ = 2.0 ms, what is the minimum required sample size n?"
       },
       "dataset": {
-        "columns": ["Parametre", "Değer"],
+        "columns": [
+          "Parametre",
+          "Değer"
+        ],
         "rows": [
-          ["Güven Düzeyi (%99 Z*)", "2.576"],
-          ["Kabul Edilebilir Hata (E)", "0.5 ms"],
-          ["Proses Std Dev (σ)", "2.0 ms"]
+          [
+            "Güven Düzeyi (%99 Z*)",
+            "2.576"
+          ],
+          [
+            "Kabul Edilebilir Hata (E)",
+            "0.5 ms"
+          ],
+          [
+            "Proses Std Dev (σ)",
+            "2.0 ms"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Formül: n = (z* · σ / E)².", "en": "Step 1: Formula: n = (z* · σ / E)²." },
-        { "tr": "2. Adım: n = (2.576 · 2.0 / 0.5)² = (10.304)² = 106.17.", "en": "Step 2: n = (2.576 · 2.0 / 0.5)² = (10.304)² = 106.17." },
-        { "tr": "3. Adım: Yukarı yuvarla: n ≥ 107 çip.", "en": "Step 3: Round up: n ≥ 107 chips." }
+        {
+          "tr": "1. Adım: Formül: n = (z* · σ / E)².",
+          "en": "Step 1: Formula: n = (z* · σ / E)²."
+        },
+        {
+          "tr": "2. Adım: n = (2.576 · 2.0 / 0.5)² = (10.304)² = 106.17.",
+          "en": "Step 2: n = (2.576 · 2.0 / 0.5)² = (10.304)² = 106.17."
+        },
+        {
+          "tr": "3. Adım: Yukarı yuvarla: n ≥ 107 çip.",
+          "en": "Step 3: Round up: n ≥ 107 chips."
+        }
       ],
       "expectedApproach": {
         "tr": "Gerekli minimum örneklem büyüklüğü n = 107 olarak hesaplanır.",
@@ -249,9 +377,15 @@
         {
           "id": "m4-case-3-q1",
           "type": "numeric",
-          "prompt": { "tr": "Gerekli minimum örneklem büyüklüğü (n) kaçtır?", "en": "What is the minimum required sample size (n)?" },
+          "prompt": {
+            "tr": "Gerekli minimum örneklem büyüklüğü (n) kaçtır?",
+            "en": "What is the minimum required sample size (n)?"
+          },
           "correctAnswer": 107,
-          "explanation": { "tr": "(2.576 * 2.0 / 0.5)^2 = 106.17 -> yukarı yuvarlayınca 107", "en": "(2.576 * 2.0 / 0.5)^2 = 106.17 -> rounded up to 107" }
+          "explanation": {
+            "tr": "(2.576 * 2.0 / 0.5)^2 = 106.17 -> yukarı yuvarlayınca 107",
+            "en": "(2.576 * 2.0 / 0.5)^2 = 106.17 -> rounded up to 107"
+          }
         }
       ]
     }

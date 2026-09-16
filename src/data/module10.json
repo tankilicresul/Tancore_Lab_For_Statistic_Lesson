@@ -1,7 +1,10 @@
 {
   "id": "module-10",
   "order": 10,
-  "title": { "tr": "Zaman Serisi Temelleri", "en": "Time Series Fundamentals" },
+  "title": {
+    "tr": "Zaman Serisi Temelleri",
+    "en": "Time Series Fundamentals"
+  },
   "description": {
     "tr": "Zaman serisi bileşenleri (trend, mevsimsellik), hareketli ortalama (MA), üstel düzleştirme ve sezonsal tahminler. Perakende satış tahmini vakası.",
     "en": "Time series components (trend, seasonality), moving averages (MA), exponential smoothing, and seasonal forecasting. Retail sales forecast case."
@@ -13,7 +16,10 @@
       "moduleId": "module-10",
       "order": 1,
       "difficulty": "basit",
-      "title": { "tr": "Zaman Serisi Bileşenleri", "en": "Time Series Components" },
+      "title": {
+        "tr": "Zaman Serisi Bileşenleri",
+        "en": "Time Series Components"
+      },
       "conceptCard": {
         "tr": "Zaman serisi veri kümesi 4 ana bileşenden oluşur: Trend (uzun vadeli yön), Mevsimsellik (periyodik dalgalanma), Döngü (konjonktür) ve Rastgele Gürültü (Noise).",
         "en": "A time series consists of 4 main components: Trend (long-term direction), Seasonality (periodic repeats), Cyclicality, and Random Noise."
@@ -35,13 +41,25 @@
         {
           "id": "m10-l1-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Her yaz aylarında tekrarlayan satış artışı hangi bileşendir?", "en": "Repeated sales spikes every summer represent which component?" },
+          "prompt": {
+            "tr": "Her yaz aylarında tekrarlayan satış artışı hangi bileşendir?",
+            "en": "Repeated sales spikes every summer represent which component?"
+          },
           "options": [
-            { "tr": "Mevsimsellik (Seasonality)", "en": "Seasonality" },
-            { "tr": "Rastgele Gürültü (Random Noise)", "en": "Random Noise" }
+            {
+              "tr": "Mevsimsellik (Seasonality)",
+              "en": "Seasonality"
+            },
+            {
+              "tr": "Rastgele Gürültü (Random Noise)",
+              "en": "Random Noise"
+            }
           ],
           "correctAnswer": "Mevsimsellik (Seasonality)",
-          "explanation": { "tr": "Yıllık periyodik tekrarlar mevsimselliktir.", "en": "Annual repeating patterns constitute seasonality." }
+          "explanation": {
+            "tr": "Yıllık periyodik tekrarlar mevsimselliktir.",
+            "en": "Annual repeating patterns constitute seasonality."
+          }
         }
       ]
     },
@@ -50,9 +68,12 @@
       "moduleId": "module-10",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Hareketli Ortalama (Moving Average)", "en": "Moving Averages" },
+      "title": {
+        "tr": "Hareketli Ortalama (Moving Average)",
+        "en": "Moving Averages"
+      },
       "conceptCard": {
-        "tr": "Hareketli Ortalama (MA), son k dönemin ortalamasını alarak zaman serisindeki kısa vadeli gürültüyü düzleştirir (smooth eder).",
+        "tr": "Zaman Serisi, kronolojik sıra ile toplanmış gözlemler kümesidir. $k$-Dönemlik Basit Hareketli Ortalama (SMA):\n\n$$\\text{SMA}_t = \\frac{1}{k} \\sum_{i=0}^{k-1} Y_{t-i} = \\frac{Y_t + Y_{t-1} + \\dots + Y_{t-k+1}}{k}$$",
         "en": "Moving Average (MA) smooths short-term noise by averaging the most recent k periods."
       },
       "companyExample": {
@@ -72,9 +93,15 @@
         {
           "id": "m10-l2-q1",
           "type": "numeric",
-          "prompt": { "tr": "Son 3 ayın satışları 10, 20 ve 30 Bin TL ise 3 aylık Hareketli Ortalama tahmini kaçtır?", "en": "If last 3 months sales are 10, 20, 30 ($k), what is the 3-month MA forecast?" },
+          "prompt": {
+            "tr": "Son 3 ayın satış değerleri $10, 20, 30$ Bin TL ise 3 aylık Hareketli Ortalama tahmini kaçtır?",
+            "en": "If last 3 months sales are 10, 20, 30 ($k), what is the 3-month MA forecast?"
+          },
           "correctAnswer": 20,
-          "explanation": { "tr": "(10 + 20 + 30) / 3 = 20", "en": "(10 + 20 + 30) / 3 = 20" }
+          "explanation": {
+            "tr": "$$\\text{SMA} = \\frac{10 + 20 + 30}{3} = \\frac{60}{3} = 20$$",
+            "en": "(10 + 20 + 30) / 3 = 20"
+          }
         }
       ]
     },
@@ -83,9 +110,12 @@
       "moduleId": "module-10",
       "order": 3,
       "difficulty": "orta-ustu",
-      "title": { "tr": "Üstel Düzleştirme (Exponential Smoothing)", "en": "Exponential Smoothing" },
+      "title": {
+        "tr": "Üstel Düzleştirme (Exponential Smoothing)",
+        "en": "Exponential Smoothing"
+      },
       "conceptCard": {
-        "tr": "Üstel Düzleştirmede (SES) en son dönemin verisine en yüksek ağırlık verilir. Alpha (α) parametresi 0 ile 1 arasındadır.",
+        "tr": "Basit Üstel Düzleştirme (Single Exponential Smoothing), geçmiş gözlemlere üssel olarak azalan ağırlıklar verir:\n\n$$\\hat{Y}_{t+1} = \\alpha Y_t + (1 - \\alpha) \\hat{Y}_t, \\qquad 0 \\le \\alpha \\le 1$$\n\nDüzleştirme parametresi $\\alpha$ büyüdükçe model en son gözleme daha yüksek ağırlık verir.",
         "en": "Single Exponential Smoothing (SES) assigns higher weights to more recent observations using parameter alpha (α)."
       },
       "companyExample": {
@@ -105,13 +135,25 @@
         {
           "id": "m10-l3-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Üstel düzleştirmede alpha (α) büyüdükçe ne olur?", "en": "What happens as alpha (α) increases in exponential smoothing?" },
+          "prompt": {
+            "tr": "Üstel düzleştirmede $\\alpha = 1.0$ seçilirse bir sonraki dönem tahmini $\\hat{Y}_{t+1}$ neye eşit olur?",
+            "en": "What happens as alpha (α) increases in exponential smoothing?"
+          },
           "options": [
-            { "tr": "En son gözleme verilen ağırlık artar", "en": "Weight on the most recent observation increases" },
-            { "tr": "Tüm geçmiş veriler eşit ağırlık alır", "en": "All historical data get equal weight" }
+            {
+              "tr": "En son gözleme verilen ağırlık artar",
+              "en": "Weight on the most recent observation increases"
+            },
+            {
+              "tr": "Tüm geçmiş veriler eşit ağırlık alır",
+              "en": "All historical data get equal weight"
+            }
           ],
           "correctAnswer": "En son gözleme verilen ağırlık artar",
-          "explanation": { "tr": "Alpha büyüdükçe model en son veriye daha duyarlı hale gelir.", "en": "Higher alpha makes forecast more sensitive to recent data." }
+          "explanation": {
+            "tr": "$$\\hat{Y}_{t+1} = 1.0(Y_t) + 0(\\hat{Y}_t) = Y_t \\quad (\\text{Naive / En son gerçekleşen değer})$$",
+            "en": "Higher alpha makes forecast more sensitive to recent data."
+          }
         }
       ]
     },
@@ -120,7 +162,10 @@
       "moduleId": "module-10",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Durağanlık & Sezonsal Tahminler", "en": "Stationarity & Seasonal Forecasting" },
+      "title": {
+        "tr": "Durağanlık & Sezonsal Tahminler",
+        "en": "Stationarity & Seasonal Forecasting"
+      },
       "conceptCard": {
         "tr": "Durağan (Stationary) zaman serisinde ortalama ve varyans zamanla değişmez. Tahmin modelleri (ARIMA gibi) serinin durağan olmasını gerektirir.",
         "en": "A stationary time series has constant mean and variance over time. Advanced models (like ARIMA) require stationarity."
@@ -142,13 +187,25 @@
         {
           "id": "m10-l4-q1",
           "type": "multiple_choice",
-          "prompt": { "tr": "Durağan zaman serisinin temel özelliği nedir?", "en": "What is the key feature of a stationary time series?" },
+          "prompt": {
+            "tr": "Durağan zaman serisinin temel özelliği nedir?",
+            "en": "What is the key feature of a stationary time series?"
+          },
           "options": [
-            { "tr": "Ortalama ve varyansın zaman içinde sabit kalması", "en": "Constant mean and variance over time" },
-            { "tr": "Sürekli sonsuza doğru yükselmesi", "en": "Constantly rising to infinity" }
+            {
+              "tr": "Ortalama ve varyansın zaman içinde sabit kalması",
+              "en": "Constant mean and variance over time"
+            },
+            {
+              "tr": "Sürekli sonsuza doğru yükselmesi",
+              "en": "Constantly rising to infinity"
+            }
           ],
           "correctAnswer": "Ortalama ve varyansın zaman içinde sabit kalması",
-          "explanation": { "tr": "Durağanlık zamana bağlı yapısal değişim olmamasıdır.", "en": "Stationarity implies time-invariant statistical properties." }
+          "explanation": {
+            "tr": "Durağanlık zamana bağlı yapısal değişim olmamasıdır.",
+            "en": "Stationarity implies time-invariant statistical properties."
+          }
         }
       ]
     }
@@ -158,22 +215,43 @@
       "id": "m10-case-1",
       "moduleId": "module-10",
       "difficulty": "kolay",
-      "title": { "tr": "RetailCo: Aylık Hareketli Ortalama Tahmini", "en": "RetailCo: Monthly Moving Average Forecast" },
+      "title": {
+        "tr": "RetailCo: Aylık Hareketli Ortalama Tahmini",
+        "en": "RetailCo: Monthly Moving Average Forecast"
+      },
       "businessQuestion": {
-        "tr": "RetailCo mağazasının son 3 aydaki satış rakamları sırasıyla: Ocak = 400 Bin TL, Şubat = 500 Bin TL, Mart = 600 Bin TL olarak gerçekleşmiştir. 3 aylık basit hareketli ortalama (MA) yöntemi ile Nisan ayı satış tahmini kaç Bin TL olur?",
+        "tr": "RetailCo son 3 aylık satışları sırasıyla $400, 500, 600$ Bin TL olarak kaydetmiştir. 3 aylık Basit Hareketli Ortalama ile bir sonraki dönemin tahminini hesaplayınız.",
         "en": "RetailCo sales for Jan, Feb, Mar are 400, 500, 600 ($k). What is the 3-month Simple Moving Average forecast for April ($k)?"
       },
       "dataset": {
-        "columns": ["Ay", "Satış (Bin TL)"],
+        "columns": [
+          "Ay",
+          "Satış (Bin TL)"
+        ],
         "rows": [
-          ["Ocak", "400"],
-          ["Şubat", "500"],
-          ["Mart", "600"]
+          [
+            "Ocak",
+            "400"
+          ],
+          [
+            "Şubat",
+            "500"
+          ],
+          [
+            "Mart",
+            "600"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Son 3 ayın satışlarını topla: 400 + 500 + 600 = 1500.", "en": "Step 1: Sum last 3 months: 400 + 500 + 600 = 1500." },
-        { "tr": "2. Adım: 3'e böl: 1500 / 3 = 500 Bin TL.", "en": "Step 2: Divide by 3: 1500 / 3 = 500." }
+        {
+          "tr": "1. Adım: $$\\text{SMA}_4 = \\frac{400 + 500 + 600}{3} = \\frac{1500}{3} = 500 \\text{ Bin TL}$$",
+          "en": "Step 1: Sum last 3 months: 400 + 500 + 600 = 1500."
+        },
+        {
+          "tr": "2. Adım: 3'e böl: 1500 / 3 = 500 Bin TL.",
+          "en": "Step 2: Divide by 3: 1500 / 3 = 500."
+        }
       ],
       "expectedApproach": {
         "tr": "Nisan ayı satış tahmini 500 Bin TL'dir.",
@@ -183,9 +261,15 @@
         {
           "id": "m10-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Nisan ayı tahmini (Bin TL) kaçtır?", "en": "What is April forecast ($k)?" },
+          "prompt": {
+            "tr": "Nisan ayı tahmini (Bin TL) kaçtır?",
+            "en": "What is April forecast ($k)?"
+          },
           "correctAnswer": 500,
-          "explanation": { "tr": "(400 + 500 + 600) / 3 = 500", "en": "(400 + 500 + 600) / 3 = 500" }
+          "explanation": {
+            "tr": "$$\\text{SMA} = \\frac{1500}{3} = 500$$",
+            "en": "(400 + 500 + 600) / 3 = 500"
+          }
         }
       ]
     },
@@ -193,20 +277,41 @@
       "id": "m10-case-2",
       "moduleId": "module-10",
       "difficulty": "orta",
-      "title": { "tr": "DataPulse: Ki-Kare Bağımsızlık Testi (Chi-Square)", "en": "DataPulse: Chi-Square Test of Independence" },
+      "title": {
+        "tr": "DataPulse: Ki-Kare Bağımsızlık Testi (Chi-Square)",
+        "en": "DataPulse: Chi-Square Test of Independence"
+      },
       "businessQuestion": {
         "tr": "Kategorik Veri Bağımsızlık Vakası: I = 2 satır ve J = 3 sütundan oluşan bir çapraz tabloda, H0: İki kategorik değişken bağımsızdır hipotezi test ediliyor. Serbestlik derecesi df = (I - 1) * (J - 1) kaçtır?",
         "en": "Categorical Data Independence Case: For a 2x3 contingency table (I = 2 rows, J = 3 columns), what is degrees of freedom df = (I - 1) * (J - 1)?"
       },
       "dataset": {
-        "columns": ["Kategori", "Seçenek 1", "Seçenek 2", "Seçenek 3"],
+        "columns": [
+          "Kategori",
+          "Seçenek 1",
+          "Seçenek 2",
+          "Seçenek 3"
+        ],
         "rows": [
-          ["Grup A", "15", "25", "10"],
-          ["Grup B", "25", "15", "10"]
+          [
+            "Grup A",
+            "15",
+            "25",
+            "10"
+          ],
+          [
+            "Grup B",
+            "25",
+            "15",
+            "10"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: df = (2 - 1) * (3 - 1) = 1 * 2 = 2.", "en": "Step 1: df = (2 - 1) * (3 - 1) = 1 * 2 = 2." }
+        {
+          "tr": "1. Adım: df = (2 - 1) * (3 - 1) = 1 * 2 = 2.",
+          "en": "Step 1: df = (2 - 1) * (3 - 1) = 1 * 2 = 2."
+        }
       ],
       "expectedApproach": {
         "tr": "Ki-kare testi için serbestlik derecesi df = 2 olarak hesaplanır.",
@@ -216,9 +321,15 @@
         {
           "id": "m10-case-2-q1",
           "type": "numeric",
-          "prompt": { "tr": "Serbestlik derecesi (df) kaçtır?", "en": "What is the degrees of freedom (df)?" },
+          "prompt": {
+            "tr": "Serbestlik derecesi (df) kaçtır?",
+            "en": "What is the degrees of freedom (df)?"
+          },
           "correctAnswer": 2,
-          "explanation": { "tr": "(2 - 1) * (3 - 1) = 1 * 2 = 2", "en": "(2 - 1) * (3 - 1) = 1 * 2 = 2" }
+          "explanation": {
+            "tr": "(2 - 1) * (3 - 1) = 1 * 2 = 2",
+            "en": "(2 - 1) * (3 - 1) = 1 * 2 = 2"
+          }
         }
       ]
     },
@@ -226,20 +337,37 @@
       "id": "m10-case-3",
       "moduleId": "module-10",
       "difficulty": "zor",
-      "title": { "tr": "RetailCo: Beklenen Hücre Değeri Eij < 5 Birleştirme", "en": "RetailCo: Expected Cell Value Eij < 5 Merging" },
+      "title": {
+        "tr": "RetailCo: Beklenen Hücre Değeri Eij < 5 Birleştirme",
+        "en": "RetailCo: Expected Cell Value Eij < 5 Merging"
+      },
       "businessQuestion": {
         "tr": "Ki-Kare Varsayımı Uyarısı: Ki-kare testi varsayımlarına göre her bir hücredeki beklenen sıklık Eij en az kaç olmalıdır? Eğer Eij < 5 ise ne yapılmalıdır?",
         "en": "Chi-Square Assumption Rule: What is minimum required expected frequency Eij per cell for Chi-Square? What if Eij < 5?"
       },
       "dataset": {
-        "columns": ["Varsayım Kriteri", "Kritik Eij Değeri", "Gerekli Eylem"],
+        "columns": [
+          "Varsayım Kriteri",
+          "Kritik Eij Değeri",
+          "Gerekli Eylem"
+        ],
         "rows": [
-          ["Minimum Beklenen Sıklık", "Eij ≥ 5", "Sağlanmazsa Satır/Sütun Birleştir"]
+          [
+            "Minimum Beklenen Sıklık",
+            "Eij ≥ 5",
+            "Sağlanmazsa Satır/Sütun Birleştir"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: Ki-kare varsayımı Eij ≥ 5 gerektirir.", "en": "Step 1: Chi-Square assumption requires Eij ≥ 5." },
-        { "tr": "2. Adım: 5'ten küçük hücreler varsa komşu satır veya sütunlar birleştirilir.", "en": "Step 2: If Eij < 5, merge adjacent rows or columns." }
+        {
+          "tr": "1. Adım: Ki-kare varsayımı Eij ≥ 5 gerektirir.",
+          "en": "Step 1: Chi-Square assumption requires Eij ≥ 5."
+        },
+        {
+          "tr": "2. Adım: 5'ten küçük hücreler varsa komşu satır veya sütunlar birleştirilir.",
+          "en": "Step 2: If Eij < 5, merge adjacent rows or columns."
+        }
       ],
       "expectedApproach": {
         "tr": "Minimum Eij ≥ 5 olmalıdır, aksi halde satır/sütun birleştirilir.",
@@ -249,9 +377,15 @@
         {
           "id": "m10-case-3-q1",
           "type": "numeric",
-          "prompt": { "tr": "Minimum beklenen hücre değeri (Eij) kaç olmalıdır?", "en": "What is the minimum expected cell value (Eij)?" },
+          "prompt": {
+            "tr": "Minimum beklenen hücre değeri (Eij) kaç olmalıdır?",
+            "en": "What is the minimum expected cell value (Eij)?"
+          },
           "correctAnswer": 5,
-          "explanation": { "tr": "Eij ≥ 5 olmalıdır.", "en": "Eij must be ≥ 5." }
+          "explanation": {
+            "tr": "Eij ≥ 5 olmalıdır.",
+            "en": "Eij must be ≥ 5."
+          }
         }
       ]
     }

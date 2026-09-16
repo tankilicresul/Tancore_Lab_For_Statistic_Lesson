@@ -1,7 +1,10 @@
 {
   "id": "module-15",
   "order": 15,
-  "title": { "tr": "Poisson Süreci & Nadir Olaylar", "en": "Poisson Process & Rare Events" },
+  "title": {
+    "tr": "Poisson Süreci & Nadir Olaylar",
+    "en": "Poisson Process & Rare Events"
+  },
   "description": {
     "tr": "Zaman içinde sabit λ oranıyla gerçekleşen varışlar, Poisson olasılık formülü P(X=k) ve olaylar arası bekleme süresi ilişkisi.",
     "en": "Arrivals with fixed rate λ over time, Poisson probability formula P(X=k), and inter-arrival time relationship."
@@ -13,9 +16,12 @@
       "moduleId": "module-15",
       "order": 1,
       "difficulty": "orta",
-      "title": { "tr": "Poisson Dağılımı & Oran Parametresi λ", "en": "Poisson Distribution & Rate Parameter λ" },
+      "title": {
+        "tr": "Poisson Dağılımı & Oran Parametresi λ",
+        "en": "Poisson Distribution & Rate Parameter λ"
+      },
       "conceptCard": {
-        "tr": "Poisson dağılımı, sabit bir zaman veya mekan aralığında nadir olayların kaç kez gerçekleştiğini modeller. Formül: P(X=k) = (λ^k * e^-λ) / k!. Hem beklenen değer hem varyans λ'ya eşittir.",
+        "tr": "Poisson Dağılımı $X \\sim \\text{Poisson}(\\lambda)$, belirli bir zaman veya alan diliminde meydana gelen bağımsız nadir olayları modeller:\n\n$$P(X = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}, \\qquad k = 0, 1, 2, \\dots$$\n\nEn önemli teorik özelliği: $\\mathbb{E}[X] = \\text{Var}(X) = \\lambda$ olmasıdır.",
         "en": "Poisson models count of independent rare events in fixed intervals: P(X=k) = (λ^k * e^-λ) / k!. Mean and variance both equal λ."
       },
       "companyExample": {
@@ -35,9 +41,15 @@
         {
           "id": "m15-l1-q1",
           "type": "numeric",
-          "prompt": { "tr": "Ortalaması λ = 5 olan Poisson dağılımının varyansı kaçtır?", "en": "What is the variance of a Poisson distribution with mean λ = 5?" },
+          "prompt": {
+            "tr": "Ortalaması $\\lambda = 5$ olan bir Poisson dağılımının varyansı $\\text{Var}(X)$ kaçtır?",
+            "en": "What is the variance of a Poisson distribution with mean λ = 5?"
+          },
           "correctAnswer": 5,
-          "explanation": { "tr": "Poisson dağılımında Varyans = λ = 5.", "en": "In Poisson distribution, Variance = λ = 5." }
+          "explanation": {
+            "tr": "$$\\text{Var}(X) = \\lambda = 5$$",
+            "en": "In Poisson distribution, Variance = λ = 5."
+          }
         }
       ]
     },
@@ -46,9 +58,12 @@
       "moduleId": "module-15",
       "order": 2,
       "difficulty": "orta",
-      "title": { "tr": "Bekleme Süreleri & Üstel Dağılım İlişkisi", "en": "Inter-Arrival Times & Exponential Relation" },
+      "title": {
+        "tr": "Bekleme Süreleri & Üstel Dağılım İlişkisi",
+        "en": "Inter-Arrival Times & Exponential Relation"
+      },
       "conceptCard": {
-        "tr": "Poisson sürecinde ardışık olaylar arasındaki bekleme süresi (T) Üstel Dağılıma uyar. Ortalama bekleme süresi E[T] = 1/λ'dır. En belirgin özelliği 'hafızasızlık' (memorylessness) ilkesidir.",
+        "tr": "Poisson sürecinde ardışık iki olay arasındaki bekleme süresi $T$, $\\lambda$ parametreli Üstel Dağılıma ($T \\sim \\text{Exp}(\\lambda)$) uyar:\n\n$$f(t) = \\lambda e^{-\\lambda t}, \\qquad \\mathbb{E}[T] = \\frac{1}{\\lambda}$$\n\nÜstel dağılımın en belirgin özelliği Hafızasızlık (Memorylessness) özelliğidir: $P(T > s + t \\mid T > s) = P(T > t)$.",
         "en": "In a Poisson process, time T between events follows an Exponential distribution with mean E[T] = 1/λ and memorylessness."
       },
       "companyExample": {
@@ -68,9 +83,15 @@
         {
           "id": "m15-l2-q1",
           "type": "numeric",
-          "prompt": { "tr": "Dakikada ortalama λ = 2 çağrı gelen çağrı merkezinde ortalama bekleme süresi kaç saniyedir?", "en": "With λ = 2 calls per minute, what is the mean waiting time in seconds?" },
+          "prompt": {
+            "tr": "Dakikada ortalama $\\lambda = 2$ çağrı gelen bir çağrı merkezinde ortalama bekleme süresi $\\mathbb{E}[T] = \\frac{1}{\\lambda}$ kaç saniyedir?",
+            "en": "With λ = 2 calls per minute, what is the mean waiting time in seconds?"
+          },
           "correctAnswer": 30,
-          "explanation": { "tr": "E[T] = 1 / 2 dakika = 0.5 dakika = 30 saniye.", "en": "E[T] = 1 / 2 min = 0.5 min = 30 seconds." }
+          "explanation": {
+            "tr": "$$\\mathbb{E}[T] = \\frac{1}{2} \\text{ dk} = 30 \\text{ saniye}$$",
+            "en": "E[T] = 1 / 2 min = 0.5 min = 30 seconds."
+          }
         }
       ]
     },
@@ -79,9 +100,12 @@
       "moduleId": "module-15",
       "order": 3,
       "difficulty": "ileri",
-      "title": { "tr": "Nadir Olaylar & Binom-Poisson Yaklaşımı", "en": "Rare Events & Binomial-Poisson Approximation" },
+      "title": {
+        "tr": "Nadir Olaylar & Binom-Poisson Yaklaşımı",
+        "en": "Rare Events & Binomial-Poisson Approximation"
+      },
       "conceptCard": {
-        "tr": "n sayısı büyük (n ≥ 20) ve p olasılığı küçük (p ≤ 0.05) olduğunda, Binom(n, p) dağılımı λ = n * p olan Poisson(λ) dağılımı ile çok yakın bir şekilde modellenebilir.",
+        "tr": "Binom-Poisson Yaklaşımı: $n \\ge 20$ büyük ve $p \\le 0.05$ küçük olduğunda $\\text{Bin}(n, p)$ dağılımı $\\lambda = n p$ olan $\\text{Poisson}(\\lambda)$ dağılımı ile modellenir:\n\n$$\\lim_{n \\to \\infty, np=\\lambda} \\binom{n}{k} p^k (1-p)^{n-k} = \\frac{\\lambda^k e^{-\\lambda}}{k!}$$",
         "en": "For large n (n ≥ 20) and small p (p ≤ 0.05), Binomial(n, p) is approximated by Poisson(λ = n * p)."
       },
       "companyExample": {
@@ -101,9 +125,15 @@
         {
           "id": "m15-l3-q1",
           "type": "numeric",
-          "prompt": { "tr": "n = 1000 ve p = 0.004 için Poisson yaklaşım parametresi λ kaçtır?", "en": "What is the Poisson parameter λ for n = 1000 and p = 0.004?" },
+          "prompt": {
+            "tr": "$n = 1000$ ve $p = 0.004$ için Poisson yaklaşım parametresi $\\lambda = n p$ kaçtır?",
+            "en": "What is the Poisson parameter λ for n = 1000 and p = 0.004?"
+          },
           "correctAnswer": 4,
-          "explanation": { "tr": "λ = n * p = 1000 * 0.004 = 4.", "en": "λ = n * p = 1000 * 0.004 = 4." }
+          "explanation": {
+            "tr": "$$\\lambda = 1000 \\times 0.004 = 4$$",
+            "en": "λ = n * p = 1000 * 0.004 = 4."
+          }
         }
       ]
     },
@@ -112,9 +142,12 @@
       "moduleId": "module-15",
       "order": 4,
       "difficulty": "zor",
-      "title": { "tr": "Poisson Süreçlerinde Toplanabilirlik", "en": "Summation of Poisson Processes" },
+      "title": {
+        "tr": "Poisson Süreçlerinde Toplanabilirlik",
+        "en": "Summation of Poisson Processes"
+      },
       "conceptCard": {
-        "tr": "İki veya daha fazla bağımsız Poisson süreci (oranları λ1, λ2) bir araya geldiğinde, toplam olay akışı da λ = λ1 + λ2 olan yeni bir Poisson sürecidir.",
+        "tr": "Poisson Süreçlerinde Toplanabilirlik: İki bağımsız Poisson süreci (oranları $\\lambda_1$ ve $\\lambda_2$) birleştiğinde toplam olay süreci de $\\lambda = \\lambda_1 + \\lambda_2$ olan bir Poisson sürecidir:\n\n$$N(t) = N_1(t) + N_2(t) \\sim \\text{Poisson}((\\lambda_1 + \\lambda_2)t)$$",
         "en": "When two or more independent Poisson processes (rates λ1, λ2) are combined, the total flow is a Poisson process with rate λ = λ1 + λ2."
       },
       "companyExample": {
@@ -134,9 +167,15 @@
         {
           "id": "m15-l4-q1",
           "type": "numeric",
-          "prompt": { "tr": "λ1 = 3/sn ve λ2 = 4/sn olan iki bağımsız sürecin birleşik varış oranı λ kaçtır?", "en": "What is total rate λ for two independent processes with λ1 = 3/sec and λ2 = 4/sec?" },
+          "prompt": {
+            "tr": "$\\lambda_1 = 3/\\text{sn}$ ve $\\lambda_2 = 4/\\text{sn}$ olan iki bağımsız Poisson sürecinin birleşik varış oranı $\\lambda$ kaçtır?",
+            "en": "What is total rate λ for two independent processes with λ1 = 3/sec and λ2 = 4/sec?"
+          },
           "correctAnswer": 7,
-          "explanation": { "tr": "λ = 3 + 4 = 7.", "en": "λ = 3 + 4 = 7." }
+          "explanation": {
+            "tr": "$$\\lambda = 3 + 4 = 7$$",
+            "en": "λ = 3 + 4 = 7."
+          }
         }
       ]
     }
@@ -146,21 +185,39 @@
       "id": "m15-case-1",
       "moduleId": "module-15",
       "difficulty": "orta",
-      "title": { "tr": "CyberPass: Sunucu İstek Trafiği & Kapasite Analizi", "en": "CyberPass: Server Traffic & Capacity Analysis" },
+      "title": {
+        "tr": "CyberPass: Sunucu İstek Trafiği & Kapasite Analizi",
+        "en": "CyberPass: Server Traffic & Capacity Analysis"
+      },
       "businessQuestion": {
         "tr": "CyberPass kimlik doğrulama sunucusuna saniyede ortalama λ = 2 istek gelmektedir. Sunucunun çökmemesi için aynı saniyede 0 istek gelme olasılığı P(X=0) ile en az 1 istek gelme olasılığı P(X≥1) analizi yapılmalıdır.",
         "en": "CyberPass server handles average λ = 2 requests/sec. Calculate P(X=0) and P(X≥1)."
       },
       "dataset": {
-        "columns": ["Metrik", "Değer"],
+        "columns": [
+          "Metrik",
+          "Değer"
+        ],
         "rows": [
-          ["Ortalama Oran λ", "2 istek/sn"],
-          ["e^(-2)", "0.1353"]
+          [
+            "Ortalama Oran λ",
+            "2 istek/sn"
+          ],
+          [
+            "e^(-2)",
+            "0.1353"
+          ]
         ]
       },
       "guidedSteps": [
-        { "tr": "1. Adım: P(X=0) = (2^0 * e^-2) / 0! = e^-2 ≈ 0.135 ( %13.5 ).", "en": "Step 1: P(X=0) = e^-2 ≈ 0.135 ( 13.5% )." },
-        { "tr": "2. Adım: P(X≥1) = 1 - P(X=0) = 1 - 0.135 = 0.865 (%86.5).", "en": "Step 2: P(X≥1) = 1 - 0.135 = 0.865 (86.5%)." }
+        {
+          "tr": "1. Adım: $P(X = 0) = \\frac{2^0 e^{-2}}{0!} = e^{-2} \\approx 0.1353 \\quad (\\%13.53)$",
+          "en": "Step 1: P(X=0) = e^-2 ≈ 0.135 ( 13.5% )."
+        },
+        {
+          "tr": "2. Adım: $P(X \\ge 1) = 1 - P(X = 0) = 1 - 0.1353 = 0.8647 \\quad (\\%86.47)$",
+          "en": "Step 2: P(X≥1) = 1 - 0.135 = 0.865 (86.5%)."
+        }
       ],
       "expectedApproach": {
         "tr": "Poisson modellemesi, sunucuların anlık aşırı yüklenme (burst) risklerini doğru tahmin etmek için kuyruk teorisinde temel teşkil eder.",
@@ -170,9 +227,15 @@
         {
           "id": "m15-case-1-q1",
           "type": "numeric",
-          "prompt": { "tr": "P(X≥1) yüzdesi en yakın tam sayı olarak kaçtır?", "en": "What is P(X≥1) in percent (nearest integer)?" },
+          "prompt": {
+            "tr": "$P(X \\ge 1)$ yüzdesi en yakın tam sayı olarak kaçtır?",
+            "en": "What is P(X≥1) in percent (nearest integer)?"
+          },
           "correctAnswer": 87,
-          "explanation": { "tr": "1 - 0.1353 = 0.8647 -> %86.47 ≈ %87.", "en": "1 - 0.1353 = 0.8647 -> 86.47% ≈ 87." }
+          "explanation": {
+            "tr": "$$1 - 0.1353 = 0.8647 \\approx \\%87 \\implies 87$$",
+            "en": "1 - 0.1353 = 0.8647 -> 86.47% ≈ 87."
+          }
         }
       ]
     }
