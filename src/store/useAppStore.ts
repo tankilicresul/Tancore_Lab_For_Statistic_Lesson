@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { UserProfile, UserState, PublicProfile, RegisteredAccount } from '../types/stats';
-import { saveUserProfileToSupabase, syncUserProgress } from '../lib/supabase';
+import { saveUserProfileToSupabase, syncUserProgress, fetchUserProfileFromSupabase, isSupabaseConfigured } from '../lib/supabase';
 
 export function isValidStudentEmail(email: string): boolean {
   const e = email.trim().toLowerCase();
@@ -12,8 +12,7 @@ export function isValidStudentEmail(email: string): boolean {
     e === 'admin@tancorelab.com' ||
     e.startsWith('admin@') ||
     e.startsWith('rtankilic.business') ||
-    e.startsWith('resultankilic.business') ||
-    e === 'rtankilic22@ku.edu.tr'
+    e.startsWith('resultankilic.business')
   ) return true;
 
   return e.endsWith('.edu.tr') || e.endsWith('.edu');
@@ -32,7 +31,7 @@ interface AppStoreActions {
   // Auth actions
   registerAccountAndSendOtp: (account: Partial<RegisteredAccount>, simulatedCode?: string) => void;
   verifyOtpAndActivateAccount: (token: string, forceActivate?: boolean) => { success: boolean; message?: string };
-  loginWithPassword: (email: string, pass: string) => { success: boolean; errorType?: 'INVALID_EMAIL_DOMAIN' | 'EMAIL_NOT_FOUND' | 'WRONG_PASSWORD'; message?: string };
+  loginWithPassword: (email: string, pass: string) => Promise<{ success: boolean; errorType?: 'INVALID_EMAIL_DOMAIN' | 'EMAIL_NOT_FOUND' | 'WRONG_PASSWORD'; message?: string }>;
   resetPasswordWithOtp: (email: string, token: string, newPass: string) => { success: boolean; message?: string };
   logout: () => void;
   setSelectedPublicProfile: (profile: PublicProfile | null) => void;
@@ -285,7 +284,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         return { success: true };
       },
 
-      loginWithPassword: (email, pass) => {
+      loginWithPassword: async (email, pass) => {
         const cleanEmail = email.trim().toLowerCase();
 
         // 1. Check valid student email domain
@@ -298,8 +297,37 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         }
 
         const state = get();
-        const accounts = state.userAccounts || DEFAULT_DEMO_ACCOUNTS;
-        const account = accounts.find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
+        let accounts = [...(state.userAccounts || DEFAULT_DEMO_ACCOUNTS)];
+        let account = accounts.find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
+
+        // If account is not in local storage, query Supabase cloud!
+        if (!account && isSupabaseConfigured) {
+          try {
+            const remoteProfile = await fetchUserProfileFromSupabase(cleanEmail);
+            if (remoteProfile) {
+              const remoteAccount: RegisteredAccount = {
+                fullName: remoteProfile.full_name || cleanEmail.split('@')[0],
+                schoolEmail: remoteProfile.email,
+                university: remoteProfile.university || 'Üniversite',
+                departmentAndClass: remoteProfile.department_and_class || 'Öğrenci',
+                password: remoteProfile.password || pass.trim(),
+                avatarEmoji: remoteProfile.avatar_emoji || '👨‍🎓',
+                avatarUrl: remoteProfile.avatar_url || undefined,
+                isVerified: remoteProfile.is_verified ?? true,
+                xp: 450,
+                streak: 3,
+                completedLessons: [],
+                completedCaseExams: [],
+                unlockedModules: ['module-1', 'module-2'],
+                unlockedBadges: [],
+              };
+              account = remoteAccount;
+              accounts.push(remoteAccount);
+            }
+          } catch (e) {
+            console.warn('Could not fetch remote profile during login:', e);
+          }
+        }
 
         // 2. Check if email exists in system
         if (!account) {
@@ -319,6 +347,11 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           };
         }
 
+        // If account password was not saved previously, set it now
+        if (!account.password) {
+          account.password = pass.trim();
+        }
+
         // Successful login
         const loggedInProfile: UserProfile = {
           id: `usr_${cleanEmail}`,
@@ -327,6 +360,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           university: account.university,
           departmentAndClass: account.departmentAndClass,
           avatarEmoji: account.avatarEmoji || '👨‍🎓',
+          avatarUrl: account.avatarUrl,
           isVerified: true,
           createdAt: new Date().toISOString(),
         };
@@ -342,6 +376,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedCaseExams: account.completedCaseExams || [],
           unlockedModules: account.unlockedModules || ['module-1', 'module-2'],
           unlockedBadges: account.unlockedBadges || [],
+          userAccounts: accounts,
         };
 
         const updatedUsers = syncUserInList(nextState);
@@ -359,9 +394,10 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           pendingOtpEmail: undefined,
           simulatedOtpCode: undefined,
           registeredUsers: updatedUsers,
+          userAccounts: accounts,
         });
 
-        saveUserProfileToSupabase(loggedInProfile);
+        saveUserProfileToSupabase({ ...loggedInProfile, password: account.password });
         return { success: true };
       },
 

@@ -208,19 +208,18 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
 
     // Admin bypass: instant verification without OTP
     if (
-      cleanEmail === 'resultankilic.business@gmail.com' ||
-      cleanEmail.startsWith('rtankilic.business') ||
-      cleanEmail.startsWith('admin@') ||
-      cleanEmail === 'admin@tancorelab.com'
+      cleanEmail === 'admin@tancorelab.com' ||
+      cleanEmail.startsWith('admin@')
     ) {
+      const studentName = fullName.trim() || (language === 'tr' ? 'Öğrenci' : 'Student');
       registerAccountAndSendOtp(
         {
           schoolEmail: cleanEmail,
-          fullName: fullName.trim() || 'Resul Tan Kılıç (Admin)',
-          university: university.trim() || 'Koç Üniversitesi',
-          departmentAndClass: departmentAndClass.trim() || 'Kurucu & Yönetici',
-          password: password || 'admin123',
-          avatarEmoji: '👑',
+          fullName: studentName,
+          university: university.trim() || 'Üniversite',
+          departmentAndClass: departmentAndClass.trim() || 'Öğrenci',
+          password: password || '123456',
+          avatarEmoji: '👨‍🎓',
         },
         '123456'
       );
@@ -329,7 +328,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   };
 
   // Handle Sign In Submission
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setShowForgotPassword(false);
@@ -338,19 +337,19 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
 
     // Admin bypass: instant login without password
     if (
-      cleanEmail === 'resultankilic.business@gmail.com' ||
-      cleanEmail.startsWith('rtankilic.business') ||
-      cleanEmail.startsWith('admin@') ||
-      cleanEmail === 'admin@tancorelab.com'
+      cleanEmail === 'admin@tancorelab.com' ||
+      cleanEmail.startsWith('admin@')
     ) {
+      const existingAccount = (userAccounts || []).find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
+      const studentName = existingAccount?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student');
       registerAccountAndSendOtp(
         {
           schoolEmail: cleanEmail,
-          fullName: 'Resul Tan Kılıç (Admin)',
-          university: 'Koç Üniversitesi',
-          departmentAndClass: 'Kurucu & Yönetici',
-          password: password || 'admin123',
-          avatarEmoji: '👑',
+          fullName: studentName,
+          university: existingAccount?.university || 'Üniversite',
+          departmentAndClass: existingAccount?.departmentAndClass || 'Öğrenci',
+          password: password || '123456',
+          avatarEmoji: existingAccount?.avatarEmoji || '👨‍🎓',
         },
         '123456'
       );
@@ -359,15 +358,22 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
       return;
     }
 
-    const res = loginWithPassword(schoolEmail, password);
+    setIsSubmitting(true);
+    try {
+      const res = await loginWithPassword(schoolEmail, password);
 
-    if (res.success) {
-      onSuccess?.();
-    } else {
-      setErrorMessage(res.message || 'Giriş yapılamadı.');
-      if (res.errorType === 'WRONG_PASSWORD') {
-        setShowForgotPassword(true);
+      if (res.success) {
+        onSuccess?.();
+      } else {
+        setErrorMessage(res.message || 'Giriş yapılamadı.');
+        if (res.errorType === 'WRONG_PASSWORD') {
+          setShowForgotPassword(true);
+        }
       }
+    } catch (err: any) {
+      setErrorMessage(err.message || (language === 'tr' ? 'Giriş yapılırken bir hata oluştu.' : 'An error occurred during login.'));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -893,10 +899,20 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 mt-2 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/25 cursor-pointer flex items-center justify-center space-x-2"
+                    disabled={isSubmitting}
+                    className="w-full py-3.5 mt-2 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/25 cursor-pointer flex items-center justify-center space-x-2 disabled:opacity-75 disabled:cursor-not-allowed"
                   >
-                    <span>{language === 'tr' ? 'Uygulamaya Giriş Yap' : 'Sign In to App'}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>{language === 'tr' ? 'Giriş Yapılıyor...' : 'Signing In...'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>{language === 'tr' ? 'Uygulamaya Giriş Yap' : 'Sign In to App'}</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
                 </form>
               )}

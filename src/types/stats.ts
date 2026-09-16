@@ -93,6 +93,7 @@ export interface RegisteredAccount {
   departmentAndClass: string;
   password: string;
   avatarEmoji?: string;
+  avatarUrl?: string;
   isVerified: boolean;
   xp: number;
   streak: number;

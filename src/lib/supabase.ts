@@ -113,25 +113,51 @@ export async function verifyEmailOtp(
 /**
  * Save / update user profile in Supabase profiles table
  */
-export async function saveUserProfileToSupabase(profile: UserProfile): Promise<void> {
+export async function saveUserProfileToSupabase(profile: UserProfile & { password?: string }): Promise<void> {
   if (!supabase || !isSupabaseConfigured) return;
 
   try {
+    const payload: any = {
+      email: profile.schoolEmail,
+      full_name: profile.fullName,
+      university: profile.university,
+      department_and_class: profile.departmentAndClass,
+      avatar_emoji: profile.avatarEmoji || '👨‍🎓',
+      avatar_url: profile.avatarUrl || null,
+      is_verified: true,
+      updated_at: new Date().toISOString(),
+    };
+    if (profile.password) {
+      payload.password = profile.password;
+    }
+
     await supabase.from('profiles').upsert(
-      {
-        email: profile.schoolEmail,
-        full_name: profile.fullName,
-        university: profile.university,
-        department_and_class: profile.departmentAndClass,
-        avatar_emoji: profile.avatarEmoji || '👨‍🎓',
-        avatar_url: profile.avatarUrl || null,
-        is_verified: true,
-        updated_at: new Date().toISOString(),
-      },
+      payload,
       { onConflict: 'email' }
     );
   } catch (err) {
     console.warn('Supabase profile save warning:', err);
+  }
+}
+
+/**
+ * Fetch user profile from Supabase by email
+ */
+export async function fetchUserProfileFromSupabase(email: string): Promise<any | null> {
+  if (!supabase || !isSupabaseConfigured) return null;
+
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('email', email.trim().toLowerCase())
+      .maybeSingle();
+
+    if (error || !data) return null;
+    return data;
+  } catch (err) {
+    console.warn('Supabase profile fetch error:', err);
+    return null;
   }
 }
 
