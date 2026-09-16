@@ -35,8 +35,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   // Form State
   const [schoolEmail, setSchoolEmail] = useState('');
   const [fullName, setFullName] = useState('');
-  const [university, setUniversity] = useState('Koç Üniversitesi');
-  const [departmentAndClass, setDepartmentAndClass] = useState('Endüstri Mühendisliği - 3. Sınıf');
+  const [university, setUniversity] = useState('');
+  const [departmentAndClass, setDepartmentAndClass] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -83,8 +83,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     if (!isValidStudentEmail(cleanEmail)) {
       setErrorMessage(
         language === 'tr'
-          ? 'Lütfen geçerli bir üniversite öğrenci e-posta adresi giriniz (ör: ad.soyad@ku.edu.tr).'
-          : 'Please enter a valid student university email (e.g., name@ku.edu.tr).'
+          ? 'Lütfen geçerli bir üniversite öğrenci e-posta adresi giriniz (ör: ad.soyad@universite.edu.tr).'
+          : 'Please enter a valid student university email (e.g., name@university.edu).'
       );
       return;
     }
@@ -186,13 +186,15 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-black/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-4">
-          {/* Huge Circular Spinning Logo */}
-          <div
-            className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white text-[#ff7a00] shadow-2xl flex items-center justify-center p-3 shrink-0 ${
-              isLogoSpinning ? 'animate-logo-spin' : ''
-            }`}
-          >
-            <Zap className="w-10 h-10 sm:w-12 sm:h-12 fill-[#ff7a00] stroke-[2]" />
+          {/* Huge Circular Logo with Static Shadow & Rotating Inner Icon */}
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white text-[#ff7a00] shadow-2xl shrink-0 p-3 flex items-center justify-center">
+            <div
+              className={`w-full h-full rounded-full flex items-center justify-center ${
+                isLogoSpinning ? 'animate-logo-spin' : ''
+              }`}
+            >
+              <Zap className="w-10 h-10 sm:w-12 sm:h-12 fill-[#ff7a00] stroke-[2]" />
+            </div>
           </div>
 
           {/* TanCoreLab Brand Title */}
@@ -219,14 +221,6 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                 <p className="text-xs text-slate-600 font-medium mt-1">
                   <strong className="text-slate-900">{schoolEmail}</strong> adresinize gönderilen 6 haneli onay kodunu giriniz.
                 </p>
-              </div>
-
-              {/* Simulated OTP Notification Banner for Easy Testing */}
-              <div className="p-3 rounded-2xl bg-orange-50 border border-orange-200 text-[#ff7a00] text-xs font-bold flex items-center justify-between">
-                <span>{language === 'tr' ? 'Test Onay Kodunuz:' : 'Demo Code:'}</span>
-                <span className="font-mono text-sm font-black px-2 py-0.5 rounded-lg bg-[#ff7a00] text-white">
-                  {simulatedCode}
-                </span>
               </div>
 
               {errorMessage && (
@@ -310,14 +304,17 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                       setForgotEmail(e.target.value);
                       handleInputChange();
                     }}
-                    placeholder="ad.soyad@ku.edu.tr"
+                    placeholder={language === 'tr' ? 'E-posta adresiniz' : 'Email address'}
+                    autoComplete="off"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Onay Kodu (123456)</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                    {language === 'tr' ? 'Onay Kodu' : 'Verification Code'}
+                  </label>
                   <input
                     type="text"
                     value={forgotOtp}
@@ -325,7 +322,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                       setForgotOtp(e.target.value);
                       handleInputChange();
                     }}
-                    placeholder="123456"
+                    placeholder={language === 'tr' ? '6 haneli kod' : '6-digit code'}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
                     required
                   />

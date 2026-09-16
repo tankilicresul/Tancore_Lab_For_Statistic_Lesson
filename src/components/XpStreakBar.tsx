@@ -48,12 +48,12 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             }}
             className="flex items-center space-x-2 sm:space-x-2.5 group cursor-pointer shrink-0 z-10"
           >
-            <div
-              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-md shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform p-1 ${
-                isLogoSpinning ? 'animate-logo-spin' : ''
-              }`}
-            >
-              <div className="w-full h-full rounded-full border-2 border-white flex items-center justify-center">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-md shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform p-1">
+              <div
+                className={`w-full h-full rounded-full border-2 border-white flex items-center justify-center ${
+                  isLogoSpinning ? 'animate-logo-spin' : ''
+                }`}
+              >
                 <Zap className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white fill-white stroke-[2]" />
               </div>
             </div>
