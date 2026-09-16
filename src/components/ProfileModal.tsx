@@ -49,10 +49,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [formData, setFormData] = useState(
     userProfile || {
-      fullName: 'Resul Tan',
-      schoolEmail: 'resul.tan@marun.edu.tr',
-      university: 'Marmara Üniversitesi',
-      departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
+      fullName: '',
+      schoolEmail: '',
+      university: '',
+      departmentAndClass: '',
       avatarEmoji: '👨‍🎓',
     }
   );
@@ -106,7 +106,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center space-x-1.5">
                     <h3 className="text-sm sm:text-base font-black tracking-tight text-white leading-none whitespace-nowrap truncate">
-                      {userProfile?.fullName || 'Resul Tan'}
+                      {userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}
                     </h3>
                     {isVerified && (
                       <span title="Doğrulanmış Hesap">
@@ -116,7 +116,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                   </div>
                   <p className="text-[10px] sm:text-xs text-slate-300 flex items-center mt-1 whitespace-nowrap leading-none truncate">
                     <Mail className="w-3 h-3 mr-1.5 text-[#ff7a00] shrink-0" />
-                    <span className="whitespace-nowrap truncate">{userProfile?.schoolEmail || 'resul.tan@marun.edu.tr'}</span>
+                    <span className="whitespace-nowrap truncate">{userProfile?.schoolEmail || (language === 'tr' ? 'Giriş yapılmadı' : 'Not signed in')}</span>
                   </p>
                 </div>
               </div>
@@ -222,11 +222,11 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                 <div className="space-y-1.5 text-[10px] sm:text-xs font-medium">
                   <div className="flex items-center space-x-2 text-slate-300 min-w-0">
                     <Building2 className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
-                    <span className="truncate">{userProfile?.university || 'Marmara Üniversitesi'}</span>
+                    <span className="truncate">{userProfile?.university || (language === 'tr' ? 'Üniversite belirtilmedi' : 'No university specified')}</span>
                   </div>
                   <div className="flex items-center space-x-2 text-slate-300 min-w-0">
                     <GraduationCap className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
-                    <span className="truncate">{userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf'}</span>
+                    <span className="truncate">{userProfile?.departmentAndClass || (language === 'tr' ? 'Bölüm belirtilmedi' : 'No department specified')}</span>
                   </div>
                 </div>
 

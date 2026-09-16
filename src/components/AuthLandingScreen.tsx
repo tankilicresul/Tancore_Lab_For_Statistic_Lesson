@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppStore, isValidStudentEmail } from '../store/useAppStore';
 import {
   Zap,
@@ -51,6 +51,21 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   const [forgotOtp, setForgotOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [forgotSuccessMsg, setForgotSuccessMsg] = useState<string | null>(null);
+
+  // Logo Spin Animation State (Every 3 Seconds)
+  const [isLogoSpinning, setIsLogoSpinning] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsLogoSpinning(true);
+      const timer = setTimeout(() => {
+        setIsLogoSpinning(false);
+      }, 1300);
+      return () => clearTimeout(timer);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Quick helper to clear errors on input change
   const handleInputChange = () => {
@@ -172,9 +187,13 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full blur-2xl pointer-events-none" />
 
           {/* Top Brand Info */}
-          <div className="relative z-10">
-            <div className="flex items-center space-x-2.5 mb-6">
-              <div className="w-11 h-11 rounded-2xl bg-white text-[#ff7a00] shadow-lg flex items-center justify-center p-1.5 shrink-0">
+          <div className="relative z-10 space-y-4">
+            <div className="flex items-center space-x-3 mb-6">
+              <div
+                className={`w-11 h-11 rounded-full bg-white text-[#ff7a00] shadow-lg flex items-center justify-center p-1.5 shrink-0 ${
+                  isLogoSpinning ? 'animate-logo-spin' : ''
+                }`}
+              >
                 <Zap className="w-6 h-6 fill-[#ff7a00] stroke-[2]" />
               </div>
               <span className="text-2xl sm:text-3xl font-black tracking-tight text-white font-sans">
@@ -188,31 +207,31 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                 : 'Statistics & Probability for Students'}
             </h2>
 
-            <p className="text-xs sm:text-sm text-orange-100 font-medium mt-2 leading-relaxed">
+            <p className="text-xs sm:text-sm text-orange-100 font-medium leading-relaxed">
               {language === 'tr'
-                ? 'Mikro-dersler, canlı simülatörler, gerçek şirket vaka sınavları ve müfredat akışı ile istatistik dersini kolayca tamamlayın.'
+                ? 'Mikro-dersler, canlı simülatörler ve gerçek şirket vaka sınavları ile istatistik dersini kolayca tamamlayın.'
                 : 'Master university statistics & probability with micro-lessons, live calculators, and business case exams.'}
             </p>
-          </div>
 
-          {/* Key Feature Bullets */}
-          <div className="relative z-10 my-6 space-y-3 bg-black/10 backdrop-blur-xs p-4 rounded-2xl border border-white/20">
-            <div className="flex items-center space-x-2.5 text-xs sm:text-sm font-extrabold text-white">
-              <Sparkles className="w-4 h-4 text-amber-300 shrink-0" />
-              <span>{language === 'tr' ? '16 İnteraktif Modül & Canlı Simülatör' : '16 Interactive Modules & Calculators'}</span>
-            </div>
-            <div className="flex items-center space-x-2.5 text-xs sm:text-sm font-extrabold text-white">
-              <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
-              <span>{language === 'tr' ? 'Gerçek Şirket Vaka Sınavları (Case Exams)' : 'Real Business Case Exams'}</span>
-            </div>
-            <div className="flex items-center space-x-2.5 text-xs sm:text-sm font-extrabold text-white">
-              <ShieldCheck className="w-4 h-4 text-orange-200 shrink-0" />
-              <span>{language === 'tr' ? 'Doğrulanmış Öğrenci Profili & Sıralama' : 'Verified Student Profile & Ranking'}</span>
+            {/* Key Feature Bullets (Clean & Simplified) */}
+            <div className="pt-3 space-y-2.5">
+              <div className="flex items-center space-x-2.5 text-xs sm:text-sm font-bold text-orange-50">
+                <Sparkles className="w-4 h-4 text-amber-300 shrink-0" />
+                <span>{language === 'tr' ? '16 İnteraktif Modül & Canlı Simülatör' : '16 Interactive Modules & Calculators'}</span>
+              </div>
+              <div className="flex items-center space-x-2.5 text-xs sm:text-sm font-bold text-orange-50">
+                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
+                <span>{language === 'tr' ? 'Gerçek Şirket Vaka Sınavları (Case Exams)' : 'Real Business Case Exams'}</span>
+              </div>
+              <div className="flex items-center space-x-2.5 text-xs sm:text-sm font-bold text-orange-50">
+                <ShieldCheck className="w-4 h-4 text-orange-200 shrink-0" />
+                <span>{language === 'tr' ? 'Doğrulanmış Öğrenci Profili & Sıralama' : 'Verified Student Profile & Ranking'}</span>
+              </div>
             </div>
           </div>
 
           {/* Footer Note */}
-          <div className="relative z-10 text-[10px] sm:text-xs text-orange-100 font-semibold">
+          <div className="relative z-10 text-[10px] sm:text-xs text-orange-100/90 font-semibold pt-4 border-t border-white/10 mt-6">
             {language === 'tr'
               ? 'Sadece geçerli üniversite öğrenci e-posta adresleri (ör: @ku.edu.tr) kabul edilir.'
               : 'Only valid university student emails (e.g. @ku.edu.tr) are accepted.'}

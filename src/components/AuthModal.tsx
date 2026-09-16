@@ -33,13 +33,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [simulatedCode, setSimulatedCode] = useState<string | null>(null);
 
-  // Form State
+  // Form State - Starts completely blank without any pre-filled data
   const [formData, setFormData] = useState<UserProfile>({
-    fullName: userProfile?.fullName || '',
-    schoolEmail: userProfile?.schoolEmail || '',
-    university: userProfile?.university || 'Marmara Üniversitesi',
-    departmentAndClass: userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
-    avatarEmoji: userProfile?.avatarEmoji || '👨‍🎓',
+    fullName: '',
+    schoolEmail: '',
+    university: '',
+    departmentAndClass: '',
+    avatarEmoji: '👨‍🎓',
   });
 
   // OTP State (6 digits)
@@ -305,7 +305,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
                 <input
                   type="text"
                   required
-                  placeholder="Örn: Resul Tan"
+                  placeholder={language === 'tr' ? 'Adınızı ve soyadınızı giriniz' : 'Enter your full name'}
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
@@ -316,14 +316,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
             {/* School Email */}
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                {language === 'tr' ? 'Okul E-postası' : 'School Email Address'} *
+                {language === 'tr' ? 'E-posta Adresi' : 'Email Address'} *
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   required
-                  placeholder="Örn: ogrenci@marun.edu.tr"
+                  placeholder={language === 'tr' ? 'E-posta adresinizi giriniz' : 'Enter your email address'}
                   value={formData.schoolEmail}
                   onChange={(e) => setFormData({ ...formData, schoolEmail: e.target.value })}
                   className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
@@ -341,7 +341,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
                 <input
                   type="text"
                   required
-                  placeholder="Örn: Marmara Üniversitesi"
+                  placeholder={language === 'tr' ? 'Hangi üniversitede okuyorsunuz?' : 'Enter your university name'}
                   value={formData.university}
                   onChange={(e) => setFormData({ ...formData, university: e.target.value })}
                   className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
@@ -359,7 +359,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
                 <input
                   type="text"
                   required
-                  placeholder="Örn: Endüstri Mühendisliği - 3. Sınıf"
+                  placeholder={language === 'tr' ? 'Bölümünüz ve sınıfınız nedir?' : 'Enter your department & class'}
                   value={formData.departmentAndClass}
                   onChange={(e) => setFormData({ ...formData, departmentAndClass: e.target.value })}
                   className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
