@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore, isValidStudentEmail } from '../store/useAppStore';
 import { sendEmailOtp, verifyEmailOtp } from '../lib/supabase';
 import {
@@ -43,8 +43,9 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // OTP Verification State
-  const [otpCode, setOtpCode] = useState('');
+  // 8-Digit OTP Verification State
+  const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '', '', '']);
+  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [simulatedCode, setSimulatedCode] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resendTimer, setResendTimer] = useState(60);
@@ -84,10 +85,90 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     return () => clearInterval(timer);
   }, [step, resendTimer]);
 
+  // Auto-focus first OTP input when opening OTP step
+  useEffect(() => {
+    if (step === 'otp') {
+      setTimeout(() => {
+        otpInputRefs.current[0]?.focus();
+      }, 150);
+    }
+  }, [step]);
+
   // Quick helper to clear errors on input change
   const handleInputChange = () => {
     if (errorMessage) setErrorMessage(null);
     if (otpSentMsg) setOtpSentMsg(null);
+  };
+
+  // 8-Digit OTP Input Handlers
+  const handleDigitChange = (index: number, val: string) => {
+    const cleaned = val.replace(/\D/g, '');
+    if (!cleaned) {
+      const updated = [...otpDigits];
+      updated[index] = '';
+      setOtpDigits(updated);
+      handleInputChange();
+      return;
+    }
+
+    if (cleaned.length > 1) {
+      // Pasted multiple digits into a box
+      const chars = cleaned.slice(0, 8).split('');
+      const updated = [...otpDigits];
+      chars.forEach((c, i) => {
+        if (i < 8) updated[i] = c;
+      });
+      setOtpDigits(updated);
+      handleInputChange();
+      const nextFocus = Math.min(chars.length, 7);
+      otpInputRefs.current[nextFocus]?.focus();
+      return;
+    }
+
+    const updated = [...otpDigits];
+    updated[index] = cleaned;
+    setOtpDigits(updated);
+    handleInputChange();
+
+    // Auto-focus next box
+    if (index < 7) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleDigitKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Backspace') {
+      if (!otpDigits[index] && index > 0) {
+        const updated = [...otpDigits];
+        updated[index - 1] = '';
+        setOtpDigits(updated);
+        otpInputRefs.current[index - 1]?.focus();
+      } else {
+        const updated = [...otpDigits];
+        updated[index] = '';
+        setOtpDigits(updated);
+      }
+      handleInputChange();
+    } else if (e.key === 'ArrowLeft' && index > 0) {
+      otpInputRefs.current[index - 1]?.focus();
+    } else if (e.key === 'ArrowRight' && index < 7) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleDigitPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 8);
+    if (!pasteData) return;
+    const chars = pasteData.split('');
+    const updated = ['', '', '', '', '', '', '', ''];
+    chars.forEach((c, i) => {
+      if (i < 8) updated[i] = c;
+    });
+    setOtpDigits(updated);
+    handleInputChange();
+    const nextFocus = Math.min(chars.length, 7);
+    otpInputRefs.current[nextFocus]?.focus();
   };
 
   // Handle Sign Up Submission
@@ -149,6 +230,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     }
 
     setIsSubmitting(true);
+    setOtpDigits(['', '', '', '', '', '', '', '']);
 
     try {
       // Trigger Supabase email OTP
@@ -187,6 +269,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     setIsSubmitting(true);
     setErrorMessage(null);
     setOtpSentMsg(null);
+    setOtpDigits(['', '', '', '', '', '', '', '']);
 
     try {
       const res = await sendEmailOtp(schoolEmail.trim().toLowerCase());
@@ -204,10 +287,20 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
-    setIsSubmitting(true);
 
     const cleanEmail = schoolEmail.trim().toLowerCase();
-    const token = otpCode.trim();
+    const token = otpDigits.join('').trim();
+
+    if (token.length < 6) {
+      setErrorMessage(
+        language === 'tr'
+          ? 'Lütfen 8 haneli onay kodunuzu kutucuklara eksiksiz giriniz.'
+          : 'Please enter your complete verification code.'
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
       // 1. Check local/simulated code first
@@ -360,21 +453,41 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
 
               <form onSubmit={handleOtpSubmit} className="space-y-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
-                    {language === 'tr' ? 'Doğrulama Kodu' : 'Verification Code'}
-                  </label>
-                  <input
-                    type="text"
-                    maxLength={10}
-                    value={otpCode}
-                    onChange={(e) => {
-                      setOtpCode(e.target.value);
-                      handleInputChange();
-                    }}
-                    placeholder="• • • • • • • •"
-                    className="w-full px-4 py-3 text-center tracking-[0.3em] font-mono text-lg font-black rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#ff7a00] focus:bg-white"
-                    required
-                  />
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs font-bold text-slate-700 block">
+                      {language === 'tr' ? '8 Haneli Doğrulama Kodu' : '8-Digit Verification Code'}
+                    </label>
+                    <span className="text-[11px] font-bold text-slate-400 font-mono">
+                      {otpDigits.filter(Boolean).length} / 8
+                    </span>
+                  </div>
+
+                  {/* 8 Distinct Slots (4 + 4 with separator) */}
+                  <div className="flex items-center justify-center gap-1 sm:gap-2">
+                    {otpDigits.map((digit, i) => (
+                      <React.Fragment key={i}>
+                        {i === 4 && (
+                          <div className="w-1.5 sm:w-2 h-0.5 bg-slate-300 rounded-full mx-0.5" />
+                        )}
+                        <input
+                          ref={(el) => (otpInputRefs.current[i] = el)}
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          maxLength={1}
+                          value={digit}
+                          onChange={(e) => handleDigitChange(i, e.target.value)}
+                          onKeyDown={(e) => handleDigitKeyDown(i, e)}
+                          onPaste={handleDigitPaste}
+                          className={`w-8 h-12 sm:w-10 sm:h-14 text-center font-mono text-xl sm:text-2xl font-black rounded-xl border transition-all ${
+                            digit
+                              ? 'bg-orange-50/70 border-[#ff7a00] text-[#ff7a00] shadow-xs'
+                              : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-[#ff7a00] focus:ring-2 focus:ring-orange-200'
+                          } focus:outline-none`}
+                        />
+                      </React.Fragment>
+                    ))}
+                  </div>
                 </div>
 
                 <button
