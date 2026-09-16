@@ -50,9 +50,10 @@ export const HomePage: React.FC<HomePageProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  // Derive dynamic user first name
-  const firstName = userProfile?.fullName
-    ? userProfile.fullName.trim().split(' ')[0]
+  // Derive dynamic student greeting name from registered fullName
+  const cleanName = (userProfile?.fullName || '').replace(/Resul\s*(Tan\s*Kılıç)?(\s*\(Admin\))?/gi, '').trim();
+  const studentDisplayName = cleanName
+    ? cleanName.split(' ')[0]
     : (language === 'tr' ? 'Öğrenci' : 'Student');
 
   const totalLessons = ALL_MODULES.reduce((acc, m) => acc + (m.lessons?.length || 0), 0);
@@ -70,7 +71,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           <TanCoreMascotAvatar size="lg" className="shadow-md shadow-[#ff7a00]/20 hover:scale-105 transition-transform shrink-0" />
           <div className="flex flex-col items-start space-y-1.5 min-w-0">
             <h1 className="text-base sm:text-xl font-black text-slate-900 tracking-tight leading-none">
-              <span>{language === 'tr' ? `Selam ${firstName}!` : `Hi ${firstName}!`}</span>
+              <span>{language === 'tr' ? `Selam ${studentDisplayName}!` : `Hi ${studentDisplayName}!`}</span>
             </h1>
 
             {/* Placement Test CTA */}

@@ -18,10 +18,13 @@ export const supabase = isSupabaseConfigured
 /**
  * Send OTP Code via email using Supabase Auth (or simulated code fallback if not configured)
  */
-export async function sendEmailOtp(email: string): Promise<{ success: boolean; simulatedCode?: string; error?: string }> {
+export async function sendEmailOtp(
+  email: string,
+  metadata?: { fullName?: string; university?: string; departmentAndClass?: string; password?: string }
+): Promise<{ success: boolean; simulatedCode?: string; error?: string }> {
   if (!supabase || !isSupabaseConfigured) {
-    // Generate a 6-digit random code for simulation mode
-    const simulatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+    // Generate an 8-digit random code for simulation mode
+    const simulatedCode = Math.floor(10000000 + Math.random() * 90000000).toString();
     console.log(`[AUTH SIMULATION] OTP sent to ${email}: ${simulatedCode}`);
     return { success: true, simulatedCode };
   }
@@ -31,6 +34,16 @@ export async function sendEmailOtp(email: string): Promise<{ success: boolean; s
       email,
       options: {
         shouldCreateUser: true,
+        data: metadata
+          ? {
+              full_name: metadata.fullName,
+              name: metadata.fullName,
+              display_name: metadata.fullName,
+              university: metadata.university,
+              department_and_class: metadata.departmentAndClass,
+              password: metadata.password,
+            }
+          : undefined,
       },
     });
 

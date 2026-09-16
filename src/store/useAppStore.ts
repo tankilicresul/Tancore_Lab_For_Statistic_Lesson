@@ -10,9 +10,7 @@ export function isValidStudentEmail(email: string): boolean {
   // Allow student email domains ending with .edu.tr or .edu, or admin emails
   if (
     e === 'admin@tancorelab.com' ||
-    e.startsWith('admin@') ||
-    e.startsWith('rtankilic.business') ||
-    e.startsWith('resultankilic.business')
+    e.startsWith('admin@')
   ) return true;
 
   return e.endsWith('.edu.tr') || e.endsWith('.edu');
@@ -80,7 +78,7 @@ const DEFAULT_DEMO_ACCOUNTS: RegisteredAccount[] = [
   },
   {
     schoolEmail: 'admin@tancorelab.com',
-    fullName: 'TanCore Admin',
+    fullName: 'Yönetici',
     university: 'Marmara Üniversitesi',
     departmentAndClass: 'Sistem Yöneticisi',
     password: '123456password',
@@ -594,7 +592,12 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       },
     }),
     {
-      name: 'tancorelab-statsim-v3',
+      name: 'tancorelab-statsim-v5',
+      onRehydrateStorage: () => (state) => {
+        if (state?.userProfile?.fullName && /Resul/i.test(state.userProfile.fullName)) {
+          state.userProfile.fullName = '';
+        }
+      },
     }
   )
 );

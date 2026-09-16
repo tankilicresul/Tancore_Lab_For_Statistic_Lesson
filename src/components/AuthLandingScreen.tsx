@@ -232,8 +232,13 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     setOtpDigits(['', '', '', '', '', '', '', '']);
 
     try {
-      // Trigger Supabase email OTP
-      const res = await sendEmailOtp(cleanEmail);
+      // Trigger Supabase email OTP with user metadata so Display name is stored in auth.users
+      const res = await sendEmailOtp(cleanEmail, {
+        fullName: fullName.trim(),
+        university: university.trim(),
+        departmentAndClass: departmentAndClass.trim(),
+        password: password,
+      });
 
       registerAccountAndSendOtp(
         {
