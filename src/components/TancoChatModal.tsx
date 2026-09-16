@@ -153,7 +153,7 @@ export const TancoChatModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:justify-end p-0 sm:p-6 bg-slate-900/60 backdrop-blur-xs animate-fade-in font-sans">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-slate-900/60 backdrop-blur-xs animate-fade-in font-sans">
       {/* Click outside to close (desktop) */}
       <div
         className="hidden sm:block absolute inset-0 -z-10"

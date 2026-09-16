@@ -3,7 +3,8 @@ import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
 import { Sparkles } from 'lucide-react';
 
-const STORAGE_KEY = 'tancore_floating_avatar_pos';
+// Use v3 storage key to ensure users get the new well-positioned coordinates
+const STORAGE_KEY = 'tancore_floating_avatar_pos_v3';
 
 export const FloatingTancoButton: React.FC = () => {
   const { language, isTancoChatOpen, setIsTancoChatOpen } = useAppStore();
@@ -20,28 +21,49 @@ export const FloatingTancoButton: React.FC = () => {
   const hasMovedRef = useRef(false);
   const buttonRef = useRef<HTMLDivElement>(null);
 
-  // Initialize position from localStorage or default to bottom-right
+  const clampPosition = (x: number, y: number) => {
+    const isMobile = window.innerWidth < 640;
+    const btnSize = isMobile ? 56 : 64;
+    const padX = 16;
+    const padTop = 72; // Below navbar
+    const padBottom = isMobile ? 96 : 32; // Mobile bottom nav clearance
+    const minX = padX;
+    const maxX = Math.max(minX, window.innerWidth - btnSize - padX);
+    const minY = padTop;
+    const maxY = Math.max(minY, window.innerHeight - btnSize - padBottom);
+    return {
+      x: Math.min(Math.max(minX, x), maxX),
+      y: Math.min(Math.max(minY, y), maxY),
+    };
+  };
+
+  // Initialize position from localStorage or calculate responsive default
   useEffect(() => {
     const updateDefaultPosition = () => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          const btnWidth = 56;
-          const btnHeight = 56;
-          const clampedX = Math.min(Math.max(12, parsed.x), window.innerWidth - btnWidth - 12);
-          const clampedY = Math.min(Math.max(68, parsed.y), window.innerHeight - btnHeight - 16);
-          setPosition({ x: clampedX, y: clampedY });
-          return;
+          if (typeof parsed.x === 'number' && typeof parsed.y === 'number') {
+            setPosition(clampPosition(parsed.x, parsed.y));
+            return;
+          }
         } catch {
           // ignore
         }
       }
 
-      // Default: bottom-right
-      const defX = window.innerWidth - 72;
-      const defY = window.innerHeight - 84;
-      setPosition({ x: Math.max(12, defX), y: Math.max(68, defY) });
+      const isMobile = window.innerWidth < 640;
+      // Desktop: placed noticeably more inward towards the middle-right so it's fully visible and not clipped
+      // Mobile: placed significantly higher up so it's easily reachable and away from bottom gestures/navigation
+      const defX = isMobile
+        ? window.innerWidth - 76
+        : Math.min(window.innerWidth - 130, Math.max(window.innerWidth / 2 + 180, window.innerWidth - 160));
+      const defY = isMobile
+        ? Math.max(100, window.innerHeight - 190)
+        : Math.max(100, window.innerHeight - 130);
+
+      setPosition(clampPosition(defX, defY));
     };
 
     updateDefaultPosition();
@@ -59,14 +81,14 @@ export const FloatingTancoButton: React.FC = () => {
   };
 
   const handlePointerDown = (e: React.PointerEvent) => {
-    // Only primary button
+    // Only primary mouse button or touch
     if (e.button !== 0) return;
 
     isPointerDownRef.current = true;
     hasMovedRef.current = false;
 
-    const currentX = position ? position.x : window.innerWidth - 72;
-    const currentY = position ? position.y : window.innerHeight - 84;
+    const currentX = position ? position.x : window.innerWidth - 130;
+    const currentY = position ? position.y : window.innerHeight - 130;
 
     dragStartRef.current = {
       startX: e.clientX,
@@ -90,19 +112,13 @@ export const FloatingTancoButton: React.FC = () => {
       }
 
       if (hasMovedRef.current) {
-        const btnWidth = 56;
-        const btnHeight = 56;
         const nextX = dragStartRef.current.initialX + deltaX;
         const nextY = dragStartRef.current.initialY + deltaY;
-
-        const clampedX = Math.min(Math.max(12, nextX), window.innerWidth - btnWidth - 12);
-        const clampedY = Math.min(Math.max(68, nextY), window.innerHeight - btnHeight - 16);
-
-        setPosition({ x: clampedX, y: clampedY });
+        setPosition(clampPosition(nextX, nextY));
       }
     };
 
-    const onPointerUp = (upEv: PointerEvent) => {
+    const onPointerUp = () => {
       isPointerDownRef.current = false;
       setIsDragging(false);
 
@@ -111,12 +127,11 @@ export const FloatingTancoButton: React.FC = () => {
       window.removeEventListener('pointercancel', onPointerUp);
 
       if (hasMovedRef.current) {
-        // Was a drag: save final position
         if (position) {
           savePosition(position);
         }
       } else {
-        // Was a click: open chat!
+        // Normal click/tap: open Tanco Chat!
         setIsTancoChatOpen(true);
       }
     };
@@ -141,22 +156,28 @@ export const FloatingTancoButton: React.FC = () => {
         touchAction: 'none',
         userSelect: 'none',
       }}
-      className={`z-40 flex items-center space-x-2 select-none transition-shadow ${
-        isLeftHalf ? 'flex-row-reverse space-x-reverse' : 'flex-row'
-      } ${isDragging ? 'cursor-grabbing scale-105' : 'cursor-grab'}`}
+      className={`z-40 flex items-center select-none ${
+        isDragging ? 'cursor-grabbing' : 'cursor-grab'
+      }`}
     >
-      {/* Dynamic Label Badge (hidden when dragging, shows on hover or stationary) */}
+      {/* Dynamic Label Badge: anchors towards center of screen to prevent clipping */}
       {!isDragging && (
-        <div className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 text-white text-[11px] font-black tracking-wide shadow-lg backdrop-blur-xs pointer-events-none opacity-90 transition-opacity">
-          <Sparkles className="w-3 h-3 text-[#ff7a00]" />
+        <div
+          className={`hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 text-white text-[11px] font-bold tracking-wide shadow-lg backdrop-blur-xs pointer-events-none whitespace-nowrap absolute top-1/2 -translate-y-1/2 transition-opacity duration-300 ${
+            isLeftHalf ? 'left-full ml-2.5' : 'right-full mr-2.5'
+          }`}
+        >
+          <Sparkles className="w-3.5 h-3.5 text-[#ff7a00]" />
           <span>{language === 'tr' ? "Tanco'ya Sor" : 'Ask Tanco'}</span>
         </div>
       )}
 
-      {/* Mascot Photo Draggable Avatar */}
+      {/* Mascot Draggable Avatar with Ultra-Smooth Breathing Animation */}
       <div
-        className={`relative p-1 rounded-full bg-white border-2 border-[#ff7a00] shadow-xl hover:shadow-[#ff7a00]/40 transition-transform ${
-          isDragging ? 'scale-110 shadow-2xl ring-4 ring-[#ff7a00]/30' : 'hover:scale-105'
+        className={`relative p-1 rounded-full bg-white border-2 border-[#ff7a00] transition-all duration-300 ${
+          isDragging
+            ? 'scale-110 shadow-2xl ring-4 ring-[#ff7a00]/40'
+            : 'animate-tanco-breathe hover:scale-110'
         }`}
         title={
           language === 'tr'
@@ -176,3 +197,4 @@ export const FloatingTancoButton: React.FC = () => {
     </div>
   );
 };
+
