@@ -626,7 +626,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-2 gap-2.5">
                     <div>
                       <label className="text-xs font-bold text-slate-700 block mb-1">
                         {language === 'tr' ? 'Üniversite İsmi' : 'University'}
@@ -664,7 +664,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-2 gap-2.5">
                     <div>
                       <label className="text-xs font-bold text-slate-700 block mb-1">
                         {language === 'tr' ? 'Şifre' : 'Password'}
