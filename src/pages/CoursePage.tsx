@@ -27,8 +27,12 @@ import {
   BarChart3,
   Layers,
   ArrowLeft,
+  ArrowRight,
+  Zap,
+  Loader2,
 } from 'lucide-react';
 import { Lesson, CaseExam, Module } from '../types/stats';
+import { CourseTrack } from './HomePage';
 
 export const SpiderIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
@@ -137,10 +141,12 @@ export const getNodeAnimalIcon = (subStepIndex: number, colorClass: string) => {
 
 interface CoursePageProps {
   selectedTrack: 'probability' | 'statistics';
+  inDesignCourse?: CourseTrack | null;
   onSelectLesson: (lessonId: string) => void;
   onSelectCaseExam: (caseId: string) => void;
   onBackToHome: () => void;
   scrollToNodeId?: string | null;
+  onStartPlacementTest?: () => void;
 }
 
 interface PathNodeItem {
@@ -160,13 +166,91 @@ const STATISTICS_MODULE_IDS = ['module-1', 'module-5', 'module-6', 'module-7', '
 
 export const CoursePage: React.FC<CoursePageProps> = ({
   selectedTrack,
+  inDesignCourse,
   onSelectLesson,
   onSelectCaseExam,
   onBackToHome,
   scrollToNodeId,
+  onStartPlacementTest,
 }) => {
   const { language, unlockedModules, completedLessons, completedCaseExams } = useAppStore();
   const [selectedNode, setSelectedNode] = useState<PathNodeItem | null>(null);
+
+  // If viewing an in-design course, render dedicated placeholder view
+  if (inDesignCourse) {
+    const isEn = language === 'en';
+    const Icon = inDesignCourse.icon;
+    const title = isEn ? inDesignCourse.name.en : inDesignCourse.name.tr;
+    const desc = isEn ? inDesignCourse.desc.en : inDesignCourse.desc.tr;
+
+    return (
+      <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden animate-fade-in space-y-6">
+        {/* Top Header Navigation Bar */}
+        <div className="flex items-center justify-between">
+          <button
+            onClick={onBackToHome}
+            className="flex items-center space-x-2 px-3.5 py-2 rounded-2xl bg-white border border-slate-200/90 text-xs font-black text-slate-700 hover:text-[#ff7a00] hover:border-[#ff7a00]/40 transition-all shadow-2xs group cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4 text-[#ff7a00] group-hover:-translate-x-0.5 transition-transform" />
+            <span>{isEn ? 'Back to Courses' : 'Ana Sayfaya Dön'}</span>
+          </button>
+
+          <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200/80 text-amber-700 font-mono text-[10px] sm:text-xs font-black">
+            <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-600" />
+            <span>{isEn ? 'IN DESIGN PHASE' : 'TASARIM AŞAMASINDA'}</span>
+          </div>
+        </div>
+
+        {/* Course Header Card */}
+        <div className="relative p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-sm overflow-hidden text-left">
+          <div className="flex items-start space-x-4">
+            <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shrink-0 ${inDesignCourse.iconBg}`}>
+              <Icon className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.25]" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="text-[11px] font-black font-mono tracking-wider text-slate-500 uppercase">
+                {inDesignCourse.code}
+              </span>
+              <h1 className="text-base sm:text-xl font-black text-slate-900 tracking-tight leading-tight mt-0.5">
+                {inDesignCourse.code} – {title}
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1.5 leading-relaxed">
+                {desc}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* In-Design Message Card with Mascot Tanco */}
+        <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-amber-50/40 via-white to-orange-50/20 border border-amber-200/80 shadow-sm text-center flex flex-col items-center">
+          <div className="relative mb-4">
+            <TanCoreMascotAvatar size="xl" className="shadow-lg shadow-[#ff7a00]/25" />
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center border-2 border-white shadow-xs">
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            </div>
+          </div>
+
+          <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight mb-2">
+            {isEn ? 'We Are Designing This Course!' : 'Bu Dersi Şu Anda Tasarlıyoruz!'}
+          </h2>
+
+          <p className="text-xs sm:text-sm text-slate-600 max-w-md leading-relaxed mb-6 font-medium">
+            {isEn
+              ? "We are currently designing this course for you. To support our development or submit your curriculum and topic requests, feel free to write to your assistant Tanco anytime!"
+              : "Bu dersi şu anda sizler için tasarlıyoruz! Bize destek olmak ve müfredat/içerik taleplerinizi iletmek için asistanınız Tanco'ya yazabilirsiniz."}
+          </p>
+
+          <button
+            onClick={onBackToHome}
+            className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer flex items-center space-x-2"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>{isEn ? 'Return to Courses' : 'Ders Listesine Dön'}</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Filter modules based on track
   const targetIds = selectedTrack === 'statistics' ? STATISTICS_MODULE_IDS : PROBABILITY_MODULE_IDS;
@@ -269,7 +353,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
       </div>
 
       {/* Course Track Header Banner */}
-      <div className="relative mb-8 p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white shadow-xl overflow-hidden">
+      <div className="relative mb-6 p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white shadow-xl overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff7a00]/20 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex items-center space-x-4 relative z-10">
@@ -294,6 +378,41 @@ export const CoursePage: React.FC<CoursePageProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Placement Test CTA Card */}
+      {onStartPlacementTest && (
+        <div className="relative mb-8 p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-orange-50/80 via-amber-50/50 to-white border border-[#ff7a00]/30 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
+          <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shadow-md shadow-[#ff7a00]/25 shrink-0">
+              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-white stroke-[2]" />
+            </div>
+            <div className="text-left min-w-0">
+              <div className="flex items-center space-x-2">
+                <h3 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight">
+                  {language === 'tr' ? 'Seviyeni Belirle' : 'Placement Test'}
+                </h3>
+                <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#ff7a00]/10 text-[#ff7a00] font-mono border border-[#ff7a00]/20">
+                  {language === 'tr' ? 'Hızlı İlerle' : 'Fast-Track'}
+                </span>
+              </div>
+              <p className="text-[10.5px] sm:text-xs text-slate-500 font-medium leading-snug mt-0.5">
+                {language === 'tr'
+                  ? 'Daha önce bu konuları gördün mü? Seviye tespit sınavı ile bildiğin modülleri doğrudan tamamla.'
+                  : 'Already familiar with these topics? Test out of mastered modules directly.'}
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={onStartPlacementTest}
+            className="w-full sm:w-auto flex items-center justify-center space-x-1.5 px-4 py-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs shadow-[#ff7a00]/25 group shrink-0 whitespace-nowrap cursor-pointer"
+          >
+            <Zap className="w-3.5 h-3.5 text-white fill-white stroke-[2]" />
+            <span>{language === 'tr' ? 'Sınava Başla' : 'Start Test'}</span>
+            <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+      )}
 
       {/* Modules Flow */}
       <div className="space-y-12">

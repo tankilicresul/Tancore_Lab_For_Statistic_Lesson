@@ -28,7 +28,7 @@ import {
   GraduationCap,
 } from 'lucide-react';
 
-interface CourseTrack {
+export interface CourseTrack {
   code: string;
   name: { tr: string; en: string };
   desc: { tr: string; en: string };
@@ -42,7 +42,7 @@ interface CourseTrack {
   glowColor: string;
 }
 
-const COURSES_DATA: CourseTrack[] = [
+export const COURSES_DATA: CourseTrack[] = [
   {
     code: 'ENGR 200',
     name: {
@@ -58,9 +58,9 @@ const COURSES_DATA: CourseTrack[] = [
     icon: Dices,
     iconBg: 'bg-[#ff7a00] text-white shadow-md shadow-[#ff7a00]/25',
     badge: { tr: '8 Modül', en: '8 Modules' },
-    badgeStyle: 'bg-orange-100 text-[#ff7a00] border-orange-200/80',
-    cardStyle: 'border-orange-200/90 hover:border-[#ff7a00] bg-gradient-to-b from-orange-50/70 via-white to-orange-50/30 hover:from-orange-50 hover:to-orange-100/60 shadow-xs hover:shadow-lg hover:-translate-y-1',
-    glowColor: 'bg-[#ff7a00]/10',
+    badgeStyle: 'bg-orange-100 text-orange-800 border-orange-200/80',
+    cardStyle: 'border-orange-200/80 bg-gradient-to-b from-orange-50/50 via-white to-amber-50/30 shadow-xs hover:shadow-md hover:border-[#ff7a00]/50',
+    glowColor: 'bg-[#ff7a00]/15',
   },
   {
     code: 'INDR 252',
@@ -69,17 +69,17 @@ const COURSES_DATA: CourseTrack[] = [
       en: 'Applied Statistics',
     },
     desc: {
-      tr: 'Parametrik istatistik, güven aralıkları, hipotez testleri, uyum iyiliği, basit/çoklu regresyon ve kalite kontrol uygulamaları.',
-      en: 'Parametric estimation, confidence intervals, hypothesis testing, distribution fitting, simple/multiple regression & quality control.',
+      tr: 'Merkezi eğilim, hipotez testleri, tek/iki örneklem testleri, ANOVA, regresyon, kikare testleri ve endüstriyel vaka çalışmaları.',
+      en: 'Descriptive stats, hypothesis testing, one/two sample tests, ANOVA, regression, chi-square tests and real-world industrial cases.',
     },
     status: 'active',
     track: 'statistics',
     icon: BarChart3,
-    iconBg: 'bg-slate-900 text-white shadow-md',
+    iconBg: 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25',
     badge: { tr: '8 Modül', en: '8 Modules' },
-    badgeStyle: 'bg-slate-100 text-slate-700 border-slate-200',
-    cardStyle: 'border-slate-200 hover:border-[#ff7a00] bg-gradient-to-b from-slate-50/70 via-white to-orange-50/20 hover:from-orange-50 hover:to-orange-100/60 shadow-xs hover:shadow-lg hover:-translate-y-1',
-    glowColor: 'bg-slate-900/5',
+    badgeStyle: 'bg-emerald-100 text-emerald-800 border-emerald-200/80',
+    cardStyle: 'border-emerald-200/80 bg-gradient-to-b from-emerald-50/50 via-white to-teal-50/30 shadow-xs hover:shadow-md hover:border-emerald-500/50',
+    glowColor: 'bg-emerald-500/15',
   },
   {
     code: 'INDR 100',
@@ -89,15 +89,15 @@ const COURSES_DATA: CourseTrack[] = [
     },
     desc: {
       tr: 'Endüstri mühendisliği kavramları, sistem analizi ve modelleme temelleri, üretim ve hizmet sistemleri, bilgisayar ve programlama uygulamaları.',
-      en: 'Introduction to industrial engineering concepts, fundamentals of systems analysis and modeling, production and service systems.',
+      en: 'Introduction to industrial engineering concepts, systems analysis & modeling, production & service systems, programming applications.',
     },
     status: 'in_design',
     icon: GraduationCap,
-    iconBg: 'bg-amber-600 text-white shadow-md shadow-amber-600/20',
+    iconBg: 'bg-cyan-600 text-white shadow-md shadow-cyan-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
-    badgeStyle: 'bg-amber-100 text-amber-800 border-amber-200/80',
-    cardStyle: 'border-amber-200/70 bg-gradient-to-b from-amber-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
-    glowColor: 'bg-amber-500/10',
+    badgeStyle: 'bg-cyan-100 text-cyan-800 border-cyan-200/80',
+    cardStyle: 'border-cyan-200/70 bg-gradient-to-b from-cyan-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-cyan-500/10',
   },
   {
     code: 'INDR 201',
@@ -106,16 +106,16 @@ const COURSES_DATA: CourseTrack[] = [
       en: 'Discrete Mathematical Structures',
     },
     desc: {
-      tr: 'Mantık temelleri, matematiksel tümevarım, küme teorisi, bağıntılar, sayma ilkeleri, çizge teorisi, ağlar ve algoritmalar.',
-      en: 'Fundamentals of logic, mathematical induction, basic set theory, relations, counting principles, graph theory & network algorithms.',
+      tr: 'Mantık temelleri, matematiksel tümevarım, küme teorisi, bağıntılar ve fonksiyonlar, sayma prensipleri, çizge teorisi ve ağ algoritmaları.',
+      en: 'Fundamentals of logic, mathematical induction, set theory, relations & functions, counting principles, graph theory & network algorithms.',
     },
     status: 'in_design',
     icon: Binary,
-    iconBg: 'bg-cyan-700 text-white shadow-md shadow-cyan-700/20',
+    iconBg: 'bg-sky-600 text-white shadow-md shadow-sky-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
-    badgeStyle: 'bg-cyan-100 text-cyan-800 border-cyan-200/80',
-    cardStyle: 'border-cyan-200/70 bg-gradient-to-b from-cyan-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
-    glowColor: 'bg-cyan-500/10',
+    badgeStyle: 'bg-sky-100 text-sky-800 border-sky-200/80',
+    cardStyle: 'border-sky-200/70 bg-gradient-to-b from-sky-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-sky-500/10',
   },
   {
     code: 'INDR 202',
@@ -124,14 +124,14 @@ const COURSES_DATA: CourseTrack[] = [
       en: 'Engineering Economics',
     },
     desc: {
-      tr: 'Finansal muhasebe prensipleri, maliyet sistemleri, maliyet-hacim-kâr analizleri, indirgenmiş nakit akışı ve bütçeleme teknikleri.',
-      en: 'Financial accounting principles, cost systems, cost-volume-profit analyses, discounted cash flow and budgeting techniques.',
+      tr: 'Paranın zaman değeri, faiz oranları, bugünkü/gelecekteki değer analizleri, yatırım projelerinin değerlendirilmesi ve amortisman yöntemleri.',
+      en: 'Time value of money, interest rates, present & future worth analysis, investment project evaluation, cash flow and depreciation methods.',
     },
     status: 'in_design',
     icon: Coins,
-    iconBg: 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20',
+    iconBg: 'bg-emerald-700 text-white shadow-md shadow-emerald-700/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
-    badgeStyle: 'bg-emerald-100 text-emerald-700 border-emerald-200/80',
+    badgeStyle: 'bg-emerald-100 text-emerald-800 border-emerald-200/80',
     cardStyle: 'border-emerald-200/70 bg-gradient-to-b from-emerald-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
     glowColor: 'bg-emerald-500/10',
   },
@@ -301,44 +301,20 @@ const COURSES_DATA: CourseTrack[] = [
 
 interface HomePageProps {
   onSelectTrack: (track: 'probability' | 'statistics') => void;
-  onStartPlacementTest: () => void;
+  onSelectInDesignCourse?: (course: CourseTrack) => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
   onSelectTrack,
-  onStartPlacementTest,
+  onSelectInDesignCourse,
 }) => {
   const {
     language,
-    xp,
-    streak,
     userProfile,
-    completedLessons,
-    completedCaseExams,
   } = useAppStore();
-
-  const [isBtnLogoSpinning, setIsBtnLogoSpinning] = useState(false);
-
-  // Periodic logo spin animation every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsBtnLogoSpinning(true);
-      const timer = setTimeout(() => {
-        setIsBtnLogoSpinning(false);
-      }, 1300);
-      return () => clearTimeout(timer);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Derive dynamic student greeting name - exactly as registered by the student
   const studentDisplayName = userProfile?.fullName?.trim() || (language === 'tr' ? 'Öğrenci' : 'Student');
-
-  const totalLessons = ALL_MODULES.reduce((acc, m) => acc + (m.lessons?.length || 0), 0);
-  const totalCases = ALL_MODULES.reduce((acc, m) => acc + (m.caseExams?.length || 0), 0);
-  const totalItems = totalLessons + totalCases;
-  const completedCount = completedLessons.length + completedCaseExams.length;
 
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden animate-fade-in space-y-6">
@@ -346,57 +322,33 @@ export const HomePage: React.FC<HomePageProps> = ({
       <div className="relative p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-sm overflow-hidden text-left">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff7a00]/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="flex items-center space-x-3 sm:space-x-4 mb-4">
+        <div className="flex items-center space-x-3.5 sm:space-x-4 mb-4">
           <TanCoreMascotAvatar size="lg" className="shadow-md shadow-[#ff7a00]/20 hover:scale-105 transition-transform shrink-0" />
-          <div className="flex flex-col items-start space-y-1.5 min-w-0">
-            <h1 className="text-base sm:text-xl font-black text-slate-900 tracking-tight leading-none">
-              <span>{language === 'tr' ? `Selam ${studentDisplayName}!` : `Hi ${studentDisplayName}!`}</span>
-            </h1>
-
-            {/* Placement Test CTA */}
-            <button
-              onClick={onStartPlacementTest}
-              onMouseEnter={() => {
-                setIsBtnLogoSpinning(true);
-                setTimeout(() => setIsBtnLogoSpinning(false), 1300);
-              }}
-              className="flex items-center justify-center space-x-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-[9.5px] xs:text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all shadow-xs shadow-[#ff7a00]/25 group shrink-0 whitespace-nowrap cursor-pointer"
-            >
-              <div
-                className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-white flex items-center justify-center p-0.5 shadow-xs shrink-0 group-hover:scale-105 transition-transform ${
-                  isBtnLogoSpinning ? 'animate-logo-spin' : ''
-                }`}
-              >
-                <div className="w-full h-full rounded-full bg-[#ff7a00] flex items-center justify-center border border-white">
-                  <Zap className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-white fill-white stroke-[1.75]" />
-                </div>
-              </div>
-              <span className="whitespace-nowrap">
+          <div className="flex flex-col items-start min-w-0">
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] font-mono">
+              TANCORE LAB • TEACHING ASSISTANT
+            </span>
+            <h1 className="text-base sm:text-xl font-black text-slate-900 tracking-tight leading-snug mt-0.5">
+              <span>
                 {language === 'tr'
-                  ? 'Seviyeni Belirle'
-                  : 'Placement Test'}
+                  ? `Selam ${studentDisplayName}! Ben Tanco, senin TA'yin olacağım.`
+                  : `Hi ${studentDisplayName}! I'm Tanco, your TA.`}
               </span>
-            </button>
+            </h1>
           </div>
         </div>
 
         {/* Speech Box */}
-        <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4.5 space-y-2 text-[11px] sm:text-xs text-slate-700 leading-relaxed shadow-2xs relative">
-          <p>
-            {language === 'tr' ? (
-              <>
-                TancoreLab istatistik ve olasılık platformuna hoş geldin! Toplam <strong className="text-[#ff7a00] font-black">{xp} XP</strong> topladın. 🎯
-              </>
-            ) : (
-              <>
-                Welcome to TancoreLab! You have earned <strong className="text-[#ff7a00] font-black">{xp} XP</strong> total. 🎯
-              </>
-            )}
-          </p>
-          <p className="pt-1.5 border-t border-slate-200/60 text-[10.5px] sm:text-xs text-slate-600 font-medium">
+        <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4.5 space-y-2 text-[11.5px] sm:text-xs text-slate-700 leading-relaxed shadow-2xs relative">
+          <p className="font-medium text-slate-800">
             {language === 'tr'
-              ? 'Aşağıdaki modül kartlarından birine tıklayarak ders akışına gidebilirsin.'
-              : 'Click any of the course cards below to open the interactive learning path.'}
+              ? "Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman ulaşabilirsin."
+              : "I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. Feel free to reach out anytime."}
+          </p>
+          <p className="pt-2 border-t border-slate-200/70 text-[10.5px] sm:text-[11.5px] text-slate-500 font-medium">
+            {language === 'tr'
+              ? "Aşağıdaki derslerden dilediğini seçerek öğrenme yoluna başlayabilirsin."
+              : "Select any of the courses below to explore your interactive path."}
           </p>
         </div>
       </div>
@@ -420,12 +372,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform ${course.glowColor}`} />
 
                 {/* Top row: Icon & Course Code / Badge */}
-                <div className="flex items-start justify-between w-full relative z-10 gap-2 shrink-0">
+                <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
                   <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                   </div>
-                  <div className="flex flex-col items-end gap-1 shrink-0">
-                    <span className="text-[10px] sm:text-xs font-black font-mono tracking-tight text-slate-800">
+                  <div className="h-10 sm:h-12 flex flex-col items-end justify-center gap-0.5 shrink-0">
+                    <span className="text-xs sm:text-sm font-black font-mono tracking-tight text-slate-800">
                       {course.code}
                     </span>
                     <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full font-mono border ${course.badgeStyle}`}>
@@ -456,19 +408,20 @@ export const HomePage: React.FC<HomePageProps> = ({
           }
 
           return (
-            <div
+            <button
               key={course.code}
-              className={`group relative p-3.5 sm:p-5 rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden ${course.cardStyle}`}
+              onClick={() => onSelectInDesignCourse?.(course)}
+              className={`group relative p-3.5 sm:p-5 rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden cursor-pointer hover:border-amber-400/80 hover:shadow-md ${course.cardStyle}`}
             >
               <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
 
               {/* Top row: Icon & Course Code / Badge */}
-              <div className="flex items-start justify-between w-full relative z-10 gap-2 shrink-0">
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shrink-0 ${course.iconBg}`}>
+              <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                 </div>
-                <div className="flex items-center shrink-0">
-                  <span className="text-[10px] sm:text-xs font-black font-mono tracking-tight text-slate-700">
+                <div className="h-10 sm:h-12 flex items-center justify-end shrink-0">
+                  <span className="text-xs sm:text-sm font-black font-mono tracking-tight text-slate-700">
                     {course.code}
                   </span>
                 </div>
@@ -476,7 +429,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
               {/* Middle content: Title & Description starting right below the icon row */}
               <div className="relative z-10 pt-2.5 sm:pt-3 flex-1 flex flex-col text-left">
-                <h3 className="text-xs sm:text-[15px] font-black tracking-tight text-slate-900 leading-snug">
+                <h3 className="text-xs sm:text-[15px] font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors leading-snug">
                   {course.code} – {title}
                 </h3>
                 <p className="text-[10px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
@@ -486,12 +439,13 @@ export const HomePage: React.FC<HomePageProps> = ({
 
               {/* Bottom status (pinned to the bottom) */}
               <div className="relative z-10 mt-auto pt-2.5 shrink-0">
-                <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500">
+                <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-600 group-hover:text-amber-700 group-hover:translate-x-0.5 transition-all">
                   <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
                   <span>{isEn ? 'In Design Phase' : 'Tasarım Aşamasında'}</span>
+                  <ArrowRight className="w-3 h-3 stroke-[2.5] opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
                 </div>
               </div>
-            </div>
+            </button>
           );
         })}
       </div>

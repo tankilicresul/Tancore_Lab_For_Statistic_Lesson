@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { XpStreakBar } from './components/XpStreakBar';
 import { AuthLandingScreen } from './components/AuthLandingScreen';
-import { HomePage } from './pages/HomePage';
+import { HomePage, CourseTrack } from './pages/HomePage';
 import { CoursePage } from './pages/CoursePage';
 import { ProfilePage } from './pages/ProfilePage';
 import { LessonPage } from './pages/LessonPage';
@@ -32,6 +32,7 @@ export const App: React.FC = () => {
   } = useAppStore();
 
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
+  const [selectedInDesignCourse, setSelectedInDesignCourse] = useState<CourseTrack | null>(null);
 
   // Automatically sync profile details from Supabase cloud so registered name is always present
   useEffect(() => {
@@ -61,12 +62,6 @@ export const App: React.FC = () => {
   }
 
   const handleSelectLesson = (lessonId: string) => {
-    const data = getLessonById(lessonId);
-    if (data && data.module.order >= 6) {
-      setSelectedTrack('statistics');
-    } else if (data) {
-      setSelectedTrack('probability');
-    }
     setSelectedLessonId(lessonId);
     setSelectedCaseId(null);
     setCurrentView('lesson');
@@ -74,12 +69,6 @@ export const App: React.FC = () => {
   };
 
   const handleSelectCaseExam = (caseId: string) => {
-    const data = getCaseExamById(caseId);
-    if (data && data.module.order >= 6) {
-      setSelectedTrack('statistics');
-    } else if (data) {
-      setSelectedTrack('probability');
-    }
     setSelectedCaseId(caseId);
     setSelectedLessonId(null);
     setCurrentView('caseExam');
@@ -101,6 +90,7 @@ export const App: React.FC = () => {
 
   const handleBackToHome = () => {
     setCurrentView('home');
+    setSelectedInDesignCourse(null);
     setSelectedLessonId(null);
     setSelectedCaseId(null);
     setScrollToNodeId(null);
@@ -110,6 +100,7 @@ export const App: React.FC = () => {
 
   const handleOpenProfile = () => {
     setCurrentView('profile');
+    setSelectedInDesignCourse(null);
     setSelectedLessonId(null);
     setSelectedCaseId(null);
     setScrollToNodeId(null);
@@ -119,6 +110,7 @@ export const App: React.FC = () => {
 
   const handleBackToCourse = (targetNodeId?: string) => {
     setCurrentView('course');
+    setSelectedInDesignCourse(null);
     setSelectedLessonId(null);
     setSelectedCaseId(null);
     setScrollToNodeId(targetNodeId || null);
@@ -126,11 +118,21 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleBackToHomeWithScroll = (lastNodeId: string) => {
+  const handleBackToHomeWithScroll = (lastNodeId?: string) => {
+    setCurrentView('course');
+    setSelectedInDesignCourse(null);
+    setSelectedLessonId(null);
+    setSelectedCaseId(null);
+    setScrollToNodeId(lastNodeId || null);
+  };
+
+  const handleSelectInDesignCourse = (course: CourseTrack) => {
+    setSelectedInDesignCourse(course);
     setCurrentView('course');
     setSelectedLessonId(null);
     setSelectedCaseId(null);
-    setScrollToNodeId(lastNodeId);
+    setCustomActiveModuleName(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const lessonData = selectedLessonId ? getLessonById(selectedLessonId) : undefined;
@@ -141,12 +143,15 @@ export const App: React.FC = () => {
     activeModuleName = getLocalized(lessonData.module.title, language);
   } else if (currentView === 'caseExam' && caseData) {
     activeModuleName = getLocalized(caseData.module.title, language);
+  } else if (currentView === 'course' && selectedInDesignCourse) {
+    activeModuleName = selectedInDesignCourse.code;
   } else if (customActiveModuleName) {
     activeModuleName = customActiveModuleName;
   }
 
   const handleSelectTrack = (track: 'probability' | 'statistics') => {
     setSelectedTrack(track);
+    setSelectedInDesignCourse(null);
     setCustomActiveModuleName(null);
     setCurrentView('course');
     setSelectedLessonId(null);
@@ -169,17 +174,19 @@ export const App: React.FC = () => {
         {currentView === 'home' && (
           <HomePage
             onSelectTrack={handleSelectTrack}
-            onStartPlacementTest={handleStartPlacementTest}
+            onSelectInDesignCourse={handleSelectInDesignCourse}
           />
         )}
 
         {currentView === 'course' && (
           <CoursePage
             selectedTrack={selectedTrack}
+            inDesignCourse={selectedInDesignCourse}
             onSelectLesson={handleSelectLesson}
             onSelectCaseExam={handleSelectCaseExam}
             onBackToHome={handleBackToHome}
             scrollToNodeId={scrollToNodeId}
+            onStartPlacementTest={handleStartPlacementTest}
           />
         )}
 
@@ -210,7 +217,7 @@ export const App: React.FC = () => {
         )}
 
         {currentView === 'placementTest' && (
-          <PlacementTestPage onBackToHome={handleBackToHome} />
+          <PlacementTestPage onBackToHome={handleBackToHomeWithScroll} />
         )}
       </main>
     </div>
