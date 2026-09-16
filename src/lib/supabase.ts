@@ -126,7 +126,7 @@ export async function verifyEmailOtp(
 /**
  * Save / update user profile in Supabase profiles table
  */
-export async function saveUserProfileToSupabase(profile: UserProfile & { password?: string }): Promise<void> {
+export async function saveUserProfileToSupabase(profile: UserProfile & { password?: string; xp?: number; streak?: number; completedLessons?: number }): Promise<void> {
   if (!supabase || !isSupabaseConfigured) return;
 
   try {
@@ -144,6 +144,15 @@ export async function saveUserProfileToSupabase(profile: UserProfile & { passwor
     }
     if (profile.password) {
       payload.password = profile.password;
+    }
+    if (typeof profile.xp === 'number') {
+      payload.xp = profile.xp;
+    }
+    if (typeof profile.streak === 'number') {
+      payload.streak = profile.streak;
+    }
+    if (typeof profile.completedLessons === 'number') {
+      payload.completed_lessons = profile.completedLessons;
     }
 
     await supabase.from('profiles').upsert(
@@ -173,6 +182,26 @@ export async function fetchUserProfileFromSupabase(email: string): Promise<any |
   } catch (err) {
     console.warn('Supabase profile fetch error:', err);
     return null;
+  }
+}
+
+/**
+ * Fetch all registered profiles from Supabase profiles table for live leaderboard
+ */
+export async function fetchAllProfilesFromSupabase(): Promise<any[]> {
+  if (!supabase || !isSupabaseConfigured) return [];
+
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .order('xp', { ascending: false });
+
+    if (error || !data) return [];
+    return data;
+  } catch (err) {
+    console.warn('Supabase fetchAllProfiles error:', err);
+    return [];
   }
 }
 

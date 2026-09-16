@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { ALL_MODULES } from '../data/modules';
 import { PublicProfile } from '../types/stats';
-import { uploadAvatarImage, deleteUserAvatar } from '../lib/supabase';
+import { uploadAvatarImage, deleteUserAvatar, fetchAllProfilesFromSupabase, saveUserProfileToSupabase } from '../lib/supabase';
 import { AvatarCropModal } from '../components/AvatarCropModal';
 import {
   GraduationCap,
@@ -64,6 +64,44 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [cropTargetImage, setCropTargetImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [dbProfiles, setDbProfiles] = useState<PublicProfile[]>([]);
+  const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoadingProfiles(true);
+    fetchAllProfilesFromSupabase()
+      .then((profiles) => {
+        if (!isMounted) return;
+        if (Array.isArray(profiles) && profiles.length > 0) {
+          const mapped: PublicProfile[] = profiles.map((p, idx) => ({
+            id: p.id || `db-${idx}`,
+            fullName: p.full_name || 'Öğrenci',
+            schoolEmail: p.email || p.school_email || '',
+            university: p.university || 'Üniversite',
+            departmentAndClass: p.department_and_class || '',
+            avatarEmoji: p.avatar_emoji || '👨‍🎓',
+            avatarUrl: p.avatar_url || undefined,
+            xp: typeof p.xp === 'number' ? p.xp : 450,
+            streak: typeof p.streak === 'number' ? p.streak : 1,
+            rank: idx + 1,
+            level: Math.floor((typeof p.xp === 'number' ? p.xp : 450) / 100) + 1,
+            completedCount: typeof p.completed_lessons === 'number' ? p.completed_lessons : 0,
+            unlockedBadges: Array.isArray(p.unlocked_badges) ? p.unlocked_badges : ['badge-first-lesson'],
+          }));
+          setDbProfiles(mapped);
+        }
+      })
+      .catch((err) => {
+        console.warn('Failed to load profiles:', err);
+      })
+      .finally(() => {
+        if (isMounted) setIsLoadingProfiles(false);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [xp, userProfile?.avatarUrl]);
 
   const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -90,6 +128,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
       if (res.success && res.url) {
         updateUserProfile({ avatarUrl: res.url });
         setFormData((prev) => ({ ...prev, avatarUrl: res.url }));
+        if (userProfile?.schoolEmail) {
+          saveUserProfileToSupabase({
+            ...userProfile,
+            avatarUrl: res.url,
+            xp: xp || 450,
+            streak: streak || 1,
+            completedLessons: completedLessons.length + completedCaseExams.length,
+          });
+        }
       } else {
         alert(res.error || (language === 'tr' ? 'Fotoğraf yüklenemedi.' : 'Upload failed.'));
       }
@@ -101,6 +148,16 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     updateUserProfile({ ...formData, avatarUrl: userProfile?.avatarUrl });
+    if (userProfile?.schoolEmail) {
+      saveUserProfileToSupabase({
+        ...userProfile,
+        ...formData,
+        avatarUrl: userProfile?.avatarUrl,
+        xp: xp || 450,
+        streak: streak || 1,
+        completedLessons: completedLessons.length + completedCaseExams.length,
+      });
+    }
     setIsEditing(false);
   };
 
@@ -114,62 +171,64 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
   // Topic Success Rate (Calculated dynamically)
   const successRate = completedCount === 0 ? 0 : Math.min(100, Math.round(92 + (completedCount % 8)));
 
-  // Real Leaderboard Calculation
-  const sortedLeaderboard: PublicProfile[] = [...(registeredUsers || [])].sort((a, b) => b.xp - a.xp);
+  // Real Leaderboard Calculation (Strictly Real Data, No Mock Users)
+  const allProfilesMap = new Map<string, PublicProfile>();
+
+  // 1. Add Supabase database profiles
+  dbProfiles.forEach((p) => {
+    const key = (p.schoolEmail || p.id).toLowerCase();
+    if (key) allProfilesMap.set(key, p);
+  });
+
+  // 2. Add local store registered users if not present
+  (registeredUsers || []).forEach((p) => {
+    const key = (p.schoolEmail || p.id).toLowerCase();
+    if (key && !allProfilesMap.has(key)) {
+      allProfilesMap.set(key, p);
+    }
+  });
+
+  // 3. Ensure active current user is present and up-to-date
+  if (userProfile && (userProfile.schoolEmail || userProfile.fullName)) {
+    const currentEmail = (userProfile.schoolEmail || 'current_user').toLowerCase();
+    const existing = allProfilesMap.get(currentEmail);
+    allProfilesMap.set(currentEmail, {
+      id: existing?.id || userProfile.id || 'self',
+      fullName: userProfile.fullName || 'Öğrenci',
+      schoolEmail: userProfile.schoolEmail || '',
+      university: userProfile.university || 'Üniversite',
+      departmentAndClass: userProfile.departmentAndClass || '',
+      avatarEmoji: userProfile.avatarEmoji || '👨‍🎓',
+      avatarUrl: userProfile.avatarUrl || existing?.avatarUrl || undefined,
+      xp: xp ?? existing?.xp ?? 450,
+      streak: streak ?? existing?.streak ?? 1,
+      rank: 1,
+      level: Math.floor((xp || 450) / 100) + 1,
+      completedCount: completedLessons.length + completedCaseExams.length,
+      unlockedBadges: unlockedBadges && unlockedBadges.length > 0 ? unlockedBadges : ['badge-first-lesson'],
+    });
+  }
+
+  const sortedLeaderboard: PublicProfile[] = Array.from(allProfilesMap.values()).sort(
+    (a, b) => b.xp - a.xp
+  );
+
+  sortedLeaderboard.forEach((p, idx) => {
+    p.rank = idx + 1;
+  });
 
   // Current user's real rank in the full list of registered users
   const currentUserIdx = sortedLeaderboard.findIndex(
     (u) =>
-      u.schoolEmail === userProfile?.schoolEmail ||
+      (userProfile?.schoolEmail && u.schoolEmail?.toLowerCase() === userProfile.schoolEmail.toLowerCase()) ||
       u.fullName === userProfile?.fullName
   );
   const userRank = currentUserIdx >= 0 ? currentUserIdx + 1 : 1;
 
-  // Mock TOP_USERS if sortedLeaderboard is sparse
-  const TOP_USERS: PublicProfile[] = [
-    {
-      id: 'top-1',
-      fullName: sortedLeaderboard[0]?.fullName || 'Zeynep K.',
-      schoolEmail: sortedLeaderboard[0]?.schoolEmail || 'zeynep.k@itu.edu.tr',
-      university: sortedLeaderboard[0]?.university || 'İstanbul Teknik Üniversitesi',
-      departmentAndClass: sortedLeaderboard[0]?.departmentAndClass || 'Veri Bilimi ve Analitiği - 4. Sınıf',
-      avatarEmoji: sortedLeaderboard[0]?.avatarEmoji || '👦',
-      xp: sortedLeaderboard[0]?.xp || 755217,
-      streak: sortedLeaderboard[0]?.streak || 14,
-      rank: 1,
-      level: 75,
-      completedCount: sortedLeaderboard[0]?.completedCount || 18,
-      unlockedBadges: sortedLeaderboard[0]?.unlockedBadges || ['badge-first-lesson', 'badge-10-lessons', 'badge-first-case', 'badge-case-master'],
-    },
-    {
-      id: 'top-2',
-      fullName: sortedLeaderboard[1]?.fullName || 'Ahmet Y.',
-      schoolEmail: sortedLeaderboard[1]?.schoolEmail || 'ahmet.y@metu.edu.tr',
-      university: sortedLeaderboard[1]?.university || 'Orta Doğu Teknik Üniversitesi',
-      departmentAndClass: sortedLeaderboard[1]?.departmentAndClass || 'Bilgisayar Mühendisliği - 3. Sınıf',
-      avatarEmoji: sortedLeaderboard[1]?.avatarEmoji || '👦',
-      xp: sortedLeaderboard[1]?.xp || 363818,
-      streak: sortedLeaderboard[1]?.streak || 8,
-      rank: 2,
-      level: 36,
-      completedCount: sortedLeaderboard[1]?.completedCount || 14,
-      unlockedBadges: sortedLeaderboard[1]?.unlockedBadges || ['badge-first-lesson', 'badge-10-lessons', 'badge-first-case'],
-    },
-    {
-      id: 'top-3',
-      fullName: sortedLeaderboard[2]?.fullName || 'Elif D.',
-      schoolEmail: sortedLeaderboard[2]?.schoolEmail || 'elif.d@boun.edu.tr',
-      university: sortedLeaderboard[2]?.university || 'Boğaziçi Üniversitesi',
-      departmentAndClass: sortedLeaderboard[2]?.departmentAndClass || 'Endüstri Mühendisliği - 4. Sınıf',
-      avatarEmoji: sortedLeaderboard[2]?.avatarEmoji || '👩',
-      xp: sortedLeaderboard[2]?.xp || 128939,
-      streak: sortedLeaderboard[2]?.streak || 5,
-      rank: 3,
-      level: 13,
-      completedCount: sortedLeaderboard[2]?.completedCount || 10,
-      unlockedBadges: sortedLeaderboard[2]?.unlockedBadges || ['badge-first-lesson', 'badge-10-lessons'],
-    },
-  ];
+  // Real Top 3 users (No mock data)
+  const user1 = sortedLeaderboard[0] || null;
+  const user2 = sortedLeaderboard[1] || null;
+  const user3 = sortedLeaderboard[2] || null;
 
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans space-y-6 animate-fade-in">
@@ -412,25 +471,54 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
               <div className="flex items-end justify-center gap-2 sm:gap-4 pt-3 pb-1">
                 {/* 2nd Place */}
                 <div className="flex flex-col items-center flex-1 max-w-[100px]">
-                  <div className="relative mb-2 flex flex-col items-center group cursor-pointer" onClick={() => setSelectedPublicProfile(TOP_USERS[1])}>
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-slate-300 bg-slate-800 flex items-center justify-center text-xl shadow-md overflow-hidden group-hover:scale-110 transition-transform ring-2 ring-slate-400/50">
-                      <span className="text-2xl">{TOP_USERS[1].avatarEmoji}</span>
-                    </div>
-                    <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-900 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
-                      2
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setSelectedPublicProfile(TOP_USERS[1])}
-                    className="text-[11px] font-extrabold text-slate-200 truncate max-w-full text-center hover:text-amber-300 flex items-center space-x-1"
-                  >
-                    <span>{TOP_USERS[1].fullName}</span>
-                    <ExternalLink className="w-2.5 h-2.5 opacity-70" />
-                  </button>
-                  <div className="flex items-center space-x-1 text-slate-300 text-[10px] font-black my-1">
-                    <span className="text-cyan-400 font-serif">◆</span>
-                    <span>{TOP_USERS[1].xp.toLocaleString('tr-TR')}</span>
-                  </div>
+                  {user2 ? (
+                    <>
+                      <div
+                        className="relative mb-2 flex flex-col items-center group cursor-pointer"
+                        onClick={() => setSelectedPublicProfile(user2)}
+                      >
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-slate-300 bg-slate-800 flex items-center justify-center text-xl shadow-md overflow-hidden group-hover:scale-110 transition-transform ring-2 ring-slate-400/50">
+                          {user2.avatarUrl ? (
+                            <img src={user2.avatarUrl} alt={user2.fullName} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-2xl">{user2.avatarEmoji || '👨‍🎓'}</span>
+                          )}
+                        </div>
+                        <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-900 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
+                          2
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setSelectedPublicProfile(user2)}
+                        className="text-[11px] font-extrabold text-slate-200 truncate max-w-full text-center hover:text-amber-300 flex items-center justify-center space-x-1"
+                        title={user2.fullName}
+                      >
+                        <span className="truncate">{user2.fullName}</span>
+                        <ExternalLink className="w-2.5 h-2.5 opacity-70 shrink-0" />
+                      </button>
+                      <div className="flex items-center space-x-1 text-slate-300 text-[10px] font-black my-1">
+                        <span className="text-cyan-400 font-serif">◆</span>
+                        <span>{user2.xp.toLocaleString('tr-TR')}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="relative mb-2 flex flex-col items-center">
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-dashed border-slate-600/70 bg-slate-900/60 flex items-center justify-center text-slate-500 shadow-md">
+                          <span className="text-xs font-black text-slate-500">2</span>
+                        </div>
+                        <div className="w-5 h-5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-slate-600 z-10">
+                          2
+                        </div>
+                      </div>
+                      <span className="text-[10.5px] font-extrabold text-slate-400 truncate max-w-full text-center">
+                        {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
+                      </span>
+                      <div className="flex items-center space-x-1 text-slate-500 text-[9.5px] font-bold my-1">
+                        <span>{language === 'tr' ? 'Sıradaki Sen Ol' : 'Next is You'}</span>
+                      </div>
+                    </>
+                  )}
                   <div className="w-full h-16 bg-slate-800/90 rounded-t-2xl border-t-2 border-slate-400/60 shadow-inner flex items-center justify-center">
                     <span className="text-xs font-black text-slate-400">2.</span>
                   </div>
@@ -438,25 +526,54 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
 
                 {/* 1st Place */}
                 <div className="flex flex-col items-center flex-1 max-w-[110px]">
-                  <div className="relative mb-2 flex flex-col items-center group cursor-pointer" onClick={() => setSelectedPublicProfile(TOP_USERS[0])}>
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-amber-400 bg-slate-800 flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.6)] overflow-hidden group-hover:scale-110 transition-transform">
-                      <span className="text-3xl">{TOP_USERS[0].avatarEmoji}</span>
-                    </div>
-                    <div className="w-6 h-6 rounded-full bg-amber-400 text-slate-950 text-xs font-black flex items-center justify-center shadow-md -mt-3 border border-white z-10">
-                      1
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setSelectedPublicProfile(TOP_USERS[0])}
-                    className="text-xs font-black text-amber-300 truncate max-w-full text-center hover:underline flex items-center space-x-1"
-                  >
-                    <span>{TOP_USERS[0].fullName}</span>
-                    <ExternalLink className="w-3 h-3 text-amber-400" />
-                  </button>
-                  <div className="flex items-center space-x-1 text-amber-400 text-xs font-black my-1">
-                    <span className="text-cyan-400 font-serif">◆</span>
-                    <span>{TOP_USERS[0].xp.toLocaleString('tr-TR')}</span>
-                  </div>
+                  {user1 ? (
+                    <>
+                      <div
+                        className="relative mb-2 flex flex-col items-center group cursor-pointer"
+                        onClick={() => setSelectedPublicProfile(user1)}
+                      >
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-amber-400 bg-slate-800 flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.6)] overflow-hidden group-hover:scale-110 transition-transform">
+                          {user1.avatarUrl ? (
+                            <img src={user1.avatarUrl} alt={user1.fullName} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-3xl">{user1.avatarEmoji || '👨‍🎓'}</span>
+                          )}
+                        </div>
+                        <div className="w-6 h-6 rounded-full bg-amber-400 text-slate-950 text-xs font-black flex items-center justify-center shadow-md -mt-3 border border-white z-10">
+                          1
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setSelectedPublicProfile(user1)}
+                        className="text-xs font-black text-amber-300 truncate max-w-full text-center hover:underline flex items-center justify-center space-x-1"
+                        title={user1.fullName}
+                      >
+                        <span className="truncate">{user1.fullName}</span>
+                        <ExternalLink className="w-3 h-3 text-amber-400 shrink-0" />
+                      </button>
+                      <div className="flex items-center space-x-1 text-amber-400 text-xs font-black my-1">
+                        <span className="text-cyan-400 font-serif">◆</span>
+                        <span>{user1.xp.toLocaleString('tr-TR')}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="relative mb-2 flex flex-col items-center">
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-dashed border-amber-500/50 bg-slate-900/60 flex items-center justify-center text-amber-500 shadow-md">
+                          <span className="text-sm font-black text-amber-500/70">1</span>
+                        </div>
+                        <div className="w-6 h-6 rounded-full bg-amber-500/30 text-amber-300 text-xs font-black flex items-center justify-center shadow-md -mt-3 border border-amber-500/60 z-10">
+                          1
+                        </div>
+                      </div>
+                      <span className="text-xs font-black text-amber-300/80 truncate max-w-full text-center">
+                        {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
+                      </span>
+                      <div className="flex items-center space-x-1 text-amber-400/60 text-[10px] font-bold my-1">
+                        <span>{language === 'tr' ? 'Sıradaki Sen Ol' : 'Next is You'}</span>
+                      </div>
+                    </>
+                  )}
                   <div className="w-full h-24 bg-gradient-to-b from-amber-500/40 via-amber-900/50 to-slate-900 rounded-t-2xl border-t-2 border-amber-400 shadow-inner flex items-center justify-center">
                     <Crown className="w-5 h-5 text-amber-400 animate-pulse" />
                   </div>
@@ -464,25 +581,54 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
 
                 {/* 3rd Place */}
                 <div className="flex flex-col items-center flex-1 max-w-[100px]">
-                  <div className="relative mb-2 flex flex-col items-center group cursor-pointer" onClick={() => setSelectedPublicProfile(TOP_USERS[2])}>
-                    <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-amber-700 bg-slate-800 flex items-center justify-center text-lg shadow-md overflow-hidden group-hover:scale-110 transition-transform ring-2 ring-amber-700/50">
-                      <span className="text-xl">{TOP_USERS[2].avatarEmoji}</span>
-                    </div>
-                    <div className="w-5 h-5 rounded-full bg-amber-700 text-amber-100 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
-                      3
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setSelectedPublicProfile(TOP_USERS[2])}
-                    className="text-[11px] font-extrabold text-amber-200/90 truncate max-w-full text-center hover:text-amber-300 flex items-center space-x-1"
-                  >
-                    <span>{TOP_USERS[2].fullName}</span>
-                    <ExternalLink className="w-2.5 h-2.5 opacity-70" />
-                  </button>
-                  <div className="flex items-center space-x-1 text-amber-500 text-[10px] font-black my-1">
-                    <span className="text-cyan-400 font-serif">◆</span>
-                    <span>{TOP_USERS[2].xp.toLocaleString('tr-TR')}</span>
-                  </div>
+                  {user3 ? (
+                    <>
+                      <div
+                        className="relative mb-2 flex flex-col items-center group cursor-pointer"
+                        onClick={() => setSelectedPublicProfile(user3)}
+                      >
+                        <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-amber-700 bg-slate-800 flex items-center justify-center text-lg shadow-md overflow-hidden group-hover:scale-110 transition-transform ring-2 ring-amber-700/50">
+                          {user3.avatarUrl ? (
+                            <img src={user3.avatarUrl} alt={user3.fullName} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-xl">{user3.avatarEmoji || '👨‍🎓'}</span>
+                          )}
+                        </div>
+                        <div className="w-5 h-5 rounded-full bg-amber-700 text-amber-100 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
+                          3
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setSelectedPublicProfile(user3)}
+                        className="text-[11px] font-extrabold text-amber-200/90 truncate max-w-full text-center hover:text-amber-300 flex items-center justify-center space-x-1"
+                        title={user3.fullName}
+                      >
+                        <span className="truncate">{user3.fullName}</span>
+                        <ExternalLink className="w-2.5 h-2.5 opacity-70 shrink-0" />
+                      </button>
+                      <div className="flex items-center space-x-1 text-amber-500 text-[10px] font-black my-1">
+                        <span className="text-cyan-400 font-serif">◆</span>
+                        <span>{user3.xp.toLocaleString('tr-TR')}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="relative mb-2 flex flex-col items-center">
+                        <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-dashed border-amber-900/60 bg-slate-900/60 flex items-center justify-center text-amber-700/60 shadow-md">
+                          <span className="text-xs font-black text-amber-700/70">3</span>
+                        </div>
+                        <div className="w-5 h-5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-slate-600 z-10">
+                          3
+                        </div>
+                      </div>
+                      <span className="text-[10.5px] font-extrabold text-slate-400 truncate max-w-full text-center">
+                        {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
+                      </span>
+                      <div className="flex items-center space-x-1 text-slate-500 text-[9.5px] font-bold my-1">
+                        <span>{language === 'tr' ? 'Sıradaki Sen Ol' : 'Next is You'}</span>
+                      </div>
+                    </>
+                  )}
                   <div className="w-full h-12 bg-amber-950/50 rounded-t-2xl border-t-2 border-amber-700/80 shadow-inner flex items-center justify-center">
                     <span className="text-xs font-black text-amber-700">3.</span>
                   </div>
@@ -499,6 +645,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                     university: userProfile?.university || 'Marmara Üniversitesi',
                     departmentAndClass: userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
                     avatarEmoji: userProfile?.avatarEmoji || '👨‍🎓',
+                    avatarUrl: userProfile?.avatarUrl,
                     xp: xp || 450,
                     streak: streak || 3,
                     rank: userRank,
@@ -513,15 +660,22 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                   <div className="px-2 py-0.5 rounded-lg bg-[#ff7a00] text-white font-black text-xs shadow-xs shrink-0">
                     {userRank}.
                   </div>
-                  <div className="w-7 h-7 rounded-lg bg-[#ff7a00] text-white font-extrabold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                    {userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'Ö')}
+                  <div className="w-7 h-7 rounded-lg bg-[#ff7a00] text-white font-extrabold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden">
+                    {userProfile?.avatarUrl ? (
+                      <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'Ö')
+                    )}
                   </div>
                   <div className="min-w-0">
                     <span className="text-xs font-black text-white truncate block">
-                      {userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')} <span className="text-[10px] font-extrabold text-amber-300">(Siz)</span>
+                      {userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')}{' '}
+                      <span className="text-[10px] font-extrabold text-amber-300">(Siz)</span>
                     </span>
                     <span className="text-[9.5px] font-medium text-slate-300 block">
-                      {language === 'tr' ? 'Öğrenciler Arasında' : 'Among Students'}
+                      {language === 'tr'
+                        ? `${sortedLeaderboard.length} Kayıtlı Öğrenci Arasında`
+                        : `Among ${sortedLeaderboard.length} Registered Students`}
                     </span>
                   </div>
                 </div>
@@ -531,6 +685,38 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                   <span>{(xp || 450).toLocaleString('tr-TR')} XP</span>
                 </div>
               </div>
+
+              {/* Additional Registered Users (Rank 4+) */}
+              {sortedLeaderboard.length > 3 && (
+                <div className="mt-3 pt-2.5 border-t border-slate-800 space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                  {sortedLeaderboard.slice(3).map((user) => (
+                    <div
+                      key={user.id}
+                      onClick={() => setSelectedPublicProfile(user)}
+                      className="flex items-center justify-between p-2 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 text-white cursor-pointer transition-colors"
+                    >
+                      <div className="flex items-center space-x-2.5 min-w-0">
+                        <span className="text-xs font-black text-slate-400 w-5 text-center">{user.rank}.</span>
+                        <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center overflow-hidden shrink-0">
+                          {user.avatarUrl ? (
+                            <img src={user.avatarUrl} alt={user.fullName} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-xs">{user.avatarEmoji || '👨‍🎓'}</span>
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <span className="text-xs font-bold text-slate-200 truncate block">{user.fullName}</span>
+                          <span className="text-[10px] text-slate-400 truncate block">{user.university}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-1 text-amber-400 text-xs font-black shrink-0">
+                        <span className="text-cyan-400 font-serif">◆</span>
+                        <span>{user.xp.toLocaleString('tr-TR')}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
