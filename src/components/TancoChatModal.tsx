@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
 import { formatStudentGreetingName } from '../utils/localization';
@@ -133,8 +133,8 @@ export const TancoChatModal: React.FC = () => {
     sender: 'tanco',
     text:
       language === 'tr'
-        ? `Selam ${studentName}! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nOlasılık (ENGR 200), İstatistik (INDR 252), Yöneylem Araştırması, Optimizasyon, Stokastik Modeller veya ders çalışma planınla ilgili aklına takılan her şeyi bana sorabilirsin. Nasıl yardımcı olabilirim?`
-        : `Hi ${studentName}! I'm Tanco, your Industrial Engineering TA 🎓\n\nFeel free to ask me anything about Probability (ENGR 200), Applied Statistics (INDR 252), Operations Research, Optimization, Stochastic Models, or your study schedule. How can I help you today?`,
+        ? `Selam ${studentName}! Ben Tanco 🤖\n\nKafana takılan konuları, formülleri ya da çözemediğin soruları bana direkt sorabilirsin. Birlikte hallederiz! Nasıl yardımcı olayım?`
+        : `Hey ${studentName}! I'm Tanco 🤖\n\nGot stuck on a formula, concept, or tricky problem? Just ask me anything, we'll solve it together! How can I help you today?`,
     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
   };
 
@@ -269,9 +269,6 @@ export const TancoChatModal: React.FC = () => {
                   Tanco
                   <Sparkles className="w-3.5 h-3.5 text-[#ff7a00] inline-block animate-pulse" />
                 </h3>
-                <span className="px-1.5 py-0.5 rounded-full bg-[#ff7a00]/25 text-[#ff7a00] font-mono text-[9.5px] font-black uppercase tracking-wider border border-[#ff7a00]/40">
-                  AI TA
-                </span>
               </div>
               <p className="text-[10.5px] sm:text-[11.5px] text-slate-300 font-medium truncate mt-0.5">
                 {language === 'tr' ? 'Endüstri Mühendisliği Asistanı • Çevrimiçi' : 'Industrial Engineering TA • Online'}
