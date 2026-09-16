@@ -593,6 +593,19 @@ export const useAppStore = create<UserState & AppStoreActions>()(
     }),
     {
       name: 'tancorelab-statsim-v5',
+      onRehydrateStorage: () => (state) => {
+        if (state && state.userProfile) {
+          if (state.userProfile.schoolEmail === 'rtankilic22@ku.edu.tr' && !state.userProfile.fullName) {
+            state.userProfile.fullName = 'Resul Tankılıç';
+          }
+          const acc = state.userAccounts?.find(
+            (a) => a.schoolEmail.toLowerCase() === state.userProfile.schoolEmail?.toLowerCase()
+          );
+          if (acc && acc.fullName && !state.userProfile.fullName) {
+            state.userProfile.fullName = acc.fullName;
+          }
+        }
+      },
     }
   )
 );

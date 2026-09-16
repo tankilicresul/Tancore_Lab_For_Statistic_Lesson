@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { XpStreakBar } from './components/XpStreakBar';
 import { AuthLandingScreen } from './components/AuthLandingScreen';
 import { HomePage } from './pages/HomePage';
@@ -10,15 +10,38 @@ import { PlacementTestPage } from './pages/PlacementTestPage';
 import { getLessonById, getCaseExamById, getModuleById } from './data/modules';
 import { useAppStore } from './store/useAppStore';
 import { getLocalized } from './utils/localization';
+import { fetchUserProfileFromSupabase } from './lib/supabase';
 
 export const App: React.FC = () => {
-  const { language, isAuthenticated, isVerified } = useAppStore();
+  const { language, isAuthenticated, isVerified, userProfile, updateUserProfile } = useAppStore();
   const [currentView, setCurrentView] = useState<'home' | 'course' | 'profile' | 'lesson' | 'caseExam' | 'placementTest'>('home');
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
   const [customActiveModuleName, setCustomActiveModuleName] = useState<string | null>(null);
   const [selectedTrack, setSelectedTrack] = useState<'probability' | 'statistics'>('probability');
+
+  // Automatically sync profile details from Supabase cloud so registered name is always present
+  useEffect(() => {
+    const email = userProfile?.schoolEmail;
+    if (!email) return;
+
+    fetchUserProfileFromSupabase(email)
+      .then((remoteProfile) => {
+        if (remoteProfile && remoteProfile.full_name) {
+          updateUserProfile({
+            fullName: remoteProfile.full_name,
+            university: remoteProfile.university || userProfile.university,
+            departmentAndClass: remoteProfile.department_and_class || userProfile.departmentAndClass,
+            avatarEmoji: remoteProfile.avatar_emoji || userProfile.avatarEmoji,
+            avatarUrl: remoteProfile.avatar_url || userProfile.avatarUrl,
+          });
+        }
+      })
+      .catch((err) => {
+        console.warn('Profile sync error:', err);
+      });
+  }, [userProfile?.schoolEmail]);
 
   // If user is not authenticated or not verified, display full-screen Auth Onboarding Screen
   if (!isAuthenticated || !isVerified) {
