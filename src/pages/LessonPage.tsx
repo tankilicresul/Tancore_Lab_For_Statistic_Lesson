@@ -137,27 +137,26 @@ export const LessonPage: React.FC<LessonPageProps> = ({
 
         {/* Tanco Mascot Speech Card */}
         <div className="mb-6 p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-orange-50/80 via-white to-amber-50/50 border border-[#ff7a00]/30 shadow-md relative overflow-hidden">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+          <div className="flex items-center gap-3.5 sm:gap-4 mb-3.5">
             <button
               onClick={() => setIsTancoChatOpen(true)}
               className="relative shrink-0 cursor-pointer group focus:outline-none"
               title={language === 'tr' ? "Tanco ile Sohbet Et" : "Chat with Tanco"}
             >
-              <TanCoreMascotAvatar size="lg" className="shadow-lg shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform" />
-              <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center border-2 border-white shadow-xs">
+              <TanCoreMascotAvatar size="md" className="shadow-md shadow-[#ff7a00]/25 group-hover:scale-105 transition-transform" />
+              <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center border-2 border-white shadow-xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
               </div>
             </button>
 
-            <div className="flex-1 min-w-0">
-              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] text-[11px] font-black uppercase tracking-wider mb-2">
-                <span>🤖 {language === 'tr' ? 'Tanco Rehberin Konuşuyor' : 'Guide Tanco Speaking'}</span>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">
-                {lesson.tancoSpeech ? getLocalized(lesson.tancoSpeech, language) : getLocalized(lesson.conceptCard, language)}
-              </p>
+            <div className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] text-[11px] sm:text-xs font-black uppercase tracking-wider border border-[#ff7a00]/20">
+              <span>🤖 {language === 'tr' ? 'Tanco Rehberin Konuşuyor' : 'Guide Tanco Speaking'}</span>
             </div>
           </div>
+
+          <p className="text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">
+            {lesson.tancoSpeech ? getLocalized(lesson.tancoSpeech, language) : getLocalized(lesson.conceptCard, language)}
+          </p>
         </div>
 
         {/* Tanco Assistant Floating Reminder Card */}
