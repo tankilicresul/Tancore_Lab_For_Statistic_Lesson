@@ -1,6 +1,7 @@
-/**
+﻿/**
  * Tanco AI Service
- * Connects Tanco to Google Gemini (or Groq/OpenAI compatible) LLMs for real-time pedagogical Industrial Engineering assistance.
+ * Connects Tanco to Google Gemini LLMs via secure serverless proxy (/api/tanco-chat) or direct fallback.
+ * Supports text, chat memory, and multimodal image question solving.
  */
 
 import { ALL_MODULES } from '../data/modules';
@@ -29,18 +30,18 @@ const CURRICULUM_SUMMARY = buildCurriculumContext();
 
 function getSystemPrompt(language: 'tr' | 'en', studentName: string = 'Öğrenci'): string {
   return `
-Sen TanCoreLab platformunun samimi, akıllı, yardımsever ve pedagojik öğretim asistanı "Tanco"sun 🎓.
+Sen TanCoreLab platformunun samimi, akıllı, yardımsever ve pedagojik yapay zeka öğretim asistanı "Tanco"sun 🎓.
 Şu anda sohbet ettiğin öğrencinin adı: "${studentName}".
 
 =======================================================
 💬 İLETİŞİM VE KONUŞMA TARZI:
 =======================================================
 - Son derece doğal, akıcı, zeki ve samimi bir insan gibi konuş.
-- Robotik kalıplar, yapmacık övgüler veya "ben şu modülleri biliyorum" gibi ezber kendini övme cümleleri KESİNLİKLE KURMA.
+- Robotik kalıplar ve yapmacık kendini övme cümleleri KESİNLİKLE KURMA.
 - Kullanıcı ne söylediyse veya ne sorduysa onu tam olarak anla ve doğrudan, mantıklı ve net bir şekilde cevap ver.
-- Kullanıcı sadece "selam", "merhaba", "naber" gibi bir selamlama yazarsa, sadece doğal ve sıcak bir şekilde karşılık ver:
-  Örnek: "Selam ${studentName}! Nasıl yardımcı olabilirim?" veya "Merhaba ${studentName}! Nasıl gidiyor, neye bakalım?"
-- Kullanıcı bir soru sorduğunda lafı uzatmadan doğrudan sorunun çözümüne, formülüne ve mantığına odaklan.
+- Kullanıcı sadece "selam", "merhaba", "naber" gibi bir selamlama yazarsa, sadece doğal ve sıcak bir şekilde karşılık ver.
+- Eğer öğrenci bir soru görseli (fotoğraf, grafik, sınav sorusu vb.) yüklediyse: Görseldeki matematiksel problemi veya grafiği dikkatle incele, formülleri çıkar ve adım adım net bir çözüm sun.
+- Kullanıcı bir soru sorduğunda doğrudan sorunun çözümüne, formülüne ve mantığına odaklan.
 
 =======================================================
 📚 TANCORELAB MÜFREDAT BİLGİSİ (ARKA PLAN REFERANSI):
@@ -71,21 +72,51 @@ export async function askTancoAI(
   userPrompt: string,
   history: ChatMessageHistoryItem[] = [],
   language: 'tr' | 'en' = 'tr',
-  studentName: string = 'Öğrenci'
+  studentName: string = 'Öğrenci',
+  imageBase64?: string,
+  imageMimeType?: string
 ): Promise<string> {
-  const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
-  const groqApiKey = import.meta.env.VITE_GROQ_API_KEY;
+  // 1. Try secure Serverless Function first (/api/tanco-chat)
+  try {
+    const serverlessRes = await fetch('/api/tanco-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: userPrompt,
+        history,
+        language,
+        studentName,
+        imageBase64,
+        imageMimeType,
+      }),
+    });
 
-  // 1. If Gemini API Key is available
+    if (serverlessRes.ok) {
+      const data = await serverlessRes.json();
+      if (data?.text) {
+        return data.text;
+      }
+    } else if (serverlessRes.status === 429) {
+      return language === 'tr'
+        ? '⏳ Çok hızlı soru gönderiyorsun! Lütfen birkaç saniye bekleyip tekrar dene.'
+        : '⏳ Please slow down! Wait a few seconds before asking again.';
+    }
+  } catch (err) {
+    // Serverless endpoint may not be running in local standalone Vite dev mode, continue to direct client fallback
+  }
+
+  // 2. Direct Gemini fallback for local development
+  const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (geminiApiKey && geminiApiKey.trim() && !geminiApiKey.includes('BURAYA') && !geminiApiKey.includes('YOUR_')) {
     try {
-      return await callGemini(geminiApiKey.trim(), userPrompt, history, language, studentName);
+      return await callGemini(geminiApiKey.trim(), userPrompt, history, language, studentName, imageBase64, imageMimeType);
     } catch (err: any) {
-      console.warn('Gemini API call failed, attempting fallback or error message:', err);
+      console.warn('Gemini client call failed, attempting Groq or fallback:', err);
     }
   }
 
-  // 2. If Groq API Key is available
+  // 3. Direct Groq fallback if configured
+  const groqApiKey = import.meta.env.VITE_GROQ_API_KEY;
   if (groqApiKey && groqApiKey.trim() && !groqApiKey.includes('BURAYA') && !groqApiKey.includes('YOUR_')) {
     try {
       return await callGroq(groqApiKey.trim(), userPrompt, history, language, studentName);
@@ -94,19 +125,21 @@ export async function askTancoAI(
     }
   }
 
-  // 3. Fallback response if no valid key is configured
+  // 4. Offline / No key fallback
   return getNoKeyFallback(userPrompt, language, studentName);
 }
 
 /**
- * Call Google Gemini API (gemini-2.5-flash / gemini-3.6-flash)
+ * Call Google Gemini API (gemini-3.6-flash / gemini-2.5-flash) with text + multimodal image support
  */
 async function callGemini(
   apiKey: string,
   prompt: string,
   history: ChatMessageHistoryItem[],
   language: 'tr' | 'en',
-  studentName: string
+  studentName: string,
+  imageBase64?: string,
+  imageMimeType?: string
 ): Promise<string> {
   const models = ['gemini-3.6-flash', 'gemini-2.5-flash'];
   let lastError: any = null;
@@ -144,10 +177,27 @@ async function callGemini(
         });
       }
 
-      // Append current prompt
+      // Build current message parts
+      const currentParts: any[] = [];
+      if (imageBase64) {
+        const cleanBase64 = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+        currentParts.push({
+          inlineData: {
+            data: cleanBase64,
+            mimeType: imageMimeType || 'image/jpeg',
+          },
+        });
+      }
+
+      if (prompt) {
+        currentParts.push({ text: prompt });
+      } else if (imageBase64) {
+        currentParts.push({ text: 'Bu görseldeki soruyu inceleyip adım adım çözebilir misin?' });
+      }
+
       contents.push({
         role: 'user',
-        parts: [{ text: prompt }],
+        parts: currentParts,
       });
 
       const response = await fetch(endpoint, {
@@ -160,7 +210,7 @@ async function callGemini(
           generationConfig: {
             temperature: 0.7,
             topP: 0.95,
-            maxOutputTokens: 1200,
+            maxOutputTokens: 1500,
           },
         }),
       });
@@ -254,7 +304,7 @@ function getNoKeyFallback(question: string, language: 'tr' | 'en', studentName: 
   if (q.includes('bayes') || q.includes('koşullu') || q.includes('conditional')) {
     return language === 'tr'
       ? `🎯 **Bayes Teoremi:**\n\n$$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$$\n\nB olayı gerçekleştiğinde A'nın gerçekleşme olasılığını hesaplar. Kalite kontrol ve arıza tespitinde sıkça kullanılır.`
-      : `🎯 **Bayes' Theorem:**\n\n$$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$$`;
+      : `🎯 **Bayes' Theorem:**\n\n$$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$$$`;
   }
 
   return language === 'tr'

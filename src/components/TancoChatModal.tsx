@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
 import { formatStudentGreetingName } from '../utils/localization';
@@ -14,15 +14,17 @@ import {
   Send,
   Camera,
   Mic,
+  MicOff,
   Trash2,
-  Info,
   Sparkles,
+  Image as ImageIcon,
 } from 'lucide-react';
 
 interface ChatMessage {
   id: string;
   sender: 'tanco' | 'student';
   text: string;
+  imageUrl?: string;
   timestamp: string;
 }
 
@@ -123,18 +125,23 @@ export const TancoChatModal: React.FC = () => {
 
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [showMediaNotice, setShowMediaNotice] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<{ base64: string; mimeType: string } | null>(null);
+  const [isListening, setIsListening] = useState(false);
+  const [lastSentTime, setLastSentTime] = useState<number>(0);
 
   const studentName = formatStudentGreetingName(userProfile?.fullName, language === 'tr' ? 'Öğrenci' : 'Student');
   const userIdentifier = userProfile?.schoolEmail || userProfile?.id || 'guest_user';
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const speechRecognitionRef = useRef<any>(null);
 
   const initialGreeting: ChatMessage = {
     id: 'welcome-1',
     sender: 'tanco',
     text:
       language === 'tr'
-        ? `Selam ${studentName}! Ben Tanco 🤖\n\nKafana takılan konuları, formülleri ya da çözemediğin soruları bana direkt sorabilirsin. Birlikte hallederiz! Nasıl yardımcı olayım?`
-        : `Hey ${studentName}! I'm Tanco 🤖\n\nGot stuck on a formula, concept, or tricky problem? Just ask me anything, we'll solve it together! How can I help you today?`,
+        ? `Selam ${studentName}! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nOlasılık (ENGR 200), İstatistik (INDR 252), Yöneylem Araştırması veya optimizasyonla ilgili aklına takılan her şeyi bana sorabilirsin. İstersen fotoğraf yükleyerek soru da sorabilirsin!`
+        : `Hi ${studentName}! I'm Tanco, your Industrial Engineering TA 🎓\n\nFeel free to ask me anything about Probability, Applied Statistics, Operations Research, or upload problem photos for instant analysis!`,
     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
   };
 
@@ -172,26 +179,107 @@ export const TancoChatModal: React.FC = () => {
     }
   }, [messages, isTancoChatOpen, isTyping]);
 
+  // Handle Speech-to-Text Setup
+  useEffect(() => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = language === 'tr' ? 'tr-TR' : 'en-US';
+
+      recognition.onresult = (event: any) => {
+        const transcript = event.results?.[0]?.[0]?.transcript;
+        if (transcript) {
+          setInputMessage((prev) => (prev ? `${prev} ${transcript}` : transcript));
+        }
+        setIsListening(false);
+      };
+
+      recognition.onerror = () => {
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      speechRecognitionRef.current = recognition;
+    }
+  }, [language]);
+
+  const toggleVoiceInput = () => {
+    if (!speechRecognitionRef.current) {
+      alert(language === 'tr' ? 'Tarayıcınız sesli girişi desteklemiyor.' : 'Your browser does not support voice input.');
+      return;
+    }
+
+    if (isListening) {
+      speechRecognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      try {
+        speechRecognitionRef.current.start();
+        setIsListening(true);
+      } catch (e) {
+        console.warn('Speech recognition start error:', e);
+      }
+    }
+  };
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert(language === 'tr' ? 'Lütfen geçerli bir görsel seçin.' : 'Please select a valid image.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setSelectedImage({
+        base64: reader.result as string,
+        mimeType: file.type,
+      });
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
   if (!isTancoChatOpen) return null;
 
   const handleSendMessage = async (textToSend?: string) => {
     const query = (textToSend || inputMessage).trim();
-    if (!query || isTyping) return;
+    const currentImage = selectedImage;
+
+    if ((!query && !currentImage) || isTyping) return;
+
+    // 3-second Anti-Spam Rate Limit Cooldown
+    const now = Date.now();
+    if (now - lastSentTime < 2500) {
+      return;
+    }
+    setLastSentTime(now);
 
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
       sender: 'student',
-      text: query,
+      text: query || (language === 'tr' ? '📸 Soru Görseli' : '📸 Problem Image'),
+      imageUrl: currentImage?.base64,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
     setMessages((prev) => [...prev, userMsg]);
     setInputMessage('');
+    setSelectedImage(null);
     setIsTyping(true);
 
     // Save student message to Supabase cloud sync
     if (userProfile?.schoolEmail || userProfile?.id) {
-      saveTancoChatMessageToSupabase(userIdentifier, userProfile?.schoolEmail, 'student', query);
+      saveTancoChatMessageToSupabase(userIdentifier, userProfile?.schoolEmail, 'student', query || '[Görsel Soru]');
     }
 
     try {
@@ -203,7 +291,14 @@ export const TancoChatModal: React.FC = () => {
           content: m.text,
         }));
 
-      const reply = await askTancoAI(query, history, language as 'tr' | 'en', studentName);
+      const reply = await askTancoAI(
+        query,
+        history,
+        language as 'tr' | 'en',
+        studentName,
+        currentImage?.base64,
+        currentImage?.mimeType
+      );
 
       const tancoMsg: ChatMessage = {
         id: `tanco-${Date.now()}`,
@@ -237,6 +332,7 @@ export const TancoChatModal: React.FC = () => {
 
   const handleClearChat = async () => {
     setMessages([initialGreeting]);
+    setSelectedImage(null);
     if (userProfile?.schoolEmail || userProfile?.id) {
       await clearTancoChatsInSupabase(userIdentifier);
     }
@@ -269,6 +365,9 @@ export const TancoChatModal: React.FC = () => {
                   Tanco
                   <Sparkles className="w-3.5 h-3.5 text-[#ff7a00] inline-block animate-pulse" />
                 </h3>
+                <span className="px-1.5 py-0.5 rounded-full bg-[#ff7a00]/25 text-[#ff7a00] font-mono text-[9.5px] font-black uppercase tracking-wider border border-[#ff7a00]/40">
+                  AI TA
+                </span>
               </div>
               <p className="text-[10.5px] sm:text-[11.5px] text-slate-300 font-medium truncate mt-0.5">
                 {language === 'tr' ? 'Endüstri Mühendisliği Asistanı • Çevrimiçi' : 'Industrial Engineering TA • Online'}
@@ -293,22 +392,6 @@ export const TancoChatModal: React.FC = () => {
             </button>
           </div>
         </div>
-
-        {/* Media Roadmap Notice Banner (if triggered) */}
-        {showMediaNotice && (
-          <div className="bg-amber-50 border-b border-amber-200/80 px-3.5 py-2 text-[11px] text-amber-900 font-medium flex items-center justify-between animate-fade-in shrink-0">
-            <div className="flex items-center space-x-1.5 min-w-0">
-              <Info className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>{showMediaNotice}</span>
-            </div>
-            <button
-              onClick={() => setShowMediaNotice(null)}
-              className="text-amber-700 hover:text-amber-900 font-black text-xs ml-2 cursor-pointer"
-            >
-              ✕
-            </button>
-          </div>
-        )}
 
         {/* Messages Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-slate-50/70">
@@ -335,6 +418,13 @@ export const TancoChatModal: React.FC = () => {
                       : 'bg-[#ff7a00] text-white rounded-br-xs font-medium'
                   }`}
                 >
+                  {/* Render Image Thumbnail if attached */}
+                  {msg.imageUrl && (
+                    <div className="mb-2 rounded-xl overflow-hidden border border-white/30 shadow-xs max-w-[220px]">
+                      <img src={msg.imageUrl} alt="Soru görseli" className="w-full h-auto object-cover max-h-48" />
+                    </div>
+                  )}
+
                   <FormattedMessageText text={msg.text} isTanco={isTanco} />
                   <div
                     className={`text-[9px] mt-2 text-right font-mono ${
@@ -381,6 +471,27 @@ export const TancoChatModal: React.FC = () => {
           </div>
         )}
 
+        {/* Image Attachment Preview Bar */}
+        {selectedImage && (
+          <div className="px-3.5 py-2 bg-amber-50/90 border-t border-amber-200/80 flex items-center justify-between animate-fade-in shrink-0">
+            <div className="flex items-center space-x-2 min-w-0">
+              <div className="w-8 h-8 rounded-lg overflow-hidden border border-amber-300 shrink-0">
+                <img src={selectedImage.base64} alt="Attached" className="w-full h-full object-cover" />
+              </div>
+              <span className="text-[11px] text-amber-900 font-medium truncate">
+                {language === 'tr' ? 'Soru görseli eklendi (Fotoğraflı analiz)' : 'Problem image attached'}
+              </span>
+            </div>
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="p-1 text-amber-700 hover:text-amber-900 rounded-lg hover:bg-amber-200/50 transition-colors cursor-pointer"
+              title={language === 'tr' ? 'Görseli Kaldır' : 'Remove Image'}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
         {/* Input Footer Area */}
         <div className="p-3 sm:p-3.5 bg-white border-t border-slate-200/90 shrink-0">
           <form
@@ -390,41 +501,49 @@ export const TancoChatModal: React.FC = () => {
             }}
             className="flex items-center space-x-2"
           >
-            {/* Visual AI Photo Analysis */}
+            {/* Hidden File Input for Image Upload */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageSelect}
+            />
+
+            {/* Visual AI Photo Analysis (Camera Button) */}
             <button
               type="button"
-              onClick={() => {
-                setShowMediaNotice(
-                  language === 'tr'
-                    ? '📸 Görsel soru analizi çok yakında! Fotoğraf çekip soru sorma özelliği aktif olduğunda Tanco soru görsellerini analiz edebilecek.'
-                    : '📸 Visual question analysis coming soon! When active, Tanco will inspect problem snapshots directly.'
-                );
-              }}
-              className="p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer shrink-0 relative group"
+              onClick={() => fileInputRef.current?.click()}
+              className={`p-2 sm:p-2.5 rounded-xl transition-all cursor-pointer shrink-0 relative ${
+                selectedImage
+                  ? 'bg-[#ff7a00] text-white shadow-xs'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800'
+              }`}
               title={
                 language === 'tr'
-                  ? 'Görsel Soru Analizi (Yakında)'
-                  : 'Visual Question Analysis (Coming Soon)'
+                  ? 'Görsel / Soru Fotoğrafı Yükle'
+                  : 'Upload Problem Image'
               }
             >
-              <Camera className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#ff7a00]" />
+              {selectedImage ? <ImageIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5" /> : <Camera className="w-4 h-4 sm:w-4.5 sm:h-4.5" />}
             </button>
 
-            {/* Voice Input */}
+            {/* Voice Input Button */}
             <button
               type="button"
-              onClick={() => {
-                setShowMediaNotice(
-                  language === 'tr'
-                    ? '🎙️ Sesli soru sorma özelliği yakında kullanıma sunulacaktır.'
-                    : '🎙️ Voice questions will be available in an upcoming update.'
-                );
-              }}
-              className="p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer shrink-0"
-              title={language === 'tr' ? 'Sesli Soru (Yakında)' : 'Voice Input (Coming Soon)'}
+              onClick={toggleVoiceInput}
+              className={`p-2 sm:p-2.5 rounded-xl transition-all cursor-pointer shrink-0 ${
+                isListening
+                  ? 'bg-rose-500 text-white animate-pulse shadow-md shadow-rose-500/30'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800'
+              }`}
+              title={
+                isListening
+                  ? language === 'tr' ? 'Dinleniyor... (Durdurmak için tıkla)' : 'Listening... (Click to stop)'
+                  : language === 'tr' ? 'Sesli Soru Sor' : 'Voice Input'
+              }
             >
-              <Mic className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+              {isListening ? <MicOff className="w-4 h-4 sm:w-4.5 sm:h-4.5" /> : <Mic className="w-4 h-4 sm:w-4.5 sm:h-4.5" />}
             </button>
 
             {/* Main Text Input */}
@@ -434,7 +553,11 @@ export const TancoChatModal: React.FC = () => {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               placeholder={
-                language === 'tr'
+                isListening
+                  ? language === 'tr' ? 'Dinleniyor... Konuşabilirsiniz' : 'Listening...'
+                  : selectedImage
+                  ? language === 'tr' ? 'Görselle ilgili soru sor veya doğrudan gönder...' : 'Ask about the image or send...'
+                  : language === 'tr'
                   ? "Tanco'ya bir soru veya konu sor..."
                   : "Ask Tanco a question or concept..."
               }
@@ -444,9 +567,9 @@ export const TancoChatModal: React.FC = () => {
             {/* Send Button */}
             <button
               type="submit"
-              disabled={!inputMessage.trim() || isTyping}
+              disabled={(!inputMessage.trim() && !selectedImage) || isTyping}
               className={`p-2.5 sm:p-3 rounded-xl transition-all shrink-0 cursor-pointer shadow-xs ${
-                inputMessage.trim() && !isTyping
+                (inputMessage.trim() || selectedImage) && !isTyping
                   ? 'bg-[#ff7a00] hover:bg-[#e66e00] text-white shadow-[#ff7a00]/30 active:scale-95'
                   : 'bg-slate-200 text-slate-400 cursor-not-allowed'
               }`}
