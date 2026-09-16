@@ -40,25 +40,15 @@
       "questions": [
         {
           "id": "m4-l1-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
             "tr": "Standart sapması $\\sigma = 20$ olan bir anakütleden $n = 100$ büyüklüğünde bir örneklem çekildiğinde Standart Hata ($\\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$) kaçtır?",
-            "en": "What is the primary goal of random sampling?"
+            "en": "If population standard deviation $\\sigma = 20$ and sample size $n = 100$, what is the Standard Error ($\\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$)?"
           },
-          "options": [
-            {
-              "tr": "Ana kütleyi tarafsız şekilde temsil etmek",
-              "en": "To represent the population without bias"
-            },
-            {
-              "tr": "Sadece en aktif kullanıcıları seçmek",
-              "en": "To select only the most active users"
-            }
-          ],
-          "correctAnswer": "Ana kütleyi tarafsız şekilde temsil etmek",
+          "correctAnswer": 2,
           "explanation": {
             "tr": "$$\\text{SE} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{20}{\\sqrt{100}} = \\frac{20}{10} = 2$$",
-            "en": "Random selection prevents bias and increases representativeness."
+            "en": "$$\\text{SE} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{20}{\\sqrt{100}} = \\frac{20}{10} = 2$$"
           }
         }
       ]
@@ -97,7 +87,7 @@
             "tr": "Merkezi Limit Teoremi'nin (CLT) geçerli olması için literatürde genel kabul gören minimum örneklem hacmi ($n$) kaçtır?",
             "en": "If σ = 20 and n = 100, what is SE?"
           },
-          "correctAnswer": 2,
+          "correctAnswer": 30,
           "explanation": {
             "tr": "İstatistikte örneklem ortalamasının normale yaklaşması için genellikle $n \\ge 30$ eşiği yeterli kabul edilir.",
             "en": "20 / √100 = 2"
@@ -255,7 +245,7 @@
             "tr": "Örneklem ortalaması dağılımının standart hatası $\\text{SE}$ kaçtır?",
             "en": "What is the Standard Error (SE)?"
           },
-          "correctAnswer": 2,
+          "correctAnswer": 5,
           "explanation": {
             "tr": "$$\\text{SE} = \\frac{40}{\\sqrt{64}} = 5$$",
             "en": "20 / √100 = 20 / 10 = 2"

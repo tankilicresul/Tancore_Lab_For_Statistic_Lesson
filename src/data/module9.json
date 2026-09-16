@@ -94,23 +94,23 @@
           "id": "m9-l2-q1",
           "type": "multiple_choice",
           "prompt": {
-            "tr": "3 veya daha fazla grup ortalamasını karşılaştırırken ikili t-testleri yerine neden ANOVA tercih edilir?",
-            "en": "What does H0 state in ANOVA?"
+            "tr": "ANOVA testinde Sıfır Hipotezi ($H_0$) neyi ifade eder?",
+            "en": "What does the Null Hypothesis ($H_0$) state in ANOVA?"
           },
           "options": [
             {
-              "tr": "Tüm grupların ortalamalarının birbirine eşit olduğunu",
-              "en": "All group means are equal"
+              "tr": "Tüm grup ortalamalarının birbirine eşit olduğunu (μ1 = μ2 = ... = μk)",
+              "en": "All group means are equal (μ1 = μ2 = ... = μk)"
             },
             {
               "tr": "Tüm grupların birbirinden tamamen farklı olduğunu",
-              "en": "All group means are totally different"
+              "en": "All groups are completely different"
             }
           ],
-          "correctAnswer": "Tüm grupların ortalamalarının birbirine eşit olduğunu",
+          "correctAnswer": "Tüm grup ortalamalarının birbirine eşit olduğunu (μ1 = μ2 = ... = μk)",
           "explanation": {
-            "tr": "Çoklu ikili test yapmak kümülatif Tip I Hata (Family-wise Error Rate) oranını $\\alpha_{\\text{toplam}} = 1 - (1-\\alpha)^m$ formülü ile aşırı şişirir.",
-            "en": "H0: µ1 = µ2 = µ3 (All group means are equal)."
+            "tr": "ANOVA $H_0$ hipotezi tüm incelenen grupların ana kütle ortalamalarının eşit olduğunu varsayar: $\\mu_1 = \\mu_2 = \\dots = \\mu_k$.",
+            "en": "ANOVA $H_0$ states all group population means are equal: $\\mu_1 = \\mu_2 = \\dots = \\mu_k$."
           }
         }
       ]
@@ -144,25 +144,15 @@
       "questions": [
         {
           "id": "m9-l3-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
             "tr": "$2 \\times 3$ boyutlu bir kontenjans tablosunda Ki-Kare testinin serbestlik derecesi ($df = (r-1)(c-1)$) kaçtır?",
-            "en": "Which data type is analyzed with Chi-Square?"
+            "en": "For a $2 \\times 3$ contingency table, what is the degrees of freedom ($df = (r-1)(c-1)$)?"
           },
-          "options": [
-            {
-              "tr": "Kategorik (Frekans/Sayım) Veriler",
-              "en": "Categorical (Frequency/Count) Data"
-            },
-            {
-              "tr": "Sadece zaman serisi verileri",
-              "en": "Only time series data"
-            }
-          ],
-          "correctAnswer": "Kategorik (Frekans/Sayım) Veriler",
+          "correctAnswer": 2,
           "explanation": {
             "tr": "$$df = (2 - 1)(3 - 1) = 1 \\times 2 = 2$$",
-            "en": "Chi-Square tests frequency counts of categorical variables."
+            "en": "$$df = (2 - 1)(3 - 1) = 1 \\times 2 = 2$$"
           }
         }
       ]
@@ -282,25 +272,15 @@
       "solutionQuestions": [
         {
           "id": "m9-case-1-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Hesaplanan ANOVA $F$-istatistiği kaçtır?",
-            "en": "What is the decision?"
+            "tr": "Hesaplanan ANOVA $F$-istatistiği ($F = \\frac{\\text{MSB}}{\\text{MSW}}$) kaçtır?",
+            "en": "What is the calculated ANOVA $F$-statistic ($F = \\frac{\\text{MSB}}{\\text{MSW}}$)?"
           },
-          "options": [
-            {
-              "tr": "H0 reddedilir, kampanyalar eşit değildir",
-              "en": "Reject H0, campaigns are not equal"
-            },
-            {
-              "tr": "H0 reddedilemez, tüm kampanyalar eşittir",
-              "en": "Fail to reject H0, all campaigns equal"
-            }
-          ],
-          "correctAnswer": "H0 reddedilir, kampanyalar eşit değildir",
+          "correctAnswer": 12,
           "explanation": {
             "tr": "$$F = \\frac{60}{5} = 12$$",
-            "en": "Since p (0.003) < 0.05, there is a significant difference among campaigns."
+            "en": "$$F = \\frac{60}{5} = 12$$"
           }
         }
       ]

@@ -137,22 +137,22 @@
           "type": "multiple_choice",
           "prompt": {
             "tr": "Üstel düzleştirmede $\\alpha = 1.0$ seçilirse bir sonraki dönem tahmini $\\hat{Y}_{t+1}$ neye eşit olur?",
-            "en": "What happens as alpha (α) increases in exponential smoothing?"
+            "en": "In exponential smoothing, if $\\alpha = 1.0$, what does next period forecast $\\hat{Y}_{t+1}$ equal?"
           },
           "options": [
             {
-              "tr": "En son gözleme verilen ağırlık artar",
-              "en": "Weight on the most recent observation increases"
+              "tr": "En son gerçekleşen gözlem değerine ($Y_t$ / Naive Tahmin)",
+              "en": "The most recent actual observation ($Y_t$ / Naive)"
             },
             {
-              "tr": "Tüm geçmiş veriler eşit ağırlık alır",
-              "en": "All historical data get equal weight"
+              "tr": "Tüm geçmiş verilerin aritmetik ortalamasına",
+              "en": "The simple average of all past data"
             }
           ],
-          "correctAnswer": "En son gözleme verilen ağırlık artar",
+          "correctAnswer": "En son gerçekleşen gözlem değerine ($Y_t$ / Naive Tahmin)",
           "explanation": {
-            "tr": "$$\\hat{Y}_{t+1} = 1.0(Y_t) + 0(\\hat{Y}_t) = Y_t \\quad (\\text{Naive / En son gerçekleşen değer})$$",
-            "en": "Higher alpha makes forecast more sensitive to recent data."
+            "tr": "$$\\hat{Y}_{t+1} = 1.0(Y_t) + 0(\\hat{Y}_t) = Y_t \\quad (\\text{En son gerçekleşen gözleme tam ağırlık verilir})$$",
+            "en": "$$\\hat{Y}_{t+1} = 1.0(Y_t) + 0(\\hat{Y}_t) = Y_t$$"
           }
         }
       ]

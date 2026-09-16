@@ -46,25 +46,15 @@
       "questions": [
         {
           "id": "m3-l1-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "$X$ kesikli rastgele değişkeni için $\\sum_{i} P(X = x_i)$ toplamı her zaman kaça eşit olmalıdır?",
-            "en": "For a discrete random variable $X$, what must the sum $\\sum_{i} P(X = x_i)$ always equal?"
+            "tr": "$X$ kesikli rastgele değişkeni için tüm olası durumların olasılıkları toplamı $\\sum_{i} P(X = x_i)$ kaça eşittir?",
+            "en": "For a discrete random variable $X$, what is the sum of probabilities for all outcomes $\\sum_{i} P(X = x_i)$?"
           },
-          "options": [
-            {
-              "tr": "Her denemede tam 2 olası sonuç olması (Başarı / Başarısız)",
-              "en": "Exactly 2 possible outcomes per trial (Success / Failure)"
-            },
-            {
-              "tr": "Verilerin sürekli (continuous) sayısal değerler alması",
-              "en": "Data taking continuous numerical values"
-            }
-          ],
-          "correctAnswer": "Her denemede tam 2 olası sonuç olması (Başarı / Başarısız)",
+          "correctAnswer": 1,
           "explanation": {
-            "tr": "Olasılık aksiyomlarına göre tüm olası durumların olasılıkları toplamı tam olarak $1$'e (yani $\\%100$) eşittir: $$\\sum_{i} P(X = x_i) = 1$$",
-            "en": "By probability axioms, the sum of probabilities over all outcomes equals $1$: $$\\sum_{i} P(X = x_i) = 1$$"
+            "tr": "Olasılık aksiyomlarına göre tüm olası durumların toplam olasılığı her zaman $1$ (yani %100)'e eşittir: $$\\sum P(X = x_i) = 1$$",
+            "en": "By probability axioms, total probability across sample space is always $1$: $$\\sum P(X = x_i) = 1$$"
           }
         }
       ],
@@ -102,25 +92,15 @@
       "questions": [
         {
           "id": "m3-l2-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
             "tr": "$n = 4$ bağımsız denemede her bir denemenin başarı olasılığı $p = 0.50$ ise, tam $k = 0$ başarı olasılığı $P(X=0)$ kaçtır?",
-            "en": "In $n = 4$ independent trials with success probability $p = 0.50$, what is $P(X = 0)$?"
+            "en": "In $n = 4$ trials with success probability $p = 0.50$, what is the probability of $k = 0$ successes $P(X=0)$?"
           },
-          "options": [
-            {
-              "tr": "Poisson Dağılımı",
-              "en": "Poisson Distribution"
-            },
-            {
-              "tr": "Zaman serisi çizelgesi",
-              "en": "Time series timeline"
-            }
-          ],
-          "correctAnswer": "Poisson Dağılımı",
+          "correctAnswer": 0.0625,
           "explanation": {
             "tr": "$$P(X = 0) = \\binom{4}{0} (0.50)^0 (0.50)^4 = 1 \\times 1 \\times 0.0625 = 0.0625$$",
-            "en": "$$P(X = 0) = \\binom{4}{0} (0.50)^0 (0.50)^4 = 0.0625$$"
+            "en": "$$P(X = 0) = \\binom{4}{0} (0.50)^0 (0.50)^4 = 1 \\times 1 \\times 0.0625 = 0.0625$$"
           }
         }
       ],
@@ -169,7 +149,7 @@
             "tr": "Ortalaması $\\lambda = 3$ olan bir Poisson sürecinde $k = 0$ olay gerçekleşme olasılığı $P(X=0)$ kaçtır ($e^{-3} \\approx 0.05$)?",
             "en": "In a Poisson process with rate $\\lambda = 3$, what is $P(X=0)$ ($e^{-3} \\approx 0.05$)?"
           },
-          "correctAnswer": 2,
+          "correctAnswer": 0.05,
           "explanation": {
             "tr": "$$P(X = 0) = \\frac{3^0 e^{-3}}{0!} = \\frac{1 \\cdot e^{-3}}{1} = e^{-3} \\approx 0.05$$",
             "en": "$$P(X = 0) = \\frac{3^0 e^{-3}}{0!} = e^{-3} \\approx 0.05$$"
@@ -215,7 +195,7 @@
             "tr": "Ortalaması $\\mu = 100$ ve standart sapması $\\sigma = 15$ olan bir dağılımda $X = 130$ değerinin Z-skoru kaçtır?",
             "en": "In a distribution with $\\mu = 100$ and $\\sigma = 15$, what is the Z-score for $X = 130$?"
           },
-          "correctAnswer": 1,
+          "correctAnswer": 2,
           "explanation": {
             "tr": "$$Z = \\frac{X - \\mu}{\\sigma} = \\frac{130 - 100}{15} = \\frac{30}{15} = 2.0$$",
             "en": "$$Z = \\frac{X - \\mu}{\\sigma} = \\frac{130 - 100}{15} = 2.0$$"
@@ -279,7 +259,7 @@
             "tr": "Poisson dağılımında varyans $\\text{Var}(X)$ kaçtır ($\\lambda = 4$)?",
             "en": "What is the Z-score of the 330s call?"
           },
-          "correctAnswer": 3,
+          "correctAnswer": 4,
           "explanation": {
             "tr": "$$\\text{Var}(X) = \\lambda = 4$$",
             "en": "(330 - 240) / 30 = 90 / 30 = 3"

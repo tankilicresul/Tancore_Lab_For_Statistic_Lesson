@@ -43,22 +43,22 @@
           "type": "multiple_choice",
           "prompt": {
             "tr": "Sıfır hipotezi ($H_0$) gerçekte doğru olduğu halde reddedilirse hangi tür hata yapılmış olur?",
-            "en": "What does H0 usually state in an A/B test?"
+            "en": "If the null hypothesis ($H_0$) is true but rejected, what type of error is committed?"
           },
           "options": [
             {
-              "tr": "İki sürüm arasında anlamlı fark olmadığını",
-              "en": "That there is no significant difference between versions"
+              "tr": "Tip 1 Hata (Alfa / False Positive)",
+              "en": "Type 1 Error (Alpha / False Positive)"
             },
             {
-              "tr": "Yeni sürümün %100 daha iyi olduğunu",
-              "en": "That the new version is 100% better"
+              "tr": "Tip 2 Hata (Beta / False Negative)",
+              "en": "Type 2 Error (Beta / False Negative)"
             }
           ],
-          "correctAnswer": "İki sürüm arasında anlamlı fark olmadığını",
+          "correctAnswer": "Tip 1 Hata (Alfa / False Positive)",
           "explanation": {
-            "tr": "Gerçekte doğru olan $H_0$'ın reddedilmesi Tip I Hata ($\\alpha$, Type I Error / Yalancı Pozitif) olarak adlandırılır.",
-            "en": "H0 = No effect or difference is random noise."
+            "tr": "Gerçekte doğru olan $H_0$'ın reddedilmesi Tip 1 Hata (Alfa) olarak adlandırılır.",
+            "en": "Rejecting a true $H_0$ is a Type 1 Error (Alpha)."
           }
         }
       ]
@@ -95,22 +95,22 @@
           "type": "multiple_choice",
           "prompt": {
             "tr": "Bir hipotez testinde hesaplanan $p\\text{-değeri} = 0.015$ ve anlamlılık düzeyi $\\alpha = 0.05$ ise karar ne olmalıdır?",
-            "en": "What does α = 0.05 represent?"
+            "en": "If $p\\text{-value} = 0.015$ and significance level $\\alpha = 0.05$, what is the test decision?"
           },
           "options": [
             {
-              "tr": "%5 Tip 1 Hata yapma riski toleransı",
-              "en": "5% tolerance for Type I error risk"
+              "tr": "H0 Reddedilir (Fark Anlamlı)",
+              "en": "Reject H0 (Statistically Significant)"
             },
             {
-              "tr": "%5 başarı oranı",
-              "en": "5% success rate"
+              "tr": "H0 Reddedilemez (Farksız)",
+              "en": "Cannot Reject H0"
             }
           ],
-          "correctAnswer": "%5 Tip 1 Hata yapma riski toleransı",
+          "correctAnswer": "H0 Reddedilir (Fark Anlamlı)",
           "explanation": {
-            "tr": "$p = 0.015 \\le \\alpha = 0.05$ olduğundan $H_0$ reddedilir (istatistiksel olarak anlamlı fark vardır).",
-            "en": "Alpha is the maximum allowable Type I error risk."
+            "tr": "$p = 0.015 \\le \\alpha = 0.05$ olduğundan $H_0$ reddedilir.",
+            "en": "Since $p = 0.015 \\le \\alpha = 0.05$, reject $H_0$."
           }
         }
       ]
@@ -272,25 +272,15 @@
       "solutionQuestions": [
         {
           "id": "m6-case-1-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
             "tr": "Hesaplanan test istatistiği $Z_{\\text{hesap}}$ kaçtır?",
-            "en": "What is the decision?"
+            "en": "What is the calculated test statistic $Z$?"
           },
-          "options": [
-            {
-              "tr": "H0 reddedilir, yeni buton uygulamaya alınır",
-              "en": "Reject H0, deploy new button"
-            },
-            {
-              "tr": "H0 reddedilemez, eski buton kalır",
-              "en": "Fail to reject H0, keep old button"
-            }
-          ],
-          "correctAnswer": "H0 reddedilir, yeni buton uygulamaya alınır",
+          "correctAnswer": -2,
           "explanation": {
             "tr": "$$Z = \\frac{47 - 50}{1.5} = -2.0$$",
-            "en": "Since p (0.01) < 0.05, difference is statistically significant."
+            "en": "$$Z = \\frac{47 - 50}{1.5} = -2.0$$"
           }
         }
       ]

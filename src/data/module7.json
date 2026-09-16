@@ -43,22 +43,22 @@
           "type": "multiple_choice",
           "prompt": {
             "tr": "$r = -0.92$ çıkan bir korelasyon katsayısı değişkenler arasında nasıl bir ilişki olduğunu gösterir?",
-            "en": "If Y increases as X increases, what is the correlation?"
+            "en": "What does a correlation coefficient $r = -0.92$ indicate?"
           },
           "options": [
             {
-              "tr": "Pozitif İlişki",
-              "en": "Positive Correlation"
+              "tr": "Negatif İlişki (Güçlü Ters Yönlü)",
+              "en": "Strong Negative Linear Relationship"
             },
             {
-              "tr": "Negatif İlişki",
-              "en": "Negative Correlation"
+              "tr": "Pozitif İlişki (Aynı Yönlü)",
+              "en": "Positive Linear Relationship"
             }
           ],
-          "correctAnswer": "Pozitif İlişki",
+          "correctAnswer": "Negatif İlişki (Güçlü Ters Yönlü)",
           "explanation": {
             "tr": "$-1$'e çok yakın olduğu için güçlü ve ters yönlü (negatif) doğrusal bir ilişkiyi gösterir.",
-            "en": "Moving in same direction means positive correlation."
+            "en": "Being very close to $-1$, it indicates a strong negative linear relationship."
           }
         }
       ]
@@ -92,25 +92,15 @@
       "questions": [
         {
           "id": "m7-l2-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
             "tr": "Doğrusal regresyon denklemi $\\hat{y} = 15 + 3x$ olan bir modelde $x = 10$ için tahmin edilen $\\hat{y}$ değeri kaçtır?",
-            "en": "What does r = -0.90 indicate?"
+            "en": "In regression line $\\hat{y} = 15 + 3x$, what is the predicted $\\hat{y}$ for $x = 10$?"
           },
-          "options": [
-            {
-              "tr": "Güçlü negatif doğrusal ilişki",
-              "en": "Strong negative linear relationship"
-            },
-            {
-              "tr": "Zayıf pozitif ilişki",
-              "en": "Weak positive relationship"
-            }
-          ],
-          "correctAnswer": "Güçlü negatif doğrusal ilişki",
+          "correctAnswer": 45,
           "explanation": {
             "tr": "$$\\hat{y} = 15 + 3(10) = 15 + 30 = 45$$",
-            "en": "Values close to -1 show a strong negative relationship."
+            "en": "$$\\hat{y} = 15 + 3(10) = 15 + 30 = 45$$"
           }
         }
       ]
@@ -264,7 +254,7 @@
             "tr": "Model kesişim parametresi $\\beta_0$ kaçtır?",
             "en": "What is predicted Sales ($k)?"
           },
-          "correctAnswer": 150,
+          "correctAnswer": 20,
           "explanation": {
             "tr": "$$\\beta_0 = 100 - 4(20) = 20$$",
             "en": "100 + 5 * 10 = 150"

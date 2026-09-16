@@ -42,23 +42,23 @@
           "id": "m8-l1-q1",
           "type": "multiple_choice",
           "prompt": {
-            "tr": "Çoklu regresyonda modele anlamsız yeni değişkenler eklendikçe standart $R^2$ ve Düzeltilmiş $R^2_{\\text{adj}}$ nasıl davranır?",
-            "en": "What is the key difference of multiple regression?"
+            "tr": "Çoklu regresyon modelinde Düzeltilmiş R² (Adjusted R²) hangi amaçla kullanılır?",
+            "en": "What is the primary purpose of Adjusted R² in multiple regression?"
           },
           "options": [
             {
-              "tr": "Birden fazla bağımsız değişken kullanılması",
-              "en": "Uses multiple independent variables"
+              "tr": "Modele gereksiz değişken eklendiğinde ceza puanı kesmek",
+              "en": "Penalize adding non-informative predictors"
             },
             {
-              "tr": "Sadece 1 veri noktası içermesi",
-              "en": "Contains only 1 data point"
+              "tr": "Sadece tek bir veri noktasını tahmin etmek",
+              "en": "Estimate a single data point"
             }
           ],
-          "correctAnswer": "Birden fazla bağımsız değişken kullanılması",
+          "correctAnswer": "Modele gereksiz değişken eklendiğinde ceza puanı kesmek",
           "explanation": {
-            "tr": "Standart $R^2$ asla azalmaz (şişer); Düzeltilmiş $R^2_{\\text{adj}}$ ise ceza katsayısı sebebiyle düşebilir.",
-            "en": "Multiple X predictors are included simultaneously."
+            "tr": "Düzeltilmiş $R^2_{\\text{adj}}$, modele gereksiz değişkenler eklendiğinde şişmeyi önleyen serbestlik derecesi cezası uygular.",
+            "en": "Adjusted $R^2$ applies a degrees of freedom penalty to prevent inflation when adding redundant variables."
           }
         }
       ]
@@ -92,25 +92,15 @@
       "questions": [
         {
           "id": "m8-l2-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Bir bağımsız değişkenin diğer değişkenlerle regresyonunda $R_j^2 = 0.80$ ise bu değişkenin $\\text{VIF}$ değeri kaçtır?",
-            "en": "Which metric compares models with different numbers of predictors?"
+            "tr": "Bir bağımsız değişkenin diğer değişkenlerle regresyonunda $R_j^2 = 0.80$ ise bu değişkenin $\\text{VIF} = \\frac{1}{1 - R_j^2}$ değeri kaçtır?",
+            "en": "If $R_j^2 = 0.80$, what is the Variance Inflation Factor $\\text{VIF} = \\frac{1}{1 - R_j^2}$?"
           },
-          "options": [
-            {
-              "tr": "Düzeltilmiş R² (Adjusted R²)",
-              "en": "Adjusted R-squared"
-            },
-            {
-              "tr": "Sadece Örneklem Sayısı n",
-              "en": "Only sample size n"
-            }
-          ],
-          "correctAnswer": "Düzeltilmiş R² (Adjusted R²)",
+          "correctAnswer": 5,
           "explanation": {
             "tr": "$$\\text{VIF} = \\frac{1}{1 - 0.80} = \\frac{1}{0.20} = 5$$",
-            "en": "Adjusted R-squared penalizes extra features for fair comparison."
+            "en": "$$\\text{VIF} = \\frac{1}{1 - 0.80} = \\frac{1}{0.20} = 5$$"
           }
         }
       ]
@@ -259,7 +249,7 @@
             "tr": "Tahmin edilen konut fiyatı (Bin TL) kaçtır?",
             "en": "What is the predicted price ($k)?"
           },
-          "correctAnswer": 1140,
+          "correctAnswer": 2240,
           "explanation": {
             "tr": "$$\\hat{Y} = 500 + 1500 + 240 = 2240$$",
             "en": "200 + 1000 - 60 = 1140"

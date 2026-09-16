@@ -172,9 +172,9 @@
           "type": "numeric",
           "prompt": {
             "tr": "Bir veri setinde $n = 5$ gözlem için değerler toplamı $\\sum x_i = 125$ ise aritmetik ortalama $\\bar{x}$ kaçtır?",
-            "en": "If the sum of values $\\sum x_i = 125$ for $n = 5$ observations in a dataset, what is the arithmetic mean $\\bar{x}$?"
+            "en": "If the sum of $n = 5$ observations is $\\sum x_i = 125$, what is the arithmetic mean $\\bar{x}$?"
           },
-          "correctAnswer": 18,
+          "correctAnswer": 25,
           "explanation": {
             "tr": "$$\\bar{x} = \\frac{\\sum x_i}{n} = \\frac{125}{5} = 25$$",
             "en": "$$\\bar{x} = \\frac{\\sum x_i}{n} = \\frac{125}{5} = 25$$"
@@ -233,25 +233,15 @@
       "questions": [
         {
           "id": "m1-l2-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Sıralı veri seti $x = [4, 7, 10, 14, 18, 22]$ için medyan değeri kaçtır?",
-            "en": "For ordered dataset $x = [4, 7, 10, 14, 18, 22]$, what is the median value?"
+            "tr": "Sıralı veri seti $x = [4, 7, 10, 14, 18, 22]$ için medyan ($Q_2$) değeri kaçtır?",
+            "en": "What is the median ($Q_2$) of the ordered dataset $x = [4, 7, 10, 14, 18, 22]$?"
           },
-          "options": [
-            {
-              "tr": "Ortalama (Mean)",
-              "en": "Mean"
-            },
-            {
-              "tr": "Medyan (Median)",
-              "en": "Median"
-            }
-          ],
-          "correctAnswer": "Medyan (Median)",
+          "correctAnswer": 12,
           "explanation": {
             "tr": "$n = 6$ (çift) olduğu için ortadaki 3. ($10$) ve 4. ($14$) elemanların ortalaması alınır: $$\\text{Medyan} = \\frac{10 + 14}{2} = 12$$",
-            "en": "Since $n = 6$ (even), we take the average of the 3rd ($10$) and 4th ($14$) elements: $$\\text{Median} = \\frac{10 + 14}{2} = 12$$"
+            "en": "Since $n = 6$ (even), take the average of 3rd ($10$) and 4th ($14$) items: $$\\text{Median} = \\frac{10 + 14}{2} = 12$$"
           }
         }
       ],
@@ -299,12 +289,12 @@
           "type": "numeric",
           "prompt": {
             "tr": "Gözlem değerleri $x = [3, 8, 8, 8, 12, 14, 14, 20]$ olan veri setinin modu kaçtır?",
-            "en": "What is the mode of the dataset $x = [3, 8, 8, 8, 12, 14, 14, 20]$?"
+            "en": "What is the mode of dataset $x = [3, 8, 8, 8, 12, 14, 14, 20]$?"
           },
-          "correctAnswer": 4,
+          "correctAnswer": 8,
           "explanation": {
-            "tr": "$8$ sayısı $3$ kez tekrar ederek en yüksek frekansa sahiptir. Dolayısıyla $\\text{Mod} = 8$'dir.",
-            "en": "The number $8$ appears $3$ times, having the highest frequency. Thus, $\\text{Mode} = 8$."
+            "tr": "$8$ sayısı $3$ kez tekrar ederek en yüksek frekansa sahiptir. Dolayısıyla $\\text{Mod} = 8$ olur.",
+            "en": "The value $8$ appears 3 times (highest frequency). Thus $\\text{Mode} = 8$."
           }
         }
       ]
@@ -350,22 +340,12 @@
       "questions": [
         {
           "id": "m1-l4-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Örneklem varyansı $s^2 = 36$ olarak hesaplanan bir lojistik teslimat süresinin standart sapması $s$ kaçtır?",
-            "en": "If the sample variance of delivery times is $s^2 = 36$, what is the sample standard deviation $s$?"
+            "tr": "Örneklem varyansı $s^2 = 36$ olan bir lojistik teslimat süresinin standart sapması $s = \\sqrt{s^2}$ kaçtır?",
+            "en": "If sample variance is $s^2 = 36$, what is the sample standard deviation $s = \\sqrt{s^2}$?"
           },
-          "options": [
-            {
-              "tr": "Ortalama (Mean)",
-              "en": "Mean"
-            },
-            {
-              "tr": "Standart Sapma",
-              "en": "Standard Deviation"
-            }
-          ],
-          "correctAnswer": "Standart Sapma",
+          "correctAnswer": 6,
           "explanation": {
             "tr": "$$s = \\sqrt{s^2} = \\sqrt{36} = 6$$",
             "en": "$$s = \\sqrt{s^2} = \\sqrt{36} = 6$$"
@@ -453,7 +433,7 @@
             "tr": "NovaMarket veri setinin aritmetik ortalaması $\\bar{x}$ kaçtır (M\\$)?",
             "en": "What is the median sales figure in the dataset ($)?"
           },
-          "correctAnswer": 8150,
+          "correctAnswer": 18,
           "explanation": {
             "tr": "$$\\bar{x} = \\frac{108}{6} = 18 \\text{ M\\$}$$",
             "en": "Sorted: 7900, 8000, 8100, 8200, 8500, 21000. Average of middle two: (8100 + 8200)/2 = 8150"
@@ -559,25 +539,15 @@
       "solutionQuestions": [
         {
           "id": "m1-case-2-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
             "tr": "Tukey çit yöntemine göre üst aykırı değer eşik sınırı ($Q_3 + 1.5 \\cdot \\text{IQR}$) kaçtır?",
-            "en": "Which category carries less risk for predictable inventory and supply chain management?"
+            "en": "What is the upper outlier fence threshold ($Q_3 + 1.5 \\cdot \\text{IQR}$)?"
           },
-          "options": [
-            {
-              "tr": "Elektronik (Düşük varyans)",
-              "en": "Electronics (Low variance)"
-            },
-            {
-              "tr": "Giyim (Yüksek varyans)",
-              "en": "Clothing (High variance)"
-            }
-          ],
-          "correctAnswer": "Elektronik (Düşük varyans)",
+          "correctAnswer": 190,
           "explanation": {
             "tr": "$$\\text{Üst Sınır} = 100 + 1.5(60) = 190$$",
-            "en": "Electronics weekly sales fluctuate in a tight 148-155 range with low standard deviation."
+            "en": "$$\\text{Upper Fence} = 100 + 1.5(60) = 190$$"
           }
         }
       ]
@@ -664,7 +634,7 @@
             "tr": "Teslimat sürelerinin standart sapması $s$ (dakika) kaçtır?",
             "en": "What is the median of the customer complaint counts?"
           },
-          "correctAnswer": 3,
+          "correctAnswer": 8,
           "explanation": {
             "tr": "$$s = \\sqrt{64} = 8 \\text{ dk}$$",
             "en": "Sorted: 2, 2, 2, 3, 3, 3, 3, 48. Average of middle two: (3+3)/2 = 3"

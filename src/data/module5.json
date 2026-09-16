@@ -40,25 +40,15 @@
       "questions": [
         {
           "id": "m5-l1-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "$\\%95$ güven düzeyi için iki kuyruklu standart normal kritik $Z$-değeri ($Z_{\\alpha/2}$) kaçtır?",
-            "en": "What does a confidence interval combine?"
+            "tr": "$\\%95$ güven düzeyi için iki kuyruklu standart normal kritik $Z$-değeri ($Z_{0.025}$) kaçtır?",
+            "en": "For a 95% confidence level, what is the two-tailed standard normal critical $Z$-value ($Z_{0.025}$)?"
           },
-          "options": [
-            {
-              "tr": "Nokta Tahmini ± Hata Payı",
-              "en": "Point Estimate ± Margin of Error"
-            },
-            {
-              "tr": "Sadece maksimum değer",
-              "en": "Only the maximum value"
-            }
-          ],
-          "correctAnswer": "Nokta Tahmini ± Hata Payı",
+          "correctAnswer": 1.96,
           "explanation": {
-            "tr": "$$1 - \\alpha = 0.95 \\implies \\alpha = 0.05 \\implies Z_{0.025} = 1.96$$",
-            "en": "Interval = symmetric error bounds around point estimate."
+            "tr": "$$\\%95 \\text{ güven düzeyinde } 1 - \\alpha = 0.95 \\implies \\alpha/2 = 0.025 \\implies Z_{0.025} = 1.96$$",
+            "en": "$$1 - \\alpha = 0.95 \\implies \\alpha/2 = 0.025 \\implies Z_{0.025} = 1.96$$"
           }
         }
       ]
@@ -92,25 +82,15 @@
       "questions": [
         {
           "id": "m5-l2-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
             "tr": "$n = 16$ gözlemden oluşan bir örneklem için Student's t dağılımının serbestlik derecesi ($df = n - 1$) kaçtır?",
-            "en": "How does interval width change when confidence level goes from 95% to 99%?"
+            "en": "For a sample of $n = 16$ observations, what is the degrees of freedom ($df = n - 1$) of Student's t-distribution?"
           },
-          "options": [
-            {
-              "tr": "Genişler (Daha güvenli ama daha geniş)",
-              "en": "Widens (More confident but wider bounds)"
-            },
-            {
-              "tr": "Daralır",
-              "en": "Narrows"
-            }
-          ],
-          "correctAnswer": "Genişler (Daha güvenli ama daha geniş)",
+          "correctAnswer": 15,
           "explanation": {
             "tr": "$$df = n - 1 = 16 - 1 = 15$$",
-            "en": "Higher certainty requires a larger z* critical value."
+            "en": "$$df = n - 1 = 16 - 1 = 15$$"
           }
         }
       ]
@@ -255,7 +235,7 @@
             "tr": "$\\%95$ Güven Aralığı Hata Payı (ME) kaçtır?",
             "en": "What is the Margin of Error in minutes?"
           },
-          "correctAnswer": 19.6,
+          "correctAnswer": 1.96,
           "explanation": {
             "tr": "$$\\text{ME} = 1.96 \\times 1.0 = 1.96$$",
             "en": "1.96 * 10 = 19.6"
