@@ -234,9 +234,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                 <div className="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold transition-colors border border-white/15 shrink-0 whitespace-nowrap cursor-pointer text-slate-200 hover:text-white"
+                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold transition-colors border border-white/15 shrink-0 whitespace-nowrap cursor-pointer text-slate-200 hover:text-white"
                   >
-                    <Edit3 className="w-3.5 h-3.5 text-[#ff7a00]" />
                     <span>{language === 'tr' ? 'Düzenle' : 'Edit'}</span>
                   </button>
 
