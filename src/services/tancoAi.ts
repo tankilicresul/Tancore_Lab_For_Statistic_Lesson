@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Tanco AI Service
  * Connects Tanco to Google Gemini LLMs via secure serverless proxy (/api/tanco-chat) or direct fallback.
  * Supports text, chat memory, and multimodal image question solving.
@@ -28,7 +28,50 @@ function buildCurriculumContext(): string {
 
 const CURRICULUM_SUMMARY = buildCurriculumContext();
 
-function getSystemPrompt(language: 'tr' | 'en', studentName: string = 'Öğrenci'): string {
+function formatStudyContext(studyContext: any, lang: 'tr' | 'en'): string {
+  if (!studyContext) return '';
+  if (studyContext.type === 'lesson') {
+    return `
+=======================================================
+📍 ÖĞRENCİNİN ŞU AN EKRANDA ÇALIŞTIĞI DERS (CANLI EKRAN BİLGİSİ):
+=======================================================
+- Modül: ${studyContext.moduleTitle || ''}
+- Ders Başlığı: ${studyContext.lessonTitle || ''}
+- Konu Anlatımı (Kavram Kartı): ${studyContext.conceptCard || ''}
+- Gerçek Şirket Vaka Örneği: ${studyContext.companyExample || ''}
+- Sözlük & Terimler: ${studyContext.vocabTerms ? studyContext.vocabTerms.join(', ') : ''}
+- Dersteki Sorular / Test: ${studyContext.questions ? JSON.stringify(studyContext.questions) : ''}
+
+ÖNEMLİ KURAL: Öğrenci "burada ne anlatıyor?", "şurasında ne demek isteniyor?", "bu konuyu özetler misin?", "bu soruyu nasıl çözerim?", "bu formül ne?" vb. sorduğunda veya sadece soru sorduğunda, yukarıdaki canlı ekrandaki konu anlatımı ve şirket örneği üzerinden doğrudan, net ve pedagojik şekilde anlat!
+`;
+  } else if (studyContext.type === 'caseExam') {
+    return `
+=======================================================
+📍 ÖĞRENCİNİN ŞU AN EKRANDA ÇÖZDÜĞÜ ŞİRKET VAKA SINAVI (CANLI EKRAN):
+=======================================================
+- Modül: ${studyContext.moduleTitle || ''}
+- Vaka Başlığı: ${studyContext.caseTitle || ''}
+- İş Problemi / Tanım: ${studyContext.businessQuestion || ''}
+- Rehberli Adımlar: ${studyContext.guidedSteps ? studyContext.guidedSteps.join('\n') : ''}
+- Vaka Soruları & Çözümleri: ${studyContext.solutionQuestions ? JSON.stringify(studyContext.solutionQuestions) : ''}
+- Beklenen Yönetici Yaklaşımı: ${studyContext.expectedApproach || ''}
+
+ÖNEMLİ KURAL: Öğrenci vaka sınavı, veri seti veya problemle ilgili soru sorduğunda yukarıdaki vaka verilerine ve adımlarına dayanarak açıkla!
+`;
+  } else if (studyContext.type === 'course') {
+    return `
+=======================================================
+📍 ÖĞRENCİNİN ŞU AN BULUNDUĞU ALAN:
+=======================================================
+- Parkur / Ders: ${studyContext.activeTrackTitle || studyContext.track || ''}
+`;
+  }
+  return '';
+}
+
+function getSystemPrompt(language: 'tr' | 'en', studentName: string = 'Öğrenci', studyContext?: any): string {
+  const liveContextStr = formatStudyContext(studyContext, language);
+
   return `
 Sen TanCoreLab platformunun samimi, akıllı, yardımsever ve pedagojik yapay zeka öğretim asistanı "Tanco"sun 🎓.
 Şu anda sohbet ettiğin öğrencinin adı: "${studentName}".
@@ -42,11 +85,12 @@ Sen TanCoreLab platformunun samimi, akıllı, yardımsever ve pedagojik yapay ze
 - Kullanıcı sadece "selam", "merhaba", "naber" gibi bir selamlama yazarsa, sadece doğal ve sıcak bir şekilde karşılık ver.
 - Eğer öğrenci bir soru görseli (fotoğraf, grafik, sınav sorusu vb.) yüklediyse: Görseldeki matematiksel problemi veya grafiği dikkatle incele, formülleri çıkar ve adım adım net bir çözüm sun.
 - Kullanıcı bir soru sorduğunda doğrudan sorunun çözümüne, formülüne ve mantığına odaklan.
+${liveContextStr}
 
 =======================================================
 📚 TANCORELAB MÜFREDAT BİLGİSİ (ARKA PLAN REFERANSI):
 =======================================================
-Aşağıdaki 16 modül senin dahili bilgi tabanındır. Öğrenci spesifik olarak bir modül veya ders konusu sorduğunda bu bilgiyi kullanabilirsin, ancak öğrenci sormadıkça durduk yere modül listesi sayma:
+Aşağıdaki 16 modül senin dahili bilgi tabanındır:
 
 ${CURRICULUM_SUMMARY}
 
@@ -74,7 +118,8 @@ export async function askTancoAI(
   language: 'tr' | 'en' = 'tr',
   studentName: string = 'Öğrenci',
   imageBase64?: string,
-  imageMimeType?: string
+  imageMimeType?: string,
+  studyContext?: any
 ): Promise<string> {
   // 1. Try secure Serverless Function first (/api/tanco-chat)
   try {
@@ -88,6 +133,7 @@ export async function askTancoAI(
         studentName,
         imageBase64,
         imageMimeType,
+        studyContext,
       }),
     });
 
@@ -109,7 +155,7 @@ export async function askTancoAI(
   const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (geminiApiKey && geminiApiKey.trim() && !geminiApiKey.includes('BURAYA') && !geminiApiKey.includes('YOUR_')) {
     try {
-      return await callGemini(geminiApiKey.trim(), userPrompt, history, language, studentName, imageBase64, imageMimeType);
+      return await callGemini(geminiApiKey.trim(), userPrompt, history, language, studentName, imageBase64, imageMimeType, studyContext);
     } catch (err: any) {
       console.warn('Gemini client call failed, attempting Groq or fallback:', err);
     }
@@ -119,14 +165,14 @@ export async function askTancoAI(
   const groqApiKey = import.meta.env.VITE_GROQ_API_KEY;
   if (groqApiKey && groqApiKey.trim() && !groqApiKey.includes('BURAYA') && !groqApiKey.includes('YOUR_')) {
     try {
-      return await callGroq(groqApiKey.trim(), userPrompt, history, language, studentName);
+      return await callGroq(groqApiKey.trim(), userPrompt, history, language, studentName, studyContext);
     } catch (err: any) {
       console.warn('Groq API call failed:', err);
     }
   }
 
   // 4. Offline / No key fallback
-  return getNoKeyFallback(userPrompt, language, studentName);
+  return getNoKeyFallback(userPrompt, language, studentName, studyContext);
 }
 
 /**
@@ -139,12 +185,13 @@ async function callGemini(
   language: 'tr' | 'en',
   studentName: string,
   imageBase64?: string,
-  imageMimeType?: string
+  imageMimeType?: string,
+  studyContext?: any
 ): Promise<string> {
   const models = ['gemini-3.6-flash', 'gemini-2.5-flash'];
   let lastError: any = null;
 
-  const systemInstruction = getSystemPrompt(language, studentName);
+  const systemInstruction = getSystemPrompt(language, studentName, studyContext);
 
   for (const model of models) {
     try {
@@ -161,7 +208,7 @@ async function callGemini(
             {
               text:
                 language === 'tr'
-                  ? `Anladım! ${studentName} ile son derece doğal, doğrudan ve samimi bir şekilde konuşmaya hazırım.`
+                  ? `Anladım! ${studentName} ile son derece doğal, doğrudan ve samimi bir şekilde konuşmaya hazırım. Ekrandaki aktif ders/vaka içeriğine tamamen hakimim.`
                   : `Understood! Ready to converse naturally and directly with ${studentName}.`,
             },
           ],
@@ -221,19 +268,18 @@ async function callGemini(
       }
 
       const data = await response.json();
-      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!text) {
-        throw new Error('No response text generated by Gemini');
-      }
+      const textOutput = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-      return text.trim();
+      if (textOutput) {
+        return textOutput.trim();
+      }
     } catch (err) {
       lastError = err;
-      console.warn(`Gemini model ${model} failed, trying next:`, err);
+      console.warn(`Model ${model} failed, trying fallback:`, err);
     }
   }
 
-  throw lastError || new Error('All Gemini model endpoints failed');
+  throw lastError || new Error('All Gemini model endpoints failed.');
 }
 
 /**
@@ -244,10 +290,11 @@ async function callGroq(
   prompt: string,
   history: ChatMessageHistoryItem[],
   language: 'tr' | 'en',
-  studentName: string
+  studentName: string,
+  studyContext?: any
 ): Promise<string> {
   const endpoint = 'https://api.groq.com/openai/v1/chat/completions';
-  const systemInstruction = getSystemPrompt(language, studentName);
+  const systemInstruction = getSystemPrompt(language, studentName, studyContext);
 
   const messages = [
     { role: 'system', content: systemInstruction },
@@ -284,7 +331,7 @@ async function callGroq(
 /**
  * Fallback response if API key is not configured or offline
  */
-function getNoKeyFallback(question: string, language: 'tr' | 'en', studentName: string = 'Öğrenci'): string {
+function getNoKeyFallback(question: string, language: 'tr' | 'en', studentName: string = 'Öğrenci', studyContext?: any): string {
   const q = question.toLowerCase().trim();
 
   // Natural greeting
@@ -299,6 +346,12 @@ function getNoKeyFallback(question: string, language: 'tr' | 'en', studentName: 
     return language === 'tr'
       ? '🔒 Kişisel verilerin gizliliği politikamız gereğince diğer kullanıcıların özel bilgileri kesinlikle paylaşılamaz.'
       : '🔒 Personal data of other users cannot be shared due to privacy policies.';
+  }
+
+  if (studyContext?.type === 'lesson' && studyContext?.lessonTitle) {
+    return language === 'tr'
+      ? `📖 **${studyContext.lessonTitle}** konusunu inceliyorsun!\n\n${studyContext.conceptCard || ''}\n\nÖrnek: ${studyContext.companyExample || ''}`
+      : `📖 You are studying **${studyContext.lessonTitle}**!\n\n${studyContext.conceptCard || ''}`;
   }
 
   if (q.includes('bayes') || q.includes('koşullu') || q.includes('conditional')) {

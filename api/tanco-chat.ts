@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Vercel Serverless Function: /api/tanco-chat
  * Secure server-side AI proxy protecting API keys from client-side exposure.
  * Supports text and multimodal image analysis.
@@ -35,6 +35,47 @@ Endüstri Mühendisliği, İstatistik ve Yöneylem Araştırması öğrencilerin
 - Başka öğrencilerin kişisel verilerini kesinlikle koru ve paylaşma.
 `;
 
+function formatStudyContext(studyContext: any, lang: 'tr' | 'en'): string {
+  if (!studyContext) return '';
+  if (studyContext.type === 'lesson') {
+    return `
+=======================================================
+📍 ÖĞRENCİNİN ŞU AN EKRANDA ÇALIŞTIĞI DERS (CANLI EKRAN BİLGİSİ):
+=======================================================
+- Modül: ${studyContext.moduleTitle || ''}
+- Ders Başlığı: ${studyContext.lessonTitle || ''}
+- Konu Anlatımı (Kavram Kartı): ${studyContext.conceptCard || ''}
+- Gerçek Şirket Vaka Örneği: ${studyContext.companyExample || ''}
+- Sözlük & Kavramlar: ${studyContext.vocabTerms ? studyContext.vocabTerms.join(', ') : ''}
+- Dersteki Soru(lar): ${studyContext.questions ? JSON.stringify(studyContext.questions) : ''}
+
+ÖNEMLİ: Öğrenci "burada ne anlatıyor?", "şurasında ne demek isteniyor?", "bu konuyu özetler misin?", "bu soruyu nasıl çözerim?", "bu formül ne?" vb. sorduğunda doğrudan bu canlı dersin içeriğine referans vererek açıkla!
+`;
+  } else if (studyContext.type === 'caseExam') {
+    return `
+=======================================================
+📍 ÖĞRENCİNİN ŞU AN EKRANDA ÇÖZDÜĞÜ ŞİRKET VAKA SINAVI (CANLI EKRAN):
+=======================================================
+- Modül: ${studyContext.moduleTitle || ''}
+- Vaka Başlığı: ${studyContext.caseTitle || ''}
+- İş Problemi / Tanım: ${studyContext.businessQuestion || ''}
+- Rehberli Adımlar: ${studyContext.guidedSteps ? studyContext.guidedSteps.join('\n') : ''}
+- Vaka Soruları & Çözümleri: ${studyContext.solutionQuestions ? JSON.stringify(studyContext.solutionQuestions) : ''}
+- Beklenen Yönetici Yaklaşımı: ${studyContext.expectedApproach || ''}
+
+ÖNEMLİ: Öğrenci bu vaka sınavı veya problemle ilgili soru sorduğunda yukarıdaki vaka verilerine ve adımlarına dayanarak açıkla!
+`;
+  } else if (studyContext.type === 'course') {
+    return `
+=======================================================
+📍 ÖĞRENCİNİN ŞU AN BULUNDUĞU ALAN:
+=======================================================
+- Parkur / Ders: ${studyContext.activeTrackTitle || studyContext.track || ''}
+`;
+  }
+  return '';
+}
+
 export default async function handler(req: any, res: any) {
   // CORS Headers for safety
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -62,7 +103,7 @@ export default async function handler(req: any, res: any) {
     });
   }
 
-  const { prompt, history, language = 'tr', studentName = 'Öğrenci', imageBase64, imageMimeType } = req.body || {};
+  const { prompt, history, language = 'tr', studentName = 'Öğrenci', imageBase64, imageMimeType, studyContext } = req.body || {};
 
   if (!prompt && !imageBase64) {
     return res.status(400).json({ error: 'Prompt or image is required.' });
@@ -83,6 +124,8 @@ export default async function handler(req: any, res: any) {
     const models = ['gemini-3.6-flash', 'gemini-2.5-flash'];
     let lastError: any = null;
 
+    const liveContextStr = formatStudyContext(studyContext, language);
+
     for (const model of models) {
       try {
         const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
@@ -94,7 +137,7 @@ export default async function handler(req: any, res: any) {
               {
                 text: `${TANCO_SYSTEM_INSTRUCTION}\n\nŞu anda konuştuğun öğrencinin adı: "${studentName}". Dili: ${
                   language === 'tr' ? 'Türkçe' : 'İngilizce'
-                }`,
+                }${liveContextStr}`,
               },
             ],
           },
@@ -104,8 +147,8 @@ export default async function handler(req: any, res: any) {
               {
                 text:
                   language === 'tr'
-                    ? `Anladım! ${studentName} ile son derece doğal ve samimi bir şekilde konuşmaya hazırım.`
-                    : `Understood! Ready to assist ${studentName} naturally and effectively.`,
+                    ? `Anladım! ${studentName} ile son derece doğal ve samimi bir şekilde konuşmaya hazırım. Ekrandaki aktif ders/vaka içeriğine tamamen hakimim.`
+                    : `Understood! Ready to assist ${studentName} naturally with full awareness of their current study screen.`,
               },
             ],
           },

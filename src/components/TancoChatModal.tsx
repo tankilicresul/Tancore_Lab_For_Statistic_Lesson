@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
-import { formatStudentGreetingName } from '../utils/localization';
+import { formatStudentGreetingName, getLocalized } from '../utils/localization';
+import { getLessonById, getCaseExamById } from '../data/modules';
 import { askTancoAI, ChatMessageHistoryItem } from '../services/tancoAi';
 import {
   fetchTancoChatsFromSupabase,
@@ -18,6 +19,9 @@ import {
   Trash2,
   Sparkles,
   Image as ImageIcon,
+  BookOpen,
+  HelpCircle,
+  Radio,
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -121,6 +125,11 @@ export const TancoChatModal: React.FC = () => {
     isTancoChatOpen,
     setIsTancoChatOpen,
     userProfile,
+    currentView,
+    selectedLessonId,
+    selectedCaseId,
+    selectedTrack,
+    customActiveModuleName,
   } = useAppStore();
 
   const [inputMessage, setInputMessage] = useState('');
@@ -132,6 +141,70 @@ export const TancoChatModal: React.FC = () => {
   const studentName = formatStudentGreetingName(userProfile?.fullName, language === 'tr' ? 'Öğrenci' : 'Student');
   const userIdentifier = userProfile?.schoolEmail || userProfile?.id || 'guest_user';
 
+  // Live Screen Context Detection
+  const lessonObj = selectedLessonId ? getLessonById(selectedLessonId) : undefined;
+  const caseObj = selectedCaseId ? getCaseExamById(selectedCaseId) : undefined;
+
+  let currentStudyContext: any = null;
+  if (currentView === 'lesson' && lessonObj) {
+    currentStudyContext = {
+      type: 'lesson',
+      moduleTitle: getLocalized(lessonObj.module.title, language),
+      moduleId: lessonObj.module.id,
+      lessonTitle: getLocalized(lessonObj.lesson.title, language),
+      lessonId: lessonObj.lesson.id,
+      difficulty: lessonObj.lesson.difficulty,
+      conceptCard: getLocalized(lessonObj.lesson.conceptCard, language),
+      companyExample: getLocalized(lessonObj.lesson.companyExample, language),
+      questions: lessonObj.lesson.questions?.map((q) => ({
+        prompt: getLocalized(q.prompt, language),
+        options: q.options?.map((opt) => getLocalized(opt, language)),
+        correctAnswer: q.correctAnswer,
+        explanation: getLocalized(q.explanation, language),
+      })),
+      vocabTerms: lessonObj.lesson.vocabTerms?.map(
+        (v) => `${v.term_en}: ${language === 'tr' ? v.explanation_tr : v.explanation_en}`
+      ),
+    };
+  } else if (currentView === 'caseExam' && caseObj) {
+    currentStudyContext = {
+      type: 'caseExam',
+      moduleTitle: getLocalized(caseObj.module.title, language),
+      moduleId: caseObj.module.id,
+      caseTitle: getLocalized(caseObj.caseExam.title, language),
+      caseId: caseObj.caseExam.id,
+      businessQuestion: getLocalized(caseObj.caseExam.businessQuestion, language),
+      guidedSteps: caseObj.caseExam.guidedSteps?.map((s) => getLocalized(s, language)),
+      datasetColumns: caseObj.caseExam.dataset?.columns,
+      datasetRows: caseObj.caseExam.dataset?.rows?.slice(0, 5),
+      solutionQuestions: caseObj.caseExam.solutionQuestions?.map((q) => ({
+        prompt: getLocalized(q.prompt, language),
+        options: q.options?.map((opt) => getLocalized(opt, language)),
+        correctAnswer: q.correctAnswer,
+        explanation: getLocalized(q.explanation, language),
+      })),
+      expectedApproach: getLocalized(caseObj.caseExam.expectedApproach, language),
+    };
+  } else if (currentView === 'course') {
+    currentStudyContext = {
+      type: 'course',
+      track: selectedTrack,
+      activeTrackTitle:
+        selectedTrack === 'probability'
+          ? language === 'tr'
+            ? 'Olasılık ve Rastgele Değişkenler'
+            : 'Probability & Random Variables'
+          : language === 'tr'
+          ? 'Uygulamalı İstatistik'
+          : 'Applied Statistics',
+    };
+  } else if (currentView === 'placementTest') {
+    currentStudyContext = {
+      type: 'placementTest',
+      title: language === 'tr' ? 'Seviye Belirleme Sınavı' : 'Placement Test',
+    };
+  }
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const speechRecognitionRef = useRef<any>(null);
 
@@ -140,8 +213,14 @@ export const TancoChatModal: React.FC = () => {
     sender: 'tanco',
     text:
       language === 'tr'
-        ? `Selam ${studentName}! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nOlasılık (ENGR 200), İstatistik (INDR 252), Yöneylem Araştırması veya optimizasyonla ilgili aklına takılan her şeyi bana sorabilirsin. İstersen fotoğraf yükleyerek soru da sorabilirsin!`
-        : `Hi ${studentName}! I'm Tanco, your Industrial Engineering TA 🎓\n\nFeel free to ask me anything about Probability, Applied Statistics, Operations Research, or upload problem photos for instant analysis!`,
+        ? currentStudyContext?.type === 'lesson'
+          ? `Selam ${studentName}! 🎓 Şu anda **${currentStudyContext.lessonTitle}** konusunu inceliyorsun. Ekrandaki konu anlatımı, formüller, şirket örneği veya mini test sorusuyla ilgili takıldığın her şeyi bana sorabilirsin!`
+          : currentStudyContext?.type === 'caseExam'
+          ? `Selam ${studentName}! 🎓 Şu anda **${currentStudyContext.caseTitle}** vaka sınavındasın. Vaka problemi, veri seti veya çözüm adımlarında takıldığın noktaları birlikte adım adım çözebiliriz!`
+          : `Selam ${studentName}! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nOlasılık (ENGR 200), İstatistik (INDR 252), Yöneylem Araştırması veya optimizasyonla ilgili aklına takılan her şeyi bana sorabilirsin. İstersen fotoğraf yükleyerek soru da sorabilirsin!`
+        : currentStudyContext?.type === 'lesson'
+        ? `Hi ${studentName}! 🎓 You are currently studying **${currentStudyContext.lessonTitle}**. Ask me anything about the concept, formulas, company case, or mini test questions on screen!`
+        : `Hi ${studentName}! I'm Tanco, your Industrial Engineering TA 🎓\n\nFeel free to ask me anything about Probability, Applied Statistics, Operations Research, or upload problem photos!`,
     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
   };
 
@@ -355,7 +434,8 @@ export const TancoChatModal: React.FC = () => {
         language as 'tr' | 'en',
         studentName,
         currentImage?.base64,
-        currentImage?.mimeType
+        currentImage?.mimeType,
+        currentStudyContext
       );
 
       const tancoMsg: ChatMessage = {
@@ -405,7 +485,7 @@ export const TancoChatModal: React.FC = () => {
       />
 
       {/* Main Chat Box */}
-      <div className="relative w-full sm:w-[460px] h-[92vh] sm:h-[680px] max-h-[95vh] bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200/90 shadow-2xl flex flex-col overflow-hidden animate-slide-up sm:animate-fade-in">
+      <div className="relative w-full sm:w-[480px] h-[92vh] sm:h-[690px] max-h-[95vh] bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200/90 shadow-2xl flex flex-col overflow-hidden animate-slide-up sm:animate-fade-in">
         {/* Chat Header */}
         <div className="p-4 sm:p-4.5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white flex items-center justify-between shadow-md shrink-0">
           <div className="flex items-center space-x-3 min-w-0">
@@ -450,6 +530,27 @@ export const TancoChatModal: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Live Study Screen Indicator Bar */}
+        {currentStudyContext && (
+          <div className="px-3.5 py-2 bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border-b border-[#ff7a00]/20 flex items-center justify-between text-xs shrink-0">
+            <div className="flex items-center space-x-2 min-w-0">
+              <div className="flex items-center space-x-1 shrink-0">
+                <span className="w-2 h-2 rounded-full bg-[#ff7a00] animate-ping" />
+                <Radio className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
+              </div>
+              <span className="font-extrabold text-slate-800 text-[11px] truncate">
+                {currentStudyContext.type === 'lesson' && `${currentStudyContext.moduleTitle} › ${currentStudyContext.lessonTitle}`}
+                {currentStudyContext.type === 'caseExam' && `${currentStudyContext.moduleTitle} › ${currentStudyContext.caseTitle}`}
+                {currentStudyContext.type === 'course' && `${currentStudyContext.activeTrackTitle}`}
+                {currentStudyContext.type === 'placementTest' && (language === 'tr' ? 'Seviye Belirleme Sınavı' : 'Placement Test')}
+              </span>
+            </div>
+            <span className="text-[9.5px] font-black uppercase text-[#ff7a00] bg-white px-2 py-0.5 rounded-full border border-[#ff7a00]/30 shrink-0 shadow-2xs">
+              {language === 'tr' ? 'Canlı Ekran Bağlı' : 'Live Screen'}
+            </span>
+          </div>
+        )}
 
         {/* Messages Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-slate-50/70">
@@ -498,15 +599,14 @@ export const TancoChatModal: React.FC = () => {
 
           {/* Typing Indicator */}
           {isTyping && (
-            <div className="flex items-center space-x-2 animate-fade-in">
-              <TanCoreMascotAvatar size="sm" className="rounded-full shadow-2xs border border-[#ff7a00]/40" />
-              <div className="bg-white border border-slate-200/90 rounded-2xl rounded-bl-xs px-3.5 py-2.5 flex items-center space-x-2 shadow-2xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#ff7a00] animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="w-1.5 h-1.5 rounded-full bg-[#ff7a00] animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="w-1.5 h-1.5 rounded-full bg-[#ff7a00] animate-bounce" style={{ animationDelay: '300ms' }} />
-                <span className="text-[10.5px] text-slate-500 font-medium ml-1">
-                  {language === 'tr' ? 'Tanco düşünüyor ve yanıt hazırlıyor...' : 'Tanco is thinking...'}
-                </span>
+            <div className="flex items-end space-x-2 justify-start animate-fade-in">
+              <div className="shrink-0 mb-1">
+                <TanCoreMascotAvatar size="sm" className="rounded-full shadow-2xs border border-[#ff7a00]/40" />
+              </div>
+              <div className="bg-white border border-slate-200 p-3 rounded-2xl rounded-bl-xs shadow-2xs flex items-center space-x-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#ff7a00] animate-bounce" />
+                <span className="w-2 h-2 rounded-full bg-[#ff7a00] animate-bounce [animation-delay:0.2s]" />
+                <span className="w-2 h-2 rounded-full bg-[#ff7a00] animate-bounce [animation-delay:0.4s]" />
               </div>
             </div>
           )}
@@ -514,29 +614,16 @@ export const TancoChatModal: React.FC = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Quick Prompts Suggestions */}
-        {messages.length <= 2 && !isTyping && (
-          <div className="px-3.5 py-2 bg-slate-100/80 border-t border-slate-200/80 overflow-x-auto whitespace-nowrap scrollbar-none flex gap-1.5 shrink-0">
-            {(language === 'tr' ? QUICK_PROMPTS.tr : QUICK_PROMPTS.en).map((prompt, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleSendMessage(prompt)}
-                className="px-2.5 py-1 rounded-xl bg-white border border-slate-200/90 text-[10.5px] font-medium text-slate-700 hover:text-[#ff7a00] hover:border-[#ff7a00]/50 transition-all shadow-2xs shrink-0 cursor-pointer text-left"
-              >
-                💬 {prompt}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Image Attachment Preview Bar */}
+        {/* Image Preview Banner if an image is selected */}
         {selectedImage && (
-          <div className="px-3.5 py-2 bg-amber-50/90 border-t border-amber-200/80 flex items-center justify-between animate-fade-in shrink-0">
-            <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 rounded-lg overflow-hidden border border-amber-300 shrink-0">
-                <img src={selectedImage.base64} alt="Attached" className="w-full h-full object-cover" />
-              </div>
-              <span className="text-[11px] text-amber-900 font-medium truncate">
+          <div className="p-2.5 bg-amber-50 border-t border-amber-200 flex items-center justify-between shrink-0 animate-fade-in">
+            <div className="flex items-center space-x-2.5 min-w-0">
+              <img
+                src={selectedImage.base64}
+                alt="Seçilen görsel"
+                className="w-10 h-10 object-cover rounded-lg border border-amber-300 shadow-2xs shrink-0"
+              />
+              <span className="text-xs font-bold text-amber-900 truncate">
                 {language === 'tr' ? 'Soru görseli eklendi (Fotoğraflı analiz)' : 'Problem image attached'}
               </span>
             </div>
@@ -552,6 +639,69 @@ export const TancoChatModal: React.FC = () => {
 
         {/* Input Footer Area */}
         <div className="p-3 sm:p-3.5 bg-white border-t border-slate-200/90 shrink-0">
+          {/* Quick Context Question Suggestions */}
+          {currentStudyContext && (
+            <div className="flex items-center space-x-1.5 overflow-x-auto pb-2 mb-2 scrollbar-none text-[11px]">
+              {currentStudyContext.type === 'lesson' && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => handleSendMessage(language === 'tr' ? 'Bu derste ekranda anlatılan temel mantığı ve formülleri özetler misin?' : 'Can you summarize the core logic and formulas of this lesson?')}
+                    className="whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#ff7a00]/15 hover:text-[#ff7a00] text-slate-700 font-bold border border-slate-200 transition-all cursor-pointer flex items-center gap-1 shrink-0"
+                  >
+                    💡 {language === 'tr' ? 'Konuyu Özetle' : 'Summarize'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSendMessage(language === 'tr' ? 'Buradaki şirket vaka örneğinde ne anlatılmak isteniyor?' : 'Can you explain the company case example?')}
+                    className="whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#ff7a00]/15 hover:text-[#ff7a00] text-slate-700 font-bold border border-slate-200 transition-all cursor-pointer flex items-center gap-1 shrink-0"
+                  >
+                    🏢 {language === 'tr' ? 'Şirket Örneğini Açıkla' : 'Explain Case'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSendMessage(language === 'tr' ? 'Bu konudaki formülün mantığını ve nereden geldiğini açıklar mısın?' : 'Can you explain how this formula works?')}
+                    className="whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#ff7a00]/15 hover:text-[#ff7a00] text-slate-700 font-bold border border-slate-200 transition-all cursor-pointer flex items-center gap-1 shrink-0"
+                  >
+                    📐 {language === 'tr' ? 'Formül Mantığı' : 'Formula Logic'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSendMessage(language === 'tr' ? 'Bu dersteki mini kavram sorusunu nasıl çözmeliyim, ipucu verir misin?' : 'How should I solve the mini question on screen?')}
+                    className="whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#ff7a00]/15 hover:text-[#ff7a00] text-slate-700 font-bold border border-slate-200 transition-all cursor-pointer flex items-center gap-1 shrink-0"
+                  >
+                    ❓ {language === 'tr' ? 'Soru İpucu' : 'Question Hint'}
+                  </button>
+                </>
+              )}
+              {currentStudyContext.type === 'caseExam' && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => handleSendMessage(language === 'tr' ? 'Bu vaka sınavındaki problem tanımını ve yaklaşımı adım adım anlatır mısın?' : 'Can you explain the case problem definition and approach?')}
+                    className="whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#ff7a00]/15 hover:text-[#ff7a00] text-slate-700 font-bold border border-slate-200 transition-all cursor-pointer flex items-center gap-1 shrink-0"
+                  >
+                    🎯 {language === 'tr' ? 'Vaka Amacı' : 'Case Goal'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSendMessage(language === 'tr' ? 'Vaka veri setini nasıl yorumlayıp analiz etmeliyim?' : 'How should I analyze this case dataset?')}
+                    className="whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#ff7a00]/15 hover:text-[#ff7a00] text-slate-700 font-bold border border-slate-200 transition-all cursor-pointer flex items-center gap-1 shrink-0"
+                  >
+                    📊 {language === 'tr' ? 'Veri Setini Yorumla' : 'Analyze Dataset'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSendMessage(language === 'tr' ? 'Bu vaka sınavındaki rehberli çözüm adımlarını bana açıklar mısın?' : 'Can you guide me through the case solution steps?')}
+                    className="whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#ff7a00]/15 hover:text-[#ff7a00] text-slate-700 font-bold border border-slate-200 transition-all cursor-pointer flex items-center gap-1 shrink-0"
+                  >
+                    🧭 {language === 'tr' ? 'Rehberli Çözüm' : 'Guided Solution'}
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -616,8 +766,8 @@ export const TancoChatModal: React.FC = () => {
                   : selectedImage
                   ? language === 'tr' ? 'Görselle ilgili soru sor veya doğrudan gönder...' : 'Ask about the image or send...'
                   : language === 'tr'
-                  ? "Tanco'ya bir soru veya konu sor..."
-                  : "Ask Tanco a question or concept..."
+                  ? "Tanco'ya bu konu veya soru hakkında sor..."
+                  : "Ask Tanco about this topic or question..."
               }
               className="flex-1 px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-100 border border-slate-200/90 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff7a00]/40 focus:bg-white transition-all"
             />
