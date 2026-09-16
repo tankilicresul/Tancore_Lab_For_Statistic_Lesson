@@ -4,7 +4,6 @@ import { useAppStore } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
 import { TanCoreMascotAvatar } from '../components/TanCoreMascotAvatar';
 import {
-  BookOpen,
   Zap,
   Dices,
   BarChart3,
@@ -119,17 +118,8 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </div>
 
-      {/* Course Track Selection Section (Öğrenmek İstediğin Alanı Seç) */}
-      <div className="bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-6 shadow-sm">
-        <div className="flex items-center space-x-2 mb-4 px-1">
-          <BookOpen className="w-4.5 h-4.5 text-[#ff7a00]" />
-          <h2 className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-800">
-            {language === 'tr' ? 'Öğrenmek İstediğin Alanı Seç' : 'Select Learning Track'}
-          </h2>
-        </div>
-
-        {/* 2 Square Course Cards in 1 Row */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-4">
+      {/* Course Track Selection - 2 Square Course Cards in 1 Row */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
           {/* Card 1: Olasılık */}
           <button
             onClick={() => onSelectTrack('probability')}
@@ -196,7 +186,6 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
           </button>
         </div>
-      </div>
     </div>
   );
 };
