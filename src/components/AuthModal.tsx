@@ -1,8 +1,7 @@
 ﻿import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore, isValidStudentEmail } from '../store/useAppStore';
-import { sendEmailOtp, verifyEmailOtp, uploadAvatarImage } from '../lib/supabase';
+import { sendEmailOtp, verifyEmailOtp } from '../lib/supabase';
 import { UserProfile } from '../types/stats';
-import { AvatarCropModal } from './AvatarCropModal';
 import {
   X,
   Mail,
@@ -11,13 +10,10 @@ import {
   GraduationCap,
   Building2,
   ShieldCheck,
-  ArrowRight,
   RefreshCw,
   CheckCircle2,
   KeyRound,
-  Sparkles,
   Info,
-  Camera,
   Loader2,
   LogIn,
   UserPlus,
@@ -29,7 +25,7 @@ interface AuthModalProps {
   initialTab?: 'login' | 'register';
 }
 
-const AVATAR_OPTIONS = ['👨‍🎓', '👩‍🎓', '👨‍💻', '👩‍💻', '👨‍🔬', '👩‍🔬', '🚀', '⚡', '📊', '🧠'];
+const RANDOM_AVATARS = ['👨‍🎓', '👩‍🎓', '👨‍💻', '👩‍💻', '👨‍🔬', '👩‍🔬', '🚀', '⚡', '📊', '🧠', '🦉', '🎯'];
 
 export const AuthModal: React.FC<AuthModalProps> = ({
   onClose,
@@ -61,13 +57,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     university: '',
     departmentAndClass: '',
     avatarEmoji: '👨‍🎓',
-    avatarUrl: undefined,
   });
   const [registerPassword, setRegisterPassword] = useState('');
-
-  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const [cropTargetImage, setCropTargetImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // OTP State (6 digits)
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
@@ -84,40 +75,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
     return () => clearInterval(timer);
   }, [step, resendTimer]);
-
-  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (file.size > 10 * 1024 * 1024) {
-      alert(language === 'tr' ? 'Fotoğraf boyutu en fazla 10MB olabilir.' : 'Photo size must be less than 10MB.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setCropTargetImage(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-
-    if (fileInputRef.current) fileInputRef.current.value = '';
-  };
-
-  const handleCropComplete = async (croppedFile: File) => {
-    setIsUploadingAvatar(true);
-    try {
-      const email = formData.schoolEmail.trim().toLowerCase() || 'register_user';
-      const res = await uploadAvatarImage(croppedFile, email);
-      if (res.success && res.url) {
-        setFormData((prev) => ({ ...prev, avatarUrl: res.url }));
-        setCropTargetImage(null);
-      } else {
-        alert(res.error || (language === 'tr' ? 'Fotoğraf yüklenemedi.' : 'Upload failed.'));
-      }
-    } finally {
-      setIsUploadingAvatar(false);
-    }
-  };
 
   // Submit Login Form
   const handleLoginSubmit = async (e: React.FormEvent) => {
@@ -201,9 +158,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         setSimulatedCode(null);
       }
 
+      const randomEmoji = RANDOM_AVATARS[Math.floor(Math.random() * RANDOM_AVATARS.length)];
+
       registerAccountAndSendOtp(
         {
           ...formData,
+          avatarEmoji: randomEmoji,
           password: registerPassword || '123456',
         },
         res.simulatedCode
@@ -295,9 +255,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     try {
       const res = await sendEmailOtp(formData.schoolEmail);
       if (res.simulatedCode) setSimulatedCode(res.simulatedCode);
+      const randomEmoji = RANDOM_AVATARS[Math.floor(Math.random() * RANDOM_AVATARS.length)];
       registerAccountAndSendOtp(
         {
           ...formData,
+          avatarEmoji: randomEmoji,
           password: registerPassword || '123456',
         },
         res.simulatedCode
@@ -313,7 +275,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-md animate-fade-in font-sans">
-      <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden max-h-[95vh] flex flex-col">
+      <div className="relative w-full max-w-md bg-white border border-slate-200 rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden max-h-[95vh] flex flex-col">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -478,74 +440,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         {/* ─── TAB 2: KAYIT OL (REGISTER FORM) ─── */}
         {step === 'register' && activeTab === 'register' && (
           <form onSubmit={handleSendOtp} autoComplete="off" className="space-y-3 flex-1 overflow-y-auto pr-1">
-            {/* Avatar Photo & Emoji Selector */}
-            <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5">
-              <label className="block text-xs font-bold text-slate-700">
-                {language === 'tr' ? 'Profil Fotoğrafı veya Avatar Seçin' : 'Choose Profile Photo or Avatar'}
-              </label>
-
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-[#ff7a00] text-white font-black text-xl flex items-center justify-center border-2 border-white shadow-xs shrink-0 overflow-hidden relative">
-                  {isUploadingAvatar ? (
-                    <Loader2 className="w-5 h-5 animate-spin text-white" />
-                  ) : formData.avatarUrl ? (
-                    <img src={formData.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-                  ) : (
-                    formData.avatarEmoji || (formData.fullName ? formData.fullName.charAt(0).toUpperCase() : '👨‍🎓')
-                  )}
-                </div>
-
-                <div className="flex-1 min-w-0 space-y-1">
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleAvatarFileChange}
-                    accept="image/*"
-                    className="hidden"
-                  />
-                  <div className="flex flex-wrap items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={isUploadingAvatar}
-                      className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95 disabled:opacity-50"
-                    >
-                      <Camera className="w-3.5 h-3.5" />
-                      <span>{language === 'tr' ? 'Fotoğraf Seç / Çek' : 'Upload / Take Photo'}</span>
-                    </button>
-
-                    {formData.avatarUrl && (
-                      <button
-                        type="button"
-                        onClick={() => setFormData((prev) => ({ ...prev, avatarUrl: undefined }))}
-                        className="px-2.5 py-1.5 rounded-xl bg-slate-200 hover:bg-rose-100 text-slate-700 hover:text-rose-700 text-xs font-bold transition-colors cursor-pointer"
-                      >
-                        {language === 'tr' ? 'Kaldır' : 'Remove'}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Emoji Options */}
-              <div className="flex items-center space-x-1.5 overflow-x-auto py-0.5 scrollbar-none">
-                {AVATAR_OPTIONS.map((emoji) => (
-                  <button
-                    key={emoji}
-                    type="button"
-                    onClick={() => setFormData({ ...formData, avatarEmoji: emoji, avatarUrl: undefined })}
-                    className={`w-8 h-8 rounded-full text-base flex items-center justify-center transition-all border shrink-0 cursor-pointer ${
-                      !formData.avatarUrl && formData.avatarEmoji === emoji
-                        ? 'bg-gradient-to-br from-[#ff7a00] to-orange-500 text-white border-white ring-2 ring-[#ff7a00] scale-105 shadow-xs'
-                        : 'bg-white hover:bg-slate-100 border-slate-200 text-slate-700'
-                    }`}
-                  >
-                    {emoji}
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* Full Name */}
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
@@ -689,7 +583,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
             {simulatedCode && (
               <div className="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold text-center flex items-center justify-center space-x-2">
-                <Sparkles className="w-4 h-4 text-amber-600 shrink-0 animate-spin" />
+                <Loader2 className="w-4 h-4 text-amber-600 shrink-0" />
                 <span>
                   {language === 'tr' ? 'Test Onay Kodu: ' : 'Test Verification Code: '}
                   <strong className="font-mono text-sm tracking-wider text-[#ff7a00] ml-1">{simulatedCode}</strong>
@@ -744,15 +638,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </form>
         )}
       </div>
-
-      {cropTargetImage && (
-        <AvatarCropModal
-          imageSrc={cropTargetImage}
-          onCropComplete={handleCropComplete}
-          onClose={() => setCropTargetImage(null)}
-          language={language}
-        />
-      )}
     </div>
   );
 };
