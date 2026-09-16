@@ -341,16 +341,6 @@ export const CoursePage: React.FC<CoursePageProps> = ({
     return pattern[index % pattern.length];
   };
 
-  const trackTitle =
-    selectedTrack === 'statistics'
-      ? language === 'tr' ? 'Uygulamalı İstatistik' : 'Applied Statistics'
-      : language === 'tr' ? 'Mühendisler İçin Olasılık ve Rastgele Değişkenler' : 'Probability and Random Variables for Engineers';
-
-  const trackDescription =
-    selectedTrack === 'statistics'
-      ? language === 'tr' ? 'Merkezi Eğilim, Hipotez Testleri, Regresyon & İş Vakaları' : 'Descriptive, Hypothesis Testing & Business Cases'
-      : language === 'tr' ? 'Temel Olasılık, Bayes Teoremi, Dağılımlar & Monte Carlo' : 'Probability Rules, Bayes & Monte Carlo';
-
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden animate-fade-in">
       {/* Top Header Navigation Bar */}
@@ -366,33 +356,6 @@ export const CoursePage: React.FC<CoursePageProps> = ({
         <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-[#ff7a00] font-mono text-[10px] sm:text-xs font-black">
           {selectedTrack === 'statistics' ? <BarChart3 className="w-3.5 h-3.5" /> : <Dices className="w-3.5 h-3.5" />}
           <span>{selectedTrack === 'statistics' ? 'APPLIED STATISTICS' : 'PROBABILITY & RANDOM VARIABLES'}</span>
-        </div>
-      </div>
-
-      {/* Course Track Header Banner */}
-      <div className="relative mb-6 p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white shadow-xl overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff7a00]/20 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="flex items-center space-x-4 relative z-10">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shadow-lg shadow-[#ff7a00]/30 shrink-0">
-            {selectedTrack === 'statistics' ? (
-              <BarChart3 className="w-8 h-8 stroke-[2.25]" />
-            ) : (
-              <Dices className="w-8 h-8 stroke-[2.25]" />
-            )}
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
-              {language === 'tr' ? 'DERS AKIŞI' : 'COURSE PATH'}
-            </span>
-            <h1 className="text-lg sm:text-2xl font-black tracking-tight text-white leading-tight mt-0.5">
-              {trackTitle}
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-300 font-medium mt-1 leading-relaxed">
-              {trackDescription}
-            </p>
-          </div>
         </div>
       </div>
 

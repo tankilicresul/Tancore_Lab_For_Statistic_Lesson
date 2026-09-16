@@ -9,9 +9,73 @@
   "iconName": "Dices",
   "lessons": [
     {
-      "id": "m2-l1",
+      "id": "m2-l0",
       "moduleId": "module-2",
       "order": 1,
+      "difficulty": "basit",
+      "isOrientation": true,
+      "title": { "tr": "Ders Tanıtımı & Yol Haritası", "en": "Course Overview & Roadmap" },
+      "conceptCard": {
+        "tr": "Mühendisler İçin Olasılık ve Rastgele Değişkenler dersinde öğreneceğin tüm modüller, konular ve başarı yol haritası.",
+        "en": "Comprehensive learning roadmap and modules for Probability & Random Variables."
+      },
+      "companyExample": {
+        "tr": "Fintech fraud analizinden Monte Carlo ve yapay zeka olasılık modellerine kadar endüstriyel rehber.",
+        "en": "Industrial guide from fintech fraud analytics to Monte Carlo and AI probabilistic models."
+      },
+      "tancoSpeech": {
+        "tr": "Selam, ben Tanco! 🎲 Bu ders boyunca Olasılık ve Rastgele Değişkenler dersinin en temellerinden olan Örneklem Uzayı, Olaylar ve Olasılık Aksiyomları bilgilerinden başlayıp; Koşullu Olasılık & Bayes Teoremi, Kesikli ve Sürekli Rastgele Değişkenler (PMF, PDF, CDF), Beklenen Değer, Varyans ve Ortak Dağılımlar konularından taa en zor ve kritik problemlerden olan Büyük Sayılar Yasası (LLN), Merkezi Limit Teoremi (CLT) ve Monte Carlo Simülasyonları konularını adım adım öğreneceğiz!",
+        "en": "Hi, I'm Tanco! 🎲 Throughout this course, we will start from the core fundamentals of Probability & Random Variables—Sample Space, Events, and Probability Axioms—and advance through Conditional Probability, Bayes' Rule, Discrete and Continuous Random Variables (PMF, PDF, CDF), Expected Value, Variance & Joint Distributions, all the way to complex engineering challenges like Law of Large Numbers (LLN), Central Limit Theorem (CLT), and Monte Carlo Simulations!"
+      },
+      "roadmapModules": [
+        {
+          "order": 1,
+          "title": { "tr": "Olasılık Temelleri & Olay Cebiri", "en": "Probability Fundamentals & Events" },
+          "summary": { "tr": "Örneklem Uzayı, Olasılık Aksiyomları, Koşullu Olasılık ve Bayes Teoremi", "en": "Sample Space, Probability Axioms, Conditional Probability and Bayes' Theorem" }
+        },
+        {
+          "order": 2,
+          "title": { "tr": "Kesikli Rastgele Değişkenler", "en": "Discrete Random Variables" },
+          "summary": { "tr": "Olasılık Kütle Fonksiyonu (PMF), CDF, Binom, Geometrik ve Poisson Dağılımları", "en": "Probability Mass Function (PMF), CDF, Binomial, Geometric and Poisson Distributions" }
+        },
+        {
+          "order": 3,
+          "title": { "tr": "Sürekli Rastgele Değişkenler", "en": "Continuous Random Variables" },
+          "summary": { "tr": "Olasılık Yoğunluk Fonksiyonu (PDF), CDF, Düzgün, Üstel ve Normal Dağılım", "en": "Probability Density Function (PDF), CDF, Uniform, Exponential and Normal Distributions" }
+        },
+        {
+          "order": 4,
+          "title": { "tr": "Beklenen Değer & Varyans", "en": "Expected Value & Variance" },
+          "summary": { "tr": "Beklenen Değerin Doğrusallığı, Varyans, Kovaryans ve Korelasyon Katsayısı", "en": "Linearity of Expectation, Variance, Covariance and Correlation Coefficient" }
+        },
+        {
+          "order": 5,
+          "title": { "tr": "Ortak Olasılık Dağılımları", "en": "Joint Probability Distributions" },
+          "summary": { "tr": "Joint PMF/PDF, Marjinal Dağılımlar, Bağımsızlık ve Koşullu Dağılımlar", "en": "Joint PMF/PDF, Marginal Distributions, Independence and Conditional Distributions" }
+        },
+        {
+          "order": 6,
+          "title": { "tr": "Koşullu Beklenen Değer", "en": "Conditional Expectation" },
+          "summary": { "tr": "Toplam Beklenti Yasası (Law of Total Expectation) ve Koşullu Varyans", "en": "Law of Total Expectation and Conditional Variance Formulas" }
+        },
+        {
+          "order": 7,
+          "title": { "tr": "Limit Teoremleri (LLN & CLT)", "en": "Limit Theorems (LLN & CLT)" },
+          "summary": { "tr": "Markov ve Çebişev Eşitsizlikleri, Büyük Sayılar Yasası (LLN) ve Merkezi Limit Teoremi", "en": "Markov & Chebyshev Inequalities, Law of Large Numbers (LLN) and CLT" }
+        },
+        {
+          "order": 8,
+          "title": { "tr": "Monte Carlo & Stokastik Süreçler", "en": "Monte Carlo & Stochastic Processes" },
+          "summary": { "tr": "Monte Carlo Simülasyonları, Markov Zincirleri ve Algoritmik Risk Modelleme", "en": "Monte Carlo Simulations, Markov Chains and Algorithmic Risk Modeling" }
+        }
+      ],
+      "vocabTerms": [],
+      "questions": []
+    },
+    {
+      "id": "m2-l1",
+      "moduleId": "module-2",
+      "order": 2,
       "difficulty": "basit",
       "title": { "tr": "Temel Olasılık Kuralları", "en": "Basic Probability Rules" },
       "conceptCard": {

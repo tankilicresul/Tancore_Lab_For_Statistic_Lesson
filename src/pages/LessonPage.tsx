@@ -5,15 +5,33 @@ import { useAppStore } from '../store/useAppStore';
 import { VocabBox } from '../components/VocabBox';
 import { RealWorldBox } from '../components/RealWorldBox';
 import { InteractiveCalc } from '../components/InteractiveCalc';
-import { ArrowLeft, CheckCircle2, HelpCircle, Building2, Lightbulb, Trophy, Sparkles, Calculator, ChevronDown, ChevronUp, PartyPopper, Check, Eye, Loader2 } from 'lucide-react';
+import { TanCoreMascotAvatar } from '../components/TanCoreMascotAvatar';
+import {
+  ArrowLeft,
+  CheckCircle2,
+  HelpCircle,
+  Building2,
+  Lightbulb,
+  Trophy,
+  Sparkles,
+  Calculator,
+  ChevronDown,
+  ChevronUp,
+  PartyPopper,
+  Check,
+  Eye,
+  Loader2,
+  Bot,
+  ArrowRight,
+  Home,
+  RefreshCw,
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 import { ConceptDiagram } from '../components/ConceptDiagram';
 import { MathFormulaText } from '../components/MathFormulaText';
 import { KatexFormula } from '../components/KatexFormula';
 import { extractTopicFormula, stripFormulaFromText } from '../utils/formulaExtractor';
-
-import { ArrowRight, Home, RefreshCw } from 'lucide-react';
 import { getNextTopicItem } from '../data/modules';
 
 interface LessonPageProps {
@@ -31,7 +49,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
   onSelectNextTopic,
   onBackToHomeWithScroll,
 }) => {
-  const { language, completeLesson, completedLessons } = useAppStore();
+  const { language, completeLesson, completedLessons, setIsTancoChatOpen } = useAppStore();
 
   const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: string]: string | number }>({});
   const [submittedQuestions, setSubmittedQuestions] = useState<{ [questionId: string]: boolean }>({});
@@ -51,7 +69,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
         onSelectNextTopic(nextTopic.id, nextTopic.type);
       }
       setIsNextLoading(false);
-    }, 2000);
+    }, 1200);
   };
 
   const handleAnswerSubmit = (qId: string) => {
@@ -88,6 +106,161 @@ export const LessonPage: React.FC<LessonPageProps> = ({
     setIsCompleted(true);
     triggerConfetti();
   };
+
+  // Dedicated Orientation / Roadmap view for the first introductory lesson
+  if (lesson.isOrientation) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8 font-sans animate-fade-in">
+        {/* Top Breadcrumb Navigation */}
+        <div className="flex items-center justify-between gap-2 mb-6">
+          <button
+            onClick={() => (onBackToHomeWithScroll ? onBackToHomeWithScroll(lesson.id) : onBack())}
+            className="flex items-center space-x-1.5 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 bg-white px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-slate-200 shadow-2xs transition-colors shrink-0 cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#ff7a00] shrink-0" />
+            <span className="whitespace-nowrap">{language === 'tr' ? 'Ders Paneline Dön' : 'Back to Course'}</span>
+          </button>
+
+          <div className="flex items-center text-[10.5px] sm:text-xs font-extrabold text-[#ff7a00] bg-[#ff7a00]/10 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#ff7a00]/30 min-w-0">
+            <Sparkles className="w-3.5 h-3.5 mr-1" />
+            <span className="truncate whitespace-nowrap">{language === 'tr' ? 'DERS REHBERİ' : 'COURSE GUIDE'}</span>
+          </div>
+        </div>
+
+        {/* Lesson Main Header */}
+        <div className="mb-6">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight mb-2">
+            {getLocalized(lesson.title, language)}
+          </h1>
+          <div className="h-1.5 w-24 bg-[#ff7a00] rounded-full" />
+        </div>
+
+        {/* Tanco Mascot Speech Card */}
+        <div className="mb-6 p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-orange-50/80 via-white to-amber-50/50 border border-[#ff7a00]/30 shadow-md relative overflow-hidden">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+            <button
+              onClick={() => setIsTancoChatOpen(true)}
+              className="relative shrink-0 cursor-pointer group focus:outline-none"
+              title={language === 'tr' ? "Tanco ile Sohbet Et" : "Chat with Tanco"}
+            >
+              <TanCoreMascotAvatar size="lg" className="shadow-lg shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform" />
+              <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center border-2 border-white shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              </div>
+            </button>
+
+            <div className="flex-1 min-w-0">
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] text-[11px] font-black uppercase tracking-wider mb-2">
+                <span>🤖 {language === 'tr' ? 'Tanco Rehberin Konuşuyor' : 'Guide Tanco Speaking'}</span>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">
+                {lesson.tancoSpeech ? getLocalized(lesson.tancoSpeech, language) : getLocalized(lesson.conceptCard, language)}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Course Roadmap & Modules Grid */}
+        <div className="mb-6 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
+                {language === 'tr' ? '📚 Bu Derste Neler Öğreneceksin?' : '📚 What You Will Learn in This Course'}
+              </h2>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">
+                {language === 'tr' ? 'Tüm modüller ve öğrenilecek kritik yetkinlikler:' : 'All modules and critical competencies:'}
+              </p>
+            </div>
+            <span className="text-[11px] font-black font-mono text-[#ff7a00] bg-orange-50 px-2.5 py-1 rounded-full border border-orange-200">
+              8 {language === 'tr' ? 'Modül' : 'Modules'}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {lesson.roadmapModules?.map((mod) => (
+              <div
+                key={mod.order}
+                className="p-4 rounded-2xl bg-slate-50/80 border border-slate-200 hover:border-[#ff7a00]/40 transition-colors flex items-start space-x-3 group"
+              >
+                <div className="w-8 h-8 rounded-xl bg-[#ff7a00] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                  {mod.order}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight leading-snug">
+                    {getLocalized(mod.title, language)}
+                  </h3>
+                  <p className="text-[11px] text-slate-500 font-medium leading-snug mt-1">
+                    {getLocalized(mod.summary, language)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tanco Assistant Floating Reminder Card */}
+        <div className="mb-8 p-5 rounded-3xl bg-slate-900 text-white shadow-lg relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center space-x-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shrink-0 shadow-md shadow-[#ff7a00]/30">
+              <Bot className="w-5 h-5 stroke-[2.25]" />
+            </div>
+            <div>
+              <h4 className="text-xs sm:text-sm font-black text-white tracking-tight">
+                {language === 'tr' ? 'Hey, unutmadan!' : "Hey, don't forget!"}
+              </h4>
+              <p className="text-[11px] sm:text-xs text-slate-300 font-medium leading-relaxed mt-0.5 max-w-lg">
+                {language === 'tr'
+                  ? 'Çalışırken aklına takılan herhangi bir formülü veya soruyu sol alttaki Tanco Asistan butonuna tıklayarak bana anında sorabilirsin.'
+                  : 'Whenever you get stuck or have questions about formulas, you can chat with Assistant Tanco on the bottom-left.'}
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setIsTancoChatOpen(true)}
+            className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black transition-all shrink-0 cursor-pointer shadow-sm active:scale-95 text-center"
+          >
+            {language === 'tr' ? 'Tanco ile Konuş' : 'Chat with Tanco'}
+          </button>
+        </div>
+
+        {/* Bottom Navigation / Next Topic Start Button */}
+        <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-xs text-center">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <button
+              onClick={() => (onBackToHomeWithScroll ? onBackToHomeWithScroll(lesson.id) : onBack())}
+              className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs border border-slate-200 transition-colors flex items-center justify-center space-x-2 cursor-pointer"
+            >
+              <Home className="w-4 h-4 text-[#ff7a00]" />
+              <span>{language === 'tr' ? 'Ders Paneli' : 'Course Panel'}</span>
+            </button>
+
+            {nextTopic && (
+              <button
+                disabled={isNextLoading}
+                onClick={handleNextTopicClick}
+                className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white font-black text-xs uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/25 flex items-center justify-center space-x-2 cursor-pointer active:scale-95"
+              >
+                {isNextLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    <span>{language === 'tr' ? 'Açılıyor...' : 'Opening...'}</span>
+                  </>
+                ) : (
+                  <>
+                    <span>
+                      {language === 'tr' ? `Başla: ${getLocalized(nextTopic.title, language)}` : `Start: ${getLocalized(nextTopic.title, language)}`}
+                    </span>
+                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                  </>
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 font-sans animate-fade-in">

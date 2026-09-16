@@ -9,9 +9,73 @@
   "iconName": "BarChart3",
   "lessons": [
     {
-      "id": "m1-l1",
+      "id": "m1-l0",
       "moduleId": "module-1",
       "order": 1,
+      "difficulty": "basit",
+      "isOrientation": true,
+      "title": { "tr": "Ders Tanıtımı & Yol Haritası", "en": "Course Overview & Roadmap" },
+      "conceptCard": {
+        "tr": "Uygulamalı İstatistik dersinde öğreneceğin tüm modüller, konular ve başarı yol haritası.",
+        "en": "Comprehensive learning roadmap and modules for the Applied Statistics course."
+      },
+      "companyExample": {
+        "tr": "İş dünyasında A/B testlerinden kâr optimizasyonuna ve makine öğrenimi temellerine kadar analitik rehber.",
+        "en": "Analytical guide from A/B testing to profit optimization and data-driven corporate decision making."
+      },
+      "tancoSpeech": {
+        "tr": "Selam, ben Tanco! 🚀 Bu ders boyunca Uygulamalı İstatistik'in en temellerinden olan Veri Türleri, Merkezi Eğilim (Ortalama, Medyan, Mod) ve Yayılım Ölçüleri (Varyans, Standart Sapma) bilgilerinden başlayıp; Olasılık Dağılımları, Örnekleme ve Merkezi Limit Teoremi, Güven Aralıkları, Hipotez Testleri (z-testi, t-testi, ANOVA, Ki-Kare) konularından taa en zor ve analitik problemlerden olan Doğrusal ve Çoklu Regresyon, A/B Testleri ve Veriye Dayalı Karar Verme Modelleri konularını adım adım öğreneceğiz!",
+        "en": "Hi, I'm Tanco! 🚀 Throughout this course, we will start from the very fundamentals of Applied Statistics—Data Types, Measures of Central Tendency (Mean, Median, Mode) and Spread (Variance, Standard Deviation)—and journey through Probability Distributions, Sampling, CLT, Confidence Intervals, Hypothesis Testing (z-test, t-test, ANOVA, Chi-Square), all the way to advanced analytics like Linear & Multiple Regression, A/B Testing, and Business Decision Models!"
+      },
+      "roadmapModules": [
+        {
+          "order": 1,
+          "title": { "tr": "Tanımlayıcı İstatistik & Veri Özetleme", "en": "Descriptive Statistics & Summaries" },
+          "summary": { "tr": "Ortalama, Medyan, Mod, Varyans, Standart Sapma, Çeyreklikler & Outlier Tespiti", "en": "Mean, Median, Mode, Variance, Standard Deviation, Quartiles & Outlier Detection" }
+        },
+        {
+          "order": 2,
+          "title": { "tr": "Rastgele Değişkenler & Dağılımlar", "en": "Random Variables & Distributions" },
+          "summary": { "tr": "Kesikli ve Sürekli Dağılımlar, Binom, Poisson, Normal Dağılım & Z-Skorları", "en": "Discrete & Continuous Distributions, Binomial, Poisson, Normal Distribution & Z-Scores" }
+        },
+        {
+          "order": 3,
+          "title": { "tr": "Örnekleme & Merkezi Limit Teoremi", "en": "Sampling & Central Limit Theorem" },
+          "summary": { "tr": "Örnekleme Dağılımları, Standart Hata (SE), Büyük Sayılar Yasası ve CLT", "en": "Sampling Distributions, Standard Error (SE), Law of Large Numbers & CLT" }
+        },
+        {
+          "order": 4,
+          "title": { "tr": "Güven Aralıkları (Confidence Intervals)", "en": "Confidence Intervals" },
+          "summary": { "tr": "Anakütle Ortalaması ve Oranı için Güven Aralıkları, Student's t Dağılımı", "en": "Confidence Intervals for Population Means and Proportions, Student's t Distribution" }
+        },
+        {
+          "order": 5,
+          "title": { "tr": "Tek Örneklem Hipotez Testleri", "en": "One-Sample Hypothesis Testing" },
+          "summary": { "tr": "Sıfır Hipotezi, Alternatif Hipotez, Tip I/II Hata, p-Değeri, Z ve t Testleri", "en": "Null/Alternative Hypotheses, Type I/II Errors, p-Values, One-Sample Z and t Tests" }
+        },
+        {
+          "order": 6,
+          "title": { "tr": "İki Örneklem Testleri & ANOVA", "en": "Two-Sample Tests & ANOVA" },
+          "summary": { "tr": "Bağımsız ve Eşleştirilmiş t-Testleri, Tek Yönlü ANOVA ve F Dağılımı", "en": "Independent and Paired t-Tests, One-Way ANOVA and F Distribution" }
+        },
+        {
+          "order": 7,
+          "title": { "tr": "Ki-Kare Testleri & Bağımsızlık", "en": "Chi-Square Tests & Independence" },
+          "summary": { "tr": "Uyum İyiliği Testi (Goodness-of-Fit) ve Kontenjans Tablosu Bağımsızlık Testi", "en": "Goodness-of-Fit Tests and Contingency Table Independence Testing" }
+        },
+        {
+          "order": 8,
+          "title": { "tr": "Regresyon Analizi & Karar Verme", "en": "Regression Analysis & Decision Making" },
+          "summary": { "tr": "Basit ve Çoklu Doğrusal Regresyon, R², A/B Testleri ve İş Dünyası Karar Analitiği", "en": "Simple & Multiple Linear Regression, R-Squared, A/B Testing & Business Analytics" }
+        }
+      ],
+      "vocabTerms": [],
+      "questions": []
+    },
+    {
+      "id": "m1-l1",
+      "moduleId": "module-1",
+      "order": 2,
       "difficulty": "basit",
       "title": { "tr": "Ortalama (Mean)", "en": "Mean (Average)" },
       "conceptCard": {
