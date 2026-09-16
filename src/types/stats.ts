@@ -116,6 +116,7 @@ export interface UserState {
   pendingOtpEmail?: string;
   simulatedOtpCode?: string;
   selectedPublicProfile?: PublicProfile | null;
+  registeredUsers: PublicProfile[];
 }
 
 export interface PlacementTestResult {

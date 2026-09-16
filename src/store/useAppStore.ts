@@ -18,6 +18,7 @@ interface AppStoreActions {
   verifyOtpAndLogin: (token: string) => boolean;
   logout: () => void;
   setSelectedPublicProfile: (profile: PublicProfile | null) => void;
+  syncRegisteredUserInList: () => void;
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -44,18 +45,68 @@ const INITIAL_STATE: UserState = {
   pendingOtpEmail: undefined,
   simulatedOtpCode: undefined,
   selectedPublicProfile: null,
+  registeredUsers: [],
 };
+
+// Helper to keep current user synchronized inside registeredUsers list
+function syncUserInList(state: UserState): PublicProfile[] {
+  const profile = state.userProfile;
+  const currentEmail = profile.schoolEmail || 'guest@marun.edu.tr';
+
+  const userEntry: PublicProfile = {
+    id: profile.id || `usr_${currentEmail}`,
+    fullName: profile.fullName || 'Resul Tan',
+    schoolEmail: profile.schoolEmail,
+    university: profile.university || 'Marmara Üniversitesi',
+    departmentAndClass: profile.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
+    avatarEmoji: profile.avatarEmoji || '👨‍🎓',
+    xp: state.xp,
+    streak: state.streak,
+    rank: 1,
+    level: Math.floor(state.xp / 100) + 1,
+    completedCount: state.completedLessons.length + state.completedCaseExams.length,
+    unlockedBadges: state.unlockedBadges,
+  };
+
+  const existingList = state.registeredUsers || [];
+  const existingIdx = existingList.findIndex(
+    (u) => u.schoolEmail === currentEmail || u.fullName === profile.fullName
+  );
+
+  let newList: PublicProfile[];
+  if (existingIdx >= 0) {
+    newList = [...existingList];
+    newList[existingIdx] = { ...newList[existingIdx], ...userEntry };
+  } else {
+    newList = [...existingList, userEntry];
+  }
+
+  // Sort descending by XP
+  newList.sort((a, b) => b.xp - a.xp);
+  // Recalculate rank
+  return newList.map((u, i) => ({ ...u, rank: i + 1 }));
+}
 
 export const useAppStore = create<UserState & AppStoreActions>()(
   persist(
     (set, get) => ({
       ...INITIAL_STATE,
 
+      syncRegisteredUserInList: () => {
+        set((state) => ({
+          registeredUsers: syncUserInList(state),
+        }));
+      },
+
       updateUserProfile: (profile) => {
         set((state) => {
           const updatedProfile = { ...state.userProfile, ...profile };
           saveUserProfileToSupabase(updatedProfile);
-          return { userProfile: updatedProfile };
+          const newState = { ...state, userProfile: updatedProfile };
+          return {
+            userProfile: updatedProfile,
+            registeredUsers: syncUserInList(newState),
+          };
         });
       },
 
@@ -83,12 +134,22 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             createdAt: new Date().toISOString(),
           };
 
+          const tempState = {
+            ...state,
+            userProfile: verifiedProfile,
+            isAuthenticated: true,
+            isVerified: true,
+          };
+
+          const updatedUsers = syncUserInList(tempState);
+
           set({
             userProfile: verifiedProfile,
             isAuthenticated: true,
             isVerified: true,
             pendingOtpEmail: undefined,
             simulatedOtpCode: undefined,
+            registeredUsers: updatedUsers,
           });
 
           saveUserProfileToSupabase(verifiedProfile);
@@ -131,10 +192,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         if (diffDays === 1) {
-          // Continuous streak
           set((state) => ({ streak: state.streak + 1, lastActiveDate: today }));
         } else if (diffDays > 1) {
-          // Streak broken
           set({ streak: 1, lastActiveDate: today });
         }
       },
@@ -158,10 +217,20 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           newBadges.push('badge-10-lessons');
         }
 
+        const nextState = {
+          ...state,
+          completedLessons: newCompleted,
+          xp: newXp,
+          unlockedBadges: newBadges,
+        };
+
+        const updatedUsers = syncUserInList(nextState);
+
         set({
           completedLessons: newCompleted,
           xp: newXp,
           unlockedBadges: newBadges,
+          registeredUsers: updatedUsers,
         });
 
         get().checkAndUpdateStreak();
@@ -201,11 +270,22 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           newBadges.push('badge-case-master');
         }
 
+        const nextState = {
+          ...state,
+          completedCaseExams: newCompletedCases,
+          unlockedModules: newUnlockedModules,
+          xp: newXp,
+          unlockedBadges: newBadges,
+        };
+
+        const updatedUsers = syncUserInList(nextState);
+
         set({
           completedCaseExams: newCompletedCases,
           unlockedModules: newUnlockedModules,
           xp: newXp,
           unlockedBadges: newBadges,
+          registeredUsers: updatedUsers,
         });
 
         get().checkAndUpdateStreak();
@@ -230,9 +310,18 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const updatedUnlocked = Array.from(new Set([...state.unlockedModules, ...modulesToUnlock]));
         const bonusXp = state.xp + 150;
 
+        const nextState = {
+          ...state,
+          unlockedModules: updatedUnlocked,
+          xp: bonusXp,
+        };
+
+        const updatedUsers = syncUserInList(nextState);
+
         set({
           unlockedModules: updatedUnlocked,
           xp: bonusXp,
+          registeredUsers: updatedUsers,
         });
 
         get().checkAndUpdateStreak();
