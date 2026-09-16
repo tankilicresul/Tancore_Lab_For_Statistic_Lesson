@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { Flame, Globe, Zap, UserCheck, ShieldCheck } from 'lucide-react';
+import { Flame, Globe, Zap, UserCheck, ShieldCheck, Home } from 'lucide-react';
 import { ProfileModal } from './ProfileModal';
 import { AuthModal } from './AuthModal';
 import { PublicProfileModal } from './PublicProfileModal';
@@ -40,6 +40,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             href="#"
             onClick={(e) => {
               e.preventDefault();
+              setShowProfile(false);
               onGoHome?.();
             }}
             className="flex items-center space-x-1.5 sm:space-x-2 group cursor-pointer shrink-0 z-10"
@@ -59,7 +60,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             </span>
           </a>
 
-          {/* User Stats & Controls: Streak, Language and Profile */}
+          {/* User Stats & Controls: Streak, Language and Profile / Home Icon */}
           <div className="flex items-center space-x-1 sm:space-x-2 shrink-0 z-10">
             {/* Streak */}
             <div className="flex items-center space-x-1 bg-[#ff7a00]/10 border border-[#ff7a00]/30 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[#ff7a00] font-extrabold text-[10px] sm:text-xs tracking-wide shadow-xs">
@@ -78,7 +79,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
               <span>{language.toUpperCase()}</span>
             </button>
 
-            {/* Registration / Auth Button or My Profile Avatar */}
+            {/* Registration / Auth Button or My Profile / Home Icon Button */}
             {!isAuthenticated || !isVerified ? (
               <button
                 onClick={() => setShowAuth(true)}
@@ -88,7 +89,17 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                 <UserCheck className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">{language === 'tr' ? 'Kayıt Ol' : 'Sign Up'}</span>
               </button>
+            ) : showProfile ? (
+              /* When Profile is Open: Rightmost Button becomes Home Icon (🏠 Ev İkonu) */
+              <button
+                onClick={() => setShowProfile(false)}
+                className="p-1.5 sm:p-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white transition-all shadow-md shadow-[#ff7a00]/30 flex items-center justify-center cursor-pointer"
+                title={language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
+              >
+                <Home className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.25]" />
+              </button>
             ) : (
+              /* When Profile is Closed: Rightmost Button shows Profile Avatar */
               <button
                 onClick={() => setShowProfile(true)}
                 className="p-1 sm:p-1.5 rounded-xl bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border border-[#ff7a00]/40 transition-colors shadow-xs flex items-center justify-center space-x-1 font-bold text-xs cursor-pointer"

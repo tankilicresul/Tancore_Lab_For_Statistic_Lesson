@@ -90,24 +90,15 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
   const top3 = sortedLeaderboard[2];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in font-sans">
-      <div className="relative w-full max-w-xl bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
-        {/* Floating Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-6 z-30 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white/90 hover:text-white border border-white/20 transition-colors backdrop-blur-xs cursor-pointer"
-          title="Kapat"
-        >
-          <X className="w-4 h-4 sm:w-5 sm:h-5" />
-        </button>
-
+    <div className="fixed inset-0 z-40 pt-16 sm:pt-20 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in font-sans">
+      <div className="relative w-full max-w-xl bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden max-h-[85vh] flex flex-col">
         {/* Scrollable Body */}
         <div className="space-y-4 overflow-y-auto pr-0.5 flex-1">
           {/* User Profile Identity Card */}
           <div className="bg-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-lg relative overflow-hidden">
             <div className="absolute top-0 right-0 w-48 h-48 bg-[#ff7a00]/15 rounded-full blur-2xl -mr-12 -mt-12 pointer-events-none" />
 
-            <div className="flex items-start justify-between relative z-10 gap-2 pr-9 sm:pr-10">
+            <div className="flex items-start justify-between relative z-10 gap-2">
               <div className="flex items-center space-x-3 min-w-0 flex-1">
                 <div className="w-12 h-12 rounded-2xl bg-[#ff7a00] text-white font-black text-xl flex items-center justify-center border border-white/20 shadow-md shrink-0">
                   {userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')}
