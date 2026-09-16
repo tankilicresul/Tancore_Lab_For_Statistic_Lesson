@@ -406,7 +406,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     <div className="min-h-screen w-full bg-white font-sans flex flex-col overflow-x-hidden animate-fade-in">
       
       {/* TOP LAYER: Complete Orange Section (Üst Kısım Komple Turuncu) */}
-      <div className="w-full bg-gradient-to-br from-[#ff7a00] via-orange-600 to-amber-600 px-6 py-12 sm:px-12 sm:py-16 text-white relative overflow-hidden flex flex-col items-center justify-center shadow-sm">
+      <div className="w-full bg-gradient-to-br from-[#ff7a00] via-orange-600 to-amber-600 px-6 pt-14 pb-24 sm:px-12 sm:pt-20 sm:pb-32 text-white relative overflow-hidden flex flex-col items-center justify-center shadow-sm">
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-black/10 rounded-full blur-2xl pointer-events-none" />
 
