@@ -243,6 +243,7 @@ export const TancoChatModal: React.FC = () => {
     }
 
     if (isTancoChatOpen) {
+      localStorage.setItem('tancore_last_read_tanco_chat_v1', String(Date.now()));
       loadCloudHistory();
     }
 

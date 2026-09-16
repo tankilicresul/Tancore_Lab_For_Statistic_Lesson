@@ -2,7 +2,9 @@ import React, { useState, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { ALL_MODULES } from '../data/modules';
 import { PublicProfile } from '../types/stats';
-import { uploadAvatarImage } from '../lib/supabase';
+import { uploadAvatarImage, deleteUserAvatar, saveUserProfileToSupabase } from '../lib/supabase';
+import { AvatarCropModal } from './AvatarCropModal';
+import { UserAvatar } from './UserAvatar';
 import {
   X,
   GraduationCap,
@@ -145,10 +147,14 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                 >
                   {isUploadingAvatar ? (
                     <Loader2 className="w-5 h-5 animate-spin text-white" />
-                  ) : userProfile?.avatarUrl ? (
-                    <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
                   ) : (
-                    userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
+                    <UserAvatar
+                      avatarUrl={userProfile?.avatarUrl}
+                      avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
+                      fullName={userProfile?.fullName}
+                      size="md"
+                      className="w-full h-full"
+                    />
                   )}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <Camera className="w-4 h-4 text-white" />

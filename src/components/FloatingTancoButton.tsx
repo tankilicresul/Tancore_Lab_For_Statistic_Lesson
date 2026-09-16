@@ -1,16 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Bell } from 'lucide-react';
+import { getLatestTancoMessageInfo } from '../lib/supabase';
 
 // Use v3 storage key to ensure users get the new well-positioned coordinates
 const STORAGE_KEY = 'tancore_floating_avatar_pos_v3';
+const LAST_READ_KEY = 'tancore_last_read_tanco_chat_v1';
 
 export const FloatingTancoButton: React.FC = () => {
-  const { language, isTancoChatOpen, setIsTancoChatOpen } = useAppStore();
+  const { language, isTancoChatOpen, setIsTancoChatOpen, userProfile } = useAppStore();
 
   const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [hasUnread, setHasUnread] = useState(false);
+
   const isPointerDownRef = useRef(false);
   const dragStartRef = useRef<{ startX: number; startY: number; initialX: number; initialY: number }>({
     startX: 0,
@@ -37,6 +41,48 @@ export const FloatingTancoButton: React.FC = () => {
     };
   };
 
+  // Check unread messages from Tanco
+  const checkUnreadNotification = useCallback(async () => {
+    if (isTancoChatOpen) {
+      setHasUnread(false);
+      return;
+    }
+
+    const userIdentifier = userProfile?.schoolEmail || userProfile?.id;
+    if (!userIdentifier) return;
+
+    try {
+      const latestMsg = await getLatestTancoMessageInfo(userIdentifier);
+      if (latestMsg && latestMsg.sender === 'tanco') {
+        const lastReadStr = localStorage.getItem(LAST_READ_KEY);
+        const lastReadTime = lastReadStr ? Number(lastReadStr) : 0;
+        const msgTime = new Date(latestMsg.createdAt).getTime();
+
+        if (msgTime > lastReadTime) {
+          setHasUnread(true);
+          return;
+        }
+      }
+      setHasUnread(false);
+    } catch {
+      // ignore
+    }
+  }, [isTancoChatOpen, userProfile]);
+
+  useEffect(() => {
+    checkUnreadNotification();
+    const interval = setInterval(checkUnreadNotification, 12000);
+    return () => clearInterval(interval);
+  }, [checkUnreadNotification]);
+
+  // When chat modal opens, mark as read
+  useEffect(() => {
+    if (isTancoChatOpen) {
+      setHasUnread(false);
+      localStorage.setItem(LAST_READ_KEY, String(Date.now()));
+    }
+  }, [isTancoChatOpen]);
+
   // Initialize position from localStorage or calculate responsive default
   useEffect(() => {
     const updateDefaultPosition = () => {
@@ -54,8 +100,6 @@ export const FloatingTancoButton: React.FC = () => {
       }
 
       const isMobile = window.innerWidth < 640;
-      // Desktop: placed noticeably more inward towards the middle-right so it's fully visible and not clipped
-      // Mobile: placed significantly higher up so it's easily reachable and away from bottom gestures/navigation
       const defX = isMobile
         ? window.innerWidth - 76
         : Math.min(window.innerWidth - 130, Math.max(window.innerWidth / 2 + 180, window.innerWidth - 160));
@@ -97,7 +141,6 @@ export const FloatingTancoButton: React.FC = () => {
       initialY: currentY,
     };
 
-    // Capture pointer
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
 
     const onPointerMove = (moveEv: PointerEvent) => {
@@ -131,7 +174,9 @@ export const FloatingTancoButton: React.FC = () => {
           savePosition(position);
         }
       } else {
-        // Normal click/tap: open Tanco Chat!
+        // Normal click/tap: open Tanco Chat & clear notification badge
+        setHasUnread(false);
+        localStorage.setItem(LAST_READ_KEY, String(Date.now()));
         setIsTancoChatOpen(true);
       }
     };
@@ -160,24 +205,37 @@ export const FloatingTancoButton: React.FC = () => {
         isDragging ? 'cursor-grabbing' : 'cursor-grab'
       }`}
     >
-      {/* Dynamic Label Badge: anchors towards center of screen to prevent clipping */}
-      {!isDragging && (
+      {/* Dynamic Label or Unread Notification Alert Bubble */}
+      {hasUnread ? (
         <div
-          className={`hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 text-white text-[11px] font-bold tracking-wide shadow-lg backdrop-blur-xs pointer-events-none whitespace-nowrap absolute top-1/2 -translate-y-1/2 transition-opacity duration-300 ${
-            isLeftHalf ? 'left-full ml-2.5' : 'right-full mr-2.5'
+          className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-red-600 via-rose-500 to-orange-500 text-white text-[11px] font-black tracking-wide shadow-xl shadow-red-500/30 border border-white/40 pointer-events-none whitespace-nowrap absolute top-1/2 -translate-y-1/2 animate-bounce transition-all duration-300 ${
+            isLeftHalf ? 'left-full ml-3' : 'right-full mr-3'
           }`}
         >
-          <Sparkles className="w-3.5 h-3.5 text-[#ff7a00]" />
-          <span>{language === 'tr' ? "Tanco'ya Sor" : 'Ask Tanco'}</span>
+          <Bell className="w-3.5 h-3.5 text-yellow-300 animate-wiggle" />
+          <span>{language === 'tr' ? "Tanco'dan Yeni Mesaj! 🔔" : 'New Message from Tanco! 🔔'}</span>
         </div>
+      ) : (
+        !isDragging && (
+          <div
+            className={`hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 text-white text-[11px] font-bold tracking-wide shadow-lg backdrop-blur-xs pointer-events-none whitespace-nowrap absolute top-1/2 -translate-y-1/2 transition-opacity duration-300 ${
+              isLeftHalf ? 'left-full ml-2.5' : 'right-full mr-2.5'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#ff7a00]" />
+            <span>{language === 'tr' ? "Tanco'ya Sor" : 'Ask Tanco'}</span>
+          </div>
+        )
       )}
 
-      {/* Mascot Draggable Avatar with Ultra-Smooth Breathing Animation */}
+      {/* Mascot Draggable Avatar with Breathing and Glow Effects */}
       <div
-        className={`relative p-1 rounded-full bg-white border-2 border-[#ff7a00] transition-all duration-300 ${
-          isDragging
-            ? 'scale-110 shadow-2xl ring-4 ring-[#ff7a00]/40'
-            : 'animate-tanco-breathe hover:scale-110'
+        className={`relative p-1 rounded-full bg-white border-2 transition-all duration-300 ${
+          hasUnread
+            ? 'border-red-500 ring-4 ring-red-400/40 shadow-xl shadow-red-500/30'
+            : isDragging
+            ? 'border-[#ff7a00] scale-110 shadow-2xl ring-4 ring-[#ff7a00]/40'
+            : 'border-[#ff7a00] animate-tanco-breathe hover:scale-110'
         }`}
         title={
           language === 'tr'
@@ -190,11 +248,21 @@ export const FloatingTancoButton: React.FC = () => {
             size="md"
             className="rounded-full shadow-inner pointer-events-none"
           />
+
           {/* Glowing Green Online Status Dot */}
           <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white shadow-xs animate-pulse" />
+
+          {/* Attention-Grabbing Red/Orange Unread Notification Badge */}
+          {hasUnread && (
+            <div className="absolute -top-1.5 -right-1.5 z-20 flex items-center justify-center pointer-events-none">
+              <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-rose-500 opacity-75" />
+              <span className="relative inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-gradient-to-r from-rose-500 to-red-600 text-white text-[10px] font-black shadow-md border-2 border-white ring-1 ring-red-400/50">
+                1
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
-

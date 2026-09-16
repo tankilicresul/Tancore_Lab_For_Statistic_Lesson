@@ -1,5 +1,7 @@
 import React from 'react';
 import { PublicProfile } from '../types/stats';
+import { getLocalized } from '../utils/localization';
+import { UserAvatar } from './UserAvatar';
 import { useAppStore } from '../store/useAppStore';
 import {
   X,
@@ -54,11 +56,13 @@ export const PublicProfileModal: React.FC<PublicProfileModalProps> = ({ profile,
               {/* Avatar Photo / Emoji */}
               <div className="relative shrink-0">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-[#ff7a00]/60 flex items-center justify-center text-3xl sm:text-4xl shadow-lg overflow-hidden">
-                  {profile.avatarUrl ? (
-                    <img src={profile.avatarUrl} alt={profile.fullName} className="w-full h-full object-cover rounded-full" />
-                  ) : (
-                    profile.avatarEmoji || '👦'
-                  )}
+                  <UserAvatar
+                    avatarUrl={profile.avatarUrl}
+                    avatarEmoji={profile.avatarEmoji || '👨‍🎓'}
+                    fullName={profile.fullName}
+                    size="xl"
+                    className="w-full h-full"
+                  />
                 </div>
                 <div
                   className={`absolute -bottom-2 -right-2 px-2 py-0.5 rounded-full text-[10px] font-black border shadow-md bg-gradient-to-r ${rankColor}`}

@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
-import { PLACEMENT_QUESTIONS, PlacementQuestion } from '../data/placementQuestions';
+import { getPlacementQuestionsForTrack, PlacementQuestion } from '../data/placementQuestions';
 import { ALL_MODULES } from '../data/modules';
 import { useAppStore } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
 import { MathFormulaText } from '../components/MathFormulaText';
 import {
   Sparkles,
-  CheckCircle2,
-  XCircle,
   ArrowRight,
-  RotateCcw,
   Trophy,
-  Award,
-  BookOpen,
   ArrowLeft,
   Zap,
   Check,
-  Star,
+  Dices,
+  BarChart3,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -25,13 +21,15 @@ interface PlacementTestPageProps {
 }
 
 export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHome }) => {
-  const { language, unlockUpToModule } = useAppStore();
+  const { language, unlockUpToModule, selectedTrack } = useAppStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string>>({});
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [customModuleId, setCustomModuleId] = useState<string>('module-1');
 
-  const currentQuestion = PLACEMENT_QUESTIONS[currentIndex];
+  const activeTrack = selectedTrack === 'statistics' ? 'statistics' : 'probability';
+  const questions: PlacementQuestion[] = getPlacementQuestionsForTrack(activeTrack);
+  const currentQuestion = questions[currentIndex] || questions[0];
 
   const handleSelectOption = (optionText: string) => {
     setSelectedAnswers((prev) => ({
@@ -41,7 +39,7 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
   };
 
   const handleNext = () => {
-    if (currentIndex < PLACEMENT_QUESTIONS.length - 1) {
+    if (currentIndex < questions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
       // Completed all 10 diagnostic questions
@@ -56,7 +54,7 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
 
   // Calculate score & recommended module placement
   let correctAnswersCount = 0;
-  PLACEMENT_QUESTIONS.forEach((q) => {
+  questions.forEach((q) => {
     const selected = selectedAnswers[q.id];
     if (!selected) return;
 
@@ -77,12 +75,21 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
   });
 
   const getRecommendedModule = (score: number) => {
-    if (score <= 1) return ALL_MODULES.find((m) => m.id === 'module-13') || ALL_MODULES[0];
-    if (score <= 3) return ALL_MODULES.find((m) => m.id === 'module-2') || ALL_MODULES[1];
-    if (score <= 5) return ALL_MODULES.find((m) => m.id === 'module-14') || ALL_MODULES[2];
-    if (score <= 7) return ALL_MODULES.find((m) => m.id === 'module-3') || ALL_MODULES[3];
-    if (score <= 9) return ALL_MODULES.find((m) => m.id === 'module-15') || ALL_MODULES[4];
-    return ALL_MODULES.find((m) => m.id === 'module-12') || ALL_MODULES[11];
+    if (activeTrack === 'statistics') {
+      if (score <= 1) return ALL_MODULES.find((m) => m.id === 'module-1') || ALL_MODULES[0];
+      if (score <= 3) return ALL_MODULES.find((m) => m.id === 'module-5') || ALL_MODULES[4];
+      if (score <= 5) return ALL_MODULES.find((m) => m.id === 'module-6') || ALL_MODULES[5];
+      if (score <= 7) return ALL_MODULES.find((m) => m.id === 'module-7') || ALL_MODULES[6];
+      if (score <= 9) return ALL_MODULES.find((m) => m.id === 'module-8') || ALL_MODULES[7];
+      return ALL_MODULES.find((m) => m.id === 'module-9') || ALL_MODULES[8];
+    } else {
+      if (score <= 1) return ALL_MODULES.find((m) => m.id === 'module-13') || ALL_MODULES[0];
+      if (score <= 3) return ALL_MODULES.find((m) => m.id === 'module-2') || ALL_MODULES[1];
+      if (score <= 5) return ALL_MODULES.find((m) => m.id === 'module-14') || ALL_MODULES[2];
+      if (score <= 7) return ALL_MODULES.find((m) => m.id === 'module-3') || ALL_MODULES[3];
+      if (score <= 9) return ALL_MODULES.find((m) => m.id === 'module-15') || ALL_MODULES[4];
+      return ALL_MODULES.find((m) => m.id === 'module-12') || ALL_MODULES[11];
+    }
   };
 
   const recommendedModule = getRecommendedModule(correctAnswersCount);
@@ -99,18 +106,30 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 font-sans">
       {/* Navigation Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <button
           onClick={() => onBackToHome()}
-          className="flex items-center space-x-2 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors bg-white px-3.5 py-2 rounded-xl border border-slate-200"
+          className="flex items-center space-x-2 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors bg-white px-3.5 py-2 rounded-xl border border-slate-200 self-start"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>{language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}</span>
+          <span>{language === 'tr' ? 'Ders Haritasına Dön' : 'Back to Curriculum'}</span>
         </button>
 
-        <div className="flex items-center space-x-2 px-3 py-1.5 bg-[#ff7a00]/15 text-[#ff7a00] rounded-full border border-[#ff7a00]/30 text-xs font-black">
-          <Sparkles className="w-4 h-4" />
-          <span>{language === 'tr' ? 'Seviye Belirleme Sınavı' : 'Placement Assessment'}</span>
+        <div className="flex items-center space-x-2 px-3.5 py-1.5 bg-[#ff7a00]/15 text-[#ff7a00] rounded-full border border-[#ff7a00]/30 text-xs font-black self-start sm:self-auto shadow-xs">
+          {activeTrack === 'statistics' ? (
+            <BarChart3 className="w-4 h-4 text-[#ff7a00]" />
+          ) : (
+            <Dices className="w-4 h-4 text-[#ff7a00]" />
+          )}
+          <span>
+            {activeTrack === 'statistics'
+              ? language === 'tr'
+                ? 'İstatistik: Seviye Belirleme Sınavı'
+                : 'Applied Stats: Placement Test'
+              : language === 'tr'
+              ? 'Olasılık: Seviye Belirleme Sınavı'
+              : 'Probability: Placement Test'}
+          </span>
         </div>
       </div>
 
@@ -121,8 +140,8 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
           <div className="flex items-center justify-between text-xs font-extrabold text-slate-500">
             <span>
               {language === 'tr'
-                ? `Soru ${currentIndex + 1} / ${PLACEMENT_QUESTIONS.length}`
-                : `Question ${currentIndex + 1} of ${PLACEMENT_QUESTIONS.length}`}
+                ? `Soru ${currentIndex + 1} / ${questions.length}`
+                : `Question ${currentIndex + 1} of ${questions.length}`}
             </span>
             <span className="text-[#ff7a00] font-black">
               {getLocalized(currentQuestion.topicTitle, language)}
@@ -132,7 +151,7 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
             <div
               className="h-full bg-[#ff7a00] rounded-full transition-all duration-300"
               style={{
-                width: `${((currentIndex + 1) / PLACEMENT_QUESTIONS.length) * 100}%`,
+                width: `${((currentIndex + 1) / questions.length) * 100}%`,
               }}
             />
           </div>
@@ -193,9 +212,13 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
             }`}
           >
             <span>
-              {currentIndex < PLACEMENT_QUESTIONS.length - 1
-                ? language === 'tr' ? 'Sonraki Soru' : 'Next Question'
-                : language === 'tr' ? 'Sınavı Tamamla' : 'Finish Test'}
+              {currentIndex < questions.length - 1
+                ? language === 'tr'
+                  ? 'Sonraki Soru'
+                  : 'Next Question'
+                : language === 'tr'
+                ? 'Sınavı Tamamla'
+                : 'Finish Test'}
             </span>
             <ArrowRight className="w-4 h-4" />
           </button>
@@ -216,8 +239,8 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
               </h2>
               <p className="text-xs text-slate-500 font-semibold">
                 {language === 'tr'
-                  ? 'Teşhis sorularına verdiğiniz yanıtlar analiz edildi.'
-                  : 'Your diagnostic exam responses have been evaluated.'}
+                  ? `${activeTrack === 'statistics' ? 'İstatistik' : 'Olasılık'} teşhis sorularına verdiğiniz yanıtlar analiz edildi.`
+                  : `Your ${activeTrack === 'statistics' ? 'Statistics' : 'Probability'} diagnostic responses have been evaluated.`}
               </p>
             </div>
 
@@ -228,7 +251,7 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
                   {language === 'tr' ? 'Test Sonucunuz' : 'Your Test Score'}
                 </span>
                 <span className="text-lg font-black text-[#ff7a00] bg-[#ff7a00]/20 px-3 py-1 rounded-full border border-[#ff7a00]/40">
-                  {correctAnswersCount} / {PLACEMENT_QUESTIONS.length} {language === 'tr' ? 'Doğru' : 'Correct'}
+                  {correctAnswersCount} / {questions.length} {language === 'tr' ? 'Doğru' : 'Correct'}
                 </span>
               </div>
 
@@ -252,7 +275,7 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
               </div>
             </div>
 
-            {/* Explicit Confirmation Actions ("Kişinin onayını alıp geçir") */}
+            {/* Explicit Confirmation Actions */}
             <div className="space-y-3">
               <p className="text-xs font-bold text-slate-700 text-center mb-1">
                 {language === 'tr'
@@ -275,12 +298,14 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
 
               {/* Action 2: Start from Beginning */}
               <button
-                onClick={() => handleConfirmPlacement('module-1')}
+                onClick={() =>
+                  handleConfirmPlacement(activeTrack === 'statistics' ? 'module-1' : 'module-2')
+                }
                 className="w-full py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs transition-colors border border-slate-200"
               >
                 {language === 'tr'
-                  ? 'Sıfırdan (1. Modülden) Devam Et'
-                  : 'Start from Beginning (Module 1)'}
+                  ? `Sıfırdan (${activeTrack === 'statistics' ? 'Modül 1' : 'Modül 2'}'den) Devam Et`
+                  : 'Start from Beginning'}
               </button>
 
               {/* Action 3: Custom Level Select */}

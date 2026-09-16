@@ -539,6 +539,33 @@ export async function clearTancoChatsInSupabase(userIdentifier: string): Promise
   }
 }
 
+/**
+ * Get latest message info to detect unread messages from Tanco
+ */
+export async function getLatestTancoMessageInfo(
+  userIdentifier: string
+): Promise<{ text: string; createdAt: string; sender: string } | null> {
+  if (!supabase || !isSupabaseConfigured || !userIdentifier) return null;
+  try {
+    const cleanId = userIdentifier.trim().toLowerCase();
+    const { data, error } = await supabase
+      .from('tanco_chats')
+      .select('text, created_at, sender')
+      .or(`user_id.eq.${cleanId},user_email.eq.${cleanId}`)
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (error || !data || data.length === 0) return null;
+    return {
+      text: data[0].text,
+      createdAt: data[0].created_at,
+      sender: data[0].sender,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export interface UploadedCourseNoteRecord {
   id?: string;
   courseCode: string;

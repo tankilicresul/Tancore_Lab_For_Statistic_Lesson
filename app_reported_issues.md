@@ -12,6 +12,7 @@ Bu dosya, kullanıcıların Tanco AI ile sohbet ederken ilettikleri teknik aksak
 |:---|:---|:---|:---|:---|:---|:---|
 | *Örnek* | *2026-09-16 23:30* | *sistem_test* | *Sistem Başlatma* | *Otomatik hata tespit mekanizması devrede.* | *Düşük* | *Çözüldü* |
 | 2 | 2026-09-16 23:55 | rtankilic22@ku.edu.tr | Seviye Tespit Sınavı | Seviye tespit sınavı soruları istatistik yerine olasılık müfredatına uyarlandı. | Yüksek | Çözüldü |
+| 3 | 2026-09-17 00:02 | rtankilic22@ku.edu.tr | Seviye Tespit Sınavı | Her iki ders modülünün seviye tespit sınavının ayrılması (Olasılık için Olasılık, İstatistik için İstatistik soruları). | Kritik | Çözüldü |
 
 ---
 
@@ -29,4 +30,11 @@ Bu dosya, kullanıcıların Tanco AI ile sohbet ederken ilettikleri teknik aksak
 - **Kullanıcı:** rtankilic22@ku.edu.tr
 - **Ekran:** Seviye Tespit Sınavı (`PlacementTestPage.tsx`)
 - **Açıklama:** Sınav içerisindeki istatistik (regresyon, anova vb.) soruları tamamen Kombinatorik, Olasılık Aksiyomları, Bayes Teoremi, Binom/Poisson/Üstel Dağılımlar, Beklenen Değer/Varyans, PDF normalizasyonu ve Markov Zincirleri konularına uyarlandı.
+- **Durum:** ✅ Çözüldü (Canlıda)
+
+### [ISSUE-003] Seviye Tespit Sınavlarının Ders Bazında Ayrılması
+- **Tarih:** 2026-09-17 00:02
+- **Kullanıcı:** rtankilic22@ku.edu.tr
+- **Ekran:** Seviye Tespit Sınavı (`PlacementTestPage.tsx` & `placementQuestions.ts`)
+- **Açıklama:** Olasılık ve İstatistik dersleri için 10'ar soruluk iki ayrı teşhis havuzu oluşturuldu (`PROBABILITY_PLACEMENT_QUESTIONS` ve `STATISTICS_PLACEMENT_QUESTIONS`). Hangi dersten sınava başlanırsa o derse ait özel soru seti ve modül yerleştirme algoritması otomatik çalışacak şekilde yapılandırıldı.
 - **Durum:** ✅ Çözüldü (Canlıda)

@@ -4,6 +4,7 @@ import { ALL_MODULES } from '../data/modules';
 import { PublicProfile } from '../types/stats';
 import { uploadAvatarImage, deleteUserAvatar, fetchAllProfilesFromSupabase, saveUserProfileToSupabase } from '../lib/supabase';
 import { AvatarCropModal } from '../components/AvatarCropModal';
+import { UserAvatar } from '../components/UserAvatar';
 import {
   GraduationCap,
   Mail,
@@ -253,12 +254,14 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
             >
               {isUploadingAvatar ? (
                 <Loader2 className="w-6 h-6 animate-spin text-white" />
-              ) : userProfile?.avatarUrl ? (
-                <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-              ) : isAuthenticated ? (
-                userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
               ) : (
-                '👤'
+                <UserAvatar
+                  avatarUrl={userProfile?.avatarUrl}
+                  avatarEmoji={isAuthenticated ? userProfile?.avatarEmoji || '👨‍🎓' : '👤'}
+                  fullName={userProfile?.fullName}
+                  size="lg"
+                  className="w-full h-full"
+                />
               )}
             </div>
             <input
@@ -315,13 +318,17 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
           <form onSubmit={handleSave} className="mt-5 pt-4 border-t border-white/10 space-y-4 relative z-10">
             {/* Profil Fotoğrafı Düzenleme Bölümü */}
             <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3.5 p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 min-w-[64px] min-h-[64px] max-w-[64px] max-h-[64px] sm:max-w-[80px] sm:max-h-[80px] rounded-full bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border-2 border-white/30 shadow-md shrink-0 overflow-hidden relative">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 min-w-[64px] min-h-[64px] max-w-[64px] max-h-[64px] sm:max-w-[80px] sm:max-h-[80px] rounded-full bg-white/25 text-white font-black text-2xl flex items-center justify-center border-2 border-white/30 shadow-md shrink-0 overflow-hidden relative">
                 {isUploadingAvatar ? (
                   <Loader2 className="w-6 h-6 animate-spin text-white" />
-                ) : userProfile?.avatarUrl ? (
-                  <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
                 ) : (
-                  userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
+                  <UserAvatar
+                    avatarUrl={userProfile?.avatarUrl}
+                    avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
+                    fullName={userProfile?.fullName}
+                    size="xl"
+                    className="w-full h-full"
+                  />
                 )}
               </div>
 
@@ -650,25 +657,25 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                       </div>
                     </>
                   )}
-                  <div className="w-full h-12 bg-amber-950/50 rounded-t-2xl border-t-2 border-amber-700/80 shadow-inner flex items-center justify-center">
+                  <div className="w-full h-12 bg-slate-800/90 rounded-t-2xl border-t-2 border-amber-700/60 shadow-inner flex items-center justify-center">
                     <span className="text-xs font-black text-amber-700">3.</span>
                   </div>
                 </div>
               </div>
 
-              {/* Current User's Own Rank Below Podium */}
+              {/* Current User Rank Row (Highlighted) */}
               <div
                 onClick={() =>
                   setSelectedPublicProfile({
-                    id: 'self',
+                    id: userProfile?.id || 'current_user',
                     fullName: userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student'),
-                    schoolEmail: userProfile?.schoolEmail || 'ogrenci@universite.edu.tr',
+                    schoolEmail: userProfile?.schoolEmail,
                     university: userProfile?.university || 'Marmara Üniversitesi',
-                    departmentAndClass: userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
+                    departmentAndClass: userProfile?.departmentAndClass || 'Endüstri Mühendisliği',
                     avatarEmoji: userProfile?.avatarEmoji || '👨‍🎓',
                     avatarUrl: userProfile?.avatarUrl,
                     xp: xp || 0,
-                    streak: streak || 1,
+                    streak: streak || 0,
                     rank: userRank,
                     level: Math.floor((xp || 0) / 100) + 1,
                     completedCount: completedCount,
@@ -682,11 +689,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                     {userRank}.
                   </div>
                   <div className="w-7 h-7 rounded-full bg-[#ff7a00] text-white font-extrabold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden">
-                    {userProfile?.avatarUrl ? (
-                      <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-                    ) : (
-                      userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'Ö')
-                    )}
+                    <UserAvatar
+                      avatarUrl={userProfile?.avatarUrl}
+                      avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
+                      fullName={userProfile?.fullName}
+                      size="xs"
+                      className="w-full h-full"
+                    />
                   </div>
                   <div className="min-w-0">
                     <span className="text-xs font-black text-white truncate block">
@@ -719,11 +728,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                       <div className="flex items-center space-x-2.5 min-w-0">
                         <span className="text-xs font-black text-slate-400 w-5 text-center">{user.rank}.</span>
                         <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center overflow-hidden shrink-0">
-                          {user.avatarUrl ? (
-                            <img src={user.avatarUrl} alt={user.fullName} className="w-full h-full object-cover" />
-                          ) : (
-                            <span className="text-xs">{user.avatarEmoji || '👨‍🎓'}</span>
-                          )}
+                          <UserAvatar
+                            avatarUrl={user.avatarUrl}
+                            avatarEmoji={user.avatarEmoji || '👨‍🎓'}
+                            fullName={user.fullName}
+                            size="xs"
+                            className="w-full h-full"
+                          />
                         </div>
                         <div className="min-w-0">
                           <span className="text-xs font-bold text-slate-200 truncate block">{user.fullName}</span>

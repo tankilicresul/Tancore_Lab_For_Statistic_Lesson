@@ -6,9 +6,12 @@ export interface PlacementQuestion extends Question {
   topicTitle: LocalizedText;
 }
 
-export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
+// -------------------------------------------------------------
+// 1. PROBABILITY & STOCHASTIC PROCESSES PLACEMENT QUESTIONS
+// -------------------------------------------------------------
+export const PROBABILITY_PLACEMENT_QUESTIONS: PlacementQuestion[] = [
   {
-    id: 'pq-1',
+    id: 'ppq-1',
     targetModuleId: 'module-13',
     targetModuleOrder: 1,
     topicTitle: {
@@ -33,7 +36,7 @@ export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
     },
   },
   {
-    id: 'pq-2',
+    id: 'ppq-2',
     targetModuleId: 'module-2',
     targetModuleOrder: 2,
     topicTitle: {
@@ -58,7 +61,7 @@ export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
     },
   },
   {
-    id: 'pq-3',
+    id: 'ppq-3',
     targetModuleId: 'module-14',
     targetModuleOrder: 3,
     topicTitle: {
@@ -83,7 +86,7 @@ export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
     },
   },
   {
-    id: 'pq-4',
+    id: 'ppq-4',
     targetModuleId: 'module-3',
     targetModuleOrder: 4,
     topicTitle: {
@@ -108,7 +111,7 @@ export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
     },
   },
   {
-    id: 'pq-5',
+    id: 'ppq-5',
     targetModuleId: 'module-15',
     targetModuleOrder: 5,
     topicTitle: {
@@ -133,7 +136,7 @@ export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
     },
   },
   {
-    id: 'pq-6',
+    id: 'ppq-6',
     targetModuleId: 'module-4',
     targetModuleOrder: 6,
     topicTitle: {
@@ -158,7 +161,7 @@ export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
     },
   },
   {
-    id: 'pq-7',
+    id: 'ppq-7',
     targetModuleId: 'module-16',
     targetModuleOrder: 7,
     topicTitle: {
@@ -183,7 +186,7 @@ export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
     },
   },
   {
-    id: 'pq-8',
+    id: 'ppq-8',
     targetModuleId: 'module-3',
     targetModuleOrder: 8,
     topicTitle: {
@@ -208,7 +211,7 @@ export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
     },
   },
   {
-    id: 'pq-9',
+    id: 'ppq-9',
     targetModuleId: 'module-12',
     targetModuleOrder: 9,
     topicTitle: {
@@ -233,7 +236,7 @@ export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
     },
   },
   {
-    id: 'pq-10',
+    id: 'ppq-10',
     targetModuleId: 'module-2',
     targetModuleOrder: 10,
     topicTitle: {
@@ -258,3 +261,267 @@ export const PLACEMENT_QUESTIONS: PlacementQuestion[] = [
     },
   },
 ];
+
+// -------------------------------------------------------------
+// 2. APPLIED STATISTICS PLACEMENT QUESTIONS
+// -------------------------------------------------------------
+export const STATISTICS_PLACEMENT_QUESTIONS: PlacementQuestion[] = [
+  {
+    id: 'spq-1',
+    targetModuleId: 'module-1',
+    targetModuleOrder: 1,
+    topicTitle: {
+      tr: 'Temel İstatistik & Merkezi Eğilim Ölçüleri',
+      en: 'Descriptive Stats & Central Tendency',
+    },
+    type: 'multiple_choice',
+    prompt: {
+      tr: 'Bir veri setinde aşırı uç değerlerden (outliers) EN AZ etkilenen ve dayanıklı (robust) olan merkezi eğilim ölçüsü hangisidir?',
+      en: 'Which measure of central tendency is LEAST affected by extreme outliers in a dataset?',
+    },
+    options: [
+      { tr: 'Medyan (Ortanca)', en: 'Median' },
+      { tr: 'Aritmetik Ortalama', en: 'Arithmetic Mean' },
+      { tr: 'Varyans', en: 'Variance' },
+      { tr: 'Standart Sapma', en: 'Standard Deviation' },
+    ],
+    correctAnswer: 'Medyan (Ortanca)',
+    explanation: {
+      tr: 'Medyan veriler sıralandığında ortadaki değer olduğundan uç değerlerden etkilenmez.',
+      en: 'Median is the middle value when sorted and is robust against extreme outliers.',
+    },
+  },
+  {
+    id: 'spq-2',
+    targetModuleId: 'module-1',
+    targetModuleOrder: 2,
+    topicTitle: {
+      tr: 'Değişkenlik Ölçüleri & Sabit Ekleme Kuralı',
+      en: 'Measures of Dispersion & Constant Shift Rule',
+    },
+    type: 'multiple_choice',
+    prompt: {
+      tr: 'Bir veri setindeki tüm gözlem değerlerine sabit 10 sayısı eklenirse, veri setinin standart sapması ve varyansı nasıl değişir?',
+      en: 'If a constant of 10 is added to every observation in a dataset, how do the variance and standard deviation change?',
+    },
+    options: [
+      { tr: 'Değişmez (Aynı kalır)', en: 'Remains unchanged' },
+      { tr: '10 artar', en: 'Increases by 10' },
+      { tr: '100 artar', en: 'Increases by 100' },
+      { tr: 'Karekökü kadar artar', en: 'Increases by square root' },
+    ],
+    correctAnswer: 'Değişmez (Aynı kalır)',
+    explanation: {
+      tr: 'Tüm verilere aynı sabit sayı eklendiğinde yayılım ve değişkenlik değişmez; varyans ve standart sapma aynı kalır.',
+      en: 'Adding a constant shifts the distribution without altering spread; variance and standard deviation remain invariant.',
+    },
+  },
+  {
+    id: 'spq-3',
+    targetModuleId: 'module-5',
+    targetModuleOrder: 3,
+    topicTitle: {
+      tr: 'Güven Aralıkları & Z Kritik Değeri',
+      en: 'Confidence Intervals & Critical Z-Value',
+    },
+    type: 'multiple_choice',
+    prompt: {
+      tr: 'Büyük örneklemlerde anakütle ortalaması için %95 Güven Aralığı hesaplanırken kullanılan iki yönlü standart Z kritik değeri ($z^*$) kaçtır?',
+      en: 'What is the two-tailed standard critical Z-value ($z^*$) used for a 95% Confidence Interval?',
+    },
+    options: [
+      { tr: '1.96', en: '1.96' },
+      { tr: '1.645', en: '1.645' },
+      { tr: '2.58', en: '2.58' },
+      { tr: '3.00', en: '3.00' },
+    ],
+    correctAnswer: '1.96',
+    explanation: {
+      tr: 'Standart normal tablosunda %95 güven düzeyi için iki uçlu kritik Z değeri tam olarak 1.96’dır.',
+      en: 'The two-tailed critical z-value for a 95% confidence interval is 1.96.',
+    },
+  },
+  {
+    id: 'spq-4',
+    targetModuleId: 'module-5',
+    targetModuleOrder: 4,
+    topicTitle: {
+      tr: 'Hata Payı & Örneklem Büyüklüğü İlişkisi',
+      en: 'Margin of Error & Sample Size Relation',
+    },
+    type: 'multiple_choice',
+    prompt: {
+      tr: 'Bir araştırmacı güven aralığının hata payını (margin of error) yarıya indirmek (%50 küçültmek) istemektedir. Güven düzeyi sabitken örneklem büyüklüğü $n$ kaç katına çıkarılmalıdır?',
+      en: 'A researcher wishes to halve the margin of error of a confidence interval. Keeping confidence level fixed, by what factor must sample size $n$ increase?',
+    },
+    options: [
+      { tr: '4 katına çıkarılmalıdır', en: 'Must be quadrupled (4x)' },
+      { tr: '2 katına çıkarılmalıdır', en: 'Must be doubled (2x)' },
+      { tr: 'Karekökü kadar olmalıdır', en: 'Square root factor' },
+      { tr: '8 katına çıkarılmalıdır', en: 'Must be 8x' },
+    ],
+    correctAnswer: '4 katına çıkarılmalıdır',
+    explanation: {
+      tr: 'Hata payı $ME = z^* \\frac{\\sigma}{\\sqrt{n}}$ formülünde $n$ karekök içinde yer alır. $ME$\'yi yarıya indirmek için $n$ değeri $2^2 = 4$ katına çıkarılmalıdır.',
+      en: 'Margin of error $ME = z^* \\frac{\\sigma}{\\sqrt{n}}$ is inversely proportional to $\\sqrt{n}$. Halving $ME$ requires increasing $n$ by $2^2 = 4$ times.',
+    },
+  },
+  {
+    id: 'spq-5',
+    targetModuleId: 'module-6',
+    targetModuleOrder: 5,
+    topicTitle: {
+      tr: 'Hipotez Testi & p-Değeri Karar Kuralı',
+      en: 'Hypothesis Testing & p-Value Decision Rule',
+    },
+    type: 'multiple_choice',
+    prompt: {
+      tr: 'Bir A/B testinde hesaplanan $p\\text{-değeri} = 0.015$ bulunmuştur. Anlamlılık düzeyi $\\alpha = 0.05$ olduğuna göre varılacak istatistiksel karar nedir?',
+      en: 'In an A/B test, the calculated p-value is 0.015. Given significance level $\\alpha = 0.05$, what is the statistical conclusion?',
+    },
+    options: [
+      { tr: 'H0 (Sıfır Hipotezi) reddedilir, değişim istatistiksel olarak anlamlıdır.', en: 'Reject H0; difference is statistically significant.' },
+      { tr: 'H0 reddedilemez, etki anlamsızdır.', en: 'Fail to reject H0; no significant effect.' },
+      { tr: 'Test geçersiz sayılır.', en: 'Test is invalid.' },
+      { tr: 'Örneklem sayısı artırılmalıdır.', en: 'Sample size must be increased.' },
+    ],
+    correctAnswer: 'H0 (Sıfır Hipotezi) reddedilir, değişim istatistiksel olarak anlamlıdır.',
+    explanation: {
+      tr: '$p\\text{-değeri} (0.015) < \\alpha (0.05)$ olduğundan $H_0$ reddedilir ve sonuç istatistiksel olarak anlamlı kabul edilir.',
+      en: 'Since p-value (0.015) < $\\alpha$ (0.05), we reject $H_0$; the outcome is statistically significant.',
+    },
+  },
+  {
+    id: 'spq-6',
+    targetModuleId: 'module-6',
+    targetModuleOrder: 6,
+    topicTitle: {
+      tr: 'Hipotez Testlerinde Tip 1 ve Tip 2 Hata',
+      en: 'Type I and Type II Errors',
+    },
+    type: 'multiple_choice',
+    prompt: {
+      tr: 'Gerçekte DOĞRU olan bir Sıfır Hipotezinin ($H_0$) yanlışlıkla reddedilmesi durumuna ne ad verilir?',
+      en: 'What is the error called when a TRUE Null Hypothesis ($H_0$) is mistakenly rejected?',
+    },
+    options: [
+      { tr: 'Tip 1 Hata (Alfa Hatası / Yalancı Pozitif)', en: 'Type I Error (Alpha / False Positive)' },
+      { tr: 'Tip 2 Hata (Beta Hatası / Yalancı Negatif)', en: 'Type II Error (Beta / False Negative)' },
+      { tr: 'Standart Hata', en: 'Standard Error' },
+      { tr: 'Örnekleme Yanlılığı', en: 'Sampling Bias' },
+    ],
+    correctAnswer: 'Tip 1 Hata (Alfa Hatası / Yalancı Pozitif)',
+    explanation: {
+      tr: 'Tip 1 hata, gerçekte doğru olan $H_0$\'ı reddetmektir ve olasılığı $\\alpha$ ile gösterilir.',
+      en: 'Type I error occurs when a true null hypothesis is rejected, with probability bounded by significance level $\\alpha$.',
+    },
+  },
+  {
+    id: 'spq-7',
+    targetModuleId: 'module-7',
+    targetModuleOrder: 7,
+    topicTitle: {
+      tr: 'Pearson Korelasyon Katsayısı (r)',
+      en: 'Pearson Correlation Coefficient (r)',
+    },
+    type: 'multiple_choice',
+    prompt: {
+      tr: 'İki sayısal değişken arasında Pearson korelasyon katsayısı $r = -0.88$ olarak bulunduğunda bu ilişki nasıl tanımlanır?',
+      en: 'If the Pearson correlation coefficient between two numeric variables is $r = -0.88$, how is this relationship described?',
+    },
+    options: [
+      { tr: 'Güçlü ters (negatif) yönlü doğrusal ilişki', en: 'Strong inverse (negative) linear relationship' },
+      { tr: 'Zayıf pozitif yönlü ilişki', en: 'Weak positive relationship' },
+      { tr: 'İki değişken arasında doğrusal ilişki yoktur', en: 'No linear relationship' },
+      { tr: 'Mükemmel deterministik pozitif ilişki', en: 'Perfect deterministic positive relationship' },
+    ],
+    correctAnswer: 'Güçlü ters (negatif) yönlü doğrusal ilişki',
+    explanation: {
+      tr: '$r$ katsayısı -1\'e çok yakın olduğundan güçlü bir negatif doğrusal ilişki mevcuttur.',
+      en: 'Since $r$ is close to -1, there exists a strong inverse (negative) linear relationship.',
+    },
+  },
+  {
+    id: 'spq-8',
+    targetModuleId: 'module-8',
+    targetModuleOrder: 8,
+    topicTitle: {
+      tr: 'Regresyonda Belirtme Katsayısı (R²)',
+      en: 'Coefficient of Determination (R-squared)',
+    },
+    type: 'multiple_choice',
+    prompt: {
+      tr: 'Bir çoklu doğrusal regresyon modelinde $R^2 = 0.85$ (Belirtme Katsayısı) elde edilmiştir. Bu ne anlama gelir?',
+      en: 'In a multiple regression model, $R^2 = 0.85$ (R-squared) is obtained. What does this indicate?',
+    },
+    options: [
+      { tr: 'Bağımlı değişkendeki varyansın %85\'i modeldeki bağımsız değişkenler tarafından açıklanmaktadır.', en: '85% of the total variance in the dependent variable is explained by the independent variables.' },
+      { tr: 'Modelin hata payı %85\'tir.', en: 'Model error is 85%.' },
+      { tr: 'Tahminlerin %85\'i yanlıştır.', en: '85% of predictions are incorrect.' },
+      { tr: 'Gözlemlerin %85\'i model dışı bırakılmıştır.', en: '85% of observations were omitted.' },
+    ],
+    correctAnswer: 'Bağımlı değişkendeki varyansın %85\'i modeldeki bağımsız değişkenler tarafından açıklanmaktadır.',
+    explanation: {
+      tr: '$R^2$, bağımlı değişkendeki toplam değişkenliğin model tarafından açıklanan oranını temsil eder.',
+      en: 'R-squared represents the proportion of variance in the dependent variable explained by predictors in the model.',
+    },
+  },
+  {
+    id: 'spq-9',
+    targetModuleId: 'module-9',
+    targetModuleOrder: 9,
+    topicTitle: {
+      tr: 'ANOVA (Tek Yönlü Varyans Analizi)',
+      en: 'ANOVA (One-Way Analysis of Variance)',
+    },
+    type: 'multiple_choice',
+    prompt: {
+      tr: '3 veya daha fazla bağımsız grubun anakütle ortalamalarını Tip 1 hata oranını şişirmeden eşzamanlı olarak karşılaştırmak için hangi yöntem kullanılır?',
+      en: 'Which method is used to compare the population means of 3 or more independent groups simultaneously without inflating Type I error rate?',
+    },
+    options: [
+      { tr: 'ANOVA (Varyans Analizi)', en: 'ANOVA (Analysis of Variance)' },
+      { tr: 'Çoklu Bağımsız t-Testleri', en: 'Multiple Independent t-Tests' },
+      { tr: 'Ki-Kare Testi', en: 'Chi-Square Test' },
+      { tr: 'Z-Testi', en: 'Z-Test' },
+    ],
+    correctAnswer: 'ANOVA (Varyans Analizi)',
+    explanation: {
+      tr: 'ANOVA (F-Testi), çoklu t-testlerinin yarattığı kümülatif Tip 1 hata riskini engelleyerek 3+ grubun ortalamasını tek seferde kıyaslar.',
+      en: 'ANOVA uses the F-distribution to compare multiple group means in a single test, preventing Type I error inflation.',
+    },
+  },
+  {
+    id: 'spq-10',
+    targetModuleId: 'module-10',
+    targetModuleOrder: 10,
+    topicTitle: {
+      tr: 'Zaman Serileri Analizi & Mevsimsellik',
+      en: 'Time Series Analysis & Seasonality',
+    },
+    type: 'multiple_choice',
+    prompt: {
+      tr: 'Bir e-ticaret platformunun satış verilerinde her yılın Kasım-Aralık aylarında tekrarlayan düzenli dalgalanmalar hangi zaman serisi bileşeniyle modellenir?',
+      en: 'In an e-commerce platform\'s sales data, regular fluctuations repeating every November-December are modeled by which time series component?',
+    },
+    options: [
+      { tr: 'Mevsimsellik (Seasonality)', en: 'Seasonality' },
+      { tr: 'Rastgele Gürültü (Random Noise)', en: 'Random Noise' },
+      { tr: 'Uzun Vadeli Trend (Trend)', en: 'Long-term Trend' },
+      { tr: 'Durağanlık (Stationarity)', en: 'Stationarity' },
+    ],
+    correctAnswer: 'Mevsimsellik (Seasonality)',
+    explanation: {
+      tr: 'Belirli takvim periyotlarında (örneğin her yılın aynı aylarında) tekrarlayan düzenli periyodik hareketler Mevsimsellik (Seasonality) olarak tanımlanır.',
+      en: 'Periodic patterns repeating at fixed intervals across calendar cycles are classified as Seasonality.',
+    },
+  },
+];
+
+// Helper to get questions for active track
+export function getPlacementQuestionsForTrack(track: 'probability' | 'statistics'): PlacementQuestion[] {
+  return track === 'statistics' ? STATISTICS_PLACEMENT_QUESTIONS : PROBABILITY_PLACEMENT_QUESTIONS;
+}
+
+// Default export for backward compatibility
+export const PLACEMENT_QUESTIONS: PlacementQuestion[] = PROBABILITY_PLACEMENT_QUESTIONS;

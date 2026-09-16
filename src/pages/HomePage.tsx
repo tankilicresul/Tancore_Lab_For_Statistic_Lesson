@@ -94,7 +94,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: GraduationCap,
     iconBg: 'bg-cyan-600 text-white shadow-md shadow-cyan-600/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-cyan-100 text-cyan-800 border-cyan-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-cyan-300',
     glowColor: 'bg-cyan-500/10',
@@ -112,7 +112,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Binary,
     iconBg: 'bg-sky-600 text-white shadow-md shadow-sky-600/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-sky-100 text-sky-800 border-sky-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-sky-300',
     glowColor: 'bg-sky-500/10',
@@ -130,7 +130,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Coins,
     iconBg: 'bg-emerald-700 text-white shadow-md shadow-emerald-700/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-emerald-100 text-emerald-800 border-emerald-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-emerald-300',
     glowColor: 'bg-emerald-500/10',
@@ -148,7 +148,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Terminal,
     iconBg: 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-indigo-100 text-indigo-700 border-indigo-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-indigo-300',
     glowColor: 'bg-indigo-500/10',
@@ -166,7 +166,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Target,
     iconBg: 'bg-violet-600 text-white shadow-md shadow-violet-600/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-violet-100 text-violet-700 border-violet-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-violet-300',
     glowColor: 'bg-violet-500/10',
@@ -184,7 +184,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Activity,
     iconBg: 'bg-amber-600 text-white shadow-md shadow-amber-600/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-amber-100 text-amber-800 border-amber-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-amber-300',
     glowColor: 'bg-amber-500/10',
@@ -202,7 +202,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Workflow,
     iconBg: 'bg-teal-600 text-white shadow-md shadow-teal-600/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-teal-100 text-teal-800 border-teal-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-teal-300',
     glowColor: 'bg-teal-500/10',
@@ -220,7 +220,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Network,
     iconBg: 'bg-purple-600 text-white shadow-md shadow-purple-600/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-purple-100 text-purple-700 border-purple-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-purple-300',
     glowColor: 'bg-purple-500/10',
@@ -238,7 +238,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Factory,
     iconBg: 'bg-slate-800 text-white shadow-md shadow-slate-800/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-slate-100 text-slate-700 border-slate-300',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-slate-400',
     glowColor: 'bg-slate-800/10',
@@ -256,7 +256,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Calendar,
     iconBg: 'bg-blue-600 text-white shadow-md shadow-blue-600/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-blue-100 text-blue-700 border-blue-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-blue-300',
     glowColor: 'bg-blue-500/10',
@@ -274,7 +274,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Database,
     iconBg: 'bg-sky-600 text-white shadow-md shadow-sky-600/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-sky-100 text-sky-800 border-sky-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-sky-300',
     glowColor: 'bg-sky-500/10',
@@ -292,7 +292,7 @@ export const COURSES_DATA: CourseTrack[] = [
     status: 'in_design',
     icon: Compass,
     iconBg: 'bg-rose-600 text-white shadow-md shadow-rose-600/20',
-    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badge: { tr: 'Yakında', en: 'Coming Soon' },
     badgeStyle: 'bg-rose-100 text-rose-800 border-rose-200/80',
     cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-rose-300',
     glowColor: 'bg-rose-500/10',
@@ -392,17 +392,14 @@ export const HomePage: React.FC<HomePageProps> = ({
             >
               <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform ${course.glowColor}`} />
 
-              {/* Top row: Icon & Course Code / Badge */}
-              <div className="flex items-center justify-between w-full relative z-10 gap-1.5 sm:gap-2 shrink-0">
-                <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
-                </div>
-                <div className="h-9 sm:h-12 flex flex-col items-end justify-center gap-0.5 shrink-0">
-                  <span className="text-xs sm:text-sm font-black font-mono tracking-tight text-slate-800">
+              {/* Top row: Icon & Course Code (Side-by-side with larger bold font) */}
+              <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
+                <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+                  </div>
+                  <span className="text-sm sm:text-lg font-black font-mono tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors truncate">
                     {course.code}
-                  </span>
-                  <span className={`text-[9px] sm:text-[10.5px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full font-mono border ${course.badgeStyle}`}>
-                    {badgeText}
                   </span>
                 </div>
               </div>
@@ -417,12 +414,15 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </p>
               </div>
 
-              {/* Bottom CTA button (pinned to the bottom) */}
-              <div className="relative z-10 mt-auto pt-2 sm:pt-3 shrink-0">
-                <div className="flex items-center space-x-1 text-[10.5px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] group-hover:translate-x-1 transition-transform">
-                  <span>{isEn ? 'Open Path' : 'Ders Yoluna Git'}</span>
-                  <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[2.5]" />
+              {/* Bottom Row: CTA button + 8 Modules Badge */}
+              <div className="relative z-10 mt-auto pt-2 sm:pt-3 flex items-center justify-between gap-2 shrink-0">
+                <div className="flex items-center space-x-1.5 text-[10.5px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] group-hover:translate-x-1 transition-transform">
+                  <span>{isEn ? 'Start Course !' : 'Derse Başla !'}</span>
+                  <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
                 </div>
+                <span className={`text-[9px] sm:text-[10.5px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full font-mono border shrink-0 shadow-2xs ${course.badgeStyle}`}>
+                  {badgeText}
+                </span>
               </div>
             </button>
           );
@@ -436,6 +436,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             const isEn = language === 'en';
             const title = isEn ? course.name.en : course.name.tr;
             const desc = isEn ? course.desc.en : course.desc.tr;
+            const badgeText = isEn ? course.badge.en : course.badge.tr;
             const Icon = course.icon;
 
             return (
@@ -446,13 +447,13 @@ export const HomePage: React.FC<HomePageProps> = ({
               >
                 <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
 
-                {/* Top row: Icon & Course Code */}
-                <div className="flex items-center justify-between w-full relative z-10 gap-1.5 sm:gap-2 shrink-0">
-                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
-                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
-                  </div>
-                  <div className="h-9 sm:h-12 flex items-center justify-end shrink-0">
-                    <span className="text-xs sm:text-sm font-black font-mono tracking-tight text-slate-700">
+                {/* Top row: Icon & Course Code (Side-by-side with larger bold font) */}
+                <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
+                  <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+                    <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+                    </div>
+                    <span className="text-sm sm:text-lg font-black font-mono tracking-tight text-slate-800 group-hover:text-amber-700 transition-colors truncate">
                       {course.code}
                     </span>
                   </div>
@@ -468,13 +469,16 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </p>
                 </div>
 
-                {/* Bottom status (pinned to the bottom) */}
-                <div className="relative z-10 mt-auto pt-2 sm:pt-3 shrink-0">
-                  <div className="flex items-center space-x-1 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-600 group-hover:text-amber-700 group-hover:translate-x-0.5 transition-all">
+                {/* Bottom Row: Status + Badge */}
+                <div className="relative z-10 mt-auto pt-2 sm:pt-3 flex items-center justify-between gap-2 shrink-0">
+                  <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-600 group-hover:text-amber-700 group-hover:translate-x-0.5 transition-all">
                     <Loader2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-spin text-amber-500 shrink-0" />
-                    <span className="truncate">{isEn ? 'In Design' : 'Tasarım Aşamasında'}</span>
+                    <span className="truncate">{isEn ? 'Coming Soon' : 'Yakında'}</span>
                     <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5] opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0" />
                   </div>
+                  <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full font-mono border shrink-0 ${course.badgeStyle}`}>
+                    {badgeText}
+                  </span>
                 </div>
               </button>
             );

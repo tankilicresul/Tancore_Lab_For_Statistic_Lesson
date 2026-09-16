@@ -3,6 +3,7 @@ import { useAppStore } from '../store/useAppStore';
 import { Flame, Globe, Zap, UserCheck, ShieldCheck, Home } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { PublicProfileModal } from './PublicProfileModal';
+import { UserAvatar } from './UserAvatar';
 
 interface XpStreakBarProps {
   onGoHome?: () => void;
@@ -108,11 +109,13 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                 className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border-2 border-[#ff7a00]/50 transition-all shadow-xs flex items-center justify-center font-black cursor-pointer overflow-hidden p-0 active:scale-95 shrink-0"
                 title={language === 'tr' ? 'Profilim & Performansım' : 'My Profile'}
               >
-                {userProfile?.avatarUrl ? (
-                  <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full rounded-full object-cover" />
-                ) : (
-                  <span className="text-base sm:text-lg leading-none">{userProfile?.avatarEmoji || '👨‍🎓'}</span>
-                )}
+                <UserAvatar
+                  avatarUrl={userProfile?.avatarUrl}
+                  avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
+                  fullName={userProfile?.fullName}
+                  size="sm"
+                  className="w-full h-full"
+                />
               </button>
             )}
           </div>
