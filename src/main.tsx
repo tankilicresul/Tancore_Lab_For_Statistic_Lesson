@@ -4,6 +4,11 @@ import { App } from './App'
 import 'katex/dist/katex.min.css'
 import './index.css'
 
+try {
+  localStorage.removeItem('tancorelab-user-storage');
+  localStorage.removeItem('tancorelab-statsim-storage');
+} catch (_) {}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />

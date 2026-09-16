@@ -271,7 +271,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
 
         {/* STEP 1: Registration Profile Form */}
         {step === 'register' && (
-          <form onSubmit={handleSendOtp} className="space-y-3.5 flex-1 overflow-y-auto pr-1">
+          <form onSubmit={handleSendOtp} autoComplete="off" className="space-y-3.5 flex-1 overflow-y-auto pr-1">
             {/* Avatar Selector */}
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1.5">
@@ -305,6 +305,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
                 <input
                   type="text"
                   required
+                  autoComplete="off"
                   placeholder={language === 'tr' ? 'Adınızı ve soyadınızı giriniz' : 'Enter your full name'}
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
@@ -323,6 +324,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
                 <input
                   type="email"
                   required
+                  autoComplete="off"
                   placeholder={language === 'tr' ? 'E-posta adresinizi giriniz' : 'Enter your email address'}
                   value={formData.schoolEmail}
                   onChange={(e) => setFormData({ ...formData, schoolEmail: e.target.value })}
@@ -341,6 +343,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
                 <input
                   type="text"
                   required
+                  autoComplete="off"
                   placeholder={language === 'tr' ? 'Hangi üniversitede okuyorsunuz?' : 'Enter your university name'}
                   value={formData.university}
                   onChange={(e) => setFormData({ ...formData, university: e.target.value })}
@@ -359,6 +362,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
                 <input
                   type="text"
                   required
+                  autoComplete="off"
                   placeholder={language === 'tr' ? 'Bölümünüz ve sınıfınız nedir?' : 'Enter your department & class'}
                   value={formData.departmentAndClass}
                   onChange={(e) => setFormData({ ...formData, departmentAndClass: e.target.value })}
