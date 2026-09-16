@@ -7,8 +7,8 @@ export function isValidStudentEmail(email: string): boolean {
   const e = email.trim().toLowerCase();
   if (!e.includes('@')) return false;
 
-  // Master / Admin accounts
-  if (e === 'rtankilic22@ku.edu.tr' || e === 'admin@tancorelab.com') return true;
+  // Custom admin email exception
+  if (e === 'admin@tancorelab.com') return true;
 
   // Student institutional emails (.edu.tr and .edu)
   return e.endsWith('.edu.tr') || e.endsWith('.edu');
@@ -18,12 +18,6 @@ export const ALL_SYSTEM_MODULE_IDS = [
   'module-1', 'module-2', 'module-3', 'module-4', 'module-5', 'module-6', 'module-7', 'module-8',
   'module-9', 'module-10', 'module-11', 'module-12', 'module-13', 'module-14', 'module-15', 'module-16'
 ];
-
-export function isMasterAdmin(email?: string): boolean {
-  if (!email) return false;
-  const e = email.trim().toLowerCase();
-  return e === 'rtankilic22@ku.edu.tr' || e === 'admin@tancorelab.com';
-}
 
 interface AppStoreActions {
   setLanguage: (lang: 'tr' | 'en') => void;
@@ -273,7 +267,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         }
 
         const state = get();
-        const isMaster = isMasterAdmin(cleanEmail);
 
         // 2. Authenticate via Supabase Auth (bcrypt hashed)
         if (isSupabaseConfigured) {
@@ -294,16 +287,18 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             fullName: remoteProfile?.full_name || authRes.user?.user_metadata?.full_name || cleanEmail.split('@')[0],
             schoolEmail: cleanEmail,
             university: remoteProfile?.university || 'Üniversite',
-            departmentAndClass: remoteProfile?.department_and_class || (isMaster ? 'Sistem Yöneticisi' : 'Öğrenci'),
-            avatarEmoji: remoteProfile?.avatar_emoji || (isMaster ? '👑' : '👨‍🎓'),
+            departmentAndClass: remoteProfile?.department_and_class || 'Öğrenci',
+            avatarEmoji: remoteProfile?.avatar_emoji || '👨‍🎓',
             avatarUrl: remoteProfile?.avatar_url || undefined,
             isVerified: true,
             createdAt: new Date().toISOString(),
           };
 
-          const userXp = isMaster ? Math.max(99999, remoteProfile?.xp || 0) : (remoteProfile?.xp ?? 450);
-          const userStreak = isMaster ? Math.max(30, remoteProfile?.streak || 0) : (remoteProfile?.streak ?? 1);
-          const unlockedModules = isMaster ? ALL_SYSTEM_MODULE_IDS : (state.unlockedModules && state.unlockedModules.length > 0 ? state.unlockedModules : ['module-1', 'module-2']);
+          const userXp = remoteProfile?.xp ?? 450;
+          const userStreak = remoteProfile?.streak ?? 1;
+          const unlockedModules = remoteProfile?.unlocked_modules && remoteProfile.unlocked_modules.length > 0
+            ? remoteProfile.unlocked_modules
+            : (state.unlockedModules && state.unlockedModules.length > 0 ? state.unlockedModules : ['module-1', 'module-2']);
 
           const nextState = {
             ...state,
@@ -368,9 +363,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           userProfile: loggedInProfile,
           isAuthenticated: true,
           isVerified: true,
-          xp: isMaster ? 99999 : (account.xp || 450),
-          streak: isMaster ? 30 : (account.streak || 1),
-          unlockedModules: isMaster ? ALL_SYSTEM_MODULE_IDS : (account.unlockedModules || ['module-1', 'module-2']),
+          xp: account.xp || 450,
+          streak: account.streak || 1,
+          unlockedModules: account.unlockedModules || ['module-1', 'module-2'],
         });
 
         return { success: true };
@@ -582,14 +577,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       name: 'tancorelab-statsim-v5',
       onRehydrateStorage: () => (state) => {
         if (state && state.userProfile) {
-          if (state.userProfile.schoolEmail === 'rtankilic22@ku.edu.tr') {
-            if (!state.userProfile.fullName) {
-              state.userProfile.fullName = 'Resul Tankılıç';
-            }
-            if (!state.userProfile.avatarUrl) {
-              state.userProfile.avatarUrl = 'https://jjbofttymfqjivzzhaly.supabase.co/storage/v1/object/public/avatars/rtankilic22_ku_edu_tr/1789557892186.avif';
-            }
-          }
           const acc = state.userAccounts?.find(
             (a) => a.schoolEmail.toLowerCase() === state.userProfile.schoolEmail?.toLowerCase()
           );
