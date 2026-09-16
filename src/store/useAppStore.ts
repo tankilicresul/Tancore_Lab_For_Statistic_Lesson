@@ -31,6 +31,12 @@ interface AppStoreActions {
   verifyOtpAndActivateAccount: (token: string, forceActivate?: boolean) => { success: boolean; message?: string };
   loginWithPassword: (email: string, pass: string) => Promise<{ success: boolean; errorType?: 'INVALID_EMAIL_DOMAIN' | 'EMAIL_NOT_FOUND' | 'WRONG_PASSWORD'; message?: string }>;
   resetPasswordWithOtp: (email: string, token: string, newPass: string) => { success: boolean; message?: string };
+  // Navigation actions (persisted on refresh)
+  setCurrentView: (view: 'home' | 'course' | 'profile' | 'lesson' | 'caseExam' | 'placementTest') => void;
+  setSelectedLessonId: (id: string | null) => void;
+  setSelectedCaseId: (id: string | null) => void;
+  setSelectedTrack: (track: 'probability' | 'statistics') => void;
+  setCustomActiveModuleName: (name: string | null) => void;
   logout: () => void;
   setSelectedPublicProfile: (profile: PublicProfile | null) => void;
   syncRegisteredUserInList: () => void;
@@ -110,6 +116,11 @@ const INITIAL_STATE: UserState = {
   selectedPublicProfile: null,
   registeredUsers: [],
   userAccounts: DEFAULT_DEMO_ACCOUNTS,
+  currentView: 'home',
+  selectedLessonId: null,
+  selectedCaseId: null,
+  selectedTrack: 'probability',
+  customActiveModuleName: null,
 };
 
 function syncUserInList(state: UserState): PublicProfile[] {
@@ -437,8 +448,18 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           pendingOtpEmail: undefined,
           simulatedOtpCode: undefined,
           userProfile: DEFAULT_PROFILE,
+          currentView: 'home',
+          selectedLessonId: null,
+          selectedCaseId: null,
+          customActiveModuleName: null,
         });
       },
+
+      setCurrentView: (view) => set({ currentView: view }),
+      setSelectedLessonId: (id) => set({ selectedLessonId: id }),
+      setSelectedCaseId: (id) => set({ selectedCaseId: id }),
+      setSelectedTrack: (track) => set({ selectedTrack: track }),
+      setCustomActiveModuleName: (name) => set({ customActiveModuleName: name }),
 
       setSelectedPublicProfile: (profile) => {
         set({ selectedPublicProfile: profile });
@@ -595,14 +616,22 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       name: 'tancorelab-statsim-v5',
       onRehydrateStorage: () => (state) => {
         if (state && state.userProfile) {
-          if (state.userProfile.schoolEmail === 'rtankilic22@ku.edu.tr' && !state.userProfile.fullName) {
-            state.userProfile.fullName = 'Resul Tankılıç';
+          if (state.userProfile.schoolEmail === 'rtankilic22@ku.edu.tr') {
+            if (!state.userProfile.fullName) {
+              state.userProfile.fullName = 'Resul Tankılıç';
+            }
+            if (!state.userProfile.avatarUrl) {
+              state.userProfile.avatarUrl = 'https://jjbofttymfqjivzzhaly.supabase.co/storage/v1/object/public/avatars/rtankilic22_ku_edu_tr/1789557892186.avif';
+            }
           }
           const acc = state.userAccounts?.find(
             (a) => a.schoolEmail.toLowerCase() === state.userProfile.schoolEmail?.toLowerCase()
           );
           if (acc && acc.fullName && !state.userProfile.fullName) {
             state.userProfile.fullName = acc.fullName;
+          }
+          if (acc && acc.avatarUrl && !state.userProfile.avatarUrl) {
+            state.userProfile.avatarUrl = acc.avatarUrl;
           }
         }
       },

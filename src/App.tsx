@@ -13,13 +13,25 @@ import { getLocalized } from './utils/localization';
 import { fetchUserProfileFromSupabase } from './lib/supabase';
 
 export const App: React.FC = () => {
-  const { language, isAuthenticated, isVerified, userProfile, updateUserProfile } = useAppStore();
-  const [currentView, setCurrentView] = useState<'home' | 'course' | 'profile' | 'lesson' | 'caseExam' | 'placementTest'>('home');
-  const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
-  const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
+  const {
+    language,
+    isAuthenticated,
+    isVerified,
+    userProfile,
+    updateUserProfile,
+    currentView = 'home',
+    setCurrentView,
+    selectedLessonId = null,
+    setSelectedLessonId,
+    selectedCaseId = null,
+    setSelectedCaseId,
+    selectedTrack = 'probability',
+    setSelectedTrack,
+    customActiveModuleName = null,
+    setCustomActiveModuleName,
+  } = useAppStore();
+
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
-  const [customActiveModuleName, setCustomActiveModuleName] = useState<string | null>(null);
-  const [selectedTrack, setSelectedTrack] = useState<'probability' | 'statistics'>('probability');
 
   // Automatically sync profile details from Supabase cloud so registered name is always present
   useEffect(() => {

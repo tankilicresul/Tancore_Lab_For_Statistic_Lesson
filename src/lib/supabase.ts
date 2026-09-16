@@ -136,10 +136,12 @@ export async function saveUserProfileToSupabase(profile: UserProfile & { passwor
       university: profile.university,
       department_and_class: profile.departmentAndClass,
       avatar_emoji: profile.avatarEmoji || '👨‍🎓',
-      avatar_url: profile.avatarUrl || null,
       is_verified: true,
       updated_at: new Date().toISOString(),
     };
+    if (profile.avatarUrl) {
+      payload.avatar_url = profile.avatarUrl;
+    }
     if (profile.password) {
       payload.password = profile.password;
     }
@@ -206,7 +208,17 @@ export async function uploadAvatarImage(file: File, userIdentifier: string): Pro
     }
 
     const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
-    return { success: true, url: data.publicUrl };
+    const publicUrl = data.publicUrl;
+
+    // Immediately update profile in database so avatar_url persists
+    if (userIdentifier && userIdentifier.includes('@')) {
+      await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl, updated_at: new Date().toISOString() })
+        .eq('email', userIdentifier.trim().toLowerCase());
+    }
+
+    return { success: true, url: publicUrl };
   } catch (err: any) {
     console.error('Avatar upload exception:', err);
     return { success: false, error: err.message || 'Fotoğraf yüklenemedi.' };

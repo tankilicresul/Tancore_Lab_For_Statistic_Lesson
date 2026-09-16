@@ -136,6 +136,11 @@ export interface UserState {
   selectedPublicProfile?: PublicProfile | null;
   registeredUsers: PublicProfile[];
   userAccounts?: RegisteredAccount[];
+  currentView?: 'home' | 'course' | 'profile' | 'lesson' | 'caseExam' | 'placementTest';
+  selectedLessonId?: string | null;
+  selectedCaseId?: string | null;
+  selectedTrack?: 'probability' | 'statistics';
+  customActiveModuleName?: string | null;
 }
 
 export interface PlacementTestResult {

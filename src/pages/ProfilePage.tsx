@@ -77,6 +77,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
       const res = await uploadAvatarImage(file, userProfile?.schoolEmail || 'user');
       if (res.success && res.url) {
         updateUserProfile({ avatarUrl: res.url });
+        setFormData((prev) => ({ ...prev, avatarUrl: res.url }));
       } else {
         alert(res.error || (language === 'tr' ? 'Fotoğraf yüklenemedi.' : 'Upload failed.'));
       }
@@ -88,7 +89,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    updateUserProfile(formData);
+    updateUserProfile({ ...formData, avatarUrl: userProfile?.avatarUrl });
     setIsEditing(false);
   };
 
