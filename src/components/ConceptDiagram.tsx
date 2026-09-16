@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppStore } from '../store/useAppStore';
+import { KatexFormula } from './KatexFormula';
 
 interface ConceptDiagramProps {
   type?: string;
@@ -60,7 +61,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
             </h4>
           </div>
           <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
-            N(µ, σ²)
+            <KatexFormula formula="\mathcal{N}(\mu, \sigma^2)" displayMode={false} />
           </span>
         </div>
 
@@ -123,11 +124,11 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         <p className="text-xs text-slate-300 font-medium text-center mt-1">
           {language === 'tr' ? (
             <>
-              Simetrik çan eğrisinde verilerin %68.3'ü <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±1σ</span>, %95.4'ü <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±2σ</span> ve %99.7'si <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±3σ</span> aralığında yer alır.
+              Simetrik çan eğrisinde verilerin %68.3'ü <span className="text-amber-300 font-medium mx-1"><KatexFormula formula="\pm 1\sigma" displayMode={false} /></span>, %95.4'ü <span className="text-amber-300 font-medium mx-1"><KatexFormula formula="\pm 2\sigma" displayMode={false} /></span> ve %99.7'si <span className="text-amber-300 font-medium mx-1"><KatexFormula formula="\pm 3\sigma" displayMode={false} /></span> aralığında yer alır.
             </>
           ) : (
             <>
-              In a symmetric bell curve, 68.3% of data lies within <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±1σ</span>, 95.4% within <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±2σ</span>, and 99.7% within <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±3σ</span>.
+              In a symmetric bell curve, 68.3% of data lies within <span className="text-amber-300 font-medium mx-1"><KatexFormula formula="\pm 1\sigma" displayMode={false} /></span>, 95.4% within <span className="text-amber-300 font-medium mx-1"><KatexFormula formula="\pm 2\sigma" displayMode={false} /></span>, and 99.7% within <span className="text-amber-300 font-medium mx-1"><KatexFormula formula="\pm 3\sigma" displayMode={false} /></span>.
             </>
           )}
         </p>
@@ -180,11 +181,11 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         <p className="text-xs text-slate-300 font-medium text-center">
           {language === 'tr' ? (
             <>
-              Kutu genişliği <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] border border-slate-700/80 font-mono text-xs font-bold">IQR = Q3 - Q1</span> çeyreklikler arası genişliği gösterir. Çizginin ortasındaki dikey beyaz hat Medyan değeridir.
+              Kutu genişliği <span className="text-amber-300 font-medium mx-1"><KatexFormula formula="\text{IQR} = Q_3 - Q_1" displayMode={false} /></span> çeyreklikler arası genişliği gösterir. Çizginin ortasındaki dikey beyaz hat Medyan değeridir.
             </>
           ) : (
             <>
-              Box width is <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] border border-slate-700/80 font-mono text-xs font-bold">IQR = Q3 - Q1</span>. The white vertical line inside represents the Median (Q2).
+              Box width is <span className="text-amber-300 font-medium mx-1"><KatexFormula formula="\text{IQR} = Q_3 - Q_1" displayMode={false} /></span>. The white vertical line inside represents the Median (Q2).
             </>
           )}
         </p>
@@ -232,11 +233,11 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         <p className="text-xs text-slate-300 font-medium text-center">
           {language === 'tr' ? (
             <>
-              <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">CI</span> sadece kitle ortalamasını kapsar (en dar). <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">PI</span> tekil bir sonraki ürünü kapsar. <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">TI</span> ise üretimin %90'ını kapsama garantisi verir (en geniş).
+              <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\text{CI}" displayMode={false} /></span> sadece kitle ortalamasını kapsar (en dar). <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\text{PI}" displayMode={false} /></span> tekil bir sonraki ürünü kapsar. <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\text{TI}" displayMode={false} /></span> ise üretimin %90'ını kapsama garantisi verir (en geniş).
             </>
           ) : (
             <>
-              <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">CI</span> covers population mean (narrowest). <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">PI</span> covers a single future product. <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">TI</span> guarantees coverage for 90% of population (widest).
+              <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\text{CI}" displayMode={false} /></span> covers population mean (narrowest). <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\text{PI}" displayMode={false} /></span> covers a single future product. <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\text{TI}" displayMode={false} /></span> guarantees coverage for 90% of population (widest).
             </>
           )}
         </p>
@@ -284,11 +285,11 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         <p className="text-xs text-slate-300 font-medium text-center">
           {language === 'tr' ? (
             <>
-              Hesaplanan test istatistiği <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-sky-300 font-mono text-xs font-bold">z0 &gt; z_α</span> ise kırmızı kritik bölgeye düşer ve <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-red-400 font-mono text-xs font-bold">H0</span> hipotezi reddedilir.
+              Hesaplanan test istatistiği <span className="text-sky-300 font-semibold mx-1"><KatexFormula formula="z_0 > z_\alpha" displayMode={false} /></span> ise kırmızı kritik bölgeye düşer ve <span className="text-red-400 font-semibold mx-1"><KatexFormula formula="H_0" displayMode={false} /></span> hipotezi reddedilir.
             </>
           ) : (
             <>
-              If calculated test statistic <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-sky-300 font-mono text-xs font-bold">z0 &gt; z_α</span>, it falls into the red rejection region and <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-red-400 font-mono text-xs font-bold">H0</span> is rejected.
+              If calculated test statistic <span className="text-sky-300 font-semibold mx-1"><KatexFormula formula="z_0 > z_\alpha" displayMode={false} /></span>, it falls into the red rejection region and <span className="text-red-400 font-semibold mx-1"><KatexFormula formula="H_0" displayMode={false} /></span> is rejected.
             </>
           )}
         </p>
@@ -335,11 +336,11 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         <p className="text-xs text-slate-300 font-medium text-center">
           {language === 'tr' ? (
             <>
-              En Küçük Kareler Yöntemi, gözlenen noktalar ile doğru <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] font-mono text-xs font-bold">ŷ = b0 + b1·x</span> arasındaki dikey hata kareleri toplamını <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-1.5 py-0.5 rounded bg-slate-800 text-red-400 font-mono text-xs font-bold">(SSE)</span> en aza indirir.
+              En Küçük Kareler Yöntemi, gözlenen noktalar ile doğru <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\hat{y} = \beta_0 + \beta_1 x" displayMode={false} /></span> arasındaki dikey hata kareleri toplamını <span className="text-red-400 font-semibold mx-1"><KatexFormula formula="\text{SSE}" displayMode={false} /></span> en aza indirir.
             </>
           ) : (
             <>
-              Ordinary Least Squares minimizes the sum of squared vertical residual distances <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-1.5 py-0.5 rounded bg-slate-800 text-red-400 font-mono text-xs font-bold">(SSE)</span> for <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] font-mono text-xs font-bold">ŷ = b0 + b1·x</span>.
+              Ordinary Least Squares minimizes the sum of squared vertical residual distances <span className="text-red-400 font-semibold mx-1"><KatexFormula formula="\text{SSE}" displayMode={false} /></span> for <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\hat{y} = \beta_0 + \beta_1 x" displayMode={false} /></span>.
             </>
           )}
         </p>
@@ -377,17 +378,17 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         </svg>
       </div>
 
-        <p className="text-xs text-slate-300 font-medium text-center">
-          {language === 'tr' ? (
-            <>
-              Örneklem büyüklüğü <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">n</span> arttıkça Standart Hata <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] border border-slate-700/80 font-mono text-xs font-bold shadow-2xs">SE = σ / √n</span> küçülür ve örneklem ortalamaları <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">µ</span> etrafında sıkıca kümelenir.
-            </>
-          ) : (
-            <>
-              As sample size <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">n</span> increases, <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] border border-slate-700/80 font-mono text-xs font-bold shadow-2xs">SE = σ / √n</span> shrinks and sample means tightly cluster around true mean <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">µ</span>.
-            </>
-          )}
-        </p>
+      <p className="text-xs text-slate-300 font-medium text-center">
+        {language === 'tr' ? (
+          <>
+            Örneklem büyüklüğü <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="n" displayMode={false} /></span> arttıkça Standart Hata <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\text{SE} = \frac{\sigma}{\sqrt{n}}" displayMode={false} /></span> küçülür ve örneklem ortalamaları <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\mu" displayMode={false} /></span> etrafında sıkıca kümelenir.
+          </>
+        ) : (
+          <>
+            As sample size <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="n" displayMode={false} /></span> increases, <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\text{SE} = \frac{\sigma}{\sqrt{n}}" displayMode={false} /></span> shrinks and sample means tightly cluster around true mean <span className="text-amber-300 font-semibold mx-1"><KatexFormula formula="\mu" displayMode={false} /></span>.
+          </>
+        )}
+      </p>
     </div>
   );
 };

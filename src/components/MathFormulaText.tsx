@@ -25,10 +25,10 @@ export const MathFormulaText: React.FC<MathFormulaTextProps> = ({
             return (
               <div
                 key={idx}
-                className={`my-3 p-3.5 sm:p-4 rounded-2xl text-center overflow-x-auto max-w-full touch-pan-x shadow-2xs border ${
+                className={`my-3 py-2.5 px-3 text-center overflow-x-auto max-w-full touch-pan-x ${
                   darkBg
-                    ? 'bg-slate-800/95 text-amber-300 border-slate-700'
-                    : 'bg-orange-500/5 text-slate-900 border-orange-200/80'
+                    ? 'text-amber-300'
+                    : 'text-slate-900'
                 }`}
               >
                 <KatexFormula formula={rawFormula} displayMode={true} />
@@ -52,10 +52,8 @@ export const MathFormulaText: React.FC<MathFormulaTextProps> = ({
             return (
               <span
                 key={idx}
-                className={`inline-block align-baseline mx-0.5 px-1.5 py-0.5 rounded-md border text-sm transition-all ${
-                  darkBg
-                    ? 'bg-slate-800/90 text-amber-300 border-slate-700/80 font-bold'
-                    : 'bg-orange-500/10 text-orange-950 border-orange-300/50 font-bold'
+                className={`inline-block align-baseline mx-0.5 font-normal ${
+                  darkBg ? 'text-amber-300' : 'text-slate-900'
                 }`}
               >
                 <KatexFormula formula={rawFormula} displayMode={false} />
@@ -105,16 +103,12 @@ const MathFormulaLegacyParser: React.FC<{ text: string; className?: string; dark
       parts.push(
         <span
           key={`f-${matchIndex}`}
-          className={`inline-flex items-center align-middle mx-1 my-0.5 px-2.5 py-1 rounded-xl border shadow-2xs font-sans text-xs font-bold leading-none transition-all ${
-            darkBg
-              ? 'bg-slate-800/95 text-amber-400 border-slate-700/90'
-              : 'bg-orange-500/10 text-[#ff7a00] border-[#ff7a00]/35'
-          }`}
+          className="inline-flex items-center align-baseline mx-1 font-normal"
         >
-          <span className="text-[10px] uppercase font-black tracking-wider opacity-90 mr-1.5 font-sans px-1.5 py-0.5 rounded bg-[#ff7a00]/20 text-[#ff7a00] shrink-0">
-            {label.replace(':', '')}
+          <span className="text-xs font-bold text-slate-500 mr-1 font-sans">
+            {label}
           </span>
-          <KatexFormula formula={formulaContent} displayMode={false} className="text-[#ff7a00]" />
+          <KatexFormula formula={formulaContent} displayMode={false} />
         </span>
       );
     } else if (standaloneEquation) {
@@ -126,13 +120,11 @@ const MathFormulaLegacyParser: React.FC<{ text: string; className?: string; dark
       parts.push(
         <span
           key={`eq-${matchIndex}`}
-          className={`inline-flex items-center align-middle mx-1 my-0.5 px-2 py-1 rounded-lg border font-sans text-xs font-extrabold transition-all ${
-            darkBg
-              ? 'bg-slate-800 text-amber-400 border-slate-700'
-              : 'bg-orange-500/10 text-[#ff7a00] border-[#ff7a00]/30 shadow-2xs'
+          className={`inline-block align-baseline mx-0.5 font-normal ${
+            darkBg ? 'text-amber-300' : 'text-slate-900'
           }`}
         >
-          <KatexFormula formula={standaloneEquation} displayMode={false} className="text-[#ff7a00]" />
+          <KatexFormula formula={standaloneEquation} displayMode={false} />
         </span>
       );
       if (trailingDot) {

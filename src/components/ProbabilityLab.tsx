@@ -45,6 +45,7 @@ import {
   Network,
   Repeat,
 } from 'lucide-react';
+import { KatexFormula } from './KatexFormula';
 
 interface ProbabilityLabProps {
   defaultTab?: 'distributions' | 'montecarlo' | 'clt' | 'bayes' | 'markov';
@@ -535,8 +536,9 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
           {/* Summary Box */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="p-3.5 rounded-2xl bg-orange-50 border border-orange-200">
-              <span className="text-[10px] font-black uppercase text-[#ff7a00]">
-                {language === 'tr' ? 'BEKLENEN DEĞER E[X]' : 'EXPECTED VALUE E[X]'}
+              <span className="text-[10px] font-black uppercase text-[#ff7a00] flex items-center gap-1">
+                <span>{language === 'tr' ? 'BEKLENEN DEĞER' : 'EXPECTED VALUE'}</span>
+                <KatexFormula formula="\mathbb{E}[X]" displayMode={false} />
               </span>
               <p className="text-base font-black text-slate-900 mt-1">
                 {distType === 'normal'
@@ -549,8 +551,9 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
               </p>
             </div>
             <div className="p-3.5 rounded-2xl bg-slate-100 border border-slate-200">
-              <span className="text-[10px] font-black uppercase text-slate-500">
-                {language === 'tr' ? 'VARYANS Var(X)' : 'VARIANCE Var(X)'}
+              <span className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-1">
+                <span>{language === 'tr' ? 'VARYANS' : 'VARIANCE'}</span>
+                <KatexFormula formula="\text{Var}(X)" displayMode={false} />
               </span>
               <p className="text-base font-black text-slate-900 mt-1">
                 {distType === 'normal'
@@ -563,8 +566,9 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
               </p>
             </div>
             <div className="p-3.5 rounded-2xl bg-slate-100 border border-slate-200">
-              <span className="text-[10px] font-black uppercase text-slate-500">
-                {language === 'tr' ? `KÜMÜLATİF OLASILIK P(X <= ${targetX})` : `CUMULATIVE P(X <= ${targetX})`}
+              <span className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-1">
+                <span>{language === 'tr' ? 'KÜMÜLATİF OLASILIK' : 'CUMULATIVE'}</span>
+                <KatexFormula formula={`P(X \\le ${targetX})`} displayMode={false} />
               </span>
               <p className="text-base font-black text-[#ff7a00] mt-1">
                 {typeof cdfValue === 'number' ? (cdfValue * 100).toFixed(2) + '%' : cdfValue}
@@ -801,15 +805,24 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
             <div className="p-3 bg-slate-100 rounded-2xl">
-              <span className="text-[10px] font-black uppercase text-slate-500">Popülasyon Ortalaması μ</span>
+              <span className="text-[10px] font-black uppercase text-slate-500 flex items-center justify-center gap-1">
+                <span>Popülasyon</span>
+                <KatexFormula formula="\mu" displayMode={false} />
+              </span>
               <p className="text-sm font-black text-slate-900">{cltResult.popMean}</p>
             </div>
             <div className="p-3 bg-slate-100 rounded-2xl">
-              <span className="text-[10px] font-black uppercase text-slate-500">Örneklem Ortalamaları μ_X̄</span>
+              <span className="text-[10px] font-black uppercase text-slate-500 flex items-center justify-center gap-1">
+                <span>Örneklem Ortalamaları</span>
+                <KatexFormula formula="\mu_{\bar{X}}" displayMode={false} />
+              </span>
               <p className="text-sm font-black text-[#ff7a00]">{cltResult.sampleMeansMean}</p>
             </div>
             <div className="p-3 bg-slate-100 rounded-2xl">
-              <span className="text-[10px] font-black uppercase text-slate-500">Standart Hata SE (σ / √n)</span>
+              <span className="text-[10px] font-black uppercase text-slate-500 flex items-center justify-center gap-1">
+                <span>Standart Hata</span>
+                <KatexFormula formula="\text{SE} = \frac{\sigma}{\sqrt{n}}" displayMode={false} />
+              </span>
               <p className="text-sm font-black text-slate-900">{cltResult.sampleMeansStd}</p>
             </div>
             <div className="p-3 bg-slate-100 rounded-2xl">
@@ -827,8 +840,10 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200">
             <div>
-              <label className="text-xs font-extrabold text-slate-700 block mb-1">
-                Önsel Olasılık P(A) [Base Rate]: {(bayesPrior * 100).toFixed(1)}%
+              <label className="text-xs font-extrabold text-slate-700 mb-1 flex items-center gap-1">
+                <span>Önsel Olasılık</span>
+                <KatexFormula formula="P(A)" displayMode={false} />
+                <span>: {(bayesPrior * 100).toFixed(1)}%</span>
               </label>
               <input
                 type="range"
@@ -843,8 +858,10 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
             </div>
 
             <div>
-              <label className="text-xs font-extrabold text-slate-700 block mb-1">
-                Duyarlılık P(B|A) [Sensitivity]: {(bayesSensitivity * 100).toFixed(1)}%
+              <label className="text-xs font-extrabold text-slate-700 mb-1 flex items-center gap-1">
+                <span>Duyarlılık</span>
+                <KatexFormula formula="P(B \mid A)" displayMode={false} />
+                <span>: {(bayesSensitivity * 100).toFixed(1)}%</span>
               </label>
               <input
                 type="range"
@@ -859,8 +876,10 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
             </div>
 
             <div>
-              <label className="text-xs font-extrabold text-slate-700 block mb-1">
-                Yalancı Pozitif P(B|A') [False Alarm]: {(bayesFalsePos * 100).toFixed(1)}%
+              <label className="text-xs font-extrabold text-slate-700 mb-1 flex items-center gap-1">
+                <span>Yalancı Pozitif</span>
+                <KatexFormula formula="P(B \mid A^c)" displayMode={false} />
+                <span>: {(bayesFalsePos * 100).toFixed(1)}%</span>
               </label>
               <input
                 type="range"
@@ -880,12 +899,16 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
             <div className="flex items-center justify-between border-b border-slate-700 pb-4">
               <div>
                 <span className="text-[10px] font-black uppercase text-[#ff7a00]">POSTERİOR OLASILIK (SONSAL RİSK)</span>
-                <h4 className="text-2xl font-black text-white mt-0.5">
-                  P(A | B) = {(bayesAnalysis.pAGivenB * 100).toFixed(2)}%
+                <h4 className="text-2xl font-black text-white mt-1 flex items-center gap-2">
+                  <KatexFormula formula={`P(A \\mid B) = ${(bayesAnalysis.pAGivenB * 100).toFixed(2)}\\%`} displayMode={false} />
                 </h4>
               </div>
               <div className="text-right">
-                <span className="text-xs text-slate-400">Toplam Pozitif Test Oranı P(B):</span>
+                <span className="text-xs text-slate-400 flex items-center justify-end gap-1">
+                  <span>Toplam Pozitif Test</span>
+                  <KatexFormula formula="P(B)" displayMode={false} />
+                  <span>:</span>
+                </span>
                 <p className="text-base font-bold text-slate-200">{(bayesAnalysis.pBTotal * 100).toFixed(2)}%</p>
               </div>
             </div>
@@ -906,7 +929,7 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
           <div className="p-4 rounded-2xl bg-orange-50/80 border border-orange-200 text-xs text-slate-700 leading-relaxed">
             <p className="font-extrabold text-[#ff7a00] mb-1">🔗 Markov Zinciri (Markov Chain) Nedir?</p>
             Gelecekteki durumun olasılığı, geçmişteki tüm geçmişten bağımsız olarak <strong>sadece bir önceki duruma bağlıdır (Belleksizlik Özelliği)</strong>.
-            Geçiş matrisi $P$ ile zaman içinde durum olasılıkları durağan bir dengeye (Stationary Vector $\pi^*$) yakınsar.
+            Geçiş matrisi <KatexFormula formula="P" displayMode={false} /> ile zaman içinde durum olasılıkları durağan bir dengeye (Stationary Vector <KatexFormula formula="\boldsymbol{\pi}^*" displayMode={false} />) yakınsar.
           </div>
 
           {/* Preset Buttons */}
@@ -939,8 +962,10 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
 
           {/* Transition Matrix Editor */}
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-            <h4 className="text-xs font-extrabold uppercase text-slate-700 tracking-wider">
-              Geçiş Matrisi P (Transition Matrix):
+            <h4 className="text-xs font-extrabold uppercase text-slate-700 tracking-wider flex items-center gap-1.5">
+              <span>Geçiş Matrisi</span>
+              <KatexFormula formula="P" displayMode={false} />
+              <span>(Transition Matrix):</span>
             </h4>
 
             <div className="overflow-x-auto">
@@ -1028,8 +1053,10 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {stateNames.map((name, idx) => (
               <div key={idx} className="p-4 rounded-2xl bg-orange-50 border border-orange-200">
-                <span className="text-[10px] font-black uppercase text-[#ff7a00]">
-                  UZUN VADELİ DURAĞAN DENGE π* ({name})
+                <span className="text-[10px] font-black uppercase text-[#ff7a00] flex items-center gap-1">
+                  <span>UZUN VADELİ DURAĞAN DENGE</span>
+                  <KatexFormula formula="\boldsymbol{\pi}^*" displayMode={false} />
+                  <span>({name})</span>
                 </span>
                 <p className="text-xl font-black text-slate-900 mt-1">
                   {((stationaryDist[idx] || 0) * 100).toFixed(1)}%

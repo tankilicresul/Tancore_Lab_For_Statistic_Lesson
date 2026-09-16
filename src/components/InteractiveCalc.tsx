@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { ProbabilityLab } from './ProbabilityLab';
+import { KatexFormula } from './KatexFormula';
 
 interface InteractiveCalcProps {
   type?: string;
@@ -252,19 +253,31 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5 tracking-wide">Ortalama (Mean)</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center gap-1 mb-0.5 tracking-wide">
+              <span>Ortalama</span>
+              <KatexFormula formula="\bar{x}" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{currentMean}</span>
           </div>
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5 tracking-wide">Medyan (Median)</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center gap-1 mb-0.5 tracking-wide">
+              <span>Medyan</span>
+              <KatexFormula formula="\tilde{x}" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{currentMedian}</span>
           </div>
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5 tracking-wide">Mod (Mode)</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center gap-1 mb-0.5 tracking-wide">
+              <span>Mod</span>
+              <KatexFormula formula="\text{Mode}" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{currentModes.join(', ')}</span>
           </div>
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5 tracking-wide">Std Sapma (Std Dev)</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center gap-1 mb-0.5 tracking-wide">
+              <span>Std Sapma</span>
+              <KatexFormula formula="s" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{currentStd}</span>
           </div>
         </div>
@@ -313,9 +326,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              {language === 'tr' ? 'Tura Olasılığı P(Tura):' : 'Probability P(Heads):'}{' '}
-              <span className="text-[#ff7a00] font-mono font-bold">{(coinP * 100).toFixed(0)}%</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>{language === 'tr' ? 'Tura Olasılığı' : 'Probability'}</span>
+              <KatexFormula formula="P(\text{Tura})" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{(coinP * 100).toFixed(0)}%</span>
             </label>
             <input
               type="range"
@@ -381,8 +395,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
       <>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Ön Olasılık P(Spam): <span className="text-[#ff7a00] font-mono font-bold">{(priorA * 100).toFixed(0)}%</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Ön Olasılık</span>
+              <KatexFormula formula="P(\text{Spam})" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{(priorA * 100).toFixed(0)}%</span>
             </label>
             <input
               type="range"
@@ -396,8 +412,9 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              P('FREE' | Spam): <span className="text-[#ff7a00] font-mono font-bold">{(pBGivenA * 100).toFixed(0)}%</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <KatexFormula formula="P(\text{FREE} \mid \text{Spam})" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{(pBGivenA * 100).toFixed(0)}%</span>
             </label>
             <input
               type="range"
@@ -411,8 +428,9 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              P('FREE' | Normal): <span className="text-[#ff7a00] font-mono font-bold">{(pBGivenNotA * 100).toFixed(0)}%</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <KatexFormula formula="P(\text{FREE} \mid \text{Normal})" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{(pBGivenNotA * 100).toFixed(0)}%</span>
             </label>
             <input
               type="range"
@@ -427,8 +445,9 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
         </div>
 
         <div className="p-5 rounded-2xl bg-[#ff7a00]/10 border border-[#ff7a00]/30 text-center shadow-xs">
-          <span className="text-xs text-[#ff7a00] font-bold uppercase tracking-wider block mb-1">
-            Güncellenmiş Sonsal Olasılık P(Spam | 'FREE')
+          <span className="text-xs text-[#ff7a00] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 mb-1">
+            <span>Güncellenmiş Sonsal Olasılık</span>
+            <KatexFormula formula="P(\text{Spam} \mid \text{FREE})" displayMode={false} />
           </span>
           <span className="text-4xl font-black text-[#ff7a00] font-mono tracking-tight">
             {(posterior * 100).toFixed(1)}%
@@ -464,8 +483,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
       <>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Ortalama (µ): <span className="text-[#ff7a00] font-mono font-bold">{normMean}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Ortalama</span>
+              <KatexFormula formula="(\mu)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{normMean}</span>
             </label>
             <input
               type="range"
@@ -478,8 +499,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Standart Sapma (σ): <span className="text-[#ff7a00] font-mono font-bold">{normStd}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Standart Sapma</span>
+              <KatexFormula formula="(\sigma)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{normStd}</span>
             </label>
             <input
               type="range"
@@ -492,8 +515,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Hedef Değer (X): <span className="text-[#ff7a00] font-mono font-bold">{targetX}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Hedef Değer</span>
+              <KatexFormula formula="(X)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{targetX}</span>
             </label>
             <input
               type="range"
@@ -508,15 +533,22 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20 text-center">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">Z-Skoru</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center justify-center gap-1 mb-0.5">
+              <span>Z-Skoru</span>
+              <KatexFormula formula="Z = \frac{X - \mu}{\sigma}" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{zScore}</span>
           </div>
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20 text-center">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">P(X ≤ {targetX})</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center justify-center gap-1 mb-0.5">
+              <KatexFormula formula={`P(X \\le ${targetX})`} displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">%{probLess}</span>
           </div>
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20 text-center col-span-2 sm:col-span-1">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">P(X &gt; {targetX})</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center justify-center gap-1 mb-0.5">
+              <KatexFormula formula={`P(X > ${targetX})`} displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">%{(100 - probLess).toFixed(1)}</span>
           </div>
         </div>
@@ -585,11 +617,17 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
 
         <div className="grid grid-cols-2 gap-3 mb-6">
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20 text-center">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">Beklenen Değer E(X) = n·p</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center justify-center gap-1 mb-0.5">
+              <span>Beklenen Değer</span>
+              <KatexFormula formula="\mathbb{E}[X] = n \cdot p" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{expectedVal}</span>
           </div>
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20 text-center">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">Varyans Var(X) = n·p·(1-p)</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center justify-center gap-1 mb-0.5">
+              <span>Varyans</span>
+              <KatexFormula formula="\text{Var}(X) = n \cdot p(1-p)" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{varianceVal}</span>
           </div>
         </div>
@@ -623,8 +661,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
       language === 'tr' ? 'Ortalama geliş/olay hızını (λ) değiştir' : 'Adjust arrival rate λ',
       <>
         <div className="mb-5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-          <label className="text-xs font-bold text-slate-800 block mb-1.5">
-            Ortalama Varış Oranı (λ): <span className="text-[#ff7a00] font-mono font-bold">{poisLambda.toFixed(1)}</span>
+          <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+            <span>Ortalama Varış Oranı</span>
+            <KatexFormula formula="(\lambda)" displayMode={false} />:
+            <span className="text-[#ff7a00] font-mono font-bold ml-1">{poisLambda.toFixed(1)}</span>
           </label>
           <input
             type="range"
@@ -639,11 +679,17 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
 
         <div className="grid grid-cols-2 gap-3 mb-6">
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20 text-center">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">Beklenen Değer E(X) = λ</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center justify-center gap-1 mb-0.5">
+              <span>Beklenen Değer</span>
+              <KatexFormula formula="\mathbb{E}[X] = \lambda" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{poisLambda.toFixed(1)}</span>
           </div>
           <div className="p-3.5 rounded-2xl bg-[#ff7a00]/5 border border-[#ff7a00]/20 text-center">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">Varyans Var(X) = λ</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center justify-center gap-1 mb-0.5">
+              <span>Varyans</span>
+              <KatexFormula formula="\text{Var}(X) = \lambda" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{poisLambda.toFixed(1)}</span>
           </div>
         </div>
@@ -687,8 +733,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Standart Sapma (σ): <span className="text-[#ff7a00] font-mono font-bold">{sampleStd}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Standart Sapma</span>
+              <KatexFormula formula="(\sigma)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{sampleStd}</span>
             </label>
             <input
               type="range"
@@ -701,8 +749,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Hata Payı (E): <span className="text-[#ff7a00] font-mono font-bold">± {errorMargin.toFixed(1)}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Hata Payı</span>
+              <KatexFormula formula="(E)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">± {errorMargin.toFixed(1)}</span>
             </label>
             <input
               type="range"
@@ -717,15 +767,17 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
         </div>
 
         <div className="p-5 rounded-2xl bg-[#ff7a00]/10 border border-[#ff7a00]/30 text-center shadow-xs">
-          <span className="text-xs text-[#ff7a00] font-bold uppercase tracking-wider block mb-1">
-            Gerekli Minimum Örneklem Boyutu (n)
+          <span className="text-xs text-[#ff7a00] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 mb-1">
+            <span>Gerekli Minimum Örneklem Boyutu</span>
+            <KatexFormula formula="(n)" displayMode={false} />
           </span>
           <span className="text-4xl font-black text-[#ff7a00] font-mono tracking-tight">
             n ≥ {requiredN}
           </span>
-          <p className="text-xs text-slate-600 mt-2 font-medium">
-            Formül: n = (Z_{`α/2`} · σ / E)² = ({zVal} · {sampleStd} / {errorMargin.toFixed(1)})²
-          </p>
+          <div className="text-xs text-slate-600 mt-2 font-medium flex items-center justify-center gap-1 flex-wrap">
+            <span>Formül:</span>
+            <KatexFormula formula={`n = \\left(\\frac{Z_{\\alpha/2} \\cdot \\sigma}{E}\\right)^2 = \\left(\\frac{${zVal} \\cdot ${sampleStd}}{${errorMargin.toFixed(1)}}\\right)^2`} displayMode={false} />
+          </div>
         </div>
       </>
     );
@@ -748,8 +800,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
       <>
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Ortalama (x̄): <span className="text-[#ff7a00] font-mono font-bold">{ciMean.toFixed(1)}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Ortalama</span>
+              <KatexFormula formula="(\bar{x})" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{ciMean.toFixed(1)}</span>
             </label>
             <input
               type="range"
@@ -763,8 +817,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Standart Sapma (s): <span className="text-[#ff7a00] font-mono font-bold">{ciStd.toFixed(1)}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Standart Sapma</span>
+              <KatexFormula formula="(s)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{ciStd.toFixed(1)}</span>
             </label>
             <input
               type="range"
@@ -778,8 +834,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Örneklem (n): <span className="text-[#ff7a00] font-mono font-bold">{ciN}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Örneklem</span>
+              <KatexFormula formula="(n)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{ciN}</span>
             </label>
             <input
               type="range"
@@ -807,15 +865,25 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="p-4 rounded-2xl bg-orange-50 border border-orange-200 text-center">
-            <span className="text-xs font-black text-[#ff7a00] block mb-1">%{ciConfLevel} Güven Aralığı (CI)</span>
+            <span className="text-xs font-black text-[#ff7a00] flex items-center justify-center gap-1 mb-1">
+              <span>%{ciConfLevel} Güven Aralığı</span>
+              <KatexFormula formula="\text{(CI)}" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">({ciLow}, {ciHigh})</span>
             <span className="text-[11px] text-slate-600 block mt-1 font-medium">Hata Marjı: ± {me.toFixed(2)}</span>
           </div>
 
           <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-center">
-            <span className="text-xs font-black text-amber-700 block mb-1">%{ciConfLevel} Tahmin Aralığı (PI)</span>
+            <span className="text-xs font-black text-amber-700 flex items-center justify-center gap-1 mb-1">
+              <span>%{ciConfLevel} Tahmin Aralığı</span>
+              <KatexFormula formula="\text{(PI)}" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">({piLow}, {piHigh})</span>
-            <span className="text-[11px] text-slate-600 block mt-1 font-medium">Gelecek tekil değer X_n+1 için</span>
+            <span className="text-[11px] text-slate-600 block mt-1 font-medium flex items-center justify-center gap-1">
+              <span>Gelecek tekil değer</span>
+              <KatexFormula formula="X_{n+1}" displayMode={false} />
+              <span>için</span>
+            </span>
           </div>
         </div>
       </>
@@ -835,8 +903,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
       <>
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              H0 Ortalaması (µ0): <span className="text-[#ff7a00] font-mono font-bold">{h0Mean}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>H0 Ortalaması</span>
+              <KatexFormula formula="(\mu_0)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{h0Mean}</span>
             </label>
             <input
               type="range"
@@ -849,8 +919,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Örneklem (x̄): <span className="text-[#ff7a00] font-mono font-bold">{htSampleMean.toFixed(1)}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Örneklem</span>
+              <KatexFormula formula="(\bar{x})" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{htSampleMean.toFixed(1)}</span>
             </label>
             <input
               type="range"
@@ -864,8 +936,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Std Sapma (s): <span className="text-[#ff7a00] font-mono font-bold">{htSampleStd.toFixed(1)}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Std Sapma</span>
+              <KatexFormula formula="(s)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{htSampleStd.toFixed(1)}</span>
             </label>
             <input
               type="range"
@@ -879,8 +953,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Örneklem (n): <span className="text-[#ff7a00] font-mono font-bold">{htSampleN}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Örneklem</span>
+              <KatexFormula formula="(n)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{htSampleN}</span>
             </label>
             <input
               type="range"
@@ -895,7 +971,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-center">
-            <span className="text-[11px] font-extrabold text-slate-600 block mb-0.5">Test İstatistiği (t0)</span>
+            <span className="text-[11px] font-extrabold text-slate-600 flex items-center justify-center gap-1 mb-0.5">
+              <span>Test İstatistiği</span>
+              <KatexFormula formula="(t_0)" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{tStat}</span>
           </div>
 
@@ -905,8 +984,9 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className={`p-3.5 rounded-2xl border text-center col-span-2 sm:col-span-1 ${isReject ? 'bg-rose-50 border-rose-200' : 'bg-emerald-50 border-emerald-200'}`}>
-            <span className={`text-[11px] font-extrabold block mb-0.5 ${isReject ? 'text-rose-700' : 'text-emerald-700'}`}>
-              Karar (α = 0.05)
+            <span className={`text-[11px] font-extrabold flex items-center justify-center gap-1 mb-0.5 ${isReject ? 'text-rose-700' : 'text-emerald-700'}`}>
+              <span>Karar</span>
+              <KatexFormula formula="(\alpha = 0.05)" displayMode={false} />
             </span>
             <span className={`text-base font-black uppercase ${isReject ? 'text-rose-800' : 'text-emerald-800'}`}>
               {isReject ? (language === 'tr' ? 'Reddet H0' : 'Reject H0') : (language === 'tr' ? 'H0 Reddedilemez' : 'Fail to Reject H0')}
@@ -928,8 +1008,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
       <>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Hedef Korelasyon (r): <span className="text-[#ff7a00] font-mono font-bold">{regTargetR.toFixed(2)}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Hedef Korelasyon</span>
+              <KatexFormula formula="(r)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{regTargetR.toFixed(2)}</span>
             </label>
             <input
               type="range"
@@ -947,8 +1029,10 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
           </div>
 
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <label className="text-xs font-bold text-slate-800 block mb-1.5">
-              Veri Noktası Sayısı (N): <span className="text-[#ff7a00] font-mono font-bold">{regN}</span>
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Veri Noktası Sayısı</span>
+              <KatexFormula formula="(N)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{regN}</span>
             </label>
             <input
               type="range"
@@ -977,12 +1061,18 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-center">
-            <span className="text-[11px] font-extrabold text-slate-600 block mb-0.5">Korelasyon (r)</span>
+            <span className="text-[11px] font-extrabold text-slate-600 flex items-center justify-center gap-1 mb-0.5">
+              <span>Korelasyon</span>
+              <KatexFormula formula="(r)" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-slate-900 font-mono">{calcR}</span>
           </div>
 
           <div className="p-3.5 rounded-2xl bg-orange-50 border border-orange-200 text-center">
-            <span className="text-[11px] font-extrabold text-[#ff7a00] block mb-0.5">Belirtlilik (R²)</span>
+            <span className="text-[11px] font-extrabold text-[#ff7a00] flex items-center justify-center gap-1 mb-0.5">
+              <span>Belirtlilik Katsayısı</span>
+              <KatexFormula formula="(R^2)" displayMode={false} />
+            </span>
             <span className="text-2xl font-black text-[#ff7a00] font-mono">%{r2Val}</span>
           </div>
 
