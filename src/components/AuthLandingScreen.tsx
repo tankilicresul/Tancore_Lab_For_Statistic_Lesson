@@ -26,6 +26,8 @@ import {
   RefreshCw,
   Trophy,
   Activity,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 
 const RANDOM_AVATARS = ['👨‍🎓', '👩‍🎓', '👨‍💻', '👩‍💻', '👨‍🔬', '👩‍🔬', '🚀', '⚡', '📊', '🧠', '🦉', '🎯'];
@@ -93,6 +95,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   const [departmentAndClass, setDepartmentAndClass] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // 8-Digit OTP Verification State
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '', '', '']);
@@ -108,6 +112,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotOtp, setForgotOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [forgotSuccessMsg, setForgotSuccessMsg] = useState<string | null>(null);
   const [forgotStep, setForgotStep] = useState<'request' | 'verify'>('request');
 
@@ -723,17 +728,28 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                     <label className="text-xs font-bold text-slate-700 block mb-1">
                       {language === 'tr' ? 'Yeni Şifre' : 'New Password'}
                     </label>
-                    <input
-                      type="password"
-                      value={newPassword}
-                      onChange={(e) => {
-                        setNewPassword(e.target.value);
-                        handleInputChange();
-                      }}
-                      placeholder="••••••••"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
-                      required
-                    />
+                    <div className="relative">
+                      <input
+                        type={showNewPassword ? 'text' : 'password'}
+                        value={newPassword}
+                        onChange={(e) => {
+                          setNewPassword(e.target.value);
+                          handleInputChange();
+                        }}
+                        placeholder="••••••••"
+                        className="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPassword((prev) => !prev)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                        tabIndex={-1}
+                        aria-label={showNewPassword ? 'Hide password' : 'Show password'}
+                      >
+                        {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
                   </div>
 
                   <button
@@ -922,36 +938,58 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                       <label className="text-xs font-bold text-slate-700 block mb-1">
                         {language === 'tr' ? 'Şifre' : 'Password'}
                       </label>
-                      <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => {
-                          setPassword(e.target.value);
-                          handleInputChange();
-                        }}
-                        placeholder="••••••••"
-                        autoComplete="new-password"
-                        className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
-                        required
-                      />
+                      <div className="relative">
+                        <input
+                          type={showPassword ? 'text' : 'password'}
+                          value={password}
+                          onChange={(e) => {
+                            setPassword(e.target.value);
+                            handleInputChange();
+                          }}
+                          placeholder="••••••••"
+                          autoComplete="new-password"
+                          className="w-full pl-3 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                          tabIndex={-1}
+                          aria-label={showPassword ? 'Hide password' : 'Show password'}
+                        >
+                          {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
                     </div>
 
                     <div>
                       <label className="text-xs font-bold text-slate-700 block mb-1">
                         {language === 'tr' ? 'Şifre Onayı' : 'Confirm Password'}
                       </label>
-                      <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => {
-                          setConfirmPassword(e.target.value);
-                          handleInputChange();
-                        }}
-                        placeholder="••••••••"
-                        autoComplete="new-password"
-                        className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
-                        required
-                      />
+                      <div className="relative">
+                        <input
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          value={confirmPassword}
+                          onChange={(e) => {
+                            setConfirmPassword(e.target.value);
+                            handleInputChange();
+                          }}
+                          placeholder="••••••••"
+                          autoComplete="new-password"
+                          className="w-full pl-3 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword((prev) => !prev)}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                          tabIndex={-1}
+                          aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                        >
+                          {showConfirmPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
                     </div>
                   </div>
 
@@ -1058,9 +1096,9 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                       </button>
                     </div>
                     <div className="relative">
-                      <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                      <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
                       <input
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => {
                           setPassword(e.target.value);
@@ -1068,9 +1106,18 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                         }}
                         placeholder="••••••••"
                         autoComplete="current-password"
-                        className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
+                        className="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                         required
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                        tabIndex={-1}
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
                     </div>
                   </div>
 

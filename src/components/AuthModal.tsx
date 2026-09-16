@@ -17,6 +17,8 @@ import {
   Loader2,
   LogIn,
   UserPlus,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 
 interface AuthModalProps {
@@ -49,6 +51,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   // Login Form State
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
 
   // Register Form State
   const [formData, setFormData] = useState<UserProfile>({
@@ -59,6 +62,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     avatarEmoji: '👨‍🎓',
   });
   const [registerPassword, setRegisterPassword] = useState('');
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
 
   // OTP State (6 digits)
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
@@ -383,16 +387,25 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 {language === 'tr' ? 'Şifre' : 'Password'} *
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
-                  type="password"
+                  type={showLoginPassword ? 'text' : 'password'}
                   required
                   autoComplete="current-password"
                   placeholder="••••••••"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowLoginPassword((prev) => !prev)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                  tabIndex={-1}
+                  aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
@@ -509,14 +522,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 {language === 'tr' ? 'Şifre Belirleyin' : 'Set Password'}
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
-                  type="password"
+                  type={showRegisterPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   value={registerPassword}
                   onChange={(e) => setRegisterPassword(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
+                  className="w-full pl-10 pr-10 py-2 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowRegisterPassword((prev) => !prev)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                  tabIndex={-1}
+                  aria-label={showRegisterPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showRegisterPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
