@@ -413,37 +413,34 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   };
 
   return (
-    <div className="min-h-screen w-full bg-white font-sans flex flex-col overflow-x-hidden animate-fade-in">
+    <div className="min-h-screen w-full bg-gradient-to-b from-[#ff8800] via-[#ff6f00] to-[#f25900] font-sans flex flex-col items-center justify-start px-4 pt-6 pb-12 sm:pt-8 sm:pb-16 overflow-x-hidden relative animate-fade-in">
       
-      {/* TOP LAYER: Complete Orange Section (Üst Kısım Canlı Turuncu) */}
-      <div className="w-full bg-gradient-to-b from-[#ff8800] via-[#ff6f00] to-[#f25900] px-6 pt-14 pb-20 sm:pt-18 sm:pb-24 text-white relative overflow-hidden flex flex-col items-center justify-center min-h-[30vh] sm:min-h-[34vh]">
-        {/* Modern glowing ambient lights for rich, vibrant, high-end look */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-white/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-amber-300/25 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute top-1/4 -left-12 w-48 h-48 bg-orange-400/20 rounded-full blur-2xl pointer-events-none" />
+      {/* Decorative ambient glowing lights */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-white/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-black/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 left-10 w-64 h-64 bg-amber-300/20 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-3.5">
-          {/* Huge Circular Logo with Static Shadow & Rotating Inner Icon */}
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white text-[#ff7a00] shadow-[0_12px_30px_rgba(0,0,0,0.18)] shrink-0 p-3.5 flex items-center justify-center">
-            <div
-              className={`w-full h-full rounded-full flex items-center justify-center ${
-                isLogoSpinning ? 'animate-logo-spin' : ''
-              }`}
-            >
-              <Zap className="w-10 h-10 sm:w-11 sm:h-11 fill-[#ff7a00] stroke-[2]" />
-            </div>
+      {/* TOP: Brand Logo & Title */}
+      <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-3.5 pt-2 pb-5 sm:pt-4 sm:pb-7">
+        {/* Huge Circular Logo with Static Shadow & Rotating Inner Icon */}
+        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white text-[#ff7a00] shadow-[0_12px_30px_rgba(0,0,0,0.18)] shrink-0 p-3.5 flex items-center justify-center">
+          <div
+            className={`w-full h-full rounded-full flex items-center justify-center ${
+              isLogoSpinning ? 'animate-logo-spin' : ''
+            }`}
+          >
+            <Zap className="w-10 h-10 sm:w-11 sm:h-11 fill-[#ff7a00] stroke-[2]" />
           </div>
-
-          {/* TanCoreLab Brand Title */}
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white font-sans drop-shadow-xs">
-            TanCoreLab
-          </h1>
         </div>
+
+        {/* TanCoreLab Brand Title */}
+        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white font-sans drop-shadow-xs">
+          TanCoreLab
+        </h1>
       </div>
 
-      {/* BOTTOM LAYER: White Card / Sheet (Sabit Hizalı, Atlamayan Alan) */}
-      <div className="w-full bg-white -mt-6 sm:-mt-8 rounded-t-[32px] sm:rounded-t-[36px] px-6 pt-7 pb-12 sm:px-12 sm:pt-9 flex-1 flex flex-col items-center justify-start shadow-[0_-8px_32px_rgba(0,0,0,0.06)] relative z-10">
-        <div className="w-full max-w-md">
+      {/* FLOATING WHITE CARD: Hem üstü hem altı kavisli, boyutu ihtiyaca göre otomatik esneyen panel */}
+      <div className="w-full max-w-md bg-white rounded-[32px] sm:rounded-[36px] shadow-[0_20px_50px_rgba(0,0,0,0.18)] p-6 sm:p-8 relative z-10">
           
           {step === 'otp' ? (
             /* Step 2: OTP Verification Screen */
@@ -937,15 +934,14 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
               )}
             </div>
           )}
-        </div>
 
-        {/* Footer Note */}
-        <div className="mt-8 text-center text-[11px] sm:text-xs text-slate-400 font-medium">
-          {language === 'tr'
-            ? 'Sadece geçerli üniversite e-posta adresleri kabul edilir.'
-            : 'Only valid university email addresses are accepted.'}
+          {/* Footer Note */}
+          <div className="mt-6 text-center text-[11px] sm:text-xs text-slate-400 font-medium">
+            {language === 'tr'
+              ? 'Sadece geçerli üniversite e-posta adresleri kabul edilir.'
+              : 'Only valid university email addresses are accepted.'}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
