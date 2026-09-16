@@ -192,9 +192,22 @@ export async function uploadAvatarImage(file: File, userIdentifier: string): Pro
 
   try {
     const cleanId = userIdentifier.replace(/[^a-zA-Z0-9_-]/g, '_');
-    const fileExt = file.name.split('.').pop() || 'png';
+
+    // 1. Check for any existing avatar files to delete after new upload succeeds
+    let oldFilesToDelete: string[] = [];
+    try {
+      const { data: existingFiles } = await supabase.storage.from('avatars').list(cleanId);
+      if (existingFiles && existingFiles.length > 0) {
+        oldFilesToDelete = existingFiles.map((f) => `${cleanId}/${f.name}`);
+      }
+    } catch (e) {
+      console.warn('Could not list previous avatars for cleanup:', e);
+    }
+
+    const fileExt = file.name.split('.').pop() || 'jpg';
     const filePath = `${cleanId}/${Date.now()}.${fileExt}`;
 
+    // 2. Upload new cropped avatar
     const { error: uploadError } = await supabase.storage
       .from('avatars')
       .upload(filePath, file, {
@@ -210,7 +223,16 @@ export async function uploadAvatarImage(file: File, userIdentifier: string): Pro
     const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
     const publicUrl = data.publicUrl;
 
-    // Immediately update profile in database so avatar_url persists
+    // 3. Immediately clean up old avatar files so they do not take up space
+    if (oldFilesToDelete.length > 0) {
+      try {
+        await supabase.storage.from('avatars').remove(oldFilesToDelete);
+      } catch (delErr) {
+        console.warn('Could not clean up old avatars:', delErr);
+      }
+    }
+
+    // 4. Update profile in database with new avatar_url
     if (userIdentifier && userIdentifier.includes('@')) {
       await supabase
         .from('profiles')
@@ -222,6 +244,34 @@ export async function uploadAvatarImage(file: File, userIdentifier: string): Pro
   } catch (err: any) {
     console.error('Avatar upload exception:', err);
     return { success: false, error: err.message || 'Fotoğraf yüklenemedi.' };
+  }
+}
+
+/**
+ * Delete all avatar images for a user from Supabase Storage and reset avatar_url
+ */
+export async function deleteUserAvatar(userIdentifier: string): Promise<boolean> {
+  if (!supabase || !isSupabaseConfigured) return true;
+
+  try {
+    const cleanId = userIdentifier.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const { data: existingFiles } = await supabase.storage.from('avatars').list(cleanId);
+    if (existingFiles && existingFiles.length > 0) {
+      const filesToDelete = existingFiles.map((f) => `${cleanId}/${f.name}`);
+      await supabase.storage.from('avatars').remove(filesToDelete);
+    }
+
+    if (userIdentifier && userIdentifier.includes('@')) {
+      await supabase
+        .from('profiles')
+        .update({ avatar_url: null, updated_at: new Date().toISOString() })
+        .eq('email', userIdentifier.trim().toLowerCase());
+    }
+
+    return true;
+  } catch (err) {
+    console.warn('Delete avatar error:', err);
+    return false;
   }
 }
 

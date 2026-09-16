@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { ALL_MODULES } from '../data/modules';
 import { PublicProfile } from '../types/stats';
-import { uploadAvatarImage } from '../lib/supabase';
+import { uploadAvatarImage, deleteUserAvatar } from '../lib/supabase';
 import { AvatarCropModal } from '../components/AvatarCropModal';
 import {
   GraduationCap,
@@ -269,7 +269,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                   {userProfile?.avatarUrl && (
                     <button
                       type="button"
-                      onClick={() => {
+                      onClick={async () => {
+                        if (userProfile?.schoolEmail) {
+                          await deleteUserAvatar(userProfile.schoolEmail);
+                        }
                         updateUserProfile({ avatarUrl: undefined });
                         setFormData((prev) => ({ ...prev, avatarUrl: undefined }));
                       }}
