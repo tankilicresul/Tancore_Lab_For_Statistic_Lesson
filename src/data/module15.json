@@ -106,6 +106,39 @@
           "explanation": { "tr": "λ = n * p = 1000 * 0.004 = 4.", "en": "λ = n * p = 1000 * 0.004 = 4." }
         }
       ]
+    },
+    {
+      "id": "m15-l4",
+      "moduleId": "module-15",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Poisson Süreçlerinde Toplanabilirlik", "en": "Summation of Poisson Processes" },
+      "conceptCard": {
+        "tr": "İki veya daha fazla bağımsız Poisson süreci (oranları λ1, λ2) bir araya geldiğinde, toplam olay akışı da λ = λ1 + λ2 olan yeni bir Poisson sürecidir.",
+        "en": "When two or more independent Poisson processes (rates λ1, λ2) are combined, the total flow is a Poisson process with rate λ = λ1 + λ2."
+      },
+      "companyExample": {
+        "tr": "CyberPass ana sunucusuna Sunucu A'dan ortalama λ1 = 3 istek/sn, Sunucu B'den λ2 = 4 istek/sn geliyorsa toplam istek oranı λ = 3 + 4 = 7 istek/sn olur.",
+        "en": "If CyberPass receives λ1 = 3 req/sec from Server A and λ2 = 4 req/sec from Server B, total rate is λ = 7 req/sec."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "poisson superposition",
+          "explanation_tr": "Bağımsız Poisson süreçlerinin toplanarak bileşik akış oluşturması.",
+          "explanation_en": "Combining independent Poisson processes into a unified total flow.",
+          "exampleSentence_en": "Poisson superposition property models aggregate network traffic."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m15-l4-q1",
+          "type": "numeric",
+          "prompt": { "tr": "λ1 = 3/sn ve λ2 = 4/sn olan iki bağımsız sürecin birleşik varış oranı λ kaçtır?", "en": "What is total rate λ for two independent processes with λ1 = 3/sec and λ2 = 4/sec?" },
+          "correctAnswer": 7,
+          "explanation": { "tr": "λ = 3 + 4 = 7.", "en": "λ = 3 + 4 = 7." }
+        }
+      ]
     }
   ],
   "caseExams": [

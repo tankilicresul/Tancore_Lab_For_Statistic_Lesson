@@ -106,6 +106,39 @@
           "explanation": { "tr": "Z = (75 - 50) / 10 = 25 / 10 = 2.5.", "en": "Z = (75 - 50) / 10 = 25 / 10 = 2.5." }
         }
       ]
+    },
+    {
+      "id": "m16-l4",
+      "moduleId": "module-16",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Kümülatif Dağılım (CDF) & Alan Hesabı", "en": "Cumulative Distribution (CDF) & Area Calculation" },
+      "conceptCard": {
+        "tr": "Kümülatif Dağılım Fonksiyonu F(x) = P(X ≤ x), rastlantı değişkeninin x değerinden küçük veya eşit olma birikimli olasılığıdır. Aralıktaki alan P(a ≤ X ≤ b) = F(b) - F(a) ile hesaplanır.",
+        "en": "Cumulative Distribution Function F(x) = P(X ≤ x) gives cumulative probability. Interval probability P(a ≤ X ≤ b) = F(b) - F(a)."
+      },
+      "companyExample": {
+        "tr": "CyberPass indirme hızında F(50) = 0.85 (%85) ve F(20) = 0.15 (%15) ise indirme süresinin 20 ile 50 sn arasında kalma olasılığı 0.85 - 0.15 = 0.70 (%70)'tir.",
+        "en": "If F(50) = 0.85 and F(20) = 0.15, download duration between 20s and 50s has probability 0.85 - 0.15 = 0.70 (70%)."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "cumulative distribution function",
+          "explanation_tr": "Rastlantı değişkeninin x veya daha küçük değerler alma olasılığını birikimli olarak veren fonksiyon (CDF).",
+          "explanation_en": "Function giving cumulative probability that variable X takes value less than or equal to x (CDF).",
+          "exampleSentence_en": "CDF values range monotonically from 0 to 1."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m16-l4-q1",
+          "type": "numeric",
+          "prompt": { "tr": "F(50) = 0.85 ve F(20) = 0.15 ise P(20 ≤ X ≤ 50) kaçtır?", "en": "If F(50) = 0.85 and F(20) = 0.15, what is P(20 ≤ X ≤ 50)?" },
+          "correctAnswer": 0.7,
+          "explanation": { "tr": "0.85 - 0.15 = 0.70.", "en": "0.85 - 0.15 = 0.70." }
+        }
+      ]
     }
   ],
   "caseExams": [

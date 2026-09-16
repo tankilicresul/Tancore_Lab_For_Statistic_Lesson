@@ -74,10 +74,31 @@ export interface Badge {
 }
 
 export interface UserProfile {
+  id?: string;
   fullName: string;
   schoolEmail: string;
   university: string;
   departmentAndClass: string;
+  avatarEmoji?: string;
+  avatarUrl?: string;
+  isVerified?: boolean;
+  createdAt?: string;
+}
+
+export interface PublicProfile {
+  id: string;
+  fullName: string;
+  schoolEmail?: string;
+  university: string;
+  departmentAndClass: string;
+  avatarEmoji?: string;
+  avatarUrl?: string;
+  xp: number;
+  streak: number;
+  rank: number;
+  level: number;
+  completedCount: number;
+  unlockedBadges: string[];
 }
 
 export interface UserState {
@@ -90,6 +111,11 @@ export interface UserState {
   unlockedModules: string[];
   unlockedBadges: string[];
   userProfile: UserProfile;
+  isAuthenticated: boolean;
+  isVerified: boolean;
+  pendingOtpEmail?: string;
+  simulatedOtpCode?: string;
+  selectedPublicProfile?: PublicProfile | null;
 }
 
 export interface PlacementTestResult {

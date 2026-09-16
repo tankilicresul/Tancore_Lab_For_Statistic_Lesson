@@ -19,8 +19,8 @@
         "en": "Probability expresses the chance of an event occurring between 0 and 1 (or 0% to 100%). The probability of two independent events happening together (Intersection) is calculated using the multiplication rule."
       },
       "companyExample": {
-        "tr": "PaySafe e-ödeme sisteminde bir işlemin yüksek tutarlı olma olasılığı P(A) = 0.20 (%20). İşlemin gece yapılmış olma olasılığı P(B) = 0.10 (%10). İki durum bağımsız ise ikisinin aynı anda olma olasılığı = 0.20 * 0.10 = 0.02 (%2).",
-        "en": "In PaySafe e-payment platform, the probability of a transaction having high value P(A) = 0.20 (20%). The probability of it occurring at night P(B) = 0.10 (10%). If independent, the probability of both = 0.20 * 0.10 = 0.02 (2%)."
+        "tr": "PaySafe ödeme altyapısında bir işlemin yüksek tutarlı olma olasılığı P(A) = %20 ve gece saatinde yapılma olasılığı P(B) = %10'dur. Bu iki durum birbiriyle bağlantısız (bağımsız) olduğunda, bir işlemin hem yüksek tutarlı hem de gece yapılma olasılığını bulmak için iki olasılığı birbiriyle çarparız: 0.20 × 0.10 = 0.02 (%2).",
+        "en": "In PaySafe's payment system, the probability of a transaction being high-value is P(A) = 20%, and being placed at night is P(B) = 10%. Because these events are independent, we find the probability of both happening simultaneously by multiplying their probabilities: 0.20 × 0.10 = 0.02 (2%)."
       },
       "interactiveType": "probability_coin",
       "vocabTerms": [
@@ -58,12 +58,12 @@
       "difficulty": "orta",
       "title": { "tr": "Koşullu Olasılık (Conditional Probability)", "en": "Conditional Probability" },
       "conceptCard": {
-        "tr": "Koşullu olasılık, P(A|B), B olayının gerçekleştiği bilindiğinde A olayının olma olasılığıdır. Formül: P(A|B) = P(A ve B) / P(B).",
-        "en": "Conditional probability, P(A|B), is the probability of event A given that event B has occurred. Formula: P(A|B) = P(A and B) / P(B)."
+        "tr": "Koşullu olasılık, belirli bir durum veya olay halihazırda gerçekleştiğinde, başka bir olayın meydana gelme ihtimalini ifade eder.",
+        "en": "Conditional probability represents the likelihood of an event occurring given that another specific event has already taken place."
       },
       "companyExample": {
-        "tr": "TrendyShop'ta tüm alışveriş yapanların %5'i dolandırıcılıktır P(Fraud) = 0.05. Ancak VPN kullanan siparişler (B) içinde dolandırıcılık oranı %30'a yükselir P(Fraud | VPN) = 0.30.",
-        "en": "In TrendyShop, 5% of all buyers are fraudulent P(Fraud) = 0.05. However among VPN-using orders (B), the fraud rate jumps to 30% P(Fraud | VPN) = 0.30."
+        "tr": "TrendyShop'ta genel müşteri kitlesinde dolandırıcılık oranı %5'tir P(Dolandırıcılık) = 0.05. Ancak bir müşterinin VPN kullandığı bilindiğinde, bu şartlı durum altında dolandırıcılık ihtimali %30'a yükselir P(Dolandırıcılık | VPN) = 0.30. Koşullu olasılık bize yeni bir bilgi aldığımızda riskimizi nasıl güncelleyeceğimizi gösterir.",
+        "en": "In TrendyShop, the overall fraud rate among all buyers is 5% P(Fraud) = 0.05. However, when we know an order originates from a VPN, under this condition the fraud probability jumps to 30% P(Fraud | VPN) = 0.30. Conditional probability shows how receiving new context updates risk expectations."
       },
       "vocabTerms": [
         {
@@ -90,12 +90,12 @@
       "difficulty": "orta-ustu",
       "title": { "tr": "Bayes Teoremi (Bayes' Rule)", "en": "Bayes' Theorem" },
       "conceptCard": {
-        "tr": "Bayes Teoremi, yeni kanıtlar elde edildikçe bir hipotezin olasılığını güncellememizi sağlar. P(A|B) = [P(B|A) * P(A)] / P(B). Yapay zeka ve dolandırıcılık tespitinde temel taşıdır.",
-        "en": "Bayes' Theorem allows us to update the probability of a hypothesis as new evidence arrives. P(A|B) = [P(B|A) * P(A)] / P(B). Fundamental in AI and fraud detection."
+        "tr": "Bayes Teoremi, elimize yeni bilgi veya kanıtlar geçtikçe bir durumun gerçekleşme olasılığını dinamik olarak güncellememizi sağlar. Yapay zeka ve dolandırıcılık tespit sistemlerinin temel taşıdır.",
+        "en": "Bayes' Theorem allows us to dynamically update the probability of a hypothesis as new evidence arrives. It is a cornerstone of AI and fraud detection systems."
       },
       "companyExample": {
-        "tr": "E-posta spam filtresi: Bir e-postanın spam olma ön olasılığı P(Spam) = 0.10. Spam e-postaların %80'inde 'ÜCRETSİZ' kelimesi geçer P(Kelime|Spam) = 0.80. Normal e-postaların ise %5'inde geçer. 'ÜCRETSİZ' geçen bir e-postanın spam olma olasılığı Bayes ile hesaplanır.",
-        "en": "Email spam filter: Prior probability of spam P(Spam) = 0.10. 80% of spam contains 'FREE' P(Word|Spam) = 0.80. Normal emails contain it 5% of the time. Bayes calculates the updated probability of spam given 'FREE'."
+        "tr": "Bir e-posta güvenlik sisteminde e-postanın spam olma başlangıç ihtimali P(Spam) = %10'dur. Spam e-postaların %80'inde 'ÜCRETSİZ' kelimesi geçerken, normal e-postalarda bu oran sadece %5'tir. Sistem gelen mesajda 'ÜCRETSİZ' kelimesini gördüğünde, Bayes teoremi bu yeni kanıtı kullanarak mesajın spam olma olasılığını %64'e günceller.",
+        "en": "In an email security filter, the prior probability of spam is P(Spam) = 10%. 80% of spam emails contain 'FREE', compared to only 5% of legitimate emails. When the system detects the word 'FREE' in an email, Bayes' Theorem uses this evidence to update the spam probability up to 64%."
       },
       "interactiveType": "bayes_rule",
       "vocabTerms": [
@@ -140,8 +140,8 @@
         "en": "If the occurrence of one event does not affect the probability of another, they are independent. The set of all possible outcomes is called the sample space (S)."
       },
       "companyExample": {
-        "tr": "Finansal risk analizinde iki farklı ülkedeki sunucu kesintilerinin bağımsızlığı incelenir.",
-        "en": "In financial risk analysis, the independence of server outages across two regions is evaluated."
+        "tr": "FinTech şirketi CloudBank, Almanya ve Japonya sunucularının kesintiye uğrama risklerini analiz eder. Almanya sunucusunun çökme ihtimali %1 (0.01), Japonya sunucusunun çökme ihtimali %2 (0.02)'dir. Kesintiler bağımsız olduğu için her iki sunucunun aynı anda çökme ihtimali 0.01 × 0.02 = 0.0002 (%0.02)'dir. Bu bağımsızlık, sistem yedekliliğinin temel güvencesidir.",
+        "en": "FinTech platform CloudBank analyzes server outage risks across Germany and Japan. Germany's crash chance is 1% (0.01) and Japan's is 2% (0.02). Since outages are independent, the chance of both failing concurrently is 0.01 × 0.02 = 0.0002 (0.02%), validating server redundancy."
       },
       "interactiveType": "probability_coin",
       "vocabTerms": [

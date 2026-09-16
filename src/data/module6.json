@@ -19,8 +19,8 @@
         "en": "H0 (Null Hypothesis) represents the default status quo ('No effect'). H1 (Alternative) represents the claim we seek to prove ('Effect exists')."
       },
       "companyExample": {
-        "tr": "WebOptima A/B testinde H0: 'Yeni turuncu buton ile eski buton arasında dönüşüm farkı yoktur'. H1: 'Yeni buton dönüşümü artırır'.",
-        "en": "In WebOptima A/B test, H0: 'No conversion difference between orange and old button'. H1: 'New button increases conversion'."
+        "tr": "WebOptima e-ticaret platformu satın alma butonunun rengini maviden turuncuya değiştirmek istiyor. Test öncesinde iki hipotez kurulur: Sıfır Hipotezi H0: 'Yeni turuncu buton ile eski mavi buton arasında dönüşüm oranı açısından hiçbir fark yoktur'. Alternatif Hipotez H1: 'Yeni turuncu buton dönüşüm oranını artırır'. Amaç veri toplayıp H0'ı çürütmektir.",
+        "en": "WebOptima wants to change its checkout button from blue to orange. Before testing, two hypotheses are set: Null H0: 'There is no difference in conversion rate between blue and orange buttons'. Alternative H1: 'The orange button increases conversion'. The goal is to collect data to challenge H0."
       },
       "interactiveType": "hypothesis_z_t",
       "vocabTerms": [
@@ -56,8 +56,8 @@
         "en": "Type I Error (α): Rejecting a true H0 (False Positive). Type II Error (β): Failing to reject a false H0 (False Negative)."
       },
       "companyExample": {
-        "tr": "WebOptima hiç etki etmeyen bir butonu etki ediyor sanıp canlıya alırsa Tip 1 Hata yapmış olur.",
-        "en": "If WebOptima deploys an ineffective button believing it worked, a Type I error occurs."
+        "tr": "WebOptima A/B testinde iki farklı hata yapma riski vardır: Gerçekte turuncu buton hiçbir işe yaramadığı halde şans eseri gelen yüksek verilere bakıp 'İşe yaradı' deyip canlıya almak Tip 1 Hata (Yanlış Alarm)'dır. Gerçekte turuncu buton çok daha iyi olduğu halde veriyi yetersiz görüp eski butonda kalmak ise Tip 2 Hata (Kaçırılan Fırsat)'dır.",
+        "en": "In WebOptima's A/B test, two error risks exist: Deploying the orange button believing it boosted sales when it actually made no difference is a Type I Error (False Positive). Rejecting the orange button when it actually was superior is a Type II Error (False Negative)."
       },
       "interactiveType": "hypothesis_z_t",
       "vocabTerms": [
@@ -93,8 +93,8 @@
         "en": "p-value is the probability of obtaining sample data if H0 were true. If p < α (e.g. 0.05), reject H0; result is statistically significant."
       },
       "companyExample": {
-        "tr": "WebOptima A/B testinde p = 0.02 bulunur. 0.02 < 0.05 olduğu için H0 reddedilir ve turuncu buton seçilir.",
-        "en": "WebOptima finds p = 0.02. Since 0.02 < 0.05, H0 is rejected and the new button is chosen."
+        "tr": "WebOptima A/B testini çalıştırır ve p-değerini 0.02 (%2) olarak hesaplar. Anlamlılık seviyesi alpha = 0.05 (%5) kabul edilmiştir. p-değeri (0.02) < alpha (0.05) olduğu için 'Bu %2'lik başarı şans eseri olamaz' denir, H0 hipotezi reddedilir ve turuncu butonun satışı artırdığı istatistiksel olarak kanıtlanmış olur.",
+        "en": "WebOptima runs the A/B test and calculates a p-value of 0.02 (2%). With alpha set at 0.05 (5%), since 0.02 < 0.05, we reject the Null hypothesis H0 and conclude that the orange button statistically significantly increases conversion."
       },
       "interactiveType": "hypothesis_z_t",
       "vocabTerms": [
@@ -130,8 +130,8 @@
         "en": "One-tailed test looks for direction (A > B). Two-tailed test looks for any difference (A ≠ B)."
       },
       "companyExample": {
-        "tr": "Yeni butonun dönüşümü kesinlikle artıracağı iddia ediliyorsa tek yönlü test kullanılır.",
-        "en": "If predicting new button strictly increases conversion, a one-tailed test is applied."
+        "tr": "WebOptima pazarlama ekibi 'Yeni turuncu butonun dönüşümü KESİNLİKLE artıracağını' iddia ediyorsa tek yönlü (one-tailed) test uygular. Eğer ekip 'Renk değişiminin satışı olumlu veya olumsuz etkileyip etkilemeyeceğini' bilmeden sadece HERHANGİ BİR FARK arıyorsa çift yönlü (two-tailed) test kullanır.",
+        "en": "If WebOptima's team specifically claims 'The orange button INCREASES conversion', they use a one-tailed test. If they want to test whether the color change creates ANY DIFFERENCE (higher or lower), they apply a two-tailed test."
       },
       "interactiveType": "hypothesis_z_t",
       "vocabTerms": [

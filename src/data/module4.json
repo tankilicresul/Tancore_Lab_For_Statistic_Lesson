@@ -19,8 +19,8 @@
         "en": "Population is the entire group of interest. Sample is a smaller representative subset selected from the population."
       },
       "companyExample": {
-        "tr": "SurveyPulse şirketi 1,000,000 aktif kullanıcısından rastgele 1,000 kişi seçerek anket uygular.",
-        "en": "SurveyPulse selects 1,000 random users out of 1,000,000 active users to conduct a survey."
+        "tr": "SurveyPulse pazar araştırma şirketi 1,000,000 aktif kullanıcısından memnuniyet puanı toplamak istiyor. Herkesi tek tek aramak imkansız olduğu için tüm platformu (Ana Kütle) temsil edecek 1,000 kişilik tarafsız bir Rastgele Örneklem grubu seçer. Bu sayede düşük maliyetle tüm kütlenin memnuniyeti doğru bir şekilde tahmin edilir.",
+        "en": "SurveyPulse market research firm wants to collect satisfaction scores from 1,000,000 active users. Because surveying everyone is impossible, they draw an unbiased Random Sample of 1,000 users to represent the entire platform (Population), estimating overall satisfaction accurately at low cost."
       },
       "interactiveType": "sample_size",
       "vocabTerms": [
@@ -52,12 +52,12 @@
       "difficulty": "orta",
       "title": { "tr": "Örneklem Dağılımı & Standart Hata", "en": "Sampling Distribution & Standard Error" },
       "conceptCard": {
-        "tr": "Örneklem ortalamasının standart sapmasına Standart Hata (SE) denir: SE = σ / √n. Örneklem büyüklüğü n arttıkça Standart Hata küçülür.",
-        "en": "The standard deviation of sample means is called Standard Error (SE): SE = σ / √n. As sample size n increases, SE decreases."
+        "tr": "Örneklem ortalamasının değişkenlik ölçüsüne Standart Hata denir. Örneklemdeki kişi sayısı arttıkça tahminin Standart Hatası ve yanılma payı azalır.",
+        "en": "The standard deviation of sample means is called the Standard Error. As the sample size grows larger, the Standard Error decreases."
       },
       "companyExample": {
-        "tr": "SurveyPulse 100 kişilik örneklemler aldığında Standart Hata 2 TL iken, n=400 olduğunda SE = 1 TL'ye düşer.",
-        "en": "For n=100, Standard Error is $2. Increasing to n=400 drops SE to $1."
+        "tr": "SurveyPulse harcama araştırmasında kütle standart sapması σ = 20 TL'dir. Şirket n = 100 kişilik bir örneklem aldığında Standart Hatayı SE = 20 / √100 = 2 TL olarak bulur. Örneklem büyüklüğünü 4 katına çıkarıp n = 400 yaptığında ise SE = 20 / √400 = 1 TL'ye düşer. Yani katılan kişi sayısı arttıkça tahminimizin yanılma payı azalır.",
+        "en": "In SurveyPulse's spending study, population std dev is σ = $20. When drawing a sample of n = 100, the Standard Error is SE = 20 / √100 = $2. Quadrupling sample size to n = 400 reduces SE = 20 / √400 = $1, demonstrating that larger sample sizes reduce estimation error."
       },
       "interactiveType": "sample_size",
       "vocabTerms": [
@@ -85,12 +85,12 @@
       "difficulty": "orta-ustu",
       "title": { "tr": "Merkezi Limit Teoremi (CLT)", "en": "Central Limit Theorem (CLT)" },
       "conceptCard": {
-        "tr": "Merkezi Limit Teoremi, ana kütle hangi dağılıma sahip olursa olsun (n >= 30 olmak şartıyla), alınan örneklemlerin ortalamalarının dağılımının Normal Dağılıma yaklaşacağını söyler.",
-        "en": "The Central Limit Theorem states that regardless of population distribution, sample means approach a Normal distribution as n >= 30."
+        "tr": "Merkezi Limit Teoremi, ana kütle hangi dağılıma sahip olursa olsun, yeterli büyüklükte alınan örneklem ortalamalarının her zaman Normal Dağılıma (Çan Eğrisi) yaklaşacağını belirtir.",
+        "en": "The Central Limit Theorem states that regardless of the population distribution shape, sample means will approach a Normal distribution for sufficient sample sizes."
       },
       "companyExample": {
-        "tr": "Aşırı sağa yatık e-ticaret harcama verilerinden n=50 kişilik örneklemler çekildiğinde ortalamalar çan eğrisi oluşturur.",
-        "en": "Even with heavily skewed e-commerce order amounts, taking n=50 samples yields normal sample means."
+        "tr": "SurveyPulse e-ticaret sitesinde sipariş tutarları sağa yatıktır (çoğu sipariş küçük, birkaç sipariş aşırı büyük). Ancak şirket bu siteden her seferinde n = 50 kişilik rastgele örneklemler çekip bunların ortalamasını aldığında, elde edilen bu ortalamaların dağılımı mükemmel bir Çan Eğrisi (Normal Dağılım) oluşturur. İşte bu Merkezi Limit Teoremi'nin gücüdür.",
+        "en": "On SurveyPulse's e-commerce platform, order values are heavily right-skewed (mostly small orders, a few massive ones). However, when repeatedly taking random samples of n = 50 and calculating their averages, the distribution of those sample means forms a perfect bell curve, proving the Central Limit Theorem."
       },
       "interactiveType": "sample_size",
       "vocabTerms": [
@@ -122,12 +122,12 @@
       "difficulty": "zor",
       "title": { "tr": "Yeterli Örneklem Büyüklüğü (n ≥ 30 Rule)", "en": "Sample Size Determination" },
       "conceptCard": {
-        "tr": "Hedeflenen hata payı (E) ve güven düzeyine göre gereken minimum örneklem büyüklüğü n = (Z * σ / E)² formülü ile hesaplanır.",
-        "en": "The required minimum sample size for a target margin of error (E) is n = (Z * σ / E)²."
+        "tr": "İstenen hata payı ve güven düzeyine ulaşabilmek için araştırmada kaç kişiye ulaşılması gerektiği örneklem büyüklüğü hesabı ile belirlenir.",
+        "en": "Sample size determination calculates the minimum number of observations required to achieve a desired confidence level and margin of error."
       },
       "companyExample": {
-        "tr": "SurveyPulse %95 güvenle 2 TL hata payı elde etmek için en az 100 kullanıcıya ulaşmalıdır.",
-        "en": "To achieve a $2 margin of error at 95% confidence, SurveyPulse must survey at least 100 users."
+        "tr": "SurveyPulse yönetimi ortalama sepet tutarını %95 güven düzeyinde (Z = 1.96) ve en fazla ±2 TL hata payı (E = 2) ile tahmin etmek istiyor. Kütle standart sapması σ = 10 TL ise gerekli minimum örneklem sayısı n = (1.96 × 10 / 2)² = 96.04 yani en az 97 kullanıcı olarak hesaplanır.",
+        "en": "SurveyPulse management wants to estimate average basket size with 95% confidence (Z = 1.96) and a margin of error of ±$2 (E = 2). With population std dev σ = $10, the required minimum sample size is n = (1.96 × 10 / 2)² = 96.04, meaning at least 97 users must be sampled."
       },
       "interactiveType": "sample_size",
       "vocabTerms": [

@@ -19,8 +19,8 @@
         "en": "The binomial distribution models the probability of getting k successes in n independent trials. Each trial has only 2 outcomes (success/failure) with constant probability p."
       },
       "companyExample": {
-        "tr": "CallCenterDirect'te 10 müşteri temsilcisi telefon araması yapıyor. Her birinin satışı kapatma olasılığı p = 0.20 (%20). 10 aramadan tam 3 tanesinin satışla sonuçlanma olasılığı Binom formülü ile hesaplanır.",
-        "en": "At CallCenterDirect, 10 reps place outbound calls. Each has a closing probability p = 0.20 (20%). The probability of getting exactly 3 sales out of 10 calls is calculated using the Binomial formula."
+        "tr": "CallCenterDirect satış ekibinde 10 temsilci müşterileri arıyor. Her bir aramanın satışla sonuçlanma şansı %20'dir (p = 0.20). Yapılan her arama bağımsız bir deneme olduğundan, bu 10 aramadan tam olarak 3 tanesinin satışla bitme olasılığını bulmak için Binom formülünü kullanırız ve sonucun yaklaşık %20.1 olduğunu hesaplarız.",
+        "en": "At CallCenterDirect, 10 sales reps place customer calls. Each call has a 20% success rate (p = 0.20). Since each outbound call is an independent trial, we use the Binomial formula to calculate the probability of getting exactly 3 sales out of 10 calls, resulting in approximately 20.1%."
       },
       "interactiveType": "binomial_dist",
       "vocabTerms": [
@@ -66,8 +66,8 @@
         "en": "Poisson distribution models the count of events occurring in a fixed interval of time or space (e.g. calls per hour). Its single parameter is the mean rate lambda (λ)."
       },
       "companyExample": {
-        "tr": "CallCenterDirect çağrı merkezine saatte ortalama 5 müşteri temsilci talebi düşmektedir (λ = 5). Gelecek saatte tam 8 çağrı gelme olasılığı Poisson formülüyle hesaplanır.",
-        "en": "At CallCenterDirect, an average of 5 calls arrive per hour (λ = 5). The probability of receiving exactly 8 calls in the next hour is modeled by Poisson."
+        "tr": "CallCenterDirect çağrı merkezine 1 saat içinde ortalama 5 Müşteri Temsilcisi çağrısı gelmektedir (lambda = 5). Saatlik gelişler rastgele ve bağımsız olduğu için, önümüzdeki 1 saatlik dilimde merkezimize tam 8 çağrı gelme olasılığını hesaplamak adına Poisson dağılımı formülünü uygularız ve sonucun %6.5 olduğunu buluruz.",
+        "en": "CallCenterDirect receives an average of 5 calls per hour (λ = 5). Because incoming calls arrive independently over time, we apply the Poisson distribution formula to find the probability of receiving exactly 8 calls in the next hour, yielding 6.5%."
       },
       "interactiveType": "poisson_dist",
       "vocabTerms": [
@@ -103,12 +103,12 @@
       "difficulty": "orta-ustu",
       "title": { "tr": "Normal Dağılım ve Z-Skoru", "en": "Normal Distribution and Z-Score" },
       "conceptCard": {
-        "tr": "Normal (Gauss) dağılımı, çan eğrisi şeklinde simetrik bir sürekli dağılımdır. Doğadaki ve iş dünyasındaki birçok ölçüm normal dağılır. Z-skoru, bir değerin ortalamadan kaç standart sapma uzakta olduğunu gösterir: Z = (X - µ) / σ.",
-        "en": "The Normal (Gaussian) distribution is a symmetric bell-shaped continuous distribution. A Z-score indicates how many standard deviations a value is from the mean: Z = (X - µ) / σ."
+        "tr": "Normal (Gauss) dağılımı, çan eğrisi şeklinde simetrik bir yapıdadır. Z-skoru ise bir gözlem değerinin ortalamadan kaç standart sapma uzakta durduğunu gösterir.",
+        "en": "The Normal distribution is a symmetric bell-shaped curve. A Z-score indicates how many standard deviations a data point lies from the mean."
       },
       "companyExample": {
-        "tr": "CallCenterDirect'te bir çağrının çözüm süresi ortalama µ = 300 saniye (5 dk) ve standart sapması σ = 60 saniyedir. 420 saniye süren bir çağrının Z-skoru Z = (420 - 300) / 60 = +2.0'dır (normalden belirgin uzun!).",
-        "en": "At CallCenterDirect, call handling time has mean µ = 300s (5 min) and std dev σ = 60s. A 420s call has a Z-score Z = (420 - 300) / 60 = +2.0 (noticeably longer than average!)."
+        "tr": "CallCenterDirect'te temsilcilerin bir müşteri çağrısını çözme süresi ortalama 300 saniye (5 dakika) ve standart sapması 60 saniyedir. Tam 420 saniye (7 dakika) süren bir çağrının ortalamadan ne kadar saptığını bulmak için Z-skorunu hesaplarız: Z = (420 - 300) / 60 = +2.0. Yani bu çağrı normal süreden 2 standart sapma daha uzun sürmüştür.",
+        "en": "At CallCenterDirect, average call duration is 300 seconds (5 minutes) with a standard deviation of 60 seconds. To measure how far a 420-second (7 min) call deviates from the norm, we compute its Z-score: Z = (420 - 300) / 60 = +2.0, showing it lasted 2 standard deviations longer than normal."
       },
       "interactiveType": "normal_dist",
       "vocabTerms": [
@@ -150,8 +150,8 @@
         "en": "In continuous distributions, the probability of any exact point is zero; probabilities are calculated as area under the curve. Total area under the bell curve is always 1 (100%)."
       },
       "companyExample": {
-        "tr": "CallCenterDirect çağrı merkezinde 3 dakika ile 5 dakika arasında süren çağrıların oranı entegral alanı ile hesaplanır.",
-        "en": "In CallCenterDirect call center, the proportion of calls lasting between 3 and 5 minutes is calculated via area under the curve."
+        "tr": "CallCenterDirect yönetimi, çağrı sürelerinin 180 saniye (3 dk) ile 300 saniye (5 dk) arasında olma olasılığını öğrenmek istiyor. Çağrı süreleri sürekli bir değişken olduğu için, çan eğrisinin Z = -2.0 ile Z = 0.0 noktaları arasında kalan alanını (entegralini) hesaplarız ve müşteri görüşmelerinin %47.7'sinin bu süre aralığında tamamlandığını tespit ederiz.",
+        "en": "CallCenterDirect management wants to know the likelihood of a call lasting between 180 seconds (3 min) and 300 seconds (5 min). Because handling time is continuous, we compute the area under the bell curve between Z = -2.0 and Z = 0.0, discovering that 47.7% of calls fall within this timeframe."
       },
       "interactiveType": "normal_dist",
       "vocabTerms": [

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { ALL_MODULES } from '../data/modules';
+import { PublicProfile } from '../types/stats';
 import {
   X,
-  User,
   GraduationCap,
   Mail,
   Trophy,
@@ -14,13 +14,21 @@ import {
   Edit3,
   Save,
   Building2,
+  ChevronDown,
+  ChevronUp,
+  Crown,
+  ShieldCheck,
+  LogOut,
+  UserCheck,
+  ExternalLink,
 } from 'lucide-react';
 
 interface ProfileModalProps {
   onClose: () => void;
+  onOpenAuth?: () => void;
 }
 
-export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
+export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth }) => {
   const {
     language,
     userProfile,
@@ -30,17 +38,26 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
     xp,
     streak,
     unlockedBadges,
+    isAuthenticated,
+    isVerified,
+    logout,
+    setSelectedPublicProfile,
   } = useAppStore();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [formData, setFormData] = useState(
     userProfile || {
       fullName: 'Resul Tan',
       schoolEmail: 'resul.tan@marun.edu.tr',
       university: 'Marmara Üniversitesi',
       departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
+      avatarEmoji: '👨‍🎓',
     }
   );
+
+  // User rank calculation (defaults to 15th if standard points, adjusts dynamically)
+  const userRank = xp >= 755217 ? 1 : xp >= 363818 ? 2 : xp >= 128939 ? 3 : 15;
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,13 +75,59 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
   // Topic Success Rate (Calculated dynamically)
   const successRate = completedCount === 0 ? 0 : Math.min(100, Math.round(92 + (completedCount % 8)));
 
+  // Mock public profile users for leaderboard interaction
+  const TOP_USERS: PublicProfile[] = [
+    {
+      id: 'top-1',
+      fullName: 'Zeynep K.',
+      schoolEmail: 'zeynep.k@itu.edu.tr',
+      university: 'İstanbul Teknik Üniversitesi',
+      departmentAndClass: 'Veri Bilimi ve Analitiği - 4. Sınıf',
+      avatarEmoji: '👦',
+      xp: 755217,
+      streak: 14,
+      rank: 1,
+      level: 75,
+      completedCount: 18,
+      unlockedBadges: ['badge-first-lesson', 'badge-10-lessons', 'badge-first-case', 'badge-case-master'],
+    },
+    {
+      id: 'top-2',
+      fullName: 'Ahmet Y.',
+      schoolEmail: 'ahmet.y@metu.edu.tr',
+      university: 'Orta Doğu Teknik Üniversitesi',
+      departmentAndClass: 'Bilgisayar Mühendisliği - 3. Sınıf',
+      avatarEmoji: '👦',
+      xp: 363818,
+      streak: 8,
+      rank: 2,
+      level: 36,
+      completedCount: 14,
+      unlockedBadges: ['badge-first-lesson', 'badge-10-lessons', 'badge-first-case'],
+    },
+    {
+      id: 'top-3',
+      fullName: 'Elif D.',
+      schoolEmail: 'elif.d@boun.edu.tr',
+      university: 'Boğaziçi Üniversitesi',
+      departmentAndClass: 'Endüstri Mühendisliği - 4. Sınıf',
+      avatarEmoji: '👩',
+      xp: 128939,
+      streak: 5,
+      rank: 3,
+      level: 13,
+      completedCount: 10,
+      unlockedBadges: ['badge-first-lesson', 'badge-10-lessons'],
+    },
+  ];
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in font-sans">
       <div className="relative w-full max-w-xl bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
         {/* Floating Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 z-30 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white/90 hover:text-white border border-white/20 transition-colors backdrop-blur-xs"
+          className="absolute top-6 right-6 z-30 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white/90 hover:text-white border border-white/20 transition-colors backdrop-blur-xs cursor-pointer"
           title="Kapat"
         >
           <X className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -79,35 +142,66 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
             <div className="flex items-start justify-between relative z-10 gap-2 pr-9 sm:pr-10">
               <div className="flex items-center space-x-3 min-w-0 flex-1">
                 <div className="w-12 h-12 rounded-2xl bg-[#ff7a00] text-white font-black text-xl flex items-center justify-center border border-white/20 shadow-md shrink-0">
-                  {userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'R'}
+                  {userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-sm sm:text-base font-black tracking-tight text-white leading-none whitespace-nowrap">
-                    {userProfile?.fullName || 'Resul Tan'}
-                  </h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 flex items-center mt-1 whitespace-nowrap leading-none">
+                  <div className="flex items-center space-x-1.5">
+                    <h3 className="text-sm sm:text-base font-black tracking-tight text-white leading-none whitespace-nowrap truncate">
+                      {userProfile?.fullName || 'Resul Tan'}
+                    </h3>
+                    {isVerified && (
+                      <span title="Doğrulanmış Hesap">
+                        <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[10px] sm:text-xs text-slate-300 flex items-center mt-1 whitespace-nowrap leading-none truncate">
                     <Mail className="w-3 h-3 mr-1.5 text-[#ff7a00] shrink-0" />
-                    <span className="whitespace-nowrap">{userProfile?.schoolEmail || 'resul.tan@marun.edu.tr'}</span>
+                    <span className="whitespace-nowrap truncate">{userProfile?.schoolEmail || 'resul.tan@marun.edu.tr'}</span>
                   </p>
                 </div>
               </div>
 
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                className="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-[11px] font-bold transition-colors border border-white/15 shrink-0 whitespace-nowrap"
-              >
-                {isEditing ? (
-                  <>
-                    <X className="w-3.5 h-3.5" />
-                    <span>{language === 'tr' ? 'İptal' : 'Cancel'}</span>
-                  </>
+              <div className="flex items-center space-x-1.5 shrink-0">
+                {!isAuthenticated ? (
+                  <button
+                    onClick={() => {
+                      onClose();
+                      onOpenAuth?.();
+                    }}
+                    className="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-[11px] font-black transition-colors shadow-xs shrink-0 whitespace-nowrap"
+                  >
+                    <UserCheck className="w-3.5 h-3.5" />
+                    <span>{language === 'tr' ? 'Giriş Yap' : 'Sign In'}</span>
+                  </button>
                 ) : (
                   <>
-                    <Edit3 className="w-3.5 h-3.5 text-[#ff7a00]" />
-                    <span>{language === 'tr' ? 'Düzenle' : 'Edit'}</span>
+                    <button
+                      onClick={() => setIsEditing(!isEditing)}
+                      className="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-[11px] font-bold transition-colors border border-white/15 shrink-0 whitespace-nowrap"
+                    >
+                      {isEditing ? (
+                        <>
+                          <X className="w-3.5 h-3.5" />
+                          <span>{language === 'tr' ? 'İptal' : 'Cancel'}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Edit3 className="w-3.5 h-3.5 text-[#ff7a00]" />
+                          <span>{language === 'tr' ? 'Düzenle' : 'Edit'}</span>
+                        </>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => logout()}
+                      className="p-1 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition-colors"
+                      title={language === 'tr' ? 'Çıkış Yap' : 'Sign Out'}
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                    </button>
                   </>
                 )}
-              </button>
+              </div>
             </div>
 
             {/* Editable Form vs Metadata Display */}
@@ -175,14 +269,174 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
                 </div>
               </form>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3 border-t border-white/10 text-[10px] sm:text-xs font-medium relative z-10">
-                <div className="flex items-center space-x-2 text-slate-300 min-w-0">
-                  <Building2 className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
-                  <span className="whitespace-nowrap">{userProfile?.university || 'Marmara Üniversitesi'}</span>
+              <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2 relative z-10">
+                <div className="space-y-1 text-[10px] sm:text-xs font-medium min-w-0 flex-1">
+                  <div className="flex items-center space-x-2 text-slate-300 min-w-0">
+                    <Building2 className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
+                    <span className="truncate">{userProfile?.university || 'Marmara Üniversitesi'}</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-slate-300 min-w-0">
+                    <GraduationCap className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
+                    <span className="truncate">{userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf'}</span>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2 text-slate-300 min-w-0">
-                  <GraduationCap className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
-                  <span className="whitespace-nowrap">{userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf'}</span>
+
+                {/* Leaderboard Rank Button in Bottom-Right Corner of Identity Card */}
+                <button
+                  onClick={() => setIsLeaderboardOpen(!isLeaderboardOpen)}
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 to-orange-500/25 hover:from-amber-500/40 hover:to-orange-500/40 text-amber-300 border border-amber-400/50 text-xs font-black transition-all shadow-md group shrink-0 cursor-pointer"
+                  title="Genel Sıralamayı Gör"
+                >
+                  <Trophy className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
+                  <span>{userRank}.</span>
+                  {isLeaderboardOpen ? (
+                    <ChevronUp className="w-4 h-4 text-amber-300 stroke-[2.5]" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-amber-300 stroke-[2.5]" />
+                  )}
+                </button>
+              </div>
+            )}
+
+            {/* Expandable Symmetrical Top 3 Leaderboard Podium & User Rank */}
+            {isLeaderboardOpen && (
+              <div className="mt-4 pt-4 border-t border-white/15 animate-fade-in relative z-10">
+                <div className="flex items-center justify-between mb-3 px-1">
+                  <div className="flex items-center space-x-2">
+                    <Trophy className="w-4 h-4 text-amber-400" />
+                    <span className="text-xs font-black uppercase tracking-wider text-amber-300">
+                      {language === 'tr' ? 'Genel Liderlik Tablosu' : 'Global Leaderboard'}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-amber-200/80 italic">
+                    {language === 'tr' ? '(Profil fotoğrafına tıklayarak inceleyin)' : '(Click photo to inspect profile)'}
+                  </span>
+                </div>
+
+                {/* Symmetrical Podium Container (Top 3 Users) */}
+                <div className="bg-slate-950/90 rounded-2xl p-3 sm:p-4 border border-amber-500/30 shadow-2xl">
+                  <div className="flex items-end justify-center gap-2 sm:gap-4 pt-3 pb-1">
+                    {/* 2nd Place (Left - Ahmet Y.) */}
+                    <div className="flex flex-col items-center flex-1 max-w-[100px]">
+                      <div className="relative mb-2 flex flex-col items-center group cursor-pointer" onClick={() => setSelectedPublicProfile(TOP_USERS[1])}>
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-slate-300 bg-slate-800 flex items-center justify-center text-xl shadow-md overflow-hidden group-hover:scale-110 transition-transform ring-2 ring-slate-400/50">
+                          <span className="text-2xl">{TOP_USERS[1].avatarEmoji}</span>
+                        </div>
+                        <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-900 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
+                          2
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setSelectedPublicProfile(TOP_USERS[1])}
+                        className="text-[11px] font-extrabold text-slate-200 truncate max-w-full text-center hover:text-amber-300 flex items-center space-x-1"
+                      >
+                        <span>{TOP_USERS[1].fullName}</span>
+                        <ExternalLink className="w-2.5 h-2.5 opacity-70" />
+                      </button>
+                      <div className="flex items-center space-x-1 text-slate-300 text-[10px] font-black my-1">
+                        <span className="text-cyan-400 font-serif">◆</span>
+                        <span>{TOP_USERS[1].xp.toLocaleString('tr-TR')}</span>
+                      </div>
+                      <div className="w-full h-16 bg-slate-800/90 rounded-t-2xl border-t-2 border-slate-400/60 shadow-inner flex items-center justify-center">
+                        <span className="text-xs font-black text-slate-400">2.</span>
+                      </div>
+                    </div>
+
+                    {/* 1st Place (Center - Zeynep K.) */}
+                    <div className="flex flex-col items-center flex-1 max-w-[110px]">
+                      <div className="relative mb-2 flex flex-col items-center group cursor-pointer" onClick={() => setSelectedPublicProfile(TOP_USERS[0])}>
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-amber-400 bg-slate-800 flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.6)] overflow-hidden group-hover:scale-110 transition-transform">
+                          <span className="text-3xl">{TOP_USERS[0].avatarEmoji}</span>
+                        </div>
+                        <div className="w-6 h-6 rounded-full bg-amber-400 text-slate-950 text-xs font-black flex items-center justify-center shadow-md -mt-3 border border-white z-10">
+                          1
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setSelectedPublicProfile(TOP_USERS[0])}
+                        className="text-xs font-black text-amber-300 truncate max-w-full text-center hover:underline flex items-center space-x-1"
+                      >
+                        <span>{TOP_USERS[0].fullName}</span>
+                        <ExternalLink className="w-3 h-3 text-amber-400" />
+                      </button>
+                      <div className="flex items-center space-x-1 text-amber-400 text-xs font-black my-1">
+                        <span className="text-cyan-400 font-serif">◆</span>
+                        <span>{TOP_USERS[0].xp.toLocaleString('tr-TR')}</span>
+                      </div>
+                      <div className="w-full h-24 bg-gradient-to-b from-amber-500/40 via-amber-900/50 to-slate-900 rounded-t-2xl border-t-2 border-amber-400 shadow-inner flex items-center justify-center">
+                        <Crown className="w-5 h-5 text-amber-400 animate-pulse" />
+                      </div>
+                    </div>
+
+                    {/* 3rd Place (Right - Elif D.) */}
+                    <div className="flex flex-col items-center flex-1 max-w-[100px]">
+                      <div className="relative mb-2 flex flex-col items-center group cursor-pointer" onClick={() => setSelectedPublicProfile(TOP_USERS[2])}>
+                        <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-amber-700 bg-slate-800 flex items-center justify-center text-lg shadow-md overflow-hidden group-hover:scale-110 transition-transform ring-2 ring-amber-700/50">
+                          <span className="text-xl">{TOP_USERS[2].avatarEmoji}</span>
+                        </div>
+                        <div className="w-5 h-5 rounded-full bg-amber-700 text-amber-100 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
+                          3
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setSelectedPublicProfile(TOP_USERS[2])}
+                        className="text-[11px] font-extrabold text-amber-200/90 truncate max-w-full text-center hover:text-amber-300 flex items-center space-x-1"
+                      >
+                        <span>{TOP_USERS[2].fullName}</span>
+                        <ExternalLink className="w-2.5 h-2.5 opacity-70" />
+                      </button>
+                      <div className="flex items-center space-x-1 text-amber-500 text-[10px] font-black my-1">
+                        <span className="text-cyan-400 font-serif">◆</span>
+                        <span>{TOP_USERS[2].xp.toLocaleString('tr-TR')}</span>
+                      </div>
+                      <div className="w-full h-12 bg-amber-950/50 rounded-t-2xl border-t-2 border-amber-700/80 shadow-inner flex items-center justify-center">
+                        <span className="text-xs font-black text-amber-700">3.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Current User's Own Rank Below Podium */}
+                  <div
+                    onClick={() =>
+                      setSelectedPublicProfile({
+                        id: 'self',
+                        fullName: userProfile?.fullName || 'Resul Tan',
+                        schoolEmail: userProfile?.schoolEmail || 'resul.tan@marun.edu.tr',
+                        university: userProfile?.university || 'Marmara Üniversitesi',
+                        departmentAndClass: userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
+                        avatarEmoji: userProfile?.avatarEmoji || '👨‍🎓',
+                        xp: xp || 450,
+                        streak: streak || 3,
+                        rank: userRank,
+                        level: Math.floor((xp || 450) / 100) + 1,
+                        completedCount: completedCount,
+                        unlockedBadges: unlockedBadges,
+                      })
+                    }
+                    className="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between bg-gradient-to-r from-[#ff7a00]/20 to-amber-500/20 hover:from-[#ff7a00]/30 hover:to-amber-500/30 border border-[#ff7a00]/40 p-2.5 rounded-xl text-white cursor-pointer transition-colors group"
+                  >
+                    <div className="flex items-center space-x-2.5 min-w-0">
+                      <div className="px-2 py-0.5 rounded-lg bg-[#ff7a00] text-white font-black text-xs shadow-xs shrink-0">
+                        {userRank}.
+                      </div>
+                      <div className="w-7 h-7 rounded-lg bg-[#ff7a00] text-white font-extrabold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                        {userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'R')}
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-xs font-black text-white truncate block">
+                          {userProfile?.fullName || 'Resul Tan'} <span className="text-[10px] font-extrabold text-amber-300">(Siz)</span>
+                        </span>
+                        <span className="text-[9.5px] font-medium text-slate-300 block">
+                          {language === 'tr' ? '120 öğrenci arasında' : 'Out of 120 students'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-1 text-amber-300 text-xs font-black shrink-0">
+                      <span className="text-cyan-400 font-serif">◆</span>
+                      <span>{(xp || 450).toLocaleString('tr-TR')} XP</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -297,4 +551,3 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose }) => {
     </div>
   );
 };
-

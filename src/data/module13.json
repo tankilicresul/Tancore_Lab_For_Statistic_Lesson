@@ -106,6 +106,39 @@
           "explanation": { "tr": "(5 * 4) / 2 = 10.", "en": "(5 * 4) / 2 = 10." }
         }
       ]
+    },
+    {
+      "id": "m13-l4",
+      "moduleId": "module-13",
+      "order": 4,
+      "difficulty": "zor",
+      "title": { "tr": "Binom Katsayıları & Pascal Üçgeni", "en": "Binomial Coefficients & Pascal's Triangle" },
+      "conceptCard": {
+        "tr": "Binom açılımında (a + b)^n terimlerinin katsayıları kombinasyon C(n, k) değerleri ile elde edilir. Pascal üçgeninde her sayı, üstündeki iki sayının toplamına eşittir.",
+        "en": "Binomial expansion (a + b)^n coefficients are given by combinations C(n, k). Each number in Pascal's triangle is the sum of the two above it."
+      },
+      "companyExample": {
+        "tr": "CyberPass şifrelemede k-out-of-n anahtar paylaşımı protokolünde C(n, k) katsayıları kullanılarak sistem güvenliği modellenir.",
+        "en": "CyberPass key-sharing protocols use C(n, k) binomial coefficients to model security threshold bounds."
+      },
+      "interactiveType": "probability_lab",
+      "vocabTerms": [
+        {
+          "term_en": "binomial coefficient",
+          "explanation_tr": "Binom açılımındaki C(n, k) katsayı sayısı.",
+          "explanation_en": "The combination value C(n, k) representing terms in binomial expansion.",
+          "exampleSentence_en": "Binomial coefficients populate Pascal's triangle."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m13-l4-q1",
+          "type": "numeric",
+          "prompt": { "tr": "C(4, 2) ve C(4, 1) toplamı kaçtır?", "en": "What is C(4, 2) + C(4, 1)?" },
+          "correctAnswer": 10,
+          "explanation": { "tr": "6 + 4 = 10.", "en": "6 + 4 = 10." }
+        }
+      ]
     }
   ],
   "caseExams": [

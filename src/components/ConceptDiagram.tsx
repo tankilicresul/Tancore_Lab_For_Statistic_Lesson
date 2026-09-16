@@ -65,8 +65,8 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         </div>
 
         {/* SVG Bell Curve Render */}
-        <div className="w-full h-48 sm:h-56 my-2">
-          <svg viewBox="0 0 600 220" className="w-full h-full overflow-visible">
+        <div className="w-full my-2 flex justify-center">
+          <svg viewBox="0 0 600 220" className="w-full max-w-lg h-auto overflow-visible">
             {/* Background Grid Lines */}
             <line x1="50" y1="180" x2="550" y2="180" stroke="#334155" strokeWidth="2" />
             <line x1="300" y1="20" x2="300" y2="180" stroke="#ff7a00" strokeWidth="2" strokeDasharray="4 4" />
@@ -121,9 +121,15 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         </div>
 
         <p className="text-xs text-slate-300 font-medium text-center mt-1">
-          {language === 'tr'
-            ? 'Simetrik çan eğrisinde verilerin %68.3\'ü ±1σ, %95.4\'ü ±2σ ve %99.7\'si ±3σ aralığında yer alır.'
-            : 'In a symmetric bell curve, 68.3% of data lies within ±1σ, 95.4% within ±2σ, and 99.7% within ±3σ.'}
+          {language === 'tr' ? (
+            <>
+              Simetrik çan eğrisinde verilerin %68.3'ü <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±1σ</span>, %95.4'ü <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±2σ</span> ve %99.7'si <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±3σ</span> aralığında yer alır.
+            </>
+          ) : (
+            <>
+              In a symmetric bell curve, 68.3% of data lies within <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±1σ</span>, 95.4% within <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±2σ</span>, and 99.7% within <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">±3σ</span>.
+            </>
+          )}
         </p>
       </div>
     );
@@ -144,31 +150,43 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
           </div>
         </div>
 
-        <div className="w-full h-44 my-2">
-          <svg viewBox="0 0 600 180" className="w-full h-full overflow-visible">
-            <line x1="60" y1="140" x2="540" y2="140" stroke="#475569" strokeWidth="2" />
-            <line x1="100" y1="70" x2="200" y2="70" stroke="#ff7a00" strokeWidth="3" />
-            <line x1="400" y1="70" x2="500" y2="70" stroke="#ff7a00" strokeWidth="3" />
-            <line x1="100" y1="50" x2="100" y2="90" stroke="#ff7a00" strokeWidth="3" />
-            <line x1="500" y1="50" x2="500" y2="90" stroke="#ff7a00" strokeWidth="3" />
+        <div className="w-full my-2 flex justify-center">
+          <svg viewBox="0 0 620 185" className="w-full max-w-lg h-auto overflow-visible">
+            <line x1="50" y1="140" x2="570" y2="140" stroke="#475569" strokeWidth="2" />
+            <line x1="90" y1="70" x2="190" y2="70" stroke="#ff7a00" strokeWidth="3" />
+            <line x1="390" y1="70" x2="490" y2="70" stroke="#ff7a00" strokeWidth="3" />
+            <line x1="90" y1="50" x2="90" y2="90" stroke="#ff7a00" strokeWidth="3" />
+            <line x1="490" y1="50" x2="490" y2="90" stroke="#ff7a00" strokeWidth="3" />
 
-            <rect x="200" y="40" width="200" height="60" fill="#ff7a00" fillOpacity="0.25" stroke="#ff7a00" strokeWidth="3" rx="6" />
+            <rect x="190" y="40" width="200" height="60" fill="#ff7a00" fillOpacity="0.25" stroke="#ff7a00" strokeWidth="3" rx="6" />
             <line x1="290" y1="40" x2="290" y2="100" stroke="#ffffff" strokeWidth="4" />
-            <circle cx="530" cy="70" r="5" fill="#ef4444" />
+            <circle cx="560" cy="70" r="5" fill="#ef4444" />
 
-            <text x="100" y="120" fill="#94a3b8" fontSize="11" textAnchor="middle" fontWeight="bold">Min (Q1 - 1.5·IQR)</text>
-            <text x="200" y="120" fill="#ff7a00" fontSize="12" textAnchor="middle" fontWeight="bold">Q1 (%25)</text>
+            <text x="90" y="122" fill="#94a3b8" fontSize="11" textAnchor="middle" fontWeight="bold">Min</text>
+            <text x="90" y="137" fill="#64748b" fontSize="10" textAnchor="middle">[Q1-1.5·IQR]</text>
+
+            <text x="190" y="122" fill="#ff7a00" fontSize="12" textAnchor="middle" fontWeight="bold">Q1 (%25)</text>
             <text x="290" y="125" fill="#ffffff" fontSize="13" textAnchor="middle" fontWeight="900">Q2 (Medyan)</text>
-            <text x="400" y="120" fill="#ff7a00" fontSize="12" textAnchor="middle" fontWeight="bold">Q3 (%75)</text>
-            <text x="500" y="120" fill="#94a3b8" fontSize="11" textAnchor="middle" fontWeight="bold">Max (Q3 + 1.5·IQR)</text>
-            <text x="530" y="120" fill="#ef4444" fontSize="11" textAnchor="middle" fontWeight="bold">Aykırı (Outlier)</text>
+            <text x="390" y="122" fill="#ff7a00" fontSize="12" textAnchor="middle" fontWeight="bold">Q3 (%75)</text>
+
+            <text x="490" y="122" fill="#94a3b8" fontSize="11" textAnchor="middle" fontWeight="bold">Max</text>
+            <text x="490" y="137" fill="#64748b" fontSize="10" textAnchor="middle">[Q3+1.5·IQR]</text>
+
+            <text x="560" y="122" fill="#ef4444" fontSize="11" textAnchor="middle" fontWeight="bold">Aykırı</text>
+            <text x="560" y="137" fill="#ef4444" fontSize="10" textAnchor="middle">(Outlier)</text>
           </svg>
         </div>
 
         <p className="text-xs text-slate-300 font-medium text-center">
-          {language === 'tr'
-            ? 'Kutu genişliği IQR = Q3 - Q1 çeyreklikler arası genişliği gösterir. Çizginin ortasındaki dikey beyaz hat Medyan değeridir.'
-            : 'Box width is IQR = Q3 - Q1. The white vertical line inside represents the Median (Q2).'}
+          {language === 'tr' ? (
+            <>
+              Kutu genişliği <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] border border-slate-700/80 font-mono text-xs font-bold">IQR = Q3 - Q1</span> çeyreklikler arası genişliği gösterir. Çizginin ortasındaki dikey beyaz hat Medyan değeridir.
+            </>
+          ) : (
+            <>
+              Box width is <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] border border-slate-700/80 font-mono text-xs font-bold">IQR = Q3 - Q1</span>. The white vertical line inside represents the Median (Q2).
+            </>
+          )}
         </p>
       </div>
     );
@@ -189,8 +207,8 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
           </div>
         </div>
 
-        <div className="w-full h-44 my-2">
-          <svg viewBox="0 0 600 170" className="w-full h-full overflow-visible">
+        <div className="w-full my-2 flex justify-center">
+          <svg viewBox="0 0 600 170" className="w-full max-w-lg h-auto overflow-visible">
             <line x1="300" y1="20" x2="300" y2="150" stroke="#ffffff" strokeWidth="2" strokeDasharray="4 4" />
             <text x="300" y="15" fill="#ffffff" fontSize="11" textAnchor="middle" fontWeight="900">µ (Gerçek Ortalama)</text>
 
@@ -212,9 +230,15 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         </div>
 
         <p className="text-xs text-slate-300 font-medium text-center">
-          {language === 'tr'
-            ? 'CI sadece kitle ortalamasını kapsar (en dar). PI tekil bir sonraki ürünü kapsar. TI ise üretimin %90\'ını kapsama garantisi verir (en geniş).'
-            : 'CI covers population mean (narrowest). PI covers a single future product. TI guarantees coverage for 90% of population (widest).'}
+          {language === 'tr' ? (
+            <>
+              <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">CI</span> sadece kitle ortalamasını kapsar (en dar). <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">PI</span> tekil bir sonraki ürünü kapsar. <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">TI</span> ise üretimin %90'ını kapsama garantisi verir (en geniş).
+            </>
+          ) : (
+            <>
+              <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">CI</span> covers population mean (narrowest). <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">PI</span> covers a single future product. <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">TI</span> guarantees coverage for 90% of population (widest).
+            </>
+          )}
         </p>
       </div>
     );
@@ -235,8 +259,8 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
           </div>
         </div>
 
-        <div className="w-full h-44 my-2">
-          <svg viewBox="0 0 600 180" className="w-full h-full overflow-visible">
+        <div className="w-full my-2 flex justify-center">
+          <svg viewBox="0 0 600 180" className="w-full max-w-lg h-auto overflow-visible">
             <line x1="50" y1="140" x2="550" y2="140" stroke="#475569" strokeWidth="2" />
             <path
               d="M 50 140 Q 150 140 250 40 Q 300 15 350 40 Q 450 140 550 140"
@@ -258,9 +282,15 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         </div>
 
         <p className="text-xs text-slate-300 font-medium text-center">
-          {language === 'tr'
-            ? 'Hesaplanan test istatistiği z0 > z_α ise kırmızı kritik bölgeye düşer ve H0 hipotezi reddedilir.'
-            : 'If calculated test statistic z0 > z_α, it falls into the red rejection region and H0 is rejected.'}
+          {language === 'tr' ? (
+            <>
+              Hesaplanan test istatistiği <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-sky-300 font-mono text-xs font-bold">z0 &gt; z_α</span> ise kırmızı kritik bölgeye düşer ve <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-red-400 font-mono text-xs font-bold">H0</span> hipotezi reddedilir.
+            </>
+          ) : (
+            <>
+              If calculated test statistic <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-sky-300 font-mono text-xs font-bold">z0 &gt; z_α</span>, it falls into the red rejection region and <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-red-400 font-mono text-xs font-bold">H0</span> is rejected.
+            </>
+          )}
         </p>
       </div>
     );
@@ -281,8 +311,8 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
           </div>
         </div>
 
-        <div className="w-full h-44 my-2">
-          <svg viewBox="0 0 600 170" className="w-full h-full overflow-visible">
+        <div className="w-full my-2 flex justify-center">
+          <svg viewBox="0 0 600 170" className="w-full max-w-lg h-auto overflow-visible">
             <line x1="60" y1="140" x2="540" y2="140" stroke="#475569" strokeWidth="2" />
             <line x1="60" y1="20" x2="60" y2="140" stroke="#475569" strokeWidth="2" />
 
@@ -303,9 +333,15 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         </div>
 
         <p className="text-xs text-slate-300 font-medium text-center">
-          {language === 'tr'
-            ? 'En Küçük Kareler Yöntemi, gözlenen noktalar ile doğru arasındaki dikey hata kareleri toplamını (SSE) en aza indirir.'
-            : 'Ordinary Least Squares minimizes the sum of squared vertical residual distances (SSE).'}
+          {language === 'tr' ? (
+            <>
+              En Küçük Kareler Yöntemi, gözlenen noktalar ile doğru <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] font-mono text-xs font-bold">ŷ = b0 + b1·x</span> arasındaki dikey hata kareleri toplamını <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-1.5 py-0.5 rounded bg-slate-800 text-red-400 font-mono text-xs font-bold">(SSE)</span> en aza indirir.
+            </>
+          ) : (
+            <>
+              Ordinary Least Squares minimizes the sum of squared vertical residual distances <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-1.5 py-0.5 rounded bg-slate-800 text-red-400 font-mono text-xs font-bold">(SSE)</span> for <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] font-mono text-xs font-bold">ŷ = b0 + b1·x</span>.
+            </>
+          )}
         </p>
       </div>
     );
@@ -325,8 +361,8 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         </div>
       </div>
 
-      <div className="w-full h-44 my-2">
-        <svg viewBox="0 0 600 170" className="w-full h-full overflow-visible">
+      <div className="w-full my-2 flex justify-center">
+        <svg viewBox="0 0 600 170" className="w-full max-w-lg h-auto overflow-visible">
           <line x1="60" y1="140" x2="540" y2="140" stroke="#475569" strokeWidth="2" />
           <line x1="300" y1="20" x2="300" y2="140" stroke="#ff7a00" strokeWidth="2" strokeDasharray="4 4" />
 
@@ -341,11 +377,17 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId }
         </svg>
       </div>
 
-      <p className="text-xs text-slate-300 font-medium text-center">
-        {language === 'tr'
-          ? 'Örneklem büyüklüğü n arttıkça Standart Hata SE = σ / √n küçülür ve örneklem ortalamaları µ etrafında sıkıca kümelenir.'
-          : 'As sample size n increases, SE = σ / √n shrinks and sample means tightly cluster around true mean µ.'}
-      </p>
+        <p className="text-xs text-slate-300 font-medium text-center">
+          {language === 'tr' ? (
+            <>
+              Örneklem büyüklüğü <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">n</span> arttıkça Standart Hata <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] border border-slate-700/80 font-mono text-xs font-bold shadow-2xs">SE = σ / √n</span> küçülür ve örneklem ortalamaları <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">µ</span> etrafında sıkıca kümelenir.
+            </>
+          ) : (
+            <>
+              As sample size <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">n</span> increases, <span className="inline-flex items-center align-middle whitespace-nowrap mx-1 px-2 py-0.5 rounded bg-slate-800 text-[#ff7a00] border border-slate-700/80 font-mono text-xs font-bold shadow-2xs">SE = σ / √n</span> shrinks and sample means tightly cluster around true mean <span className="inline-flex items-center align-middle whitespace-nowrap mx-0.5 px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-xs font-bold">µ</span>.
+            </>
+          )}
+        </p>
     </div>
   );
 };

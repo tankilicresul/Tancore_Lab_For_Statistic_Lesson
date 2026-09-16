@@ -43,7 +43,7 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({ onClose }) => {
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#ff7a00]/15 border border-[#ff7a00]/30 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-[#ff7a00]/15 border border-[#ff7a00]/30 flex items-center justify-center">
               <Trophy className="w-5 h-5 text-[#ff7a00]" />
             </div>
             <div>
@@ -78,7 +78,7 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({ onClose }) => {
                 }`}
               >
                 <div
-                  className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${
+                  className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${
                     isUnlocked
                       ? 'bg-[#ff7a00] text-white shadow-md shadow-[#ff7a00]/20'
                       : 'bg-slate-200 text-slate-400'

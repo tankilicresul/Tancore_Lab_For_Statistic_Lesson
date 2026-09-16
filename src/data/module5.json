@@ -15,12 +15,12 @@
       "difficulty": "basit",
       "title": { "tr": "Nokta Tahmini & Hata Payı", "en": "Point Estimate & Margin of Error" },
       "conceptCard": {
-        "tr": "Nokta tahmini ana kütle parametresini tek sayı ile tahmin eder. Güven aralığı ise [Nokta Tahmini ± Hata Payı] şeklinde bir aralık sunar.",
-        "en": "Point estimate predicts a parameter with a single value. Confidence interval provides [Point Estimate ± Margin of Error]."
+        "tr": "Nokta tahmini bilinmeyen parametreyi tek bir sayı ile tahmin eder. Güven aralığı ise bu tahminin etrafında güvenilir bir alt ve üst sınır aralığı sunar.",
+        "en": "A point estimate predicts a parameter with a single value, while a confidence interval provides a lower and upper range around that estimate."
       },
       "companyExample": {
-        "tr": "BioLab ilaç şirketinde ortalama etki süresi 300 dakika ± 10 dakika hata payı ile ifade edilir.",
-        "en": "BioLab expresses mean drug duration as 300 minutes ± 10 minutes margin of error."
+        "tr": "BioLab biyoteknoloji şirketi geliştirdiği ağrı kesicinin etki süresini araştırıyor. 100 hasta üzerinde yapılan deneyde ortalama etki süresi 300 dakika (Nokta Tahmini) ve Standart Hata 10 dakika olarak ölçülür. %95 güven düzeyi için hata payını 1.96 × 10 = 19.6 dakika olarak buluruz ve ilacın etki süresini [280.4 - 319.6] dakika Güven Aralığı ile raporlarız.",
+        "en": "BioLab biotech tests a new painkiller's efficacy. In a 100-patient trial, mean duration is 300 minutes (Point Estimate) with SE = 10 minutes. At 95% confidence, margin of error is 1.96 × 10 = 19.6 minutes, resulting in a Confidence Interval of [280.4, 319.6] minutes."
       },
       "interactiveType": "confidence_interval",
       "vocabTerms": [
@@ -52,12 +52,12 @@
       "difficulty": "orta",
       "title": { "tr": "%95 ve %99 Güven Aralıkları", "en": "95% & 99% Confidence Intervals" },
       "conceptCard": {
-        "tr": "%95 güven düzeyi z* = 1.96 kullanır. %99 güven düzeyi z* = 2.58 kullanır. Güven düzeyi arttıkça aralık genişler.",
-        "en": "95% confidence level uses z* = 1.96. 99% uses z* = 2.58. Higher confidence yields a wider interval."
+        "tr": "Güven düzeyi, tahminimizin gerçek değeri içerme olasılığını gösterir. Kesinlik ve güven arttıkça tahmin aralığının genişliği de artar.",
+        "en": "The confidence level indicates how likely the interval contains the true value. Higher confidence levels require a wider interval."
       },
       "companyExample": {
-        "tr": "BioLab %95 güven aralığını [280, 320] TL bulurken, %99 güven aralığını [270, 330] TL olarak hesaplar.",
-        "en": "BioLab finds 95% CI is [280, 320], whereas 99% CI widens to [270, 330]."
+        "tr": "BioLab yönetim kurulu ilacın etki süresi hakkında iki farklı rapor istiyor. %95 güven düzeyinde hata payı 1.96 × 10 = 19.6 dk olup aralık [280.4, 319.6] dakikadır. %99 güven düzeyine çıkıldığında ise kritik değer z* = 2.58'e yükselir ve aralık [274.2, 325.8] dakikaya genişler. Bu da daha yüksek kesinlik için aralığın genişlemesi gerektiğini gösterir.",
+        "en": "BioLab requires two confidence levels. At 95% confidence, the margin of error is 1.96 × 10 = 19.6 min, yielding [280.4, 319.6] min. Increasing to 99% confidence raises the critical value to z* = 2.58, widening the interval to [274.2, 325.8] min to capture higher certainty."
       },
       "interactiveType": "confidence_interval",
       "vocabTerms": [
@@ -89,12 +89,12 @@
       "difficulty": "orta-ustu",
       "title": { "tr": "t-Dağılımı ile Güven Aralığı", "en": "Student's t-Distribution CIs" },
       "conceptCard": {
-        "tr": "Ana kütle standart sapması σ bilinmediğinde ve örneklem n < 30 olduğunda Z yerine Student's t-dağılımı kullanılır. Serbestlik derecesi df = n - 1'dir.",
-        "en": "When population std dev σ is unknown and n < 30, Student's t-distribution is used with degrees of freedom df = n - 1."
+        "tr": "Kütle standart sapması bilinmediğinde ve küçük örneklemlerle çalışıldığında Standart Normal Dağılım yerine Student's t-dağılımı tercih edilir.",
+        "en": "When the population standard deviation is unknown and sample sizes are small, Student's t-distribution is used instead of the standard normal distribution."
       },
       "companyExample": {
-        "tr": "BioLab 15 hastalıklı klinik deneyde σ bilinmediği için t-tablosu kritik değerini kullanır.",
-        "en": "BioLab uses the t-table critical value for a trial of n=15 patients with unknown σ."
+        "tr": "BioLab henüz n = 15 hastadan oluşan küçük bir ön klinik deney yürütmektedir ve ana kütle standart sapması σ bilinmemektedir. Örneklem boyutu küçük (n < 30) olduğu için Z-tablosu yerine Student's t-dağılımı ve serbestlik derecesi df = 15 - 1 = 14 kullanılır; böylece küçük örneklem belirsizliği hesaba katılır.",
+        "en": "BioLab conducts a small pilot trial with n = 15 patients where population std dev σ is unknown. Because n < 30, they switch from Z to Student's t-distribution with degrees of freedom df = 15 - 1 = 14, compensating for small-sample uncertainty."
       },
       "interactiveType": "confidence_interval",
       "vocabTerms": [
@@ -122,12 +122,12 @@
       "difficulty": "zor",
       "title": { "tr": "Oranlar için Güven Aralığı", "en": "CIs for Proportions" },
       "conceptCard": {
-        "tr": "Kategorik oran p̂ için güven aralığı SE = √(p̂(1-p̂)/n) formülü ile hesaplanır.",
-        "en": "For categorical proportions p̂, confidence interval uses SE = √(p̂(1-p̂)/n)."
+        "tr": "Kategorik verilerde belirli bir özelliğe sahip olanların oranını tahmin etmek için oran güven aralıkları kullanılır.",
+        "en": "Confidence intervals for proportions are used to estimate the percentage of a population that possesses a specific characteristic."
       },
       "companyExample": {
-        "tr": "BioLab ilaç başarı oranını p̂ = 0.80 (%80) ve %95 CI = [%74, %86] olarak raporlar.",
-        "en": "BioLab reports drug success rate p̂ = 0.80 (80%) with 95% CI = [74%, 86%]."
+        "tr": "BioLab yeni ilacın hastaların %80'inde (p̂ = 0.80) ağrıyı tamamen kestiğini tespit etmiştir. n = 100 hasta için Standart Hatayı SE = √(0.80 × 0.20 / 100) = 0.04 (%4) buluruz. %95 güven düzeyinde hata payı 1.96 × %4 = %7.84 olur ve ilacın başarı oranı [%72.16, %87.84] aralığında güvenle doğrulanır.",
+        "en": "BioLab finds the drug successfully relieves symptoms in 80% of patients (p̂ = 0.80). For n = 100 patients, SE = √(0.80 × 0.20 / 100) = 0.04 (4%). At 95% confidence, margin of error is 1.96 × 4% = 7.84%, confirming the success rate within [72.16%, 87.84%]."
       },
       "interactiveType": "confidence_interval",
       "vocabTerms": [

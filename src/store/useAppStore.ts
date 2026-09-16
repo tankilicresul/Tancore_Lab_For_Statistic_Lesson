@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { UserProfile, UserState } from '../types/stats';
+import { UserProfile, UserState, PublicProfile } from '../types/stats';
+import { syncUserProgress, saveUserProfileToSupabase } from '../lib/supabase';
 
 interface AppStoreActions {
   setLanguage: (lang: 'tr' | 'en') => void;
@@ -11,6 +12,12 @@ interface AppStoreActions {
   resetProgress: () => void;
   updateUserProfile: (profile: Partial<UserProfile>) => void;
   unlockUpToModule: (targetModuleId: string) => void;
+
+  // Auth actions
+  registerAndSendOtp: (profile: UserProfile, simulatedCode?: string) => void;
+  verifyOtpAndLogin: (token: string) => boolean;
+  logout: () => void;
+  setSelectedPublicProfile: (profile: PublicProfile | null) => void;
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -18,18 +25,25 @@ const DEFAULT_PROFILE: UserProfile = {
   schoolEmail: 'resul.tan@marun.edu.tr',
   university: 'Marmara Üniversitesi',
   departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
+  avatarEmoji: '👨‍🎓',
+  isVerified: true,
 };
 
 const INITIAL_STATE: UserState = {
   language: 'tr',
-  xp: 0,
-  streak: 1,
+  xp: 450,
+  streak: 3,
   lastActiveDate: new Date().toISOString().split('T')[0],
-  completedLessons: [],
+  completedLessons: ['lesson-1-1', 'lesson-1-2'],
   completedCaseExams: [],
   unlockedModules: ['module-1', 'module-2'],
-  unlockedBadges: [],
+  unlockedBadges: ['badge-first-lesson'],
   userProfile: DEFAULT_PROFILE,
+  isAuthenticated: true,
+  isVerified: true,
+  pendingOtpEmail: undefined,
+  simulatedOtpCode: undefined,
+  selectedPublicProfile: null,
 };
 
 export const useAppStore = create<UserState & AppStoreActions>()(
@@ -37,10 +51,65 @@ export const useAppStore = create<UserState & AppStoreActions>()(
     (set, get) => ({
       ...INITIAL_STATE,
 
-      updateUserProfile: (profile) =>
-        set((state) => ({
-          userProfile: { ...state.userProfile, ...profile },
-        })),
+      updateUserProfile: (profile) => {
+        set((state) => {
+          const updatedProfile = { ...state.userProfile, ...profile };
+          saveUserProfileToSupabase(updatedProfile);
+          return { userProfile: updatedProfile };
+        });
+      },
+
+      registerAndSendOtp: (profile: UserProfile, simulatedCode?: string) => {
+        set({
+          userProfile: { ...profile, isVerified: false },
+          pendingOtpEmail: profile.schoolEmail,
+          simulatedOtpCode: simulatedCode,
+        });
+      },
+
+      verifyOtpAndLogin: (token: string) => {
+        const state = get();
+        const expectedCode = state.simulatedOtpCode;
+
+        // Master bypass code '123456' or matching simulated OTP code
+        const isMatch =
+          token.trim() === '123456' ||
+          (expectedCode && token.trim() === expectedCode.trim());
+
+        if (isMatch) {
+          const verifiedProfile = {
+            ...state.userProfile,
+            isVerified: true,
+            createdAt: new Date().toISOString(),
+          };
+
+          set({
+            userProfile: verifiedProfile,
+            isAuthenticated: true,
+            isVerified: true,
+            pendingOtpEmail: undefined,
+            simulatedOtpCode: undefined,
+          });
+
+          saveUserProfileToSupabase(verifiedProfile);
+          return true;
+        }
+
+        return false;
+      },
+
+      logout: () => {
+        set({
+          isAuthenticated: false,
+          isVerified: false,
+          pendingOtpEmail: undefined,
+          simulatedOtpCode: undefined,
+        });
+      },
+
+      setSelectedPublicProfile: (profile: PublicProfile | null) => {
+        set({ selectedPublicProfile: profile });
+      },
 
       setLanguage: (language) => set({ language }),
 
@@ -96,6 +165,14 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         });
 
         get().checkAndUpdateStreak();
+        syncUserProgress({
+          userId: state.userProfile.schoolEmail,
+          totalXp: newXp,
+          level: Math.floor(newXp / 100) + 1,
+          streak: state.streak,
+          completedLessons: newCompleted,
+          completedCaseExams: state.completedCaseExams,
+        });
       },
 
       completeCaseExam: (caseId, moduleId, xpEarned = 50) => {
@@ -132,6 +209,14 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         });
 
         get().checkAndUpdateStreak();
+        syncUserProgress({
+          userId: state.userProfile.schoolEmail,
+          totalXp: newXp,
+          level: Math.floor(newXp / 100) + 1,
+          streak: state.streak,
+          completedLessons: state.completedLessons,
+          completedCaseExams: newCompletedCases,
+        });
       },
 
       unlockUpToModule: (targetModuleId: string) => {

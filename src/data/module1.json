@@ -19,8 +19,8 @@
         "en": "The mean is found by adding all numbers in a dataset and dividing by the count. It summarizes the 'typical' value of a group."
       },
       "companyExample": {
-        "tr": "NovaMarket adlı kurgusal bir e-ticaret şirketinin son 6 çeyreklik kârı (milyon $): 10, 12, 12, 15, 9, 50.",
-        "en": "A fictional e-commerce company, NovaMarket, had the following quarterly profit (in million $) over 6 quarters: 10, 12, 12, 15, 9, 50."
+        "tr": "NovaMarket e-ticaret platformunun son 6 çeyrekteki kârları 10, 12, 12, 15, 9 ve 50 milyon $'dır. Bu şirketin çeyreklik ortalama kârını bulmak için tüm dönem kârlarını toplarız (108 M$) ve dönem sayısına (6) böleriz; böylece çeyrek başına ortalama kâr 18 milyon $ olarak hesaplanır.",
+        "en": "NovaMarket's quarterly profits over the last 6 quarters are 10, 12, 12, 15, 9, and 50 million $. To find the average quarterly profit, we add up all quarterly profits ($108M) and divide by the number of quarters (6), resulting in an average quarterly profit of $18M."
       },
       "interactiveType": "mean_median_mode",
       "interactiveInitialData": [10, 12, 12, 15, 9, 50],
@@ -64,8 +64,8 @@
         "en": "The median is the middle value when data is sorted from smallest to largest. If there is an even count, take the average of the two middle values. The median is less affected by outliers than the mean."
       },
       "companyExample": {
-        "tr": "Aynı NovaMarket verisi sıralanır: 9, 10, 12, 12, 15, 50. Medyan = (12+12)/2 = 12. Dikkat: Ortalama (18) ile Medyan (12) farklı — çünkü 50 bir outlier.",
-        "en": "The same NovaMarket data sorted: 9, 10, 12, 12, 15, 50. Median = (12+12)/2 = 12. Note: Mean (18) differs from Median (12) — because 50 is an outlier."
+        "tr": "NovaMarket'in kâr verilerini küçükten büyüğe sıraladığımızda (9, 10, 12, 12, 15, 50) ortadaki iki değer 12 ve 12 olur. Medyanı bulmak için bu iki değerin ortalamasını alırız: (12 + 12) / 2 = 12 M$. Son çeyrekteki 50 M$'lık aşırı yüksek kâr (outlier) ortalamayı 18'e yükseltirken, medyan bize şirketin tipik çeyreklik performansının 12 M$ olduğunu açıkça gösterir.",
+        "en": "Sorting NovaMarket's profit data from smallest to largest (9, 10, 12, 12, 15, 50), the two middle values are 12 and 12. Taking their average gives a median of $12M. While the $50M outlier inflates the mean to 18, the median clearly shows the company's typical quarterly profit is $12M."
       },
       "interactiveType": "mean_median_mode",
       "interactiveInitialData": [9, 10, 12, 12, 15, 50],
@@ -112,8 +112,8 @@
         "en": "The mode is the most frequently occurring value in a dataset. Especially useful for categorical data (e.g. most-sold product color)."
       },
       "companyExample": {
-        "tr": "NovaMarket verisinde 12 iki kez tekrar ediyor, diğer sayılar bir kez. Mod = 12.",
-        "en": "In the NovaMarket data, 12 appears twice, others once. Mode = 12."
+        "tr": "NovaMarket'in 6 çeyreklik kâr verilerinde (10, 12, 12, 15, 9, 50) 12 sayısı iki kez tekrarlanmış, diğer tüm sayılar ise sadece bir kez gerçekleşmiştir. Veri setinde en çok tekrarlanan bu değere Mod denir ve burada Mod = 12 M$'dır.",
+        "en": "In NovaMarket's quarterly profit data (10, 12, 12, 15, 9, 50), the number 12 appears twice, while all other numbers appear once. The most frequently occurring value is called the Mode, so Mode = $12M."
       },
       "interactiveType": "mean_median_mode",
       "interactiveInitialData": [4, 4, 4, 8, 10],
@@ -146,8 +146,8 @@
         "en": "Variance measures how spread out the data is from the mean. Each difference from the mean is squared, then averaged. Standard deviation is the square root of variance, expressed in the same unit as the original data, making it easier to interpret."
       },
       "companyExample": {
-        "tr": "İki mağazanın haftalık satışları (bin $): Mağaza A: 20, 21, 19, 20 (düşük varyans, istikrarlı). Mağaza B: 5, 35, 10, 30 (yüksek varyans, tutarsız) — ikisinin de ortalaması ~20 ama riskleri çok farklı!",
-        "en": "Two stores' weekly sales ($1000): Store A: 20, 21, 19, 20 (low variance, stable). Store B: 5, 35, 10, 30 (high variance, inconsistent) — both average ~20, but their risk profiles are very different!"
+        "tr": "Mağaza A'nın haftalık satışları (20, 21, 19, 20 bin $) sürekli ortalama etrafındadır, bu nedenle sapması azdır ve satışları istikrarlıdır. Mağaza B'nin satışları ise (5, 35, 10, 30 bin $) aşırı dalgalıdır. Her iki mağazanın haftalık ortalaması 20 bin $ çıksa da, Mağaza B'nin yüksek standart sapması iş operasyonundaki dalgalanmayı ve riski ortaya koyar.",
+        "en": "Store A's weekly sales ($20k, $21k, $19k, $20k) stay close to the mean, meaning low deviation and high stability. Store B's sales ($5k, $35k, $10k, $30k) fluctuate heavily. Although both average $20k per week, Store B's higher standard deviation highlights significant revenue volatility and risk."
       },
       "interactiveType": "variance_stddev",
       "interactiveInitialData": [20, 21, 19, 20],

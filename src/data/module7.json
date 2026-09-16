@@ -89,8 +89,8 @@
       "difficulty": "orta-ustu",
       "title": { "tr": "Doğrusal Regresyon Denklemi (y = ax + b)", "en": "Linear Regression Equation" },
       "conceptCard": {
-        "tr": "Basit regresyon denklemi y = a + bx şeklindedir. a = y-kesişimi (intercept), b = eğimdir (slope). Bağlantı ile gelecek değerleri tahmin edebiliriz.",
-        "en": "Simple regression equation is y = a + bx, where a is intercept and b is slope. Allows prediction of future values."
+        "tr": "Doğrusal regresyon, iki değişken arasındaki ilişki çizgisini kullanarak bağımsız değişkene göre bağımlı değişkenin gelecekteki değerlerini tahmin etmemizi sağlar.",
+        "en": "Linear regression uses the trend line between two variables to predict future values of the dependent variable based on the independent variable."
       },
       "companyExample": {
         "tr": "AdTechX modelinde Satış = 50 + 4 * (Reklam Harcaması) denklemi kurulur. 10 bin $ reklam harcanırsa satış = 50 + 40 = 90 bin $ tahmin edilir.",
@@ -122,8 +122,8 @@
       "difficulty": "zor",
       "title": { "tr": "Belirtme Katsayısı (R²)", "en": "Coefficient of Determination (R²)" },
       "conceptCard": {
-        "tr": "R² (R-kare), bağımlı değişkendeki değişimin yüzde kaçının bağımsız değişken tarafından açıklandığını gösterir (R² = r²).",
-        "en": "R² represents the percentage of variance in dependent variable explained by independent variable (R² = r²)."
+        "tr": "Belirtme katsayısı (R-kare), bağımlı değişkendeki değişimin yüzde kaçının modelimizdeki bağımsız değişken tarafından açıklandığını gösterir.",
+        "en": "The coefficient of determination (R-squared) measures the proportion of variance in the dependent variable explained by the independent variable."
       },
       "companyExample": {
         "tr": "r = 0.90 ise R² = 0.81 (%81)'dir. Satışlardaki değişimin %81'i reklam bütçesi ile açıklanır.",
