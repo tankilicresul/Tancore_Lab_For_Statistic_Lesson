@@ -316,7 +316,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
       />
 
       {/* STEP 4: Mini Questions (Sorular) */}
-      {lesson.questions && lesson.questions.length > 0 && (        {/* ACCORDION 4: Question & Practice */}
+      {lesson.questions && lesson.questions.length > 0 && (
         <div id="lesson-question-box" className="my-8 rounded-3xl bg-white border border-slate-200 overflow-hidden shadow-xs">
           <button
             onClick={() => setIsQuestionsOpen(!isQuestionsOpen)}
