@@ -175,6 +175,7 @@ export const App: React.FC = () => {
           <HomePage
             onSelectTrack={handleSelectTrack}
             onSelectInDesignCourse={handleSelectInDesignCourse}
+            onOpenProfile={handleOpenProfile}
           />
         )}
 

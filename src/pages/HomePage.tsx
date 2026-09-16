@@ -299,14 +299,16 @@ export const COURSES_DATA: CourseTrack[] = [
   },
 ];
 
-interface HomePageProps {
+export interface HomePageProps {
   onSelectTrack: (track: 'probability' | 'statistics') => void;
   onSelectInDesignCourse?: (course: CourseTrack) => void;
+  onOpenProfile?: () => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
   onSelectTrack,
   onSelectInDesignCourse,
+  onOpenProfile,
 }) => {
   const {
     language,
@@ -318,30 +320,75 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden animate-fade-in space-y-6">
-      {/* Top Welcome Banner */}
-      <div className="relative p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-sm overflow-hidden text-left">
+      {/* Top Welcome Banner: Tanco at bottom-left with speech bubble above */}
+      <div className="relative p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-sm overflow-hidden text-left">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff7a00]/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="flex items-center space-x-3.5 sm:space-x-4 mb-4">
-          <TanCoreMascotAvatar size="lg" className="shadow-md shadow-[#ff7a00]/20 hover:scale-105 transition-transform shrink-0" />
-          <div className="flex flex-col items-start min-w-0">
-            <h1 className="text-base sm:text-xl font-black text-slate-900 tracking-tight leading-snug">
+        <div className="relative z-10 flex flex-col gap-3.5 sm:gap-4">
+          {/* Speech Bubble coming out from Tanco's head */}
+          <div className="relative bg-slate-50 border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xs">
+            {/* Speech bubble tail pointing down towards Tanco's head */}
+            <div className="absolute left-7 sm:left-8 -bottom-2 w-4 h-4 bg-slate-50 border-r border-b border-slate-200/90 transform rotate-45" />
+
+            <h2 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug mb-1">
               <span>
                 {language === 'tr'
                   ? `Selam ${studentDisplayName}! Ben Tanco, senin TA'yin olacağım.`
                   : `Hi ${studentDisplayName}! I'm Tanco, your TA.`}
               </span>
-            </h1>
+            </h2>
+            <p className="text-[11.5px] sm:text-xs text-slate-700 font-medium leading-relaxed">
+              {language === 'tr' ? (
+                <>
+                  Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman{' '}
+                  <button
+                    onClick={onOpenProfile}
+                    className="font-bold text-[#ff7a00] hover:underline inline-flex items-center cursor-pointer"
+                  >
+                    profilime tıklayarak
+                  </button>{' '}
+                  ulaşabilirsin.
+                </>
+              ) : (
+                <>
+                  I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. You can reach me anytime by{' '}
+                  <button
+                    onClick={onOpenProfile}
+                    className="font-bold text-[#ff7a00] hover:underline inline-flex items-center cursor-pointer"
+                  >
+                    clicking on my profile
+                  </button>
+                  .
+                </>
+              )}
+            </p>
           </div>
-        </div>
 
-        {/* Speech Box */}
-        <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4.5 text-[11.5px] sm:text-xs text-slate-700 leading-relaxed shadow-2xs relative">
-          <p className="font-medium text-slate-800">
-            {language === 'tr'
-              ? "Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman profilime tıklayarak ulaşabilirsin."
-              : "I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. You can reach me anytime by clicking on my profile."}
-          </p>
+          {/* Tanco Mascot at Bottom-Left */}
+          <div className="flex items-center space-x-3 pl-1">
+            <button
+              onClick={onOpenProfile}
+              className="relative group cursor-pointer focus:outline-none"
+              title={language === 'tr' ? "Tanco'nun Profili" : "Tanco's Profile"}
+            >
+              <TanCoreMascotAvatar
+                size="lg"
+                className="shadow-md shadow-[#ff7a00]/25 group-hover:scale-105 transition-transform shrink-0"
+              />
+              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white shadow-2xs" />
+            </button>
+            <div className="flex flex-col">
+              <span className="text-xs sm:text-sm font-black text-slate-900 tracking-tight flex items-center gap-1.5">
+                Tanco
+                <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-orange-100 text-[#ff7a00] font-mono">
+                  TA
+                </span>
+              </span>
+              <span className="text-[10px] sm:text-[11px] font-medium text-slate-500">
+                {language === 'tr' ? 'Öğretim Asistanı' : 'Teaching Assistant'}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 

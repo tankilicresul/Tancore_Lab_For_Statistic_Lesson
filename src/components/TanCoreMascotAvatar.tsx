@@ -22,7 +22,7 @@ export const TanCoreMascotAvatar: React.FC<TanCoreMascotAvatarProps> = ({
   if (!imgError) {
     return (
       <div
-        className={`relative inline-flex items-center justify-center rounded-2xl overflow-hidden bg-orange-50 border-2 border-[#ff7a00] shadow-sm shrink-0 ${sizeClasses} ${className}`}
+        className={`relative inline-flex items-center justify-center rounded-full overflow-hidden bg-orange-50 border-2 border-[#ff7a00] shadow-sm shrink-0 ${sizeClasses} ${className}`}
       >
         <img
           src="/tancore-mascot.png"
@@ -37,7 +37,7 @@ export const TanCoreMascotAvatar: React.FC<TanCoreMascotAvatarProps> = ({
   // Vector SVG Fallback representing the exact avatar character
   return (
     <div
-      className={`relative inline-flex items-center justify-center rounded-2xl overflow-hidden bg-slate-100 border-2 border-slate-900 shadow-sm shrink-0 ${sizeClasses} ${className}`}
+      className={`relative inline-flex items-center justify-center rounded-full overflow-hidden bg-slate-100 border-2 border-slate-900 shadow-sm shrink-0 ${sizeClasses} ${className}`}
     >
       <svg viewBox="0 0 200 200" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Background */}
