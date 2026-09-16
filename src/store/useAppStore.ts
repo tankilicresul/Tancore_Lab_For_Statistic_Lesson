@@ -84,11 +84,24 @@ const INITIAL_STATE: UserState = {
 
 function syncUserInList(state: UserState): PublicProfile[] {
   const profile = state.userProfile;
-  if (!profile.schoolEmail || !state.isVerified) {
-    return state.registeredUsers || [];
-  }
+  const currentEmail = profile.schoolEmail ? profile.schoolEmail.trim().toLowerCase() : '';
+  const currentName = profile.fullName ? profile.fullName.trim().toLowerCase() : '';
 
-  const currentEmail = profile.schoolEmail.trim().toLowerCase();
+  const existingList = (state.registeredUsers || []).filter(Boolean);
+
+  // Filter out any duplicates matching current user by email or name
+  const otherUsers = existingList.filter((u) => {
+    const uEmail = u.schoolEmail ? u.schoolEmail.trim().toLowerCase() : '';
+    const uName = u.fullName ? u.fullName.trim().toLowerCase() : '';
+    if (currentEmail && uEmail && uEmail === currentEmail) return false;
+    if (currentName && uName && uName === currentName) return false;
+    return true;
+  });
+
+  if (!profile.schoolEmail || !state.isVerified) {
+    otherUsers.sort((a, b) => b.xp - a.xp);
+    return otherUsers.map((u, i) => ({ ...u, rank: i + 1 }));
+  }
 
   const userEntry: PublicProfile = {
     id: profile.id || `usr_${currentEmail}`,
@@ -106,19 +119,7 @@ function syncUserInList(state: UserState): PublicProfile[] {
     unlockedBadges: state.unlockedBadges,
   };
 
-  const existingList = state.registeredUsers || [];
-  const existingIdx = existingList.findIndex(
-    (u) => u.schoolEmail?.toLowerCase() === currentEmail || u.fullName === profile.fullName
-  );
-
-  let newList: PublicProfile[];
-  if (existingIdx >= 0) {
-    newList = [...existingList];
-    newList[existingIdx] = { ...newList[existingIdx], ...userEntry };
-  } else {
-    newList = [...existingList, userEntry];
-  }
-
+  const newList = [userEntry, ...otherUsers];
   newList.sort((a, b) => b.xp - a.xp);
   return newList.map((u, i) => ({ ...u, rank: i + 1 }));
 }

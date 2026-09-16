@@ -102,13 +102,22 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
   // Topic Success Rate (Calculated dynamically)
   const successRate = completedCount === 0 ? 0 : Math.min(100, Math.round(92 + (completedCount % 8)));
 
-  // Real Leaderboard Calculation
-  const sortedLeaderboard: PublicProfile[] = [...(registeredUsers || [])].sort((a, b) => b.xp - a.xp);
+  // Real Leaderboard Calculation (Strictly Deduplicated)
+  const dedupMap = new Map<string, PublicProfile>();
+  (registeredUsers || []).forEach((u) => {
+    const key = (u.schoolEmail ? `email:${u.schoolEmail.trim().toLowerCase()}` : '') ||
+                (u.fullName ? `name:${u.fullName.trim().toLowerCase()}` : '') ||
+                `id:${u.id}`;
+    if (!dedupMap.has(key)) {
+      dedupMap.set(key, u);
+    }
+  });
+  const sortedLeaderboard: PublicProfile[] = Array.from(dedupMap.values()).sort((a, b) => b.xp - a.xp);
 
   // Current user's real rank in the full list of registered users
   const currentUserIdx = sortedLeaderboard.findIndex(
     (u) =>
-      u.schoolEmail === userProfile?.schoolEmail ||
+      (userProfile?.schoolEmail && u.schoolEmail?.toLowerCase() === userProfile.schoolEmail.toLowerCase()) ||
       u.fullName === userProfile?.fullName
   );
   const userRank = currentUserIdx >= 0 ? currentUserIdx + 1 : 1;

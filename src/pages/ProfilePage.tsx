@@ -174,25 +174,33 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
   // Real Leaderboard Calculation (Strictly Real Data, No Mock Users)
   const allProfilesMap = new Map<string, PublicProfile>();
 
+  const getProfileDedupKey = (p: { id?: string; schoolEmail?: string; fullName?: string }) => {
+    const email = (p.schoolEmail || '').trim().toLowerCase();
+    if (email) return `email:${email}`;
+    const name = (p.fullName || '').trim().toLowerCase();
+    if (name) return `name:${name}`;
+    return `id:${p.id || 'unknown'}`;
+  };
+
   // 1. Add Supabase database profiles
   dbProfiles.forEach((p) => {
-    const key = (p.schoolEmail || p.id).toLowerCase();
-    if (key) allProfilesMap.set(key, p);
+    const key = getProfileDedupKey(p);
+    allProfilesMap.set(key, p);
   });
 
   // 2. Add local store registered users if not present
   (registeredUsers || []).forEach((p) => {
-    const key = (p.schoolEmail || p.id).toLowerCase();
-    if (key && !allProfilesMap.has(key)) {
+    const key = getProfileDedupKey(p);
+    if (!allProfilesMap.has(key)) {
       allProfilesMap.set(key, p);
     }
   });
 
   // 3. Ensure active current user is present and up-to-date
   if (userProfile && (userProfile.schoolEmail || userProfile.fullName)) {
-    const currentEmail = (userProfile.schoolEmail || 'current_user').toLowerCase();
-    const existing = allProfilesMap.get(currentEmail);
-    allProfilesMap.set(currentEmail, {
+    const currentKey = getProfileDedupKey(userProfile);
+    const existing = allProfilesMap.get(currentKey);
+    allProfilesMap.set(currentKey, {
       id: existing?.id || userProfile.id || 'self',
       fullName: userProfile.fullName || 'Öğrenci',
       schoolEmail: userProfile.schoolEmail || '',

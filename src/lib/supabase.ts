@@ -321,7 +321,7 @@ export async function fetchAllProfilesFromSupabase(): Promise<any[]> {
   try {
     const { data, error } = await supabase
       .from('profiles')
-      .select('full_name, university, department_and_class, avatar_emoji, avatar_url, xp, streak, completed_lessons')
+      .select('id, email, school_email, full_name, university, department_and_class, avatar_emoji, avatar_url, xp, streak, completed_lessons')
       .order('xp', { ascending: false });
 
     if (error || !data) return [];
