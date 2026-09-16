@@ -415,32 +415,34 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   return (
     <div className="min-h-screen w-full bg-white font-sans flex flex-col overflow-x-hidden animate-fade-in">
       
-      {/* TOP LAYER: Complete Orange Section (Üst Kısım Komple Turuncu) */}
-      <div className="w-full bg-gradient-to-br from-[#ff7a00] via-orange-600 to-amber-600 px-6 pt-14 pb-24 sm:px-12 sm:pt-20 sm:pb-32 text-white relative overflow-hidden flex flex-col items-center justify-center shadow-sm">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-black/10 rounded-full blur-2xl pointer-events-none" />
+      {/* TOP LAYER: Complete Orange Section (Üst Kısım Canlı Turuncu) */}
+      <div className="w-full bg-gradient-to-b from-[#ff8800] via-[#ff6f00] to-[#f25900] px-6 pt-14 pb-20 sm:pt-18 sm:pb-24 text-white relative overflow-hidden flex flex-col items-center justify-center min-h-[30vh] sm:min-h-[34vh]">
+        {/* Modern glowing ambient lights for rich, vibrant, high-end look */}
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-white/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-amber-300/25 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute top-1/4 -left-12 w-48 h-48 bg-orange-400/20 rounded-full blur-2xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-4">
+        <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-3.5">
           {/* Huge Circular Logo with Static Shadow & Rotating Inner Icon */}
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white text-[#ff7a00] shadow-2xl shrink-0 p-3 flex items-center justify-center">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white text-[#ff7a00] shadow-[0_12px_30px_rgba(0,0,0,0.18)] shrink-0 p-3.5 flex items-center justify-center">
             <div
               className={`w-full h-full rounded-full flex items-center justify-center ${
                 isLogoSpinning ? 'animate-logo-spin' : ''
               }`}
             >
-              <Zap className="w-10 h-10 sm:w-12 sm:h-12 fill-[#ff7a00] stroke-[2]" />
+              <Zap className="w-10 h-10 sm:w-11 sm:h-11 fill-[#ff7a00] stroke-[2]" />
             </div>
           </div>
 
           {/* TanCoreLab Brand Title */}
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white font-sans">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white font-sans drop-shadow-xs">
             TanCoreLab
           </h1>
         </div>
       </div>
 
-      {/* BOTTOM LAYER: Complete White Section (Alt Kısım Komple Beyaz) */}
-      <div className="w-full bg-white px-6 py-8 sm:px-12 sm:py-12 flex-1 flex flex-col items-center justify-center relative">
+      {/* BOTTOM LAYER: White Card / Sheet (Sabit Hizalı, Atlamayan Alan) */}
+      <div className="w-full bg-white -mt-6 sm:-mt-8 rounded-t-[32px] sm:rounded-t-[36px] px-6 pt-7 pb-12 sm:px-12 sm:pt-9 flex-1 flex flex-col items-center justify-start shadow-[0_-8px_32px_rgba(0,0,0,0.06)] relative z-10">
         <div className="w-full max-w-md">
           
           {step === 'otp' ? (
@@ -659,30 +661,32 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
             /* Step 1: Login / Register Tab Form */
             <div className="space-y-4 animate-fade-in">
               {/* Tab Switcher: Kayıt Ol vs Giriş Yap */}
-              <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200/80 mb-2">
+              <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200/80 mb-3">
                 <button
+                  type="button"
                   onClick={() => {
                     setActiveTab('login');
                     setErrorMessage(null);
                     setShowForgotPassword(false);
                   }}
-                  className={`flex-1 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                     activeTab === 'login'
-                      ? 'bg-white text-slate-900 shadow-xs'
+                      ? 'bg-[#ff7a00] text-white shadow-sm shadow-orange-500/20'
                       : 'text-slate-500 hover:text-slate-900'
                   }`}
                 >
                   {language === 'tr' ? 'Giriş Yap' : 'Sign In'}
                 </button>
                 <button
+                  type="button"
                   onClick={() => {
                     setActiveTab('register');
                     setErrorMessage(null);
                     setShowForgotPassword(false);
                   }}
-                  className={`flex-1 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                     activeTab === 'register'
-                      ? 'bg-[#ff7a00] text-white shadow-xs'
+                      ? 'bg-[#ff7a00] text-white shadow-sm shadow-orange-500/20'
                       : 'text-slate-500 hover:text-slate-900'
                   }`}
                 >
