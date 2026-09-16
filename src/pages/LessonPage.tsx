@@ -305,23 +305,11 @@ export const LessonPage: React.FC<LessonPageProps> = ({
 
         {(() => {
           const rawConcept = getLocalized(lesson.conceptCard, language);
-          const topicFormula = extractTopicFormula(lesson, undefined, language);
-          const displayConcept = topicFormula
-            ? stripFormulaFromText(rawConcept, topicFormula)
-            : rawConcept;
 
           return (
-            <>
-              <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium mb-3">
-                <MathFormulaText text={displayConcept} />
-              </p>
-
-              {topicFormula && (
-                <div className="mt-3 mb-5 p-4 sm:p-5 rounded-2xl bg-orange-500/10 border border-[#ff7a00]/30 shadow-2xs flex items-center justify-center text-center overflow-x-auto min-h-[64px]">
-                  <KatexFormula formula={topicFormula} displayMode={true} className="text-[#ff7a00] text-sm sm:text-base [&_.katex-display]:my-0" />
-                </div>
-              )}
-            </>
+            <div className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium mb-3">
+              <MathFormulaText text={rawConcept} />
+            </div>
           );
         })()}
       </div>

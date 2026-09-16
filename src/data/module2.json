@@ -132,8 +132,8 @@
       "order": 2,
       "difficulty": "basit",
       "title": {
-        "tr": "Temel Olasılık Kuralları",
-        "en": "Basic Probability Rules"
+        "tr": "Olasılık Aksiyomları & Toplam/Çarpma Kuralı",
+        "en": "Probability Axioms & Addition/Multiplication Rules"
       },
       "conceptCard": {
         "tr": "Olasılık, bir olayın gerçekleşme şansını $0 \\le P(A) \\le 1$ aralığında ölçer. İki bağımsız olayın aynı anda gerçekleşme olasılığı (Kesişim) Çarpma Kuralı ile hesaplanır:\n\n$$P(A \\cap B) = P(A) \\cdot P(B)$$\n\nHerhangi iki olay için Birleşim Kuralı (Toplam Olasılık):\n\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$",
@@ -181,11 +181,11 @@
     {
       "id": "m2-l2",
       "moduleId": "module-2",
-      "order": 2,
+      "order": 3,
       "difficulty": "orta",
       "title": {
-        "tr": "Koşullu Olasılık (Conditional Probability)",
-        "en": "Conditional Probability"
+        "tr": "Koşullu Olasılık & Çarpım Zinciri",
+        "en": "Conditional Probability & Chain Rule"
       },
       "conceptCard": {
         "tr": "Koşullu Olasılık, $B$ olayının gerçekleştiği bilindiğinde $A$ olayının meydana gelme olasılığıdır:\n\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}, \\qquad P(B) > 0$$\n\nBuradan Zincir Kuralı türetilir: $P(A \\cap B) = P(A \\mid B) \\cdot P(B) = P(B \\mid A) \\cdot P(A)$.",
@@ -222,11 +222,11 @@
     {
       "id": "m2-l3",
       "moduleId": "module-2",
-      "order": 3,
+      "order": 4,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Bayes Teoremi (Bayes' Rule)",
-        "en": "Bayes' Theorem"
+        "tr": "Bayes Teoremi & Sonsal Olasılık (Posterior)",
+        "en": "Bayes' Theorem & Posterior Probability"
       },
       "conceptCard": {
         "tr": "Bayes Teoremi, gözlemlenen yeni bir kanıt ($B$) ışığında bir hipotezin ($A$) önsel olasılığını (prior) güncelleyerek sonsal olasılığa (posterior) dönüştürür:\n\n$$P(A \\mid B) = \\frac{P(B \\mid A) \\cdot P(A)}{P(B)} = \\frac{P(B \\mid A) \\cdot P(A)}{\\sum_{i=1}^{n} P(B \\mid A_i) \\cdot P(A_i)}$$",
@@ -261,15 +261,23 @@
           },
           "options": [
             {
-              "tr": "Yeni kanıtlarla bir olasılığı güncellemek için",
-              "en": "To update a probability with new evidence"
+              "tr": "0.40 (%40)",
+              "en": "0.40 (40%)"
             },
             {
-              "tr": "Sadece basit ortalama hesaplamak için",
-              "en": "Only to calculate simple average"
+              "tr": "0.10 (%10)",
+              "en": "0.10 (10%)"
+            },
+            {
+              "tr": "0.80 (%80)",
+              "en": "0.80 (80%)"
+            },
+            {
+              "tr": "0.04 (%4)",
+              "en": "0.04 (4%)"
             }
           ],
-          "correctAnswer": "Yeni kanıtlarla bir olasılığı güncellemek için",
+          "correctAnswer": "0.40 (%40)",
           "explanation": {
             "tr": "$$P(A \\mid B) = \\frac{P(B \\mid A) \\cdot P(A)}{P(B)} = \\frac{0.80 \\times 0.05}{0.10} = 0.40$$",
             "en": "$$P(A \\mid B) = \\frac{P(B \\mid A) \\cdot P(A)}{P(B)} = \\frac{0.80 \\times 0.05}{0.10} = 0.40$$"
@@ -283,11 +291,11 @@
     {
       "id": "m2-l4",
       "moduleId": "module-2",
-      "order": 4,
+      "order": 5,
       "difficulty": "zor",
       "title": {
-        "tr": "Bağımsız Olaylar ve Örneklem Uzayı",
-        "en": "Independent Events & Sample Space"
+        "tr": "Bağımsız Olaylar & Kombinatorik Sayma",
+        "en": "Independent Events & Combinatorics"
       },
       "conceptCard": {
         "tr": "Kombinatorik, olası durum sayısını hesaplar. Sıranın önemli olduğu seçimler Permütasyon, sıranın önemsiz olduğu alt küme seçimleri Kombinasyon ile ifade edilir:\n\n$$P(n, k) = \\frac{n!}{(n-k)!}, \\qquad \\binom{n}{k} = C(n, k) = \\frac{n!}{k!(n-k)!}$$",
@@ -314,7 +322,7 @@
             "tr": "$5$ elemanlı bir kümeden seçilecek $2$ elemanlı farklı grup sayısı $\\binom{5}{2}$ kaçtır?",
             "en": "What is the number of distinct 2-element subsets from a set of 5 elements $\\binom{5}{2}$?"
           },
-          "correctAnswer": 0.12,
+          "correctAnswer": 10,
           "explanation": {
             "tr": "$$\\binom{5}{2} = \\frac{5!}{2!(5-2)!} = \\frac{5 \\times 4}{2 \\times 1} = 10$$",
             "en": "$$\\binom{5}{2} = \\frac{5!}{2!(5-2)!} = \\frac{5 \\times 4}{2 \\times 1} = 10$$"
@@ -325,11 +333,11 @@
     {
       "id": "m2-l5",
       "moduleId": "module-2",
-      "order": 5,
+      "order": 6,
       "difficulty": "zor",
       "title": {
-        "tr": "Markov Zincirleri ve Durağan Denge",
-        "en": "Markov Chains & Steady-State Behavior"
+        "tr": "Markov Zincirleri & Durağan Durum Dengesi",
+        "en": "Markov Chains & Steady-State Equilibrium"
       },
       "conceptCard": {
         "tr": "Markov zincirleri, gelecekteki durumun sadece bir önceki duruma bağlı olduğu stokastik süreçlerdir (Belleksizlik Özelliği). Geçiş matrisi P ile n-adım sonraki durum olasılıkları P^n ve uzun vadedeki kararlı denge (π* P = π*) hesaplanır.",

@@ -193,7 +193,7 @@
     {
       "id": "m1-l2",
       "moduleId": "module-1",
-      "order": 2,
+      "order": 3,
       "difficulty": "orta",
       "title": {
         "tr": "Medyan (Median)",
@@ -263,7 +263,7 @@
     {
       "id": "m1-l3",
       "moduleId": "module-1",
-      "order": 3,
+      "order": 4,
       "difficulty": "orta-ustu",
       "title": {
         "tr": "Mod (Mode)",
@@ -312,7 +312,7 @@
     {
       "id": "m1-l4",
       "moduleId": "module-1",
-      "order": 4,
+      "order": 5,
       "difficulty": "zor",
       "title": {
         "tr": "Varyans ve Standart Sapma",
