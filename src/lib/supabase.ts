@@ -462,3 +462,80 @@ export async function syncUserProgress(data: {
     console.warn('Supabase sync warning:', err);
   }
 }
+
+/**
+ * Fetch past Tanco chat messages for a user from Supabase
+ */
+export async function fetchTancoChatsFromSupabase(userIdentifier: string): Promise<Array<{ id: string; sender: 'tanco' | 'student'; text: string; timestamp: string }>> {
+  if (!supabase || !isSupabaseConfigured || !userIdentifier) return [];
+
+  try {
+    const cleanId = userIdentifier.trim().toLowerCase();
+    const { data, error } = await supabase
+      .from('tanco_chats')
+      .select('*')
+      .or(`user_id.eq.${cleanId},user_email.eq.${cleanId}`)
+      .order('created_at', { ascending: true })
+      .limit(60);
+
+    if (error || !data) {
+      console.warn('fetchTancoChatsFromSupabase error:', error);
+      return [];
+    }
+
+    return data.map((row: any) => ({
+      id: row.id || `msg-${Date.now()}`,
+      sender: row.sender as 'tanco' | 'student',
+      text: row.text,
+      timestamp: new Date(row.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    }));
+  } catch (err) {
+    console.warn('fetchTancoChatsFromSupabase exception:', err);
+    return [];
+  }
+}
+
+/**
+ * Save a single Tanco chat message to Supabase
+ */
+export async function saveTancoChatMessageToSupabase(
+  userIdentifier: string,
+  userEmail: string | undefined,
+  sender: 'tanco' | 'student',
+  text: string
+): Promise<void> {
+  if (!supabase || !isSupabaseConfigured || !userIdentifier || !text.trim()) return;
+
+  try {
+    const cleanId = userIdentifier.trim().toLowerCase();
+    const cleanEmail = userEmail ? userEmail.trim().toLowerCase() : cleanId;
+
+    await supabase.from('tanco_chats').insert({
+      user_id: cleanId,
+      user_email: cleanEmail,
+      sender,
+      text: text.trim(),
+      created_at: new Date().toISOString(),
+    });
+  } catch (err) {
+    console.warn('saveTancoChatMessageToSupabase error:', err);
+  }
+}
+
+/**
+ * Clear all chat messages for a user from Supabase
+ */
+export async function clearTancoChatsInSupabase(userIdentifier: string): Promise<void> {
+  if (!supabase || !isSupabaseConfigured || !userIdentifier) return;
+
+  try {
+    const cleanId = userIdentifier.trim().toLowerCase();
+    await supabase
+      .from('tanco_chats')
+      .delete()
+      .or(`user_id.eq.${cleanId},user_email.eq.${cleanId}`);
+  } catch (err) {
+    console.warn('clearTancoChatsInSupabase error:', err);
+  }
+}
+

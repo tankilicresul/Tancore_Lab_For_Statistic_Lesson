@@ -1,8 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
 import { formatStudentGreetingName } from '../utils/localization';
 import { askTancoAI, ChatMessageHistoryItem } from '../services/tancoAi';
+import {
+  fetchTancoChatsFromSupabase,
+  saveTancoChatMessageToSupabase,
+  clearTancoChatsInSupabase,
+} from '../lib/supabase';
 import { KatexFormula } from './KatexFormula';
 import {
   X,
@@ -42,7 +47,6 @@ const QUICK_PROMPTS = {
  * Rich message parser supporting KaTeX ($$...$$ and $...$) and basic Markdown (bold, lists)
  */
 const FormattedMessageText: React.FC<{ text: string; isTanco: boolean }> = ({ text, isTanco }) => {
-  // Split block formulas $$ ... $$
   const blockParts = text.split(/(\$\$[\s\S]*?\$\$)/g);
 
   return (
@@ -64,7 +68,6 @@ const FormattedMessageText: React.FC<{ text: string; isTanco: boolean }> = ({ te
           );
         }
 
-        // Split inline formulas $ ... $
         const inlineParts = block.split(/(\$[^$\n]+\$)/g);
 
         return (
@@ -86,7 +89,6 @@ const FormattedMessageText: React.FC<{ text: string; isTanco: boolean }> = ({ te
                 );
               }
 
-              // Parse Markdown bold (**text**)
               const boldParts = inline.split(/(\*\*[^*]+\*\*)/g);
 
               return (
@@ -124,6 +126,7 @@ export const TancoChatModal: React.FC = () => {
   const [showMediaNotice, setShowMediaNotice] = useState<string | null>(null);
 
   const studentName = formatStudentGreetingName(userProfile?.fullName, language === 'tr' ? 'Öğrenci' : 'Student');
+  const userIdentifier = userProfile?.schoolEmail || userProfile?.id || 'guest_user';
 
   const initialGreeting: ChatMessage = {
     id: 'welcome-1',
@@ -138,6 +141,28 @@ export const TancoChatModal: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([initialGreeting]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Load cloud synchronized chat history from Supabase
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadCloudHistory() {
+      if (userProfile?.schoolEmail || userProfile?.id) {
+        const cloudMsgs = await fetchTancoChatsFromSupabase(userIdentifier);
+        if (isMounted && cloudMsgs && cloudMsgs.length > 0) {
+          setMessages([initialGreeting, ...cloudMsgs]);
+        }
+      }
+    }
+
+    if (isTancoChatOpen) {
+      loadCloudHistory();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isTancoChatOpen, userIdentifier]);
 
   // Auto scroll to bottom of chat
   useEffect(() => {
@@ -164,6 +189,11 @@ export const TancoChatModal: React.FC = () => {
     setInputMessage('');
     setIsTyping(true);
 
+    // Save student message to Supabase cloud sync
+    if (userProfile?.schoolEmail || userProfile?.id) {
+      saveTancoChatMessageToSupabase(userIdentifier, userProfile?.schoolEmail, 'student', query);
+    }
+
     try {
       // Build conversation history for the AI
       const history: ChatMessageHistoryItem[] = messages
@@ -181,7 +211,13 @@ export const TancoChatModal: React.FC = () => {
         text: reply,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
+
       setMessages((prev) => [...prev, tancoMsg]);
+
+      // Save Tanco response to Supabase cloud sync
+      if (userProfile?.schoolEmail || userProfile?.id) {
+        saveTancoChatMessageToSupabase(userIdentifier, userProfile?.schoolEmail, 'tanco', reply);
+      }
     } catch (error) {
       console.error('Tanco AI Error:', error);
       const fallbackMsg: ChatMessage = {
@@ -199,8 +235,11 @@ export const TancoChatModal: React.FC = () => {
     }
   };
 
-  const handleClearChat = () => {
+  const handleClearChat = async () => {
     setMessages([initialGreeting]);
+    if (userProfile?.schoolEmail || userProfile?.id) {
+      await clearTancoChatsInSupabase(userIdentifier);
+    }
   };
 
   return (
@@ -230,6 +269,9 @@ export const TancoChatModal: React.FC = () => {
                   Tanco
                   <Sparkles className="w-3.5 h-3.5 text-[#ff7a00] inline-block animate-pulse" />
                 </h3>
+                <span className="px-1.5 py-0.5 rounded-full bg-[#ff7a00]/25 text-[#ff7a00] font-mono text-[9.5px] font-black uppercase tracking-wider border border-[#ff7a00]/40">
+                  AI TA
+                </span>
               </div>
               <p className="text-[10.5px] sm:text-[11.5px] text-slate-300 font-medium truncate mt-0.5">
                 {language === 'tr' ? 'Endüstri Mühendisliği Asistanı • Çevrimiçi' : 'Industrial Engineering TA • Online'}
