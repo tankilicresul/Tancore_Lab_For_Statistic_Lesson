@@ -16,7 +16,48 @@ import {
   Sparkles,
   Loader2,
   RefreshCw,
+  Trophy,
+  Activity,
 } from 'lucide-react';
+
+const HIGHLIGHT_ITEMS = [
+  {
+    icon: Activity,
+    badgeTr: '🔬 12 İnteraktif Laboratuvar',
+    badgeEn: '🔬 12 Interactive Labs',
+    titleTr: 'İnteraktif İstatistik Simülasyonları',
+    titleEn: 'Interactive Statistics Labs',
+    descTr: 'Monte Carlo, Bayes Teoremi, Normal Dağılım ve Hipotez Testlerini anlık parametre değiştirerek görsel keşfet.',
+    descEn: 'Experiment with Monte Carlo, Bayes Rule, Normal Distribution, and Hypothesis Testing with real-time sliders.',
+  },
+  {
+    icon: GraduationCap,
+    badgeTr: '🎓 Canlı Üniversite Sıralaması',
+    badgeEn: '🎓 Live University League',
+    titleTr: '40+ Üniversiteden Mühendis ve Analistler',
+    titleEn: 'Students from 40+ Top Universities',
+    descTr: 'Koç, İTÜ, ODTÜ, Boğaziçi ve Türkiye\'nin dört bir yanından öğrenciler TanCoreLab liginde yarışıyor.',
+    descEn: 'Engineers and data analysts from premier universities compete, learn, and climb the live XP leaderboard.',
+  },
+  {
+    icon: Building2,
+    badgeTr: '🏢 İş Dünyası Vaka Analizleri',
+    badgeEn: '🏢 Real-World Case Studies',
+    titleTr: 'Netflix, Spotify & Amazon Veri Senaryoları',
+    titleEn: 'Netflix, Spotify & Amazon Case Scenarios',
+    descTr: 'Sadece teoriyi değil; global şirketlerin A/B testlerini, algoritmalarını ve iş kararlarını veriyle çözmeyi deneyimle.',
+    descEn: 'Beyond theory: solve real-world A/B test dilemmas, recommendation logic, and data-driven corporate decisions.',
+  },
+  {
+    icon: Trophy,
+    badgeTr: '🏆 XP & Seviye Sistemi',
+    badgeEn: '🏆 XP & Level System',
+    titleTr: 'Öğrenirken Rozet ve Seviye Kazan',
+    titleEn: 'Earn Badges & Level Up As You Learn',
+    descTr: 'Tamamladığın her ders ve vaka analiziyle XP topla, ligde yüksel ve Doğrulanmış Öğrenci rozetine sahip ol.',
+    descEn: 'Gain XP with every lesson and case study you finish, climb leagues, and unlock verified student credentials.',
+  },
+];
 
 interface AuthLandingScreenProps {
   onSuccess?: () => void;
@@ -61,6 +102,16 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
 
   // Logo Spin Animation State (Every 3 Seconds)
   const [isLogoSpinning, setIsLogoSpinning] = useState(false);
+
+  // Dynamic rotating highlight card (random on initial load, then auto-cycles every 6s)
+  const [highlightIndex, setHighlightIndex] = useState(() => Math.floor(Math.random() * HIGHLIGHT_ITEMS.length));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHighlightIndex((prev) => (prev + 1) % HIGHLIGHT_ITEMS.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -942,6 +993,52 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
               : 'Only valid university email addresses are accepted.'}
           </div>
         </div>
+
+        {/* DYNAMIC HIGHLIGHT & COMMUNITY SHOWCASE (Her girişte rastgele değişen ve otomatik dönen vitrin) */}
+        {(() => {
+          const item = HIGHLIGHT_ITEMS[highlightIndex] || HIGHLIGHT_ITEMS[0];
+          const IconComp = item.icon;
+          return (
+            <div className="w-full max-w-md mt-4 sm:mt-5 transition-all duration-500 animate-fade-in relative z-10">
+              <div className="bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl p-4 sm:p-4.5 shadow-lg shadow-black/5 text-white">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center space-x-2.5">
+                    <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white shrink-0 shadow-xs">
+                      <IconComp className="w-5 h-5 stroke-[2.2]" />
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-wider bg-black/15 text-orange-100 px-2.5 py-1 rounded-full">
+                      {language === 'tr' ? item.badgeTr : item.badgeEn}
+                    </span>
+                  </div>
+
+                  {/* Dots Navigation */}
+                  <div className="flex items-center space-x-1.5 pt-1.5">
+                    {HIGHLIGHT_ITEMS.map((_, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setHighlightIndex(idx)}
+                        aria-label={`Slide ${idx + 1}`}
+                        className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                          idx === highlightIndex ? 'w-5 bg-white' : 'w-1.5 bg-white/40 hover:bg-white/70'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-2.5">
+                  <h4 className="text-xs sm:text-sm font-black text-white tracking-tight">
+                    {language === 'tr' ? item.titleTr : item.titleEn}
+                  </h4>
+                  <p className="text-[11px] sm:text-xs text-orange-50/90 font-medium leading-relaxed mt-1">
+                    {language === 'tr' ? item.descTr : item.descEn}
+                  </p>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
       </div>
     );
   };
