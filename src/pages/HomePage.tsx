@@ -420,7 +420,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform ${course.glowColor}`} />
 
                 {/* Top row: Icon & Course Code / Badge */}
-                <div className="flex items-start justify-between w-full relative z-10 gap-2">
+                <div className="flex items-start justify-between w-full relative z-10 gap-2 shrink-0">
                   <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                   </div>
@@ -434,16 +434,19 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </div>
                 </div>
 
-                {/* Bottom text: Title & Subtitle / CTA */}
-                <div className="relative z-10 mt-auto pt-2.5">
+                {/* Middle content: Title & Description starting right below the icon row */}
+                <div className="relative z-10 pt-2.5 sm:pt-3 flex-1 flex flex-col text-left">
                   <h3 className="text-xs sm:text-[15px] font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug">
                     {course.code} – {title}
                   </h3>
                   <p className="text-[10px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
                     {desc}
                   </p>
+                </div>
 
-                  <div className="flex items-center space-x-1 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] mt-2.5 group-hover:translate-x-1 transition-transform">
+                {/* Bottom CTA button (pinned to the bottom) */}
+                <div className="relative z-10 mt-auto pt-2.5 shrink-0">
+                  <div className="flex items-center space-x-1 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] group-hover:translate-x-1 transition-transform">
                     <span>{isEn ? 'Open Path' : 'Ders Yoluna Git'}</span>
                     <ArrowRight className="w-3 h-3 stroke-[2.5]" />
                   </div>
@@ -460,7 +463,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
 
               {/* Top row: Icon & Course Code / Badge */}
-              <div className="flex items-start justify-between w-full relative z-10 gap-2">
+              <div className="flex items-start justify-between w-full relative z-10 gap-2 shrink-0">
                 <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shrink-0 ${course.iconBg}`}>
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                 </div>
@@ -474,16 +477,19 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
               </div>
 
-              {/* Bottom text: Title & Subtitle / Status */}
-              <div className="relative z-10 mt-auto pt-2.5">
+              {/* Middle content: Title & Description starting right below the icon row */}
+              <div className="relative z-10 pt-2.5 sm:pt-3 flex-1 flex flex-col text-left">
                 <h3 className="text-xs sm:text-[15px] font-black tracking-tight text-slate-900 leading-snug">
                   {course.code} – {title}
                 </h3>
                 <p className="text-[10px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
                   {desc}
                 </p>
+              </div>
 
-                <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500 mt-2.5">
+              {/* Bottom status (pinned to the bottom) */}
+              <div className="relative z-10 mt-auto pt-2.5 shrink-0">
+                <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500">
                   <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
                   <span>{isEn ? 'In Design' : 'Design Aşamasında'}</span>
                 </div>
