@@ -181,40 +181,24 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     <div className="min-h-screen w-full bg-white font-sans flex flex-col overflow-x-hidden animate-fade-in">
       
       {/* TOP LAYER: Complete Orange Section (Üst Kısım Komple Turuncu) */}
-      <div className="w-full bg-gradient-to-br from-[#ff7a00] via-orange-600 to-amber-600 px-6 py-10 sm:px-12 sm:py-14 text-white relative overflow-hidden flex flex-col items-center justify-center shadow-sm">
+      <div className="w-full bg-gradient-to-br from-[#ff7a00] via-orange-600 to-amber-600 px-6 py-12 sm:px-12 sm:py-16 text-white relative overflow-hidden flex flex-col items-center justify-center shadow-sm">
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-black/10 rounded-full blur-2xl pointer-events-none" />
 
-        <div className="w-full max-w-md relative z-10 space-y-6">
-          {/* Logo Header */}
-          <div className="flex items-center space-x-3.5">
-            <div
-              className={`w-12 h-12 rounded-full bg-white text-[#ff7a00] shadow-xl flex items-center justify-center p-2 shrink-0 ${
-                isLogoSpinning ? 'animate-logo-spin' : ''
-              }`}
-            >
-              <Zap className="w-6.5 h-6.5 fill-[#ff7a00] stroke-[2]" />
-            </div>
-            <span className="text-3xl sm:text-4xl font-black tracking-tight text-white font-sans">
-              TanCoreLab
-            </span>
+        <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-4">
+          {/* Huge Circular Spinning Logo */}
+          <div
+            className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white text-[#ff7a00] shadow-2xl flex items-center justify-center p-3 shrink-0 ${
+              isLogoSpinning ? 'animate-logo-spin' : ''
+            }`}
+          >
+            <Zap className="w-10 h-10 sm:w-12 sm:h-12 fill-[#ff7a00] stroke-[2]" />
           </div>
 
-          {/* Only 3 Icons & Text */}
-          <div className="space-y-3.5 pt-1">
-            <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
-              <Sparkles className="w-5 h-5 text-amber-300 shrink-0" />
-              <span>{language === 'tr' ? '16 İnteraktif Modül & Canlı Simülatör' : '16 Interactive Modules & Calculators'}</span>
-            </div>
-            <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
-              <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
-              <span>{language === 'tr' ? 'Gerçek Şirket Vaka Sınavları (Case Exams)' : 'Real Business Case Exams'}</span>
-            </div>
-            <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
-              <ShieldCheck className="w-5 h-5 text-orange-200 shrink-0" />
-              <span>{language === 'tr' ? 'Doğrulanmış Öğrenci Profili & Sıralama' : 'Verified Student Profile & Ranking'}</span>
-            </div>
-          </div>
+          {/* TanCoreLab Brand Title */}
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white font-sans">
+            TanCoreLab
+          </h1>
         </div>
       </div>
 
