@@ -173,7 +173,7 @@ export const TancoChatModal: React.FC = () => {
           content: m.text,
         }));
 
-      const reply = await askTancoAI(query, history, language as 'tr' | 'en');
+      const reply = await askTancoAI(query, history, language as 'tr' | 'en', studentName);
 
       const tancoMsg: ChatMessage = {
         id: `tanco-${Date.now()}`,
