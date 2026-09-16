@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
 import { formatStudentGreetingName } from '../utils/localization';
@@ -230,9 +230,6 @@ export const TancoChatModal: React.FC = () => {
                   Tanco
                   <Sparkles className="w-3.5 h-3.5 text-[#ff7a00] inline-block animate-pulse" />
                 </h3>
-                <span className="px-1.5 py-0.5 rounded-full bg-[#ff7a00]/25 text-[#ff7a00] font-mono text-[9.5px] font-black uppercase tracking-wider border border-[#ff7a00]/40">
-                  AI TA
-                </span>
               </div>
               <p className="text-[10.5px] sm:text-[11.5px] text-slate-300 font-medium truncate mt-0.5">
                 {language === 'tr' ? 'Endüstri Mühendisliği Asistanı • Çevrimiçi' : 'Industrial Engineering TA • Online'}
