@@ -617,6 +617,19 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           if (acc && acc.avatarUrl && !state.userProfile.avatarUrl) {
             state.userProfile.avatarUrl = acc.avatarUrl;
           }
+
+          // Sync real stats from Supabase on app load
+          if (state.isAuthenticated && state.userProfile.schoolEmail && isSupabaseConfigured) {
+            fetchUserProfileFromSupabase(state.userProfile.schoolEmail).then((remote) => {
+              if (remote) {
+                const store = useAppStore.getState();
+                useAppStore.setState({
+                  xp: typeof remote.xp === 'number' ? remote.xp : store.xp,
+                  streak: typeof remote.streak === 'number' ? remote.streak : store.streak,
+                });
+              }
+            }).catch(() => {});
+          }
         }
       },
     }
