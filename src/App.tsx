@@ -162,7 +162,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col selection:bg-[#ff7a00] selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#f4f6f8] text-slate-900 font-sans flex flex-col selection:bg-[#ff7a00] selection:text-white overflow-x-hidden">
       {/* Sticky Navigation Header */}
       <XpStreakBar
         onGoHome={handleBackToHome}

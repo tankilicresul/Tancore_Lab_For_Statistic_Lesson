@@ -59,7 +59,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-[#ff7a00] text-white shadow-md shadow-[#ff7a00]/25',
     badge: { tr: '8 Modül', en: '8 Modules' },
     badgeStyle: 'bg-orange-100 text-orange-800 border-orange-200/80',
-    cardStyle: 'border-orange-200/80 bg-gradient-to-b from-orange-50/50 via-white to-amber-50/30 shadow-xs hover:shadow-md hover:border-[#ff7a00]/50',
+    cardStyle: 'border-2 border-orange-200 bg-white shadow-xs hover:shadow-md hover:border-[#ff7a00]',
     glowColor: 'bg-[#ff7a00]/15',
   },
   {
@@ -78,7 +78,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25',
     badge: { tr: '8 Modül', en: '8 Modules' },
     badgeStyle: 'bg-emerald-100 text-emerald-800 border-emerald-200/80',
-    cardStyle: 'border-emerald-200/80 bg-gradient-to-b from-emerald-50/50 via-white to-teal-50/30 shadow-xs hover:shadow-md hover:border-emerald-500/50',
+    cardStyle: 'border-2 border-emerald-200 bg-white shadow-xs hover:shadow-md hover:border-emerald-500',
     glowColor: 'bg-emerald-500/15',
   },
   {
@@ -96,7 +96,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-cyan-600 text-white shadow-md shadow-cyan-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-cyan-100 text-cyan-800 border-cyan-200/80',
-    cardStyle: 'border-cyan-200/70 bg-gradient-to-b from-cyan-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-cyan-300',
     glowColor: 'bg-cyan-500/10',
   },
   {
@@ -114,7 +114,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-sky-600 text-white shadow-md shadow-sky-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-sky-100 text-sky-800 border-sky-200/80',
-    cardStyle: 'border-sky-200/70 bg-gradient-to-b from-sky-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-sky-300',
     glowColor: 'bg-sky-500/10',
   },
   {
@@ -132,7 +132,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-emerald-700 text-white shadow-md shadow-emerald-700/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-emerald-100 text-emerald-800 border-emerald-200/80',
-    cardStyle: 'border-emerald-200/70 bg-gradient-to-b from-emerald-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-emerald-300',
     glowColor: 'bg-emerald-500/10',
   },
   {
@@ -150,7 +150,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-indigo-100 text-indigo-700 border-indigo-200/80',
-    cardStyle: 'border-indigo-200/70 bg-gradient-to-b from-indigo-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-indigo-300',
     glowColor: 'bg-indigo-500/10',
   },
   {
@@ -168,7 +168,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-violet-600 text-white shadow-md shadow-violet-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-violet-100 text-violet-700 border-violet-200/80',
-    cardStyle: 'border-violet-200/70 bg-gradient-to-b from-violet-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-violet-300',
     glowColor: 'bg-violet-500/10',
   },
   {
@@ -186,7 +186,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-amber-600 text-white shadow-md shadow-amber-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-amber-100 text-amber-800 border-amber-200/80',
-    cardStyle: 'border-amber-200/70 bg-gradient-to-b from-amber-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-amber-300',
     glowColor: 'bg-amber-500/10',
   },
   {
@@ -204,7 +204,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-teal-600 text-white shadow-md shadow-teal-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-teal-100 text-teal-800 border-teal-200/80',
-    cardStyle: 'border-teal-200/70 bg-gradient-to-b from-teal-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-teal-300',
     glowColor: 'bg-teal-500/10',
   },
   {
@@ -222,7 +222,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-purple-600 text-white shadow-md shadow-purple-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-purple-100 text-purple-700 border-purple-200/80',
-    cardStyle: 'border-purple-200/70 bg-gradient-to-b from-purple-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-purple-300',
     glowColor: 'bg-purple-500/10',
   },
   {
@@ -240,7 +240,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-slate-800 text-white shadow-md shadow-slate-800/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-slate-100 text-slate-700 border-slate-300',
-    cardStyle: 'border-slate-300/80 bg-gradient-to-b from-slate-50/50 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-slate-400',
     glowColor: 'bg-slate-800/10',
   },
   {
@@ -258,7 +258,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-blue-600 text-white shadow-md shadow-blue-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-blue-100 text-blue-700 border-blue-200/80',
-    cardStyle: 'border-blue-200/70 bg-gradient-to-b from-blue-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-blue-300',
     glowColor: 'bg-blue-500/10',
   },
   {
@@ -276,7 +276,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-sky-600 text-white shadow-md shadow-sky-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-sky-100 text-sky-800 border-sky-200/80',
-    cardStyle: 'border-sky-200/70 bg-gradient-to-b from-sky-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-sky-300',
     glowColor: 'bg-sky-500/10',
   },
   {
@@ -294,7 +294,7 @@ export const COURSES_DATA: CourseTrack[] = [
     iconBg: 'bg-rose-600 text-white shadow-md shadow-rose-600/20',
     badge: { tr: 'Tasarımda', en: 'In Design' },
     badgeStyle: 'bg-rose-100 text-rose-800 border-rose-200/80',
-    cardStyle: 'border-rose-200/70 bg-gradient-to-b from-rose-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-rose-300',
     glowColor: 'bg-rose-500/10',
   },
 ];
@@ -323,14 +323,15 @@ export const HomePage: React.FC<HomePageProps> = ({
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden animate-fade-in space-y-6">
       {/* Top Welcome Banner: Tanco at bottom-left with speech bubble above */}
-      <div className="relative p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-sm overflow-hidden text-left">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff7a00]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] border border-amber-300/60 shadow-lg shadow-orange-500/15 overflow-hidden text-left">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-yellow-300/25 rounded-full blur-2xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col gap-3.5 sm:gap-4">
           {/* Speech Bubble coming out from Tanco's head */}
-          <div className="relative bg-slate-50 border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xs">
+          <div className="relative bg-white text-slate-900 border border-amber-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-md">
             {/* Speech bubble tail pointing down towards Tanco's head */}
-            <div className="absolute left-7 sm:left-8 -bottom-2 w-4 h-4 bg-slate-50 border-r border-b border-slate-200/90 transform rotate-45" />
+            <div className="absolute left-7 sm:left-8 -bottom-2 w-4 h-4 bg-white border-r border-b border-amber-200/90 transform rotate-45" />
 
             <h2 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug mb-1">
               <span>
@@ -355,18 +356,18 @@ export const HomePage: React.FC<HomePageProps> = ({
             >
               <TanCoreMascotAvatar
                 size="lg"
-                className="shadow-md shadow-[#ff7a00]/25 group-hover:scale-105 transition-transform shrink-0"
+                className="shadow-md shadow-black/20 ring-2 ring-white/80 group-hover:scale-105 transition-transform shrink-0"
               />
-              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white shadow-2xs" />
+              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-white shadow-2xs" />
             </button>
             <div className="flex flex-col">
-              <span className="text-xs sm:text-sm font-black text-slate-900 tracking-tight flex items-center gap-1.5">
+              <span className="text-xs sm:text-sm font-black text-white tracking-tight flex items-center gap-1.5 drop-shadow-xs">
                 Tanco
-                <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-orange-100 text-[#ff7a00] font-mono">
+                <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-white/25 text-white font-mono border border-white/30 backdrop-blur-xs">
                   TA
                 </span>
               </span>
-              <span className="text-[10px] sm:text-[11px] font-medium text-slate-500">
+              <span className="text-[10px] sm:text-[11px] font-semibold text-amber-100">
                 {language === 'tr' ? 'Öğretim Asistanı' : 'Teaching Assistant'}
               </span>
             </div>
