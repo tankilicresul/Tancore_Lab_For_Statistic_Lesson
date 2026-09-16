@@ -467,12 +467,9 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shrink-0 ${course.iconBg}`}>
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                 </div>
-                <div className="flex flex-col items-end gap-1 shrink-0">
+                <div className="flex items-center shrink-0">
                   <span className="text-[10px] sm:text-xs font-black font-mono tracking-tight text-slate-700">
                     {course.code}
-                  </span>
-                  <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full font-mono border ${course.badgeStyle}`}>
-                    {badgeText}
                   </span>
                 </div>
               </div>
@@ -491,7 +488,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="relative z-10 mt-auto pt-2.5 shrink-0">
                 <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500">
                   <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
-                  <span>{isEn ? 'In Design' : 'Design Aşamasında'}</span>
+                  <span>{isEn ? 'In Design Phase' : 'Tasarım Aşamasında'}</span>
                 </div>
               </div>
             </div>
