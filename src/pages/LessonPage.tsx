@@ -160,44 +160,6 @@ export const LessonPage: React.FC<LessonPageProps> = ({
           </div>
         </div>
 
-        {/* Course Roadmap & Modules Grid */}
-        <div className="mb-6 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
-                {language === 'tr' ? '📚 Bu Derste Neler Öğreneceksin?' : '📚 What You Will Learn in This Course'}
-              </h2>
-              <p className="text-xs text-slate-500 font-medium mt-0.5">
-                {language === 'tr' ? 'Tüm modüller ve öğrenilecek kritik yetkinlikler:' : 'All modules and critical competencies:'}
-              </p>
-            </div>
-            <span className="text-[11px] font-black font-mono text-[#ff7a00] bg-orange-50 px-2.5 py-1 rounded-full border border-orange-200">
-              8 {language === 'tr' ? 'Modül' : 'Modules'}
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {lesson.roadmapModules?.map((mod) => (
-              <div
-                key={mod.order}
-                className="p-4 rounded-2xl bg-slate-50/80 border border-slate-200 hover:border-[#ff7a00]/40 transition-colors flex items-start space-x-3 group"
-              >
-                <div className="w-8 h-8 rounded-xl bg-[#ff7a00] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-xs group-hover:scale-105 transition-transform">
-                  {mod.order}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight leading-snug">
-                    {getLocalized(mod.title, language)}
-                  </h3>
-                  <p className="text-[11px] text-slate-500 font-medium leading-snug mt-1">
-                    {getLocalized(mod.summary, language)}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Tanco Assistant Floating Reminder Card */}
         <div className="mb-8 p-5 rounded-3xl bg-slate-900 text-white shadow-lg relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center space-x-3.5">
