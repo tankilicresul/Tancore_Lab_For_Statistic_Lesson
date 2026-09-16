@@ -388,28 +388,31 @@ export const HomePage: React.FC<HomePageProps> = ({
               <button
                 key={course.code}
                 onClick={() => course.track && onSelectTrack(course.track)}
-                className={`group relative p-3.5 sm:p-5 rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between min-h-[190px] sm:min-h-[210px] cursor-pointer overflow-hidden ${course.cardStyle}`}
+                className={`group relative p-3.5 sm:p-5 rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] cursor-pointer overflow-hidden ${course.cardStyle}`}
               >
                 <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform ${course.glowColor}`} />
 
-                {/* Top area: Icon + Bold Title right next to it */}
-                <div className="flex items-start space-x-2.5 sm:space-x-3 w-full relative z-10 shrink-0">
-                  <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-105 shrink-0 ${course.iconBg}`}>
-                    <Icon className="w-5 h-5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
+                {/* Top row: Icon & Course Code / Badge */}
+                <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                   </div>
-                  <div className="min-w-0 flex-1 text-left">
-                    <h3 className="text-xs sm:text-[14px] font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug">
-                      {course.code} – {title}
-                    </h3>
-                    <span className={`inline-block mt-1 text-[8.5px] sm:text-[9.5px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full font-mono border ${course.badgeStyle}`}>
+                  <div className="h-10 sm:h-12 flex flex-col items-end justify-center gap-0.5 shrink-0">
+                    <span className="text-xs sm:text-sm font-black font-mono tracking-tight text-slate-800">
+                      {course.code}
+                    </span>
+                    <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full font-mono border ${course.badgeStyle}`}>
                       {badgeText}
                     </span>
                   </div>
                 </div>
 
-                {/* Description */}
-                <div className="relative z-10 pt-2 flex-1 text-left">
-                  <p className="text-[10px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-3 mt-0.5 leading-tight">
+                {/* Middle content: Title & Description starting right below the icon row */}
+                <div className="relative z-10 pt-2.5 sm:pt-3 flex-1 flex flex-col text-left">
+                  <h3 className="text-xs sm:text-[15px] font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug">
+                    {title}
+                  </h3>
+                  <p className="text-[10px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
                     {desc}
                   </p>
                 </div>
@@ -429,25 +432,28 @@ export const HomePage: React.FC<HomePageProps> = ({
             <button
               key={course.code}
               onClick={() => onSelectInDesignCourse?.(course)}
-              className={`group relative p-3.5 sm:p-5 rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between min-h-[190px] sm:min-h-[210px] overflow-hidden cursor-pointer hover:border-amber-400/80 hover:shadow-md ${course.cardStyle}`}
+              className={`group relative p-3.5 sm:p-5 rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden cursor-pointer hover:border-amber-400/80 hover:shadow-md ${course.cardStyle}`}
             >
               <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
 
-              {/* Top area: Icon + Bold Title right next to it */}
-              <div className="flex items-start space-x-2.5 sm:space-x-3 w-full relative z-10 shrink-0">
-                <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
-                  <Icon className="w-5 h-5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
+              {/* Top row: Icon & Course Code */}
+              <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                 </div>
-                <div className="min-w-0 flex-1 text-left">
-                  <h3 className="text-xs sm:text-[14px] font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors leading-snug">
-                    {course.code} – {title}
-                  </h3>
+                <div className="h-10 sm:h-12 flex items-center justify-end shrink-0">
+                  <span className="text-xs sm:text-sm font-black font-mono tracking-tight text-slate-700">
+                    {course.code}
+                  </span>
                 </div>
               </div>
 
-              {/* Description */}
-              <div className="relative z-10 pt-2 flex-1 text-left">
-                <p className="text-[10px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-3 mt-0.5 leading-tight">
+              {/* Middle content: Title & Description starting right below the icon row */}
+              <div className="relative z-10 pt-2.5 sm:pt-3 flex-1 flex flex-col text-left">
+                <h3 className="text-xs sm:text-[15px] font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors leading-snug">
+                  {title}
+                </h3>
+                <p className="text-[10px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
                   {desc}
                 </p>
               </div>
