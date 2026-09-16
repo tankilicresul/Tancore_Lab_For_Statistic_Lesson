@@ -242,8 +242,8 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
   const trackTitle =
     selectedTrack === 'statistics'
-      ? language === 'tr' ? 'İstatistik Müfredatı' : 'Statistics Curriculum'
-      : language === 'tr' ? 'Olasılık Müfredatı' : 'Probability Curriculum';
+      ? language === 'tr' ? 'Uygulamalı İstatistik' : 'Applied Statistics'
+      : language === 'tr' ? 'Mühendisler İçin Olasılık ve Rastgele Değişkenler' : 'Probability and Random Variables for Engineers';
 
   const trackDescription =
     selectedTrack === 'statistics'
@@ -264,7 +264,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
         <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-[#ff7a00] font-mono text-[10px] sm:text-xs font-black">
           {selectedTrack === 'statistics' ? <BarChart3 className="w-3.5 h-3.5" /> : <Dices className="w-3.5 h-3.5" />}
-          <span>{selectedTrack === 'statistics' ? 'STATISTICS' : 'PROBABILITY'}</span>
+          <span>{selectedTrack === 'statistics' ? 'APPLIED STATISTICS' : 'PROBABILITY & RANDOM VARIABLES'}</span>
         </div>
       </div>
 

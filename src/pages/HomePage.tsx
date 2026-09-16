@@ -14,6 +14,10 @@ import {
   Sparkles,
   ArrowRight,
   TrendingUp,
+  Loader2,
+  Coins,
+  Terminal,
+  Binary,
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -118,74 +122,202 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </div>
 
-      {/* Course Track Selection - 2 Square Course Cards in 1 Row */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          {/* Card 1: Olasılık */}
-          <button
-            onClick={() => onSelectTrack('probability')}
-            className="group relative p-3.5 sm:p-5 rounded-3xl border border-orange-200/90 hover:border-[#ff7a00] bg-gradient-to-b from-orange-50/70 via-white to-orange-50/30 hover:from-orange-50 hover:to-orange-100/60 transition-all duration-300 text-left flex flex-col justify-between aspect-square cursor-pointer overflow-hidden shadow-xs hover:shadow-lg hover:-translate-y-1"
-          >
-            <div className="absolute top-0 right-0 w-20 h-20 bg-[#ff7a00]/10 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+      {/* Course Track Selection - Course Cards Grid */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 auto-rows-fr">
+        {/* Card 1: Probability and Random Variables for Engineers */}
+        <button
+          onClick={() => onSelectTrack('probability')}
+          className="group relative p-3.5 sm:p-5 rounded-3xl border border-orange-200/90 hover:border-[#ff7a00] bg-gradient-to-b from-orange-50/70 via-white to-orange-50/30 hover:from-orange-50 hover:to-orange-100/60 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] cursor-pointer overflow-hidden shadow-xs hover:shadow-lg hover:-translate-y-1"
+        >
+          <div className="absolute top-0 right-0 w-20 h-20 bg-[#ff7a00]/10 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
 
-            {/* Top row: Icon & Status Badge */}
-            <div className="flex items-start justify-between w-full relative z-10">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center transition-transform group-hover:scale-110 shadow-md shadow-[#ff7a00]/25">
-                <Dices className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
-              </div>
-              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-100 text-[#ff7a00] font-mono shrink-0 border border-orange-200/80">
-                {language === 'tr' ? '8 Modül' : '8 Modules'}
-              </span>
+          {/* Top row: Icon & Status Badge */}
+          <div className="flex items-start justify-between w-full relative z-10">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center transition-transform group-hover:scale-110 shadow-md shadow-[#ff7a00]/25 shrink-0">
+              <Dices className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
             </div>
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-100 text-[#ff7a00] font-mono shrink-0 border border-orange-200/80">
+              {language === 'tr' ? '8 Modül' : '8 Modules'}
+            </span>
+          </div>
 
-            {/* Bottom text: Title & Subtitle / CTA */}
-            <div className="relative z-10 mt-auto pt-2">
-              <h3 className="text-sm sm:text-lg font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug">
-                {language === 'tr' ? 'Olasılık' : 'Probability'}
-              </h3>
-              <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-0.5 leading-tight">
-                {language === 'tr' ? 'Temeller, Bayes, Monte Carlo & Dağılımlar' : 'Bayes & Distributions'}
-              </p>
+          {/* Bottom text: Title & Subtitle / CTA */}
+          <div className="relative z-10 mt-auto pt-2">
+            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug">
+              {language === 'tr' ? 'Mühendisler İçin Olasılık ve Rastgele Değişkenler' : 'Probability and Random Variables for Engineers'}
+            </h3>
+            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
+              {language === 'tr' ? 'Temeller, Bayes, Monte Carlo & Dağılımlar' : 'Bayes, Monte Carlo & Distributions'}
+            </p>
 
-              <div className="flex items-center space-x-1 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] mt-2 group-hover:translate-x-1 transition-transform">
-                <span>{language === 'tr' ? 'Ders Yoluna Git' : 'Open Path'}</span>
-                <ArrowRight className="w-3 h-3 stroke-[2.5]" />
-              </div>
+            <div className="flex items-center space-x-1 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] mt-2 group-hover:translate-x-1 transition-transform">
+              <span>{language === 'tr' ? 'Ders Yoluna Git' : 'Open Path'}</span>
+              <ArrowRight className="w-3 h-3 stroke-[2.5]" />
             </div>
-          </button>
+          </div>
+        </button>
 
-          {/* Card 2: İstatistik */}
-          <button
-            onClick={() => onSelectTrack('statistics')}
-            className="group relative p-3.5 sm:p-5 rounded-3xl border border-slate-200 hover:border-[#ff7a00] bg-gradient-to-b from-slate-50/70 via-white to-orange-50/20 hover:from-orange-50 hover:to-orange-100/60 transition-all duration-300 text-left flex flex-col justify-between aspect-square cursor-pointer overflow-hidden shadow-xs hover:shadow-lg hover:-translate-y-1"
-          >
-            <div className="absolute top-0 right-0 w-20 h-20 bg-slate-900/5 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+        {/* Card 2: Applied Statistics */}
+        <button
+          onClick={() => onSelectTrack('statistics')}
+          className="group relative p-3.5 sm:p-5 rounded-3xl border border-slate-200 hover:border-[#ff7a00] bg-gradient-to-b from-slate-50/70 via-white to-orange-50/20 hover:from-orange-50 hover:to-orange-100/60 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] cursor-pointer overflow-hidden shadow-xs hover:shadow-lg hover:-translate-y-1"
+        >
+          <div className="absolute top-0 right-0 w-20 h-20 bg-slate-900/5 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
 
-            {/* Top row: Icon & Status Badge */}
-            <div className="flex items-start justify-between w-full relative z-10">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center transition-transform group-hover:scale-110 shadow-md">
-                <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
-              </div>
-              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-mono shrink-0 border border-slate-200">
-                {language === 'tr' ? '8 Modül' : '8 Modules'}
-              </span>
+          {/* Top row: Icon & Status Badge */}
+          <div className="flex items-start justify-between w-full relative z-10">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center transition-transform group-hover:scale-110 shadow-md shrink-0">
+              <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
             </div>
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-mono shrink-0 border border-slate-200">
+              {language === 'tr' ? '8 Modül' : '8 Modules'}
+            </span>
+          </div>
 
-            {/* Bottom text: Title & Subtitle / CTA */}
-            <div className="relative z-10 mt-auto pt-2">
-              <h3 className="text-sm sm:text-lg font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug">
-                {language === 'tr' ? 'İstatistik' : 'Statistics'}
-              </h3>
-              <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-0.5 leading-tight">
-                {language === 'tr' ? 'Hipotez, Varyans, Regresyon & ANOVA' : 'Hypothesis & Regression'}
-              </p>
+          {/* Bottom text: Title & Subtitle / CTA */}
+          <div className="relative z-10 mt-auto pt-2">
+            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug">
+              {language === 'tr' ? 'Uygulamalı İstatistik' : 'Applied Statistics'}
+            </h3>
+            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
+              {language === 'tr' ? 'Hipotez, Varyans, Regresyon & ANOVA' : 'Hypothesis, Variance, Regression & ANOVA'}
+            </p>
 
-              <div className="flex items-center space-x-1 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] mt-2 group-hover:translate-x-1 transition-transform">
-                <span>{language === 'tr' ? 'Ders Yoluna Git' : 'Open Path'}</span>
-                <ArrowRight className="w-3 h-3 stroke-[2.5]" />
-              </div>
+            <div className="flex items-center space-x-1 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] mt-2 group-hover:translate-x-1 transition-transform">
+              <span>{language === 'tr' ? 'Ders Yoluna Git' : 'Open Path'}</span>
+              <ArrowRight className="w-3 h-3 stroke-[2.5]" />
             </div>
-          </button>
+          </div>
+        </button>
+
+        {/* Card 3: Engineering Economics */}
+        <div
+          className="group relative p-3.5 sm:p-5 rounded-3xl border border-emerald-200/70 bg-gradient-to-b from-emerald-50/40 via-white to-slate-50/70 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden shadow-xs hover:shadow-md"
+        >
+          <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-500/10 rounded-full blur-xl pointer-events-none" />
+
+          {/* Top row: Icon & Status Badge */}
+          <div className="flex items-start justify-between w-full relative z-10">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20 shrink-0">
+              <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+            </div>
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-mono shrink-0 border border-emerald-200/80">
+              {language === 'tr' ? 'Tasarımda' : 'In Design'}
+            </span>
+          </div>
+
+          {/* Bottom text: Title & Subtitle / Status */}
+          <div className="relative z-10 mt-auto pt-2">
+            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 leading-snug">
+              {language === 'tr' ? 'Mühendislik Ekonomisi' : 'Engineering Economics'}
+            </h3>
+            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
+              {language === 'tr' ? 'Nakit Akışları, Faiz, NPV, IRR & Maliyet Analizi' : 'Cash Flows, Interest, NPV, IRR & Cost Analysis'}
+            </p>
+
+            <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500 mt-2">
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
+              <span>{language === 'tr' ? 'Design Aşamasında' : 'In Design'}</span>
+            </div>
+          </div>
         </div>
+
+        {/* Card 4: Introduction to Computing For Operations Research */}
+        <div
+          className="group relative p-3.5 sm:p-5 rounded-3xl border border-indigo-200/70 bg-gradient-to-b from-indigo-50/40 via-white to-slate-50/70 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden shadow-xs hover:shadow-md"
+        >
+          <div className="absolute top-0 right-0 w-20 h-20 bg-indigo-500/10 rounded-full blur-xl pointer-events-none" />
+
+          {/* Top row: Icon & Status Badge */}
+          <div className="flex items-start justify-between w-full relative z-10">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-600/20 shrink-0">
+              <Terminal className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+            </div>
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-mono shrink-0 border border-indigo-200/80">
+              {language === 'tr' ? 'Tasarımda' : 'In Design'}
+            </span>
+          </div>
+
+          {/* Bottom text: Title & Subtitle / Status */}
+          <div className="relative z-10 mt-auto pt-2">
+            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 leading-snug">
+              {language === 'tr' ? 'Yöneylem Araştırması İçin Programlamaya Giriş' : 'Introduction to Computing For Operations Research'}
+            </h3>
+            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
+              {language === 'tr' ? 'Python, Algoritmalar, Veri Yapıları & Modelleme' : 'Python, Algorithms, Data Structures & Modeling'}
+            </p>
+
+            <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500 mt-2">
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
+              <span>{language === 'tr' ? 'Design Aşamasında' : 'In Design'}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 5: Introduction to Optimization Methods */}
+        <div
+          className="group relative p-3.5 sm:p-5 rounded-3xl border border-violet-200/70 bg-gradient-to-b from-violet-50/40 via-white to-slate-50/70 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden shadow-xs hover:shadow-md"
+        >
+          <div className="absolute top-0 right-0 w-20 h-20 bg-violet-500/10 rounded-full blur-xl pointer-events-none" />
+
+          {/* Top row: Icon & Status Badge */}
+          <div className="flex items-start justify-between w-full relative z-10">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-violet-600 text-white flex items-center justify-center shadow-md shadow-violet-600/20 shrink-0">
+              <Target className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+            </div>
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 font-mono shrink-0 border border-violet-200/80">
+              {language === 'tr' ? 'Tasarımda' : 'In Design'}
+            </span>
+          </div>
+
+          {/* Bottom text: Title & Subtitle / Status */}
+          <div className="relative z-10 mt-auto pt-2">
+            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 leading-snug">
+              {language === 'tr' ? 'Optimizasyon Yöntemlerine Giriş' : 'Introduction to Optimization Methods'}
+            </h3>
+            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
+              {language === 'tr' ? 'Lineer Programlama, Simplex, Dualite & Ağlar' : 'Linear Programming, Simplex, Duality & Networks'}
+            </p>
+
+            <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500 mt-2">
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
+              <span>{language === 'tr' ? 'Design Aşamasında' : 'In Design'}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 6: Discrete Mathematical Structures */}
+        <div
+          className="group relative p-3.5 sm:p-5 rounded-3xl border border-cyan-200/70 bg-gradient-to-b from-cyan-50/40 via-white to-slate-50/70 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden shadow-xs hover:shadow-md"
+        >
+          <div className="absolute top-0 right-0 w-20 h-20 bg-cyan-500/10 rounded-full blur-xl pointer-events-none" />
+
+          {/* Top row: Icon & Status Badge */}
+          <div className="flex items-start justify-between w-full relative z-10">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-cyan-700 text-white flex items-center justify-center shadow-md shadow-cyan-700/20 shrink-0">
+              <Binary className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+            </div>
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 font-mono shrink-0 border border-cyan-200/80">
+              {language === 'tr' ? 'Tasarımda' : 'In Design'}
+            </span>
+          </div>
+
+          {/* Bottom text: Title & Subtitle / Status */}
+          <div className="relative z-10 mt-auto pt-2">
+            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 leading-snug">
+              {language === 'tr' ? 'Ayrık Matematiksel Yapılar' : 'Discrete Mathematical Structures'}
+            </h3>
+            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
+              {language === 'tr' ? 'Kümeler, Mantık, Çizge Teorisi & Kombinatorik' : 'Sets, Logic, Graph Theory & Combinatorics'}
+            </p>
+
+            <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500 mt-2">
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
+              <span>{language === 'tr' ? 'Design Aşamasında' : 'In Design'}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
