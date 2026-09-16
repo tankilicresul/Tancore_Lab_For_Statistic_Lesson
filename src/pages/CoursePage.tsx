@@ -30,6 +30,7 @@ import {
   ArrowRight,
   Zap,
   Loader2,
+  Send,
 } from 'lucide-react';
 import { Lesson, CaseExam, Module } from '../types/stats';
 import { CourseTrack } from './HomePage';
@@ -173,7 +174,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
   scrollToNodeId,
   onStartPlacementTest,
 }) => {
-  const { language, unlockedModules, completedLessons, completedCaseExams } = useAppStore();
+  const { language, unlockedModules, completedLessons, completedCaseExams, setIsTancoChatOpen } = useAppStore();
   const [selectedNode, setSelectedNode] = useState<PathNodeItem | null>(null);
 
   // If viewing an in-design course, render dedicated placeholder view
@@ -223,12 +224,16 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
         {/* In-Design Message Card with Mascot Tanco */}
         <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-amber-50/40 via-white to-orange-50/20 border border-amber-200/80 shadow-sm text-center flex flex-col items-center">
-          <div className="relative mb-4">
-            <TanCoreMascotAvatar size="xl" className="shadow-lg shadow-[#ff7a00]/25" />
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center border-2 border-white shadow-xs">
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          <button
+            onClick={() => setIsTancoChatOpen(true)}
+            className="relative mb-4 cursor-pointer group focus:outline-none"
+            title={isEn ? "Chat with Tanco" : "Tanco ile Sohbet Et"}
+          >
+            <TanCoreMascotAvatar size="xl" className="shadow-lg shadow-[#ff7a00]/25 group-hover:scale-105 transition-transform" />
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center border-2 border-white shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
             </div>
-          </div>
+          </button>
 
           <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight mb-2">
             {isEn ? 'We Are Designing This Course!' : 'Bu Dersi Şu Anda Tasarlıyoruz!'}
@@ -240,13 +245,23 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               : "Bu dersi şu anda sizler için tasarlıyoruz! Bize destek olmak ve müfredat/içerik taleplerinizi iletmek için asistanınız Tanco'ya yazabilirsiniz."}
           </p>
 
-          <button
-            onClick={onBackToHome}
-            className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer flex items-center space-x-2"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>{isEn ? 'Return to Courses' : 'Ders Listesine Dön'}</span>
-          </button>
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+            <button
+              onClick={() => setIsTancoChatOpen(true)}
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff7a00]/25 cursor-pointer flex items-center justify-center space-x-2 active:scale-95"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span>{isEn ? 'Write to Assistant Tanco' : "Asistanınız Tanco'ya Yazın"}</span>
+            </button>
+
+            <button
+              onClick={onBackToHome}
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer flex items-center justify-center space-x-2"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>{isEn ? 'Return to Courses' : 'Ders Listesine Dön'}</span>
+            </button>
+          </div>
         </div>
       </div>
     );

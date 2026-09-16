@@ -40,6 +40,7 @@ interface AppStoreActions {
   logout: () => void;
   setSelectedPublicProfile: (profile: PublicProfile | null) => void;
   syncRegisteredUserInList: () => void;
+  setIsTancoChatOpen: (open: boolean) => void;
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -121,6 +122,7 @@ const INITIAL_STATE: UserState = {
   selectedCaseId: null,
   selectedTrack: 'probability',
   customActiveModuleName: null,
+  isTancoChatOpen: false,
 };
 
 function syncUserInList(state: UserState): PublicProfile[] {
@@ -168,6 +170,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
   persist(
     (set, get) => ({
       ...INITIAL_STATE,
+
+      setIsTancoChatOpen: (open) => set({ isTancoChatOpen: open }),
 
       syncRegisteredUserInList: () => {
         set((state) => ({

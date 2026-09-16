@@ -313,6 +313,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   const {
     language,
     userProfile,
+    setIsTancoChatOpen,
   } = useAppStore();
 
   // Derive dynamic student greeting name - exactly as registered by the student
@@ -338,38 +339,18 @@ export const HomePage: React.FC<HomePageProps> = ({
               </span>
             </h2>
             <p className="text-[11.5px] sm:text-xs text-slate-700 font-medium leading-relaxed">
-              {language === 'tr' ? (
-                <>
-                  Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman{' '}
-                  <button
-                    onClick={onOpenProfile}
-                    className="font-bold text-[#ff7a00] hover:underline inline-flex items-center cursor-pointer"
-                  >
-                    profilime tıklayarak
-                  </button>{' '}
-                  ulaşabilirsin.
-                </>
-              ) : (
-                <>
-                  I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. You can reach me anytime by{' '}
-                  <button
-                    onClick={onOpenProfile}
-                    className="font-bold text-[#ff7a00] hover:underline inline-flex items-center cursor-pointer"
-                  >
-                    clicking on my profile
-                  </button>
-                  .
-                </>
-              )}
+              {language === 'tr'
+                ? "Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman fotoğrafıma tıklayarak ulaşabilirsin."
+                : "I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. You can reach me anytime by clicking on my photo."}
             </p>
           </div>
 
           {/* Tanco Mascot at Bottom-Left */}
           <div className="flex items-center space-x-3 pl-1">
             <button
-              onClick={onOpenProfile}
+              onClick={() => setIsTancoChatOpen(true)}
               className="relative group cursor-pointer focus:outline-none"
-              title={language === 'tr' ? "Tanco'nun Profili" : "Tanco's Profile"}
+              title={language === 'tr' ? "Tanco ile Sohbet Et" : "Chat with Tanco"}
             >
               <TanCoreMascotAvatar
                 size="lg"

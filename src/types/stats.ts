@@ -141,6 +141,7 @@ export interface UserState {
   selectedCaseId?: string | null;
   selectedTrack?: 'probability' | 'statistics';
   customActiveModuleName?: string | null;
+  isTancoChatOpen?: boolean;
 }
 
 export interface PlacementTestResult {

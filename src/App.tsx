@@ -7,6 +7,8 @@ import { ProfilePage } from './pages/ProfilePage';
 import { LessonPage } from './pages/LessonPage';
 import { CaseExamPage } from './pages/CaseExamPage';
 import { PlacementTestPage } from './pages/PlacementTestPage';
+import { TancoChatModal } from './components/TancoChatModal';
+import { FloatingTancoButton } from './components/FloatingTancoButton';
 import { getLessonById, getCaseExamById, getModuleById } from './data/modules';
 import { useAppStore } from './store/useAppStore';
 import { getLocalized } from './utils/localization';
@@ -221,6 +223,10 @@ export const App: React.FC = () => {
           <PlacementTestPage onBackToHome={handleBackToHomeWithScroll} />
         )}
       </main>
+
+      {/* Tanco Assistant Chat Modal & Floating Launcher */}
+      <TancoChatModal />
+      <FloatingTancoButton />
     </div>
   );
 };
