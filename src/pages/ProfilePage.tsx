@@ -49,10 +49,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [formData, setFormData] = useState(
     userProfile || {
-      fullName: 'Resul Tan',
-      schoolEmail: 'resul.tan@marun.edu.tr',
-      university: 'Marmara Üniversitesi',
-      departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
+      fullName: '',
+      schoolEmail: '',
+      university: '',
+      departmentAndClass: '',
       avatarEmoji: '👨‍🎓',
     }
   );
@@ -144,7 +144,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
             <div className="min-w-0 flex-1">
               <div className="flex items-center space-x-2">
                 <h2 className="text-base sm:text-xl font-black tracking-tight text-white leading-tight truncate">
-                  {userProfile?.fullName || 'Resul Tan'}
+                  {userProfile?.fullName || (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}
                 </h2>
                 {isVerified && (
                   <span title="Doğrulanmış Hesap">
@@ -154,7 +154,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
               </div>
               <p className="text-xs sm:text-sm text-slate-300 flex items-center mt-1 truncate">
                 <Mail className="w-3.5 h-3.5 mr-1.5 text-[#ff7a00] shrink-0" />
-                <span className="truncate">{userProfile?.schoolEmail || 'resul.tan@marun.edu.tr'}</span>
+                <span className="truncate">{userProfile?.schoolEmail || (language === 'tr' ? 'Giriş yapılmadı' : 'Not signed in')}</span>
               </p>
             </div>
           </div>
