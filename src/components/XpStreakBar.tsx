@@ -46,19 +46,19 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
               e.preventDefault();
               onGoHome?.();
             }}
-            className="flex items-center space-x-2 sm:space-x-2.5 group cursor-pointer shrink-0 z-10"
+            className="flex items-center space-x-2.5 sm:space-x-3 group cursor-pointer shrink-0 z-10"
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-md shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform p-1">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-md shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform p-1">
               <div
                 className={`w-full h-full rounded-full border-2 border-white flex items-center justify-center ${
                   isLogoSpinning ? 'animate-logo-spin' : ''
                 }`}
               >
-                <Zap className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white fill-white stroke-[2]" />
+                <Zap className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-white fill-white stroke-[2]" />
               </div>
             </div>
 
-            <span className="text-base sm:text-xl font-black text-slate-900 tracking-tight font-sans">
+            <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-sans">
               TanCoreLab
             </span>
           </a>

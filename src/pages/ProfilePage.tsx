@@ -3,6 +3,7 @@ import { useAppStore } from '../store/useAppStore';
 import { ALL_MODULES } from '../data/modules';
 import { PublicProfile } from '../types/stats';
 import { uploadAvatarImage } from '../lib/supabase';
+import { AvatarCropModal } from '../components/AvatarCropModal';
 import {
   GraduationCap,
   Mail,
@@ -61,20 +62,31 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
   );
 
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [cropTargetImage, setCropTargetImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      alert(language === 'tr' ? 'Fotoğraf boyutu en fazla 5MB olabilir.' : 'Photo size must be less than 5MB.');
+    if (file.size > 10 * 1024 * 1024) {
+      alert(language === 'tr' ? 'Fotoğraf boyutu en fazla 10MB olabilir.' : 'Photo size must be less than 10MB.');
       return;
     }
 
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCropTargetImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleCropComplete = async (croppedFile: File) => {
     setIsUploadingAvatar(true);
     try {
-      const res = await uploadAvatarImage(file, userProfile?.schoolEmail || 'user');
+      const res = await uploadAvatarImage(croppedFile, userProfile?.schoolEmail || 'user');
       if (res.success && res.url) {
         updateUserProfile({ avatarUrl: res.url });
         setFormData((prev) => ({ ...prev, avatarUrl: res.url }));
@@ -83,7 +95,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
       }
     } finally {
       setIsUploadingAvatar(false);
-      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -169,9 +180,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
         <div className="flex items-start justify-between relative z-10 gap-3">
           <div className="flex items-center space-x-3.5 min-w-0 flex-1">
             <div
-              onClick={() => fileInputRef.current?.click()}
-              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border border-white/20 shadow-lg shrink-0 overflow-hidden relative group cursor-pointer"
-              title={language === 'tr' ? 'Profil fotoğrafı yükle' : 'Upload profile picture'}
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border border-white/20 shadow-lg shrink-0 overflow-hidden relative"
             >
               {isUploadingAvatar ? (
                 <Loader2 className="w-6 h-6 animate-spin text-white" />
@@ -180,9 +189,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
               ) : (
                 userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
               )}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <Camera className="w-5 h-5 text-white" />
-              </div>
             </div>
             <input
               type="file"
@@ -232,7 +238,50 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
 
         {/* Editable Form vs Metadata Display */}
         {isEditing ? (
-          <form onSubmit={handleSave} className="mt-5 pt-4 border-t border-white/10 space-y-3 relative z-10">
+          <form onSubmit={handleSave} className="mt-5 pt-4 border-t border-white/10 space-y-4 relative z-10">
+            {/* Profil Fotoğrafı Düzenleme Bölümü */}
+            <div className="flex items-center space-x-3.5 p-3 rounded-2xl bg-white/5 border border-white/10">
+              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border border-white/20 shadow-md shrink-0 overflow-hidden relative">
+                {isUploadingAvatar ? (
+                  <Loader2 className="w-6 h-6 animate-spin text-white" />
+                ) : userProfile?.avatarUrl ? (
+                  <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                  userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
+                )}
+              </div>
+
+              <div className="flex-1 min-w-0 space-y-1.5">
+                <p className="text-xs font-bold text-slate-200">
+                  {language === 'tr' ? 'Profil Fotoğrafı' : 'Profile Picture'}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploadingAvatar}
+                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-[11px] font-black transition-all shadow-sm cursor-pointer disabled:opacity-50"
+                  >
+                    <Camera className="w-3.5 h-3.5" />
+                    <span>{language === 'tr' ? 'Fotoğraf Seç / Çek' : 'Choose / Take Photo'}</span>
+                  </button>
+
+                  {userProfile?.avatarUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        updateUserProfile({ avatarUrl: undefined });
+                        setFormData((prev) => ({ ...prev, avatarUrl: undefined }));
+                      }}
+                      className="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 text-[11px] font-bold transition-colors border border-white/15 cursor-pointer"
+                    >
+                      {language === 'tr' ? 'Kaldır' : 'Remove'}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-bold text-slate-300 block mb-1">
@@ -589,6 +638,16 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
           })}
         </div>
       </div>
+
+      {/* Interactive Avatar Crop & Zoom Modal */}
+      {cropTargetImage && (
+        <AvatarCropModal
+          imageSrc={cropTargetImage}
+          onCropComplete={handleCropComplete}
+          onClose={() => setCropTargetImage(null)}
+          language={language}
+        />
+      )}
     </div>
   );
 };
