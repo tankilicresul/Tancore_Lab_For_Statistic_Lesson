@@ -27,3 +27,7 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Downloaded student course notes & materials
+gelen_ders_notlari/*
+!gelen_ders_notlari/NOTLAR_OZETI.md
