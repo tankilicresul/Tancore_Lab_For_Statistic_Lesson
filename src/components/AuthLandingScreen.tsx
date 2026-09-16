@@ -335,7 +335,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                   {language === 'tr' ? 'Doğrulama Kodu' : 'Verification Code'}
                 </h3>
                 <p className="text-xs text-slate-600 font-medium mt-1">
-                  <strong className="text-slate-900">{schoolEmail}</strong> adresinize gönderilen 6 haneli onay kodunu giriniz.
+                  <strong className="text-slate-900">{schoolEmail}</strong> adresinize gönderilen onay kodunu giriniz.
                 </p>
               </div>
 
@@ -349,18 +349,18 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
               <form onSubmit={handleOtpSubmit} className="space-y-4">
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">
-                    {language === 'tr' ? '6 Haneli Kod' : '6-Digit Code'}
+                    {language === 'tr' ? 'Doğrulama Kodu' : 'Verification Code'}
                   </label>
                   <input
                     type="text"
-                    maxLength={6}
+                    maxLength={10}
                     value={otpCode}
                     onChange={(e) => {
                       setOtpCode(e.target.value);
                       handleInputChange();
                     }}
-                    placeholder="------"
-                    className="w-full px-4 py-3 text-center tracking-[0.4em] font-mono text-lg font-black rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#ff7a00] focus:bg-white"
+                    placeholder="• • • • • • • •"
+                    className="w-full px-4 py-3 text-center tracking-[0.3em] font-mono text-lg font-black rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                     required
                   />
                 </div>
