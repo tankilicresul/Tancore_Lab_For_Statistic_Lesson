@@ -18,7 +18,267 @@ import {
   Coins,
   Terminal,
   Binary,
+  Activity,
+  Workflow,
+  Network,
+  Factory,
+  Calendar,
+  Database,
+  Compass,
 } from 'lucide-react';
+
+interface CourseTrack {
+  code: string;
+  name: { tr: string; en: string };
+  desc: { tr: string; en: string };
+  status: 'active' | 'in_design';
+  track?: 'probability' | 'statistics';
+  icon: React.ComponentType<{ className?: string }>;
+  iconBg: string;
+  badge: { tr: string; en: string };
+  badgeStyle: string;
+  cardStyle: string;
+  glowColor: string;
+}
+
+const COURSES_DATA: CourseTrack[] = [
+  {
+    code: 'ENGR 200',
+    name: {
+      tr: 'Mühendisler İçin Olasılık ve Rastgele Değişkenler',
+      en: 'Probability and Random Variables for Engineers',
+    },
+    desc: {
+      tr: 'Olasılık temelleri, kümeler, koşullu olasılık, Bayes kuralı, kesikli ve sürekli rassal değişkenler, limit teoremleri ve stokastik süreçler.',
+      en: 'Probability, sets, conditional probability, Bayes rule, discrete & continuous random variables, limit theorems & stochastic processes.',
+    },
+    status: 'active',
+    track: 'probability',
+    icon: Dices,
+    iconBg: 'bg-[#ff7a00] text-white shadow-md shadow-[#ff7a00]/25',
+    badge: { tr: '8 Modül', en: '8 Modules' },
+    badgeStyle: 'bg-orange-100 text-[#ff7a00] border-orange-200/80',
+    cardStyle: 'border-orange-200/90 hover:border-[#ff7a00] bg-gradient-to-b from-orange-50/70 via-white to-orange-50/30 hover:from-orange-50 hover:to-orange-100/60 shadow-xs hover:shadow-lg hover:-translate-y-1',
+    glowColor: 'bg-[#ff7a00]/10',
+  },
+  {
+    code: 'INDR 201',
+    name: {
+      tr: 'Ayrık Matematiksel Yapılar',
+      en: 'Discrete Mathematical Structures',
+    },
+    desc: {
+      tr: 'Mantık temelleri, matematiksel tümevarım, küme teorisi, bağıntılar, sayma ilkeleri, çizge teorisi, ağlar ve algoritmalar.',
+      en: 'Fundamentals of logic, mathematical induction, basic set theory, relations, counting principles, graph theory & network algorithms.',
+    },
+    status: 'in_design',
+    icon: Binary,
+    iconBg: 'bg-cyan-700 text-white shadow-md shadow-cyan-700/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-cyan-100 text-cyan-800 border-cyan-200/80',
+    cardStyle: 'border-cyan-200/70 bg-gradient-to-b from-cyan-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-cyan-500/10',
+  },
+  {
+    code: 'INDR 202',
+    name: {
+      tr: 'Mühendislik Ekonomisi',
+      en: 'Engineering Economics',
+    },
+    desc: {
+      tr: 'Finansal muhasebe prensipleri, maliyet sistemleri, maliyet-hacim-kâr analizleri, indirgenmiş nakit akışı ve bütçeleme teknikleri.',
+      en: 'Financial accounting principles, cost systems, cost-volume-profit analyses, discounted cash flow and budgeting techniques.',
+    },
+    status: 'in_design',
+    icon: Coins,
+    iconBg: 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-emerald-100 text-emerald-700 border-emerald-200/80',
+    cardStyle: 'border-emerald-200/70 bg-gradient-to-b from-emerald-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-emerald-500/10',
+  },
+  {
+    code: 'INDR 220',
+    name: {
+      tr: 'Yöneylem Araştırması İçin Programlamaya Giriş',
+      en: 'Introduction to Computing For Operations Research',
+    },
+    desc: {
+      tr: 'Bilimsel hesaplama, lineer cebir kütüphaneleri, optimizasyon modelleme, LP/MILP/NLP ticari çözücüleri ve istatistiksel modeller.',
+      en: 'Scientific computing, linear algebra libraries, formulation of optimization models, commercial LP/MILP/NLP solvers and statistical models.',
+    },
+    status: 'in_design',
+    icon: Terminal,
+    iconBg: 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-indigo-100 text-indigo-700 border-indigo-200/80',
+    cardStyle: 'border-indigo-200/70 bg-gradient-to-b from-indigo-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-indigo-500/10',
+  },
+  {
+    code: 'INDR 252',
+    name: {
+      tr: 'Uygulamalı İstatistik',
+      en: 'Applied Statistics',
+    },
+    desc: {
+      tr: 'Parametrik istatistik, güven aralıkları, hipotez testleri, uyum iyiliği, basit/çoklu regresyon ve kalite kontrol uygulamaları.',
+      en: 'Parametric estimation, confidence intervals, hypothesis testing, distribution fitting, simple/multiple regression & quality control.',
+    },
+    status: 'active',
+    track: 'statistics',
+    icon: BarChart3,
+    iconBg: 'bg-slate-900 text-white shadow-md',
+    badge: { tr: '8 Modül', en: '8 Modules' },
+    badgeStyle: 'bg-slate-100 text-slate-700 border-slate-200',
+    cardStyle: 'border-slate-200 hover:border-[#ff7a00] bg-gradient-to-b from-slate-50/70 via-white to-orange-50/20 hover:from-orange-50 hover:to-orange-100/60 shadow-xs hover:shadow-lg hover:-translate-y-1',
+    glowColor: 'bg-slate-900/5',
+  },
+  {
+    code: 'INDR 262',
+    name: {
+      tr: 'Optimizasyon Yöntemlerine Giriş',
+      en: 'Introduction to Optimization Methods',
+    },
+    desc: {
+      tr: 'Modelleme kavramları, doğrusal programlama problem formülasyonu, simplex yöntemi, dualite, duyarlılık analizi ve bilgisayar uygulamaları.',
+      en: 'Modeling concepts, linear programming formulation, simplex method, duality, sensitivity analysis and computer implementations.',
+    },
+    status: 'in_design',
+    icon: Target,
+    iconBg: 'bg-violet-600 text-white shadow-md shadow-violet-600/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-violet-100 text-violet-700 border-violet-200/80',
+    cardStyle: 'border-violet-200/70 bg-gradient-to-b from-violet-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-violet-500/10',
+  },
+  {
+    code: 'INDR 343',
+    name: {
+      tr: 'Stokastik Modeller',
+      en: 'Stochastic Models',
+    },
+    desc: {
+      tr: 'Envanter yönetimi, Markov zincirleri ve süreçleri, kuyruk sistemleri, Poisson süreci, Markov karar modelleri ve dinamik programlama.',
+      en: 'Inventory management, Markov chains & processes, queueing systems, Poisson process, Markov decision models & dynamic programming.',
+    },
+    status: 'in_design',
+    icon: Activity,
+    iconBg: 'bg-amber-600 text-white shadow-md shadow-amber-600/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-amber-100 text-amber-800 border-amber-200/80',
+    cardStyle: 'border-amber-200/70 bg-gradient-to-b from-amber-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-amber-500/10',
+  },
+  {
+    code: 'INDR 344',
+    name: {
+      tr: 'Modelleme ve Simülasyon',
+      en: 'Modeling and Simulation',
+    },
+    desc: {
+      tr: 'Karmaşık stokastik sistem analizi, rassal değişken üretimi, simülasyon dilleri, çıktı analizi, Monte Carlo ve varyans azaltma.',
+      en: 'Complex stochastic systems, random variate generation, simulation software, output analysis, Monte Carlo methods & variance reduction.',
+    },
+    status: 'in_design',
+    icon: Workflow,
+    iconBg: 'bg-teal-600 text-white shadow-md shadow-teal-600/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-teal-100 text-teal-800 border-teal-200/80',
+    cardStyle: 'border-teal-200/70 bg-gradient-to-b from-teal-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-teal-500/10',
+  },
+  {
+    code: 'INDR 363',
+    name: {
+      tr: 'Matematiksel Programlama',
+      en: 'Mathematical Programming',
+    },
+    desc: {
+      tr: 'Tamsayılı programlama, ağ modelleri, dinamik programlama, konvekslik, doğrusal olmayan optimizasyon ve tedarik zinciri uygulamaları.',
+      en: 'Integer programming, network models, dynamic programming, convexity, nonlinear optimization and supply chain applications.',
+    },
+    status: 'in_design',
+    icon: Network,
+    iconBg: 'bg-purple-600 text-white shadow-md shadow-purple-600/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-purple-100 text-purple-700 border-purple-200/80',
+    cardStyle: 'border-purple-200/70 bg-gradient-to-b from-purple-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-purple-500/10',
+  },
+  {
+    code: 'INDR 371',
+    name: {
+      tr: 'Operasyon ve Tesis Tasarımı',
+      en: 'Operations and Facilities Design',
+    },
+    desc: {
+      tr: 'Tesis planlama süreci, malzeme taşıma prensipleri, fabrika yerleşim düzeni, depolama, sipariş toplama ve AS/RS otomatik sistemler.',
+      en: 'Facilities design process, material handling principles, facility layout, warehousing, order picking & automated storage/retrieval systems.',
+    },
+    status: 'in_design',
+    icon: Factory,
+    iconBg: 'bg-slate-800 text-white shadow-md shadow-slate-800/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-slate-100 text-slate-700 border-slate-300',
+    cardStyle: 'border-slate-300/80 bg-gradient-to-b from-slate-50/50 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-slate-800/10',
+  },
+  {
+    code: 'INDR 372',
+    name: {
+      tr: 'Üretim Planlama ve Kontrol',
+      en: 'Production Planning and Control',
+    },
+    desc: {
+      tr: 'Toplu planlama, envanter kontrolü, talep tahmini, çizelgeleme, iş gücü ve kapasite planlama, MRP ve Tam Zamanında Üretim (JIT).',
+      en: 'Aggregate planning, inventory control, forecasting, scheduling, capacity planning, MRP and Just-In-Time (JIT) systems.',
+    },
+    status: 'in_design',
+    icon: Calendar,
+    iconBg: 'bg-blue-600 text-white shadow-md shadow-blue-600/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-blue-100 text-blue-700 border-blue-200/80',
+    cardStyle: 'border-blue-200/70 bg-gradient-to-b from-blue-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-blue-500/10',
+  },
+  {
+    code: 'INDR 481',
+    name: {
+      tr: 'Bilişim Sistemleri',
+      en: 'Information Systems',
+    },
+    desc: {
+      tr: 'Veri ve bilgi modelleme, modüler sistem analizi ve tasarımı, iş akış modelleme, proje yönetimi, MRP, ERP ve tedarik zinciri bilişim sistemleri.',
+      en: 'Technological & conceptual aspects of information systems, data modeling, workflow modeling, project management, MRP, ERP and SCM.',
+    },
+    status: 'in_design',
+    icon: Database,
+    iconBg: 'bg-sky-600 text-white shadow-md shadow-sky-600/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-sky-100 text-sky-800 border-sky-200/80',
+    cardStyle: 'border-sky-200/70 bg-gradient-to-b from-sky-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-sky-500/10',
+  },
+  {
+    code: 'INDR 491',
+    name: {
+      tr: 'Endüstri Mühendisliği Tasarımı I',
+      en: 'Industrial Engineering Design I',
+    },
+    desc: {
+      tr: 'Bitirme projesi: Sektör firmaları tarafından sunulan projelerde gerçekçi kısıtlar altında mühendislik tasarımı, takım çalışması ve proje yönetimi.',
+      en: 'Capstone design course applying engineering and science knowledge in industry projects under realistic constraints, teamwork & presentation.',
+    },
+    status: 'in_design',
+    icon: Compass,
+    iconBg: 'bg-rose-600 text-white shadow-md shadow-rose-600/20',
+    badge: { tr: 'Tasarımda', en: 'In Design' },
+    badgeStyle: 'bg-rose-100 text-rose-800 border-rose-200/80',
+    cardStyle: 'border-rose-200/70 bg-gradient-to-b from-rose-50/40 via-white to-slate-50/70 shadow-xs hover:shadow-md',
+    glowColor: 'bg-rose-500/10',
+  },
+];
 
 interface HomePageProps {
   onSelectTrack: (track: 'probability' | 'statistics') => void;
@@ -124,199 +384,94 @@ export const HomePage: React.FC<HomePageProps> = ({
 
       {/* Course Track Selection - Course Cards Grid */}
       <div className="grid grid-cols-2 gap-3 sm:gap-4 auto-rows-fr">
-        {/* Card 1: Probability and Random Variables for Engineers */}
-        <button
-          onClick={() => onSelectTrack('probability')}
-          className="group relative p-3.5 sm:p-5 rounded-3xl border border-orange-200/90 hover:border-[#ff7a00] bg-gradient-to-b from-orange-50/70 via-white to-orange-50/30 hover:from-orange-50 hover:to-orange-100/60 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] cursor-pointer overflow-hidden shadow-xs hover:shadow-lg hover:-translate-y-1"
-        >
-          <div className="absolute top-0 right-0 w-20 h-20 bg-[#ff7a00]/10 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+        {COURSES_DATA.map((course) => {
+          const isEn = language === 'en';
+          const title = isEn ? course.name.en : course.name.tr;
+          const desc = isEn ? course.desc.en : course.desc.tr;
+          const badgeText = isEn ? course.badge.en : course.badge.tr;
+          const Icon = course.icon;
 
-          {/* Top row: Icon & Status Badge */}
-          <div className="flex items-start justify-between w-full relative z-10">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center transition-transform group-hover:scale-110 shadow-md shadow-[#ff7a00]/25 shrink-0">
-              <Dices className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+          if (course.status === 'active') {
+            return (
+              <button
+                key={course.code}
+                onClick={() => course.track && onSelectTrack(course.track)}
+                className={`group relative p-3.5 sm:p-5 rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] cursor-pointer overflow-hidden ${course.cardStyle}`}
+              >
+                <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform ${course.glowColor}`} />
+
+                {/* Top row: Icon & Course Code / Badge */}
+                <div className="flex items-start justify-between w-full relative z-10 gap-2">
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+                  </div>
+                  <div className="flex flex-col items-end gap-1 shrink-0">
+                    <span className="text-[10px] sm:text-xs font-black font-mono tracking-tight text-slate-800">
+                      {course.code}
+                    </span>
+                    <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full font-mono border ${course.badgeStyle}`}>
+                      {badgeText}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Bottom text: Title & Subtitle / CTA */}
+                <div className="relative z-10 mt-auto pt-2.5">
+                  <h3 className="text-xs sm:text-[15px] font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug">
+                    {course.code} – {title}
+                  </h3>
+                  <p className="text-[10px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
+                    {desc}
+                  </p>
+
+                  <div className="flex items-center space-x-1 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] mt-2.5 group-hover:translate-x-1 transition-transform">
+                    <span>{isEn ? 'Open Path' : 'Ders Yoluna Git'}</span>
+                    <ArrowRight className="w-3 h-3 stroke-[2.5]" />
+                  </div>
+                </div>
+              </button>
+            );
+          }
+
+          return (
+            <div
+              key={course.code}
+              className={`group relative p-3.5 sm:p-5 rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden ${course.cardStyle}`}
+            >
+              <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
+
+              {/* Top row: Icon & Course Code / Badge */}
+              <div className="flex items-start justify-between w-full relative z-10 gap-2">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shrink-0 ${course.iconBg}`}>
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+                </div>
+                <div className="flex flex-col items-end gap-1 shrink-0">
+                  <span className="text-[10px] sm:text-xs font-black font-mono tracking-tight text-slate-700">
+                    {course.code}
+                  </span>
+                  <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full font-mono border ${course.badgeStyle}`}>
+                    {badgeText}
+                  </span>
+                </div>
+              </div>
+
+              {/* Bottom text: Title & Subtitle / Status */}
+              <div className="relative z-10 mt-auto pt-2.5">
+                <h3 className="text-xs sm:text-[15px] font-black tracking-tight text-slate-900 leading-snug">
+                  {course.code} – {title}
+                </h3>
+                <p className="text-[10px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
+                  {desc}
+                </p>
+
+                <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500 mt-2.5">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
+                  <span>{isEn ? 'In Design' : 'Design Aşamasında'}</span>
+                </div>
+              </div>
             </div>
-            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-100 text-[#ff7a00] font-mono shrink-0 border border-orange-200/80">
-              {language === 'tr' ? '8 Modül' : '8 Modules'}
-            </span>
-          </div>
-
-          {/* Bottom text: Title & Subtitle / CTA */}
-          <div className="relative z-10 mt-auto pt-2">
-            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug">
-              {language === 'tr' ? 'Mühendisler İçin Olasılık ve Rastgele Değişkenler' : 'Probability and Random Variables for Engineers'}
-            </h3>
-            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
-              {language === 'tr' ? 'Temeller, Bayes, Monte Carlo & Dağılımlar' : 'Bayes, Monte Carlo & Distributions'}
-            </p>
-
-            <div className="flex items-center space-x-1 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] mt-2 group-hover:translate-x-1 transition-transform">
-              <span>{language === 'tr' ? 'Ders Yoluna Git' : 'Open Path'}</span>
-              <ArrowRight className="w-3 h-3 stroke-[2.5]" />
-            </div>
-          </div>
-        </button>
-
-        {/* Card 2: Applied Statistics */}
-        <button
-          onClick={() => onSelectTrack('statistics')}
-          className="group relative p-3.5 sm:p-5 rounded-3xl border border-slate-200 hover:border-[#ff7a00] bg-gradient-to-b from-slate-50/70 via-white to-orange-50/20 hover:from-orange-50 hover:to-orange-100/60 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] cursor-pointer overflow-hidden shadow-xs hover:shadow-lg hover:-translate-y-1"
-        >
-          <div className="absolute top-0 right-0 w-20 h-20 bg-slate-900/5 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
-
-          {/* Top row: Icon & Status Badge */}
-          <div className="flex items-start justify-between w-full relative z-10">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center transition-transform group-hover:scale-110 shadow-md shrink-0">
-              <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
-            </div>
-            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-mono shrink-0 border border-slate-200">
-              {language === 'tr' ? '8 Modül' : '8 Modules'}
-            </span>
-          </div>
-
-          {/* Bottom text: Title & Subtitle / CTA */}
-          <div className="relative z-10 mt-auto pt-2">
-            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug">
-              {language === 'tr' ? 'Uygulamalı İstatistik' : 'Applied Statistics'}
-            </h3>
-            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
-              {language === 'tr' ? 'Hipotez, Varyans, Regresyon & ANOVA' : 'Hypothesis, Variance, Regression & ANOVA'}
-            </p>
-
-            <div className="flex items-center space-x-1 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] mt-2 group-hover:translate-x-1 transition-transform">
-              <span>{language === 'tr' ? 'Ders Yoluna Git' : 'Open Path'}</span>
-              <ArrowRight className="w-3 h-3 stroke-[2.5]" />
-            </div>
-          </div>
-        </button>
-
-        {/* Card 3: Engineering Economics */}
-        <div
-          className="group relative p-3.5 sm:p-5 rounded-3xl border border-emerald-200/70 bg-gradient-to-b from-emerald-50/40 via-white to-slate-50/70 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden shadow-xs hover:shadow-md"
-        >
-          <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-500/10 rounded-full blur-xl pointer-events-none" />
-
-          {/* Top row: Icon & Status Badge */}
-          <div className="flex items-start justify-between w-full relative z-10">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20 shrink-0">
-              <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
-            </div>
-            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-mono shrink-0 border border-emerald-200/80">
-              {language === 'tr' ? 'Tasarımda' : 'In Design'}
-            </span>
-          </div>
-
-          {/* Bottom text: Title & Subtitle / Status */}
-          <div className="relative z-10 mt-auto pt-2">
-            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 leading-snug">
-              {language === 'tr' ? 'Mühendislik Ekonomisi' : 'Engineering Economics'}
-            </h3>
-            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
-              {language === 'tr' ? 'Nakit Akışları, Faiz, NPV, IRR & Maliyet Analizi' : 'Cash Flows, Interest, NPV, IRR & Cost Analysis'}
-            </p>
-
-            <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500 mt-2">
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
-              <span>{language === 'tr' ? 'Design Aşamasında' : 'In Design'}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 4: Introduction to Computing For Operations Research */}
-        <div
-          className="group relative p-3.5 sm:p-5 rounded-3xl border border-indigo-200/70 bg-gradient-to-b from-indigo-50/40 via-white to-slate-50/70 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden shadow-xs hover:shadow-md"
-        >
-          <div className="absolute top-0 right-0 w-20 h-20 bg-indigo-500/10 rounded-full blur-xl pointer-events-none" />
-
-          {/* Top row: Icon & Status Badge */}
-          <div className="flex items-start justify-between w-full relative z-10">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-600/20 shrink-0">
-              <Terminal className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
-            </div>
-            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-mono shrink-0 border border-indigo-200/80">
-              {language === 'tr' ? 'Tasarımda' : 'In Design'}
-            </span>
-          </div>
-
-          {/* Bottom text: Title & Subtitle / Status */}
-          <div className="relative z-10 mt-auto pt-2">
-            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 leading-snug">
-              {language === 'tr' ? 'Yöneylem Araştırması İçin Programlamaya Giriş' : 'Introduction to Computing For Operations Research'}
-            </h3>
-            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
-              {language === 'tr' ? 'Python, Algoritmalar, Veri Yapıları & Modelleme' : 'Python, Algorithms, Data Structures & Modeling'}
-            </p>
-
-            <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500 mt-2">
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
-              <span>{language === 'tr' ? 'Design Aşamasında' : 'In Design'}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 5: Introduction to Optimization Methods */}
-        <div
-          className="group relative p-3.5 sm:p-5 rounded-3xl border border-violet-200/70 bg-gradient-to-b from-violet-50/40 via-white to-slate-50/70 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden shadow-xs hover:shadow-md"
-        >
-          <div className="absolute top-0 right-0 w-20 h-20 bg-violet-500/10 rounded-full blur-xl pointer-events-none" />
-
-          {/* Top row: Icon & Status Badge */}
-          <div className="flex items-start justify-between w-full relative z-10">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-violet-600 text-white flex items-center justify-center shadow-md shadow-violet-600/20 shrink-0">
-              <Target className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
-            </div>
-            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 font-mono shrink-0 border border-violet-200/80">
-              {language === 'tr' ? 'Tasarımda' : 'In Design'}
-            </span>
-          </div>
-
-          {/* Bottom text: Title & Subtitle / Status */}
-          <div className="relative z-10 mt-auto pt-2">
-            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 leading-snug">
-              {language === 'tr' ? 'Optimizasyon Yöntemlerine Giriş' : 'Introduction to Optimization Methods'}
-            </h3>
-            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
-              {language === 'tr' ? 'Lineer Programlama, Simplex, Dualite & Ağlar' : 'Linear Programming, Simplex, Duality & Networks'}
-            </p>
-
-            <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500 mt-2">
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
-              <span>{language === 'tr' ? 'Design Aşamasında' : 'In Design'}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 6: Discrete Mathematical Structures */}
-        <div
-          className="group relative p-3.5 sm:p-5 rounded-3xl border border-cyan-200/70 bg-gradient-to-b from-cyan-50/40 via-white to-slate-50/70 transition-all duration-300 text-left flex flex-col justify-between min-h-[195px] sm:min-h-[220px] overflow-hidden shadow-xs hover:shadow-md"
-        >
-          <div className="absolute top-0 right-0 w-20 h-20 bg-cyan-500/10 rounded-full blur-xl pointer-events-none" />
-
-          {/* Top row: Icon & Status Badge */}
-          <div className="flex items-start justify-between w-full relative z-10">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-cyan-700 text-white flex items-center justify-center shadow-md shadow-cyan-700/20 shrink-0">
-              <Binary className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
-            </div>
-            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 font-mono shrink-0 border border-cyan-200/80">
-              {language === 'tr' ? 'Tasarımda' : 'In Design'}
-            </span>
-          </div>
-
-          {/* Bottom text: Title & Subtitle / Status */}
-          <div className="relative z-10 mt-auto pt-2">
-            <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 leading-snug">
-              {language === 'tr' ? 'Ayrık Matematiksel Yapılar' : 'Discrete Mathematical Structures'}
-            </h3>
-            <p className="text-[10px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-tight">
-              {language === 'tr' ? 'Kümeler, Mantık, Çizge Teorisi & Kombinatorik' : 'Sets, Logic, Graph Theory & Combinatorics'}
-            </p>
-
-            <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-500 mt-2">
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
-              <span>{language === 'tr' ? 'Design Aşamasında' : 'In Design'}</span>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );
