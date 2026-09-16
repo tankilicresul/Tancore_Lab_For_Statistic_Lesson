@@ -142,6 +142,9 @@ export interface UserState {
   selectedTrack?: 'probability' | 'statistics';
   customActiveModuleName?: string | null;
   isTancoChatOpen?: boolean;
+  hasSeenTancoTour?: boolean;
+  isTancoTourActive?: boolean;
+  tancoTourStep?: number;
 }
 
 export interface PlacementTestResult {

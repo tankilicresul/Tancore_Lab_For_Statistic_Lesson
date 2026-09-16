@@ -44,6 +44,11 @@ interface AppStoreActions {
   setSelectedPublicProfile: (profile: PublicProfile | null) => void;
   syncRegisteredUserInList: () => void;
   setIsTancoChatOpen: (open: boolean) => void;
+  startTancoTour: () => void;
+  nextTancoTourStep: () => void;
+  prevTancoTourStep: () => void;
+  setTancoTourStep: (step: number) => void;
+  endTancoTour: (completed?: boolean) => void;
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -80,6 +85,9 @@ const INITIAL_STATE: UserState = {
   selectedTrack: 'probability',
   customActiveModuleName: null,
   isTancoChatOpen: false,
+  hasSeenTancoTour: false,
+  isTancoTourActive: false,
+  tancoTourStep: 0,
 };
 
 function syncUserInList(state: UserState): PublicProfile[] {
@@ -560,6 +568,101 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           unlockedModules: newUnlocked,
           registeredUsers: updatedUsers,
         });
+      },
+
+      startTancoTour: () => {
+        set({
+          isTancoTourActive: true,
+          tancoTourStep: 0,
+          currentView: 'home',
+          selectedLessonId: null,
+          selectedCaseId: null,
+          isTancoChatOpen: false,
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+
+      setTancoTourStep: (step: number) => {
+        const clampedStep = Math.max(0, Math.min(4, step));
+        let nextView: UserState['currentView'] = 'home';
+        let nextTrack: 'probability' | 'statistics' = 'probability';
+        let nextLessonId: string | null = null;
+
+        if (clampedStep === 0) {
+          nextView = 'home';
+        } else if (clampedStep === 1) {
+          nextView = 'course';
+          nextTrack = 'probability';
+        } else if (clampedStep === 2) {
+          nextView = 'lesson';
+          nextTrack = 'probability';
+          nextLessonId = 'lesson-1-1';
+        } else if (clampedStep === 3) {
+          nextView = 'placementTest';
+        } else if (clampedStep === 4) {
+          nextView = 'home';
+        }
+
+        set({
+          isTancoTourActive: true,
+          tancoTourStep: clampedStep,
+          currentView: nextView,
+          selectedTrack: nextTrack,
+          selectedLessonId: nextLessonId,
+          selectedCaseId: null,
+          isTancoChatOpen: false,
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+
+      nextTancoTourStep: () => {
+        const currentStep = get().tancoTourStep || 0;
+        if (currentStep >= 4) {
+          get().endTancoTour(true);
+        } else {
+          get().setTancoTourStep(currentStep + 1);
+        }
+      },
+
+      prevTancoTourStep: () => {
+        const currentStep = get().tancoTourStep || 0;
+        if (currentStep > 0) {
+          get().setTancoTourStep(currentStep - 1);
+        }
+      },
+
+      endTancoTour: (completed = false) => {
+        const state = get();
+        let addedXp = 0;
+        if (completed && !state.hasSeenTancoTour) {
+          addedXp = 50;
+        }
+
+        const nextState = {
+          ...state,
+          isTancoTourActive: false,
+          hasSeenTancoTour: true,
+          tancoTourStep: 0,
+          currentView: 'home' as const,
+          selectedLessonId: null,
+          selectedCaseId: null,
+          xp: state.xp + addedXp,
+        };
+
+        const updatedUsers = syncUserInList(nextState);
+
+        set({
+          isTancoTourActive: false,
+          hasSeenTancoTour: true,
+          tancoTourStep: 0,
+          currentView: 'home',
+          selectedLessonId: null,
+          selectedCaseId: null,
+          xp: state.xp + addedXp,
+          registeredUsers: updatedUsers,
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       },
 
       resetProgress: () => {
