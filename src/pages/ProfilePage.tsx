@@ -239,12 +239,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
         <div className="flex items-center justify-between relative z-10 gap-3">
           <div className="flex items-center space-x-3.5 min-w-0 flex-1">
             <div
-              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border border-white/20 shadow-lg shrink-0 overflow-hidden relative"
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border-2 border-white/30 shadow-lg shrink-0 overflow-hidden relative"
             >
               {isUploadingAvatar ? (
                 <Loader2 className="w-6 h-6 animate-spin text-white" />
               ) : userProfile?.avatarUrl ? (
-                <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
               ) : (
                 userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
               )}
@@ -294,11 +294,11 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
           <form onSubmit={handleSave} className="mt-5 pt-4 border-t border-white/10 space-y-4 relative z-10">
             {/* Profil Fotoğrafı Düzenleme Bölümü */}
             <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3.5 p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 min-w-[64px] min-h-[64px] max-w-[64px] max-h-[64px] sm:max-w-[80px] sm:max-h-[80px] rounded-2xl bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border border-white/20 shadow-md shrink-0 overflow-hidden relative">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 min-w-[64px] min-h-[64px] max-w-[64px] max-h-[64px] sm:max-w-[80px] sm:max-h-[80px] rounded-full bg-[#ff7a00] text-white font-black text-2xl flex items-center justify-center border-2 border-white/30 shadow-md shrink-0 overflow-hidden relative">
                 {isUploadingAvatar ? (
                   <Loader2 className="w-6 h-6 animate-spin text-white" />
                 ) : userProfile?.avatarUrl ? (
-                  <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-2xl" />
+                  <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
                 ) : (
                   userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
                 )}
@@ -660,9 +660,9 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                   <div className="px-2 py-0.5 rounded-lg bg-[#ff7a00] text-white font-black text-xs shadow-xs shrink-0">
                     {userRank}.
                   </div>
-                  <div className="w-7 h-7 rounded-lg bg-[#ff7a00] text-white font-extrabold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden">
+                  <div className="w-7 h-7 rounded-full bg-[#ff7a00] text-white font-extrabold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden">
                     {userProfile?.avatarUrl ? (
-                      <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                      <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
                     ) : (
                       userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'Ö')
                     )}

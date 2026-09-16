@@ -253,7 +253,7 @@ export const AvatarCropModal: React.FC<AvatarCropModalProps> = ({
         <div className="p-3.5 sm:p-5 flex flex-col items-center select-none overflow-hidden flex-1">
           <div
             ref={containerRef}
-            className="relative overflow-hidden rounded-2xl border-2 border-[#ff7a00] shadow-xl bg-slate-950 cursor-grab active:cursor-grabbing touch-none shrink-0"
+            className="relative overflow-hidden rounded-full border-2 border-[#ff7a00] shadow-xl bg-slate-950 cursor-grab active:cursor-grabbing touch-none shrink-0"
             style={{ width: viewportSize, height: viewportSize }}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
@@ -282,8 +282,8 @@ export const AvatarCropModal: React.FC<AvatarCropModalProps> = ({
             />
 
             {/* Subtle Overlay Guide */}
-            <div className="absolute inset-0 pointer-events-none rounded-2xl ring-1 ring-white/20">
-              <div className="w-full h-full border border-dashed border-white/20 rounded-2xl" />
+            <div className="absolute inset-0 pointer-events-none rounded-full ring-1 ring-white/20">
+              <div className="w-full h-full border border-dashed border-white/20 rounded-full" />
             </div>
           </div>
 

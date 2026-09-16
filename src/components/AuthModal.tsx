@@ -283,7 +283,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
                     key={emoji}
                     type="button"
                     onClick={() => setFormData({ ...formData, avatarEmoji: emoji })}
-                    className={`w-10 h-10 rounded-2xl text-xl flex items-center justify-center transition-all border shrink-0 ${
+                    className={`w-10 h-10 rounded-full text-xl flex items-center justify-center transition-all border shrink-0 ${
                       formData.avatarEmoji === emoji
                         ? 'bg-gradient-to-br from-[#ff7a00] to-orange-500 text-white border-white ring-2 ring-[#ff7a00] scale-110 shadow-md'
                         : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'

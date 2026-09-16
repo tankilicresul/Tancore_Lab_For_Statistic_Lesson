@@ -53,9 +53,9 @@ export const PublicProfileModal: React.FC<PublicProfileModalProps> = ({ profile,
             <div className="flex items-start space-x-3.5 relative z-10 pr-8">
               {/* Avatar Photo / Emoji */}
               <div className="relative shrink-0">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-[#ff7a00]/60 flex items-center justify-center text-3xl sm:text-4xl shadow-lg overflow-hidden">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-[#ff7a00]/60 flex items-center justify-center text-3xl sm:text-4xl shadow-lg overflow-hidden">
                   {profile.avatarUrl ? (
-                    <img src={profile.avatarUrl} alt={profile.fullName} className="w-full h-full object-cover" />
+                    <img src={profile.avatarUrl} alt={profile.fullName} className="w-full h-full object-cover rounded-full" />
                   ) : (
                     profile.avatarEmoji || '👦'
                   )}

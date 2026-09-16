@@ -96,7 +96,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
               /* When Profile is Open: Rightmost Button becomes Home Icon (🏠 Ev İkonu) */
               <button
                 onClick={onGoHome}
-                className="p-2 sm:p-2.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white transition-all shadow-md shadow-[#ff7a00]/30 flex items-center justify-center cursor-pointer"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00] hover:bg-[#e66e00] text-white transition-all shadow-md shadow-[#ff7a00]/30 flex items-center justify-center cursor-pointer active:scale-95 shrink-0"
                 title={language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
               >
                 <Home className="w-4.5 h-4.5 sm:w-5 sm:h-5 stroke-[2.25]" />
@@ -105,15 +105,14 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
               /* When Profile is Closed: Rightmost Button shows Profile Avatar */
               <button
                 onClick={onOpenProfile}
-                className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-2xl bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border border-[#ff7a00]/40 transition-colors shadow-xs flex items-center justify-center space-x-1.5 font-black text-xs sm:text-sm cursor-pointer"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border-2 border-[#ff7a00]/50 transition-all shadow-xs flex items-center justify-center font-black cursor-pointer overflow-hidden p-0 active:scale-95 shrink-0"
                 title={language === 'tr' ? 'Profilim & Performansım' : 'My Profile'}
               >
                 {userProfile?.avatarUrl ? (
-                  <img src={userProfile.avatarUrl} alt="Avatar" className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-full object-cover border border-[#ff7a00]/40" />
+                  <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full rounded-full object-cover" />
                 ) : (
-                  <span className="text-lg sm:text-xl leading-none">{userProfile?.avatarEmoji || '👨‍🎓'}</span>
+                  <span className="text-base sm:text-lg leading-none">{userProfile?.avatarEmoji || '👨‍🎓'}</span>
                 )}
-                <ShieldCheck className="w-4 h-4 text-emerald-600 hidden sm:inline" />
               </button>
             )}
           </div>

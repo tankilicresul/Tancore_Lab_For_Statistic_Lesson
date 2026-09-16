@@ -131,13 +131,13 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
               <div className="flex items-center space-x-3 min-w-0 flex-1">
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-12 h-12 rounded-2xl bg-[#ff7a00] text-white font-black text-xl flex items-center justify-center border border-white/20 shadow-md shrink-0 overflow-hidden relative group cursor-pointer"
+                  className="w-12 h-12 rounded-full bg-[#ff7a00] text-white font-black text-xl flex items-center justify-center border border-white/20 shadow-md shrink-0 overflow-hidden relative group cursor-pointer"
                   title={language === 'tr' ? 'Profil fotoğrafı yükle' : 'Upload profile picture'}
                 >
                   {isUploadingAvatar ? (
                     <Loader2 className="w-5 h-5 animate-spin text-white" />
                   ) : userProfile?.avatarUrl ? (
-                    <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                    <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
                   ) : (
                     userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : '👨‍🎓')
                   )}
@@ -451,7 +451,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                       <div className="px-2 py-0.5 rounded-lg bg-[#ff7a00] text-white font-black text-xs shadow-xs shrink-0">
                         {userRank}.
                       </div>
-                      <div className="w-7 h-7 rounded-lg bg-[#ff7a00] text-white font-extrabold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                      <div className="w-7 h-7 rounded-full bg-[#ff7a00] text-white font-extrabold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden">
                         {userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'Ö')}
                       </div>
                       <div className="min-w-0">
