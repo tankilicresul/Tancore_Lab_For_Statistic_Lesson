@@ -374,83 +374,41 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </div>
 
-      {/* Course Track Selection - Course Cards Grid */}
+      {/* 1. Hazır Olan Dersler (Aktif Modüller) */}
       <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:auto-rows-fr">
-        {COURSES_DATA.map((course) => {
+        {COURSES_DATA.filter((c) => c.status === 'active').map((course) => {
           const isEn = language === 'en';
           const title = isEn ? course.name.en : course.name.tr;
           const desc = isEn ? course.desc.en : course.desc.tr;
           const badgeText = isEn ? course.badge.en : course.badge.tr;
           const Icon = course.icon;
 
-          if (course.status === 'active') {
-            return (
-              <button
-                key={course.code}
-                onClick={() => course.track && onSelectTrack(course.track)}
-                className={`group relative w-full aspect-square sm:aspect-auto sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between cursor-pointer overflow-hidden ${course.cardStyle}`}
-              >
-                <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform ${course.glowColor}`} />
-
-                {/* Top row: Icon & Course Code / Badge */}
-                <div className="flex items-center justify-between w-full relative z-10 gap-1.5 sm:gap-2 shrink-0">
-                  <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
-                    <Icon className="w-4 h-4 sm:w-6 sm:h-6 stroke-[2.25]" />
-                  </div>
-                  <div className="h-8 sm:h-12 flex flex-col items-end justify-center gap-0.5 shrink-0">
-                    <span className="text-[11px] sm:text-sm font-black font-mono tracking-tight text-slate-800">
-                      {course.code}
-                    </span>
-                    <span className={`text-[8px] sm:text-[10px] font-black uppercase tracking-wider px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full font-mono border ${course.badgeStyle}`}>
-                      {badgeText}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Middle content: Title & Description starting right below the icon row */}
-                <div className="relative z-10 pt-1.5 sm:pt-3 flex-1 flex flex-col justify-center text-left min-h-0 overflow-hidden">
-                  <h3 className="text-[11px] sm:text-[15px] font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-tight sm:leading-snug line-clamp-2">
-                    {title}
-                  </h3>
-                  <p className="text-[9px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-1 sm:line-clamp-2 mt-0.5 sm:mt-1 leading-tight">
-                    {desc}
-                  </p>
-                </div>
-
-                {/* Bottom CTA button (pinned to the bottom) */}
-                <div className="relative z-10 mt-auto pt-1 sm:pt-2.5 shrink-0">
-                  <div className="flex items-center space-x-1 text-[9px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] group-hover:translate-x-1 transition-transform">
-                    <span>{isEn ? 'Open Path' : 'Ders Yoluna Git'}</span>
-                    <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5]" />
-                  </div>
-                </div>
-              </button>
-            );
-          }
-
           return (
             <button
               key={course.code}
-              onClick={() => onSelectInDesignCourse?.(course)}
-              className={`group relative w-full aspect-square sm:aspect-auto sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between overflow-hidden cursor-pointer hover:border-amber-400/80 hover:shadow-md ${course.cardStyle}`}
+              onClick={() => course.track && onSelectTrack(course.track)}
+              className={`group relative w-full aspect-square sm:aspect-auto sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between cursor-pointer overflow-hidden ${course.cardStyle}`}
             >
-              <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
+              <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform ${course.glowColor}`} />
 
-              {/* Top row: Icon & Course Code */}
+              {/* Top row: Icon & Course Code / Badge */}
               <div className="flex items-center justify-between w-full relative z-10 gap-1.5 sm:gap-2 shrink-0">
-                <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
+                <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
                   <Icon className="w-4 h-4 sm:w-6 sm:h-6 stroke-[2.25]" />
                 </div>
-                <div className="h-8 sm:h-12 flex items-center justify-end shrink-0">
-                  <span className="text-[11px] sm:text-sm font-black font-mono tracking-tight text-slate-700">
+                <div className="h-8 sm:h-12 flex flex-col items-end justify-center gap-0.5 shrink-0">
+                  <span className="text-[11px] sm:text-sm font-black font-mono tracking-tight text-slate-800">
                     {course.code}
+                  </span>
+                  <span className={`text-[8px] sm:text-[10px] font-black uppercase tracking-wider px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full font-mono border ${course.badgeStyle}`}>
+                    {badgeText}
                   </span>
                 </div>
               </div>
 
               {/* Middle content: Title & Description starting right below the icon row */}
               <div className="relative z-10 pt-1.5 sm:pt-3 flex-1 flex flex-col justify-center text-left min-h-0 overflow-hidden">
-                <h3 className="text-[11px] sm:text-[15px] font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors leading-tight sm:leading-snug line-clamp-2">
+                <h3 className="text-[11px] sm:text-[15px] font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-tight sm:leading-snug line-clamp-2">
                   {title}
                 </h3>
                 <p className="text-[9px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-1 sm:line-clamp-2 mt-0.5 sm:mt-1 leading-tight">
@@ -458,17 +416,69 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </p>
               </div>
 
-              {/* Bottom status (pinned to the bottom) */}
+              {/* Bottom CTA button (pinned to the bottom) */}
               <div className="relative z-10 mt-auto pt-1 sm:pt-2.5 shrink-0">
-                <div className="flex items-center space-x-1 text-[9px] sm:text-xs font-black uppercase tracking-wider text-amber-600 group-hover:text-amber-700 group-hover:translate-x-0.5 transition-all">
-                  <Loader2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-spin text-amber-500 shrink-0" />
-                  <span className="truncate">{isEn ? 'In Design' : 'Tasarım Aşamasında'}</span>
-                  <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5] opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0" />
+                <div className="flex items-center space-x-1 text-[9px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] group-hover:translate-x-1 transition-transform">
+                  <span>{isEn ? 'Open Path' : 'Ders Yoluna Git'}</span>
+                  <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5]" />
                 </div>
               </div>
             </button>
           );
         })}
+      </div>
+
+      {/* 2. Hazır Olanlar ile Hazır Olmayanlar Arasındaki Arttırılmış Mesafe */}
+      <div className="pt-6 sm:pt-8">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:auto-rows-fr">
+          {COURSES_DATA.filter((c) => c.status !== 'active').map((course) => {
+            const isEn = language === 'en';
+            const title = isEn ? course.name.en : course.name.tr;
+            const desc = isEn ? course.desc.en : course.desc.tr;
+            const Icon = course.icon;
+
+            return (
+              <button
+                key={course.code}
+                onClick={() => onSelectInDesignCourse?.(course)}
+                className={`group relative w-full aspect-square sm:aspect-auto sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between overflow-hidden cursor-pointer hover:border-amber-400/80 hover:shadow-md ${course.cardStyle}`}
+              >
+                <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
+
+                {/* Top row: Icon & Course Code */}
+                <div className="flex items-center justify-between w-full relative z-10 gap-1.5 sm:gap-2 shrink-0">
+                  <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
+                    <Icon className="w-4 h-4 sm:w-6 sm:h-6 stroke-[2.25]" />
+                  </div>
+                  <div className="h-8 sm:h-12 flex items-center justify-end shrink-0">
+                    <span className="text-[11px] sm:text-sm font-black font-mono tracking-tight text-slate-700">
+                      {course.code}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Middle content: Title & Description starting right below the icon row */}
+                <div className="relative z-10 pt-1.5 sm:pt-3 flex-1 flex flex-col justify-center text-left min-h-0 overflow-hidden">
+                  <h3 className="text-[11px] sm:text-[15px] font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors leading-tight sm:leading-snug line-clamp-2">
+                    {title}
+                  </h3>
+                  <p className="text-[9px] sm:text-[11.5px] font-medium text-slate-500 line-clamp-1 sm:line-clamp-2 mt-0.5 sm:mt-1 leading-tight">
+                    {desc}
+                  </p>
+                </div>
+
+                {/* Bottom status (pinned to the bottom) */}
+                <div className="relative z-10 mt-auto pt-1 sm:pt-2.5 shrink-0">
+                  <div className="flex items-center space-x-1 text-[9px] sm:text-xs font-black uppercase tracking-wider text-amber-600 group-hover:text-amber-700 group-hover:translate-x-0.5 transition-all">
+                    <Loader2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-spin text-amber-500 shrink-0" />
+                    <span className="truncate">{isEn ? 'In Design' : 'Tasarım Aşamasında'}</span>
+                    <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5] opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0" />
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
