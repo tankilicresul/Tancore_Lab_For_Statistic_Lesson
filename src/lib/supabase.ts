@@ -633,4 +633,58 @@ export async function uploadCourseNoteDocument(
   }
 }
 
+export interface AppIssueReport {
+  id?: string;
+  userMessage: string;
+  detectedIssue?: string;
+  screenContext?: any;
+  userEmail?: string;
+  userName?: string;
+  severity?: 'Low' | 'Medium' | 'High' | 'Critical';
+  createdAt?: string;
+}
+
+/**
+ * Report a platform issue/bug detected from chat or UI to backend
+ */
+export async function reportAppIssue(report: AppIssueReport): Promise<boolean> {
+  try {
+    const payload = {
+      id: `ISSUE-${Date.now().toString().slice(-6)}`,
+      user_message: report.userMessage,
+      detected_issue: report.detectedIssue || report.userMessage,
+      screen_context: typeof report.screenContext === 'object' ? JSON.stringify(report.screenContext) : String(report.screenContext || 'Genel'),
+      user_email: report.userEmail || 'anonymous',
+      user_name: report.userName || 'Öğrenci',
+      severity: report.severity || 'Medium',
+      status: 'Open',
+      created_at: new Date().toISOString(),
+    };
+
+    if (supabase && isSupabaseConfigured) {
+      try {
+        await supabase.from('app_issues').insert([payload]);
+      } catch (dbErr) {
+        console.warn('Supabase app_issues insert error:', dbErr);
+      }
+    }
+
+    try {
+      await fetch('/api/report-issue', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(report),
+      });
+    } catch (e) {
+      // API call fallback
+    }
+
+    return true;
+  } catch (err) {
+    console.warn('reportAppIssue error:', err);
+    return false;
+  }
+}
+
+
 

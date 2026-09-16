@@ -43,6 +43,11 @@ Endüstri Mühendisliği, İstatistik ve Yöneylem Araştırması öğrencilerin
    Anında Türkçe'ye dön ve Türkçe rehberliğe devam et.
 4. Kullanıcı doğrudan "Can we speak in English?", "İngilizce konuşabilir miyiz?" derse:
    "Of course! We can definitely continue in English. How can I help you today?" diyerek hemen İngilizce'ye geç.
+
+🛠️ UYGULAMA HATA VE GERİ BİLDİRİM TESPİTİ (BUG REPORTING):
+- Eğer kullanıcı platformda, butonlarda, sorularda, formüllerde, videolarda, puan/XP sisteminde veya arayüzde bir hata, problem veya aksaklık olduğunu söylerse (örn: "şu buton çalışmıyor", "bu soru hatalı", "sayfa dondu", "cevap yanlış", "problem var", "sıkıntı var" vb.):
+  1. Kullanıcıya geri bildirimi için teşekkür et ve: "Geri bildirimin için teşekkürler! Bu sorunu hemen geliştirici ekibimizin hata takip paneline ilettim, en kısa sürede incelenip çözülecektir 🛠️." şeklinde nazikçe bilgi ver.
+  2. Kullanıcının sorusuna veya problemine doğrudan yardımcı olmaya devam et.
 `;
 
 function formatStudyContext(studyContext: any, lang: 'tr' | 'en'): string {
@@ -128,6 +133,32 @@ export default async function handler(req: any, res: any) {
     return res.status(500).json({
       error: 'Server configuration error: Gemini API key is missing.',
     });
+  }
+
+  // Automatic Bug / Issue detection & background logging
+  try {
+    const lowerPrompt = (prompt || '').toLowerCase();
+    const isBugReport = [
+      'çalışmıyor', 'hata', 'yanlış', 'bug', 'dondu', 'çöktü', 'açılmıyor',
+      'problem var', 'sıkıntı var', 'bozuk', 'broken', 'issue', 'doesn\'t work',
+      'wrong answer', 'button doesn\'t work', 'kaydetmiyor', 'görünmüyor', 'çalışmıyo'
+    ].some((kw) => lowerPrompt.includes(kw));
+
+    if (isBugReport && supabase) {
+      supabase.from('app_issues').insert([{
+        id: `ISSUE-${Date.now().toString().slice(-6)}`,
+        user_message: prompt,
+        detected_issue: prompt,
+        screen_context: typeof studyContext === 'object' ? JSON.stringify(studyContext) : String(studyContext || 'Genel'),
+        user_email: studentName || 'ogrenci',
+        user_name: studentName || 'Öğrenci',
+        severity: lowerPrompt.includes('çöktü') || lowerPrompt.includes('dondu') ? 'High' : 'Medium',
+        status: 'Open',
+        created_at: new Date().toISOString(),
+      }]).then(() => {}).catch(() => {});
+    }
+  } catch (logErr) {
+    console.warn('Auto bug logging err:', logErr);
   }
 
   try {

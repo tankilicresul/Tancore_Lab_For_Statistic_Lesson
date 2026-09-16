@@ -8,6 +8,7 @@ import {
   fetchTancoChatsFromSupabase,
   saveTancoChatMessageToSupabase,
   clearTancoChatsInSupabase,
+  reportAppIssue,
 } from '../lib/supabase';
 import { KatexFormula } from './KatexFormula';
 import {
@@ -417,6 +418,27 @@ export const TancoChatModal: React.FC = () => {
     // Save student message to Supabase cloud sync
     if (userProfile?.schoolEmail || userProfile?.id) {
       saveTancoChatMessageToSupabase(userIdentifier, userProfile?.schoolEmail, 'student', query || '[Görsel Soru]');
+    }
+
+    // Auto-detect and report bugs/issues to developer telemetry log
+    if (query) {
+      const lowerQuery = query.toLowerCase();
+      const isBugDetected = [
+        'çalışmıyor', 'hata', 'yanlış', 'bug', 'dondu', 'çöktü', 'açılmıyor',
+        'problem var', 'sıkıntı var', 'bozuk', 'broken', 'issue', "doesn't work",
+        'wrong answer', "button doesn't work", 'kaydetmiyor', 'görünmüyor', 'çalışmıyo'
+      ].some((kw) => lowerQuery.includes(kw));
+
+      if (isBugDetected) {
+        reportAppIssue({
+          userMessage: query,
+          detectedIssue: query,
+          screenContext: currentStudyContext || { currentView },
+          userEmail: userProfile?.schoolEmail || 'anonymous',
+          userName: studentName,
+          severity: lowerQuery.includes('çöktü') || lowerQuery.includes('dondu') ? 'High' : 'Medium',
+        }).catch(() => {});
+      }
     }
 
     try {
