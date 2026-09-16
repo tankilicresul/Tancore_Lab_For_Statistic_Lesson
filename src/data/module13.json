@@ -28,7 +28,7 @@
         "tr": "CyberPass şifre jeneratörü 4 haneli PIN kodu oluştururken her haneye 0-9 arası 10 rakam seçebilir. Toplam olası PIN kodu sayısı = 10 * 10 * 10 * 10 = 10,000 adettir.",
         "en": "CyberPass PIN generator picks 4 digits from 0-9. Total possible PINs = 10 * 10 * 10 * 10 = 10,000."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "combinatorics_calc",
       "vocabTerms": [
         {
           "term_en": "counting principle",
@@ -70,7 +70,7 @@
         "tr": "CyberPass yarıştığı 8 aday arasından 1., 2. ve 3. dereceye girecek şifreleme algoritmalarını seçecektir. P(8, 3) = 8 * 7 * 6 = 336 farklı sıralama seçeneği vardır.",
         "en": "CyberPass awards 1st, 2nd, 3rd places out of 8 algorithms. P(8,3) = 8 * 7 * 6 = 336."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "combinatorics_calc",
       "vocabTerms": [
         {
           "term_en": "permutation",
@@ -112,7 +112,7 @@
         "tr": "CyberPass 10 kişilik yazılım ekibinden 3 kişilik bir siber güvenlik komitesi seçecektir. Sıra önemsiz olduğu için C(10, 3) = (10 * 9 * 8) / (3 * 2 * 1) = 120 komite kurulabilir.",
         "en": "CyberPass selects 3 reps out of 10 for a committee. C(10, 3) = 120 possible teams."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "combinatorics_calc",
       "vocabTerms": [
         {
           "term_en": "combination",
@@ -154,7 +154,7 @@
         "tr": "CyberPass şifrelemede k-out-of-n anahtar paylaşımı protokolünde C(n, k) katsayıları kullanılarak sistem güvenliği modellenir.",
         "en": "CyberPass key-sharing protocols use C(n, k) binomial coefficients to model security threshold bounds."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "combinatorics_calc",
       "vocabTerms": [
         {
           "term_en": "binomial coefficient",

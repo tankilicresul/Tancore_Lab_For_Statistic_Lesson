@@ -28,7 +28,7 @@
         "tr": "CyberPass spam filtresinde, gelen e-postanın 'Hediye' kelimesini içerme olasılığı P(Hediye) = 0.20'dir. Hem spam hem 'Hediye' içerme olasılığı P(Spam ∩ Hediye) = 0.15'tir. 'Hediye' içeren bir e-postanın spam olma olasılığı P(Spam|Hediye) = 0.15 / 0.20 = 0.75 (%75)'tir.",
         "en": "CyberPass spam filter finds P(Gift) = 0.20 and P(Spam ∩ Gift) = 0.15. Thus P(Spam|Gift) = 0.15 / 0.20 = 0.75 (75%)."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "conditional_prob",
       "vocabTerms": [
         {
           "term_en": "conditional probability",
@@ -70,7 +70,7 @@
         "tr": "CyberPass sunucu isteklerinin %60'ı Sunucu A'dan, %40'ı Sunucu B'den geçer. Sunucu A'daki hata oranı %1, Sunucu B'deki hata oranı %3'tür. Toplam sistem hata oranı P(Hata) = (0.01 * 0.60) + (0.03 * 0.40) = 0.006 + 0.012 = 0.018 (%1.8).",
         "en": "Server A handles 60% with 1% error; Server B handles 40% with 3% error. Total error = (0.01*0.60) + (0.03*0.40) = 1.8%."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "probability_rules",
       "vocabTerms": [
         {
           "term_en": "law of total probability",
@@ -112,7 +112,7 @@
         "tr": "Sistemde siber saldırı olasılığı P(Saldırı) = 0.01'dir. Alarm sistemi saldırı varken %95 doğrulukla (Sensitivite), saldırı yokken %5 yanlış alarm (False Positive) veriyor. Alarm çaldığında gerçekten saldırı olma olasılığı P(Saldırı|Alarm) ≈ %16.1'dir.",
         "en": "Prior attack P(Attack) = 0.01. Sensitivity = 0.95, False positive = 0.05. Posterior P(Attack|Alarm) ≈ 16.1%."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "bayes_rule",
       "vocabTerms": [
         {
           "term_en": "prior probability",
@@ -154,7 +154,7 @@
         "tr": "CyberPass siber güvenlik taramasında sistem %99 duyarlılığa sahip olsa da günlük 1,000 zararsız pakette %1 yanlış pozitif üretilmesi durumunda gerçek saldırı oranı düşük kalır.",
         "en": "CyberPass intrusion detection with 99% sensitivity produces false alarms on benign packets, requiring Bayesian calibration."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "bayes_rule",
       "vocabTerms": [
         {
           "term_en": "base rate fallacy",

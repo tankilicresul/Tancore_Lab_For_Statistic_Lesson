@@ -143,7 +143,7 @@
         "tr": "PaySafe ödeme sisteminde bir işlemin yüksek tutarlı olma olasılığı $P(A) = 0.20$ ve gece saatinde yapılma olasılığı $P(B) = 0.10$'dur. Olaylar bağımsız olduğunda her iki durumun aynı anda gerçekleşme olasılığı:\n\n$$P(A \\cap B) = P(A) \\cdot P(B) = 0.20 \\times 0.10 = 0.02 \\quad (\\%2)$$",
         "en": "In PaySafe's payment system, the probability of a transaction being high-value is P(A) = 20%, and being placed at night is P(B) = 10%. Because these events are independent, we find the probability of both happening simultaneously by multiplying their probabilities: 0.20 × 0.10 = 0.02 (2%)."
       },
-      "interactiveType": "probability_coin",
+      "interactiveType": "probability_rules",
       "vocabTerms": [
         {
           "term_en": "independent events",
@@ -195,6 +195,7 @@
         "tr": "PaySafe dolandırıcılık modelinde, gece yapılan işlemlerin oranı $P(B) = 0.40$ ve hem gece yapılan hem de dolandırıcılık olan işlem oranı $P(A \\cap B) = 0.12$'dir. Gece yapılan bir işlemin dolandırıcılık olma koşullu olasılığı:\n\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)} = \\frac{0.12}{0.40} = 0.30 \\quad (\\%30)$$",
         "en": "In TrendyShop, the overall fraud rate among all buyers is 5% P(Fraud) = 0.05. However, when we know an order originates from a VPN, under this condition the fraud probability jumps to 30% P(Fraud | VPN) = 0.30. Conditional probability shows how receiving new context updates risk expectations."
       },
+      "interactiveType": "conditional_prob",
       "vocabTerms": [
         {
           "term_en": "conditional probability",
@@ -305,7 +306,7 @@
         "tr": "FinTech şirketi CloudBank, Almanya ve Japonya sunucularının kesintiye uğrama risklerini analiz eder. Almanya sunucusunun çökme ihtimali %1 (0.01), Japonya sunucusunun çökme ihtimali %2 (0.02)'dir. Kesintiler bağımsız olduğu için her iki sunucunun aynı anda çökme ihtimali 0.01 × 0.02 = 0.0002 (%0.02)'dir. Bu bağımsızlık, sistem yedekliliğinin temel güvencesidir.",
         "en": "FinTech platform CloudBank analyzes server outage risks across Germany and Japan. Germany's crash chance is 1% (0.01) and Japan's is 2% (0.02). Since outages are independent, the chance of both failing concurrently is 0.01 × 0.02 = 0.0002 (0.02%), validating server redundancy."
       },
-      "interactiveType": "probability_coin",
+      "interactiveType": "combinatorics_calc",
       "vocabTerms": [
         {
           "term_en": "mutually exclusive",

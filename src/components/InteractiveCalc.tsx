@@ -39,7 +39,7 @@ interface InteractiveCalcProps {
 }
 
 export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
-  type = 'mean_median_mode',
+  type,
   initialData = [10, 12, 12, 15, 9, 50],
 }) => {
   const { language } = useAppStore();
@@ -61,6 +61,19 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
   // State for raw data list (Mean / Median / Mode)
   const [dataPoints, setDataPoints] = useState<number[]>(initialData);
   const [inputVal, setInputVal] = useState<string>('');
+
+  // State for Probability Rules (Intersection & Union)
+  const [probA, setProbA] = useState<number>(0.40);
+  const [probB, setProbB] = useState<number>(0.30);
+  const [isIndependent, setIsIndependent] = useState<boolean>(true);
+
+  // State for Conditional Probability
+  const [condPB, setCondPB] = useState<number>(0.40);
+  const [condPAB, setCondPAB] = useState<number>(0.12);
+
+  // State for Combinatorics
+  const [combN, setCombN] = useState<number>(6);
+  const [combK, setCombK] = useState<number>(2);
 
   // State for Coin Flip
   const [coinCount, setCoinCount] = useState<number>(100);
@@ -105,6 +118,11 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
   const [regTargetR, setRegTargetR] = useState<number>(0.85);
   const [regN, setRegN] = useState<number>(30);
   const [regPoints, setRegPoints] = useState(() => generateRegressionData(0.85, 30));
+
+  // If no interactive calculator is defined for this lesson, do not render
+  if (!type || type === 'none') {
+    return null;
+  }
 
   // Accordion Header (when collapsed)
   if (!isOpen) {
@@ -173,6 +191,261 @@ export const InteractiveCalc: React.FC<InteractiveCalcProps> = ({
       language === 'tr' ? '3. Gelişmiş İstatistik & Olasılık Laboratuvarı' : '3. Advanced Probability Lab',
       language === 'tr' ? 'Simülasyonlar, dağılımlar ve Bayes analizi' : 'Simulations & distributions',
       <ProbabilityLab defaultTab={tabMap[type] || 'distributions'} />
+    );
+  }
+
+  // Probability Rules (Multiplication & Addition)
+  if (type === 'probability_rules') {
+    const intersectionProb = isIndependent ? probA * probB : 0;
+    const unionProb = isIndependent
+      ? probA + probB - intersectionProb
+      : Math.min(1.0, probA + probB);
+
+    return renderLabContainer(
+      language === 'tr' ? '3. Olasılık Kuralları & Küme Cebiri Laboratuvarı' : '3. Probability Rules & Set Theory Lab',
+      language === 'tr' ? 'P(A), P(B) ve bağımsızlık durumunu değiştirerek kesişim ve birleşim olasılıklarını hesapla' : 'Adjust P(A), P(B) and independence',
+      <>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>A Olayı Olasılığı</span>
+              <KatexFormula formula="P(A)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{(probA * 100).toFixed(0)}%</span>
+            </label>
+            <input
+              type="range"
+              min="0.05"
+              max="0.95"
+              step="0.05"
+              value={probA}
+              onChange={(e) => setProbA(parseFloat(e.target.value))}
+              className="w-full accent-[#ff7a00]"
+            />
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>B Olayı Olasılığı</span>
+              <KatexFormula formula="P(B)" displayMode={false} />:
+              <span className="text-[#38bdf8] font-mono font-bold ml-1">{(probB * 100).toFixed(0)}%</span>
+            </label>
+            <input
+              type="range"
+              min="0.05"
+              max="0.95"
+              step="0.05"
+              value={probB}
+              onChange={(e) => setProbB(parseFloat(e.target.value))}
+              className="w-full accent-[#38bdf8]"
+            />
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-center">
+            <label className="text-xs font-bold text-slate-800 block mb-1.5">
+              {language === 'tr' ? 'Olayların İlişkisi:' : 'Event Relationship:'}
+            </label>
+            <div className="flex rounded-xl bg-slate-200/70 p-1 border border-slate-300">
+              <button
+                onClick={() => setIsIndependent(true)}
+                className={`flex-1 py-1 px-2 rounded-lg text-xs font-black transition-all ${
+                  isIndependent ? 'bg-white text-[#ff7a00] shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {language === 'tr' ? 'Bağımsız' : 'Independent'}
+              </button>
+              <button
+                onClick={() => setIsIndependent(false)}
+                className={`flex-1 py-1 px-2 rounded-lg text-xs font-black transition-all ${
+                  !isIndependent ? 'bg-white text-rose-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {language === 'tr' ? 'Ayrık (Disjoint)' : 'Disjoint'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-center">
+            <span className="text-xs font-black text-amber-800 uppercase tracking-wider flex items-center justify-center gap-1 mb-1">
+              <span>Kesişim Olasılığı</span>
+              <KatexFormula formula="P(A \cap B)" displayMode={false} />
+            </span>
+            <span className="text-3xl font-black text-amber-700 font-mono">
+              {(intersectionProb * 100).toFixed(1)}%
+            </span>
+            <p className="text-[11px] text-amber-800/80 font-mono mt-1 font-semibold">
+              {isIndependent
+                ? `P(A) · P(B) = ${probA.toFixed(2)} × ${probB.toFixed(2)} = ${intersectionProb.toFixed(4)}`
+                : 'Ayrık Olaylar için Kesişim P(A ∩ B) = 0'}
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-center">
+            <span className="text-xs font-black text-sky-800 uppercase tracking-wider flex items-center justify-center gap-1 mb-1">
+              <span>Birleşim (Toplam) Olasılığı</span>
+              <KatexFormula formula="P(A \cup B)" displayMode={false} />
+            </span>
+            <span className="text-3xl font-black text-sky-700 font-mono">
+              {(unionProb * 100).toFixed(1)}%
+            </span>
+            <p className="text-[11px] text-sky-800/80 font-mono mt-1 font-semibold">
+              {isIndependent
+                ? `P(A) + P(B) - P(A ∩ B) = ${(unionProb * 100).toFixed(1)}%`
+                : `P(A) + P(B) = ${(unionProb * 100).toFixed(1)}%`}
+            </p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Conditional Probability Calculator
+  if (type === 'conditional_prob') {
+    const validPAB = Math.min(condPAB, condPB);
+    const condProb = condPB > 0 ? validPAB / condPB : 0;
+
+    return renderLabContainer(
+      language === 'tr' ? '3. Koşullu Olasılık & Çarpım Kuralı Laboratuvarı' : '3. Conditional Probability Calculator',
+      language === 'tr' ? 'P(B) koşul olasılığı ve P(A ∩ B) kesişimini değiştirerek P(A | B) hesapla' : 'Adjust P(B) and P(A ∩ B)',
+      <>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Koşul Olayı</span>
+              <KatexFormula formula="P(B)" displayMode={false} />:
+              <span className="text-[#38bdf8] font-mono font-bold ml-1">{(condPB * 100).toFixed(0)}%</span>
+            </label>
+            <input
+              type="range"
+              min="0.10"
+              max="0.90"
+              step="0.05"
+              value={condPB}
+              onChange={(e) => {
+                const newPB = parseFloat(e.target.value);
+                setCondPB(newPB);
+                if (condPAB > newPB) setCondPAB(parseFloat((newPB * 0.5).toFixed(2)));
+              }}
+              className="w-full accent-[#38bdf8]"
+            />
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Ortak Kesişim</span>
+              <KatexFormula formula="P(A \cap B)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{(validPAB * 100).toFixed(1)}%</span>
+            </label>
+            <input
+              type="range"
+              min="0.01"
+              max={condPB}
+              step="0.01"
+              value={validPAB}
+              onChange={(e) => setCondPAB(parseFloat(e.target.value))}
+              className="w-full accent-[#ff7a00]"
+            />
+          </div>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-[#ff7a00]/10 border border-[#ff7a00]/30 text-center shadow-xs">
+          <span className="text-xs text-[#ff7a00] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 mb-1">
+            <span>Hesaplanan Koşullu Olasılık</span>
+            <KatexFormula formula="P(A \mid B) = \frac{P(A \cap B)}{P(B)}" displayMode={false} />
+          </span>
+          <span className="text-4xl font-black text-[#ff7a00] font-mono tracking-tight">
+            {(condProb * 100).toFixed(1)}%
+          </span>
+          <p className="text-xs text-slate-600 font-mono mt-2 font-semibold">
+            {`P(A | B) = ${validPAB.toFixed(2)} / ${condPB.toFixed(2)} = ${condProb.toFixed(4)} (%${(condProb * 100).toFixed(1)})`}
+          </p>
+        </div>
+      </>
+    );
+  }
+
+  // Combinatorics Calculator (Permutation & Combination)
+  if (type === 'combinatorics_calc') {
+    const factorial = (num: number): number => {
+      let res = 1;
+      for (let i = 2; i <= num; i++) res *= i;
+      return res;
+    };
+
+    const validK = Math.min(combK, combN);
+    const nFact = factorial(combN);
+    const permResult = factorial(combN) / factorial(combN - validK);
+    const combResult = factorial(combN) / (factorial(validK) * factorial(combN - validK));
+
+    return renderLabContainer(
+      language === 'tr' ? '3. Kombinatorik: Permütasyon & Kombinasyon Laboratuvarı' : '3. Combinatorics Calculator',
+      language === 'tr' ? 'n eleman sayısı ve k seçim sayısını değiştirerek sıralı/sırasız seçimleri hesapla' : 'Adjust n and k to compute P(n,k) and C(n,k)',
+      <>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Toplam Küme Eleman Sayısı</span>
+              <KatexFormula formula="(n)" displayMode={false} />:
+              <span className="text-[#ff7a00] font-mono font-bold ml-1">{combN}</span>
+            </label>
+            <input
+              type="range"
+              min="1"
+              max="12"
+              value={combN}
+              onChange={(e) => {
+                const newN = parseInt(e.target.value, 10);
+                setCombN(newN);
+                if (combK > newN) setCombK(newN);
+              }}
+              className="w-full accent-[#ff7a00]"
+            />
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1 mb-1.5">
+              <span>Seçilecek Eleman Sayısı</span>
+              <KatexFormula formula="(k)" displayMode={false} />:
+              <span className="text-[#38bdf8] font-mono font-bold ml-1">{validK}</span>
+            </label>
+            <input
+              type="range"
+              min="0"
+              max={combN}
+              value={validK}
+              onChange={(e) => setCombK(parseInt(e.target.value, 10))}
+              className="w-full accent-[#38bdf8]"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+            <span className="text-xs font-bold text-slate-600 block mb-1">Faktöriyel n!</span>
+            <span className="text-2xl font-black text-slate-900 font-mono">{nFact.toLocaleString()}</span>
+            <p className="text-[10px] text-slate-500 font-mono mt-1">{combN}! farklı dizilim</p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-orange-50 border border-orange-200 text-center">
+            <span className="text-xs font-black text-[#ff7a00] flex items-center justify-center gap-1 mb-1">
+              <span>Permütasyon</span>
+              <KatexFormula formula="P(n, k)" displayMode={false} />
+            </span>
+            <span className="text-2xl font-black text-[#ff7a00] font-mono">{permResult.toLocaleString()}</span>
+            <p className="text-[10px] text-orange-700/80 font-mono mt-1">Sıralama Önemli: n!/(n-k)!</p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-sky-50 border border-sky-200 text-center">
+            <span className="text-xs font-black text-sky-700 flex items-center justify-center gap-1 mb-1">
+              <span>Kombinasyon</span>
+              <KatexFormula formula="\binom{n}{k}" displayMode={false} />
+            </span>
+            <span className="text-2xl font-black text-sky-700 font-mono">{combResult.toLocaleString()}</span>
+            <p className="text-[10px] text-sky-700/80 font-mono mt-1">Grup Seçimi: n!/[k!(n-k)!]</p>
+          </div>
+        </div>
+      </>
     );
   }
 

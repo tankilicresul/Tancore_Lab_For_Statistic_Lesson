@@ -28,7 +28,7 @@
         "tr": "CyberPass veri indirme süresi [10 sn, 50 sn] aralığında Düzgün dağılmaktadır. Sürenin 20 sn ile 30 sn arasında olma olasılığı (30 - 20) / (50 - 10) = 10 / 40 = 0.25 (%25)'tir.",
         "en": "Download time is Uniform [10s, 50s]. Probability between 20s and 30s = (30 - 20) / (50 - 10) = 0.25 (25%)."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "normal_dist",
       "vocabTerms": [
         {
           "term_en": "probability density function",
@@ -70,7 +70,7 @@
         "tr": "CyberPass kullanıcı oturum süreleri μ = 60 dk, σ = 10 dk ile Normal dağılmaktadır. Oturum sürelerinin %95'i 40 dk (60-2*10) ile 80 dk (60+2*10) arasında değişir.",
         "en": "User session duration N(μ=60, σ=10). 95% of session durations lie between 40 min and 80 min."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "normal_dist",
       "vocabTerms": [
         {
           "term_en": "empirical rule",
@@ -112,7 +112,7 @@
         "tr": "CyberPass şüpheli işlem kontrolünde, kullanıcının işlem miktarı X = 350 TL'dir. Normal kullanım μ = 200 TL, σ = 50 TL ise Z = (350 - 200)/50 = +3.0 çıkar. Z > 3 olduğundan şüpheli işlem alarmı verilir.",
         "en": "User transaction X = 350 (μ=200, σ=50). Z = (350 - 200)/50 = +3.0. High Z-score triggers fraud alert."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "normal_dist",
       "vocabTerms": [
         {
           "term_en": "z-score",
@@ -154,7 +154,7 @@
         "tr": "CyberPass indirme hızında F(50) = 0.85 (%85) ve F(20) = 0.15 (%15) ise indirme süresinin 20 ile 50 sn arasında kalma olasılığı 0.85 - 0.15 = 0.70 (%70)'tir.",
         "en": "If F(50) = 0.85 and F(20) = 0.15, download duration between 20s and 50s has probability 0.85 - 0.15 = 0.70 (70%)."
       },
-      "interactiveType": "probability_lab",
+      "interactiveType": "normal_dist",
       "vocabTerms": [
         {
           "term_en": "cumulative distribution function",
