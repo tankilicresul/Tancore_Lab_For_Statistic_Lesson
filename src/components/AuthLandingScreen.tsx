@@ -178,56 +178,49 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   };
 
   return (
-    <div className="min-h-screen bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 font-sans">
-      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-slate-200 animate-fade-in">
-        
-        {/* Left Side: Vibrant Orange Branding Area (Turuncu Alan) */}
-        <div className="bg-gradient-to-br from-[#ff7a00] via-orange-600 to-amber-600 p-6 sm:p-10 text-white flex flex-col justify-between relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full blur-2xl pointer-events-none" />
+    <div className="min-h-screen w-full bg-white font-sans flex flex-col overflow-x-hidden animate-fade-in">
+      
+      {/* TOP LAYER: Complete Orange Section (Üst Kısım Komple Turuncu) */}
+      <div className="w-full bg-gradient-to-br from-[#ff7a00] via-orange-600 to-amber-600 px-6 py-10 sm:px-12 sm:py-14 text-white relative overflow-hidden flex flex-col items-center justify-center shadow-sm">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-black/10 rounded-full blur-2xl pointer-events-none" />
 
-          {/* Top Brand Info */}
-          <div className="relative z-10 my-auto space-y-6">
-            <div className="flex items-center space-x-3">
-              <div
-                className={`w-12 h-12 rounded-full bg-white text-[#ff7a00] shadow-lg flex items-center justify-center p-2 shrink-0 ${
-                  isLogoSpinning ? 'animate-logo-spin' : ''
-                }`}
-              >
-                <Zap className="w-6.5 h-6.5 fill-[#ff7a00] stroke-[2]" />
-              </div>
-              <span className="text-3xl font-black tracking-tight text-white font-sans">
-                TanCoreLab
-              </span>
+        <div className="w-full max-w-md relative z-10 space-y-6">
+          {/* Logo Header */}
+          <div className="flex items-center space-x-3.5">
+            <div
+              className={`w-12 h-12 rounded-full bg-white text-[#ff7a00] shadow-xl flex items-center justify-center p-2 shrink-0 ${
+                isLogoSpinning ? 'animate-logo-spin' : ''
+              }`}
+            >
+              <Zap className="w-6.5 h-6.5 fill-[#ff7a00] stroke-[2]" />
             </div>
-
-            {/* Only the 3 Icons and Text */}
-            <div className="space-y-4 pt-2">
-              <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
-                <Sparkles className="w-5 h-5 text-amber-300 shrink-0" />
-                <span>{language === 'tr' ? '16 İnteraktif Modül & Canlı Simülatör' : '16 Interactive Modules & Calculators'}</span>
-              </div>
-              <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
-                <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
-                <span>{language === 'tr' ? 'Gerçek Şirket Vaka Sınavları (Case Exams)' : 'Real Business Case Exams'}</span>
-              </div>
-              <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
-                <ShieldCheck className="w-5 h-5 text-orange-200 shrink-0" />
-                <span>{language === 'tr' ? 'Doğrulanmış Öğrenci Profili & Sıralama' : 'Verified Student Profile & Ranking'}</span>
-              </div>
-            </div>
+            <span className="text-3xl sm:text-4xl font-black tracking-tight text-white font-sans">
+              TanCoreLab
+            </span>
           </div>
 
-          {/* Footer Note */}
-          <div className="relative z-10 text-[10px] sm:text-xs text-orange-100/90 font-semibold pt-4 border-t border-white/10 mt-6">
-            {language === 'tr'
-              ? 'Sadece geçerli üniversite öğrenci e-posta adresleri (ör: @ku.edu.tr) kabul edilir.'
-              : 'Only valid university student emails (e.g. @ku.edu.tr) are accepted.'}
+          {/* Only 3 Icons & Text */}
+          <div className="space-y-3.5 pt-1">
+            <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
+              <Sparkles className="w-5 h-5 text-amber-300 shrink-0" />
+              <span>{language === 'tr' ? '16 İnteraktif Modül & Canlı Simülatör' : '16 Interactive Modules & Calculators'}</span>
+            </div>
+            <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
+              <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
+              <span>{language === 'tr' ? 'Gerçek Şirket Vaka Sınavları (Case Exams)' : 'Real Business Case Exams'}</span>
+            </div>
+            <div className="flex items-center space-x-3 text-sm sm:text-base font-extrabold text-white">
+              <ShieldCheck className="w-5 h-5 text-orange-200 shrink-0" />
+              <span>{language === 'tr' ? 'Doğrulanmış Öğrenci Profili & Sıralama' : 'Verified Student Profile & Ranking'}</span>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Right Side: White Authentication Form Area (Beyaz Alan) */}
-        <div className="p-6 sm:p-10 bg-white flex flex-col justify-center relative">
+      {/* BOTTOM LAYER: Complete White Section (Alt Kısım Komple Beyaz) */}
+      <div className="w-full bg-white px-6 py-8 sm:px-12 sm:py-12 flex-1 flex flex-col items-center justify-center relative">
+        <div className="w-full max-w-md">
           
           {step === 'otp' ? (
             /* Step 2: OTP Verification Screen */
@@ -480,7 +473,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           setFullName(e.target.value);
                           handleInputChange();
                         }}
-                        placeholder="Resul Tan"
+                        placeholder={language === 'tr' ? 'Ad Soyad' : 'Full Name'}
                         className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
                         required
                       />
@@ -632,9 +625,13 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                   </button>
                 </form>
               )}
-            </div>
-          )}
+        </div>
 
+        {/* Footer Note */}
+        <div className="mt-8 text-center text-[11px] sm:text-xs text-slate-400 font-medium">
+          {language === 'tr'
+            ? 'Sadece geçerli üniversite öğrenci e-posta adresleri (ör: @ku.edu.tr) kabul edilir.'
+            : 'Only valid university student emails (e.g. @ku.edu.tr) are accepted.'}
         </div>
       </div>
     </div>

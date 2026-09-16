@@ -1,4 +1,15 @@
 {
+  "headers": [
+    {
+      "source": "/resul-tankilic",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, noimageindex"
+        }
+      ]
+    }
+  ],
   "redirects": [
     {
       "source": "/resul-tankilic",

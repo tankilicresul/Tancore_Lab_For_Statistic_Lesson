@@ -385,8 +385,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                     onClick={() =>
                       setSelectedPublicProfile({
                         id: 'self',
-                        fullName: userProfile?.fullName || 'Resul Tan',
-                        schoolEmail: userProfile?.schoolEmail || 'resul.tan@marun.edu.tr',
+                        fullName: userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student'),
+                        schoolEmail: userProfile?.schoolEmail || 'ogrenci@universite.edu.tr',
                         university: userProfile?.university || 'Marmara Üniversitesi',
                         departmentAndClass: userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
                         avatarEmoji: userProfile?.avatarEmoji || '👨‍🎓',
@@ -405,11 +405,11 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                         {userRank}.
                       </div>
                       <div className="w-7 h-7 rounded-lg bg-[#ff7a00] text-white font-extrabold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                        {userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'R')}
+                        {userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'Ö')}
                       </div>
                       <div className="min-w-0">
                         <span className="text-xs font-black text-white truncate block">
-                          {userProfile?.fullName || 'Resul Tan'} <span className="text-[10px] font-extrabold text-amber-300">(Siz)</span>
+                          {userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')} <span className="text-[10px] font-extrabold text-amber-300">(Siz)</span>
                         </span>
                         <span className="text-[9.5px] font-medium text-slate-300 block">
                           {language === 'tr'

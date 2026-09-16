@@ -7,9 +7,8 @@ export function isValidStudentEmail(email: string): boolean {
   const e = email.trim().toLowerCase();
   if (!e.includes('@')) return false;
 
-  // Allow student email domains ending with .edu.tr or .edu, or specific university domains (e.g. ku.edu.tr, marun.edu.tr, etc.)
-  // Also allow admin bypass for rtankilic.business@gmail.com
-  if (e === 'rtankilic.business@gmail.com' || e.startsWith('admin@')) return true;
+  // Allow student email domains ending with .edu.tr or .edu, or admin emails
+  if (e === 'admin@tancorelab.com' || e.startsWith('admin@')) return true;
 
   return e.endsWith('.edu.tr') || e.endsWith('.edu');
 }
@@ -45,8 +44,8 @@ const DEFAULT_PROFILE: UserProfile = {
 
 const DEFAULT_DEMO_ACCOUNTS: RegisteredAccount[] = [
   {
-    schoolEmail: 'resul.tan@marun.edu.tr',
-    fullName: 'Resul Tan',
+    schoolEmail: 'ogrenci@marun.edu.tr',
+    fullName: 'Öğrenci',
     university: 'Marmara Üniversitesi',
     departmentAndClass: 'Endüstri Mühendisliği - 3. Sınıf',
     password: '123456password',
@@ -75,10 +74,10 @@ const DEFAULT_DEMO_ACCOUNTS: RegisteredAccount[] = [
     unlockedBadges: ['badge-first-lesson'],
   },
   {
-    schoolEmail: 'rtankilic.business@gmail.com',
-    fullName: 'Resul Tankılıç (Admin)',
+    schoolEmail: 'admin@tancorelab.com',
+    fullName: 'TanCore Admin',
     university: 'Marmara Üniversitesi',
-    departmentAndClass: 'Kurucu Admin',
+    departmentAndClass: 'Sistem Yöneticisi',
     password: '123456password',
     avatarEmoji: '👑',
     isVerified: true,

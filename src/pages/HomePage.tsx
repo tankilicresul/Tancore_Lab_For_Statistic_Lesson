@@ -53,7 +53,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   // Derive dynamic user first name
   const firstName = userProfile?.fullName
     ? userProfile.fullName.trim().split(' ')[0]
-    : 'Resul';
+    : (language === 'tr' ? 'Öğrenci' : 'Student');
 
   const totalLessons = ALL_MODULES.reduce((acc, m) => acc + (m.lessons?.length || 0), 0);
   const totalCases = ALL_MODULES.reduce((acc, m) => acc + (m.caseExams?.length || 0), 0);
