@@ -83,6 +83,23 @@ export interface UserProfile {
   avatarUrl?: string;
   isVerified?: boolean;
   createdAt?: string;
+  password?: string;
+}
+
+export interface RegisteredAccount {
+  schoolEmail: string;
+  fullName: string;
+  university: string;
+  departmentAndClass: string;
+  password: string;
+  avatarEmoji?: string;
+  isVerified: boolean;
+  xp: number;
+  streak: number;
+  completedLessons: string[];
+  completedCaseExams: string[];
+  unlockedModules: string[];
+  unlockedBadges: string[];
 }
 
 export interface PublicProfile {
@@ -117,6 +134,7 @@ export interface UserState {
   simulatedOtpCode?: string;
   selectedPublicProfile?: PublicProfile | null;
   registeredUsers: PublicProfile[];
+  userAccounts?: RegisteredAccount[];
 }
 
 export interface PlacementTestResult {

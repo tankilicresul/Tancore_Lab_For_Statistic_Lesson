@@ -266,27 +266,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onSuccess }) => {
           </div>
         )}
 
-        {/* Simulation Notice Banner */}
-        {step === 'otp' && (
-          <div className="mb-5 p-3 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-semibold space-y-1">
-            <div className="flex items-center space-x-1.5 text-amber-700 font-bold">
-              <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>{language === 'tr' ? 'Simülasyon / Test Doğrulama Kodu' : 'Simulation OTP Code'}</span>
-            </div>
-            <p className="text-[11px] text-amber-800">
-              {language === 'tr' ? 'E-postanıza kod gönderildi.' : 'Verification code sent.'}{' '}
-              {simulatedCode ? (
-                <>
-                  {language === 'tr' ? 'Gelen Kod:' : 'Code:'}{' '}
-                  <span className="font-mono text-xs font-black text-[#ff7a00] bg-white px-2 py-0.5 rounded-lg border border-amber-300 shadow-xs">
-                    {simulatedCode}
-                  </span>
-                </>
-              ) : null}{' '}
-              <span className="text-[10px] text-amber-700">(Test için <code className="font-bold">123456</code> da geçerlidir)</span>
-            </p>
-          </div>
-        )}
+
 
         {/* STEP 1: Registration Profile Form */}
         {step === 'register' && (
