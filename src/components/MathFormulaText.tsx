@@ -12,75 +12,126 @@ export const MathFormulaText: React.FC<MathFormulaTextProps> = ({
   className = '',
   darkBg = false,
 }) => {
-  if (!text) return null;
+  if (!text || typeof text !== 'string') return null;
 
-  // 1. Split block formulas $$ ... $$
-  if (text.includes('$$')) {
-    const blockParts = text.split(/(\$\$[\s\S]*?\$\$)/g);
-    return (
-      <div className={`space-y-2 ${className}`}>
-        {blockParts.map((part, idx) => {
-          if (part.startsWith('$$') && part.endsWith('$$') && part.length > 4) {
-            const rawFormula = part.slice(2, -2).trim();
-            return (
-              <div
-                key={idx}
-                className={`my-3 py-2.5 px-3 text-center overflow-x-auto max-w-full touch-pan-x ${
-                  darkBg
-                    ? 'text-amber-300'
-                    : 'text-slate-900'
-                }`}
-              >
-                <KatexFormula formula={rawFormula} displayMode={true} />
-              </div>
-            );
-          }
-          return <MathFormulaText key={idx} text={part} darkBg={darkBg} />;
-        })}
-      </div>
+  // Process block formulas ($$...$$) first
+  const blockRegex = /\$\$([\s\S]*?)\$\$/g;
+  
+  if (!blockRegex.test(text)) {
+    // No block formulas, parse inline formulas
+    return <InlineMathParser text={text} className={className} darkBg={darkBg} />;
+  }
+
+  // Reset regex index
+  blockRegex.lastIndex = 0;
+  const elements: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = blockRegex.exec(text)) !== null) {
+    const matchIndex = match.index;
+    const formulaContent = match[1].trim();
+
+    if (matchIndex > lastIndex) {
+      const textChunk = text.substring(lastIndex, matchIndex);
+      elements.push(
+        <InlineMathParser key={`text-${lastIndex}`} text={textChunk} darkBg={darkBg} />
+      );
+    }
+
+    if (formulaContent) {
+      elements.push(
+        <div
+          key={`block-${matchIndex}`}
+          className={`my-3 py-2.5 px-3 text-center overflow-x-auto max-w-full touch-pan-x ${
+            darkBg ? 'text-amber-300' : 'text-slate-900'
+          }`}
+        >
+          <KatexFormula formula={formulaContent} displayMode={true} />
+        </div>
+      );
+    }
+
+    lastIndex = matchIndex + match[0].length;
+    if (match.index === blockRegex.lastIndex) {
+      blockRegex.lastIndex++;
+    }
+  }
+
+  if (lastIndex < text.length) {
+    const textChunk = text.substring(lastIndex);
+    elements.push(
+      <InlineMathParser key={`text-${lastIndex}`} text={textChunk} darkBg={darkBg} />
     );
   }
 
-  // 2. Split inline formulas $ ... $
-  if (text.includes('$')) {
-    const inlineParts = text.split(/(\$[^$\n]+\$)/g);
-    return (
-      <span className={className}>
-        {inlineParts.map((part, idx) => {
-          if (part.startsWith('$') && part.endsWith('$') && part.length > 2) {
-            const rawFormula = part.slice(1, -1).trim();
-            return (
-              <span
-                key={idx}
-                className={`inline-block align-baseline mx-0.5 font-normal ${
-                  darkBg ? 'text-amber-300' : 'text-slate-900'
-                }`}
-              >
-                <KatexFormula formula={rawFormula} displayMode={false} />
-              </span>
-            );
-          }
-          return <MathFormulaLegacyParser key={idx} text={part} darkBg={darkBg} />;
-        })}
-      </span>
-    );
-  }
-
-  return <MathFormulaLegacyParser text={text} className={className} darkBg={darkBg} />;
+  return <div className={`space-y-2 ${className}`}>{elements}</div>;
 };
 
-/**
- * Fallback parser for plain text containing legacy equation syntax or "Formül: ..." labels
- */
-const MathFormulaLegacyParser: React.FC<{ text: string; className?: string; darkBg?: boolean }> = ({
+const InlineMathParser: React.FC<{ text: string; className?: string; darkBg?: boolean }> = ({
   text,
   className = '',
   darkBg = false,
 }) => {
   if (!text) return null;
 
-  // Pattern 1: Explicit "Formül: ..." or "Formula: ..."
-  // Pattern 2: Standalone equations like P(Fraud) = 0.05, P(A|B) = [P(B|A) * P(A)] / P(B), SE = σ / √n, Z = (X - µ) / σ, etc.
+  const inlineRegex = /\$([^$\n]+)\$/g;
+  if (!inlineRegex.test(text)) {
+    return <LegacyMathParser text={text} className={className} darkBg={darkBg} />;
+  }
+
+  inlineRegex.lastIndex = 0;
+  const elements: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = inlineRegex.exec(text)) !== null) {
+    const matchIndex = match.index;
+    const formulaContent = match[1].trim();
+
+    if (matchIndex > lastIndex) {
+      const textChunk = text.substring(lastIndex, matchIndex);
+      elements.push(
+        <LegacyMathParser key={`chunk-${lastIndex}`} text={textChunk} darkBg={darkBg} />
+      );
+    }
+
+    if (formulaContent) {
+      elements.push(
+        <span
+          key={`inline-${matchIndex}`}
+          className={`inline-block align-baseline mx-0.5 font-normal ${
+            darkBg ? 'text-amber-300' : 'text-slate-900'
+          }`}
+        >
+          <KatexFormula formula={formulaContent} displayMode={false} />
+        </span>
+      );
+    }
+
+    lastIndex = matchIndex + match[0].length;
+    if (match.index === inlineRegex.lastIndex) {
+      inlineRegex.lastIndex++;
+    }
+  }
+
+  if (lastIndex < text.length) {
+    const textChunk = text.substring(lastIndex);
+    elements.push(
+      <LegacyMathParser key={`chunk-${lastIndex}`} text={textChunk} darkBg={darkBg} />
+    );
+  }
+
+  return <span className={className}>{elements}</span>;
+};
+
+const LegacyMathParser: React.FC<{ text: string; className?: string; darkBg?: boolean }> = ({
+  text,
+  className = '',
+  darkBg = false,
+}) => {
+  if (!text) return null;
+
   const combinedRegex = /(Formül:|Formula:)\s*([^.!\n]+[.!]?)|(\b(?:P\([^\)]+\)|SE|Z|C\([^\)]+\)|N\([^\)]+\)|ŷ|E\(X\)|Var\(X\)|IQR|PDF|CDF|s²|F|Y)\s*[\=\:\≈]\s*[^.!\n;\?]+)/gi;
 
   const parts: React.ReactNode[] = [];
@@ -133,6 +184,9 @@ const MathFormulaLegacyParser: React.FC<{ text: string; className?: string; dark
     }
 
     lastIndex = matchIndex + matchedFull.length;
+    if (match.index === combinedRegex.lastIndex) {
+      combinedRegex.lastIndex++;
+    }
   }
 
   if (lastIndex < text.length) {
