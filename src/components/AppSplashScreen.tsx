@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
 export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onComplete }) => {
-  const [stage, setStage] = useState<'loading' | 'flashing' | 'zooming' | 'done'>('loading');
+  const [stage, setStage] = useState<'loading' | 'flashing' | 'done'>('loading');
 
   useEffect(() => {
-    // Stage 1: Cylinder fills (0s - 2.3s)
-    // Stage 2: Cylinder reaches 100% and flashes (2.3s - 2.6s)
+    // Stage 1: Cylinder fills (0s - 2.5s)
+    // Stage 2: Cylinder reaches 100% and flashes (2.5s - 3.0s)
     const flashTimer = setTimeout(() => {
       setStage('flashing');
-    }, 2300);
+    }, 2500);
 
-    // Stage 3: Logo expands & zooms into screen (2.6s - 3.0s)
-    const zoomTimer = setTimeout(() => {
-      setStage('zooming');
-    }, 2600);
-
-    // Stage 4: Finish at 3.0s and reveal app
+    // Stage 3: Close immediately at 3.0s
     const finishTimer = setTimeout(() => {
       setStage('done');
       onComplete?.();
@@ -23,7 +18,6 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
 
     return () => {
       clearTimeout(flashTimer);
-      clearTimeout(zoomTimer);
       clearTimeout(finishTimer);
     };
   }, [onComplete]);
@@ -40,17 +34,15 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
       }}
     >
       {/* Center Brand Container */}
-      <div className="flex flex-col items-center justify-center relative">
+      <div className="flex flex-col items-center justify-center">
         {/* Logo and Typography Row */}
-        <div className="flex items-center space-x-3.5 sm:space-x-4 relative">
-          {/* Logo Badge - Expands smoothly to cover entire screen in stage === 'zooming' */}
+        <div className="flex items-center space-x-3.5 sm:space-x-4">
+          {/* Logo Badge */}
           <div
-            className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#ff7a00] flex items-center justify-center p-1.5 shadow-xl transition-all ${
-              stage === 'zooming'
-                ? 'scale-[38] duration-400 ease-in z-50 shadow-none'
-                : stage === 'flashing'
-                ? 'scale-110 duration-300 ease-out shadow-[0_0_40px_rgba(255,122,0,0.95)] ring-4 ring-orange-300 ring-offset-2'
-                : 'scale-100 duration-500 ease-out shadow-[#ff7a00]/30'
+            className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#ff7a00] flex items-center justify-center p-1.5 shadow-xl transition-all duration-300 ${
+              stage === 'flashing'
+                ? 'shadow-[0_0_35px_rgba(255,122,0,0.85)] ring-4 ring-orange-300/80 ring-offset-2 scale-105'
+                : 'shadow-[#ff7a00]/30'
             }`}
           >
             <div className="w-full h-full rounded-full border-[2.5px] border-white flex items-center justify-center bg-[#ff7a00]">
@@ -69,12 +61,8 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
             </div>
           </div>
 
-          {/* Typography - Fades out immediately when zoom begins */}
-          <div
-            className={`flex flex-col transition-opacity duration-150 ${
-              stage === 'zooming' ? 'opacity-0' : 'opacity-100'
-            }`}
-          >
+          {/* Typography */}
+          <div className="flex flex-col">
             <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-sans leading-none">
               TanCoreLab
             </h1>
@@ -85,11 +73,7 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
         </div>
 
         {/* 3-Second Filling Cylinder (Progress Bar) */}
-        <div
-          className={`mt-8 sm:mt-10 transition-opacity duration-150 ${
-            stage === 'zooming' ? 'opacity-0' : 'opacity-100'
-          }`}
-        >
+        <div className="mt-8 sm:mt-10">
           {/* Outer Rounded Cylinder */}
           <div
             className={`w-64 sm:w-72 h-4 sm:h-4.5 bg-white rounded-full p-0.5 border border-slate-200/90 shadow-inner relative overflow-hidden transition-all duration-300 ${
@@ -106,7 +90,7 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
                   : ''
               }`}
               style={{
-                animation: 'cylinderProgressFill 2.4s cubic-bezier(0.12, 0.8, 0.32, 1) forwards',
+                animation: 'cylinderProgressFill 2.5s cubic-bezier(0.12, 0.8, 0.32, 1) forwards',
               }}
             >
               {/* Shimmer / Light Reflection Wave */}
