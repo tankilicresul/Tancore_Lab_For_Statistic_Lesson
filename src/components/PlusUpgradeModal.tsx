@@ -129,16 +129,26 @@ export const PlusUpgradeModal: React.FC = () => {
           </div>
 
           {/* Pricing & Free Trial Card */}
-          <div className="p-4 rounded-2xl bg-gradient-to-b from-amber-500/10 via-orange-500/5 to-slate-50 border border-amber-300/80 space-y-3">
-            <div>
-              <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider block">
-                {isTr ? '3 Günlük Deneme Süresi' : '3-Day Free Trial'}
-              </span>
-              <div className="flex items-baseline space-x-1.5 mt-0.5">
-                <span className="text-2xl font-black text-slate-900">0 ₺</span>
-                <span className="text-xs text-slate-500 font-semibold">
-                  {isTr ? 'şimdi' : 'today'} • {isTr ? 'sonra 119 ₺ / ay' : 'then 119 ₺ / mo'}
+          <div className="p-4.5 rounded-2xl bg-gradient-to-b from-amber-500/10 via-orange-500/5 to-slate-50/70 border border-amber-300/80 space-y-3.5">
+            <div className="flex items-center justify-between px-1">
+              <div>
+                <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider block">
+                  {isTr ? '3 Günlük Deneme' : '3-Day Free Trial'}
                 </span>
+                <div className="flex items-baseline space-x-1.5 mt-0.5">
+                  <span className="text-2xl sm:text-3xl font-black text-slate-900 leading-none">0 ₺</span>
+                  <span className="text-xs text-slate-500 font-semibold">{isTr ? 'şimdi' : 'today'}</span>
+                </div>
+              </div>
+
+              <div className="text-right">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                  {isTr ? 'Sonrasında' : 'Then'}
+                </span>
+                <div className="flex items-baseline justify-end space-x-1 mt-0.5">
+                  <span className="text-xl sm:text-2xl font-black text-slate-900 leading-none">119 ₺</span>
+                  <span className="text-xs text-slate-500 font-semibold">/ {isTr ? 'ay' : 'mo'}</span>
+                </div>
               </div>
             </div>
 
@@ -146,7 +156,7 @@ export const PlusUpgradeModal: React.FC = () => {
             {isUserLoggedIn ? (
               <button
                 onClick={handleAction}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-[#ff7a00] to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-bold text-sm shadow-md shadow-orange-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center space-x-2 cursor-pointer"
+                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-[#ff7a00] to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-bold text-sm shadow-md shadow-orange-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center space-x-2 cursor-pointer"
               >
                 <span>{isTr ? '3 Gün Ücretsiz Başla (0 ₺)' : 'Start 3-Day Free Trial (0 ₺)'}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -154,7 +164,7 @@ export const PlusUpgradeModal: React.FC = () => {
             ) : (
               <button
                 onClick={handleAction}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-[#ff7a00] to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-bold text-sm shadow-md shadow-orange-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center space-x-2 cursor-pointer"
+                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-[#ff7a00] to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-bold text-sm shadow-md shadow-orange-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center space-x-2 cursor-pointer"
               >
                 <UserCheck className="w-4 h-4" />
                 <span>{isTr ? 'Abonelik İçin Önce Giriş Yap / Kayıt Ol' : 'Sign In to Subscribe'}</span>
@@ -164,14 +174,14 @@ export const PlusUpgradeModal: React.FC = () => {
           </div>
 
           {/* Reassurance Footer */}
-          <div className="text-center space-y-1.5 pt-1">
-            <p className="text-[11px] text-slate-500">
+          <div className="text-center space-y-1.5 pt-0.5">
+            <p className="text-[11px] text-slate-500 leading-snug">
               {isTr
                 ? 'Bugün kartından 0 ₺ çekilir. 3 gün içinde dilediğin an tek tıkla iptal edebilirsin.'
                 : 'Charged 0 ₺ today. Cancel anytime within 3 days with one click.'}
             </p>
 
-            <div className="flex items-center justify-center space-x-4 text-[10.5px] text-slate-400 font-medium">
+            <div className="flex items-center justify-center space-x-3 text-[10.5px] text-slate-400 font-medium pt-0.5">
               <span className="flex items-center gap-1">
                 <Lock className="w-3 h-3 text-emerald-600" />
                 256-Bit SSL
