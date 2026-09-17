@@ -3,7 +3,6 @@ import { useAppStore } from '../store/useAppStore';
 import { AuthModal } from './AuthModal';
 import {
   X,
-  Sparkles,
   Zap,
   Check,
   Bot,
@@ -90,14 +89,8 @@ export const PlusUpgradeModal: React.FC = () => {
         <div className="p-6 sm:p-7 space-y-5">
           {/* Header Section */}
           <div>
-            <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-bold tracking-wide mb-2.5">
-              <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400" />
-              <span>{isTr ? '3 GÜN ÜCRETSİZ DENEME' : '3-DAY FREE TRIAL'}</span>
-            </div>
-
-            <h2 className="text-2xl font-black tracking-tight text-slate-900 flex items-center gap-2">
-              <span>TanCoreLab Plus</span>
-              <Crown className="w-5 h-5 text-amber-500 fill-amber-400 inline" />
+            <h2 className="text-2xl font-black tracking-tight text-slate-900">
+              TanCoreLab Plus
             </h2>
             <p className="text-slate-600 text-xs mt-1 leading-relaxed">
               {isTr
@@ -137,22 +130,16 @@ export const PlusUpgradeModal: React.FC = () => {
 
           {/* Pricing & Free Trial Card */}
           <div className="p-4 rounded-2xl bg-gradient-to-b from-amber-500/10 via-orange-500/5 to-slate-50 border border-amber-300/80 space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider block">
-                  {isTr ? '3 Günlük Deneme Süresi' : '3-Day Free Trial'}
-                </span>
-                <div className="flex items-baseline space-x-1.5 mt-0.5">
-                  <span className="text-2xl font-black text-slate-900">0 ₺</span>
-                  <span className="text-xs text-slate-500 font-semibold">
-                    {isTr ? 'şimdi' : 'today'} • {isTr ? 'sonra 119 ₺ / ay' : 'then 119 ₺ / mo'}
-                  </span>
-                </div>
-              </div>
-
-              <span className="px-2 py-1 rounded-lg bg-amber-500 text-white text-[11px] font-bold shadow-xs">
-                {isTr ? 'Risk Yok' : 'Zero Risk'}
+            <div>
+              <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider block">
+                {isTr ? '3 Günlük Deneme Süresi' : '3-Day Free Trial'}
               </span>
+              <div className="flex items-baseline space-x-1.5 mt-0.5">
+                <span className="text-2xl font-black text-slate-900">0 ₺</span>
+                <span className="text-xs text-slate-500 font-semibold">
+                  {isTr ? 'şimdi' : 'today'} • {isTr ? 'sonra 119 ₺ / ay' : 'then 119 ₺ / mo'}
+                </span>
+              </div>
             </div>
 
             {/* Primary Action Button */}
