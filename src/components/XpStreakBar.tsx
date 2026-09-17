@@ -96,26 +96,64 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
               <span>{language.toUpperCase()}</span>
             </button>
 
-            {/* Plus Upgrade or VIP Badge */}
-            {isPlus ? (
+            {/* Plus Upgrade or VIP Badge - ONLY shown for logged-in & verified students */}
+            {isAuthenticated && isVerified && (
+              isPlus ? (
+                <button
+                  onClick={() => setIsPlusUpgradeModalOpen(true)}
+                  className="flex items-center space-x-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 border border-amber-400/80 text-amber-600 font-bold text-xs sm:text-sm tracking-wide shadow-xs cursor-pointer hover:scale-105 transition-transform"
+                  title="TanCoreLab Plus Üyeliği Aktif"
+                >
+                  <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 fill-amber-400" />
+                  <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent font-black">
+                    PLUS
+                  </span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setIsPlusUpgradeModalOpen(true)}
+                  className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-2xl bg-gradient-to-r from-amber-500 to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-bold text-xs sm:text-sm transition-all shadow-md shadow-orange-500/25 hover:scale-105 active:scale-95 cursor-pointer"
+                  title={language === 'tr' ? "TanCoreLab Plus'a Yükselt (3 Gün Ücretsiz)" : 'Upgrade to Plus (3 Days Free)'}
+                >
+                  <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-200 text-white animate-pulse" />
+                  <span>Plus</span>
+                </button>
+              )
+            )}
+
+            {/* Registration / Auth Button or My Profile / Home Icon Button */}
+            {!isAuthenticated || !isVerified ? (
               <button
-                onClick={() => setIsPlusUpgradeModalOpen(true)}
-                className="flex items-center space-x-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 border border-amber-400/80 text-amber-600 font-black text-xs sm:text-sm tracking-wide shadow-xs cursor-pointer hover:scale-105 transition-transform"
-                title="TanCoreLab Plus Üyeliği Aktif"
+                onClick={() => setShowAuth(true)}
+                className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer"
+                title={language === 'tr' ? 'E-posta ile Kayıt Ol / Giriş Yap' : 'Sign Up / Sign In'}
               >
-                <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 fill-amber-400" />
-                <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent font-black">
-                  PLUS
-                </span>
+                <UserCheck className="w-4 h-4" />
+                <span className="hidden sm:inline">{language === 'tr' ? 'Kayıt Ol' : 'Sign Up'}</span>
+              </button>
+            ) : isProfileView ? (
+              /* When Profile is Open: Rightmost Button becomes Home Icon (🏠 Ev İkonu) */
+              <button
+                onClick={onGoHome}
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00] hover:bg-[#e66e00] text-white transition-all shadow-md shadow-[#ff7a00]/30 flex items-center justify-center cursor-pointer active:scale-95 shrink-0"
+                title={language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
+              >
+                <Home className="w-4.5 h-4.5 sm:w-5 sm:h-5 stroke-[2.25]" />
               </button>
             ) : (
+              /* When Profile is Closed: Rightmost Button shows Profile Avatar */
               <button
-                onClick={() => setIsPlusUpgradeModalOpen(true)}
-                className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-2xl bg-gradient-to-r from-amber-500 to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-black text-xs sm:text-sm transition-all shadow-md shadow-orange-500/25 hover:scale-105 active:scale-95 cursor-pointer"
-                title={language === 'tr' ? "TanCoreLab Plus'a Yükselt (119 ₺)" : 'Upgrade to Plus (119 ₺)'}
+                onClick={onOpenProfile}
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border-2 border-[#ff7a00]/50 transition-all shadow-xs flex items-center justify-center font-black cursor-pointer overflow-hidden p-0 active:scale-95 shrink-0"
+                title={language === 'tr' ? 'Profilim & Performansım' : 'My Profile'}
               >
-                <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-200 text-white animate-pulse" />
-                <span>Plus</span>
+                <UserAvatar
+                  avatarUrl={userProfile?.avatarUrl}
+                  avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
+                  fullName={userProfile?.fullName}
+                  size="sm"
+                  className="w-full h-full"
+                />
               </button>
             )}
           </div>

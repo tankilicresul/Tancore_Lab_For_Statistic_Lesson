@@ -50,7 +50,7 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
             <TanCoreMascotAvatar size="lg" className="rounded-full shadow-lg ring-4 ring-[#ff7a00]/15" />
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug">
-            {isTr ? 'Daha fazlası için Üye ol' : 'Sign Up for More'}
+            {isTr ? 'Profili Görüntülemek İçin Üye Ol !' : 'Sign Up to View Profile !'}
           </h2>
         </div>
 

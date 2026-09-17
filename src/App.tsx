@@ -10,6 +10,7 @@ import { TancoChatModal } from './components/TancoChatModal';
 import { FloatingTancoButton } from './components/FloatingTancoButton';
 import { GuestGateModal } from './components/GuestGateModal';
 import { PlusUpgradeModal } from './components/PlusUpgradeModal';
+import { AuthModal } from './components/AuthModal';
 import { BottomNavBar } from './components/BottomNavBar';
 import { getLessonById, getCaseExamById } from './data/modules';
 import { useAppStore } from './store/useAppStore';
@@ -40,6 +41,7 @@ export const App: React.FC = () => {
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
   const [selectedInDesignCourse, setSelectedInDesignCourse] = useState<CourseTrack | null>(null);
   const [showLeaderboardDirectly, setShowLeaderboardDirectly] = useState(false);
+  const [showDirectAuthModal, setShowDirectAuthModal] = useState(false);
 
   // Guest session: track how many distinct lessons/cases have been opened this session
   // Stored in sessionStorage so it resets on new tab/browser close (but persists on refresh)
@@ -289,6 +291,10 @@ export const App: React.FC = () => {
   };
 
   const handleOpenProfile = (openLeaderboard = false) => {
+    if (!isAuthenticated || !isVerified) {
+      setShowDirectAuthModal(true);
+      return;
+    }
     setShowLeaderboardDirectly(openLeaderboard);
     setCurrentView('profile');
     setSelectedInDesignCourse(null);
@@ -386,7 +392,7 @@ export const App: React.FC = () => {
         {currentView === 'profile' && (
           <ProfilePage
             onGoHome={handleBackToHome}
-            onOpenAuth={() => setShowGuestGate(true)}
+            onOpenAuth={() => setShowDirectAuthModal(true)}
             showLeaderboardDirectly={showLeaderboardDirectly}
           />
         )}
@@ -421,7 +427,7 @@ export const App: React.FC = () => {
         currentView={currentView}
         onGoHome={handleBackToHome}
         onOpenProfile={handleOpenProfile}
-        onOpenAuth={() => setShowGuestGate(true)}
+        onOpenAuth={() => setShowDirectAuthModal(true)}
       />
 
       {/* Tanco Assistant Chat Modal & Floating Launcher */}
@@ -430,6 +436,11 @@ export const App: React.FC = () => {
 
       {/* Plus Upgrade Modal */}
       <PlusUpgradeModal />
+
+      {/* Direct Auth Modal when unauthenticated user clicks Profile */}
+      {showDirectAuthModal && (
+        <AuthModal onClose={() => setShowDirectAuthModal(false)} />
+      )}
 
       {/* Guest Gate Modal: shown when unauthenticated user tries to access 2nd lesson/case */}
       {showGuestGate && (

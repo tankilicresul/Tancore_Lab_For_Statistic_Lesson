@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
+import { AuthModal } from './AuthModal';
 import {
   X,
   Sparkles,
@@ -12,6 +13,7 @@ import {
   Lock,
   ArrowRight,
   Crown,
+  UserCheck,
 } from 'lucide-react';
 
 export const PlusUpgradeModal: React.FC = () => {
@@ -19,16 +21,25 @@ export const PlusUpgradeModal: React.FC = () => {
     isPlusUpgradeModalOpen,
     setIsPlusUpgradeModalOpen,
     userProfile,
+    isAuthenticated,
+    isVerified,
     language,
     openLemonCheckout,
   } = useAppStore();
+
+  const [showAuth, setShowAuth] = useState(false);
 
   if (!isPlusUpgradeModalOpen) return null;
 
   const isTr = language === 'tr';
   const isAlreadyPlus = Boolean(userProfile?.isPremium);
+  const isUserLoggedIn = Boolean(isAuthenticated && isVerified && userProfile?.schoolEmail);
 
-  const handleStartTrial = () => {
+  const handleAction = () => {
+    if (!isUserLoggedIn) {
+      setShowAuth(true);
+      return;
+    }
     openLemonCheckout(userProfile?.schoolEmail || '');
   };
 
@@ -145,13 +156,24 @@ export const PlusUpgradeModal: React.FC = () => {
             </div>
 
             {/* Primary Action Button */}
-            <button
-              onClick={handleStartTrial}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-[#ff7a00] to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-bold text-sm shadow-md shadow-orange-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center space-x-2 cursor-pointer"
-            >
-              <span>{isTr ? '3 Gün Ücretsiz Başla (0 ₺)' : 'Start 3-Day Free Trial (0 ₺)'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            {isUserLoggedIn ? (
+              <button
+                onClick={handleAction}
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-[#ff7a00] to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-bold text-sm shadow-md shadow-orange-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center space-x-2 cursor-pointer"
+              >
+                <span>{isTr ? '3 Gün Ücretsiz Başla (0 ₺)' : 'Start 3-Day Free Trial (0 ₺)'}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            ) : (
+              <button
+                onClick={handleAction}
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-[#ff7a00] to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-bold text-sm shadow-md shadow-orange-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center space-x-2 cursor-pointer"
+              >
+                <UserCheck className="w-4 h-4" />
+                <span>{isTr ? 'Abonelik İçin Önce Giriş Yap / Kayıt Ol' : 'Sign In to Subscribe'}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
           {/* Reassurance Footer */}
@@ -176,6 +198,8 @@ export const PlusUpgradeModal: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
     </div>
   );
 };
