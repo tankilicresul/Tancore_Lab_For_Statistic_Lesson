@@ -54,6 +54,38 @@ body {
   animation: tancoBreathe 3.2s ease-in-out infinite;
 }
 
+/* 3-Second Splash Screen Cylinder Fill Animation (starts fast, eases out, fills 100%) */
+@keyframes cylinderProgressFill {
+  0% {
+    width: 0%;
+  }
+  25% {
+    width: 58%;
+  }
+  50% {
+    width: 80%;
+  }
+  75% {
+    width: 93%;
+  }
+  92% {
+    width: 98%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+/* Cylinder light shimmer reflection sweep */
+@keyframes cylinderShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
 /* Custom scrollbars for Light theme */
 ::-webkit-scrollbar {
   width: 8px;

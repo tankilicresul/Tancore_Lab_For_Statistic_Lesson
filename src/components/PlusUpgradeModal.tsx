@@ -129,24 +129,26 @@ export const PlusUpgradeModal: React.FC = () => {
           </div>
 
           {/* Pricing & Free Trial Card */}
-          <div className="p-4.5 rounded-2xl bg-gradient-to-b from-amber-500/10 via-orange-500/5 to-slate-50/70 border border-amber-300/80 space-y-3.5">
-            <div className="flex items-center justify-between px-1">
-              <div>
-                <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider block">
+          <div className="p-4 rounded-2xl bg-gradient-to-b from-amber-500/10 via-orange-500/5 to-slate-50/70 border border-amber-300/80 space-y-3.5">
+            <div className="flex items-center justify-center space-x-6 sm:space-x-8 py-0.5">
+              <div className="text-center">
+                <span className="text-[10.5px] font-bold text-amber-800 uppercase tracking-wider block">
                   {isTr ? '3 Günlük Deneme' : '3-Day Free Trial'}
                 </span>
-                <div className="flex items-baseline space-x-1.5 mt-0.5">
-                  <span className="text-2xl sm:text-3xl font-black text-slate-900 leading-none">0 ₺</span>
+                <div className="flex items-baseline justify-center space-x-1 mt-0.5">
+                  <span className="text-2xl font-black text-slate-900 leading-none">0 ₺</span>
                   <span className="text-xs text-slate-500 font-semibold">{isTr ? 'şimdi' : 'today'}</span>
                 </div>
               </div>
 
-              <div className="text-right">
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+              <div className="h-7 w-px bg-amber-300/80 self-center" />
+
+              <div className="text-center">
+                <span className="text-[10.5px] font-bold text-slate-500 uppercase tracking-wider block">
                   {isTr ? 'Sonrasında' : 'Then'}
                 </span>
-                <div className="flex items-baseline justify-end space-x-1 mt-0.5">
-                  <span className="text-xl sm:text-2xl font-black text-slate-900 leading-none">119 ₺</span>
+                <div className="flex items-baseline justify-center space-x-1 mt-0.5">
+                  <span className="text-2xl font-black text-slate-900 leading-none">119 ₺</span>
                   <span className="text-xs text-slate-500 font-semibold">/ {isTr ? 'ay' : 'mo'}</span>
                 </div>
               </div>

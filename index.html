@@ -53,25 +53,45 @@
   </head>
   <body class="bg-[#f4f6f8] text-slate-900 font-sans antialiased min-h-screen selection:bg-[#ff7a00] selection:text-white">
     <div id="root">
-      <!-- Semantic SEO Pre-Render & Accessibility Fallback for Crawlers -->
-      <main class="max-w-4xl mx-auto px-4 py-12 font-sans">
-        <header class="mb-8">
-          <h1 class="text-3xl font-black text-slate-900 tracking-tight">TanCoreLab — Endüstri Mühendisliği, Olasılık ve İstatistik Eğitim Platformu</h1>
-          <p class="mt-4 text-base text-slate-700 leading-relaxed">
-            <strong>TanCoreLab</strong>, endüstri mühendisliği lisans öğrencileri ve veri analitiği çalışanları için tasarlanmış <strong>interaktif olasılık, uygulamalı istatistik ve yöneylem araştırması</strong> eğitim laboratuvarıdır.
-          </p>
-        </header>
-
-        <section class="space-y-6">
-          <h2 class="text-xl font-bold text-slate-900">Platformun Kapsadığı Temel Müfredat ve Ders Modülleri</h2>
-          <ul class="list-disc list-inside space-y-2 text-slate-700">
-            <li><strong>ENGR 200:</strong> Mühendisler İçin Olasılık ve Rassal Değişkenler (Kombinatorik, Bayes Teoremi, Dağılımlar, Markov Zincirleri)</li>
-            <li><strong>INDR 252:</strong> Uygulamalı İstatistik (Hipotez Testleri, ANOVA, Doğrusal Regresyon, Ki-Kare)</li>
-            <li><strong>Tanco AI:</strong> 7/24 Pedagojik Yapay Zeka Öğretim Asistanı ve Soru Çözüm Rehberi</li>
-            <li><strong>Gerçek Şirket Vaka Sınavları:</strong> Üretim, lojistik, kalite kontrol ve finans veri setleri ile uygulamalı analiz</li>
-          </ul>
-        </section>
-      </main>
+      <style>
+        @keyframes initCylinderFill {
+          0% { width: 0%; }
+          25% { width: 58%; }
+          50% { width: 80%; }
+          75% { width: 93%; }
+          92% { width: 98%; }
+          100% { width: 100%; }
+        }
+        @keyframes initShimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(250%); }
+        }
+      </style>
+      <div style="position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 48%, rgba(255, 122, 0, 0.09) 0%, #f8fafc 70%); font-family: 'Poppins', -apple-system, sans-serif;">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 72px; height: 72px; border-radius: 9999px; background: #ff7a00; display: flex; align-items: center; justify-content: center; padding: 6px; box-shadow: 0 10px 25px -3px rgba(255, 122, 0, 0.35);">
+              <div style="width: 100%; height: 100%; border-radius: 9999px; border: 2.5px solid white; display: flex; align-items: center; justify-content: center; background: #ff7a00;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 36px; height: 36px; transform: rotate(-6deg);">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 32px; font-weight: 900; color: #0f172a; letter-spacing: -0.03em; line-height: 1;">TanCoreLab</span>
+              <span style="font-size: 11px; font-weight: 700; color: #ea580c; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px;">Endüstri Mühendisliği & Analitik</span>
+            </div>
+          </div>
+          <div style="margin-top: 36px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 260px; height: 16px; background: white; border-radius: 9999px; padding: 2px; border: 1px solid #e2e8f0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); position: relative; overflow: hidden;">
+              <div style="height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #fbbf24, #ff7a00, #ff5500); animation: initCylinderFill 2.4s cubic-bezier(0.12, 0.8, 0.32, 1) forwards; position: relative; overflow: hidden;">
+                <div style="position: absolute; inset: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); animation: initShimmer 1.4s ease-in-out infinite;"></div>
+              </div>
+            </div>
+            <span style="font-size: 12px; color: #94a3b8; font-weight: 500; margin-top: 10px;">Laboratuvar yükleniyor...</span>
+          </div>
+        </div>
+      </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
