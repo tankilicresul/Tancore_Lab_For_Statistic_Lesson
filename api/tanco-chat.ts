@@ -7,6 +7,20 @@
 // Simple in-memory rate limiting map (IP -> timestamps array)
 const rateLimitMap = new Map<string, number[]>();
 
+function getQuotaExceededMessage(lang: 'tr' | 'en' = 'tr', delaySeconds?: number): string {
+  const waitSecs = delaySeconds && delaySeconds > 0 ? Math.ceil(delaySeconds) : 60;
+  const resetDate = new Date(Date.now() + waitSecs * 1000);
+  const hours = String(resetDate.getHours()).padStart(2, '0');
+  const minutes = String(resetDate.getMinutes()).padStart(2, '0');
+  const timeStr = `${hours}:${minutes}`;
+
+  if (lang === 'tr') {
+    return `⏳ **Şimdilik sohbet sınırına ulaştınız.**\n\nKotanız saat **${timeStr}**'de yenilenecektir. O saatte tekrar soru sorabilirsiniz. Anlayışınız için teşekkürler! 🎓✨`;
+  } else {
+    return `⏳ **You have reached the chat limit for now.**\n\nYour quota will reset at **${timeStr}**. You can ask questions again at that time. Thank you for your patience! 🎓✨`;
+  }
+}
+
 function isRateLimited(ip: string, limit: number = 25, windowMs: number = 60000): boolean {
   const now = Date.now();
   const timestamps = rateLimitMap.get(ip) || [];
@@ -113,8 +127,9 @@ export default async function handler(req: any, res: any) {
   // Rate Limiting check
   const clientIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
   if (isRateLimited(String(clientIp))) {
-    return res.status(429).json({
-      error: 'Çok fazla istek gönderildi. Lütfen birkaç saniye bekleyip tekrar deneyin.',
+    return res.status(200).json({
+      success: true,
+      text: getQuotaExceededMessage(language, 60),
     });
   }
 
@@ -265,9 +280,26 @@ export default async function handler(req: any, res: any) {
       }
     }
 
+    const errMsg = String(lastError?.message || '');
+    if (errMsg.includes('429') || errMsg.includes('Quota') || errMsg.includes('quota') || errMsg.includes('rate-limit') || errMsg.includes('exceeded')) {
+      const match = errMsg.match(/retry in\s*([0-9.]+)\s*s/i);
+      const delaySecs = match ? parseFloat(match[1]) : 60;
+      return res.status(200).json({
+        success: true,
+        text: getQuotaExceededMessage(language, delaySecs),
+      });
+    }
+
     throw lastError || new Error('All Gemini model endpoints failed in serverless function');
   } catch (err: any) {
     console.error('Serverless tanco-chat error:', err);
+    const errMsg = String(err?.message || '');
+    if (errMsg.includes('429') || errMsg.includes('Quota') || errMsg.includes('quota') || errMsg.includes('rate-limit') || errMsg.includes('exceeded')) {
+      return res.status(200).json({
+        success: true,
+        text: getQuotaExceededMessage(language, 60),
+      });
+    }
     return res.status(500).json({ error: err.message || 'Yapay zeka yanıt oluşturamadı.' });
   }
 }

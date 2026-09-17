@@ -132,6 +132,20 @@ ${CURRICULUM_SUMMARY}
 `;
 }
 
+export function getQuotaExceededMessage(lang: 'tr' | 'en' = 'tr', delaySeconds?: number): string {
+  const waitSecs = delaySeconds && delaySeconds > 0 ? Math.ceil(delaySeconds) : 60;
+  const resetDate = new Date(Date.now() + waitSecs * 1000);
+  const hours = String(resetDate.getHours()).padStart(2, '0');
+  const minutes = String(resetDate.getMinutes()).padStart(2, '0');
+  const timeStr = `${hours}:${minutes}`;
+
+  if (lang === 'tr') {
+    return `⏳ **Şimdilik sohbet sınırına ulaştınız.**\n\nKotanız saat **${timeStr}**'de yenilenecektir. O saatte tekrar soru sorabilirsiniz. Anlayışınız için teşekkürler! 🎓✨`;
+  } else {
+    return `⏳ **You have reached the chat limit for now.**\n\nYour quota will reset at **${timeStr}**. You can ask questions again at that time. Thank you for your patience! 🎓✨`;
+  }
+}
+
 export async function askTancoAI(
   userPrompt: string,
   history: ChatMessageHistoryItem[] = [],
@@ -163,9 +177,7 @@ export async function askTancoAI(
         return data.text;
       }
     } else if (serverlessRes.status === 429) {
-      return language === 'tr'
-        ? '⏳ Çok hızlı soru gönderiyorsun! Lütfen birkaç saniye bekleyip tekrar dene.'
-        : '⏳ Please slow down! Wait a few seconds before asking again.';
+      return getQuotaExceededMessage(language, 60);
     }
   } catch (err) {
     // Serverless endpoint may not be running in local standalone Vite dev mode, continue to direct client fallback
@@ -303,6 +315,13 @@ async function callGemini(
       lastError = err;
       console.warn(`Model ${model} failed, trying fallback:`, err);
     }
+  }
+
+  const errMsg = String(lastError?.message || '');
+  if (errMsg.includes('429') || errMsg.includes('Quota') || errMsg.includes('quota') || errMsg.includes('rate-limit') || errMsg.includes('exceeded')) {
+    const match = errMsg.match(/retry in\s*([0-9.]+)\s*s/i);
+    const delaySecs = match ? parseFloat(match[1]) : 60;
+    return getQuotaExceededMessage(language, delaySecs);
   }
 
   throw lastError || new Error('All Gemini model endpoints failed.');
