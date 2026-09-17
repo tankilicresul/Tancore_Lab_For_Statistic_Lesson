@@ -393,11 +393,11 @@ export const HomePage: React.FC<HomePageProps> = ({
                   <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                   </div>
-                  <span className="text-sm sm:text-lg font-black font-mono tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors truncate">
-                    {course.code}
+                  <span className="text-base sm:text-xl font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors truncate">
+                    {course.code.replace(/\s+/g, '')}
                   </span>
                 </div>
-                <ChevronRight className="w-6 h-6 sm:w-7.5 sm:h-7.5 text-[#ff7a00] stroke-[3.5] group-hover:translate-x-1 transition-transform shrink-0" />
+                <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7 text-[#ff7a00] stroke-[3.5] shrink-0" />
               </div>
 
               {/* Middle content: Title & Description */}
