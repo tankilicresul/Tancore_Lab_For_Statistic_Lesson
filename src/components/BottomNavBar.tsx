@@ -5,6 +5,7 @@ import { UserAvatar } from './UserAvatar';
 
 interface BottomNavBarProps {
   currentView: string;
+  showLeaderboardDirectly?: boolean;
   onGoHome: () => void;
   onOpenProfile: (openLeaderboard?: boolean) => void;
   onOpenAuth: () => void;
@@ -12,6 +13,7 @@ interface BottomNavBarProps {
 
 export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   currentView,
+  showLeaderboardDirectly = false,
   onGoHome,
   onOpenProfile,
   onOpenAuth,
@@ -19,7 +21,8 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   const { language, isAuthenticated, isVerified, userProfile } = useAppStore();
 
   const isHomeActive = currentView === 'home';
-  const isProfileActive = currentView === 'profile';
+  const isLeaderboardActive = currentView === 'profile' && showLeaderboardDirectly === true;
+  const isProfileActive = currentView === 'profile' && showLeaderboardDirectly === false;
 
   return (
     <nav
@@ -54,13 +57,23 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
         {/* 2. Genel Skor Tablosu (Leaderboard) Button */}
         <button
           onClick={() => onOpenProfile(true)}
-          className="flex flex-col items-center justify-center flex-1 py-1 px-2 rounded-2xl transition-all cursor-pointer group active:scale-95 text-slate-500 hover:text-amber-600 font-medium"
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-2 rounded-2xl transition-all cursor-pointer group active:scale-95 ${
+            isLeaderboardActive
+              ? 'text-amber-500 font-black'
+              : 'text-slate-500 hover:text-amber-600 font-medium'
+          }`}
           title={language === 'tr' ? 'Genel Skor Tablosu & Liderlik' : 'Leaderboard'}
         >
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center transition-all group-hover:bg-amber-500/15 text-amber-500 group-hover:scale-105">
-            <Trophy className="w-5 h-5 stroke-[2.25] text-amber-500 fill-amber-400/20" />
+          <div
+            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center transition-all ${
+              isLeaderboardActive
+                ? 'bg-amber-500/15 text-amber-500 scale-105 shadow-xs ring-2 ring-amber-500/50'
+                : 'group-hover:bg-amber-500/15 text-amber-500 group-hover:scale-105'
+            }`}
+          >
+            <Trophy className={`w-5 h-5 ${isLeaderboardActive ? 'stroke-[2.5]' : 'stroke-[2.25]'} text-amber-500 fill-amber-400/20`} />
           </div>
-          <span className="text-[11px] mt-0.5 tracking-tight font-bold text-slate-700 group-hover:text-amber-600">
+          <span className={`text-[11px] mt-0.5 tracking-tight font-bold ${isLeaderboardActive ? 'text-amber-500 font-black' : 'text-slate-700 group-hover:text-amber-600'}`}>
             {language === 'tr' ? 'Skor Tablosu' : 'Leaderboard'}
           </span>
         </button>

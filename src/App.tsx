@@ -287,11 +287,23 @@ export const App: React.FC = () => {
   };
 
   const handleOpenProfile = (openLeaderboard = false) => {
+    if (openLeaderboard) {
+      setShowLeaderboardDirectly(true);
+      setCurrentView('profile');
+      setSelectedInDesignCourse(null);
+      setSelectedLessonId(null);
+      setSelectedCaseId(null);
+      setScrollToNodeId(null);
+      setCustomActiveModuleName(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     if (!isAuthenticated || !isVerified) {
       setShowDirectAuthModal(true);
       return;
     }
-    setShowLeaderboardDirectly(openLeaderboard);
+    setShowLeaderboardDirectly(false);
     setCurrentView('profile');
     setSelectedInDesignCourse(null);
     setSelectedLessonId(null);
@@ -421,6 +433,7 @@ export const App: React.FC = () => {
       {/* Full-width Bottom Navigation Bar (Ana Sayfa, Skor Tablosu, Profilim) */}
       <BottomNavBar
         currentView={currentView}
+        showLeaderboardDirectly={showLeaderboardDirectly}
         onGoHome={handleBackToHome}
         onOpenProfile={handleOpenProfile}
         onOpenAuth={() => setShowDirectAuthModal(true)}
