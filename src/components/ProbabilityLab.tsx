@@ -36,11 +36,9 @@ import {
   Sliders,
   TrendingUp,
   RefreshCw,
-  Zap,
   Layers,
   PieChart,
   HelpCircle,
-  Sparkles,
   GitCommit,
   Network,
   Repeat,
@@ -290,7 +288,7 @@ export const ProbabilityLab: React.FC<ProbabilityLabProps> = ({ defaultTab = 'di
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-5 border-b border-slate-100">
         <div className="flex items-center space-x-3">
           <div className="p-3 rounded-2xl bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30 shadow-2xs">
-            <Sparkles className="w-6 h-6 stroke-[2.2]" />
+            <Dices className="w-6 h-6 stroke-[2.2]" />
           </div>
           <div>
             <h3 className="text-lg font-black text-slate-900 tracking-tight">

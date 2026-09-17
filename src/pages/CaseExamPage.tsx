@@ -4,7 +4,7 @@ import { getLocalized } from '../utils/localization';
 import { useAppStore } from '../store/useAppStore';
 import { getNextTopicItem } from '../data/modules';
 import { MathFormulaText } from '../components/MathFormulaText';
-import { ArrowLeft, Trophy, CheckCircle2, Table, HelpCircle, Eye, Sparkles, AlertCircle, ArrowRight, Home, RefreshCw, PartyPopper, Check, Loader2 } from 'lucide-react';
+import { ArrowLeft, Trophy, CheckCircle2, Table, HelpCircle, Eye, AlertCircle, ArrowRight, Home, RefreshCw, PartyPopper, Check, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface CaseExamPageProps {

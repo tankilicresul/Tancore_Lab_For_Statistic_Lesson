@@ -9,7 +9,6 @@ import { extractTopicFormula, stripFormulaFromText } from '../utils/formulaExtra
 import {
   Lock,
   Trophy,
-  Sparkles,
   BookOpen,
   Star,
   Play,
@@ -28,7 +27,6 @@ import {
   Layers,
   ArrowLeft,
   ArrowRight,
-  Zap,
   Loader2,
   Send,
   Check,
@@ -112,7 +110,7 @@ export const getModuleMascotIcon = (moduleOrder: number, isUnlocked: boolean) =>
     case 9:
       return <Target className={`${strokeClass} ${iconColorClass}`} />;
     case 10:
-      return <Sparkles className={`${strokeClass} ${iconColorClass}`} />;
+      return <Target className={`${strokeClass} ${iconColorClass}`} />;
     case 11:
       return <Crown className={`${strokeClass} ${iconColorClass}`} />;
     case 12:
@@ -395,7 +393,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
         <div className="relative mb-8 p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-orange-50/80 via-amber-50/50 to-white border border-[#ff7a00]/30 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
           <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shadow-md shadow-[#ff7a00]/25 shrink-0">
-              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-white stroke-[2]" />
+              <Target className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[2]" />
             </div>
             <div className="text-left min-w-0">
               <div className="flex items-center space-x-2">
@@ -418,7 +416,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
             onClick={onStartPlacementTest}
             className="w-full sm:w-auto flex items-center justify-center space-x-1.5 px-4 py-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs shadow-[#ff7a00]/25 group shrink-0 whitespace-nowrap cursor-pointer"
           >
-            <Zap className="w-3.5 h-3.5 text-white fill-white stroke-[2]" />
+            <Target className="w-3.5 h-3.5 text-white stroke-[2]" />
             <span>{language === 'tr' ? 'Sınava Başla' : 'Start Test'}</span>
             <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
           </button>

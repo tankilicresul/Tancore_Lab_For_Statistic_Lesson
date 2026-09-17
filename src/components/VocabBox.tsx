@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { VocabTerm } from '../types/stats';
-import { BookOpen, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import { BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { MathFormulaText } from './MathFormulaText';
 
@@ -30,7 +30,6 @@ export const VocabBox: React.FC<VocabBoxProps> = ({ terms }) => {
           <div className="min-w-0">
             <h4 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-wide flex items-center gap-2">
               <span className="truncate">{language === 'tr' ? '5. İngilizce Terim Kutusu' : '5. English Vocabulary Box'}</span>
-              <Sparkles className="w-4 h-4 text-[#ff7a00] fill-[#ff7a00]/20 shrink-0" />
             </h4>
             <p className="text-xs text-slate-600 font-medium truncate">
               {language === 'tr'

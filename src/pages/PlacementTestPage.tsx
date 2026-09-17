@@ -5,11 +5,10 @@ import { useAppStore } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
 import { MathFormulaText } from '../components/MathFormulaText';
 import {
-  Sparkles,
+  Target,
   ArrowRight,
   Trophy,
   ArrowLeft,
-  Zap,
   Check,
   Dices,
   BarChart3,
@@ -288,7 +287,7 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
                 onClick={() => handleConfirmPlacement(recommendedModule.id)}
                 className="w-full py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2"
               >
-                <Zap className="w-4 h-4 fill-white" />
+                <Target className="w-4 h-4" />
                 <span>
                   {language === 'tr'
                     ? `Önerilen Seviyeye Atla (Modül ${recommendedModule.order})`

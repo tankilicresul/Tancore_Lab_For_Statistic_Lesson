@@ -13,7 +13,6 @@ import {
   Building2,
   Lightbulb,
   Trophy,
-  Sparkles,
   Calculator,
   ChevronDown,
   ChevronUp,
@@ -133,7 +132,6 @@ export const LessonPage: React.FC<LessonPageProps> = ({
           </button>
 
           <div className="flex items-center text-[10.5px] sm:text-xs font-extrabold text-[#ff7a00] bg-[#ff7a00]/10 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#ff7a00]/30 min-w-0">
-            <Sparkles className="w-3.5 h-3.5 mr-1" />
             <span className="truncate whitespace-nowrap">{language === 'tr' ? 'DERS REHBERİ' : 'COURSE GUIDE'}</span>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
-import { Sparkles, Bell } from 'lucide-react';
 import { getLatestTancoMessageInfo } from '../lib/supabase';
 
 // Use v3 storage key to ensure users get the new well-positioned coordinates
@@ -212,8 +211,7 @@ export const FloatingTancoButton: React.FC = () => {
             isLeftHalf ? 'left-full ml-3' : 'right-full mr-3'
           }`}
         >
-          <Bell className="w-3.5 h-3.5 text-yellow-300 animate-wiggle" />
-          <span>{language === 'tr' ? "Tanco'dan Yeni Mesaj! 🔔" : 'New Message from Tanco! 🔔'}</span>
+          <span>{language === 'tr' ? "Tanco'dan Yeni Mesaj!" : 'New Message from Tanco!'}</span>
         </div>
       ) : (
         !isDragging && (
@@ -222,7 +220,6 @@ export const FloatingTancoButton: React.FC = () => {
               isLeftHalf ? 'left-full ml-2.5' : 'right-full mr-2.5'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#ff7a00]" />
             <span>{language === 'tr' ? "Tanco'ya Sor" : 'Ask Tanco'}</span>
           </div>
         )

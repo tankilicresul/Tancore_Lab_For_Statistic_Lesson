@@ -10,7 +10,6 @@ import {
 } from '../lib/supabase';
 import { LegalTermsModal } from './LegalTermsModal';
 import {
-  Zap,
   Mail,
   Lock,
   User,
@@ -21,7 +20,6 @@ import {
   AlertCircle,
   KeyRound,
   ShieldCheck,
-  Sparkles,
   Loader2,
   RefreshCw,
   Trophy,
@@ -503,7 +501,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
               isLogoSpinning ? 'animate-logo-spin' : ''
             }`}
           >
-            <Zap className="w-10 h-10 sm:w-11 sm:h-11 fill-[#ff7a00] stroke-[2]" />
+            <GraduationCap className="w-10 h-10 sm:w-11 sm:h-11 text-[#ff7a00] stroke-[2]" />
           </div>
         </div>
 

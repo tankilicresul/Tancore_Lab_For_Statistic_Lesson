@@ -506,11 +506,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                         onClick={() => setSelectedPublicProfile(user2)}
                       >
                         <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-slate-300 bg-slate-800 flex items-center justify-center text-xl shadow-md overflow-hidden group-hover:scale-110 transition-transform ring-2 ring-slate-400/50">
-                          {user2.avatarUrl ? (
-                            <img src={user2.avatarUrl} alt={user2.fullName} className="w-full h-full object-cover" />
-                          ) : (
-                            <span className="text-2xl">{user2.avatarEmoji || '👨‍🎓'}</span>
-                          )}
+                          <UserAvatar
+                            avatarUrl={user2.avatarUrl}
+                            avatarEmoji={user2.avatarEmoji || '👨‍🎓'}
+                            fullName={user2.fullName}
+                            size="md"
+                            className="w-full h-full"
+                          />
                         </div>
                         <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-900 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
                           2
@@ -561,11 +563,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                         onClick={() => setSelectedPublicProfile(user1)}
                       >
                         <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-amber-400 bg-slate-800 flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.6)] overflow-hidden group-hover:scale-110 transition-transform">
-                          {user1.avatarUrl ? (
-                            <img src={user1.avatarUrl} alt={user1.fullName} className="w-full h-full object-cover" />
-                          ) : (
-                            <span className="text-3xl">{user1.avatarEmoji || '👨‍🎓'}</span>
-                          )}
+                          <UserAvatar
+                            avatarUrl={user1.avatarUrl}
+                            avatarEmoji={user1.avatarEmoji || '👨‍🎓'}
+                            fullName={user1.fullName}
+                            size="lg"
+                            className="w-full h-full"
+                          />
                         </div>
                         <div className="w-6 h-6 rounded-full bg-amber-400 text-slate-950 text-xs font-black flex items-center justify-center shadow-md -mt-3 border border-white z-10">
                           1
@@ -616,11 +620,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
                         onClick={() => setSelectedPublicProfile(user3)}
                       >
                         <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-amber-700 bg-slate-800 flex items-center justify-center text-lg shadow-md overflow-hidden group-hover:scale-110 transition-transform ring-2 ring-amber-700/50">
-                          {user3.avatarUrl ? (
-                            <img src={user3.avatarUrl} alt={user3.fullName} className="w-full h-full object-cover" />
-                          ) : (
-                            <span className="text-xl">{user3.avatarEmoji || '👨‍🎓'}</span>
-                          )}
+                          <UserAvatar
+                            avatarUrl={user3.avatarUrl}
+                            avatarEmoji={user3.avatarEmoji || '👨‍🎓'}
+                            fullName={user3.fullName}
+                            size="md"
+                            className="w-full h-full"
+                          />
                         </div>
                         <div className="w-5 h-5 rounded-full bg-amber-700 text-amber-100 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
                           3

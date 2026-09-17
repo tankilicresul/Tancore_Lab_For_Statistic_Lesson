@@ -8,7 +8,6 @@ import {
   FileText,
   FileCode,
   FileCheck,
-  Sparkles,
   CheckCircle2,
   Loader2,
   AlertCircle,
@@ -223,7 +222,6 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
 
               <div className="space-y-1">
                 <div className="inline-flex items-center space-x-1 px-3.5 py-1 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-black mb-2">
-                  <Sparkles className="w-3.5 h-3.5 text-[#ff7a00]" />
                   <span>+{uploadedRecords.length * 50} XP KAZANDIN! 🎉</span>
                 </div>
                 <h4 className="text-lg font-black text-slate-900">
@@ -432,18 +430,15 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
                     <span>{uploadProgressText || (isEn ? 'Uploading...' : 'Yükleniyor...')}</span>
                   </>
                 ) : (
-                  <>
-                    <Sparkles className="w-4 h-4 text-amber-200" />
-                    <span>
-                      {selectedFiles.length > 0
-                        ? isEn
-                          ? `Submit ${selectedFiles.length} File${selectedFiles.length > 1 ? 's' : ''} (+${selectedFiles.length * 50} XP)`
-                          : `${selectedFiles.length} Dosyayı Yükle (+${selectedFiles.length * 50} XP)`
-                        : isEn
-                        ? 'Select Files to Upload'
-                        : 'Yüklenecek Dosyaları Seçin'}
-                    </span>
-                  </>
+                  <span>
+                    {selectedFiles.length > 0
+                      ? isEn
+                        ? `Submit ${selectedFiles.length} File${selectedFiles.length > 1 ? 's' : ''} (+${selectedFiles.length * 50} XP)`
+                        : `${selectedFiles.length} Dosyayı Yükle (+${selectedFiles.length * 50} XP)`
+                      : isEn
+                      ? 'Select Files to Upload'
+                      : 'Yüklenecek Dosyaları Seçin'}
+                  </span>
                 )}
               </button>
             </form>

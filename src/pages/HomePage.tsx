@@ -4,14 +4,12 @@ import { useAppStore } from '../store/useAppStore';
 import { getLocalized, formatStudentGreetingName } from '../utils/localization';
 import { TanCoreMascotAvatar } from '../components/TanCoreMascotAvatar';
 import {
-  Zap,
   Dices,
   BarChart3,
   Trophy,
   Flame,
   Target,
   Award,
-  Sparkles,
   ArrowRight,
   TrendingUp,
   Loader2,

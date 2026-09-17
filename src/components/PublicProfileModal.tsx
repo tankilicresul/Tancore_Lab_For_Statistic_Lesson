@@ -12,7 +12,6 @@ import {
   Building2,
   TrendingUp,
   Target,
-  Sparkles,
   ShieldCheck,
 } from 'lucide-react';
 
@@ -98,7 +97,7 @@ export const PublicProfileModal: React.FC<PublicProfileModalProps> = ({ profile,
             {/* Rank Banner Tag */}
             <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-bold relative z-10">
               <span className="text-slate-400 flex items-center">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400 mr-1.5" />
+                <Trophy className="w-3.5 h-3.5 text-amber-400 mr-1.5" />
                 {language === 'tr' ? 'Liderlik Sıralaması' : 'Global Rank'}
               </span>
               <span className="text-amber-300 font-black text-sm">
