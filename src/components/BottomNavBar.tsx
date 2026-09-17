@@ -5,24 +5,24 @@ import { UserAvatar } from './UserAvatar';
 
 interface BottomNavBarProps {
   currentView: string;
-  showLeaderboardDirectly?: boolean;
   onGoHome: () => void;
-  onOpenProfile: (openLeaderboard?: boolean) => void;
+  onOpenLeaderboard: () => void;
+  onOpenProfile: () => void;
   onOpenAuth: () => void;
 }
 
 export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   currentView,
-  showLeaderboardDirectly = false,
   onGoHome,
+  onOpenLeaderboard,
   onOpenProfile,
   onOpenAuth,
 }) => {
   const { language, isAuthenticated, isVerified, userProfile } = useAppStore();
 
   const isHomeActive = currentView === 'home';
-  const isLeaderboardActive = currentView === 'profile' && showLeaderboardDirectly === true;
-  const isProfileActive = currentView === 'profile' && showLeaderboardDirectly === false;
+  const isLeaderboardActive = currentView === 'leaderboard';
+  const isProfileActive = currentView === 'profile';
 
   return (
     <nav
@@ -56,7 +56,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
 
         {/* 2. Genel Skor Tablosu (Leaderboard) Button */}
         <button
-          onClick={() => onOpenProfile(true)}
+          onClick={onOpenLeaderboard}
           className={`flex flex-col items-center justify-center flex-1 py-1 px-2 rounded-2xl transition-all cursor-pointer group active:scale-95 ${
             isLeaderboardActive
               ? 'text-amber-500 font-black'
@@ -94,7 +94,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
           </button>
         ) : (
           <button
-            onClick={() => onOpenProfile(false)}
+            onClick={onOpenProfile}
             className={`flex flex-col items-center justify-center flex-1 py-1 px-2 rounded-2xl transition-all cursor-pointer group active:scale-95 ${
               isProfileActive
                 ? 'text-[#ff7a00] font-black'

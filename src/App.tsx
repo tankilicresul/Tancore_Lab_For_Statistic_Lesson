@@ -3,6 +3,7 @@ import { XpStreakBar } from './components/XpStreakBar';
 import { HomePage, CourseTrack } from './pages/HomePage';
 import { CoursePage } from './pages/CoursePage';
 import { ProfilePage } from './pages/ProfilePage';
+import { LeaderboardPage } from './pages/LeaderboardPage';
 import { LessonPage } from './pages/LessonPage';
 import { CaseExamPage } from './pages/CaseExamPage';
 import { PlacementTestPage } from './pages/PlacementTestPage';
@@ -42,7 +43,6 @@ export const App: React.FC = () => {
 
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
   const [selectedInDesignCourse, setSelectedInDesignCourse] = useState<CourseTrack | null>(null);
-  const [showLeaderboardDirectly, setShowLeaderboardDirectly] = useState(false);
   const [showDirectAuthModal, setShowDirectAuthModal] = useState(false);
 
   // Guest session: track how many distinct lessons/cases have been opened this session
@@ -87,10 +87,10 @@ export const App: React.FC = () => {
 
   // Strict guard: Guests / unauthenticated users must never see profile page on reload/refresh
   useEffect(() => {
-    if ((!isAuthenticated || !isVerified) && currentView === 'profile' && !showLeaderboardDirectly) {
+    if ((!isAuthenticated || !isVerified) && currentView === 'profile') {
       setCurrentView('home');
     }
-  }, [isAuthenticated, isVerified, currentView, showLeaderboardDirectly, setCurrentView]);
+  }, [isAuthenticated, isVerified, currentView, setCurrentView]);
 
   // Sync active view / modal state to browser history stack
   useEffect(() => {
@@ -135,7 +135,7 @@ export const App: React.FC = () => {
         store.setSelectedLessonId(null);
         store.setSelectedCaseId(null);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (view === 'course' || view === 'profile') {
+      } else if (view === 'course' || view === 'profile' || view === 'leaderboard') {
         store.setCurrentView('home');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (view === 'home') {
@@ -204,7 +204,7 @@ export const App: React.FC = () => {
         store.setSelectedLessonId(null);
         store.setSelectedCaseId(null);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (view === 'course' || view === 'profile') {
+      } else if (view === 'course' || view === 'profile' || view === 'leaderboard') {
         store.setCurrentView('home');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -291,28 +291,24 @@ export const App: React.FC = () => {
     setSelectedCaseId(null);
     setScrollToNodeId(null);
     setCustomActiveModuleName(null);
-    setShowLeaderboardDirectly(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleOpenProfile = (openLeaderboard = false) => {
-    if (openLeaderboard) {
-      setShowLeaderboardDirectly(true);
-      setCurrentView('profile');
-      setSelectedInDesignCourse(null);
-      setSelectedLessonId(null);
-      setSelectedCaseId(null);
-      setScrollToNodeId(null);
-      setCustomActiveModuleName(null);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
+  const handleOpenLeaderboard = () => {
+    setCurrentView('leaderboard');
+    setSelectedInDesignCourse(null);
+    setSelectedLessonId(null);
+    setSelectedCaseId(null);
+    setScrollToNodeId(null);
+    setCustomActiveModuleName(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
+  const handleOpenProfile = () => {
     if (!isAuthenticated || !isVerified) {
       setShowDirectAuthModal(true);
       return;
     }
-    setShowLeaderboardDirectly(false);
     setCurrentView('profile');
     setSelectedInDesignCourse(null);
     setSelectedLessonId(null);
@@ -412,7 +408,7 @@ export const App: React.FC = () => {
         )}
 
         {currentView === 'profile' && (
-          (!isAuthenticated || !isVerified) && !showLeaderboardDirectly ? (
+          (!isAuthenticated || !isVerified) ? (
             <HomePage
               onSelectTrack={handleSelectTrack}
               onSelectInDesignCourse={handleSelectInDesignCourse}
@@ -422,9 +418,17 @@ export const App: React.FC = () => {
             <ProfilePage
               onGoHome={handleBackToHome}
               onOpenAuth={() => setShowDirectAuthModal(true)}
-              showLeaderboardDirectly={showLeaderboardDirectly}
+              onNavigateLeaderboard={handleOpenLeaderboard}
             />
           )
+        )}
+
+        {currentView === 'leaderboard' && (
+          <LeaderboardPage
+            onGoHome={handleBackToHome}
+            onOpenAuth={() => setShowDirectAuthModal(true)}
+            onOpenProfile={handleOpenProfile}
+          />
         )}
 
         {currentView === 'lesson' && lessonData && (
@@ -455,8 +459,8 @@ export const App: React.FC = () => {
       {/* Full-width Bottom Navigation Bar (Ana Sayfa, Skor Tablosu, Profilim) */}
       <BottomNavBar
         currentView={currentView}
-        showLeaderboardDirectly={showLeaderboardDirectly}
         onGoHome={handleBackToHome}
+        onOpenLeaderboard={handleOpenLeaderboard}
         onOpenProfile={handleOpenProfile}
         onOpenAuth={() => setShowDirectAuthModal(true)}
       />

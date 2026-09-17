@@ -35,7 +35,7 @@ interface AppStoreActions {
   loginWithPassword: (email: string, pass: string) => Promise<{ success: boolean; errorType?: 'INVALID_EMAIL_DOMAIN' | 'EMAIL_NOT_FOUND' | 'WRONG_PASSWORD'; message?: string }>;
   resetPasswordWithOtp: (email: string, token: string, newPass: string) => { success: boolean; message?: string };
   // Navigation actions (persisted on refresh)
-  setCurrentView: (view: 'home' | 'course' | 'profile' | 'lesson' | 'caseExam' | 'placementTest') => void;
+  setCurrentView: (view: 'home' | 'course' | 'profile' | 'leaderboard' | 'lesson' | 'caseExam' | 'placementTest') => void;
   setSelectedLessonId: (id: string | null) => void;
   setSelectedCaseId: (id: string | null) => void;
   setSelectedTrack: (track: 'probability' | 'statistics') => void;

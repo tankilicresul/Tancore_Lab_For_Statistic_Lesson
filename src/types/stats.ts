@@ -151,7 +151,7 @@ export interface UserState {
   selectedPublicProfile?: PublicProfile | null;
   registeredUsers: PublicProfile[];
   userAccounts?: RegisteredAccount[];
-  currentView?: 'home' | 'course' | 'profile' | 'lesson' | 'caseExam' | 'placementTest';
+  currentView?: 'home' | 'course' | 'profile' | 'leaderboard' | 'lesson' | 'caseExam' | 'placementTest';
   selectedLessonId?: string | null;
   selectedCaseId?: string | null;
   selectedTrack?: 'probability' | 'statistics';
