@@ -393,7 +393,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
                     <Icon className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
                   </div>
-                  <span className="text-xs sm:text-base lg:text-lg font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors whitespace-nowrap">
+                  <span className="text-sm sm:text-lg lg:text-xl font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors whitespace-nowrap">
                     {course.code}
                   </span>
                 </div>
@@ -438,7 +438,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <Icon className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
                   </div>
 
-                  <span className="text-[10px] sm:text-xs lg:text-sm font-black uppercase text-amber-700 group-hover:text-amber-800 transition-colors whitespace-nowrap">
+                  <span className="text-[11px] sm:text-xs lg:text-sm font-black uppercase text-amber-700 group-hover:text-amber-800 transition-colors whitespace-nowrap">
                     {course.code} {isEn ? 'COMING SOON' : 'YAKINDA'}
                   </span>
                 </div>
