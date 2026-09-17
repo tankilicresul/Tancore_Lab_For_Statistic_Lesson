@@ -271,10 +271,6 @@ export const App: React.FC = () => {
   };
 
   const handleStartPlacementTest = () => {
-    if (!isAuthenticated || !isVerified) {
-      setShowGuestGate(true);
-      return;
-    }
     setCurrentView('placementTest');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

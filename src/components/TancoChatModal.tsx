@@ -451,6 +451,34 @@ export const TancoChatModal: React.FC = () => {
       }
     }
 
+    const isUserAuth = Boolean(isAuthenticated && isVerified);
+    let guestAiCount = 0;
+    try {
+      guestAiCount = parseInt(localStorage.getItem('tanco_guest_ai_count') || '0', 10);
+    } catch {}
+
+    if (!isUserAuth && guestAiCount >= 7) {
+      setIsTyping(false);
+      const limitReply = language === 'tr'
+        ? '👋 Misafir oturumundaki 7 adet detaylı yapay zeka soru hakkın doldu!\n\nTanco AI ile günlük sınırsız konuşmaya devam etmek, sorularını adım adım çözdürmek ve ilerlemeni kaydetmek için lütfen **ücretsiz kayıt ol veya giriş yap**.'
+        : '👋 You have reached the 7-question limit for guest users!\n\nTo continue chatting with Tanco AI, solving problems step-by-step, and saving your progress, please **sign in or register for free**.';
+
+      const tancoMsg: ChatMessage = {
+        id: `tanco-${Date.now()}`,
+        sender: 'tanco',
+        text: limitReply,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      setMessages((prev) => [...prev, tancoMsg]);
+      return;
+    }
+
+    if (!isUserAuth) {
+      try {
+        localStorage.setItem('tanco_guest_ai_count', String(guestAiCount + 1));
+      } catch {}
+    }
+
     try {
       // Build conversation history for the AI
       const history: ChatMessageHistoryItem[] = messages

@@ -34,28 +34,49 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
         className="hidden sm:block absolute inset-0 -z-10"
         onClick={onClose}
       />
-      <div className="relative w-full sm:max-w-sm bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-7 text-center border border-slate-100">
+      <div className="relative w-full sm:max-w-sm bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl p-5 sm:p-6 text-center border border-slate-100">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer z-10"
+          className="absolute top-3 right-3 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer z-20"
           title={isTr ? 'Kapat' : 'Close'}
         >
           <X className="w-4 h-4" />
         </button>
 
-        {/* Mascot Avatar & Title */}
-        <div className="flex flex-col items-center pt-2">
-          <div className="relative inline-block mb-1">
-            <TanCoreMascotAvatar size="lg" className="rounded-full shadow-lg ring-4 ring-[#ff7a00]/15" />
+        {/* Tanco Speech Bubble Orange Header Card (2. Fotoğraf Tasarımı) */}
+        <div className="relative bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] rounded-3xl p-4 text-left shadow-lg overflow-hidden mb-4 border border-amber-300/40">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none" />
+
+          {/* White Speech Bubble Container */}
+          <div className="relative bg-white rounded-2xl p-3.5 text-slate-900 shadow-md mb-3">
+            <h3 className="font-black text-xs sm:text-sm text-slate-900 leading-snug mb-1">
+              {isTr ? 'Uygulamayı sevdin sanırım :)' : 'Looks like you enjoy the app :)'}
+            </h3>
+            <p className="text-[11.5px] sm:text-xs text-slate-600 font-medium leading-relaxed">
+              {isTr
+                ? 'Daha fazla ilerlemek istemez misin? O zaman gerçek bir insan olduğunu anlayabilmemiz için kayıt ol, tüm özelliklere erişme şansı yakala.'
+                : 'Want to keep going? Sign up so we know you are a real student and unlock all features.'}
+            </p>
+
+            {/* Speech Bubble Arrow Tail */}
+            <div className="absolute -bottom-1.5 left-5 w-3.5 h-3.5 bg-white transform rotate-45 rounded-xs" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug">
-            {isTr ? 'Profili Görüntülemek İçin Üye Ol !' : 'Sign Up to View Profile !'}
-          </h2>
+
+          {/* Tanco Mascot Avatar & Title */}
+          <div className="flex items-center space-x-2.5 pt-1 pl-1 relative z-10">
+            <TanCoreMascotAvatar size="md" className="rounded-full ring-2 ring-white/90 shadow-md shrink-0" />
+            <div className="flex flex-col text-white">
+              <span className="text-xs font-black tracking-tight drop-shadow-xs">Tanco</span>
+              <span className="text-[10px] font-bold text-amber-100">
+                {isTr ? 'Öğretim Asistanı' : 'Teaching Assistant'}
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Perks List */}
-        <div className="flex flex-col items-center justify-center space-y-2.5 my-5 text-center bg-slate-50/80 p-4 rounded-2xl border border-slate-100">
+        <div className="flex flex-col items-center justify-center space-y-2 mb-4 text-center bg-slate-50/90 p-3.5 rounded-2xl border border-slate-100">
           {(isTr
             ? [
                 '✅ İlerlemeniz sıfırlanmaz, hesabınıza aktarılır',
@@ -70,33 +91,33 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
                 '✅ Unlimited Tanco AI assistant',
               ]
           ).map((perk, i) => (
-            <span key={i} className="text-xs sm:text-sm text-slate-700 font-bold text-center leading-normal">
+            <span key={i} className="text-xs text-slate-700 font-bold text-center leading-normal">
               {perk}
             </span>
           ))}
         </div>
 
-        {/* Action Buttons */}
-        <div className="space-y-3">
-          <button
-            onClick={() => {
-              setAuthInitialTab('register');
-              setShowAuth(true);
-            }}
-            className="w-full py-3.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-95"
-          >
-            <UserPlus className="w-4 h-4" />
-            <span>{isTr ? 'KAYIT OL' : 'SIGN UP'}</span>
-          </button>
+        {/* Action Buttons: Önce Giriş Yap, Sonra KAYIT OL */}
+        <div className="space-y-2.5">
           <button
             onClick={() => {
               setAuthInitialTab('login');
               setShowAuth(true);
             }}
+            className="w-full py-3.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-95"
+          >
+            <LogIn className="w-4 h-4" />
+            <span>{isTr ? 'Giriş Yap' : 'Sign In'}</span>
+          </button>
+          <button
+            onClick={() => {
+              setAuthInitialTab('register');
+              setShowAuth(true);
+            }}
             className="w-full py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-900 font-black text-sm transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-95 border border-slate-200"
           >
-            <LogIn className="w-4 h-4 text-slate-700" />
-            <span>{isTr ? 'Giriş Yap' : 'Sign In'}</span>
+            <UserPlus className="w-4 h-4 text-slate-700" />
+            <span>{isTr ? 'KAYIT OL' : 'SIGN UP'}</span>
           </button>
         </div>
       </div>

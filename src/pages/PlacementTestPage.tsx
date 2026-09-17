@@ -85,8 +85,8 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
       if (score <= 9) return ALL_MODULES.find((m) => m.id === 'module-8') || ALL_MODULES[7];
       return ALL_MODULES.find((m) => m.id === 'module-9') || ALL_MODULES[8];
     } else {
-      if (score <= 1) return ALL_MODULES.find((m) => m.id === 'module-13') || ALL_MODULES[0];
-      if (score <= 3) return ALL_MODULES.find((m) => m.id === 'module-2') || ALL_MODULES[1];
+      if (score <= 1) return ALL_MODULES.find((m) => m.id === 'module-2') || ALL_MODULES[0];
+      if (score <= 3) return ALL_MODULES.find((m) => m.id === 'module-13') || ALL_MODULES[1];
       if (score <= 5) return ALL_MODULES.find((m) => m.id === 'module-14') || ALL_MODULES[2];
       if (score <= 7) return ALL_MODULES.find((m) => m.id === 'module-3') || ALL_MODULES[3];
       if (score <= 9) return ALL_MODULES.find((m) => m.id === 'module-15') || ALL_MODULES[4];
@@ -97,8 +97,8 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
   const recommendedModule = getRecommendedModule(correctAnswersCount);
 
   const handleConfirmPlacement = (targetModId: string) => {
-    const isFirstModule = targetModId === 'module-1' || targetModId === 'module-13';
-    if (!isAuthenticated && !isFirstModule) {
+    const isFirstModule = targetModId === 'module-1' || targetModId === 'module-2';
+    if ((!isAuthenticated || !isVerified) && !isFirstModule) {
       setPendingModuleId(targetModId);
       setShowAuthModal(true);
       return;
