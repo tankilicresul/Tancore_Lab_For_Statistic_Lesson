@@ -264,29 +264,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
   if (showLeaderboardDirectly) {
     return (
-      <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans space-y-5 animate-fade-in">
-        {/* Page Header */}
-        <div className="flex items-center justify-between gap-3 pt-1">
-          <div className="flex items-center space-x-3 min-w-0">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-[#ff7a00] flex items-center justify-center shadow-lg shadow-orange-500/25 shrink-0">
-              <Trophy className="w-6 h-6 text-white fill-white" />
-            </div>
-            <div className="min-w-0">
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-none">
-                {language === 'tr' ? 'Skor Tablosu' : 'Leaderboard'}
-              </h1>
-              <p className="text-xs text-slate-500 font-medium mt-1">
-                {language === 'tr' ? 'TanCoreLab Öğrenci Sıralaması' : 'TanCoreLab Student Rankings'}
-              </p>
-            </div>
-          </div>
-
-          {isAuthenticated && (
-            <div className="px-3.5 py-1.5 rounded-xl bg-white border border-orange-200 text-[#ff7a00] text-xs font-black shadow-xs shrink-0">
-              {userRank}. {language === 'tr' ? 'Sıra' : 'Rank'}
-            </div>
-          )}
-        </div>
+      <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans space-y-4 animate-fade-in">
 
         {/* Unauthenticated Guest Alert Banner */}
         {!isAuthenticated && (
