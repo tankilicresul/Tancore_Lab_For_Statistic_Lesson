@@ -18,6 +18,14 @@ export const supabase = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
+export const isAcademicEmail = (email: string): boolean => {
+  if (!email || typeof email !== 'string') return false;
+  const e = email.trim().toLowerCase();
+  if (!e.includes('@')) return false;
+  if (e === 'admin@tancorelab.com') return true;
+  return e.endsWith('.edu.tr') || e.endsWith('.edu');
+};
+
 /**
  * Send OTP Code via email using Supabase Auth
  */
@@ -29,9 +37,17 @@ export async function sendEmailOtp(
     return { success: false, error: 'Veritabanı bağlantısı yapılandırılamadı.' };
   }
 
+  const cleanEmail = email.trim().toLowerCase();
+  if (!isAcademicEmail(cleanEmail)) {
+    return {
+      success: false,
+      error: 'Güvenlik Kuralı: Yalnızca geçerli bir üniversite (.edu.tr veya .edu) e-posta adresi ile işlem yapabilirsiniz.',
+    };
+  }
+
   try {
     const { error } = await supabase.auth.signInWithOtp({
-      email,
+      email: cleanEmail,
       options: {
         shouldCreateUser: true,
         data: metadata
@@ -110,9 +126,17 @@ export async function signUpWithSupabase(
     return { success: false, error: 'Veritabanı bağlantısı bulunamadı.' };
   }
 
+  const cleanEmail = email.trim().toLowerCase();
+  if (!isAcademicEmail(cleanEmail)) {
+    return {
+      success: false,
+      error: 'Güvenlik Kuralı: Kayıt için geçerli bir üniversite (.edu.tr veya .edu) e-posta adresi gereklidir.',
+    };
+  }
+
   try {
     const { data, error } = await supabase.auth.signUp({
-      email: email.trim().toLowerCase(),
+      email: cleanEmail,
       password: password.trim(),
       options: {
         data: metadata
@@ -154,9 +178,18 @@ export async function signInWithSupabase(
     return { success: false, errorType: 'OTHER', error: 'Veritabanı bağlantısı bulunamadı.' };
   }
 
+  const cleanEmail = email.trim().toLowerCase();
+  if (!isAcademicEmail(cleanEmail)) {
+    return {
+      success: false,
+      errorType: 'OTHER',
+      error: 'Yalnızca geçerli bir üniversite (.edu.tr veya .edu) e-postası ile giriş yapılabilir.',
+    };
+  }
+
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: email.trim().toLowerCase(),
+      email: cleanEmail,
       password: password.trim(),
     });
 
@@ -193,8 +226,16 @@ export async function requestPasswordReset(email: string): Promise<{ success: bo
     return { success: false, error: 'Veritabanı bağlantısı bulunamadı.' };
   }
 
+  const cleanEmail = email.trim().toLowerCase();
+  if (!isAcademicEmail(cleanEmail)) {
+    return {
+      success: false,
+      error: 'Yalnızca geçerli bir üniversite (.edu.tr veya .edu) e-postası için şifre sıfırlanabilir.',
+    };
+  }
+
   try {
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase());
+    const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail);
     if (error) {
       return { success: false, error: error.message };
     }
@@ -273,13 +314,15 @@ export async function saveUserProfileToSupabase(profile: UserProfile & { xp?: nu
       payload.avatar_url = profile.avatarUrl;
     }
     if (typeof profile.xp === 'number') {
-      payload.xp = profile.xp;
+      const totalCompleted = Math.max(0, profile.completedLessons || 0);
+      const maxAllowedXp = totalCompleted * 45 + Math.min(profile.streak || 1, 365) * 50 + 2000;
+      payload.xp = Math.max(0, Math.min(Math.round(profile.xp), maxAllowedXp));
     }
     if (typeof profile.streak === 'number') {
-      payload.streak = profile.streak;
+      payload.streak = Math.max(1, Math.min(Math.round(profile.streak), 365));
     }
     if (typeof profile.completedLessons === 'number') {
-      payload.completed_lessons = profile.completedLessons;
+      payload.completed_lessons = Math.max(0, Math.min(Math.round(profile.completedLessons), 200));
     }
 
     await supabase.from('profiles').upsert(
@@ -592,6 +635,17 @@ export async function uploadCourseNoteDocument(
   noteDescription?: string
 ): Promise<{ success: boolean; record?: UploadedCourseNoteRecord; error?: string }> {
   try {
+    const ALLOWED_EXTENSIONS = new Set([
+      'pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'txt', 'png', 'jpg', 'jpeg'
+    ]);
+    const rawExt = (file.name.split('.').pop() || '').toLowerCase();
+    if (!ALLOWED_EXTENSIONS.has(rawExt)) {
+      return {
+        success: false,
+        error: 'Güvenlik Uyarısı: Yalnızca geçerli doküman ve görsel formatları (.pdf, .docx, .pptx, .xlsx, .txt, .png, .jpg) yüklenebilir.',
+      };
+    }
+
     let publicUrl = '';
     const cleanCourseCode = courseCode.replace(/[^a-zA-Z0-9_-]/g, '_');
     const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');

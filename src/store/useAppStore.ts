@@ -542,11 +542,12 @@ export const useAppStore = create<UserState & AppStoreActions>()(
 
       completeLesson: (lessonId, moduleId, xpEarned = 15) => {
         const state = get();
+        const safeXp = Math.max(0, Math.min(xpEarned || 15, 50));
         const alreadyCompleted = state.completedLessons.includes(lessonId);
         const newCompleted = alreadyCompleted
           ? state.completedLessons
           : [...state.completedLessons, lessonId];
-        const newXp = alreadyCompleted ? state.xp : state.xp + xpEarned;
+        const newXp = alreadyCompleted ? state.xp : state.xp + safeXp;
 
         const modIdx = parseInt(moduleId.replace('module-', ''), 10);
         const nextModuleId = `module-${modIdx + 1}`;
@@ -605,11 +606,12 @@ export const useAppStore = create<UserState & AppStoreActions>()(
 
       completeCaseExam: (caseId, moduleId, xpEarned = 25) => {
         const state = get();
+        const safeXp = Math.max(0, Math.min(xpEarned || 25, 100));
         const alreadyCompleted = state.completedCaseExams.includes(caseId);
         const newCompleted = alreadyCompleted
           ? state.completedCaseExams
           : [...state.completedCaseExams, caseId];
-        const newXp = alreadyCompleted ? state.xp : state.xp + xpEarned;
+        const newXp = alreadyCompleted ? state.xp : state.xp + safeXp;
 
         const newBadges = [...state.unlockedBadges];
         if (!newBadges.includes('badge-first-case')) {
@@ -680,7 +682,12 @@ export const useAppStore = create<UserState & AppStoreActions>()(
 
       addXp: (amount: number) => {
         const state = get();
-        const newXp = (state.xp || 0) + amount;
+        // Guard against arbitrary injection: limit per addition
+        const safeAmount = Math.max(0, Math.min(Math.round(amount || 0), 100));
+        const totalCompleted = state.completedLessons.length + state.completedCaseExams.length;
+        const maxAllowedXp = totalCompleted * 45 + Math.min(state.streak || 1, 365) * 50 + 2000;
+        const newXp = Math.min((state.xp || 0) + safeAmount, maxAllowedXp);
+
         const nextState = { ...state, xp: newXp };
         const updatedUsers = syncUserInList(nextState);
 
@@ -721,6 +728,17 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       name: 'tancorelab-statsim-v5',
       onRehydrateStorage: () => (state) => {
         if (state) {
+          // Anti-tamper sanity check on rehydration
+          const completedCount = (state.completedLessons?.length || 0) + (state.completedCaseExams?.length || 0);
+          const maxAllowedXp = completedCount * 45 + Math.min(state.streak || 1, 365) * 50 + 2000;
+
+          if (typeof state.xp !== 'number' || isNaN(state.xp) || state.xp < 0) {
+            state.xp = 0;
+          } else if (state.xp > maxAllowedXp) {
+            console.warn('TanCoreLab Security: Storage XP clamped to verified maximum.');
+            state.xp = maxAllowedXp;
+          }
+
           // 3-day device retention check for unauthenticated guest users
           if (!state.isAuthenticated && state.guestProgressTimestamp) {
             const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
@@ -749,6 +767,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
               fetchUserProfileFromSupabase(state.userProfile.schoolEmail).then((remote) => {
                 if (remote) {
                   const store = useAppStore.getState();
+                  const remoteXp = typeof remote.xp === 'number' ? Math.min(remote.xp, maxAllowedXp) : store.xp;
                   useAppStore.setState({
                     userProfile: {
                       ...store.userProfile,
@@ -758,8 +777,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
                       university: remote.university || store.userProfile.university,
                       departmentAndClass: remote.department_and_class || store.userProfile.departmentAndClass,
                     },
-                    xp: typeof remote.xp === 'number' ? remote.xp : store.xp,
-                    streak: typeof remote.streak === 'number' ? remote.streak : store.streak,
+                    xp: remoteXp,
+                    streak: typeof remote.streak === 'number' ? Math.min(remote.streak, 365) : store.streak,
                   });
                 }
               }).catch(() => {});

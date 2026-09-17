@@ -44,14 +44,20 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  if (!isOpen) return null;
-
   const addFilesToSelection = (incomingFiles: FileList | File[]) => {
     const validFiles: File[] = [];
     let sizeExceeded = false;
+    let invalidExtCount = 0;
+
+    const ALLOWED_EXTENSIONS = new Set([
+      'pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'txt', 'png', 'jpg', 'jpeg'
+    ]);
 
     Array.from(incomingFiles).forEach((f) => {
-      if (f.size > 50 * 1024 * 1024) {
+      const ext = (f.name.split('.').pop() || '').toLowerCase();
+      if (!ALLOWED_EXTENSIONS.has(ext)) {
+        invalidExtCount++;
+      } else if (f.size > 50 * 1024 * 1024) {
         sizeExceeded = true;
       } else {
         // Prevent exact duplicates in the current batch
@@ -64,7 +70,13 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
       }
     });
 
-    if (sizeExceeded) {
+    if (invalidExtCount > 0) {
+      setErrorMessage(
+        isEn
+          ? 'Only safe document and image formats (.pdf, .docx, .pptx, .xlsx, .txt, .png, .jpg) are allowed.'
+          : 'Güvenlik uyarısı: Yalnızca geçerli doküman ve görsel formatları (.pdf, .docx, .pptx, .xlsx, .txt, .png, .jpg) seçilebilir.'
+      );
+    } else if (sizeExceeded) {
       setErrorMessage(
         isEn
           ? 'Some files exceeded the 50MB limit and were skipped.'
@@ -183,6 +195,8 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
     selectedFiles.reduce((acc, f) => acc + f.size, 0) /
     (1024 * 1024)
   ).toFixed(2);
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in font-sans">
