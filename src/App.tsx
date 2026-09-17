@@ -12,12 +12,14 @@ import { GuestGateModal } from './components/GuestGateModal';
 import { PlusUpgradeModal } from './components/PlusUpgradeModal';
 import { AuthModal } from './components/AuthModal';
 import { BottomNavBar } from './components/BottomNavBar';
+import { AppSplashScreen } from './components/AppSplashScreen';
 import { getLessonById, getCaseExamById } from './data/modules';
 import { useAppStore } from './store/useAppStore';
 import { getLocalized } from './utils/localization';
 import { fetchUserProfileFromSupabase } from './lib/supabase';
 
 export const App: React.FC = () => {
+  const [isSplashVisible, setIsSplashVisible] = useState(true);
   const {
     language,
     isAuthenticated,
@@ -366,6 +368,11 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#f4f6f8] text-slate-900 font-sans flex flex-col selection:bg-[#ff7a00] selection:text-white overflow-x-hidden">
+      {/* 3-Second App Loading Splash Screen with Logo Animation */}
+      {isSplashVisible && (
+        <AppSplashScreen onComplete={() => setIsSplashVisible(false)} />
+      )}
+
       {/* Sticky Navigation Header */}
       <XpStreakBar
         onGoHome={handleBackToHome}
