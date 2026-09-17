@@ -394,7 +394,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                   </div>
                   <span className="text-base sm:text-xl font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors truncate">
-                    {course.code.replace(/\s+/g, '')}
+                    {course.code}
                   </span>
                 </div>
                 <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7 text-[#ff7a00] stroke-[3.5] shrink-0" />
@@ -439,7 +439,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </div>
 
                   <span className="text-xs sm:text-sm font-black uppercase text-amber-700 group-hover:text-amber-800 transition-colors shrink-0">
-                    {course.code.replace(/\s+/g, '')} {isEn ? 'COMING SOON' : 'YAKINDA'}
+                    {course.code} {isEn ? 'COMING SOON' : 'YAKINDA'}
                   </span>
                 </div>
 
