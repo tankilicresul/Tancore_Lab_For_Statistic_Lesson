@@ -383,21 +383,21 @@ export const HomePage: React.FC<HomePageProps> = ({
             <button
               key={course.code}
               onClick={() => course.track && onSelectTrack(course.track)}
-              className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between cursor-pointer overflow-hidden ${course.cardStyle}`}
+              className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between cursor-pointer overflow-hidden ${course.cardStyle}`}
             >
               <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform ${course.glowColor}`} />
 
               {/* Top row: Icon & Course Code with Arrow */}
-              <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
-                <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
-                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
-                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+              <div className="flex items-center justify-between w-full relative z-10 gap-1.5 sm:gap-2 shrink-0">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
+                    <Icon className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
                   </div>
-                  <span className="text-base sm:text-xl font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors truncate">
+                  <span className="text-xs sm:text-base lg:text-lg font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors whitespace-nowrap">
                     {course.code}
                   </span>
                 </div>
-                <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7 text-[#ff7a00] stroke-[3.5] shrink-0 translate-x-1.5" />
+                <ChevronRight className="w-5 h-5 sm:w-6.5 sm:h-6.5 text-[#ff7a00] stroke-[3.5] shrink-0" />
               </div>
 
               {/* Middle content: Title & Description */}
@@ -405,7 +405,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug line-clamp-2">
                   {title}
                 </h3>
-                <p className="text-[11px] sm:text-xs font-medium text-slate-600 line-clamp-5 mt-1.5 leading-relaxed">
+                <p className="text-[10.5px] sm:text-xs font-medium text-slate-600 line-clamp-5 mt-1.5 leading-relaxed">
                   {desc}
                 </p>
               </div>
@@ -428,17 +428,17 @@ export const HomePage: React.FC<HomePageProps> = ({
               <button
                 key={course.code}
                 onClick={() => onSelectInDesignCourse?.(course)}
-                className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between overflow-hidden cursor-pointer hover:border-amber-400/80 hover:shadow-md ${course.cardStyle}`}
+                className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between overflow-hidden cursor-pointer hover:border-amber-400/80 hover:shadow-md ${course.cardStyle}`}
               >
                 <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
 
                 {/* Top row: Icon on left, [Course Code Yakında] badge on right */}
-                <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
-                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
-                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
+                <div className="flex items-center justify-between w-full relative z-10 gap-1.5 sm:gap-2 shrink-0">
+                  <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
+                    <Icon className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
                   </div>
 
-                  <span className="text-xs sm:text-sm font-black uppercase text-amber-700 group-hover:text-amber-800 transition-colors shrink-0">
+                  <span className="text-[10px] sm:text-xs lg:text-sm font-black uppercase text-amber-700 group-hover:text-amber-800 transition-colors whitespace-nowrap">
                     {course.code} {isEn ? 'COMING SOON' : 'YAKINDA'}
                   </span>
                 </div>
