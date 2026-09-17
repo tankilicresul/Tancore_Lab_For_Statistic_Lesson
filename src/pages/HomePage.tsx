@@ -432,13 +432,13 @@ export const HomePage: React.FC<HomePageProps> = ({
               >
                 <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
 
-                {/* Top row: Icon on left, [Course Code Yakında] badge on right */}
-                <div className="flex items-center justify-between w-full relative z-10 gap-1.5 sm:gap-2 shrink-0">
+                {/* Top row: Icon & Course Code YAKINDA (left-aligned) */}
+                <div className="flex items-center justify-start w-full relative z-10 gap-2 sm:gap-3 min-w-0 shrink-0">
                   <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
                     <Icon className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
                   </div>
 
-                  <span className="text-[11px] sm:text-xs lg:text-sm font-black uppercase text-amber-700 group-hover:text-amber-800 transition-colors whitespace-nowrap">
+                  <span className="text-sm sm:text-lg lg:text-xl font-black tracking-tight uppercase text-amber-700 group-hover:text-amber-800 transition-colors truncate">
                     {course.code} {isEn ? 'COMING SOON' : 'YAKINDA'}
                   </span>
                 </div>
