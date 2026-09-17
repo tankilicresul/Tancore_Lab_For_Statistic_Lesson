@@ -791,15 +791,16 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             state.xp = maxAllowedXp;
           }
 
-          // 3-day device retention check for unauthenticated guest users
+          // 1-day device retention check for unauthenticated guest users
           if (!state.isAuthenticated && state.guestProgressTimestamp) {
-            const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
-            if (Date.now() - state.guestProgressTimestamp > THREE_DAYS_MS) {
+            const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+            if (Date.now() - state.guestProgressTimestamp > ONE_DAY_MS) {
               state.completedLessons = [];
               state.completedCaseExams = [];
               state.xp = 0;
+              state.streak = 0;
               state.unlockedBadges = [];
-              state.unlockedModules = ['module-1', 'module-2'];
+              state.unlockedModules = ['module-1'];
             }
           }
 

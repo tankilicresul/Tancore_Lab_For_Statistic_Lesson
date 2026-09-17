@@ -79,11 +79,11 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
 
           {/* User Stats & Controls: Streak, Language and Profile / Home Icon */}
           <div className="flex items-center space-x-1.5 sm:space-x-2.5 shrink-0 z-10">
-            {/* Streak */}
+            {/* Streak - 0 for unauthenticated guests, real count for logged in */}
             <div className="flex items-center space-x-1.5 bg-[#ff7a00]/10 border border-[#ff7a00]/30 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[#ff7a00] font-black text-xs sm:text-sm tracking-wide shadow-xs">
               <Flame className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-[#ff7a00] text-[#ff7a00] animate-pulse" />
               <span>
-                {streak} {language === 'tr' ? 'gün' : 'days'}
+                {isAuthenticated && isVerified ? streak : 0} {language === 'tr' ? 'gün' : 'days'}
               </span>
             </div>
 

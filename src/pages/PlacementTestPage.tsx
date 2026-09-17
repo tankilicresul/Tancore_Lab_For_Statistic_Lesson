@@ -4,6 +4,7 @@ import { ALL_MODULES } from '../data/modules';
 import { useAppStore } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
 import { MathFormulaText } from '../components/MathFormulaText';
+import { AuthModal } from '../components/AuthModal';
 import {
   Target,
   ArrowRight,
@@ -20,10 +21,12 @@ interface PlacementTestPageProps {
 }
 
 export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHome }) => {
-  const { language, unlockUpToModule, selectedTrack } = useAppStore();
+  const { language, unlockUpToModule, selectedTrack, isAuthenticated, isVerified } = useAppStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string>>({});
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [pendingModuleId, setPendingModuleId] = useState<string | null>(null);
   const [customModuleId, setCustomModuleId] = useState<string>('module-1');
 
   const activeTrack = selectedTrack === 'statistics' ? 'statistics' : 'probability';
@@ -94,6 +97,12 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
   const recommendedModule = getRecommendedModule(correctAnswersCount);
 
   const handleConfirmPlacement = (targetModId: string) => {
+    const isFirstModule = targetModId === 'module-1' || targetModId === 'module-13';
+    if (!isAuthenticated && !isFirstModule) {
+      setPendingModuleId(targetModId);
+      setShowAuthModal(true);
+      return;
+    }
     unlockUpToModule(targetModId);
     const mod = ALL_MODULES.find((m) => m.id === targetModId);
     const firstLessonId = mod?.lessons[0]?.id;
@@ -331,6 +340,20 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
             </div>
           </div>
         </div>
+      )}
+
+      {showAuthModal && (
+        <AuthModal
+          onClose={() => {
+            setShowAuthModal(false);
+            if (pendingModuleId && useAppStore.getState().isAuthenticated) {
+              unlockUpToModule(pendingModuleId);
+              const mod = ALL_MODULES.find((m) => m.id === pendingModuleId);
+              const firstLessonId = mod?.lessons[0]?.id;
+              onBackToHome(firstLessonId);
+            }
+          }}
+        />
       )}
     </div>
   );

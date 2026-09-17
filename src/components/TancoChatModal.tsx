@@ -125,6 +125,8 @@ export const TancoChatModal: React.FC = () => {
     isTancoChatOpen,
     setIsTancoChatOpen,
     userProfile,
+    isAuthenticated,
+    isVerified,
     currentView,
     selectedLessonId,
     selectedCaseId,

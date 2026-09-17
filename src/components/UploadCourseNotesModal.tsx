@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { uploadCourseNoteDocument, UploadedCourseNoteRecord } from '../lib/supabase';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
+import { AuthModal } from './AuthModal';
 import {
   X,
   UploadCloud,
@@ -14,6 +15,7 @@ import {
   Plus,
   Trash2,
   File,
+  Lock,
 } from 'lucide-react';
 
 interface UploadCourseNotesModalProps {
@@ -31,8 +33,9 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
   courseCode,
   courseTitle,
 }) => {
-  const { language, userProfile, addXp } = useAppStore();
+  const { language, userProfile, addXp, isAuthenticated, isVerified } = useAppStore();
   const isEn = language === 'en';
+  const [showAuth, setShowAuth] = useState(false);
 
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [description, setDescription] = useState<string>('');
@@ -227,7 +230,32 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
 
         {/* Modal Body */}
         <div className="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1">
-          {uploadSuccess ? (
+          {!isAuthenticated || !isVerified ? (
+            /* Auth Required State for Guests */
+            <div className="py-8 text-center space-y-4">
+              <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 text-[#ff7a00] flex items-center justify-center mx-auto shadow-sm">
+                <Lock className="w-7 h-7" />
+              </div>
+              <div className="space-y-1.5 max-w-sm mx-auto">
+                <h4 className="text-base font-bold text-slate-900">
+                  {isEn ? 'Sign In to Contribute Course Notes' : 'Ders Notu Yüklemek İçin Giriş Yapın'}
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                  {isEn
+                    ? 'To contribute study materials and earn XP on the leaderboard, please create a free student account.'
+                    : 'Ders notu yükleyip platforma katkı sağlamak ve XP kazanmak için lütfen ücretsiz kayıt olun veya giriş yapın.'}
+                </p>
+              </div>
+              <div className="pt-2">
+                <button
+                  onClick={() => setShowAuth(true)}
+                  className="px-6 py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white font-bold text-xs shadow-md shadow-orange-500/25 transition-all cursor-pointer"
+                >
+                  {isEn ? 'Sign In / Register' : 'Ücretsiz Kayıt Ol / Giriş Yap'}
+                </button>
+              </div>
+            </div>
+          ) : uploadSuccess ? (
             /* Success State */
             <div className="py-6 text-center space-y-4 animate-scale-up">
               <div className="w-16 h-16 rounded-3xl bg-emerald-50 border-2 border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/10">
@@ -459,6 +487,8 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
           )}
         </div>
       </div>
+
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
     </div>
   );
 };
