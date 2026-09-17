@@ -432,7 +432,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               >
                 <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
 
-                {/* Top row: Icon & Course Code (Side-by-side with larger bold font) */}
+                {/* Top row: Icon & Course Code with single 'Yakında' status */}
                 <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
                   <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
                     <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
@@ -442,28 +442,21 @@ export const HomePage: React.FC<HomePageProps> = ({
                       {course.code}
                     </span>
                   </div>
+
+                  <div className="flex items-center space-x-1 px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 font-mono text-[10px] sm:text-xs font-black border border-amber-500/20 shrink-0">
+                    <Loader2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-spin text-amber-600 shrink-0" />
+                    <span>{isEn ? 'Coming Soon' : 'Yakında'}</span>
+                  </div>
                 </div>
 
-                {/* Middle content: Title & Description (Top Aligned) */}
+                {/* Middle content: Title & Full Description */}
                 <div className="relative z-10 pt-2 sm:pt-2.5 flex-1 flex flex-col justify-start text-left min-h-0 overflow-hidden">
                   <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors leading-snug line-clamp-2">
                     {title}
                   </h3>
-                  <p className="text-[10.5px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-snug">
+                  <p className="text-[11px] sm:text-xs font-medium text-slate-600 line-clamp-5 mt-1.5 leading-relaxed">
                     {desc}
                   </p>
-                </div>
-
-                {/* Bottom Row: Status + Badge */}
-                <div className="relative z-10 mt-auto pt-2 sm:pt-3 flex items-center justify-between gap-2 shrink-0">
-                  <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-600 group-hover:text-amber-700 group-hover:translate-x-0.5 transition-all">
-                    <Loader2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-spin text-amber-500 shrink-0" />
-                    <span className="truncate">{isEn ? 'Coming Soon' : 'Yakında'}</span>
-                    <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5] opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0" />
-                  </div>
-                  <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full font-mono border shrink-0 ${course.badgeStyle}`}>
-                    {badgeText}
-                  </span>
                 </div>
               </button>
             );
