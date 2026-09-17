@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { Flame, Globe, Zap, UserCheck, ShieldCheck, Home, Crown } from 'lucide-react';
+import { Flame, Globe, Zap, Crown } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { PublicProfileModal } from './PublicProfileModal';
-import { UserAvatar } from './UserAvatar';
 
 interface XpStreakBarProps {
   onGoHome?: () => void;
@@ -14,8 +13,6 @@ interface XpStreakBarProps {
 
 export const XpStreakBar: React.FC<XpStreakBarProps> = ({
   onGoHome,
-  onOpenProfile,
-  currentView = 'home',
 }) => {
   const {
     language,
@@ -31,7 +28,6 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
   const [showAuth, setShowAuth] = useState(false);
   const [isLogoSpinning, setIsLogoSpinning] = useState(false);
 
-  const isProfileView = currentView === 'profile';
   const isPlus = Boolean(userProfile?.isPremium);
 
   // Trigger logo spin animation every 3 seconds
@@ -119,42 +115,6 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                   <span>Plus</span>
                 </button>
               )
-            )}
-
-            {/* Registration / Auth Button or My Profile / Home Icon Button */}
-            {!isAuthenticated || !isVerified ? (
-              <button
-                onClick={() => setShowAuth(true)}
-                className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer"
-                title={language === 'tr' ? 'E-posta ile Kayıt Ol / Giriş Yap' : 'Sign Up / Sign In'}
-              >
-                <UserCheck className="w-4 h-4" />
-                <span className="hidden sm:inline">{language === 'tr' ? 'Kayıt Ol' : 'Sign Up'}</span>
-              </button>
-            ) : isProfileView ? (
-              /* When Profile is Open: Rightmost Button becomes Home Icon (🏠 Ev İkonu) */
-              <button
-                onClick={onGoHome}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00] hover:bg-[#e66e00] text-white transition-all shadow-md shadow-[#ff7a00]/30 flex items-center justify-center cursor-pointer active:scale-95 shrink-0"
-                title={language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
-              >
-                <Home className="w-4.5 h-4.5 sm:w-5 sm:h-5 stroke-[2.25]" />
-              </button>
-            ) : (
-              /* When Profile is Closed: Rightmost Button shows Profile Avatar */
-              <button
-                onClick={onOpenProfile}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border-2 border-[#ff7a00]/50 transition-all shadow-xs flex items-center justify-center font-black cursor-pointer overflow-hidden p-0 active:scale-95 shrink-0"
-                title={language === 'tr' ? 'Profilim & Performansım' : 'My Profile'}
-              >
-                <UserAvatar
-                  avatarUrl={userProfile?.avatarUrl}
-                  avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
-                  fullName={userProfile?.fullName}
-                  size="sm"
-                  className="w-full h-full"
-                />
-              </button>
             )}
           </div>
         </div>
