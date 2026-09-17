@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { ALL_MODULES } from '../data/modules';
-import { DEFAULT_LEADERBOARD_STUDENTS } from '../data/leaderboardData';
 import { PublicProfile } from '../types/stats';
 import { uploadAvatarImage, deleteUserAvatar, fetchAllProfilesFromSupabase, saveUserProfileToSupabase } from '../lib/supabase';
+import { computeUnifiedLeaderboard } from '../utils/leaderboardHelper';
 import { AvatarCropModal } from '../components/AvatarCropModal';
 import { UserAvatar } from '../components/UserAvatar';
 import {
@@ -172,73 +172,16 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   // Topic Success Rate: real completion percentage
   const successRate = totalItems > 0 ? Math.min(100, Math.round((completedCount / totalItems) * 100)) : 0;
 
-  // Real Leaderboard Calculation (Strictly Real Data, No Mock Users)
-  const allProfilesMap = new Map<string, PublicProfile>();
-
-  const getProfileDedupKey = (p: { id?: string; schoolEmail?: string; fullName?: string }) => {
-    const email = (p.schoolEmail || '').trim().toLowerCase();
-    if (email) return `email:${email}`;
-    const name = (p.fullName || '').trim().toLowerCase();
-    if (name) return `name:${name}`;
-    return `id:${p.id || 'unknown'}`;
-  };
-
-  // 1. Add default 27 student profiles
-  DEFAULT_LEADERBOARD_STUDENTS.forEach((p) => {
-    const key = getProfileDedupKey(p);
-    allProfilesMap.set(key, p);
+  // Real Leaderboard Calculation (Strictly Deduplicated via computeUnifiedLeaderboard)
+  const { sortedLeaderboard, userRank } = computeUnifiedLeaderboard({
+    dbProfiles,
+    registeredUsers,
+    currentUserProfile: userProfile,
+    currentXp: xp,
+    currentStreak: streak,
+    completedCount,
+    unlockedBadges,
   });
-
-  // 2. Add Supabase database profiles
-  dbProfiles.forEach((p) => {
-    const key = getProfileDedupKey(p);
-    allProfilesMap.set(key, p);
-  });
-
-  // 3. Add local store registered users if not present
-  (registeredUsers || []).forEach((p) => {
-    const key = getProfileDedupKey(p);
-    if (!allProfilesMap.has(key)) {
-      allProfilesMap.set(key, p);
-    }
-  });
-
-  // 3. Ensure active current user is present and up-to-date
-  if (userProfile && (userProfile.schoolEmail || userProfile.fullName)) {
-    const currentKey = getProfileDedupKey(userProfile);
-    const existing = allProfilesMap.get(currentKey);
-    allProfilesMap.set(currentKey, {
-      id: existing?.id || userProfile.id || 'self',
-      fullName: userProfile.fullName || 'Öğrenci',
-      schoolEmail: userProfile.schoolEmail || '',
-      university: userProfile.university || 'Üniversite',
-      departmentAndClass: userProfile.departmentAndClass || '',
-      avatarEmoji: userProfile.avatarEmoji || '👨‍🎓',
-      avatarUrl: userProfile.avatarUrl || existing?.avatarUrl || undefined,
-      xp: xp ?? existing?.xp ?? 0,
-      streak: streak ?? existing?.streak ?? 1,
-      rank: 1,
-      level: Math.floor((xp || 0) / 100) + 1,
-      completedCount: completedLessons.length + completedCaseExams.length,
-      unlockedBadges: unlockedBadges && unlockedBadges.length > 0 ? unlockedBadges : ['badge-first-lesson'],
-    });
-  }
-
-  const sortedLeaderboard: PublicProfile[] = Array.from(allProfilesMap.values()).sort(
-    (a, b) => b.xp - a.xp
-  );
-
-  sortedLeaderboard.forEach((p, idx) => {
-    p.rank = idx + 1;
-  });
-
-  // Current user's real rank in the full list of registered users
-  const currentUserIdx = sortedLeaderboard.findIndex(
-    (u) =>
-      (userProfile?.schoolEmail && u.schoolEmail?.toLowerCase() === userProfile.schoolEmail.toLowerCase()) ||
-      u.fullName === userProfile?.fullName
-  );
-  const userRank = currentUserIdx >= 0 ? currentUserIdx + 1 : 1;
 
 
   return (

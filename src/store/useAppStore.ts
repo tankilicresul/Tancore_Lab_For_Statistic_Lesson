@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { UserProfile, UserState, PublicProfile, RegisteredAccount } from '../types/stats';
 import { saveUserProfileToSupabase, syncUserProgress, fetchUserProfileFromSupabase, isSupabaseConfigured, signInWithSupabase } from '../lib/supabase';
+import { isSameStudent } from '../utils/leaderboardHelper';
 
 export function isValidStudentEmail(email: string): boolean {
   const e = email.trim().toLowerCase();
@@ -92,18 +93,10 @@ const INITIAL_STATE: UserState = {
 function syncUserInList(state: UserState): PublicProfile[] {
   const profile = state.userProfile;
   const currentEmail = profile.schoolEmail ? profile.schoolEmail.trim().toLowerCase() : '';
-  const currentName = profile.fullName ? profile.fullName.trim().toLowerCase() : '';
-
   const existingList = (state.registeredUsers || []).filter(Boolean);
 
-  // Filter out any duplicates matching current user by email or name
-  const otherUsers = existingList.filter((u) => {
-    const uEmail = u.schoolEmail ? u.schoolEmail.trim().toLowerCase() : '';
-    const uName = u.fullName ? u.fullName.trim().toLowerCase() : '';
-    if (currentEmail && uEmail && uEmail === currentEmail) return false;
-    if (currentName && uName && uName === currentName) return false;
-    return true;
-  });
+  // Filter out any duplicates matching current user by normalized name, email, or database id
+  const otherUsers = existingList.filter((u) => !isSameStudent(u, profile));
 
   if (!profile.schoolEmail || !state.isVerified) {
     otherUsers.sort((a, b) => b.xp - a.xp);
@@ -349,8 +342,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           const mergedLessons = Array.from(new Set(guestLessons));
           const mergedCases = Array.from(new Set(guestCases));
           const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
-          const guestXp = state.xp || 0;
-          const userXp = Math.max(remoteXp, guestXp, remoteXp + guestXp);
+          // Cloud remote XP is the authoritative source of truth; never double/sum XP upon login
+          const userXp = remoteXp > 0 ? remoteXp : Math.max(15, state.xp || 15);
           const remoteStreak = typeof remoteProfile?.streak === 'number' ? remoteProfile.streak : 1;
           const userStreak = Math.max(remoteStreak, state.streak || 1);
 

@@ -62,14 +62,22 @@ export const App: React.FC = () => {
 
     fetchUserProfileFromSupabase(email)
       .then((remoteProfile) => {
-        if (remoteProfile && remoteProfile.full_name) {
-          updateUserProfile({
-            fullName: remoteProfile.full_name,
-            university: remoteProfile.university || userProfile.university,
-            departmentAndClass: remoteProfile.department_and_class || userProfile.departmentAndClass,
-            avatarEmoji: remoteProfile.avatar_emoji || userProfile.avatarEmoji,
-            avatarUrl: remoteProfile.avatar_url || userProfile.avatarUrl,
-          });
+        if (remoteProfile) {
+          if (remoteProfile.full_name) {
+            updateUserProfile({
+              fullName: remoteProfile.full_name,
+              university: remoteProfile.university || userProfile.university,
+              departmentAndClass: remoteProfile.department_and_class || userProfile.departmentAndClass,
+              avatarEmoji: remoteProfile.avatar_emoji || userProfile.avatarEmoji,
+              avatarUrl: remoteProfile.avatar_url || userProfile.avatarUrl,
+            });
+          }
+          if (typeof remoteProfile.xp === 'number' && remoteProfile.xp > 0) {
+            useAppStore.setState((state) => ({
+              xp: remoteProfile.xp,
+              streak: typeof remoteProfile.streak === 'number' ? remoteProfile.streak : state.streak,
+            }));
+          }
         }
       })
       .catch((err) => {

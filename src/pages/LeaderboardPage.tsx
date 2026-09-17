@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { PublicProfile } from '../types/stats';
-import { DEFAULT_LEADERBOARD_STUDENTS } from '../data/leaderboardData';
 import { fetchAllProfilesFromSupabase } from '../lib/supabase';
 import { Crown } from 'lucide-react';
 import { UserAvatar } from '../components/UserAvatar';
+import { computeUnifiedLeaderboard, isSameStudent } from '../utils/leaderboardHelper';
 
 export interface LeaderboardPageProps {
   onGoHome?: () => void;
@@ -70,74 +70,18 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     };
   }, [xp, userProfile?.avatarUrl]);
 
-  // Real Leaderboard Calculation
-  const allProfilesMap = new Map<string, PublicProfile>();
-
-  const getProfileDedupKey = (p: { id?: string; schoolEmail?: string; fullName?: string }) => {
-    const email = (p.schoolEmail || '').trim().toLowerCase();
-    if (email) return `email:${email}`;
-    const name = (p.fullName || '').trim().toLowerCase();
-    if (name) return `name:${name}`;
-    return `id:${p.id || 'unknown'}`;
-  };
-
-  // 1. Add default 27 student profiles
-  DEFAULT_LEADERBOARD_STUDENTS.forEach((p) => {
-    const key = getProfileDedupKey(p);
-    allProfilesMap.set(key, p);
-  });
-
-  // 2. Add Supabase database profiles
-  dbProfiles.forEach((p) => {
-    const key = getProfileDedupKey(p);
-    allProfilesMap.set(key, p);
-  });
-
-  // 3. Add local store registered users if not present
-  (registeredUsers || []).forEach((p) => {
-    const key = getProfileDedupKey(p);
-    if (!allProfilesMap.has(key)) {
-      allProfilesMap.set(key, p);
-    }
-  });
-
-  // 4. Ensure active current user is present and up-to-date
+  // Real Leaderboard Calculation (Strictly Deduplicated via computeUnifiedLeaderboard)
   const completedCount = completedLessons.length + completedCaseExams.length;
-  if (userProfile && (userProfile.schoolEmail || userProfile.fullName)) {
-    const currentKey = getProfileDedupKey(userProfile);
-    const existing = allProfilesMap.get(currentKey);
-    allProfilesMap.set(currentKey, {
-      id: existing?.id || userProfile.id || 'self',
-      fullName: userProfile.fullName || 'Öğrenci',
-      schoolEmail: userProfile.schoolEmail || '',
-      university: userProfile.university || 'Üniversite',
-      departmentAndClass: userProfile.departmentAndClass || '',
-      avatarEmoji: userProfile.avatarEmoji || '👨‍🎓',
-      avatarUrl: userProfile.avatarUrl || existing?.avatarUrl || undefined,
-      xp: xp ?? existing?.xp ?? 0,
-      streak: streak ?? existing?.streak ?? 1,
-      rank: 1,
-      level: Math.floor((xp || 0) / 100) + 1,
-      completedCount: completedCount,
-      unlockedBadges: unlockedBadges && unlockedBadges.length > 0 ? unlockedBadges : ['badge-first-lesson'],
-    });
-  }
 
-  const sortedLeaderboard: PublicProfile[] = Array.from(allProfilesMap.values()).sort(
-    (a, b) => b.xp - a.xp
-  );
-
-  sortedLeaderboard.forEach((p, idx) => {
-    p.rank = idx + 1;
+  const { sortedLeaderboard, userRank } = computeUnifiedLeaderboard({
+    dbProfiles,
+    registeredUsers,
+    currentUserProfile: isAuthenticated ? userProfile : null,
+    currentXp: xp,
+    currentStreak: streak,
+    completedCount,
+    unlockedBadges,
   });
-
-  // Current user's real rank in the full list
-  const currentUserIdx = sortedLeaderboard.findIndex(
-    (u) =>
-      (userProfile?.schoolEmail && u.schoolEmail?.toLowerCase() === userProfile.schoolEmail.toLowerCase()) ||
-      u.fullName === userProfile?.fullName
-  );
-  const userRank = currentUserIdx >= 0 ? currentUserIdx + 1 : 1;
 
   // Real Top 3 users
   const user1 = sortedLeaderboard[0] || null;
@@ -418,11 +362,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
             className="space-y-2 max-h-[480px] overflow-y-auto pr-1"
           >
             {sortedLeaderboard.slice(3).map((user) => {
-              const isSelf =
-                isAuthenticated &&
-                ((userProfile?.schoolEmail &&
-                  user.schoolEmail?.toLowerCase() === userProfile.schoolEmail.toLowerCase()) ||
-                  user.fullName === userProfile?.fullName);
+              const isSelf = isAuthenticated && isSameStudent(user, userProfile);
 
               return (
                 <div
