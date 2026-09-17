@@ -28,10 +28,133 @@ function buildCurriculumContext(): string {
 
 const CURRICULUM_SUMMARY = buildCurriculumContext();
 
+/**
+ * Panoramic Application Scanner & Knowledge Retriever
+ * Scans the entire application (all 16 modules, all lessons, all case exam datasets/tables)
+ * to answer any specific question about any module, topic, formula, company case, or dataset table,
+ * even when the student is not on that screen.
+ */
+export function scanAndRetrieveAppKnowledge(query: string, language: 'tr' | 'en' = 'tr'): string | null {
+  const q = query.toLowerCase().trim();
+
+  // 1. Detect explicit Module Number: "modül 4", "4. modül", "module 4", "m4"
+  const moduleMatch = q.match(/(?:mod[uü]l|module)\s*(\d{1,2})|(\d{1,2})\.\s*(?:mod[uü]l|module)|\bm(\d{1,2})\b/i);
+  const targetModNum = moduleMatch ? parseInt(moduleMatch[1] || moduleMatch[2] || moduleMatch[3], 10) : null;
+
+  // 2. Detect explicit Lesson Number: "ders 2", "2. ders", "lesson 2", "konu 3", "3. konu"
+  const lessonMatch = q.match(/(?:ders|lesson|konu)\s*(\d{1,2})|(\d{1,2})\.\s*(?:ders|lesson|konu)/i);
+  const targetLesNum = lessonMatch ? parseInt(lessonMatch[1] || lessonMatch[2], 10) : null;
+
+  // 3. Detect Case Exam / Dataset / Table request
+  const wantsCaseOrTable =
+    q.includes('vaka') ||
+    q.includes('case') ||
+    q.includes('tablo') ||
+    q.includes('veri seti') ||
+    q.includes('dataset') ||
+    q.includes('sütun') ||
+    q.includes('kolon') ||
+    q.includes('satır') ||
+    q.includes('table');
+
+  // If specific module is referenced
+  if (targetModNum && targetModNum >= 1 && targetModNum <= ALL_MODULES.length) {
+    const mod = ALL_MODULES[targetModNum - 1];
+    const modTitle = language === 'tr' ? mod.title?.tr : mod.title?.en;
+
+    // A) If looking for specific lesson in this module
+    if (targetLesNum && mod.lessons && mod.lessons.length >= targetLesNum) {
+      const les = mod.lessons[targetLesNum - 1];
+      const lesTitle = language === 'tr' ? les.title?.tr : les.title?.en;
+      const concept = language === 'tr' ? les.conceptCard?.tr : les.conceptCard?.en;
+      const company = language === 'tr' ? les.companyExample?.tr : les.companyExample?.en;
+
+      let result = `📍 **Modül ${targetModNum}: ${modTitle}**\n📚 **${targetLesNum}. Ders: ${lesTitle}**\n\n📖 **Konu Anlatımı / Kavram Kartı:**\n${concept}\n\n🏢 **Gerçek Şirket Örneği:**\n${company}`;
+
+      if (les.vocabTerms && les.vocabTerms.length > 0) {
+        result += `\n\n💡 **Önemli Terimler & Kavramlar:**\n` + les.vocabTerms.map((v) => `- **${v.term_en}:** ${language === 'tr' ? v.explanation_tr : v.explanation_en}`).join('\n');
+      }
+
+      if (les.questions && les.questions.length > 0) {
+        const q1 = les.questions[0];
+        const pText = language === 'tr' ? q1.prompt?.tr || q1.prompt : q1.prompt?.en || q1.prompt;
+        const ans = q1.correctAnswer;
+        const exp = language === 'tr' ? q1.explanation?.tr || q1.explanation : q1.explanation?.en || q1.explanation;
+        result += `\n\n📝 **Kavrama Sorusu & Çözüm:**\n- **Soru:** ${pText}\n- **Doğru Cevap:** \`${ans}\`\n- **Çözüm:** ${exp}`;
+      }
+
+      return result;
+    }
+
+    // B) If looking for Case Exam / Table / Dataset in this module
+    if (wantsCaseOrTable && mod.caseExams && mod.caseExams.length > 0) {
+      const casesText = mod.caseExams.map((c, cIdx) => {
+        const cTitle = language === 'tr' ? c.title?.tr : c.title?.en;
+        const bQuestion = language === 'tr' ? c.businessQuestion?.tr : c.businessQuestion?.en;
+        const expApproach = language === 'tr' ? c.expectedApproach?.tr : c.expectedApproach?.en;
+
+        let tableMd = '';
+        if (c.dataset && Array.isArray(c.dataset.columns) && Array.isArray(c.dataset.rows)) {
+          tableMd = `\n\n📊 **Vaka Veri Seti / Tablo:**\n| ` + c.dataset.columns.join(' | ') + ' |\n| ' + c.dataset.columns.map(() => '---').join(' | ') + ' |\n';
+          tableMd += c.dataset.rows.slice(0, 10).map((row) => '| ' + row.join(' | ') + ' |').join('\n');
+          if (c.dataset.rows.length > 10) {
+            tableMd += `\n*(Toplam ${c.dataset.rows.length} satır)*`;
+          }
+        }
+
+        return `🏢 **${cIdx + 1}. Vaka Sınavı: ${cTitle}**\n📌 **İş Problemi / Soru:** ${bQuestion}${tableMd}\n🔍 **Yönetici Yaklaşımı:** ${expApproach}`;
+      }).join('\n\n---\n\n');
+
+      return `📍 **Modül ${targetModNum}: ${modTitle} — Vaka Sınavları & Veri Tabloları:**\n\n${casesText}`;
+    }
+
+    // C) Return entire module overview with all lessons and case summaries
+    const lessonsList = (mod.lessons || []).map((l, i) => `${i + 1}. ${language === 'tr' ? l.title?.tr : l.title?.en}`).join('\n');
+    const casesList = (mod.caseExams || []).map((c, i) => `${i + 1}. ${language === 'tr' ? c.title?.tr : c.title?.en}`).join('\n');
+
+    return `📍 **Modül ${targetModNum}: ${modTitle}**\n📝 **Özet:** ${language === 'tr' ? mod.description?.tr || mod.title?.tr : mod.description?.en || mod.title?.en}\n\n📚 **Dersler:**\n${lessonsList}\n\n🏢 **Vaka Sınavları:**\n${casesList || 'Vaka sınavı hazırlanıyor.'}`;
+  }
+
+  // 4. Keyword search across Case Exam Datasets (Tables) & Lesson Titles
+  for (const mod of ALL_MODULES) {
+    for (const c of mod.caseExams || []) {
+      const cTitle = (c.title?.tr || '') + ' ' + (c.title?.en || '');
+      const bQuestion = (c.businessQuestion?.tr || '') + ' ' + (c.businessQuestion?.en || '');
+      const cols = (c.dataset?.columns || []).join(' ');
+
+      const searchWords = q.split(/[\s,?.!]+/).filter((w) => w.length > 3);
+      const isMatch = searchWords.some((w) => cTitle.toLowerCase().includes(w) || cols.toLowerCase().includes(w) || bQuestion.toLowerCase().includes(w));
+      
+      if (isMatch && c.dataset && c.dataset.columns) {
+        let tableMd = `| ` + c.dataset.columns.join(' | ') + ' |\n| ' + c.dataset.columns.map(() => '---').join(' | ') + ' |\n';
+        tableMd += c.dataset.rows.slice(0, 10).map((row) => '| ' + row.join(' | ') + ' |').join('\n');
+
+        return `📍 **Bulunan Modül / Vaka: ${language === 'tr' ? mod.title?.tr : mod.title?.en} — ${language === 'tr' ? c.title?.tr : c.title?.en}**\n\n📌 **İş Problemi:** ${language === 'tr' ? c.businessQuestion?.tr : c.businessQuestion?.en}\n\n📊 **İlgili Veri Seti / Tablo:**\n${tableMd}\n\n🔍 **Çözüm & Yaklaşım:** ${language === 'tr' ? c.expectedApproach?.tr : c.expectedApproach?.en}`;
+      }
+    }
+  }
+
+  return null;
+}
+
 function formatStudyContext(studyContext: any, lang: 'tr' | 'en'): string {
   if (!studyContext) return '';
+
+  let contextOutput = '';
+
+  if (studyContext.retrievedAppContext) {
+    contextOutput += `
+=======================================================
+🔍 UYGULAMADAN ANLIK TARANIP BULUNAN TÜM MODÜL / DERS / TABLO BİLGİSİ (PANORAMIC APP KNOWLEDGE):
+=======================================================
+${studyContext.retrievedAppContext}
+
+ÖNEMLİ KURAL: Öğrencinin sorduğu modül, konu, tablo veya veri seti yukarıda yer almaktadır. Öğrenciye bu taranan kesin verileri (tablo değerleri, formüller, şirket örnekleri) kullanarak eksiksiz, doğrudan ve samimi şekilde cevap ver!
+`;
+  }
+
   if (studyContext.type === 'lesson') {
-    return `
+    contextOutput += `
 =======================================================
 📍 ÖĞRENCİNİN ŞU AN EKRANDA ÇALIŞTIĞI DERS (CANLI EKRAN BİLGİSİ):
 =======================================================
@@ -45,7 +168,7 @@ function formatStudyContext(studyContext: any, lang: 'tr' | 'en'): string {
 ÖNEMLİ KURAL: Öğrenci "burada ne anlatıyor?", "şurasında ne demek isteniyor?", "bu konuyu özetler misin?", "bu soruyu nasıl çözerim?", "bu formül ne?" vb. sorduğunda veya sadece soru sorduğunda, yukarıdaki canlı ekrandaki konu anlatımı ve şirket örneği üzerinden doğrudan, net ve pedagojik şekilde anlat!
 `;
   } else if (studyContext.type === 'caseExam') {
-    return `
+    contextOutput += `
 =======================================================
 📍 ÖĞRENCİNİN ŞU AN EKRANDA ÇÖZDÜĞÜ ŞİRKET VAKA SINAVI (CANLI EKRAN):
 =======================================================
@@ -59,14 +182,15 @@ function formatStudyContext(studyContext: any, lang: 'tr' | 'en'): string {
 ÖNEMLİ KURAL: Öğrenci vaka sınavı, veri seti veya problemle ilgili soru sorduğunda yukarıdaki vaka verilerine ve adımlarına dayanarak açıkla!
 `;
   } else if (studyContext.type === 'course') {
-    return `
+    contextOutput += `
 =======================================================
 📍 ÖĞRENCİNİN ŞU AN BULUNDUĞU ALAN:
 =======================================================
 - Parkur / Ders: ${studyContext.activeTrackTitle || studyContext.track || ''}
 `;
   }
-  return '';
+
+  return contextOutput;
 }
 
 function getSystemPrompt(language: 'tr' | 'en', studentName: string = 'Öğrenci', studyContext?: any): string {
@@ -156,6 +280,13 @@ export async function askTancoAI(
   imageMimeType?: string,
   studyContext?: any
 ): Promise<string> {
+  // Panoramic Application Scan: Look up any referenced module, lesson, or case table
+  const retrievedInfo = scanAndRetrieveAppKnowledge(userPrompt, language);
+  const enhancedStudyContext = {
+    ...studyContext,
+    retrievedAppContext: retrievedInfo || studyContext?.retrievedAppContext,
+  };
+
   // 1. Try secure Serverless Function first (/api/tanco-chat)
   try {
     const serverlessRes = await fetch('/api/tanco-chat', {
@@ -168,7 +299,7 @@ export async function askTancoAI(
         studentName,
         imageBase64,
         imageMimeType,
-        studyContext,
+        studyContext: enhancedStudyContext,
       }),
     });
 
@@ -188,7 +319,7 @@ export async function askTancoAI(
   const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (geminiApiKey && geminiApiKey.trim() && !geminiApiKey.includes('BURAYA') && !geminiApiKey.includes('YOUR_')) {
     try {
-      return await callGemini(geminiApiKey.trim(), userPrompt, history, language, studentName, imageBase64, imageMimeType, studyContext);
+      return await callGemini(geminiApiKey.trim(), userPrompt, history, language, studentName, imageBase64, imageMimeType, enhancedStudyContext);
     } catch (err: any) {
       console.warn('Gemini client call failed, attempting Groq or fallback:', err);
     }
@@ -198,14 +329,14 @@ export async function askTancoAI(
   const groqApiKey = import.meta.env.VITE_GROQ_API_KEY;
   if (groqApiKey && groqApiKey.trim() && !groqApiKey.includes('BURAYA') && !groqApiKey.includes('YOUR_')) {
     try {
-      return await callGroq(groqApiKey.trim(), userPrompt, history, language, studentName, studyContext);
+      return await callGroq(groqApiKey.trim(), userPrompt, history, language, studentName, enhancedStudyContext);
     } catch (err: any) {
       console.warn('Groq API call failed:', err);
     }
   }
 
   // 4. Offline / No key fallback
-  return getNoKeyFallback(userPrompt, language, studentName, studyContext);
+  return getNoKeyFallback(userPrompt, language, studentName, enhancedStudyContext);
 }
 
 /**

@@ -398,21 +398,15 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
               </div>
 
-              {/* Middle content: Title & Description (Top Aligned) */}
+              {/* Middle content: Title with Arrow & Description */}
               <div className="relative z-10 pt-2 sm:pt-2.5 flex-1 flex flex-col justify-start text-left min-h-0 overflow-hidden">
-                <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug line-clamp-2">
-                  {title}
+                <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug flex items-center gap-1.5">
+                  <span>{title}</span>
+                  <ArrowRight className="w-4 h-4 text-[#ff7a00] stroke-[2.5] shrink-0 group-hover:translate-x-1 transition-transform" />
                 </h3>
-                <p className="text-[10.5px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-snug">
+                <p className="text-[10.5px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1.5 leading-snug">
                   {desc}
                 </p>
-              </div>
-
-              {/* Bottom Row: CTA arrow */}
-              <div className="relative z-10 mt-auto pt-2 sm:pt-3 flex items-center justify-end w-full shrink-0">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#ff7a00]/10 text-[#ff7a00] group-hover:bg-[#ff7a00] group-hover:text-white flex items-center justify-center transition-all duration-300 shadow-2xs">
-                  <ArrowRight className="w-4 h-4 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
-                </div>
               </div>
             </button>
           );

@@ -67,8 +67,22 @@ Endüstri Mühendisliği, İstatistik ve Yöneylem Araştırması öğrencilerin
 
 function formatStudyContext(studyContext: any, lang: 'tr' | 'en'): string {
   if (!studyContext) return '';
+
+  let output = '';
+
+  if (studyContext.retrievedAppContext) {
+    output += `
+=======================================================
+🔍 UYGULAMADAN ANLIK TARANIP BULUNAN TÜM MODÜL / DERS / TABLO BİLGİSİ (PANORAMIC APP KNOWLEDGE):
+=======================================================
+${studyContext.retrievedAppContext}
+
+ÖNEMLİ KURAL: Öğrencinin sorduğu modül, konu, tablo veya veri seti yukarıda yer almaktadır. Öğrenciye bu taranan kesin verileri (tablo değerleri, formüller, şirket örnekleri) kullanarak eksiksiz, doğrudan ve samimi şekilde cevap ver!
+`;
+  }
+
   if (studyContext.type === 'lesson') {
-    return `
+    output += `
 =======================================================
 📍 ÖĞRENCİNİN ŞU AN EKRANDA ÇALIŞTIĞI DERS (CANLI EKRAN BİLGİSİ):
 =======================================================
@@ -82,7 +96,7 @@ function formatStudyContext(studyContext: any, lang: 'tr' | 'en'): string {
 ÖNEMLİ: Öğrenci "burada ne anlatıyor?", "şurasında ne demek isteniyor?", "bu konuyu özetler misin?", "bu soruyu nasıl çözerim?", "bu formül ne?" vb. sorduğunda doğrudan bu canlı dersin içeriğine referans vererek açıkla!
 `;
   } else if (studyContext.type === 'caseExam') {
-    return `
+    output += `
 =======================================================
 📍 ÖĞRENCİNİN ŞU AN EKRANDA ÇÖZDÜĞÜ ŞİRKET VAKA SINAVI (CANLI EKRAN):
 =======================================================
@@ -96,14 +110,15 @@ function formatStudyContext(studyContext: any, lang: 'tr' | 'en'): string {
 ÖNEMLİ: Öğrenci bu vaka sınavı veya problemle ilgili soru sorduğunda yukarıdaki vaka verilerine ve adımlarına dayanarak açıkla!
 `;
   } else if (studyContext.type === 'course') {
-    return `
+    output += `
 =======================================================
 📍 ÖĞRENCİNİN ŞU AN BULUNDUĞU ALAN:
 =======================================================
 - Parkur / Ders: ${studyContext.activeTrackTitle || studyContext.track || ''}
 `;
   }
-  return '';
+
+  return output;
 }
 
 export default async function handler(req: any, res: any) {
