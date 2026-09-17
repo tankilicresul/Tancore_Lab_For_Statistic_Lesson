@@ -4,17 +4,17 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
   const [stage, setStage] = useState<'loading' | 'flashing' | 'done'>('loading');
 
   useEffect(() => {
-    // Stage 1: Cylinder fills (0s - 2.5s)
-    // Stage 2: Cylinder reaches 100% and flashes (2.5s - 3.0s)
+    // Stage 1: Cylinder fills (0s - 1.7s)
+    // Stage 2: Cylinder reaches 100% and flashes (1.7s - 2.0s)
     const flashTimer = setTimeout(() => {
       setStage('flashing');
-    }, 2500);
+    }, 1700);
 
-    // Stage 3: Close immediately at 3.0s
+    // Stage 3: Close immediately at 2.0s
     const finishTimer = setTimeout(() => {
       setStage('done');
       onComplete?.();
-    }, 3000);
+    }, 2000);
 
     return () => {
       clearTimeout(flashTimer);
@@ -90,7 +90,7 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
                   : ''
               }`}
               style={{
-                animation: 'cylinderProgressFill 2.5s cubic-bezier(0.12, 0.8, 0.32, 1) forwards',
+                animation: 'cylinderProgressFill 1.7s cubic-bezier(0.12, 0.8, 0.32, 1) forwards',
               }}
             >
               {/* Shimmer / Light Reflection Wave */}

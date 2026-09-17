@@ -537,13 +537,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       <span className="text-xs font-black text-slate-900 truncate block">
                         {userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')}{' '}
                         <span className="text-[10px] font-black text-[#ff7a00] bg-orange-100 px-1.5 py-0.5 rounded-md">
-                          (Siz)
+                          (Sen)
                         </span>
-                      </span>
-                      <span className="text-[9.5px] font-medium text-slate-500 block">
-                        {language === 'tr'
-                          ? `${sortedLeaderboard.length} Kayıtlı Öğrenci Arasında`
-                          : `Among ${sortedLeaderboard.length} Registered Students`}
                       </span>
                     </div>
                   </div>
@@ -893,9 +888,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   {language === 'tr' ? 'Genel Liderlik Tablosu' : 'Global Leaderboard'}
                 </span>
               </div>
-              <span className="text-[10px] text-white/80 italic font-medium">
-                {language === 'tr' ? '(Profil fotoğrafına tıklayarak inceleyin)' : '(Click photo to inspect)'}
-              </span>
             </div>
 
             {/* Symmetrical Podium Container (Top 3 Users) */}
@@ -1112,13 +1104,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       <span className="text-xs font-black text-slate-900 truncate block">
                         {userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')}{' '}
                         <span className="text-[10px] font-black text-[#ff7a00] bg-orange-100 px-1.5 py-0.5 rounded-md">
-                          (Siz)
+                          (Sen)
                         </span>
-                      </span>
-                      <span className="text-[9.5px] font-medium text-slate-500 block">
-                        {language === 'tr'
-                          ? `${sortedLeaderboard.length} Kayıtlı Öğrenci Arasında`
-                          : `Among ${sortedLeaderboard.length} Registered Students`}
                       </span>
                     </div>
                   </div>

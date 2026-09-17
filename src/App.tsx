@@ -85,6 +85,13 @@ export const App: React.FC = () => {
     }
   }, []);
 
+  // Strict guard: Guests / unauthenticated users must never see profile page on reload/refresh
+  useEffect(() => {
+    if ((!isAuthenticated || !isVerified) && currentView === 'profile' && !showLeaderboardDirectly) {
+      setCurrentView('home');
+    }
+  }, [isAuthenticated, isVerified, currentView, showLeaderboardDirectly, setCurrentView]);
+
   // Sync active view / modal state to browser history stack
   useEffect(() => {
     const currentState = {
@@ -405,11 +412,19 @@ export const App: React.FC = () => {
         )}
 
         {currentView === 'profile' && (
-          <ProfilePage
-            onGoHome={handleBackToHome}
-            onOpenAuth={() => setShowDirectAuthModal(true)}
-            showLeaderboardDirectly={showLeaderboardDirectly}
-          />
+          (!isAuthenticated || !isVerified) && !showLeaderboardDirectly ? (
+            <HomePage
+              onSelectTrack={handleSelectTrack}
+              onSelectInDesignCourse={handleSelectInDesignCourse}
+              onOpenProfile={handleOpenProfile}
+            />
+          ) : (
+            <ProfilePage
+              onGoHome={handleBackToHome}
+              onOpenAuth={() => setShowDirectAuthModal(true)}
+              showLeaderboardDirectly={showLeaderboardDirectly}
+            />
+          )
         )}
 
         {currentView === 'lesson' && lessonData && (

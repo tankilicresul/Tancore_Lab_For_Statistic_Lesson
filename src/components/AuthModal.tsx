@@ -416,7 +416,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-3 px-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider flex items-center justify-center space-x-2 transition-all shadow-md shadow-[#ff7a00]/30 disabled:opacity-50 cursor-pointer active:scale-95"
+              className="w-full mt-3 py-3 px-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider flex items-center justify-center space-x-2 transition-all shadow-md shadow-[#ff7a00]/30 disabled:opacity-50 cursor-pointer active:scale-95"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin text-white" />
@@ -427,20 +427,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </>
               )}
             </button>
-
-            <div className="text-center pt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveTab('register');
-                  setErrorMessage(null);
-                }}
-                className="text-xs text-slate-600 hover:text-[#ff7a00] font-bold transition-colors cursor-pointer"
-              >
-                {language === 'tr' ? 'Hesabınız yok mu? ' : "Don't have an account? "}
-                <span className="text-[#ff7a00] underline">{language === 'tr' ? 'Hemen Kayıt Olun' : 'Sign Up Now'}</span>
-              </button>
-            </div>
           </form>
         )}
 
@@ -550,31 +536,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-3 px-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider flex items-center justify-center space-x-2 transition-all shadow-md shadow-[#ff7a00]/30 disabled:opacity-50 cursor-pointer active:scale-95"
+              className="w-full mt-3 py-3 px-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider flex items-center justify-center space-x-2 transition-all shadow-md shadow-[#ff7a00]/30 disabled:opacity-50 cursor-pointer active:scale-95"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin text-white" />
               ) : (
                 <>
                   <UserPlus className="w-4 h-4" />
-                  <span>{language === 'tr' ? 'Doğrulama Kodu Gönder' : 'Send Verification Code'}</span>
+                  <span>{language === 'tr' ? 'Kayıt Ol ve Doğrula' : 'Sign Up & Verify'}</span>
                 </>
               )}
             </button>
-
-            <div className="text-center pt-1">
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveTab('login');
-                  setErrorMessage(null);
-                }}
-                className="text-xs text-slate-600 hover:text-[#ff7a00] font-bold transition-colors cursor-pointer"
-              >
-                {language === 'tr' ? 'Zaten hesabınız var mı? ' : 'Already have an account? '}
-                <span className="text-[#ff7a00] underline">{language === 'tr' ? 'Giriş Yapın' : 'Sign In'}</span>
-              </button>
-            </div>
           </form>
         )}
 
