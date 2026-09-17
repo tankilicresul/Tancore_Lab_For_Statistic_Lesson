@@ -301,12 +301,14 @@ export async function saveUserProfileToSupabase(profile: UserProfile & { xp?: nu
   if (!supabase || !isSupabaseConfigured) return;
 
   try {
+    const sanitizeText = (txt?: string, maxLen = 120) => (txt || '').replace(/<[^>]*>/g, '').trim().slice(0, maxLen);
+
     const payload: any = {
       email: profile.schoolEmail.trim().toLowerCase(),
-      full_name: profile.fullName,
-      university: profile.university,
-      department_and_class: profile.departmentAndClass,
-      avatar_emoji: profile.avatarEmoji || '👨‍🎓',
+      full_name: sanitizeText(profile.fullName, 80),
+      university: sanitizeText(profile.university, 100),
+      department_and_class: sanitizeText(profile.departmentAndClass, 100),
+      avatar_emoji: sanitizeText(profile.avatarEmoji || '👨‍🎓', 10) || '👨‍🎓',
       is_verified: true,
       updated_at: new Date().toISOString(),
     };
@@ -323,6 +325,15 @@ export async function saveUserProfileToSupabase(profile: UserProfile & { xp?: nu
     }
     if (typeof profile.completedLessons === 'number') {
       payload.completed_lessons = Math.max(0, Math.min(Math.round(profile.completedLessons), 200));
+    }
+    if (typeof profile.isPremium === 'boolean') {
+      payload.is_premium = profile.isPremium;
+    }
+    if (profile.subscriptionStatus) {
+      payload.subscription_status = profile.subscriptionStatus;
+    }
+    if (profile.subscriptionRenewsAt) {
+      payload.subscription_renews_at = profile.subscriptionRenewsAt;
     }
 
     await supabase.from('profiles').upsert(
@@ -356,15 +367,24 @@ export async function fetchUserProfileFromSupabase(email: string): Promise<any |
 }
 
 /**
- * Fetch all registered profiles from Supabase profiles table for live leaderboard
+ * Fetch all registered profiles from Supabase for live leaderboard (Emails strictly excluded)
  */
 export async function fetchAllProfilesFromSupabase(): Promise<any[]> {
   if (!supabase || !isSupabaseConfigured) return [];
 
   try {
+    // 1. Query secure public_leaderboard view (contains zero emails)
+    const { data: viewData, error: viewError } = await supabase
+      .from('public_leaderboard')
+      .select('id, full_name, university, department_and_class, avatar_emoji, avatar_url, xp, streak, completed_lessons')
+      .order('xp', { ascending: false });
+
+    if (!viewError && viewData && viewData.length > 0) return viewData;
+
+    // 2. Direct fallback to profiles table without requesting email column
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, email, school_email, full_name, university, department_and_class, avatar_emoji, avatar_url, xp, streak, completed_lessons')
+      .select('id, full_name, university, department_and_class, avatar_emoji, avatar_url, xp, streak, completed_lessons')
       .order('xp', { ascending: false });
 
     if (error || !data) return [];

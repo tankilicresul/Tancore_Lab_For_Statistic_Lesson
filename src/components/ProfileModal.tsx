@@ -48,6 +48,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
     logout,
     setSelectedPublicProfile,
     registeredUsers,
+    setIsPlusUpgradeModalOpen,
   } = useAppStore();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -495,6 +496,74 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                 </div>
               </div>
             )}
+          </div>
+
+          {/* TanCoreLab Plus Membership Status Card */}
+          <div
+            className={`p-3.5 sm:p-4 rounded-2xl border transition-all ${
+              userProfile?.isPremium
+                ? 'bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-amber-300 shadow-xs'
+                : 'bg-gradient-to-r from-slate-900 to-slate-800 border-slate-700 text-white shadow-md'
+            }`}
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center space-x-3 min-w-0">
+                <div
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                    userProfile?.isPremium ? 'bg-amber-500 text-white shadow-md' : 'bg-white/10 text-amber-400'
+                  }`}
+                >
+                  <Crown className="w-5 h-5 fill-current" />
+                </div>
+                <div className="min-w-0">
+                  <h4
+                    className={`text-xs sm:text-sm font-black flex items-center gap-1.5 ${
+                      userProfile?.isPremium ? 'text-amber-900' : 'text-white'
+                    }`}
+                  >
+                    <span>{userProfile?.isPremium ? 'TanCoreLab Plus Üyesi' : 'TanCoreLab Plus'}</span>
+                    {userProfile?.isPremium && (
+                      <span className="px-1.5 py-0.5 text-[9px] font-black uppercase rounded bg-amber-400 text-slate-950 shadow-xs">
+                        VIP
+                      </span>
+                    )}
+                  </h4>
+                  <p
+                    className={`text-[11px] truncate ${
+                      userProfile?.isPremium ? 'text-amber-700 font-medium' : 'text-slate-300'
+                    }`}
+                  >
+                    {userProfile?.isPremium
+                      ? language === 'tr'
+                        ? 'Tüm modüller & Tanco AI sınırsız açık'
+                        : 'All modules & Tanco AI unlocked'
+                      : language === 'tr'
+                      ? 'Tüm konular, çıkmış notlar ve Tanco AI (119 ₺/ay)'
+                      : 'All modules, notes & AI tutor (119 ₺/mo)'}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => {
+                  onClose();
+                  setIsPlusUpgradeModalOpen(true);
+                }}
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-black shrink-0 transition-all cursor-pointer ${
+                  userProfile?.isPremium
+                    ? 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-800 border border-amber-400'
+                    : 'bg-gradient-to-r from-amber-500 to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white shadow-md shadow-orange-500/30 hover:scale-105 active:scale-95'
+                }`}
+              >
+                {userProfile?.isPremium
+                  ? language === 'tr'
+                    ? 'Avantajlar'
+                    : 'Perks'
+                  : language === 'tr'
+                  ? "Plus'a Geç"
+                  : 'Upgrade'}
+              </button>
+            </div>
           </div>
 
           {/* Key Metrics Bar (3 Hero Stats) */}

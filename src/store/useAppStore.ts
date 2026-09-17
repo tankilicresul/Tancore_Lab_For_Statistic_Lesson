@@ -45,6 +45,10 @@ interface AppStoreActions {
   syncRegisteredUserInList: () => void;
   setIsTancoChatOpen: (open: boolean) => void;
   addXp: (amount: number) => void;
+  isPlusUpgradeModalOpen?: boolean;
+  setIsPlusUpgradeModalOpen: (open: boolean) => void;
+  openLemonCheckout: (customEmail?: string) => void;
+  setSubscriptionStatus: (isPremium: boolean, status?: string) => void;
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -54,6 +58,7 @@ const DEFAULT_PROFILE: UserProfile = {
   departmentAndClass: '',
   avatarEmoji: '👨‍🎓',
   isVerified: false,
+  isPremium: false,
 };
 
 const DEFAULT_DEMO_ACCOUNTS: RegisteredAccount[] = [];
@@ -81,6 +86,7 @@ const INITIAL_STATE: UserState = {
   selectedTrack: 'probability',
   customActiveModuleName: null,
   isTancoChatOpen: false,
+  isPlusUpgradeModalOpen: false,
 };
 
 function syncUserInList(state: UserState): PublicProfile[] {
@@ -118,6 +124,7 @@ function syncUserInList(state: UserState): PublicProfile[] {
     level: Math.floor(state.xp / 100) + 1,
     completedCount: state.completedLessons.length + state.completedCaseExams.length,
     unlockedBadges: state.unlockedBadges,
+    isPremium: Boolean(profile.isPremium),
   };
 
   const newList = [userEntry, ...otherUsers];
@@ -330,6 +337,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             avatarUrl: remoteProfile?.avatar_url || state.userProfile?.avatarUrl || undefined,
             isVerified: true,
             createdAt: new Date().toISOString(),
+            isPremium: Boolean(remoteProfile?.is_premium || remoteProfile?.isPremium),
+            subscriptionStatus: remoteProfile?.subscription_status || undefined,
+            subscriptionRenewsAt: remoteProfile?.subscription_renews_at || undefined,
           };
 
           // Seamlessly merge guest progress with remote account progress
@@ -713,6 +723,48 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         });
       },
 
+      setIsPlusUpgradeModalOpen: (open) => set({ isPlusUpgradeModalOpen: open }),
+
+      openLemonCheckout: (customEmail) => {
+        const state = get();
+        const email = customEmail || state.userProfile?.schoolEmail || '';
+        const name = state.userProfile?.fullName || '';
+        const baseUrl = 'https://tancorelab.lemonsqueezy.com/checkout/buy/7f8fd627-8384-4a2c-9b36-da2f05a7b216';
+        const params = new URLSearchParams({
+          desc: '0',
+          discount: '0',
+        });
+        if (email) {
+          params.set('checkout[email]', email);
+          params.set('checkout[custom][user_email]', email);
+        }
+        if (name) {
+          params.set('checkout[name]', name);
+        }
+        const finalUrl = `${baseUrl}?${params.toString()}`;
+        window.open(finalUrl, '_blank');
+      },
+
+      setSubscriptionStatus: (isPremium, status) => {
+        const state = get();
+        const updatedProfile: UserProfile = {
+          ...state.userProfile,
+          isPremium,
+          subscriptionStatus: status || (isPremium ? 'active' : 'inactive'),
+        };
+        set({
+          userProfile: updatedProfile,
+        });
+        if (state.isAuthenticated && updatedProfile.schoolEmail) {
+          saveUserProfileToSupabase({
+            ...updatedProfile,
+            xp: state.xp,
+            streak: state.streak,
+            completedLessons: state.completedLessons.length + state.completedCaseExams.length,
+          });
+        }
+      },
+
       resetProgress: () => {
         set({
           completedLessons: [],
@@ -762,7 +814,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
               state.userProfile.avatarUrl = acc.avatarUrl;
             }
 
-            // Sync real stats & avatar from Supabase on app load
+            // Sync real stats, avatar & PLUS status from Supabase on app load
             if (state.isAuthenticated && state.userProfile.schoolEmail && isSupabaseConfigured) {
               fetchUserProfileFromSupabase(state.userProfile.schoolEmail).then((remote) => {
                 if (remote) {
@@ -776,6 +828,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
                       avatarEmoji: remote.avatar_emoji || store.userProfile.avatarEmoji,
                       university: remote.university || store.userProfile.university,
                       departmentAndClass: remote.department_and_class || store.userProfile.departmentAndClass,
+                      isPremium: Boolean(remote.is_premium || remote.isPremium),
+                      subscriptionStatus: remote.subscription_status || store.userProfile.subscriptionStatus,
+                      subscriptionRenewsAt: remote.subscription_renews_at || store.userProfile.subscriptionRenewsAt,
                     },
                     xp: remoteXp,
                     streak: typeof remote.streak === 'number' ? Math.min(remote.streak, 365) : store.streak,

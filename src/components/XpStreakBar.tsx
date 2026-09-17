@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { Flame, Globe, Zap, UserCheck, ShieldCheck, Home } from 'lucide-react';
+import { Flame, Globe, Zap, UserCheck, ShieldCheck, Home, Crown } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { PublicProfileModal } from './PublicProfileModal';
 import { UserAvatar } from './UserAvatar';
@@ -17,11 +17,22 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
   onOpenProfile,
   currentView = 'home',
 }) => {
-  const { language, toggleLanguage, streak, isAuthenticated, isVerified, userProfile, selectedPublicProfile, setSelectedPublicProfile } = useAppStore();
+  const {
+    language,
+    toggleLanguage,
+    streak,
+    isAuthenticated,
+    isVerified,
+    userProfile,
+    selectedPublicProfile,
+    setSelectedPublicProfile,
+    setIsPlusUpgradeModalOpen,
+  } = useAppStore();
   const [showAuth, setShowAuth] = useState(false);
   const [isLogoSpinning, setIsLogoSpinning] = useState(false);
 
   const isProfileView = currentView === 'profile';
+  const isPlus = Boolean(userProfile?.isPremium);
 
   // Trigger logo spin animation every 3 seconds
   useEffect(() => {
@@ -84,6 +95,29 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
               <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.25]" />
               <span>{language.toUpperCase()}</span>
             </button>
+
+            {/* Plus Upgrade or VIP Badge */}
+            {isPlus ? (
+              <button
+                onClick={() => setIsPlusUpgradeModalOpen(true)}
+                className="flex items-center space-x-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 border border-amber-400/80 text-amber-600 font-black text-xs sm:text-sm tracking-wide shadow-xs cursor-pointer hover:scale-105 transition-transform"
+                title="TanCoreLab Plus Üyeliği Aktif"
+              >
+                <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 fill-amber-400" />
+                <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent font-black">
+                  PLUS
+                </span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsPlusUpgradeModalOpen(true)}
+                className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-2xl bg-gradient-to-r from-amber-500 to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-black text-xs sm:text-sm transition-all shadow-md shadow-orange-500/25 hover:scale-105 active:scale-95 cursor-pointer"
+                title={language === 'tr' ? "TanCoreLab Plus'a Yükselt (119 ₺)" : 'Upgrade to Plus (119 ₺)'}
+              >
+                <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-200 text-white animate-pulse" />
+                <span>Plus</span>
+              </button>
+            )}
 
             {/* Registration / Auth Button or My Profile / Home Icon Button */}
             {!isAuthenticated || !isVerified ? (

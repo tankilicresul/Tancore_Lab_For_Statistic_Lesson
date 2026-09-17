@@ -9,6 +9,7 @@ import { PlacementTestPage } from './pages/PlacementTestPage';
 import { TancoChatModal } from './components/TancoChatModal';
 import { FloatingTancoButton } from './components/FloatingTancoButton';
 import { GuestGateModal } from './components/GuestGateModal';
+import { PlusUpgradeModal } from './components/PlusUpgradeModal';
 import { getLessonById, getCaseExamById } from './data/modules';
 import { useAppStore } from './store/useAppStore';
 import { getLocalized } from './utils/localization';
@@ -413,6 +414,9 @@ export const App: React.FC = () => {
       {/* Tanco Assistant Chat Modal & Floating Launcher */}
       <TancoChatModal />
       <FloatingTancoButton />
+
+      {/* Plus Upgrade Modal */}
+      <PlusUpgradeModal />
 
       {/* Guest Gate Modal: shown when unauthenticated user tries to access 2nd lesson/case */}
       {showGuestGate && (
