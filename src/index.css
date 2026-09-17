@@ -10,6 +10,7 @@
     -ms-hyphens: none !important;
     word-break: normal !important;
     overflow-wrap: normal !important;
+    overscroll-behavior-x: none;
   }
 }
 

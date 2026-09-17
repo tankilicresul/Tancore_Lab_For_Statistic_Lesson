@@ -31,6 +31,8 @@ export const App: React.FC = () => {
     setSelectedTrack,
     customActiveModuleName = null,
     setCustomActiveModuleName,
+    isTancoChatOpen,
+    setIsTancoChatOpen,
   } = useAppStore();
 
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
@@ -68,7 +70,73 @@ export const App: React.FC = () => {
       });
   }, [userProfile?.schoolEmail]);
 
-  // ── Swipe-back edge gesture ──────────────────────────────────────────────
+  // ── Native OS Edge Swipe-Back & History Management ─────────────────────
+  // Initial root state setup
+  useEffect(() => {
+    if (!window.history.state) {
+      window.history.replaceState({ view: 'home' }, '');
+    }
+  }, []);
+
+  // Sync active view / modal state to browser history stack
+  useEffect(() => {
+    const currentState = {
+      view: currentView,
+      lessonId: selectedLessonId,
+      caseId: selectedCaseId,
+      chatOpen: isTancoChatOpen,
+      guestGate: showGuestGate,
+      inDesign: Boolean(selectedInDesignCourse),
+    };
+
+    const historyState = window.history.state;
+    if (!historyState || JSON.stringify(historyState) !== JSON.stringify(currentState)) {
+      window.history.pushState(currentState, '');
+    }
+  }, [currentView, selectedLessonId, selectedCaseId, isTancoChatOpen, showGuestGate, selectedInDesignCourse]);
+
+  // Handle popstate (triggered when user swiping from edge or clicking back button)
+  useEffect(() => {
+    const handlePopState = () => {
+      const store = useAppStore.getState();
+
+      // 1. Close open modals first
+      if (store.isTancoChatOpen) {
+        store.setIsTancoChatOpen(false);
+        return;
+      }
+      if (showGuestGate) {
+        setShowGuestGate(false);
+        return;
+      }
+      if (selectedInDesignCourse) {
+        setSelectedInDesignCourse(null);
+        return;
+      }
+
+      // 2. Navigate backwards in view hierarchy
+      const view = store.currentView;
+      if (view === 'lesson' || view === 'caseExam' || view === 'placementTest') {
+        store.setCurrentView('course');
+        store.setSelectedLessonId(null);
+        store.setSelectedCaseId(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (view === 'course' || view === 'profile') {
+        store.setCurrentView('home');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (view === 'home') {
+        // Prevent accidental app exit on home page back-swipe
+        window.history.pushState({ view: 'home' }, '');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [showGuestGate, selectedInDesignCourse]);
+
+  // Touch gesture fallback for edge swipes
   const swipeTouchRef = useRef<{ startX: number; startY: number } | null>(null);
 
   useEffect(() => {
@@ -102,14 +170,28 @@ export const App: React.FC = () => {
 
       if (!isBackSwipe) return;
 
-      const view = useAppStore.getState().currentView;
+      const store = useAppStore.getState();
+      if (store.isTancoChatOpen) {
+        store.setIsTancoChatOpen(false);
+        return;
+      }
+      if (showGuestGate) {
+        setShowGuestGate(false);
+        return;
+      }
+      if (selectedInDesignCourse) {
+        setSelectedInDesignCourse(null);
+        return;
+      }
+
+      const view = store.currentView;
       if (view === 'lesson' || view === 'caseExam' || view === 'placementTest') {
-        useAppStore.getState().setCurrentView('course');
-        useAppStore.getState().setSelectedLessonId(null);
-        useAppStore.getState().setSelectedCaseId(null);
+        store.setCurrentView('course');
+        store.setSelectedLessonId(null);
+        store.setSelectedCaseId(null);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (view === 'course' || view === 'profile') {
-        useAppStore.getState().setCurrentView('home');
+        store.setCurrentView('home');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     };
@@ -120,7 +202,7 @@ export const App: React.FC = () => {
       document.removeEventListener('touchstart', onTouchStart);
       document.removeEventListener('touchend', onTouchEnd);
     };
-  }, []);
+  }, [showGuestGate, selectedInDesignCourse]);
   // ────────────────────────────────────────────────────────────────────────
 
   // Guest-aware lesson/case opener:
