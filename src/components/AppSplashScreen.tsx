@@ -34,31 +34,23 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
 
   return (
     <div
-      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#f8fafc] select-none pointer-events-none transition-opacity ${
-        stage === 'zooming' ? 'opacity-0 duration-400 ease-out' : 'opacity-100 duration-300'
-      }`}
+      className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#f8fafc] select-none pointer-events-none overflow-hidden"
       style={{
-        background: 'radial-gradient(circle at 50% 48%, rgba(255, 122, 0, 0.09) 0%, #f8fafc 70%)',
+        background: '#f8fafc',
       }}
     >
       {/* Center Brand Container */}
-      <div
-        className={`flex flex-col items-center justify-center transition-all ${
-          stage === 'zooming'
-            ? 'scale-[14] opacity-0 duration-450 ease-in'
-            : stage === 'flashing'
-            ? 'scale-105 duration-300 ease-out'
-            : 'scale-100 duration-500 ease-out'
-        }`}
-      >
-        {/* TanCoreLab Icon & Brand Text */}
-        <div className="flex items-center space-x-3.5 sm:space-x-4">
-          {/* Logo Badge */}
+      <div className="flex flex-col items-center justify-center relative">
+        {/* Logo and Typography Row */}
+        <div className="flex items-center space-x-3.5 sm:space-x-4 relative">
+          {/* Logo Badge - Expands smoothly to cover entire screen in stage === 'zooming' */}
           <div
-            className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#ff7a00] flex items-center justify-center p-1.5 shadow-xl transition-all duration-300 ${
-              stage === 'flashing'
-                ? 'shadow-[0_0_40px_rgba(255,122,0,0.95)] ring-4 ring-orange-300 ring-offset-2 scale-110'
-                : 'shadow-[#ff7a00]/30'
+            className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#ff7a00] flex items-center justify-center p-1.5 shadow-xl transition-all ${
+              stage === 'zooming'
+                ? 'scale-[38] duration-400 ease-in z-50 shadow-none'
+                : stage === 'flashing'
+                ? 'scale-110 duration-300 ease-out shadow-[0_0_40px_rgba(255,122,0,0.95)] ring-4 ring-orange-300 ring-offset-2'
+                : 'scale-100 duration-500 ease-out shadow-[#ff7a00]/30'
             }`}
           >
             <div className="w-full h-full rounded-full border-[2.5px] border-white flex items-center justify-center bg-[#ff7a00]">
@@ -77,8 +69,12 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
             </div>
           </div>
 
-          {/* Typography */}
-          <div className="flex flex-col">
+          {/* Typography - Fades out immediately when zoom begins */}
+          <div
+            className={`flex flex-col transition-opacity duration-150 ${
+              stage === 'zooming' ? 'opacity-0' : 'opacity-100'
+            }`}
+          >
             <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-sans leading-none">
               TanCoreLab
             </h1>
@@ -90,8 +86,8 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
 
         {/* 3-Second Filling Cylinder (Progress Bar) */}
         <div
-          className={`mt-8 sm:mt-10 transition-all duration-300 ${
-            stage === 'zooming' ? 'opacity-0 scale-90' : 'opacity-100'
+          className={`mt-8 sm:mt-10 transition-opacity duration-150 ${
+            stage === 'zooming' ? 'opacity-0' : 'opacity-100'
           }`}
         >
           {/* Outer Rounded Cylinder */}
