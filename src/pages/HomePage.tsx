@@ -397,7 +397,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     {course.code}
                   </span>
                 </div>
-                <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7 text-[#ff7a00] stroke-[3.5] shrink-0" />
+                <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7 text-[#ff7a00] stroke-[3.5] shrink-0 translate-x-1.5" />
               </div>
 
               {/* Middle content: Title & Description */}
