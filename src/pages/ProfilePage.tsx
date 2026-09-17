@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { ALL_MODULES } from '../data/modules';
+import { DEFAULT_LEADERBOARD_STUDENTS } from '../data/leaderboardData';
 import { PublicProfile } from '../types/stats';
 import { uploadAvatarImage, deleteUserAvatar, fetchAllProfilesFromSupabase, saveUserProfileToSupabase } from '../lib/supabase';
 import { AvatarCropModal } from '../components/AvatarCropModal';
@@ -198,13 +199,19 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     return `id:${p.id || 'unknown'}`;
   };
 
-  // 1. Add Supabase database profiles
+  // 1. Add default 27 student profiles
+  DEFAULT_LEADERBOARD_STUDENTS.forEach((p) => {
+    const key = getProfileDedupKey(p);
+    allProfilesMap.set(key, p);
+  });
+
+  // 2. Add Supabase database profiles
   dbProfiles.forEach((p) => {
     const key = getProfileDedupKey(p);
     allProfilesMap.set(key, p);
   });
 
-  // 2. Add local store registered users if not present
+  // 3. Add local store registered users if not present
   (registeredUsers || []).forEach((p) => {
     const key = getProfileDedupKey(p);
     if (!allProfilesMap.has(key)) {
@@ -279,20 +286,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
             </div>
 
-            {isAuthenticated ? (
+            {isAuthenticated && (
               <div className="flex items-center space-x-2 shrink-0">
                 <div className="px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-black">
                   {userRank}. {language === 'tr' ? 'Sıra' : 'Rank'}
                 </div>
               </div>
-            ) : (
-              <button
-                onClick={onOpenAuth}
-                className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black transition-all shadow-md shadow-[#ff7a00]/30 cursor-pointer shrink-0 active:scale-95"
-              >
-                <UserCheck className="w-4 h-4" />
-                <span>{language === 'tr' ? 'Giriş Yap / Kayıt Ol' : 'Sign In / Up'}</span>
-              </button>
             )}
           </div>
 
