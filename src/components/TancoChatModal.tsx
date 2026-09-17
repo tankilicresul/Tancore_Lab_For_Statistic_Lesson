@@ -248,8 +248,16 @@ export const TancoChatModal: React.FC = () => {
 
     return () => {
       isMounted = false;
+      localStorage.setItem('tancore_last_read_tanco_chat_v1', String(Date.now()));
     };
   }, [isTancoChatOpen, userIdentifier]);
+
+  // Keep last read timestamp updated whenever messages change while chat is open
+  useEffect(() => {
+    if (isTancoChatOpen) {
+      localStorage.setItem('tancore_last_read_tanco_chat_v1', String(Date.now()));
+    }
+  }, [messages, isTancoChatOpen]);
 
   // Auto scroll to bottom of chat
   useEffect(() => {

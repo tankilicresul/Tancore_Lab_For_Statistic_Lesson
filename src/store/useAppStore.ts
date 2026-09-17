@@ -744,12 +744,20 @@ export const useAppStore = create<UserState & AppStoreActions>()(
               state.userProfile.avatarUrl = acc.avatarUrl;
             }
 
-            // Sync real stats from Supabase on app load
+            // Sync real stats & avatar from Supabase on app load
             if (state.isAuthenticated && state.userProfile.schoolEmail && isSupabaseConfigured) {
               fetchUserProfileFromSupabase(state.userProfile.schoolEmail).then((remote) => {
                 if (remote) {
                   const store = useAppStore.getState();
                   useAppStore.setState({
+                    userProfile: {
+                      ...store.userProfile,
+                      fullName: remote.full_name || store.userProfile.fullName,
+                      avatarUrl: remote.avatar_url || store.userProfile.avatarUrl,
+                      avatarEmoji: remote.avatar_emoji || store.userProfile.avatarEmoji,
+                      university: remote.university || store.userProfile.university,
+                      departmentAndClass: remote.department_and_class || store.userProfile.departmentAndClass,
+                    },
                     xp: typeof remote.xp === 'number' ? remote.xp : store.xp,
                     streak: typeof remote.streak === 'number' ? remote.streak : store.streak,
                   });
