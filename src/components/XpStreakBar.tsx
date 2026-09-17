@@ -118,45 +118,51 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                 <span>Plus</span>
               </button>
             )}
-
-            {/* Registration / Auth Button or My Profile / Home Icon Button */}
-            {!isAuthenticated || !isVerified ? (
-              <button
-                onClick={() => setShowAuth(true)}
-                className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs sm:text-sm font-black transition-all shadow-xs cursor-pointer"
-                title={language === 'tr' ? 'E-posta ile Kayıt Ol / Giriş Yap' : 'Sign Up / Sign In'}
-              >
-                <UserCheck className="w-4 h-4" />
-                <span className="hidden sm:inline">{language === 'tr' ? 'Kayıt Ol' : 'Sign Up'}</span>
-              </button>
-            ) : isProfileView ? (
-              /* When Profile is Open: Rightmost Button becomes Home Icon (🏠 Ev İkonu) */
-              <button
-                onClick={onGoHome}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00] hover:bg-[#e66e00] text-white transition-all shadow-md shadow-[#ff7a00]/30 flex items-center justify-center cursor-pointer active:scale-95 shrink-0"
-                title={language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
-              >
-                <Home className="w-4.5 h-4.5 sm:w-5 sm:h-5 stroke-[2.25]" />
-              </button>
-            ) : (
-              /* When Profile is Closed: Rightmost Button shows Profile Avatar */
-              <button
-                onClick={onOpenProfile}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#ff7a00]/15 hover:bg-[#ff7a00]/25 text-[#ff7a00] border-2 border-[#ff7a00]/50 transition-all shadow-xs flex items-center justify-center font-black cursor-pointer overflow-hidden p-0 active:scale-95 shrink-0"
-                title={language === 'tr' ? 'Profilim & Performansım' : 'My Profile'}
-              >
-                <UserAvatar
-                  avatarUrl={userProfile?.avatarUrl}
-                  avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
-                  fullName={userProfile?.fullName}
-                  size="sm"
-                  className="w-full h-full"
-                />
-              </button>
-            )}
           </div>
         </div>
       </header>
+
+      {/* Fixed Bottom Profile Button (Telefonun en alt kenarında) */}
+      <div className="fixed bottom-4 left-4 z-40 sm:bottom-6 sm:left-6 transition-all duration-300">
+        {!isAuthenticated || !isVerified ? (
+          <button
+            onClick={() => setShowAuth(true)}
+            className="flex items-center space-x-2 px-3.5 py-2.5 rounded-full bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs sm:text-sm font-black transition-all shadow-lg shadow-orange-500/30 border border-white/30 cursor-pointer active:scale-95"
+            title={language === 'tr' ? 'E-posta ile Kayıt Ol / Giriş Yap' : 'Sign Up / Sign In'}
+          >
+            <UserCheck className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+            <span className="font-bold">{language === 'tr' ? 'Giriş / Kayıt' : 'Sign In'}</span>
+          </button>
+        ) : isProfileView ? (
+          <button
+            onClick={onGoHome}
+            className="flex items-center space-x-2 px-3.5 py-2.5 rounded-full bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs sm:text-sm font-black transition-all shadow-lg shadow-[#ff7a00]/30 border border-white/30 cursor-pointer active:scale-95"
+            title={language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
+          >
+            <Home className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.5]" />
+            <span className="font-bold">{language === 'tr' ? 'Ana Sayfa' : 'Home'}</span>
+          </button>
+        ) : (
+          <button
+            onClick={onOpenProfile}
+            className="flex items-center space-x-2 p-1.5 pr-3.5 rounded-full bg-white/95 backdrop-blur-md hover:bg-white text-slate-900 border-2 border-[#ff7a00] transition-all shadow-lg shadow-black/10 cursor-pointer active:scale-95 group"
+            title={language === 'tr' ? 'Profilim & Performansım' : 'My Profile'}
+          >
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#ff7a00]/15 flex items-center justify-center overflow-hidden shrink-0 group-hover:scale-105 transition-transform">
+              <UserAvatar
+                avatarUrl={userProfile?.avatarUrl}
+                avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
+                fullName={userProfile?.fullName}
+                size="sm"
+                className="w-full h-full"
+              />
+            </div>
+            <span className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-[#ff7a00] transition-colors">
+              {language === 'tr' ? 'Profilim' : 'Profile'}
+            </span>
+          </button>
+        )}
+      </div>
 
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
 
