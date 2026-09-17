@@ -438,8 +438,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                   </div>
 
-                  <span className="text-[11px] sm:text-xs font-black font-mono uppercase tracking-wider text-amber-700 group-hover:text-amber-800 transition-colors shrink-0">
-                    {course.code} {isEn ? 'COMING SOON' : 'YAKINDA'}
+                  <span className="text-xs sm:text-sm font-black uppercase text-amber-700 group-hover:text-amber-800 transition-colors shrink-0">
+                    {course.code.replace(/\s+/g, '')} {isEn ? 'COMING SOON' : 'YAKINDA'}
                   </span>
                 </div>
 
