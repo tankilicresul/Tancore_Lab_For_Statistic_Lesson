@@ -42,7 +42,9 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
         <div className="max-w-6xl mx-auto flex items-center justify-between relative">
           {/* TancoreLab Brand Logo */}
           <a
-            href="#"
+            href="/"
+            title="TanCoreLab Ana Sayfası"
+            aria-label="TanCoreLab Ana Sayfasına Dön"
             onClick={(e) => {
               e.preventDefault();
               onGoHome?.();
@@ -60,7 +62,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             </div>
 
             <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-sans">
-              TancoreLab
+              TanCoreLab
             </span>
           </a>
 

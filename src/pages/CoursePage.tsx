@@ -39,7 +39,7 @@ import { UploadCourseNotesModal } from '../components/UploadCourseNotesModal';
 
 export const SpiderIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -63,7 +63,7 @@ export const SpiderIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 export const CaseExamIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"

@@ -332,13 +332,11 @@ export const HomePage: React.FC<HomePageProps> = ({
             {/* Speech bubble tail pointing down towards Tanco's head */}
             <div className="absolute left-7 sm:left-8 -bottom-2 w-4 h-4 bg-white border-r border-b border-amber-200/90 transform rotate-45" />
 
-            <h2 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug mb-1">
-              <span>
-                {language === 'tr'
-                  ? `Selam ${studentDisplayName}! Ben Tanco, senin TA'yin olacağım.`
-                  : `Hi ${studentDisplayName}! I'm Tanco, your TA.`}
-              </span>
-            </h2>
+            <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug mb-1">
+              {language === 'tr'
+                ? `Selam ${studentDisplayName}! Ben Tanco, senin TA'yin olacağım.`
+                : `Hi ${studentDisplayName}! I'm Tanco, your TA.`}
+            </h1>
             <p className="text-[11.5px] sm:text-xs text-slate-700 font-medium leading-relaxed">
               {language === 'tr'
                 ? "Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman fotoğrafıma tıklayarak ulaşabilirsin."
@@ -355,6 +353,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             >
               <TanCoreMascotAvatar
                 size="lg"
+                alt="Tanco Yapay Zeka Öğretim Asistanı"
                 className="shadow-md shadow-black/20 ring-2 ring-white/80 group-hover:scale-105 transition-transform shrink-0"
               />
             </button>
@@ -371,7 +370,11 @@ export const HomePage: React.FC<HomePageProps> = ({
       </div>
 
       {/* 1. Hazır Olan Dersler (Aktif Modüller) */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:auto-rows-fr">
+      <section aria-label={language === 'tr' ? 'Aktif Ders Parkurları' : 'Active Course Tracks'}>
+        <h2 className="sr-only">
+          {language === 'tr' ? 'Endüstri Mühendisliği Temel Dersleri' : 'Core Industrial Engineering Courses'}
+        </h2>
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:auto-rows-fr">
         {COURSES_DATA.filter((c) => c.status === 'active').map((course) => {
           const isEn = language === 'en';
           const title = isEn ? course.name.en : course.name.tr;
@@ -412,10 +415,14 @@ export const HomePage: React.FC<HomePageProps> = ({
             </button>
           );
         })}
-      </div>
+        </div>
+      </section>
 
       {/* 2. Hazır Olanlar ile Hazır Olmayanlar Arasındaki Arttırılmış Mesafe */}
-      <div className="pt-6 sm:pt-8">
+      <section className="pt-6 sm:pt-8" aria-label={language === 'tr' ? 'Geliştirilmekte Olan Dersler' : 'Upcoming Courses'}>
+        <h2 className="sr-only">
+          {language === 'tr' ? 'Yakında Eklenecek Endüstri Mühendisliği Dersleri' : 'Upcoming Industrial Engineering Courses'}
+        </h2>
         <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:auto-rows-fr">
           {COURSES_DATA.filter((c) => c.status !== 'active').map((course) => {
             const isEn = language === 'en';
@@ -456,7 +463,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             );
           })}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

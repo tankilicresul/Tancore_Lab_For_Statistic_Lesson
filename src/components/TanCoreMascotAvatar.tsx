@@ -4,11 +4,13 @@ import { Zap } from 'lucide-react';
 interface TanCoreMascotAvatarProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  alt?: string;
 }
 
 export const TanCoreMascotAvatar: React.FC<TanCoreMascotAvatarProps> = ({
   className = '',
   size = 'md',
+  alt = 'Tanco Yapay Zeka Öğretim Asistanı Maskotu',
 }) => {
   const [imgError, setImgError] = useState(false);
 
@@ -26,7 +28,7 @@ export const TanCoreMascotAvatar: React.FC<TanCoreMascotAvatarProps> = ({
       >
         <img
           src="/tancore-mascot.png"
-          alt="TanCore Guide Mascot"
+          alt={alt}
           className="w-full h-full object-cover"
           onError={() => setImgError(true)}
         />
@@ -39,7 +41,7 @@ export const TanCoreMascotAvatar: React.FC<TanCoreMascotAvatarProps> = ({
     <div
       className={`relative inline-flex items-center justify-center rounded-full overflow-hidden bg-slate-100 border-2 border-slate-900 shadow-sm shrink-0 ${sizeClasses} ${className}`}
     >
-      <svg viewBox="0 0 200 200" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 200 200" className="w-full h-full" fill="none" xmlns="https://www.w3.org/2000/svg">
         {/* Background */}
         <rect width="200" height="200" fill="#F5F5F4" />
         
