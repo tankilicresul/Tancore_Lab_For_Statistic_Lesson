@@ -408,11 +408,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </p>
               </div>
 
-              {/* Bottom Row: CTA button */}
-              <div className="relative z-10 mt-auto pt-2.5 sm:pt-3.5 flex items-center justify-between gap-2 shrink-0">
-                <div className="flex items-center space-x-2 text-xs sm:text-sm font-black uppercase tracking-wider text-[#ff7a00] group-hover:translate-x-1.5 transition-transform">
-                  <span>{isEn ? 'Start Course !' : 'Derse Başla !'}</span>
-                  <ArrowRight className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.5]" />
+              {/* Bottom Row: CTA arrow */}
+              <div className="relative z-10 mt-auto pt-2 sm:pt-3 flex items-center justify-end w-full shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#ff7a00]/10 text-[#ff7a00] group-hover:bg-[#ff7a00] group-hover:text-white flex items-center justify-center transition-all duration-300 shadow-2xs">
+                  <ArrowRight className="w-4 h-4 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
             </button>
