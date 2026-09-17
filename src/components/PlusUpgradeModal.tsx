@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { AuthModal } from './AuthModal';
 import {
@@ -27,6 +27,28 @@ export const PlusUpgradeModal: React.FC = () => {
   } = useAppStore();
 
   const [showAuth, setShowAuth] = useState(false);
+  const [isLogoSpinning, setIsLogoSpinning] = useState(false);
+
+  useEffect(() => {
+    if (!isPlusUpgradeModalOpen) return;
+
+    // Initial spin on open
+    const initialTimer = setTimeout(() => {
+      setIsLogoSpinning(true);
+      setTimeout(() => setIsLogoSpinning(false), 1300);
+    }, 250);
+
+    // Periodic spin every 4 seconds
+    const interval = setInterval(() => {
+      setIsLogoSpinning(true);
+      setTimeout(() => setIsLogoSpinning(false), 1300);
+    }, 4000);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(interval);
+    };
+  }, [isPlusUpgradeModalOpen]);
 
   if (!isPlusUpgradeModalOpen) return null;
 
@@ -87,16 +109,38 @@ export const PlusUpgradeModal: React.FC = () => {
         </button>
 
         <div className="p-6 sm:p-7 space-y-5">
-          {/* Header Section */}
-          <div>
-            <h2 className="text-2xl font-black tracking-tight text-slate-900">
-              TanCoreLab Plus
-            </h2>
-            <p className="text-slate-600 text-xs mt-1 leading-relaxed">
-              {isTr
-                ? 'Mühendislik istatistiği ve olasılık derslerinde en yüksek başarı için ihtiyacın olan her şey.'
-                : 'Everything you need to master university probability & statistics.'}
-            </p>
+          {/* Header Section (Centered with animated TanCoreLab Brand Logo) */}
+          <div className="flex flex-col items-center text-center space-y-2.5 pt-1">
+            {/* Animated TanCoreLab Logo */}
+            <div
+              className="relative flex items-center justify-center cursor-pointer group"
+              onClick={() => {
+                setIsLogoSpinning(true);
+                setTimeout(() => setIsLogoSpinning(false), 1300);
+              }}
+              title="TanCoreLab"
+            >
+              <div className="w-13 h-13 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-lg shadow-[#ff7a00]/30 p-1 group-hover:scale-105 transition-transform">
+                <div
+                  className={`w-full h-full rounded-full border-2 border-white flex items-center justify-center ${
+                    isLogoSpinning ? 'animate-logo-spin' : ''
+                  }`}
+                >
+                  <Zap className="w-6 h-6 text-white fill-white stroke-[2]" />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-black tracking-tight text-slate-900">
+                TanCoreLab Plus
+              </h2>
+              <p className="text-slate-600 text-xs mt-1 leading-relaxed max-w-sm mx-auto">
+                {isTr
+                  ? 'Mühendislik istatistiği ve olasılık derslerinde en yüksek başarı için ihtiyacın olan her şey.'
+                  : 'Everything you need to master university probability & statistics.'}
+              </p>
+            </div>
           </div>
 
           {/* Active status if already subscribed */}
