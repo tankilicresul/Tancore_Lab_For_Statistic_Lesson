@@ -237,9 +237,6 @@ export const CoursePage: React.FC<CoursePageProps> = ({
             title={isEn ? "Chat with Tanco" : "Tanco ile Sohbet Et"}
           >
             <TanCoreMascotAvatar size="xl" className="shadow-lg shadow-[#ff7a00]/25 group-hover:scale-105 transition-transform" />
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center border-2 border-white shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-            </div>
           </button>
 
           <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight mb-2">

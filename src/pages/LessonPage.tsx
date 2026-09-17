@@ -153,13 +153,10 @@ export const LessonPage: React.FC<LessonPageProps> = ({
               title={language === 'tr' ? "Tanco ile Sohbet Et" : "Chat with Tanco"}
             >
               <TanCoreMascotAvatar size="md" className="shadow-md shadow-[#ff7a00]/25 group-hover:scale-105 transition-transform" />
-              <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center border-2 border-white shadow-xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-              </div>
             </button>
 
             <div className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] text-[11px] sm:text-xs font-black uppercase tracking-wider border border-[#ff7a00]/20">
-              <span>🤖 {language === 'tr' ? 'Tanco Rehberin Konuşuyor' : 'Guide Tanco Speaking'}</span>
+              <span>{language === 'tr' ? 'Tanco Rehberin Konuşuyor' : 'Guide Tanco Speaking'}</span>
             </div>
           </div>
 

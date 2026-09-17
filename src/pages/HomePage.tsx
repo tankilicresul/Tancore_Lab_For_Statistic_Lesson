@@ -356,14 +356,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                 size="lg"
                 className="shadow-md shadow-black/20 ring-2 ring-white/80 group-hover:scale-105 transition-transform shrink-0"
               />
-              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-white shadow-2xs" />
             </button>
             <div className="flex flex-col">
-              <span className="text-xs sm:text-sm font-black text-white tracking-tight flex items-center gap-1.5 drop-shadow-xs">
+              <span className="text-xs sm:text-sm font-black text-white tracking-tight drop-shadow-xs">
                 Tanco
-                <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-white/25 text-white font-mono border border-white/30 backdrop-blur-xs">
-                  TA
-                </span>
               </span>
               <span className="text-[10px] sm:text-[11px] font-semibold text-amber-100">
                 {language === 'tr' ? 'Öğretim Asistanı' : 'Teaching Assistant'}
@@ -412,15 +408,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </p>
               </div>
 
-              {/* Bottom Row: CTA button + 8 Modules Badge */}
+              {/* Bottom Row: CTA button */}
               <div className="relative z-10 mt-auto pt-2 sm:pt-3 flex items-center justify-between gap-2 shrink-0">
                 <div className="flex items-center space-x-1.5 text-[10.5px] sm:text-xs font-black uppercase tracking-wider text-[#ff7a00] group-hover:translate-x-1 transition-transform">
                   <span>{isEn ? 'Start Course !' : 'Derse Başla !'}</span>
                   <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
                 </div>
-                <span className={`text-[9px] sm:text-[10.5px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full font-mono border shrink-0 shadow-2xs ${course.badgeStyle}`}>
-                  {badgeText}
-                </span>
               </div>
             </button>
           );

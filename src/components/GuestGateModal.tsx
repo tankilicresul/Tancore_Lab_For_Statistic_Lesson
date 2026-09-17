@@ -43,7 +43,6 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
           </button>
           <div className="relative inline-block mb-3">
             <TanCoreMascotAvatar size="lg" className="rounded-full shadow-xl border-4 border-white/60" />
-            <span className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white shadow-xs animate-pulse" />
           </div>
           <h2 className="text-lg sm:text-xl font-black text-white tracking-tight leading-snug relative z-10">
             {isTr ? '2. Modüle Geçmek İçin Üye Ol! 🎓' : 'Sign Up to Unlock Module 2! 🎓'}

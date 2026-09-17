@@ -246,9 +246,6 @@ export const FloatingTancoButton: React.FC = () => {
             className="rounded-full shadow-inner pointer-events-none"
           />
 
-          {/* Glowing Green Online Status Dot */}
-          <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white shadow-xs animate-pulse" />
-
           {/* Attention-Grabbing Red/Orange Unread Notification Badge */}
           {hasUnread && (
             <div className="absolute -top-1.5 -right-1.5 z-20 flex items-center justify-center pointer-events-none">

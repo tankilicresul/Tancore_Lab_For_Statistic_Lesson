@@ -516,7 +516,6 @@ export const TancoChatModal: React.FC = () => {
                 size="md"
                 className="rounded-full shadow-md shadow-[#ff7a00]/30 border-2 border-[#ff7a00]"
               />
-              <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-slate-900 shadow-2xs animate-pulse" />
             </div>
 
             <div className="min-w-0 flex-1">
