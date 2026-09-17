@@ -438,7 +438,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <Icon className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
                   </div>
 
-                  <span className="text-sm sm:text-lg lg:text-xl font-black tracking-tight uppercase text-amber-700 group-hover:text-amber-800 transition-colors truncate">
+                  <span className="text-xs sm:text-base lg:text-lg font-black tracking-tight uppercase text-amber-700 group-hover:text-amber-800 transition-colors truncate">
                     {course.code} {isEn ? 'COMING SOON' : 'YAKINDA'}
                   </span>
                 </div>
