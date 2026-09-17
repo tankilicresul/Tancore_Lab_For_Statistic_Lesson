@@ -341,110 +341,110 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                 </div>
 
                 {/* Symmetrical Podium Container (Top 3 Real Users) */}
-                <div className="bg-slate-950/90 rounded-2xl p-3 sm:p-4 border border-amber-500/30 shadow-2xl space-y-3">
+                <div className="bg-white text-slate-900 rounded-2xl p-3 sm:p-4 border border-white/80 shadow-2xl space-y-3">
                   <div className="flex items-end justify-center gap-2 sm:gap-4 pt-3 pb-1">
-                    {/* 2nd Place (Left) */}
+                    {/* 2nd Place (Left - Silver) */}
                     <div className="flex flex-col items-center flex-1 max-w-[100px]">
                       {top2 ? (
                         <>
                           <div
-                            className="relative mb-2 flex flex-col items-center group cursor-pointer"
+                            className="relative mb-2 flex flex-col items-center group cursor-pointer animate-podium-2"
                             onClick={() => setSelectedPublicProfile(top2)}
                           >
-                            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-slate-300 bg-slate-800 flex items-center justify-center text-xl shadow-md overflow-hidden group-hover:scale-110 transition-transform ring-2 ring-slate-400/50">
+                            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-slate-300 bg-slate-100 flex items-center justify-center text-xl shadow-md overflow-hidden group-hover:scale-105 transition-transform ring-2 ring-slate-300/80">
                               <span className="text-2xl">{top2.avatarEmoji || '👦'}</span>
                             </div>
-                            <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-900 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
+                            <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-800 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
                               2
                             </div>
                           </div>
                           <button
                             onClick={() => setSelectedPublicProfile(top2)}
-                            className="text-[11px] font-extrabold text-slate-200 truncate max-w-full text-center hover:text-amber-300 flex items-center space-x-1"
+                            className="text-[11px] font-extrabold text-slate-800 truncate max-w-full text-center hover:text-[#ff7a00] flex items-center space-x-1"
                           >
                             <span>{top2.fullName}</span>
-                            <ExternalLink className="w-2.5 h-2.5 opacity-70 shrink-0" />
+                            <ExternalLink className="w-2.5 h-2.5 opacity-60 shrink-0" />
                           </button>
-                          <div className="flex items-center space-x-1 text-slate-300 text-[10px] font-black my-1">
-                            <span className="text-cyan-400 font-serif">◆</span>
+                          <div className="flex items-center space-x-1 text-slate-600 text-[10px] font-black my-1">
+                            <span className="text-amber-500 font-serif">◆</span>
                             <span>{top2.xp.toLocaleString('tr-TR')}</span>
                           </div>
                         </>
                       ) : (
-                        <div className="text-[10px] text-slate-500 font-bold my-4">2. Sıra Boş</div>
+                        <div className="text-[10px] text-slate-400 font-bold my-4">2. Sıra Boş</div>
                       )}
-                      <div className="w-full h-16 bg-slate-800/90 rounded-t-2xl border-t-2 border-slate-400/60 shadow-inner flex items-center justify-center">
-                        <span className="text-xs font-black text-slate-400">2.</span>
+                      <div className="w-full h-16 sm:h-20 bg-gradient-to-b from-slate-200 via-slate-300 to-slate-400/90 rounded-t-2xl border-t-2 border-slate-100 shadow-inner flex items-center justify-center">
+                        <span className="text-xs font-black text-slate-700">2.</span>
                       </div>
                     </div>
 
-                    {/* 1st Place (Center - Highest) */}
+                    {/* 1st Place (Center - Gold) */}
                     <div className="flex flex-col items-center flex-1 max-w-[110px]">
                       {top1 ? (
                         <>
                           <div
-                            className="relative mb-2 flex flex-col items-center group cursor-pointer"
+                            className="relative mb-2 flex flex-col items-center group cursor-pointer animate-podium-1"
                             onClick={() => setSelectedPublicProfile(top1)}
                           >
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-amber-400 bg-slate-800 flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.6)] overflow-hidden group-hover:scale-110 transition-transform">
+                            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-amber-400 bg-amber-50 flex items-center justify-center shadow-lg overflow-hidden group-hover:scale-105 transition-transform ring-4 ring-amber-300/80">
                               <span className="text-3xl">{top1.avatarEmoji || '👨‍🎓'}</span>
                             </div>
-                            <div className="w-6 h-6 rounded-full bg-amber-400 text-slate-950 text-xs font-black flex items-center justify-center shadow-md -mt-3 border border-white z-10">
+                            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-amber-400 to-[#ff7a00] text-white text-xs font-black flex items-center justify-center shadow-md -mt-3 border border-white z-10">
                               1
                             </div>
                           </div>
                           <button
                             onClick={() => setSelectedPublicProfile(top1)}
-                            className="text-xs font-black text-amber-300 truncate max-w-full text-center hover:underline flex items-center space-x-1"
+                            className="text-xs sm:text-sm font-black text-slate-900 truncate max-w-full text-center hover:text-[#ff7a00] flex items-center space-x-1"
                           >
                             <span>{top1.fullName}</span>
-                            <ExternalLink className="w-3 h-3 text-amber-400 shrink-0" />
+                            <ExternalLink className="w-3 h-3 text-[#ff7a00] shrink-0" />
                           </button>
-                          <div className="flex items-center space-x-1 text-amber-400 text-xs font-black my-1">
-                            <span className="text-cyan-400 font-serif">◆</span>
+                          <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black my-1">
+                            <span className="text-amber-500 font-serif">◆</span>
                             <span>{top1.xp.toLocaleString('tr-TR')}</span>
                           </div>
                         </>
                       ) : (
-                        <div className="text-[10px] text-amber-400 font-bold my-4">1. Sıra</div>
+                        <div className="text-[10px] text-amber-600 font-bold my-4">1. Sıra</div>
                       )}
-                      <div className="w-full h-24 bg-gradient-to-b from-amber-500/40 via-amber-900/50 to-slate-900 rounded-t-2xl border-t-2 border-amber-400 shadow-inner flex items-center justify-center">
-                        <Crown className="w-5 h-5 text-amber-400 animate-pulse" />
+                      <div className="w-full h-24 sm:h-28 bg-gradient-to-b from-amber-400 via-amber-500 to-[#ff7a00] rounded-t-2xl border-t-2 border-amber-300 shadow-md flex items-center justify-center">
+                        <Crown className="w-6 h-6 text-white fill-white/80 animate-pulse" />
                       </div>
                     </div>
 
-                    {/* 3rd Place (Right) */}
+                    {/* 3rd Place (Right - Bronze) */}
                     <div className="flex flex-col items-center flex-1 max-w-[100px]">
                       {top3 ? (
                         <>
                           <div
-                            className="relative mb-2 flex flex-col items-center group cursor-pointer"
+                            className="relative mb-2 flex flex-col items-center group cursor-pointer animate-podium-3"
                             onClick={() => setSelectedPublicProfile(top3)}
                           >
-                            <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-amber-700 bg-slate-800 flex items-center justify-center text-lg shadow-md overflow-hidden group-hover:scale-110 transition-transform ring-2 ring-amber-700/50">
+                            <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-amber-700 bg-amber-50 flex items-center justify-center text-lg shadow-md overflow-hidden group-hover:scale-105 transition-transform ring-2 ring-amber-600/60">
                               <span className="text-xl">{top3.avatarEmoji || '👩‍🎓'}</span>
                             </div>
-                            <div className="w-5 h-5 rounded-full bg-amber-700 text-amber-100 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
+                            <div className="w-5 h-5 rounded-full bg-amber-700 text-white text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
                               3
                             </div>
                           </div>
                           <button
                             onClick={() => setSelectedPublicProfile(top3)}
-                            className="text-[11px] font-extrabold text-amber-200/90 truncate max-w-full text-center hover:text-amber-300 flex items-center space-x-1"
+                            className="text-[11px] font-extrabold text-slate-800 truncate max-w-full text-center hover:text-[#ff7a00] flex items-center space-x-1"
                           >
                             <span>{top3.fullName}</span>
-                            <ExternalLink className="w-2.5 h-2.5 opacity-70 shrink-0" />
+                            <ExternalLink className="w-2.5 h-2.5 opacity-60 shrink-0" />
                           </button>
-                          <div className="flex items-center space-x-1 text-amber-500 text-[10px] font-black my-1">
-                            <span className="text-cyan-400 font-serif">◆</span>
+                          <div className="flex items-center space-x-1 text-amber-800 text-[10px] font-black my-1">
+                            <span className="text-amber-500 font-serif">◆</span>
                             <span>{top3.xp.toLocaleString('tr-TR')}</span>
                           </div>
                         </>
                       ) : (
-                        <div className="text-[10px] text-slate-500 font-bold my-4">3. Sıra Boş</div>
+                        <div className="text-[10px] text-slate-400 font-bold my-4">3. Sıra Boş</div>
                       )}
-                      <div className="w-full h-12 bg-amber-950/50 rounded-t-2xl border-t-2 border-amber-700/80 shadow-inner flex items-center justify-center">
-                        <span className="text-xs font-black text-amber-700">3.</span>
+                      <div className="w-full h-12 sm:h-16 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t-2xl border-t-2 border-amber-500 shadow-xs flex items-center justify-center">
+                        <span className="text-xs font-black text-amber-200">3.</span>
                       </div>
                     </div>
                   </div>
@@ -467,20 +467,20 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                         unlockedBadges: unlockedBadges,
                       })
                     }
-                    className="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between bg-gradient-to-r from-[#ff7a00]/20 to-amber-500/20 hover:from-[#ff7a00]/30 hover:to-amber-500/30 border border-[#ff7a00]/40 p-2.5 rounded-xl text-white cursor-pointer transition-colors group"
+                    className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 hover:from-orange-100 hover:to-amber-100 border-2 border-[#ff7a00]/40 p-2.5 rounded-xl text-slate-900 cursor-pointer transition-all shadow-xs group"
                   >
                     <div className="flex items-center space-x-2.5 min-w-0">
                       <div className="px-2 py-0.5 rounded-lg bg-[#ff7a00] text-white font-black text-xs shadow-xs shrink-0">
                         {userRank}.
                       </div>
-                      <div className="w-7 h-7 rounded-full bg-[#ff7a00] text-white font-extrabold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden">
+                      <div className="w-7 h-7 rounded-full bg-white border border-orange-200 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden shadow-2xs">
                         {userProfile?.avatarEmoji || (userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'Ö')}
                       </div>
                       <div className="min-w-0">
-                        <span className="text-xs font-black text-white truncate block">
-                          {userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')} <span className="text-[10px] font-extrabold text-amber-300">(Siz)</span>
+                        <span className="text-xs font-black text-slate-900 truncate block">
+                          {userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')} <span className="text-[10px] font-black text-[#ff7a00] bg-orange-100 px-1.5 py-0.5 rounded-md">(Siz)</span>
                         </span>
-                        <span className="text-[9.5px] font-medium text-slate-300 block">
+                        <span className="text-[9.5px] font-medium text-slate-500 block">
                           {language === 'tr'
                             ? `${sortedLeaderboard.length} kayıtlı öğrenci arasında`
                             : `Out of ${sortedLeaderboard.length} registered students`}
@@ -488,8 +488,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-1 text-amber-300 text-xs font-black shrink-0">
-                      <span className="text-cyan-400 font-serif">◆</span>
+                    <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black shrink-0">
+                      <span className="text-amber-500 font-serif">◆</span>
                       <span>{(xp || 0).toLocaleString('tr-TR')} XP</span>
                     </div>
                   </div>
