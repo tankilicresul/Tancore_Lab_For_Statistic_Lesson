@@ -386,7 +386,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             >
               <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform ${course.glowColor}`} />
 
-              {/* Top row: Icon & Course Code (Side-by-side with larger bold font) */}
+              {/* Top row: Icon & Course Code with Arrow */}
               <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
                 <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
                   <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
@@ -396,15 +396,15 @@ export const HomePage: React.FC<HomePageProps> = ({
                     {course.code}
                   </span>
                 </div>
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#ff7a00] stroke-[2.5] group-hover:translate-x-1 transition-transform shrink-0" />
               </div>
 
-              {/* Middle content: Title with Arrow & Description */}
+              {/* Middle content: Title & Description */}
               <div className="relative z-10 pt-2 sm:pt-2.5 flex-1 flex flex-col justify-start text-left min-h-0 overflow-hidden">
-                <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug flex items-center gap-1.5">
-                  <span>{title}</span>
-                  <ArrowRight className="w-4 h-4 text-[#ff7a00] stroke-[2.5] shrink-0 group-hover:translate-x-1 transition-transform" />
+                <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug line-clamp-2">
+                  {title}
                 </h3>
-                <p className="text-[10.5px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1.5 leading-snug">
+                <p className="text-[10.5px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-snug">
                   {desc}
                 </p>
               </div>
