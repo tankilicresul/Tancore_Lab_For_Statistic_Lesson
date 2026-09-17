@@ -455,7 +455,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
             {/* Bottom Row: Edit button on Bottom-Left, Leaderboard rank button on Bottom-Right */}
             <div className="flex items-center justify-between gap-2.5 pt-2.5 border-t border-white/30">
               <button
-                onClick={() => setIsEditing(true)}
+                onClick={() => {
+                  setIsEditing(true);
+                  setIsLeaderboardOpen(false);
+                }}
                 className="flex items-center space-x-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/20 hover:bg-white/30 border border-white/30 text-xs sm:text-sm font-black transition-all shadow-xs shrink-0 whitespace-nowrap cursor-pointer text-white group hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white group-hover:rotate-12 transition-transform" />
@@ -463,7 +466,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
               </button>
 
               <button
-                onClick={() => setIsLeaderboardOpen(!isLeaderboardOpen)}
+                onClick={() => {
+                  setIsLeaderboardOpen((prev) => !prev);
+                  setIsEditing(false);
+                }}
                 className="flex items-center space-x-2 px-4 sm:px-4.5 py-2 sm:py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white border border-white/30 text-xs sm:text-sm font-black transition-all shadow-md group shrink-0 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
                 title="Genel Sıralamayı Gör"
               >

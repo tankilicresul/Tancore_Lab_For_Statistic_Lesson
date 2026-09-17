@@ -404,7 +404,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug line-clamp-2">
                   {title}
                 </h3>
-                <p className="text-[10.5px] sm:text-xs font-medium text-slate-500 line-clamp-2 mt-1 leading-snug">
+                <p className="text-[11px] sm:text-xs font-medium text-slate-600 line-clamp-5 mt-1.5 leading-relaxed">
                   {desc}
                 </p>
               </div>

@@ -295,14 +295,20 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                 {/* Bottom Row: Edit button on Left, Leaderboard rank button on Right */}
                 <div className="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
                   <button
-                    onClick={() => setIsEditing(true)}
+                    onClick={() => {
+                      setIsEditing(true);
+                      setIsLeaderboardOpen(false);
+                    }}
                     className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold transition-colors border border-white/15 shrink-0 whitespace-nowrap cursor-pointer text-slate-200 hover:text-white"
                   >
                     <span>{language === 'tr' ? 'Düzenle' : 'Edit'}</span>
                   </button>
 
                   <button
-                    onClick={() => setIsLeaderboardOpen(!isLeaderboardOpen)}
+                    onClick={() => {
+                      setIsLeaderboardOpen((prev) => !prev);
+                      setIsEditing(false);
+                    }}
                     className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 to-orange-500/25 hover:from-amber-500/40 hover:to-orange-500/40 text-amber-300 border border-amber-400/50 text-xs font-black transition-all shadow-md group shrink-0 cursor-pointer"
                     title="Genel Sıralamayı Gör"
                   >
