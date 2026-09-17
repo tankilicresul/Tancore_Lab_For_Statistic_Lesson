@@ -438,10 +438,9 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                   </div>
 
-                  <div className="flex items-center space-x-1.5 text-xs sm:text-sm font-black font-mono tracking-tight text-amber-700 group-hover:text-amber-800 transition-colors shrink-0">
-                    <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin text-amber-600 shrink-0" />
-                    <span>{course.code} {isEn ? 'Coming Soon' : 'Yakında'}</span>
-                  </div>
+                  <span className="text-[11px] sm:text-xs font-black font-mono uppercase tracking-wider text-amber-700 group-hover:text-amber-800 transition-colors shrink-0">
+                    {course.code} {isEn ? 'COMING SOON' : 'YAKINDA'}
+                  </span>
                 </div>
 
                 {/* Middle content: Title & Full Description */}
