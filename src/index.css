@@ -86,37 +86,31 @@ body {
   }
 }
 
-/* Podium breathing animations for Top 3 */
+/* Podium breathing animations for Top 3 (pure scale on circular badges, zero box artifacts) */
 @keyframes podiumBreathe1 {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 16px 2px rgba(245, 158, 11, 0.45);
   }
   50% {
     transform: scale(1.08);
-    box-shadow: 0 0 28px 6px rgba(245, 158, 11, 0.75);
   }
 }
 
 @keyframes podiumBreathe2 {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 10px 1px rgba(148, 163, 184, 0.4);
   }
   50% {
     transform: scale(1.05);
-    box-shadow: 0 0 18px 3px rgba(148, 163, 184, 0.65);
   }
 }
 
 @keyframes podiumBreathe3 {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 8px 1px rgba(180, 83, 9, 0.35);
   }
   50% {
     transform: scale(1.03);
-    box-shadow: 0 0 14px 2px rgba(180, 83, 9, 0.55);
   }
 }
 
