@@ -278,10 +278,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-white" />
               </div>
               <div className="min-w-0">
-                <h2 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2 truncate">
-                  <span>{language === 'tr' ? 'Genel Skor Tablosu' : 'Global Leaderboard'}</span>
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug">
+                  {language === 'tr' ? 'Genel Skor Tablosu' : 'Global Leaderboard'}
                 </h2>
-                <p className="text-xs text-slate-500 font-medium truncate">
+                <p className="text-xs text-slate-500 font-medium">
                   {language === 'tr' ? 'TanCoreLab Öğrenci Sıralaması' : 'TanCoreLab Student Rankings'}
                 </p>
               </div>
@@ -289,7 +289,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
             {isAuthenticated && (
               <div className="flex items-center space-x-2 shrink-0">
-                <div className="px-3 py-1.5 rounded-xl bg-[#ff7a00]/10 border border-[#ff7a00]/30 text-[#ff7a00] text-xs font-black shadow-2xs">
+                <div className="px-3 py-1.5 rounded-xl bg-orange-50 border border-orange-200 text-[#ff7a00] text-xs font-black shadow-xs">
                   {userRank}. {language === 'tr' ? 'Sıra' : 'Rank'}
                 </div>
               </div>
@@ -320,7 +320,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <div className="mt-5 relative z-10">
             <div className="flex items-end justify-center gap-2 sm:gap-4 pt-3 pb-1">
               {/* 2nd Place (Silver) */}
-              <div className="flex flex-col items-center flex-1 max-w-[100px]">
+              <div className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
                 {user2 ? (
                   <>
                     <div
@@ -342,11 +342,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     </div>
                     <button
                       onClick={() => setSelectedPublicProfile(user2)}
-                      className="text-[11px] font-extrabold text-slate-800 truncate max-w-full text-center hover:text-[#ff7a00] flex items-center justify-center space-x-1"
+                      className="text-xs font-bold text-slate-800 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
                       title={user2.fullName}
                     >
-                      <span className="truncate">{user2.fullName}</span>
-                      <ExternalLink className="w-2.5 h-2.5 opacity-60 shrink-0" />
+                      {user2.fullName}
                     </button>
                     <div className="flex items-center space-x-1 text-slate-600 text-[10px] font-black my-1">
                       <span className="text-amber-500 font-serif">◆</span>
@@ -363,7 +362,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                         2
                       </div>
                     </div>
-                    <span className="text-[10.5px] font-extrabold text-slate-400 truncate max-w-full text-center">
+                    <span className="text-xs font-bold text-slate-400 truncate max-w-full text-center">
                       {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
                     </span>
                     <div className="flex items-center space-x-1 text-slate-400 text-[9.5px] font-bold my-1">
@@ -372,12 +371,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   </>
                 )}
                 <div className="w-full h-16 sm:h-20 bg-gradient-to-b from-slate-200 via-slate-300 to-slate-400/90 rounded-t-2xl border-t-2 border-slate-100 shadow-inner flex items-center justify-center">
-                  <span className="text-xs font-black text-slate-700">2.</span>
+                  <span className="text-xs sm:text-sm font-black text-slate-700">2.</span>
                 </div>
               </div>
 
               {/* 1st Place (Gold / Warm Amber) */}
-              <div className="flex flex-col items-center flex-1 max-w-[110px]">
+              <div className="flex flex-col items-center flex-1 min-w-0 max-w-[125px]">
                 {user1 ? (
                   <>
                     <div
@@ -399,11 +398,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     </div>
                     <button
                       onClick={() => setSelectedPublicProfile(user1)}
-                      className="text-xs sm:text-sm font-black text-slate-900 truncate max-w-full text-center hover:text-[#ff7a00] flex items-center justify-center space-x-1"
+                      className="text-xs sm:text-sm font-black text-slate-900 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
                       title={user1.fullName}
                     >
-                      <span className="truncate">{user1.fullName}</span>
-                      <ExternalLink className="w-3 h-3 text-[#ff7a00] shrink-0" />
+                      {user1.fullName}
                     </button>
                     <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black my-1">
                       <span className="text-amber-500 font-serif">◆</span>
@@ -428,13 +426,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     </div>
                   </>
                 )}
-                <div className="w-full h-24 sm:h-28 bg-gradient-to-b from-amber-400 via-amber-500 to-[#ff7a00] rounded-t-2xl border-t-2 border-amber-300 shadow-md flex items-center justify-center">
-                  <Crown className="w-6 h-6 text-white fill-white/80 animate-pulse" />
+                <div className="w-full h-24 sm:h-28 bg-gradient-to-b from-amber-400 via-[#ff7a00] to-[#ea580c] rounded-t-2xl border-t-2 border-amber-300 shadow-md flex items-center justify-center">
+                  <Crown className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-white/90 animate-pulse" />
                 </div>
               </div>
 
               {/* 3rd Place (Bronze) */}
-              <div className="flex flex-col items-center flex-1 max-w-[100px]">
+              <div className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
                 {user3 ? (
                   <>
                     <div
@@ -456,11 +454,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     </div>
                     <button
                       onClick={() => setSelectedPublicProfile(user3)}
-                      className="text-[11px] font-extrabold text-slate-800 truncate max-w-full text-center hover:text-[#ff7a00] flex items-center justify-center space-x-1"
+                      className="text-xs font-bold text-slate-800 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
                       title={user3.fullName}
                     >
-                      <span className="truncate">{user3.fullName}</span>
-                      <ExternalLink className="w-2.5 h-2.5 opacity-60 shrink-0" />
+                      {user3.fullName}
                     </button>
                     <div className="flex items-center space-x-1 text-amber-800 text-[10px] font-black my-1">
                       <span className="text-amber-500 font-serif">◆</span>
@@ -477,7 +474,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                         3
                       </div>
                     </div>
-                    <span className="text-[10.5px] font-extrabold text-slate-400 truncate max-w-full text-center">
+                    <span className="text-xs font-bold text-slate-400 truncate max-w-full text-center">
                       {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
                     </span>
                     <div className="flex items-center space-x-1 text-slate-400 text-[9.5px] font-bold my-1">
@@ -485,8 +482,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     </div>
                   </>
                 )}
-                <div className="w-full h-12 sm:h-16 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t-2xl border-t-2 border-amber-500 shadow-xs flex items-center justify-center">
-                  <span className="text-xs font-black text-amber-200">3.</span>
+                <div className="w-full h-12 sm:h-16 bg-gradient-to-b from-amber-500 via-amber-600 to-amber-700 rounded-t-2xl border-t-2 border-amber-400 shadow-xs flex items-center justify-center">
+                  <span className="text-xs sm:text-sm font-black text-white drop-shadow-xs">3.</span>
                 </div>
               </div>
             </div>
@@ -894,7 +891,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             <div className="bg-white text-slate-900 rounded-2xl p-3 sm:p-4 border border-white/80 shadow-2xl">
               <div className="flex items-end justify-center gap-2 sm:gap-4 pt-3 pb-1">
                 {/* 2nd Place (Silver) */}
-                <div className="flex flex-col items-center flex-1 max-w-[100px]">
+                <div className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
                   {user2 ? (
                     <>
                       <div
@@ -916,11 +913,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                       <button
                         onClick={() => setSelectedPublicProfile(user2)}
-                        className="text-[11px] font-extrabold text-slate-800 truncate max-w-full text-center hover:text-[#ff7a00] flex items-center justify-center space-x-1"
+                        className="text-xs font-bold text-slate-800 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
                         title={user2.fullName}
                       >
-                        <span className="truncate">{user2.fullName}</span>
-                        <ExternalLink className="w-2.5 h-2.5 opacity-60 shrink-0" />
+                        {user2.fullName}
                       </button>
                       <div className="flex items-center space-x-1 text-slate-600 text-[10px] font-black my-1">
                         <span className="text-amber-500 font-serif">◆</span>
@@ -937,7 +933,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                           2
                         </div>
                       </div>
-                      <span className="text-[10.5px] font-extrabold text-slate-400 truncate max-w-full text-center">
+                      <span className="text-xs font-bold text-slate-400 truncate max-w-full text-center">
                         {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
                       </span>
                       <div className="flex items-center space-x-1 text-slate-400 text-[9.5px] font-bold my-1">
@@ -946,12 +942,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     </>
                   )}
                   <div className="w-full h-16 sm:h-20 bg-gradient-to-b from-slate-200 via-slate-300 to-slate-400/90 rounded-t-2xl border-t-2 border-slate-100 shadow-inner flex items-center justify-center">
-                    <span className="text-xs font-black text-slate-700">2.</span>
+                    <span className="text-xs sm:text-sm font-black text-slate-700">2.</span>
                   </div>
                 </div>
 
                 {/* 1st Place (Gold / Warm Amber) */}
-                <div className="flex flex-col items-center flex-1 max-w-[110px]">
+                <div className="flex flex-col items-center flex-1 min-w-0 max-w-[125px]">
                   {user1 ? (
                     <>
                       <div
@@ -973,11 +969,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                       <button
                         onClick={() => setSelectedPublicProfile(user1)}
-                        className="text-xs sm:text-sm font-black text-slate-900 truncate max-w-full text-center hover:text-[#ff7a00] flex items-center justify-center space-x-1"
+                        className="text-xs sm:text-sm font-black text-slate-900 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
                         title={user1.fullName}
                       >
-                        <span className="truncate">{user1.fullName}</span>
-                        <ExternalLink className="w-3 h-3 text-[#ff7a00] shrink-0" />
+                        {user1.fullName}
                       </button>
                       <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black my-1">
                         <span className="text-amber-500 font-serif">◆</span>
@@ -1002,13 +997,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                     </>
                   )}
-                  <div className="w-full h-24 sm:h-28 bg-gradient-to-b from-amber-400 via-amber-500 to-[#ff7a00] rounded-t-2xl border-t-2 border-amber-300 shadow-md flex items-center justify-center">
-                    <Crown className="w-6 h-6 text-white fill-white/80 animate-pulse" />
+                  <div className="w-full h-24 sm:h-28 bg-gradient-to-b from-amber-400 via-[#ff7a00] to-[#ea580c] rounded-t-2xl border-t-2 border-amber-300 shadow-md flex items-center justify-center">
+                    <Crown className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-white/90 animate-pulse" />
                   </div>
                 </div>
 
                 {/* 3rd Place (Bronze) */}
-                <div className="flex flex-col items-center flex-1 max-w-[100px]">
+                <div className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
                   {user3 ? (
                     <>
                       <div
@@ -1030,11 +1025,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                       <button
                         onClick={() => setSelectedPublicProfile(user3)}
-                        className="text-[11px] font-extrabold text-slate-800 truncate max-w-full text-center hover:text-[#ff7a00] flex items-center justify-center space-x-1"
+                        className="text-xs font-bold text-slate-800 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
                         title={user3.fullName}
                       >
-                        <span className="truncate">{user3.fullName}</span>
-                        <ExternalLink className="w-2.5 h-2.5 opacity-60 shrink-0" />
+                        {user3.fullName}
                       </button>
                       <div className="flex items-center space-x-1 text-amber-800 text-[10px] font-black my-1">
                         <span className="text-amber-500 font-serif">◆</span>
@@ -1051,7 +1045,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                           3
                         </div>
                       </div>
-                      <span className="text-[10.5px] font-extrabold text-slate-400 truncate max-w-full text-center">
+                      <span className="text-xs font-bold text-slate-400 truncate max-w-full text-center">
                         {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
                       </span>
                       <div className="flex items-center space-x-1 text-slate-400 text-[9.5px] font-bold my-1">
@@ -1059,8 +1053,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                     </>
                   )}
-                  <div className="w-full h-12 sm:h-16 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t-2xl border-t-2 border-amber-500 shadow-xs flex items-center justify-center">
-                    <span className="text-xs font-black text-amber-200">3.</span>
+                  <div className="w-full h-12 sm:h-16 bg-gradient-to-b from-amber-500 via-amber-600 to-amber-700 rounded-t-2xl border-t-2 border-amber-400 shadow-xs flex items-center justify-center">
+                    <span className="text-xs sm:text-sm font-black text-white drop-shadow-xs">3.</span>
                   </div>
                 </div>
               </div>
