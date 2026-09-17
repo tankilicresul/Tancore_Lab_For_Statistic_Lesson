@@ -351,36 +351,134 @@ async function callGroq(
 /**
  * Fallback response if API key is not configured or offline
  */
-function getNoKeyFallback(question: string, language: 'tr' | 'en', studentName: string = 'Öğrenci', studyContext?: any): string {
+/**
+ * Intelligent Pedagogical & Contextual Fallback Engine
+ * Provides rich, step-by-step problem solving, formula derivation, and witty conversation even when offline or rate-limited.
+ */
+function getNoKeyFallback(
+  question: string,
+  language: 'tr' | 'en',
+  studentName: string = 'Öğrenci',
+  studyContext?: any
+): string {
   const q = question.toLowerCase().trim();
 
-  // Natural greeting
-  if (q === 'selam' || q === 'merhaba' || q === 'hi' || q === 'hello' || q === 'selamlar' || q === 'naber') {
+  // 1. Conversational / Humor / Brain Check
+  if (
+    q.includes('zekan gidiyor') ||
+    q.includes('akıllan') ||
+    q.includes('dondu') ||
+    q.includes('kafayı yedi') ||
+    q.includes('saçmalad') ||
+    q.includes('robotlaştın')
+  ) {
     return language === 'tr'
-      ? `Selam ${studentName}! Nasıl yardımcı olabilirim?`
-      : `Hi ${studentName}! How can I help you?`;
+      ? `Hahaha haklısın ${studentName}! 😄 Bazen anlık API sunucu hız limitleri veya yoğunluktan dolayı nöronlarım kısa bir devre yapabiliyor ama merak etme buradayım ve zihnim tamamen açık 🎯!\n\nŞu an üzerinde çalıştığımız ders veya aklına takılan soru hakkında konuşalım; hangi formülü ya da problemi birlikte çözelim?`
+      : `Haha you got me ${studentName}! 😄 Sometimes API rate limits give my neurons a quick hiccup, but I'm fully back and sharp 🎯!\n\nWhat concept or problem are we tackling today? Let's dive in!`;
   }
 
-  // Privacy protection check
-  if (q.includes('başkası') || q.includes('diğer kullanıcı') || q.includes('notu kaç') || q.includes('şifre') || q.includes('mail')) {
+  // 2. Greetings
+  if (
+    q === 'selam' ||
+    q === 'merhaba' ||
+    q === 'hi' ||
+    q === 'hello' ||
+    q === 'selamlar' ||
+    q === 'naber' ||
+    q === 'naber tanco' ||
+    q === 'nasılsın'
+  ) {
     return language === 'tr'
-      ? '🔒 Kişisel verilerin gizliliği politikamız gereğince diğer kullanıcıların özel bilgileri kesinlikle paylaşılamaz.'
-      : '🔒 Personal data of other users cannot be shared due to privacy policies.';
+      ? `Selam ${studentName}! 🎓 İyiyim, seninle çalışmaya hazırım. Bugün Olasılık veya İstatistik'te hangi konuyu inceliyoruz?`
+      : `Hi ${studentName}! 🎓 Doing great and ready to study! What topic in Probability or Statistics are we exploring today?`;
   }
 
+  // 3. Asking for Question Solution / Answers in Active Lesson or Case
+  const isAskingForSolution =
+    q.includes('bu sorunun') ||
+    q.includes('sorunun cevabı') ||
+    q.includes('cevabı nedir') ||
+    q.includes('cevap ne') ||
+    q.includes('nasıl çözülür') ||
+    q.includes('çözümü') ||
+    q.includes('nasıl yaparım') ||
+    q.includes('ipucu') ||
+    q.includes('doğru cevap');
+
+  if (isAskingForSolution) {
+    // Check if on a Lesson with Questions
+    if (studyContext?.type === 'lesson' && Array.isArray(studyContext?.questions) && studyContext.questions.length > 0) {
+      const firstQ = studyContext.questions[0];
+      const promptText = typeof firstQ.prompt === 'string' ? firstQ.prompt : firstQ.prompt?.tr || firstQ.prompt?.en || '';
+      const ansText = String(firstQ.correctAnswer ?? '');
+      const expText = typeof firstQ.explanation === 'string' ? firstQ.explanation : firstQ.explanation?.tr || firstQ.explanation?.en || '';
+
+      return language === 'tr'
+        ? `🎯 **Ekrandaki Alıştırma Sorusu ve Çözümü:**\n\n📌 **Soru:** ${promptText}\n\n✅ **Doğru Cevap:** \`${ansText}\`\n\n💡 **Adım Adım Çözüm / Açıklama:**\n${expText}\n\nAklına yatmayan bir işlem veya formül adımı varsa söyle, detaylandırayım!`
+        : `🎯 **Exercise Question & Solution on Screen:**\n\n📌 **Question:** ${promptText}\n\n✅ **Correct Answer:** \`${ansText}\`\n\n💡 **Step-by-Step Solution:**\n${expText}`;
+    }
+
+    // Check if on a Case Exam with Solution Questions
+    if (studyContext?.type === 'caseExam' && Array.isArray(studyContext?.solutionQuestions) && studyContext.solutionQuestions.length > 0) {
+      const qList = studyContext.solutionQuestions
+        .slice(0, 2)
+        .map((sq: any, i: number) => `**${i + 1}. Soru:** ${sq.prompt}\n- **Doğru Cevap:** \`${sq.correctAnswer}\`\n- **Açıklama:** ${sq.explanation}`)
+        .join('\n\n');
+
+      return language === 'tr'
+        ? `🎯 **${studyContext.caseTitle || 'Vaka Sınavı'} Çözüm Rehberi:**\n\n${qList}\n\n🔍 **Beklenen Yönetici Yaklaşımı:**\n${studyContext.expectedApproach || ''}`
+        : `🎯 **Case Exam Solution Guide:**\n\n${qList}`;
+    }
+  }
+
+  // 4. Summarizing Current Lesson / Concept
+  if (
+    q.includes('özetle') ||
+    q.includes('ne anlatıyor') ||
+    q.includes('konuyu anlat') ||
+    q.includes('özet') ||
+    q.includes('açıkla')
+  ) {
+    if (studyContext?.type === 'lesson' && studyContext?.lessonTitle) {
+      return language === 'tr'
+        ? `📖 **${studyContext.lessonTitle} — Konu Özeti:**\n\n${studyContext.conceptCard || ''}\n\n🏢 **Gerçek Şirket Örneği:**\n${studyContext.companyExample || ''}\n\nHerhangi bir terimde veya formülde takıldığında hemen sorabilirsin!`
+        : `📖 **${studyContext.lessonTitle} — Summary:**\n\n${studyContext.conceptCard || ''}\n\n🏢 **Real-World Case:**\n${studyContext.companyExample || ''}`;
+    }
+  }
+
+  // 5. Common Probability & Statistics Concepts
+  if (q.includes('bayes') || q.includes('koşullu')) {
+    return language === 'tr'
+      ? `🎯 **Bayes Teoremi ve Koşullu Olasılık:**\n\n$$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$$\n\n- $P(A)$: Önsel olasılık (Prior probability)\n- $P(B|A)$: Olabilirlik (Likelihood)\n- $P(A|B)$: Sonsal olasılık (Posterior probability - B olayı gerçekleştikten sonra A'nın yeni olasılığı)\n\nÖrnek: Bir sensör pozitif sinyal verdiğinde cihazın gerçekten bozuk olma olasılığını hesaplarken Bayes kullanılır.`
+      : `🎯 **Bayes' Theorem:**\n\n$$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$$`;
+  }
+
+  if (q.includes('ortalama') || q.includes('mean') || q.includes('medyan') || q.includes('median')) {
+    return language === 'tr'
+      ? `📊 **Merkezi Eğilim Ölçüleri:**\n\n1. **Aritmetik Ortalama (Mean):** $\\bar{x} = \\frac{\\sum x_i}{n}$. Tüm verilerin toplamının gözlem sayısına bölümüdür, ancak aşırı uç değerlerden (outliers) çok etkilenir.\n2. **Medyan (Ortanca):** Küçükten büyüğe sıralandığında tam ortadaki değerdir. Uç değerlere karşı dayanıklıdır (robust).`
+      : `📊 **Measures of Central Tendency:**\n\n1. **Mean:** $\\bar{x} = \\frac{\\sum x_i}{n}$\n2. **Median:** Middle value when sorted, robust to outliers.`;
+  }
+
+  if (q.includes('varyans') || q.includes('variance') || q.includes('standart sapma') || q.includes('standard deviation')) {
+    return language === 'tr'
+      ? `📐 **Değişkenlik & Yayılım Ölçüleri:**\n\n- **Örneklem Varyansı:** $s^2 = \\frac{\\sum (x_i - \\bar{x})^2}{n - 1}$\n- **Standart Sapma:** $s = \\sqrt{s^2}$\n- **Kural:** Verilerin tümüne sabit bir $c$ sayısı eklenirse ($Y = X + c$), varyans **değişmez**. Veriler $a$ ile çarpılırsa ($Y = aX$), varyans $a^2$ ile çarpılır ($Var(aX) = a^2 Var(X)$).`
+      : `📐 **Variance & Standard Deviation:**\n\n$$Var(aX + b) = a^2 Var(X)$$`;
+  }
+
+  if (q.includes('markov') || q.includes('geçiş')) {
+    return language === 'tr'
+      ? `🎲 **Markov Zincirleri & Stokastik Süreçler:**\n\nMarkov özelliği (Hafızasızlık): Gelecekteki durum sadece *şu anki* duruma bağlıdır, geçmişteki tüm adımlardan bağımsızdır.\n\n$$P(X_{n+1} = j \\mid X_n = i, X_{n-1} = i_{n-1}, \\dots) = P(X_{n+1} = j \\mid X_n = i) = P_{ij}$$\n\n2 adımlı geçiş olasılığı $P^2$ matrisiyle (Chapman-Kolmogorov denklemi) hesaplanır.`
+      : `🎲 **Markov Chains:**\n\nFuture state depends only on the present state, independent of the past path.`;
+  }
+
+  // 6. Default Contextual Prompt
   if (studyContext?.type === 'lesson' && studyContext?.lessonTitle) {
     return language === 'tr'
-      ? `📖 **${studyContext.lessonTitle}** konusunu inceliyorsun!\n\n${studyContext.conceptCard || ''}\n\nÖrnek: ${studyContext.companyExample || ''}`
-      : `📖 You are studying **${studyContext.lessonTitle}**!\n\n${studyContext.conceptCard || ''}`;
-  }
-
-  if (q.includes('bayes') || q.includes('koşullu') || q.includes('conditional')) {
-    return language === 'tr'
-      ? `🎯 **Bayes Teoremi:**\n\n$$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$$\n\nB olayı gerçekleştiğinde A'nın gerçekleşme olasılığını hesaplar. Kalite kontrol ve arıza tespitinde sıkça kullanılır.`
-      : `🎯 **Bayes' Theorem:**\n\n$$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$$$`;
+      ? `🎓 Şu anda **${studyContext.lessonTitle}** konusundasın ${studentName}.\n\nKonunun kavram anlatımı veya ekrandaki soruyla ilgili sormak istediğin detayı yazabilirsin, hemen çözelim!`
+      : `🎓 You are on **${studyContext.lessonTitle}** ${studentName}. Ask any questions about the concept or exercise!`;
   }
 
   return language === 'tr'
-    ? `Nasıl yardımcı olabilirim ${studentName}? Aklına takılan konuyu veya soruyu yazabilirsin!`
-    : `How can I help you ${studentName}? Feel free to ask your question!`;
+    ? `Nasıl yardımcı olabilirim ${studentName}? 🎓 Olasılık, İstatistik veya ekrandaki dersle ilgili aklına takılan soruyu sorabilirsin!`
+    : `How can I help you ${studentName}? 🎓 Feel free to ask any question on Probability, Stats, or your active lesson!`;
 }
