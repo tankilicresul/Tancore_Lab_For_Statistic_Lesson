@@ -52,8 +52,18 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
         <div className="bg-white px-5 pb-6 pt-5 space-y-3">
           <div className="flex flex-col items-center justify-center space-y-2 mb-3 text-center">
             {(isTr
-              ? ['✅ İlerlemeniz sıfırlanmaz, hesabınıza aktarılır', '✅ 2. Modül ve tüm ileri düzey konular açılır', '✅ XP, rozet ve liderlik tablosu', '✅ Tanco AI asistan ile sınırsız sohbet']
-              : ['✅ Progress is preserved & transferred to your account', '✅ Unlock Module 2 & all advanced courses', '✅ XP, badges & global leaderboard', '✅ Unlimited Tanco AI assistant']
+              ? [
+                  '✅ İlerlemeniz sıfırlanmaz, hesabınıza aktarılır',
+                  '✅ 2. Modül ve tüm ileri düzey konular açılır',
+                  '✅ Tanco AI asistan ile sınırsız sohbet',
+                  '✅ XP, rozet ve liderlik tablosu',
+                ]
+              : [
+                  '✅ Progress is preserved & transferred to your account',
+                  '✅ Unlock Module 2 & all advanced courses',
+                  '✅ XP, badges & global leaderboard',
+                  '✅ Unlimited Tanco AI assistant',
+                ]
             ).map((perk, i) => (
               <span key={i} className="text-xs text-slate-700 font-semibold text-center">{perk}</span>
             ))}
@@ -77,9 +87,6 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
           >
             <LogIn className="w-4 h-4" />
             <span>{isTr ? 'Giriş Yap' : 'Sign In'}</span>
-          </button>
-          <button onClick={onClose} className="w-full py-2 text-slate-400 hover:text-slate-600 text-xs font-bold transition-colors cursor-pointer">
-            {isTr ? 'Şimdi değil' : 'Not now'}
           </button>
         </div>
       </div>
