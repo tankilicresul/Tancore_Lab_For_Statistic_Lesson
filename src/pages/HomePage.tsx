@@ -432,20 +432,15 @@ export const HomePage: React.FC<HomePageProps> = ({
               >
                 <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
 
-                {/* Top row: Icon & Course Code with single 'Yakında' status */}
+                {/* Top row: Icon on left, [Course Code Yakında] badge on right */}
                 <div className="flex items-center justify-between w-full relative z-10 gap-2 shrink-0">
-                  <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
-                    <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
-                      <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
-                    </div>
-                    <span className="text-sm sm:text-lg font-black font-mono tracking-tight text-slate-800 group-hover:text-amber-700 transition-colors truncate">
-                      {course.code}
-                    </span>
+                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25]" />
                   </div>
 
-                  <div className="flex items-center space-x-1 px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 font-mono text-[10px] sm:text-xs font-black border border-amber-500/20 shrink-0">
-                    <Loader2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-spin text-amber-600 shrink-0" />
-                    <span>{isEn ? 'Coming Soon' : 'Yakında'}</span>
+                  <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-800 font-mono text-xs sm:text-sm font-black border border-amber-500/25 shrink-0 shadow-2xs">
+                    <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin text-amber-600 shrink-0" />
+                    <span>{course.code} {isEn ? 'Coming Soon' : 'Yakında'}</span>
                   </div>
                 </div>
 
