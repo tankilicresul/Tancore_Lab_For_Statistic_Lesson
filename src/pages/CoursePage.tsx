@@ -257,8 +257,8 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               <UploadCloud className="w-4 h-4" />
               <span>
                 {isEn
-                  ? 'Upload Notes, Help Build Module'
-                  : 'Ders Notlarını Yükle, Modülün Gelmesine Yardımcı Ol'}
+                  ? 'Upload Course Materials +'
+                  : 'Ders Materyallerini Yükle +'}
               </span>
             </button>
 
@@ -267,7 +267,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer flex items-center justify-center space-x-2"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>{isEn ? 'Return to Courses' : 'Ders Listesine Dön'}</span>
+              <span>{isEn ? 'Home' : 'Ana Sayfa'}</span>
             </button>
           </div>
         </div>
