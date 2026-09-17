@@ -3,8 +3,8 @@ import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
 import { getLatestTancoMessageInfo } from '../lib/supabase';
 
-// Use v3 storage key to ensure users get the new well-positioned coordinates
-const STORAGE_KEY = 'tancore_floating_avatar_pos_v3';
+// Use v4 storage key to ensure users get the new well-positioned coordinates
+const STORAGE_KEY = 'tancore_floating_avatar_pos_v4';
 const LAST_READ_KEY = 'tancore_last_read_tanco_chat_v1';
 
 export const FloatingTancoButton: React.FC = () => {
@@ -29,7 +29,7 @@ export const FloatingTancoButton: React.FC = () => {
     const btnSize = isMobile ? 56 : 64;
     const padX = 16;
     const padTop = 72; // Below navbar
-    const padBottom = isMobile ? 96 : 32; // Mobile bottom nav clearance
+    const padBottom = isMobile ? 110 : 40; // Mobile bottom nav clearance
     const minX = padX;
     const maxX = Math.max(minX, window.innerWidth - btnSize - padX);
     const minY = padTop;

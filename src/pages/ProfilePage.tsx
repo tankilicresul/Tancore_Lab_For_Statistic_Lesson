@@ -31,9 +31,14 @@ import {
 interface ProfilePageProps {
   onOpenAuth?: () => void;
   onGoHome?: () => void;
+  showLeaderboardDirectly?: boolean;
 }
 
-export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }) => {
+export const ProfilePage: React.FC<ProfilePageProps> = ({
+  onOpenAuth,
+  onGoHome,
+  showLeaderboardDirectly = false,
+}) => {
   const {
     language,
     userProfile,
@@ -51,7 +56,17 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
   } = useAppStore();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(Boolean(showLeaderboardDirectly));
+
+  useEffect(() => {
+    if (showLeaderboardDirectly) {
+      setIsLeaderboardOpen(true);
+      setTimeout(() => {
+        const el = document.getElementById('leaderboard-section');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
+    }
+  }, [showLeaderboardDirectly]);
   const [formData, setFormData] = useState(
     userProfile || {
       fullName: '',
@@ -487,7 +502,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onOpenAuth, onGoHome }
 
         {/* Expandable Symmetrical Top 3 Leaderboard Podium */}
         {isLeaderboardOpen && (
-          <div className="mt-5 pt-4 border-t border-white/15 animate-fade-in relative z-10">
+          <div id="leaderboard-section" className="mt-5 pt-4 border-t border-white/15 animate-fade-in relative z-10 scroll-mt-24">
             <div className="flex items-center justify-between mb-3 px-1">
               <div className="flex items-center space-x-2">
                 <Trophy className="w-4 h-4 text-amber-400" />

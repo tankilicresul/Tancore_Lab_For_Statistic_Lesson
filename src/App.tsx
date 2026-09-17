@@ -10,6 +10,7 @@ import { TancoChatModal } from './components/TancoChatModal';
 import { FloatingTancoButton } from './components/FloatingTancoButton';
 import { GuestGateModal } from './components/GuestGateModal';
 import { PlusUpgradeModal } from './components/PlusUpgradeModal';
+import { BottomNavBar } from './components/BottomNavBar';
 import { getLessonById, getCaseExamById } from './data/modules';
 import { useAppStore } from './store/useAppStore';
 import { getLocalized } from './utils/localization';
@@ -38,6 +39,7 @@ export const App: React.FC = () => {
 
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
   const [selectedInDesignCourse, setSelectedInDesignCourse] = useState<CourseTrack | null>(null);
+  const [showLeaderboardDirectly, setShowLeaderboardDirectly] = useState(false);
 
   // Guest session: track how many distinct lessons/cases have been opened this session
   // Stored in sessionStorage so it resets on new tab/browser close (but persists on refresh)
@@ -282,10 +284,12 @@ export const App: React.FC = () => {
     setSelectedCaseId(null);
     setScrollToNodeId(null);
     setCustomActiveModuleName(null);
+    setShowLeaderboardDirectly(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleOpenProfile = () => {
+  const handleOpenProfile = (openLeaderboard = false) => {
+    setShowLeaderboardDirectly(openLeaderboard);
     setCurrentView('profile');
     setSelectedInDesignCourse(null);
     setSelectedLessonId(null);
@@ -357,7 +361,7 @@ export const App: React.FC = () => {
       />
 
       {/* Main Page Body */}
-      <main className="flex-1 pt-20 sm:pt-24 pb-16">
+      <main className="flex-1 pt-20 sm:pt-24 pb-24 sm:pb-28">
         {currentView === 'home' && (
           <HomePage
             onSelectTrack={handleSelectTrack}
@@ -383,6 +387,7 @@ export const App: React.FC = () => {
           <ProfilePage
             onGoHome={handleBackToHome}
             onOpenAuth={() => setShowGuestGate(true)}
+            showLeaderboardDirectly={showLeaderboardDirectly}
           />
         )}
 
@@ -410,6 +415,14 @@ export const App: React.FC = () => {
           <PlacementTestPage onBackToHome={handleBackToHomeWithScroll} />
         )}
       </main>
+
+      {/* Full-width Bottom Navigation Bar (Ana Sayfa, Skor Tablosu, Profilim) */}
+      <BottomNavBar
+        currentView={currentView}
+        onGoHome={handleBackToHome}
+        onOpenProfile={handleOpenProfile}
+        onOpenAuth={() => setShowGuestGate(true)}
+      />
 
       {/* Tanco Assistant Chat Modal & Floating Launcher */}
       <TancoChatModal />
