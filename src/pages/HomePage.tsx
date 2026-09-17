@@ -11,6 +11,7 @@ import {
   Target,
   Award,
   ArrowRight,
+  ChevronRight,
   TrendingUp,
   Loader2,
   Coins,
@@ -396,7 +397,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     {course.code}
                   </span>
                 </div>
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#ff7a00] stroke-[2.5] group-hover:translate-x-1 transition-transform shrink-0" />
+                <ChevronRight className="w-6 h-6 sm:w-7.5 sm:h-7.5 text-[#ff7a00] stroke-[3.5] group-hover:translate-x-1 transition-transform shrink-0" />
               </div>
 
               {/* Middle content: Title & Description */}
