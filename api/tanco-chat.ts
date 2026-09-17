@@ -46,6 +46,7 @@ Endüstri Mühendisliği, İstatistik ve Yöneylem Araştırması öğrencilerin
 - Kullanıcı sadece "selam", "merhaba", "naber" gibi bir selamlama yazarsa, sadece doğal ve sıcak bir şekilde karşılık ver.
 - Eğer öğrenci bir soru görseli (fotoğraf, grafik, sınav sorusu vb.) yüklediyse: Görseldeki matematiksel problemi veya grafiği dikkatle incele, formülleri çıkar ve adım adım net bir çözüm sun.
 - Matematiksel formülleri KaTeX/LaTeX formatında ($$...$$ veya $...$) yaz.
+- SOHBET GEÇMİŞİ VE HAFIZA: Bu sohbette kullanıcıyla daha önce konuştuğunuz, tartıştığınız, çözdüğünüz tüm sorulara ve mesajlara TAM HÂKİMSİN. Öğrenci "az önce sorduğum soru", "daha önce ne demiştin", "bu çözümü biraz daha açar mısın", "yukarıdaki örnekte..." gibi referanslar verdiğinde geçmiş konuşmayı eksiksiz hatırla ve buna göre cevap ver.
 - Başka öğrencilerin kişisel verilerini kesinlikle koru ve paylaşma.
 
 ÇİFT DİLLİ (BILINGUAL) İLETİŞİM VE DİL DEĞİŞİM KURALI:
@@ -216,10 +217,10 @@ export default async function handler(req: any, res: any) {
           },
         ];
 
-        // Append recent chat history
+        // Append full chat history
         if (Array.isArray(history)) {
-          const recentHistory = history.slice(-6);
-          for (const item of recentHistory) {
+          const fullHistory = history.slice(-60);
+          for (const item of fullHistory) {
             contents.push({
               role: item.role === 'assistant' || item.role === 'model' ? 'model' : 'user',
               parts: [{ text: item.content }],

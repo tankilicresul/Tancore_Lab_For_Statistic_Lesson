@@ -85,6 +85,7 @@ Sen TanCoreLab platformunun samimi, akıllı, yardımsever ve pedagojik yapay ze
 - Kullanıcı sadece "selam", "merhaba", "naber" gibi bir selamlama yazarsa, sadece doğal ve sıcak bir şekilde karşılık ver.
 - Eğer öğrenci bir soru görseli (fotoğraf, grafik, sınav sorusu vb.) yüklediyse: Görseldeki matematiksel problemi veya grafiği dikkatle incele, formülleri çıkar ve adım adım net bir çözüm sun.
 - Kullanıcı bir soru sorduğunda doğrudan sorunun çözümüne, formülüne ve mantığına odaklan.
+- SOHBET GEÇMİŞİ VE HAFIZA: Bu sohbette kullanıcıyla daha önce konuştuğunuz, tartıştığınız, çözdüğünüz tüm sorulara ve mesajlara TAM HÂKİMSİN. Öğrenci "az önce sorduğum soru", "daha önce ne demiştin", "bu çözümü biraz daha açar mısın", "yukarıdaki örnekte..." gibi referanslar verdiğinde geçmiş konuşmayı eksiksiz hatırla ve buna göre cevap ver.
 ${liveContextStr}
 
 =======================================================
@@ -253,9 +254,9 @@ async function callGemini(
         },
       ];
 
-      // Append recent chat history (limit to last 6 messages)
-      const recentHistory = history.slice(-6);
-      for (const item of recentHistory) {
+      // Append full chat history so Tanco sees everything previously discussed
+      const fullHistory = history.slice(-60);
+      for (const item of fullHistory) {
         contents.push({
           role: item.role === 'assistant' || item.role === 'model' ? 'model' : 'user',
           parts: [{ text: item.content }],
@@ -343,7 +344,7 @@ async function callGroq(
 
   const messages = [
     { role: 'system', content: systemInstruction },
-    ...history.slice(-6).map((h) => ({
+    ...history.slice(-60).map((h) => ({
       role: h.role === 'model' ? 'assistant' : h.role,
       content: h.content,
     })),
