@@ -50,20 +50,20 @@ const QUICK_PROMPTS = {
 };
 
 /**
- * Rich message parser supporting KaTeX ($$...$$ and $...$) and basic Markdown (bold, lists)
+ * Rich message parser supporting KaTeX ($$...$$ and $...$) and basic Markdown (bold, lists, linebreaks)
  */
 const FormattedMessageText: React.FC<{ text: string; isTanco: boolean }> = ({ text, isTanco }) => {
   const blockParts = text.split(/(\$\$[\s\S]*?\$\$)/g);
 
   return (
-    <div className="space-y-1.5 leading-relaxed break-words">
+    <div className="space-y-1.5 leading-relaxed break-words whitespace-pre-wrap">
       {blockParts.map((block, bIdx) => {
         if (block.startsWith('$$') && block.endsWith('$$')) {
           const formula = block.slice(2, -2).trim();
           return (
             <div
               key={bIdx}
-              className={`my-2 p-2 rounded-xl text-center overflow-x-auto ${
+              className={`my-2 p-2 rounded-xl text-center overflow-x-auto max-w-full touch-pan-x ${
                 isTanco
                   ? 'bg-orange-50/80 border border-orange-200/80 text-orange-950'
                   : 'bg-white/20 text-white'
@@ -84,7 +84,7 @@ const FormattedMessageText: React.FC<{ text: string; isTanco: boolean }> = ({ te
                 return (
                   <span
                     key={iIdx}
-                    className={`inline-block mx-0.5 px-1.5 py-0.5 rounded text-xs font-semibold ${
+                    className={`inline-block mx-0.5 px-1.5 py-0.5 rounded text-xs font-semibold overflow-x-auto max-w-full align-middle ${
                       isTanco
                         ? 'bg-orange-50 text-[#ff7a00] border border-orange-200/60'
                         : 'bg-white/20 text-white'
@@ -102,7 +102,7 @@ const FormattedMessageText: React.FC<{ text: string; isTanco: boolean }> = ({ te
                   {boldParts.map((bChunk, chunkIdx) => {
                     if (bChunk.startsWith('**') && bChunk.endsWith('**')) {
                       return (
-                        <strong key={chunkIdx} className="font-bold text-slate-900">
+                        <strong key={chunkIdx} className="font-bold">
                           {bChunk.slice(2, -2)}
                         </strong>
                       );

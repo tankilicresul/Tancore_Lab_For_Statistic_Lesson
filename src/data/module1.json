@@ -140,7 +140,7 @@
         "en": "The sample arithmetic mean (\\bar{x}) is a measure of central tendency calculated by dividing the sum of all observed values by the total sample size ($n$):\n\n$$\\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i$$\n\nPopulation mean is denoted as $\\mu = \\frac{1}{N}\\sum_{i=1}^{N} X_i$. It is sensitive to extreme outliers."
       },
       "companyExample": {
-        "tr": "NovaMarket e-ticaret platformunun son 6 çeyrekteki kârları sırasıyla $x = [10, 12, 12, 15, 9, 50]$ milyon $'dır. Ortalama kâr:\n\n$$\\bar{x} = \\frac{10 + 12 + 12 + 15 + 9 + 50}{6} = \\frac{108}{6} = 18 \\text{ M\\$}$$",
+        "tr": "NovaMarket e-ticaret platformunun son 6 çeyrekteki kârları sırasıyla $x = [10, 12, 12, 15, 9, 50]$ milyon $'dır. Ortalama kâr:\n\n$$\\bar{x} = \\frac{10 + 12 + 12 + 15 + 9 + 50}{6} = \\frac{108}{6} = 18 \\text{ M USD}$$",
         "en": "NovaMarket's quarterly profits over the last 6 quarters are 10, 12, 12, 15, 9, and 50 million $. To find the average quarterly profit, we add up all quarterly profits ($108M) and divide by the number of quarters (6), resulting in an average quarterly profit of $18M."
       },
       "interactiveType": "mean_median_mode",
@@ -204,7 +204,7 @@
         "en": "The median ($Q_2$) splits ordered data into two equal halves (50% below, 50% above). For odd $n$, it is the $\\frac{n+1}{2}$-th observation; for even $n$, it is the average of the two middle observations:\n\n$$x_{\\text{median}} = \\begin{cases} x_{\\left(\\frac{n+1}{2}\\right)}, & n \\text{ odd} \\\\[6pt] \\frac{x_{\\left(\\frac{n}{2}\\right)} + x_{\\left(\\frac{n}{2} + 1\\right)}}{2}, & n \\text{ even} \\end{cases}$$\n\nIt is resistant (robust) to outliers."
       },
       "companyExample": {
-        "tr": "NovaMarket kârları sıralandığında: $x_{(i)} = [9, 10, 12, 12, 15, 50]$ milyon $'dır. $n = 6$ (çift) olduğundan medyan ortadaki 3. ve 4. değerlerin ortalamasıdır:\n\n$$x_{\\text{medyan}} = \\frac{12 + 12}{2} = 12 \\text{ M\\$}$$",
+        "tr": "NovaMarket kârları sıralandığında: $x_{(i)} = [9, 10, 12, 12, 15, 50]$ milyon $'dır. $n = 6$ (çift) olduğundan medyan ortadaki 3. ve 4. değerlerin ortalamasıdır:\n\n$$x_{\\text{medyan}} = \\frac{12 + 12}{2} = 12 \\text{ M USD}$$",
         "en": "Sorting NovaMarket's profit data from smallest to largest (9, 10, 12, 12, 15, 50), the two middle values are 12 and 12. Taking their average gives a median of $12M. While the $50M outlier inflates the mean to 18, the median clearly shows the company's typical quarterly profit is $12M."
       },
       "interactiveType": "mean_median_mode",
@@ -405,11 +405,11 @@
       },
       "guidedSteps": [
         {
-          "tr": "1. Adım: Aritmetik Ortalama Hesabı: $$\\bar{x} = \\frac{\\sum x_i}{n} = \\frac{10 + 12 + 12 + 15 + 9 + 50}{6} = \\frac{108}{6} = 18 \\text{ M\\$}$$",
+          "tr": "1. Adım: Aritmetik Ortalama Hesabı: $$\\bar{x} = \\frac{\\sum x_i}{n} = \\frac{10 + 12 + 12 + 15 + 9 + 50}{6} = \\frac{108}{6} = 18 \\text{ M USD}$$",
           "en": "Step 1: Calculate the mean of all branches."
         },
         {
-          "tr": "2. Adım: Medyan Hesabı: Sıralı veri $[9, 10, 12, 12, 15, 50]$ için ortadaki iki elemanın ortalaması: $$x_{\\text{medyan}} = \\frac{12 + 12}{2} = 12 \\text{ M\\$}$$",
+          "tr": "2. Adım: Medyan Hesabı: Sıralı veri $[9, 10, 12, 12, 15, 50]$ için ortadaki iki elemanın ortalaması: $$x_{\\text{medyan}} = \\frac{12 + 12}{2} = 12 \\text{ M USD}$$",
           "en": "Step 2: Calculate the median."
         },
         {
@@ -430,12 +430,12 @@
           "id": "m1-case-1-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "NovaMarket veri setinin aritmetik ortalaması $\\bar{x}$ kaçtır (M\\$)?",
+            "tr": "NovaMarket veri setinin aritmetik ortalaması $\\bar{x}$ kaçtır (M USD)?",
             "en": "What is the median sales figure in the dataset ($)?"
           },
           "correctAnswer": 18,
           "explanation": {
-            "tr": "$$\\bar{x} = \\frac{108}{6} = 18 \\text{ M\\$}$$",
+            "tr": "$$\\bar{x} = \\frac{108}{6} = 18 \\text{ M USD}$$",
             "en": "Sorted: 7900, 8000, 8100, 8200, 8500, 21000. Average of middle two: (8100 + 8200)/2 = 8150"
           }
         },
