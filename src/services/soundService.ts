@@ -13,15 +13,12 @@ class SoundService {
   } | null = null;
 
   constructor() {
-    // Check initial mute preference from localStorage
+    this.isMuted = false;
     if (typeof window !== 'undefined') {
       try {
-        const saved = localStorage.getItem('tancore_sound_enabled');
-        if (saved !== null) {
-          this.isMuted = saved === 'false';
-        }
+        localStorage.setItem('tancore_sound_enabled', 'true');
       } catch {
-        this.isMuted = false;
+        // ignore
       }
     }
   }

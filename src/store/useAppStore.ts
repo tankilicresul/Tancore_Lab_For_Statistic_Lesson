@@ -984,8 +984,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       name: 'tancorelab-statsim-v5',
       onRehydrateStorage: () => (state) => {
         if (state) {
-          // Sync sound state
-          soundService.setEnabled(state.isSoundEnabled ?? true);
+          // Sound is always enabled
+          state.isSoundEnabled = true;
+          soundService.setEnabled(true);
 
           // Check Tanco session: if within 1 minute or returning from payment, preserve position; otherwise reset to card!
           const tancoSession = loadTancoSession();

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAppStore, getInitialDemoActivityDates } from '../store/useAppStore';
-import { X, Check, Flame, Zap, Sparkles } from 'lucide-react';
+import { X, Check, Flame } from 'lucide-react';
 import { soundService } from '../services/soundService';
 
 interface StreakModalProps {
@@ -400,14 +400,9 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
         className="relative w-full max-w-sm rounded-3xl bg-gradient-to-b from-[#ff7a00] via-[#f56500] to-[#e04f00] text-white p-6 sm:p-7 text-center shadow-2xl overflow-hidden border border-amber-300/40 animate-scale-up"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Ambient Glows & Background Lightning Effects */}
+        {/* Ambient Glows */}
         <div className="absolute -top-16 -left-16 w-44 h-44 bg-yellow-300/25 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-16 -right-16 w-44 h-44 bg-red-600/30 rounded-full blur-3xl pointer-events-none" />
-
-        {/* Decorative lightning bolts in background */}
-        <Zap className="absolute top-8 left-4 w-7 h-7 text-yellow-200/40 rotate-[-15deg] pointer-events-none animate-pulse" />
-        <Zap className="absolute top-12 right-6 w-9 h-9 text-amber-200/40 rotate-[20deg] pointer-events-none animate-pulse" />
-        <Sparkles className="absolute bottom-28 left-6 w-6 h-6 text-yellow-300/40 pointer-events-none" />
 
         {/* Close Button */}
         <button
@@ -418,12 +413,12 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
           <X className="w-4 h-4 stroke-[2.5]" />
         </button>
 
-        {/* Real Tanco Mascot with Sunglasses & Radiating Lightning Aura */}
+        {/* Real Tanco Mascot with Sunglasses */}
         <div className="relative mx-auto mt-1 mb-2 flex items-center justify-center">
           {/* Pulsing Energy Glow Orb */}
           <div className="absolute w-36 h-36 rounded-full bg-gradient-to-tr from-yellow-300/40 via-amber-400/50 to-orange-500/40 blur-2xl animate-pulse pointer-events-none" />
 
-          {/* Electric Sunburst Aura & Spikes radiating behind head */}
+          {/* Electric Sunburst Aura behind head */}
           <svg
             viewBox="0 0 240 240"
             className="absolute w-44 h-44 -top-3 overflow-visible pointer-events-none"
@@ -437,31 +432,15 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
               fillOpacity="0.55"
               className="animate-pulse"
             />
-            {/* Inner Golden Lightning Rays */}
+            {/* Inner Golden Rays */}
             <path
               d="M120 22 L132 50 L164 40 L154 68 L184 80 L160 102 L180 128 L150 134 L156 164 L130 152 L118 180 L106 152 L80 164 L86 134 L56 128 L76 102 L52 80 L82 68 L72 40 L104 50 Z"
               fill="#FACC15"
               fillOpacity="0.75"
             />
-            {/* Crackling Zigzag Bolt on Left */}
-            <path
-              d="M32 75 L54 102 H42 L58 136 L36 108 H48 Z"
-              fill="#FFFFFF"
-              stroke="#F59E0B"
-              strokeWidth="2.5"
-              className="animate-pulse"
-            />
-            {/* Crackling Zigzag Bolt on Right */}
-            <path
-              d="M208 75 L186 102 H198 L182 136 L204 108 H192 Z"
-              fill="#FFFFFF"
-              stroke="#F59E0B"
-              strokeWidth="2.5"
-              className="animate-pulse"
-            />
           </svg>
 
-          {/* Official Tanco Character with Overlay Sunglasses */}
+          {/* Official Tanco Character with Enlarged Overlay Sunglasses */}
           <div className="relative w-32 h-32 sm:w-36 sm:h-36 shrink-0 filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.35)]">
             <img
               src={imgError ? '/tancore-mascot.png' : '/tancore-mascot-transparent.png'}
@@ -470,13 +449,13 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
               onError={() => setImgError(true)}
             />
 
-            {/* Cool Sunglasses Overlay anatomically placed on Tanco's face */}
+            {/* Cool Sunglasses Overlay enlarged to fit Tanco's face perfectly */}
             <div
               className="absolute pointer-events-none"
               style={{
                 left: '48.4%',
                 top: '41.2%',
-                width: '42%',
+                width: '58%',
                 transform: 'translate(-50%, -50%)',
               }}
             >
@@ -555,8 +534,8 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                         className="relative flex items-center justify-center pt-2"
                         title={
                           isTr
-                            ? 'Buzlu Gün (Önceki Çözülen Dersler - Soğuk Duman Tütüyor)'
-                            : 'Frozen Day (Previous Solved Lessons - Steaming Ice)'
+                            ? 'Buzlu Gün (Önceki Çözülen Dersler)'
+                            : 'Frozen Day (Previous Solved Lessons)'
                         }
                       >
                         <IceCrystal3D size="md" showSmoke={true} />
@@ -569,8 +548,8 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                         className="relative flex items-center justify-center pt-2"
                         title={
                           isTr
-                            ? 'Sönmüş Lav Kayası (Girilmemiş Gün)'
-                            : 'Extinguished Lava Rock (Missed Day)'
+                            ? 'Sönmüş Lav Kayası'
+                            : 'Extinguished Lava Rock'
                         }
                       >
                         <ExtinguishedLavaRock3D size="md" />
@@ -581,7 +560,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                     {isFuture && (
                       <div
                         className="relative flex items-center justify-center pt-2 opacity-80 hover:opacity-100 transition-opacity"
-                        title={isTr ? 'Gelecek Gün (Kaya)' : 'Future Day (Rock)'}
+                        title={isTr ? 'Gelecek Gün' : 'Future Day'}
                       >
                         <FutureRock3D size="md" />
                       </div>
@@ -591,33 +570,13 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
               );
             })}
           </div>
-
-          {/* Mini Legend for Lava vs Ice vs Extinguished vs Future */}
-          <div className="flex items-center justify-center gap-2 sm:gap-2.5 mt-3 pt-2.5 border-t border-slate-100 text-[10px] sm:text-[10.5px] font-bold text-slate-500 flex-wrap">
-            <span className="flex items-center gap-1">
-              <LavaRock3D size="sm" showFlames={false} hasSolvedBadge={false} />
-              <span className="text-orange-600">{isTr ? 'Lavlı Seri' : 'Active Lava'}</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <IceCrystal3D size="sm" showSmoke={false} hasSolvedBadge={false} />
-              <span className="text-sky-600">{isTr ? 'Buzlu' : 'Frozen'}</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <ExtinguishedLavaRock3D size="sm" />
-              <span className="text-slate-600">{isTr ? 'Sönmüş' : 'Dormant'}</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <FutureRock3D size="sm" />
-              <span className="text-stone-500">{isTr ? 'Gelecek' : 'Future'}</span>
-            </span>
-          </div>
         </div>
 
         {/* Motivational Info Text */}
         <p className="text-xs sm:text-sm font-semibold text-amber-50/95 leading-relaxed px-2 mb-4">
           {isTr
-            ? 'Ateşin hiç sönmesin! Her gün en az bir ders veya vaka çözerek serini koru.'
-            : 'Keep your fire burning! Solve at least one lesson or case study every day.'}
+            ? 'Serini devam ettirmek için her gün giriş yap !'
+            : 'Log in every day to keep your streak going !'}
         </p>
 
         {/* Action Button */}
