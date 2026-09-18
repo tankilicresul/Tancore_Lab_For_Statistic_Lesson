@@ -333,18 +333,9 @@ class SoundService {
     whiteNoise.start();
     rumbleOsc.start();
 
-    // Ember crackle generator interval
-    const crackleInterval = setInterval(() => {
-      if (this.isMuted || !this.activeAmbientNodes) return;
-      if (Math.random() > 0.4) {
-        this.playMiniCrackle(ctx, volume * 0.7);
-      }
-    }, 280);
-
     this.activeAmbientNodes = {
       gainNode: masterGain,
       stop: () => {
-        clearInterval(crackleInterval);
         try {
           const stopTime = ctx.currentTime + 0.4;
           masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
@@ -364,36 +355,6 @@ class SoundService {
         }
       },
     };
-  }
-
-  private playMiniCrackle(ctx: AudioContext, vol: number) {
-    try {
-      const now = ctx.currentTime;
-      const crackleLen = Math.floor(ctx.sampleRate * 0.008); // 8ms pop
-      const buffer = ctx.createBuffer(1, crackleLen, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < crackleLen; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (crackleLen * 0.3));
-      }
-
-      const source = ctx.createBufferSource();
-      source.buffer = buffer;
-
-      const hp = ctx.createBiquadFilter();
-      hp.type = 'highpass';
-      hp.frequency.setValueAtTime(1400, now);
-
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(vol * (0.5 + Math.random() * 0.5), now);
-
-      source.connect(hp);
-      hp.connect(gain);
-      gain.connect(ctx.destination);
-
-      source.start(now);
-    } catch {
-      // ignore
-    }
   }
 
   // ─────────────────────────────────────────────────────────────
