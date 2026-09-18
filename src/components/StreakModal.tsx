@@ -438,21 +438,17 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                   </span>
 
                   <div className="relative h-11 sm:h-12 flex items-center justify-center">
-                    {/* LAVLI (Fiery Lava Active Streak Day) */}
+                    {/* LAVLI (3D Burning Lava Rock with Surging Flame Waves) */}
                     {isLava && (
                       <div
-                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shadow-md bg-gradient-to-tr from-amber-500 via-orange-500 to-red-500 text-white shadow-orange-500/40 ${
-                          isToday
-                            ? 'ring-2 ring-yellow-300 ring-offset-2 ring-offset-white scale-110 animate-pulse'
-                            : 'ring-1 ring-amber-300/70'
-                        }`}
+                        className="relative flex items-center justify-center pt-2"
                         title={
                           isToday
-                            ? (isTr ? 'Bugün (Alevli Seri)' : 'Today (Active Streak)')
-                            : (isTr ? 'Alevli Seri Günü' : 'Active Streak Day')
+                            ? (isTr ? 'Bugün (Alev Alev Yanan Lav Kayası!)' : 'Today (Blazing Lava Rock!)')
+                            : (isTr ? 'Alevli Seri Günü (Yanan Lav Kayası)' : 'Active Streak Day (Burning Lava Rock)')
                         }
                       >
-                        <Check className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[3] text-white drop-shadow-xs" />
+                        <LavaRock3D size="md" showFlames={true} isToday={isToday} hasSolvedBadge={true} />
                       </div>
                     )}
 
@@ -496,7 +492,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
           {/* Mini Legend for Lava vs Ice */}
           <div className="flex items-center justify-center gap-3.5 mt-3 pt-2.5 border-t border-slate-100 text-[11px] font-bold text-slate-500">
             <span className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-amber-500 to-red-500 shadow-xs ring-1 ring-amber-300/60" />
+              <LavaRock3D size="sm" showFlames={false} hasSolvedBadge={false} />
               <span className="text-orange-600">{isTr ? 'Lavlı Seri' : 'Active Lava'}</span>
             </span>
             <span className="flex items-center gap-1.5">

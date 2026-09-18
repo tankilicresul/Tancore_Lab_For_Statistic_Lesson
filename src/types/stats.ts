@@ -164,6 +164,7 @@ export interface UserState {
   isTancoActive?: boolean;
   isTancoMoved?: boolean;
   tancoPosition?: { x: number; y: number } | null;
+  isSoundEnabled?: boolean;
 }
 
 export interface PlacementTestResult {

@@ -34,11 +34,12 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   const [dbProfiles, setDbProfiles] = useState<PublicProfile[]>([]);
   const [_isLoadingProfiles, setIsLoadingProfiles] = useState(false);
 
-  // Animation State for Rank Climbing:
+  // Animation State for XP Count-up & Rank Climbing:
+  const [animatedXp, setAnimatedXp] = useState<number | null>(null);
+  const [isCountingXp, setIsCountingXp] = useState(false);
   const [displayRank, setDisplayRank] = useState<number | null>(null);
   const [isClimbing, setIsClimbing] = useState(false);
   const [justArrived, setJustArrived] = useState(false);
-  const [showSparkles, setShowSparkles] = useState(false);
   const listRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -90,38 +91,75 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     unlockedBadges,
   });
 
-  // Rank Climb Init & Trigger Logic
+  // Rank & XP Climb Animation Initialization
   const startRankClimbAnimation = (fromRankOverride?: number) => {
     if (!isAuthenticated || !userRank || sortedLeaderboard.length === 0) return;
 
-    let prev = fromRankOverride;
-    if (prev === undefined) {
-      const savedStr = localStorage.getItem('tancore_last_seen_rank');
-      prev = savedStr ? parseInt(savedStr, 10) : NaN;
+    let prevRank = fromRankOverride;
+    if (prevRank === undefined) {
+      const savedRankStr = localStorage.getItem('tancore_last_seen_rank');
+      prevRank = savedRankStr ? parseInt(savedRankStr, 10) : NaN;
     }
 
-    if (isNaN(prev) || prev === null) {
-      prev = Math.min(sortedLeaderboard.length, userRank + 6);
-      localStorage.setItem('tancore_last_seen_rank', String(prev));
+    const currentXpTarget = xp || 0;
+    const savedXpStr = localStorage.getItem('tancore_last_seen_xp');
+    let prevXp = savedXpStr ? parseInt(savedXpStr, 10) : NaN;
+
+    if (isNaN(prevRank) || prevRank === null) {
+      prevRank = Math.min(sortedLeaderboard.length, userRank + 6);
+    }
+    if (isNaN(prevXp) || prevXp === null || prevXp > currentXpTarget) {
+      prevXp = Math.max(0, currentXpTarget - 200);
     }
 
-    if (userRank < prev) {
-      setDisplayRank(prev);
-      const t = setTimeout(() => {
-        setIsClimbing(true);
-      }, 550);
-      return () => clearTimeout(t);
+    if (userRank < prevRank || currentXpTarget > prevXp) {
+      // Step 1: Set initial lower XP & lower rank, then start XP count-up!
+      setAnimatedXp(prevXp);
+      setDisplayRank(prevRank);
+      setIsCountingXp(true);
+      setIsClimbing(false);
+      setJustArrived(false);
     } else {
+      setAnimatedXp(currentXpTarget);
       setDisplayRank(userRank);
+      setIsCountingXp(false);
+      setIsClimbing(false);
       localStorage.setItem('tancore_last_seen_rank', String(userRank));
+      localStorage.setItem('tancore_last_seen_xp', String(currentXpTarget));
     }
   };
 
   useEffect(() => {
     startRankClimbAnimation();
-  }, [userRank, isAuthenticated, sortedLeaderboard.length]);
+  }, [userRank, xp, isAuthenticated, sortedLeaderboard.length]);
 
-  // Step-by-Step Rank Climbing Interval
+  // Phase 1: Rapid XP Count-up Effect (Numbers count up rapidly to target XP)
+  useEffect(() => {
+    if (!isCountingXp || animatedXp === null || !xp) return;
+
+    if (animatedXp < xp) {
+      const delta = xp - animatedXp;
+      const step = Math.max(1, Math.ceil(delta / 5));
+      const timer = setTimeout(() => {
+        setAnimatedXp((current) => (current !== null ? Math.min(xp, current + step) : xp));
+      }, 35);
+
+      return () => clearTimeout(timer);
+    } else if (animatedXp === xp) {
+      // Phase 1 finished! Save XP and start Phase 2 (Rank Climb)
+      setIsCountingXp(false);
+      localStorage.setItem('tancore_last_seen_xp', String(xp));
+
+      if (displayRank !== null && userRank && displayRank > userRank) {
+        const climbTimer = setTimeout(() => {
+          setIsClimbing(true);
+        }, 300);
+        return () => clearTimeout(climbTimer);
+      }
+    }
+  }, [isCountingXp, animatedXp, xp, displayRank, userRank]);
+
+  // Phase 2: Step-by-Step Rank Climbing Interval (Row climbs position by position)
   useEffect(() => {
     if (!isClimbing || displayRank === null || !userRank) return;
 
@@ -132,9 +170,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
       return () => clearTimeout(timer);
     } else if (displayRank === userRank) {
+      // Phase 2 finished! Start Phase 3 (Puf Pop Snap)
       setIsClimbing(false);
       setJustArrived(true);
-      setShowSparkles(true);
 
       localStorage.setItem('tancore_last_seen_rank', String(userRank));
 
@@ -142,14 +180,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         setJustArrived(false);
       }, 850);
 
-      const sparkleTimer = setTimeout(() => {
-        setShowSparkles(false);
-      }, 2500);
-
-      return () => {
-        clearTimeout(popTimer);
-        clearTimeout(sparkleTimer);
-      };
+      return () => clearTimeout(popTimer);
     }
   }, [isClimbing, displayRank, userRank]);
 
