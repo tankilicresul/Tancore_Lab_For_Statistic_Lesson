@@ -50,6 +50,11 @@ interface AppStoreActions {
   setIsPlusUpgradeModalOpen: (open: boolean) => void;
   openLemonCheckout: (customEmail?: string) => void;
   setSubscriptionStatus: (isPremium: boolean, status?: string) => void;
+  isTancoActive?: boolean;
+  tancoPosition?: { x: number; y: number } | null;
+  activateTanco: (initialPos: { x: number; y: number }) => void;
+  setTancoPosition: (pos: { x: number; y: number }) => void;
+  deactivateTanco: () => void;
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -88,6 +93,8 @@ const INITIAL_STATE: UserState = {
   customActiveModuleName: null,
   isTancoChatOpen: false,
   isPlusUpgradeModalOpen: false,
+  isTancoActive: false,
+  tancoPosition: null,
 };
 
 function syncUserInList(state: UserState): PublicProfile[] {
@@ -768,11 +775,35 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           unlockedBadges: [],
         });
       },
+
+      activateTanco: (initialPos) => {
+        set({
+          isTancoActive: true,
+          tancoPosition: initialPos,
+        });
+      },
+
+      setTancoPosition: (pos) => {
+        set({
+          tancoPosition: pos,
+        });
+      },
+
+      deactivateTanco: () => {
+        set({
+          isTancoActive: false,
+          tancoPosition: null,
+        });
+      },
     }),
     {
       name: 'tancorelab-statsim-v5',
       onRehydrateStorage: () => (state) => {
         if (state) {
+          // Tanco must always start inactive and in the welcome banner upon every entry/refresh
+          state.isTancoActive = false;
+          state.tancoPosition = null;
+
           // Anti-tamper sanity check on rehydration
           const completedCount = (state.completedLessons?.length || 0) + (state.completedCaseExams?.length || 0);
           const maxAllowedXp = completedCount * 45 + Math.min(state.streak || 1, 365) * 50 + 2000;

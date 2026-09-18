@@ -159,6 +159,8 @@ export interface UserState {
   isTancoChatOpen?: boolean;
   guestProgressTimestamp?: number;
   isPlusUpgradeModalOpen?: boolean;
+  isTancoActive?: boolean;
+  tancoPosition?: { x: number; y: number } | null;
 }
 
 export interface PlacementTestResult {

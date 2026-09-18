@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ALL_MODULES } from '../data/modules';
 import { useAppStore } from '../store/useAppStore';
 import { getLocalized, formatStudentGreetingName } from '../utils/localization';
@@ -25,6 +25,7 @@ import {
   Database,
   Compass,
   GraduationCap,
+  Sparkles,
 } from 'lucide-react';
 
 export interface CourseTrack {
@@ -313,7 +314,84 @@ export const HomePage: React.FC<HomePageProps> = ({
     language,
     userProfile,
     setIsTancoChatOpen,
+    isTancoActive,
+    activateTanco,
+    setTancoPosition,
   } = useAppStore();
+
+  const avatarRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+  const hasMovedRef = useRef(false);
+  const dragStartRef = useRef<{ startX: number; startY: number; initialX: number; initialY: number }>({
+    startX: 0,
+    startY: 0,
+    initialX: 0,
+    initialY: 0,
+  });
+
+  const clampPosition = useCallback((x: number, y: number) => {
+    const isMobile = window.innerWidth < 640;
+    const btnSize = isMobile ? 56 : 60;
+    const padX = 12;
+    const padTop = 64;
+    const padBottom = isMobile ? 96 : 36;
+    const minX = padX;
+    const maxX = Math.max(minX, window.innerWidth - btnSize - padX);
+    const minY = padTop;
+    const maxY = Math.max(minY, window.innerHeight - btnSize - padBottom);
+    return {
+      x: Math.min(Math.max(minX, x), maxX),
+      y: Math.min(Math.max(minY, y), maxY),
+    };
+  }, []);
+
+  const handleAvatarPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const initialPos = { x: rect.left, y: rect.top };
+
+    dragStartRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      initialX: initialPos.x,
+      initialY: initialPos.y,
+    };
+    hasMovedRef.current = false;
+    isDraggingRef.current = true;
+
+    // Immediately awaken and activate Tanco at this exact viewport position!
+    activateTanco(initialPos);
+
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+
+    const onPointerMove = (moveEv: PointerEvent) => {
+      if (!isDraggingRef.current) return;
+      const deltaX = moveEv.clientX - dragStartRef.current.startX;
+      const deltaY = moveEv.clientY - dragStartRef.current.startY;
+
+      if (!hasMovedRef.current && Math.hypot(deltaX, deltaY) > 5) {
+        hasMovedRef.current = true;
+      }
+
+      if (hasMovedRef.current) {
+        const nextX = dragStartRef.current.initialX + deltaX;
+        const nextY = dragStartRef.current.initialY + deltaY;
+        setTancoPosition(clampPosition(nextX, nextY));
+      }
+    };
+
+    const onPointerUp = () => {
+      isDraggingRef.current = false;
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointercancel', onPointerUp);
+    };
+
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerUp);
+  };
 
   // Format student greeting name according to user rule:
   // 1-2 words -> first name; 3+ words -> First letter. Second name
@@ -339,28 +417,57 @@ export const HomePage: React.FC<HomePageProps> = ({
             </h1>
             <p className="text-[11.5px] sm:text-xs text-slate-700 font-medium leading-relaxed">
               {language === 'tr'
-                ? "Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman fotoğrafıma tıklayarak ulaşabilirsin."
-                : "I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. You can reach me anytime by clicking on my photo."}
+                ? "Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman fotoğrafıma tıklayarak ulaşabilirsin. Fotoğrafıma dokunup kaydırmayı dene !"
+                : "I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. You can reach me anytime by clicking on my photo. Try tapping and dragging my photo!"}
             </p>
           </div>
 
           {/* Tanco Mascot at Bottom-Left */}
           <div className="flex items-center space-x-3 pl-1">
-            <button
-              onClick={() => setIsTancoChatOpen(true)}
-              className="relative group cursor-pointer focus:outline-none"
-              title={language === 'tr' ? "Tanco ile Sohbet Et" : "Chat with Tanco"}
-            >
-              <TanCoreMascotAvatar
-                size="lg"
-                alt="Tanco Yapay Zeka Öğretim Asistanı"
-                className="shadow-md shadow-black/20 ring-2 ring-white/80 group-hover:scale-105 transition-transform shrink-0"
-              />
-            </button>
+            {!isTancoActive ? (
+              <div
+                ref={avatarRef}
+                onPointerDown={handleAvatarPointerDown}
+                className="relative group cursor-pointer select-none touch-none focus:outline-none"
+                title={
+                  language === 'tr'
+                    ? "Tanco'yu canlandırmak ve serbest bırakmak için dokun veya kaydır!"
+                    : "Tap or drag to awaken Tanco!"
+                }
+              >
+                <TanCoreMascotAvatar
+                  size="lg"
+                  alt="Tanco Yapay Zeka Öğretim Asistanı"
+                  className="shadow-md shadow-black/20 ring-2 ring-white/80 group-hover:scale-105 group-active:scale-95 transition-transform shrink-0"
+                />
+                {/* Enticing touch/drag pulse badge */}
+                <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 pointer-events-none">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-200 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-yellow-300 border-2 border-orange-600" />
+                </span>
+              </div>
+            ) : (
+              <div
+                onClick={() => setIsTancoChatOpen(true)}
+                className="relative group cursor-pointer focus:outline-none w-14 h-14 rounded-full border-2 border-dashed border-white/60 bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all shrink-0"
+                title={language === 'tr' ? "Tanco ile Sohbet Et" : "Chat with Tanco"}
+              >
+                <Sparkles className="w-5 h-5 text-amber-200 animate-pulse" />
+              </div>
+            )}
+
             <div className="flex flex-col">
-              <span className="text-xs sm:text-sm font-black text-white tracking-tight drop-shadow-xs">
-                Tanco
-              </span>
+              <div className="flex items-center space-x-1.5">
+                <span className="text-xs sm:text-sm font-black text-white tracking-tight drop-shadow-xs">
+                  Tanco
+                </span>
+                {isTancoActive && (
+                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-black bg-white/20 text-white border border-white/30 backdrop-blur-xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse" />
+                    {language === 'tr' ? 'Aktif' : 'Active'}
+                  </span>
+                )}
+              </div>
               <span className="text-[10px] sm:text-[11px] font-semibold text-amber-100">
                 {language === 'tr' ? 'Öğretim Asistanı' : 'Teaching Assistant'}
               </span>
