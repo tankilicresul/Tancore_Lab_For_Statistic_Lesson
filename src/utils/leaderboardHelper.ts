@@ -72,6 +72,7 @@ export function computeUnifiedLeaderboard(params: {
   dbProfiles?: PublicProfile[];
   registeredUsers?: PublicProfile[];
   currentUserProfile?: UserProfile | null;
+  isAuthenticated?: boolean;
   currentXp?: number;
   currentStreak?: number;
   completedCount?: number;
@@ -81,6 +82,7 @@ export function computeUnifiedLeaderboard(params: {
     dbProfiles = [],
     registeredUsers = [],
     currentUserProfile = null,
+    isAuthenticated = false,
     currentXp = 0,
     currentStreak = 1,
     completedCount = 0,
@@ -153,17 +155,14 @@ export function computeUnifiedLeaderboard(params: {
     }
   };
 
-  // 1. Add baseline 27 mock student profiles
-  DEFAULT_LEADERBOARD_STUDENTS.forEach((p) => upsertProfile(p));
-
-  // 2. Add remote Supabase profiles (live database students)
+  // 1. Add remote Supabase profiles (live database students)
   dbProfiles.forEach((p) => upsertProfile(p));
 
   // 3. Add local registered users
   registeredUsers.forEach((p) => upsertProfile(p));
 
-  // 4. Upsert active logged in user if authenticated
-  if (currentUserProfile && (currentUserProfile.fullName || currentUserProfile.schoolEmail)) {
+  // 4. Upsert active logged in user ONLY IF authenticated
+  if (isAuthenticated && currentUserProfile && (currentUserProfile.fullName || currentUserProfile.schoolEmail)) {
     const activeEntry: PublicProfile = {
       id: currentUserProfile.id || 'self',
       fullName: currentUserProfile.fullName || 'Öğrenci',
@@ -193,7 +192,7 @@ export function computeUnifiedLeaderboard(params: {
 
   // Calculate current user's real index and rank
   let currentUserIdx = -1;
-  if (currentUserProfile) {
+  if (isAuthenticated && currentUserProfile) {
     currentUserIdx = list.findIndex((p) => isSameStudent(p, currentUserProfile));
   }
   const userRank = currentUserIdx >= 0 ? currentUserIdx + 1 : 1;

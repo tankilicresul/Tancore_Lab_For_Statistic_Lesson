@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { UserProfile, UserState, PublicProfile, RegisteredAccount } from '../types/stats';
-import { saveUserProfileToSupabase, syncUserProgress, fetchUserProfileFromSupabase, isSupabaseConfigured, signInWithSupabase } from '../lib/supabase';
+import { saveUserProfileToSupabase, syncUserProgress, fetchUserProfileFromSupabase, isSupabaseConfigured, signInWithSupabase, supabase } from '../lib/supabase';
 import { isSameStudent } from '../utils/leaderboardHelper';
 import { soundService } from '../services/soundService';
 
@@ -622,17 +622,27 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       },
 
       logout: () => {
-        set({
-          isAuthenticated: false,
-          isVerified: false,
-          pendingOtpEmail: undefined,
-          simulatedOtpCode: undefined,
-          userProfile: DEFAULT_PROFILE,
-          currentView: 'home',
-          selectedLessonId: null,
-          selectedCaseId: null,
-          customActiveModuleName: null,
-          unlockedModules: ['module-1', 'module-2'],
+        if (supabase) {
+          supabase.auth.signOut().catch(() => {});
+        }
+        set((state) => {
+          const newState = {
+            ...state,
+            isAuthenticated: false,
+            isVerified: false,
+            pendingOtpEmail: undefined,
+            simulatedOtpCode: undefined,
+            userProfile: DEFAULT_PROFILE,
+            currentView: 'home' as const,
+            selectedLessonId: null,
+            selectedCaseId: null,
+            customActiveModuleName: null,
+            unlockedModules: ['module-1', 'module-2'],
+          };
+          return {
+            ...newState,
+            registeredUsers: syncUserInList(newState),
+          };
         });
       },
 

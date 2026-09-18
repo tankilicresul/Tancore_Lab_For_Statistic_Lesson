@@ -7,6 +7,7 @@ import {
   requestPasswordReset,
   verifyPasswordResetToken,
   completePasswordReset,
+  saveUserProfileToSupabase,
 } from '../lib/supabase';
 import { LegalTermsModal } from './LegalTermsModal';
 import {
@@ -96,8 +97,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // 8-Digit OTP Verification State
-  const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '', '', '']);
+  // 6-Digit OTP Verification State
+  const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [simulatedCode, setSimulatedCode] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -169,7 +170,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     if (otpSentMsg) setOtpSentMsg(null);
   };
 
-  // 8-Digit OTP Input Handlers
+  // 6-Digit OTP Input Handlers
   const handleDigitChange = (index: number, val: string) => {
     const cleaned = val.replace(/\D/g, '');
     if (!cleaned) {
@@ -182,14 +183,14 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
 
     if (cleaned.length > 1) {
       // Pasted multiple digits into a box
-      const chars = cleaned.slice(0, 8).split('');
+      const chars = cleaned.slice(0, 6).split('');
       const updated = [...otpDigits];
       chars.forEach((c, i) => {
-        if (i < 8) updated[i] = c;
+        if (i < 6) updated[i] = c;
       });
       setOtpDigits(updated);
       handleInputChange();
-      const nextFocus = Math.min(chars.length, 7);
+      const nextFocus = Math.min(chars.length, 5);
       otpInputRefs.current[nextFocus]?.focus();
       return;
     }
@@ -200,7 +201,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     handleInputChange();
 
     // Auto-focus next box
-    if (index < 7) {
+    if (index < 5) {
       otpInputRefs.current[index + 1]?.focus();
     }
   };
@@ -220,23 +221,23 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
       handleInputChange();
     } else if (e.key === 'ArrowLeft' && index > 0) {
       otpInputRefs.current[index - 1]?.focus();
-    } else if (e.key === 'ArrowRight' && index < 7) {
+    } else if (e.key === 'ArrowRight' && index < 5) {
       otpInputRefs.current[index + 1]?.focus();
     }
   };
 
   const handleDigitPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const pasteData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 8);
+    const pasteData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
     if (!pasteData) return;
     const chars = pasteData.split('');
-    const updated = ['', '', '', '', '', '', '', ''];
+    const updated = ['', '', '', '', '', ''];
     chars.forEach((c, i) => {
-      if (i < 8) updated[i] = c;
+      if (i < 6) updated[i] = c;
     });
     setOtpDigits(updated);
     handleInputChange();
-    const nextFocus = Math.min(chars.length, 7);
+    const nextFocus = Math.min(chars.length, 5);
     otpInputRefs.current[nextFocus]?.focus();
   };
 
@@ -354,6 +355,14 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
       const remoteRes = await verifyEmailOtp(cleanEmail, token);
       if (remoteRes.success) {
         verifyOtpAndActivateAccount(token, true);
+        saveUserProfileToSupabase({
+          schoolEmail: cleanEmail,
+          fullName: fullName.trim(),
+          university: university.trim(),
+          departmentAndClass: departmentAndClass.trim(),
+          avatarEmoji: '👨‍🎓',
+          isVerified: true,
+        });
         onSuccess?.();
       } else {
         setErrorMessage(
@@ -527,19 +536,19 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-xs font-bold text-slate-700 block">
-                      {language === 'tr' ? '8 Haneli Doğrulama Kodu' : '8-Digit Verification Code'}
+                      {language === 'tr' ? '6 Haneli Doğrulama Kodu' : '6-Digit Verification Code'}
                     </label>
                     <span className="text-[11px] font-bold text-slate-400 font-mono">
-                      {otpDigits.filter(Boolean).length} / 8
+                      {otpDigits.filter(Boolean).length} / 6
                     </span>
                   </div>
 
-                  {/* 8 Distinct Slots (4 + 4 with separator) */}
-                  <div className="flex items-center justify-center gap-1 sm:gap-2">
+                  {/* 6 Distinct Slots (3 + 3 with separator) */}
+                  <div className="flex items-center justify-center gap-1.5 sm:gap-2.5">
                     {otpDigits.map((digit, i) => (
                       <React.Fragment key={i}>
-                        {i === 4 && (
-                          <div className="w-1.5 sm:w-2 h-0.5 bg-slate-300 rounded-full mx-0.5" />
+                        {i === 3 && (
+                          <div className="w-2 sm:w-3 h-0.5 bg-slate-300 rounded-full mx-1" />
                         )}
                         <input
                           ref={(el) => (otpInputRefs.current[i] = el)}
@@ -551,7 +560,7 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           onChange={(e) => handleDigitChange(i, e.target.value)}
                           onKeyDown={(e) => handleDigitKeyDown(i, e)}
                           onPaste={handleDigitPaste}
-                          className={`w-8 h-12 sm:w-10 sm:h-14 text-center font-mono text-xl sm:text-2xl font-black rounded-xl border transition-all ${
+                          className={`w-9 h-12 sm:w-11 sm:h-14 text-center font-mono text-xl sm:text-2xl font-black rounded-xl border transition-all ${
                             digit
                               ? 'bg-orange-50/70 border-[#ff7a00] text-[#ff7a00] shadow-xs'
                               : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-[#ff7a00] focus:ring-2 focus:ring-orange-200'

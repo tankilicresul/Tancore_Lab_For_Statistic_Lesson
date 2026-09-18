@@ -140,8 +140,12 @@ export const TancoChatModal: React.FC = () => {
   const [isListening, setIsListening] = useState(false);
   const [lastSentTime, setLastSentTime] = useState<number>(0);
 
-  const studentName = formatStudentGreetingName(userProfile?.fullName, language === 'tr' ? 'Öğrenci' : 'Student');
-  const userIdentifier = userProfile?.schoolEmail || userProfile?.id || 'guest_user';
+  const studentName = isAuthenticated && userProfile?.fullName?.trim()
+    ? formatStudentGreetingName(userProfile.fullName, language === 'tr' ? 'Öğrenci' : 'Student')
+    : (language === 'tr' ? 'Öğrenci' : 'Student');
+  const userIdentifier = isAuthenticated && userProfile?.schoolEmail
+    ? userProfile.schoolEmail
+    : 'guest_user';
 
   // Live Screen Context Detection
   const lessonObj = selectedLessonId ? getLessonById(selectedLessonId) : undefined;
@@ -216,13 +220,23 @@ export const TancoChatModal: React.FC = () => {
     text:
       language === 'tr'
         ? currentStudyContext?.type === 'lesson'
-          ? `Selam ${studentName}! 🎓 Şu anda **${currentStudyContext.lessonTitle}** konusunu inceliyorsun. Ekrandaki konu anlatımı, formüller, şirket örneği veya mini test sorusuyla ilgili takıldığın her şeyi bana sorabilirsin!`
+          ? (isAuthenticated && userProfile?.fullName?.trim()
+              ? `Selam ${studentName}! 🎓 Şu anda **${currentStudyContext.lessonTitle}** konusunu inceliyorsun. Ekrandaki konu anlatımı, formüller, şirket örneği veya mini test sorusuyla ilgili takıldığın her şeyi bana sorabilirsin!`
+              : `Selam! 🎓 Şu anda **${currentStudyContext.lessonTitle}** konusunu inceliyorsun. Ekrandaki konu anlatımı, formüller, şirket örneği veya mini test sorusuyla ilgili takıldığın her şeyi bana sorabilirsin!`)
           : currentStudyContext?.type === 'caseExam'
-          ? `Selam ${studentName}! 🎓 Şu anda **${currentStudyContext.caseTitle}** vaka sınavındasın. Vaka problemi, veri seti veya çözüm adımlarında takıldığın noktaları birlikte adım adım çözebiliriz!`
-          : `Selam ${studentName}! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nOlasılık (ENGR 200), İstatistik (INDR 252), Yöneylem Araştırması veya optimizasyonla ilgili aklına takılan her şeyi bana sorabilirsin. İstersen fotoğraf yükleyerek soru da sorabilirsin!`
+          ? (isAuthenticated && userProfile?.fullName?.trim()
+              ? `Selam ${studentName}! 🎓 Şu anda **${currentStudyContext.caseTitle}** vaka sınavındasın. Vaka problemi, veri seti veya çözüm adımlarında takıldığın noktaları birlikte adım adım çözebiliriz!`
+              : `Selam! 🎓 Şu anda **${currentStudyContext.caseTitle}** vaka sınavındasın. Vaka problemi, veri seti veya çözüm adımlarında takıldığın noktaları birlikte adım adım çözebiliriz!`)
+          : (isAuthenticated && userProfile?.fullName?.trim()
+              ? `Selam ${studentName}! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nOlasılık (ENGR 200), İstatistik (INDR 252), Yöneylem Araştırması veya optimizasyonla ilgili aklına takılan her şeyi bana sorabilirsin. İstersen fotoğraf yükleyerek soru da sorabilirsin!`
+              : `Selam! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nOlasılık (ENGR 200), İstatistik (INDR 252), Yöneylem Araştırması veya optimizasyonla ilgili aklına takılan her şeyi bana sorabilirsin. İstersen fotoğraf yükleyerek soru da sorabilirsin!`)
         : currentStudyContext?.type === 'lesson'
-        ? `Hi ${studentName}! 🎓 You are currently studying **${currentStudyContext.lessonTitle}**. Ask me anything about the concept, formulas, company case, or mini test questions on screen!`
-        : `Hi ${studentName}! I'm Tanco, your Industrial Engineering TA 🎓\n\nFeel free to ask me anything about Probability, Applied Statistics, Operations Research, or upload problem photos!`,
+        ? (isAuthenticated && userProfile?.fullName?.trim()
+            ? `Hi ${studentName}! 🎓 You are currently studying **${currentStudyContext.lessonTitle}**. Ask me anything about the concept, formulas, company case, or mini test questions on screen!`
+            : `Hi! 🎓 You are currently studying **${currentStudyContext.lessonTitle}**. Ask me anything about the concept, formulas, company case, or mini test questions on screen!`)
+        : (isAuthenticated && userProfile?.fullName?.trim()
+            ? `Hi ${studentName}! I'm Tanco, your Industrial Engineering TA 🎓\n\nFeel free to ask me anything about Probability, Applied Statistics, Operations Research, or upload problem photos!`
+            : `Hi! I'm Tanco, your Industrial Engineering TA 🎓\n\nFeel free to ask me anything about Probability, Applied Statistics, Operations Research, or upload problem photos!`),
     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
   };
 
@@ -230,12 +244,12 @@ export const TancoChatModal: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Load cloud synchronized chat history from Supabase
+  // Load cloud synchronized chat history from Supabase only for logged in users
   useEffect(() => {
     let isMounted = true;
 
     async function loadCloudHistory() {
-      if (userProfile?.schoolEmail || userProfile?.id) {
+      if (isAuthenticated && userProfile?.schoolEmail) {
         const cloudMsgs = await fetchTancoChatsFromSupabase(userIdentifier);
         if (isMounted && cloudMsgs && cloudMsgs.length > 0) {
           setMessages([initialGreeting, ...cloudMsgs]);
@@ -252,7 +266,7 @@ export const TancoChatModal: React.FC = () => {
       isMounted = false;
       localStorage.setItem('tancore_last_read_tanco_chat_v1', String(Date.now()));
     };
-  }, [isTancoChatOpen, userIdentifier]);
+  }, [isTancoChatOpen, userIdentifier, isAuthenticated]);
 
   // Keep last read timestamp updated whenever messages change while chat is open
   useEffect(() => {
@@ -426,7 +440,7 @@ export const TancoChatModal: React.FC = () => {
     setIsTyping(true);
 
     // Save student message to Supabase cloud sync
-    if (userProfile?.schoolEmail || userProfile?.id) {
+    if (isAuthenticated && userProfile?.schoolEmail) {
       saveTancoChatMessageToSupabase(userIdentifier, userProfile?.schoolEmail, 'student', query || '[Görsel Soru]');
     }
 
@@ -508,7 +522,7 @@ export const TancoChatModal: React.FC = () => {
       setMessages((prev) => [...prev, tancoMsg]);
 
       // Save Tanco response to Supabase cloud sync
-      if (userProfile?.schoolEmail || userProfile?.id) {
+      if (isAuthenticated && userProfile?.schoolEmail) {
         saveTancoChatMessageToSupabase(userIdentifier, userProfile?.schoolEmail, 'tanco', reply);
       }
     } catch (error) {

@@ -72,14 +72,10 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     };
   }, [xp, userProfile?.avatarUrl]);
 
-  // Effective active profile: logged in user or current local student
-  const effectiveProfile = userProfile || {
-    id: 'active_student',
-    fullName: language === 'tr' ? 'Öğrenci' : 'Student',
-    university: language === 'tr' ? 'Misafir Öğrenci' : 'Guest Student',
-    schoolEmail: '',
-    avatarEmoji: '👨‍🎓',
-  };
+  // Effective active profile: only for authenticated user
+  const effectiveProfile = isAuthenticated && userProfile
+    ? userProfile
+    : null;
 
   // Real Leaderboard Calculation (Strictly Deduplicated via computeUnifiedLeaderboard)
   const completedCount = completedLessons.length + completedCaseExams.length;
@@ -88,6 +84,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     dbProfiles,
     registeredUsers,
     currentUserProfile: effectiveProfile,
+    isAuthenticated: Boolean(isAuthenticated),
     currentXp: xp,
     currentStreak: streak,
     completedCount,
@@ -96,7 +93,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   // Ambient soothing lava flow if user is in Top 3
   useEffect(() => {
-    if (userRank && userRank <= 3) {
+    if (isAuthenticated && userRank && userRank <= 3) {
       soundService.playLavaFlow(0.12);
     } else {
       soundService.stopAmbient();
@@ -104,11 +101,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     return () => {
       soundService.stopAmbient();
     };
-  }, [userRank]);
+  }, [userRank, isAuthenticated]);
 
   // Auto-Scroll to keep user row in view on load
   useEffect(() => {
-    if (userRank) {
+    if (isAuthenticated && userRank) {
       const timer = setTimeout(() => {
         const el = document.getElementById(`leaderboard-row-${userRank}`);
         if (el) {
@@ -117,7 +114,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       }, 150);
       return () => clearTimeout(timer);
     }
-  }, [userRank]);
+  }, [userRank, isAuthenticated]);
 
   // Real Top 3 users based on sortedLeaderboard
   const user1 = sortedLeaderboard[0] || null;
@@ -319,8 +316,8 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         </div>
       </div>
 
-      {/* Current User Floating/Top Preview Row (Visible only when user is Rank 4+ and has not scrolled down yet) */}
-      {userRank > 3 && (
+      {/* Current User Floating/Top Preview Row (Visible only when user is authenticated, Rank 4+ and has not scrolled down yet) */}
+      {isAuthenticated && userRank > 3 && effectiveProfile && (
         <div
           className={`transition-all duration-300 ease-in-out ${
             hasScrolledInLeaderboard
@@ -404,7 +401,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
             className="space-y-2 max-h-[480px] overflow-y-auto pr-1"
           >
             {sortedLeaderboard.slice(3).map((user) => {
-              const isSelf = isSameStudent(user, effectiveProfile);
+              const isSelf = Boolean(isAuthenticated && effectiveProfile && isSameStudent(user, effectiveProfile));
               const currentVisualRank = user.rank;
 
               return (

@@ -87,19 +87,19 @@ export async function verifyEmailOtp(
   const cleanToken = token.trim();
 
   try {
-    // 1. Try 'signup' verification type first
+    // 1. Try 'email' type first (used by signInWithOtp)
     let res = await supabase.auth.verifyOtp({
       email: email.trim().toLowerCase(),
       token: cleanToken,
-      type: 'signup',
+      type: 'email',
     });
 
-    // 2. If 'signup' fails, try 'email' type (used for magiclink/otp signin)
+    // 2. If 'email' fails, try 'signup' type (used by signUp)
     if (res.error) {
       res = await supabase.auth.verifyOtp({
         email: email.trim().toLowerCase(),
         token: cleanToken,
-        type: 'email',
+        type: 'signup',
       });
     }
 

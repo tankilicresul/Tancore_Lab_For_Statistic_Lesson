@@ -17,7 +17,7 @@ import { AppSplashScreen } from './components/AppSplashScreen';
 import { getLessonById, getCaseExamById } from './data/modules';
 import { useAppStore, saveTancoSession } from './store/useAppStore';
 import { getLocalized } from './utils/localization';
-import { fetchUserProfileFromSupabase } from './lib/supabase';
+import { fetchUserProfileFromSupabase, supabase } from './lib/supabase';
 
 export const App: React.FC = () => {
   const [isSplashVisible, setIsSplashVisible] = useState(true);
@@ -57,6 +57,8 @@ export const App: React.FC = () => {
 
   // Automatically sync profile details from Supabase cloud so registered name is always present
   useEffect(() => {
+    // Only perform sync if user is authenticated and has an email
+    if (!isAuthenticated) return;
     const email = userProfile?.schoolEmail;
     if (!email) return;
 
@@ -78,12 +80,48 @@ export const App: React.FC = () => {
               streak: typeof remoteProfile.streak === 'number' ? remoteProfile.streak : state.streak,
             }));
           }
+        } else {
+          // If the profile no longer exists in Supabase (e.g. account was deleted from database),
+          // cleanly reset user to guest state so phantom accounts don't remain in local storage
+          console.info('Account not found in cloud, resetting to guest session.');
+          useAppStore.getState().logout();
         }
       })
       .catch((err) => {
         console.warn('Profile sync error:', err);
       });
-  }, [userProfile?.schoolEmail]);
+  }, [userProfile?.schoolEmail, isAuthenticated]);
+
+  // Listen to Supabase Auth state changes in real-time
+  useEffect(() => {
+    if (!supabase) return;
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        if (useAppStore.getState().isAuthenticated) {
+          useAppStore.getState().logout();
+        }
+      } else if (session?.user && !useAppStore.getState().isAuthenticated) {
+        const meta = session.user.user_metadata || {};
+        const email = session.user.email || '';
+        if (email) {
+          updateUserProfile({
+            id: session.user.id,
+            schoolEmail: email,
+            fullName: meta.full_name || meta.name || email.split('@')[0],
+            university: meta.university || '',
+            departmentAndClass: meta.department_and_class || '',
+            isVerified: true,
+          });
+          useAppStore.setState({ isAuthenticated: true, isVerified: true });
+        }
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [isAuthenticated]);
 
   // ── Native OS Edge Swipe-Back & History Management ─────────────────────
   // Initial root state setup
