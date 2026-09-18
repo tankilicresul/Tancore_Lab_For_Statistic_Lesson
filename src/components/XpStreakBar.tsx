@@ -34,6 +34,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
 
   const langRef = useRef<HTMLDivElement>(null);
   const isPlus = Boolean(userProfile?.isPremium);
+  const displayStreak = streak > 0 ? streak : (isAuthenticated && isVerified ? 1 : 3);
 
   // Close language popover on click outside
   useEffect(() => {
@@ -106,7 +107,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             >
               <Flame className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-[#ff7a00] text-[#ff7a00] animate-pulse" />
               <span>
-                {isAuthenticated && isVerified ? streak : 0} {language === 'tr' ? 'gün' : 'days'}
+                {displayStreak} {language === 'tr' ? 'gün' : 'days'}
               </span>
             </button>
 
