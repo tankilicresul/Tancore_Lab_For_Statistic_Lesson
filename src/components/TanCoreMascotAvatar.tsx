@@ -125,8 +125,8 @@ export const TanCoreMascotAvatar: React.FC<TanCoreMascotAvatarProps> = ({
           className="absolute pointer-events-none"
           style={{
             left: '49.5%',
-            top: '42.5%',
-            width: '60%',
+            top: '43%',
+            width: '47%',
             transform: 'translate(-50%, -50%)',
           }}
         >
@@ -175,8 +175,8 @@ export const TanCoreMascotAvatar: React.FC<TanCoreMascotAvatarProps> = ({
         className="absolute pointer-events-none"
         style={{
           left: '49.5%',
-          top: '42.5%',
-          width: '60%',
+          top: '43%',
+          width: '47%',
           transform: 'translate(-50%, -50%)',
         }}
       >

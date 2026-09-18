@@ -434,19 +434,33 @@ class SoundService {
     whiteNoise.buffer = noiseBuffer;
     whiteNoise.loop = true;
 
+    // Lowpass filter for deep molten magma rumble
     const filter = ctx.createBiquadFilter();
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(240, ctx.currentTime);
-    filter.Q.setValueAtTime(3.0, ctx.currentTime);
+    filter.frequency.setValueAtTime(220, ctx.currentTime);
+    filter.Q.setValueAtTime(3.2, ctx.currentTime);
 
+    // Slow organic LFO to modulate lava waves / bubbling surge (no ticks, pure fluid magma)
+    const lfo = ctx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(0.35, ctx.currentTime); // 0.35Hz slow magma wave
+
+    const lfoGain = ctx.createGain();
+    lfoGain.gain.setValueAtTime(75, ctx.currentTime); // +/- 75Hz filter sweep
+
+    lfo.connect(lfoGain);
+    lfoGain.connect(filter.frequency);
+
+    // Low subterranean rumble oscillator (deep warmth)
     const rumbleOsc = ctx.createOscillator();
     rumbleOsc.type = 'sine';
-    rumbleOsc.frequency.setValueAtTime(54, ctx.currentTime);
+    rumbleOsc.frequency.setValueAtTime(52, ctx.currentTime);
 
     const rumbleGain = ctx.createGain();
-    rumbleGain.gain.setValueAtTime(0.12, ctx.currentTime);
+    rumbleGain.gain.setValueAtTime(0.14, ctx.currentTime);
     rumbleOsc.connect(rumbleGain);
 
+    // Master ambient gain with smooth fade-in
     const masterGain = ctx.createGain();
     masterGain.gain.setValueAtTime(0.0001, ctx.currentTime);
     masterGain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + 0.8);
@@ -458,18 +472,11 @@ class SoundService {
 
     whiteNoise.start();
     rumbleOsc.start();
-
-    const crackleInterval = setInterval(() => {
-      if (this.isMuted || !this.activeAmbientNodes) return;
-      if (Math.random() > 0.4) {
-        this.playMiniCrackle(ctx, volume * 0.7);
-      }
-    }, 280);
+    lfo.start();
 
     this.activeAmbientNodes = {
       gainNode: masterGain,
       stop: () => {
-        clearInterval(crackleInterval);
         try {
           const stopTime = ctx.currentTime + 0.4;
           masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
@@ -478,8 +485,10 @@ class SoundService {
             try {
               whiteNoise.stop();
               rumbleOsc.stop();
+              lfo.stop();
               whiteNoise.disconnect();
               rumbleOsc.disconnect();
+              lfo.disconnect();
             } catch {
               // ignore
             }
@@ -489,36 +498,6 @@ class SoundService {
         }
       },
     };
-  }
-
-  private playMiniCrackle(ctx: AudioContext, vol: number) {
-    try {
-      const now = ctx.currentTime;
-      const crackleLen = Math.floor(ctx.sampleRate * 0.008);
-      const buffer = ctx.createBuffer(1, crackleLen, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < crackleLen; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (crackleLen * 0.3));
-      }
-
-      const source = ctx.createBufferSource();
-      source.buffer = buffer;
-
-      const hp = ctx.createBiquadFilter();
-      hp.type = 'highpass';
-      hp.frequency.setValueAtTime(1400, now);
-
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(vol * (0.5 + Math.random() * 0.5), now);
-
-      source.connect(hp);
-      hp.connect(gain);
-      gain.connect(ctx.destination);
-
-      source.start(now);
-    } catch {
-      // ignore
-    }
   }
 
   // ─────────────────────────────────────────────────────────────

@@ -256,7 +256,8 @@ const LavaRock3D: React.FC<{
 const ExtinguishedLavaRock3D: React.FC<{
   className?: string;
   size?: 'sm' | 'md' | 'lg';
-}> = ({ className = '', size = 'md' }) => {
+  hasSolvedBadge?: boolean;
+}> = ({ className = '', size = 'md', hasSolvedBadge = false }) => {
   const [imgError, setImgError] = useState(false);
 
   const dims = {
@@ -288,6 +289,13 @@ const ExtinguishedLavaRock3D: React.FC<{
           <path d="M50 34 Q62 48 70 70" stroke="#991b1b" strokeWidth="2.5" strokeLinecap="round" />
           <path d="M46 28 Q48 40 42 52" stroke="#ea580c" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
+      )}
+
+      {/* Solved Checkmark Badge on bottom-right of extinguished rock */}
+      {hasSolvedBadge && (
+        <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-slate-700 text-white flex items-center justify-center ring-1 ring-white shadow-xs z-10">
+          <Check className="w-2.5 h-2.5 stroke-[3.5]" />
+        </div>
       )}
     </div>
   );
@@ -400,9 +408,14 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
     const isFuture = d.dayOffset > todayMondayOffset;
     const daysAgo = todayMondayOffset - d.dayOffset;
 
+    const wasRecorded = recordedDates.includes(dateStr);
     const isLava = !isFuture && (daysAgo >= 0 && daysAgo < displayStreak);
-    const isIce = !isFuture && !isLava && recordedDates.includes(dateStr);
-    const isMissed = !isFuture && !isLava && !isIce;
+
+    // Solved previously, but streak broke -> Sönmüş Lav Kayası (Extinguished)
+    const isExtinguished = !isFuture && !isLava && wasRecorded;
+
+    // Never entered / missed -> Buz Kristali (Ice)
+    const isIce = !isFuture && !isLava && !wasRecorded;
 
     return {
       ...d,
@@ -410,8 +423,8 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
       isToday,
       isFuture,
       isLava,
+      isExtinguished,
       isIce,
-      isMissed,
     };
   });
 
@@ -426,9 +439,14 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
 
     const daysAgo = todayMondayOffset + 7 - d.dayOffset;
 
+    const wasRecorded = recordedDates.includes(dateStr);
     const isLava = daysAgo >= 0 && daysAgo < displayStreak;
-    const isIce = !isLava && recordedDates.includes(dateStr);
-    const isMissed = !isLava && !isIce;
+
+    // Solved previously, but streak broke -> Sönmüş Lav Kayası (Extinguished)
+    const isExtinguished = !isLava && wasRecorded;
+
+    // Never entered / missed -> Buz Kristali (Ice)
+    const isIce = !isLava && !wasRecorded;
 
     return {
       ...d,
@@ -436,8 +454,8 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
       isToday: false,
       isFuture: false,
       isLava,
+      isExtinguished,
       isIce,
-      isMissed,
     };
   });
 
@@ -499,13 +517,13 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
               onError={() => setImgError(true)}
             />
 
-            {/* Cool Sunglasses Overlay enlarged to fit Tanco's face perfectly */}
+            {/* Cool Sunglasses Overlay proportioned to fit Tanco's face naturally */}
             <div
               className="absolute pointer-events-none"
               style={{
-                left: '48.4%',
-                top: '41.2%',
-                width: '58%',
+                left: '48.8%',
+                top: '41.6%',
+                width: '50%',
                 transform: 'translate(-50%, -50%)',
               }}
             >
@@ -539,10 +557,10 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                       ? 'text-[#ff7a00] font-black scale-105'
                       : d.isLava
                       ? 'text-orange-600 font-bold'
+                      : d.isExtinguished
+                      ? 'text-slate-600 font-bold'
                       : d.isIce
                       ? 'text-sky-600 font-bold'
-                      : d.isMissed
-                      ? 'text-slate-600 font-bold'
                       : 'text-slate-400 font-medium'
                   }`}
                 >
@@ -550,21 +568,25 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                 </span>
 
                 <div className="relative h-10 sm:h-11 flex items-center justify-center">
+                  {/* Active continuous streak -> 3D Burning Lava Rock */}
                   {d.isLava && (
                     <div className="relative flex items-center justify-center pt-1">
                       <LavaRock3D size="md" showFlames={true} isToday={d.isToday} hasSolvedBadge={true} />
                     </div>
                   )}
+                  {/* Solved previously, but streak broke -> 3D Extinguished Lava Rock */}
+                  {d.isExtinguished && (
+                    <div className="relative flex items-center justify-center pt-1">
+                      <ExtinguishedLavaRock3D size="md" hasSolvedBadge={true} />
+                    </div>
+                  )}
+                  {/* Never entered / missed -> 3D Ice Crystal */}
                   {d.isIce && (
                     <div className="relative flex items-center justify-center pt-1">
-                      <IceCrystal3D size="md" showSmoke={true} />
+                      <IceCrystal3D size="md" showSmoke={true} hasSolvedBadge={false} />
                     </div>
                   )}
-                  {d.isMissed && (
-                    <div className="relative flex items-center justify-center pt-1">
-                      <ExtinguishedLavaRock3D size="md" />
-                    </div>
-                  )}
+                  {/* Future day -> 3D Future Rock */}
                   {d.isFuture && (
                     <div className="relative flex items-center justify-center pt-1 opacity-80">
                       <FutureRock3D size="md" />
@@ -582,19 +604,22 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                 <div key={d.dayOffset} className="flex flex-col items-center">
                   <span className="text-[10px] text-slate-400 font-bold mb-1">{d.label}</span>
                   <div className="relative h-9 sm:h-10 flex items-center justify-center">
+                    {/* Active continuous streak -> 3D Burning Lava Rock */}
                     {d.isLava && (
                       <div className="relative flex items-center justify-center">
                         <LavaRock3D size="sm" showFlames={false} isToday={false} hasSolvedBadge={true} />
                       </div>
                     )}
-                    {d.isIce && (
+                    {/* Solved previously, but streak broke -> 3D Extinguished Lava Rock */}
+                    {d.isExtinguished && (
                       <div className="relative flex items-center justify-center">
-                        <IceCrystal3D size="sm" showSmoke={false} />
+                        <ExtinguishedLavaRock3D size="sm" hasSolvedBadge={true} />
                       </div>
                     )}
-                    {d.isMissed && (
+                    {/* Never entered / missed -> 3D Ice Crystal */}
+                    {d.isIce && (
                       <div className="relative flex items-center justify-center">
-                        <ExtinguishedLavaRock3D size="md" />
+                        <IceCrystal3D size="sm" showSmoke={false} hasSolvedBadge={false} />
                       </div>
                     )}
                   </div>
