@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ALL_MODULES } from '../data/modules';
-import { useAppStore } from '../store/useAppStore';
+import { useAppStore, PROBABILITY_TRACK_MODULE_IDS, STATISTICS_TRACK_MODULE_IDS } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
 import { TanCoreMascotAvatar } from '../components/TanCoreMascotAvatar';
 import { MathFormulaText } from '../components/MathFormulaText';
@@ -166,8 +166,8 @@ interface PathNodeItem {
   totalCasesCount?: number;
 }
 
-const PROBABILITY_MODULE_IDS = ['module-2', 'module-13', 'module-14', 'module-3', 'module-15', 'module-16', 'module-4', 'module-12'];
-const STATISTICS_MODULE_IDS = ['module-1', 'module-5', 'module-6', 'module-7', 'module-8', 'module-9', 'module-10', 'module-11'];
+const PROBABILITY_MODULE_IDS = PROBABILITY_TRACK_MODULE_IDS;
+const STATISTICS_MODULE_IDS = STATISTICS_TRACK_MODULE_IDS;
 
 export const CoursePage: React.FC<CoursePageProps> = ({
   selectedTrack,

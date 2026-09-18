@@ -17,9 +17,17 @@ export function isValidStudentEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 }
 
+export const PROBABILITY_TRACK_MODULE_IDS = [
+  'module-2', 'module-13', 'module-14', 'module-3', 'module-15', 'module-16', 'module-4', 'module-12'
+];
+
+export const STATISTICS_TRACK_MODULE_IDS = [
+  'module-1', 'module-5', 'module-6', 'module-7', 'module-8', 'module-9', 'module-10', 'module-11'
+];
+
 export const ALL_SYSTEM_MODULE_IDS = [
-  'module-1', 'module-2', 'module-3', 'module-4', 'module-5', 'module-6', 'module-7', 'module-8',
-  'module-9', 'module-10', 'module-11', 'module-12', 'module-13', 'module-14', 'module-15', 'module-16'
+  ...STATISTICS_TRACK_MODULE_IDS,
+  ...PROBABILITY_TRACK_MODULE_IDS,
 ];
 
 interface AppStoreActions {
@@ -712,12 +720,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           : [...state.completedLessons, lessonId];
         const newXp = alreadyCompleted ? state.xp : state.xp + safeXp;
 
-        const modIdx = parseInt(moduleId.replace('module-', ''), 10);
-        const nextModuleId = `module-${modIdx + 1}`;
-        const newUnlocked = state.unlockedModules.includes(nextModuleId)
-          ? state.unlockedModules
-          : [...state.unlockedModules, nextModuleId];
-
         const newBadges = [...state.unlockedBadges];
         if (!newBadges.includes('badge-first-lesson')) {
           newBadges.push('badge-first-lesson');
@@ -739,7 +741,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedLessons: newCompleted,
           xp: newXp,
           activityDates: updatedDates,
-          unlockedModules: newUnlocked,
           unlockedBadges: newBadges,
           guestProgressTimestamp: guestTimestamp,
         };
@@ -750,7 +751,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedLessons: newCompleted,
           xp: newXp,
           activityDates: updatedDates,
-          unlockedModules: newUnlocked,
           unlockedBadges: newBadges,
           guestProgressTimestamp: guestTimestamp,
           registeredUsers: updatedUsers,
@@ -792,6 +792,18 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           newBadges.push('badge-case-master');
         }
 
+        // Unlock next module in the relevant course track sequence
+        const isProb = PROBABILITY_TRACK_MODULE_IDS.includes(moduleId);
+        const trackList = isProb ? PROBABILITY_TRACK_MODULE_IDS : STATISTICS_TRACK_MODULE_IDS;
+        const trackIdx = trackList.indexOf(moduleId);
+        const updatedUnlocked = [...state.unlockedModules];
+        if (trackIdx >= 0 && trackIdx < trackList.length - 1) {
+          const nextModId = trackList[trackIdx + 1];
+          if (!updatedUnlocked.includes(nextModId)) {
+            updatedUnlocked.push(nextModId);
+          }
+        }
+
         const guestTimestamp = !state.isAuthenticated ? Date.now() : state.guestProgressTimestamp;
 
         const today = new Date().toISOString().split('T')[0];
@@ -805,6 +817,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedCaseExams: newCompleted,
           xp: newXp,
           activityDates: updatedDates,
+          unlockedModules: updatedUnlocked,
           unlockedBadges: newBadges,
           guestProgressTimestamp: guestTimestamp,
         };
@@ -815,6 +828,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedCaseExams: newCompleted,
           xp: newXp,
           activityDates: updatedDates,
+          unlockedModules: updatedUnlocked,
           unlockedBadges: newBadges,
           guestProgressTimestamp: guestTimestamp,
           registeredUsers: updatedUsers,
@@ -840,14 +854,20 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       },
 
       unlockUpToModule: (targetModuleId) => {
-        const targetIdx = parseInt(targetModuleId.replace('module-', ''), 10);
+        const isProb = PROBABILITY_TRACK_MODULE_IDS.includes(targetModuleId);
+        const trackList = isProb ? PROBABILITY_TRACK_MODULE_IDS : STATISTICS_TRACK_MODULE_IDS;
+        const targetIdx = trackList.indexOf(targetModuleId);
         const newUnlocked = [...get().unlockedModules];
 
-        for (let i = 1; i <= targetIdx; i++) {
-          const modId = `module-${i}`;
-          if (!newUnlocked.includes(modId)) {
-            newUnlocked.push(modId);
+        if (targetIdx >= 0) {
+          for (let i = 0; i <= targetIdx; i++) {
+            const modId = trackList[i];
+            if (!newUnlocked.includes(modId)) {
+              newUnlocked.push(modId);
+            }
           }
+        } else if (!newUnlocked.includes(targetModuleId)) {
+          newUnlocked.push(targetModuleId);
         }
 
         const nextState = { ...get(), unlockedModules: newUnlocked };

@@ -80,19 +80,17 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
 
   const getRecommendedModule = (score: number) => {
     if (activeTrack === 'statistics') {
-      if (score <= 1) return ALL_MODULES.find((m) => m.id === 'module-1') || ALL_MODULES[0];
-      if (score <= 3) return ALL_MODULES.find((m) => m.id === 'module-5') || ALL_MODULES[4];
-      if (score <= 5) return ALL_MODULES.find((m) => m.id === 'module-6') || ALL_MODULES[5];
-      if (score <= 7) return ALL_MODULES.find((m) => m.id === 'module-7') || ALL_MODULES[6];
-      if (score <= 9) return ALL_MODULES.find((m) => m.id === 'module-8') || ALL_MODULES[7];
-      return ALL_MODULES.find((m) => m.id === 'module-9') || ALL_MODULES[8];
+      const statsMods = ['module-1', 'module-5', 'module-6', 'module-7', 'module-8', 'module-9', 'module-10', 'module-11'];
+      // Scale 0-10 score to index 0-7
+      const targetIdx = Math.min(statsMods.length - 1, Math.floor(score / 1.3));
+      const targetId = statsMods[targetIdx];
+      return ALL_MODULES.find((m) => m.id === targetId) || ALL_MODULES[0];
     } else {
-      if (score <= 1) return ALL_MODULES.find((m) => m.id === 'module-2') || ALL_MODULES[0];
-      if (score <= 3) return ALL_MODULES.find((m) => m.id === 'module-13') || ALL_MODULES[1];
-      if (score <= 5) return ALL_MODULES.find((m) => m.id === 'module-14') || ALL_MODULES[2];
-      if (score <= 7) return ALL_MODULES.find((m) => m.id === 'module-3') || ALL_MODULES[3];
-      if (score <= 9) return ALL_MODULES.find((m) => m.id === 'module-15') || ALL_MODULES[4];
-      return ALL_MODULES.find((m) => m.id === 'module-12') || ALL_MODULES[11];
+      const probMods = ['module-2', 'module-13', 'module-14', 'module-3', 'module-15', 'module-16', 'module-4', 'module-12'];
+      // Scale 0-10 score to index 0-7
+      const targetIdx = Math.min(probMods.length - 1, Math.floor(score / 1.3));
+      const targetId = probMods[targetIdx];
+      return ALL_MODULES.find((m) => m.id === targetId) || ALL_MODULES[1];
     }
   };
 
@@ -112,6 +110,11 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
   };
 
   const currentAnswer = selectedAnswers[currentQuestion.id];
+  const trackModuleList = ALL_MODULES.filter((m) =>
+    activeTrack === 'statistics'
+      ? ['module-1', 'module-5', 'module-6', 'module-7', 'module-8', 'module-9', 'module-10', 'module-11'].includes(m.id)
+      : ['module-2', 'module-13', 'module-14', 'module-3', 'module-15', 'module-16', 'module-4', 'module-12'].includes(m.id)
+  );
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 font-sans">
@@ -325,15 +328,15 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
                   onChange={(e) => setCustomModuleId(e.target.value)}
                   className="flex-1 px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:outline-none focus:border-[#ff7a00]"
                 >
-                  {ALL_MODULES.map((m) => (
+                  {trackModuleList.map((m, idx) => (
                     <option key={m.id} value={m.id}>
-                      Modül {m.order}: {getLocalized(m.title, language)}
+                      {language === 'tr' ? `Aşama ${idx + 1}` : `Stage ${idx + 1}`}: {getLocalized(m.title, language)}
                     </option>
                   ))}
                 </select>
 
                 <button
-                  onClick={() => handleConfirmPlacement(customModuleId)}
+                  onClick={() => handleConfirmPlacement(customModuleId || trackModuleList[0]?.id || 'module-1')}
                   className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-xs transition-colors shrink-0"
                 >
                   {language === 'tr' ? 'Seçileni Aç' : 'Unlock Selected'}

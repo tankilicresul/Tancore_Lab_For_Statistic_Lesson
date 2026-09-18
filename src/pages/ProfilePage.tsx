@@ -233,6 +233,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     dbProfiles,
     registeredUsers,
     currentUserProfile: userProfile,
+    isAuthenticated: Boolean(isAuthenticated),
     currentXp: xp,
     currentStreak: streak,
     completedCount,

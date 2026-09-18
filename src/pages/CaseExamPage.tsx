@@ -216,11 +216,16 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
           {caseExam.solutionQuestions.map((q) => {
             const isSubmitted = submittedQuestions[q.id];
             const userAnswer = selectedAnswers[q.id];
-            const isCorrect =
-              isSubmitted &&
-              (typeof q.correctAnswer === 'number'
-                ? parseFloat(String(userAnswer)) === q.correctAnswer
-                : String(userAnswer).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase());
+            let isCorrect = false;
+            if (isSubmitted) {
+              if (typeof q.correctAnswer === 'number') {
+                const normalizedStr = String(userAnswer).replace(',', '.').trim();
+                const parsed = parseFloat(normalizedStr);
+                isCorrect = !isNaN(parsed) && (Math.abs(parsed - q.correctAnswer) <= 0.01 || parsed === q.correctAnswer);
+              } else {
+                isCorrect = String(userAnswer).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase();
+              }
+            }
 
             return (
               <div
