@@ -379,9 +379,8 @@ export const CoursePage: React.FC<CoursePageProps> = ({
           <span>{language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}</span>
         </button>
 
-        <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-[#ff7a00] font-mono text-[10px] sm:text-xs font-black">
-          {selectedTrack === 'statistics' ? <BarChart3 className="w-3.5 h-3.5" /> : <Dices className="w-3.5 h-3.5" />}
-          <span>{selectedTrack === 'statistics' ? 'APPLIED STATISTICS' : 'PROBABILITY & RANDOM VARIABLES'}</span>
+        <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-[#ff7a00] font-mono text-xs font-black tracking-wider">
+          <span>{selectedTrack === 'statistics' ? 'INDR 252' : 'ENGR 200'}</span>
         </div>
       </div>
 
