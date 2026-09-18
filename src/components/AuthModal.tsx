@@ -95,8 +95,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     if (!isValidStudentEmail(cleanEmail)) {
       setErrorMessage(
         language === 'tr'
-          ? 'Lütfen geçerli bir üniversite e-posta adresi giriniz (ör: ad.soyad@universite.edu.tr).'
-          : 'Please enter a valid university email address.'
+          ? 'Lütfen geçerli bir e-posta adresi giriniz.'
+          : 'Please enter a valid email address.'
       );
       return;
     }
@@ -141,8 +141,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     if (!isValidStudentEmail(emailClean)) {
       setErrorMessage(
         language === 'tr'
-          ? 'Lütfen geçerli bir üniversite e-posta adresi giriniz (ör: ad.soyad@universite.edu.tr).'
-          : 'Please enter a valid university email address.'
+          ? 'Lütfen geçerli bir e-posta adresi giriniz.'
+          : 'Please enter a valid email address.'
       );
       return;
     }
@@ -405,10 +405,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         {/* ─── TAB 1: GİRİŞ YAP (LOGIN FORM) ─── */}
         {step !== 'otp' && activeTab === 'login' && (
           <form onSubmit={handleLoginSubmit} autoComplete="off" className="space-y-3.5 flex-1 overflow-y-auto pr-1">
-            {/* School Email */}
+            {/* Email */}
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                {language === 'tr' ? 'Üniversite E-postası' : 'University Email'} *
+                {language === 'tr' ? 'E-posta' : 'Email'} *
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -416,7 +416,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   type="email"
                   required
                   autoComplete="email"
-                  placeholder={language === 'tr' ? 'ad.soyad@universite.edu.tr' : 'your.email@university.edu'}
+                  placeholder={language === 'tr' ? 'ad.soyad@universite.edu.tr veya e-postanız' : 'your.email@example.com'}
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
                   className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
@@ -491,10 +491,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
             </div>
 
-            {/* School Email */}
+            {/* Email */}
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                {language === 'tr' ? 'Üniversite E-postası' : 'University Email'} *
+                {language === 'tr' ? 'E-posta' : 'Email'} *
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -502,7 +502,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   type="email"
                   required
                   autoComplete="email"
-                  placeholder={language === 'tr' ? 'ad.soyad@universite.edu.tr' : 'your.email@university.edu'}
+                  placeholder={language === 'tr' ? 'ad.soyad@universite.edu.tr veya e-postanız' : 'your.email@example.com'}
                   value={formData.schoolEmail}
                   onChange={(e) => setFormData({ ...formData, schoolEmail: e.target.value })}
                   className="w-full pl-10 pr-3 py-2 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
@@ -510,17 +510,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
             </div>
 
-            {/* University & Department */}
+            {/* School & Department - Optional */}
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  {language === 'tr' ? 'Üniversite' : 'University'}
+                  {language === 'tr' ? 'Okul / Üniversite' : 'School / University'}
+                  <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
                 </label>
                 <div className="relative">
                   <Building2 className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
-                    placeholder={language === 'tr' ? 'Üniversiteniz' : 'University'}
+                    placeholder={language === 'tr' ? 'Örn: Koç Üniversitesi' : 'e.g. University'}
                     value={formData.university}
                     onChange={(e) => setFormData({ ...formData, university: e.target.value })}
                     className="w-full pl-8 pr-2.5 py-2 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
@@ -530,13 +531,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  {language === 'tr' ? 'Bölüm ve Sınıf' : 'Dept & Class'}
+                  {language === 'tr' ? 'Bölüm' : 'Department'}
+                  <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
                 </label>
                 <div className="relative">
                   <GraduationCap className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
-                    placeholder={language === 'tr' ? 'Bölümünüz' : 'Department'}
+                    placeholder={language === 'tr' ? 'Örn: Endüstri Müh.' : 'e.g. Department'}
                     value={formData.departmentAndClass}
                     onChange={(e) => setFormData({ ...formData, departmentAndClass: e.target.value })}
                     className="w-full pl-8 pr-2.5 py-2 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
@@ -549,12 +551,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
                 {language === 'tr' ? 'Şifre Belirleyin' : 'Set Password'}
+                <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
               </label>
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type={showRegisterPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
+                  placeholder={language === 'tr' ? '•••••••• (boş bırakılırsa: 123456)' : '•••••••• (default: 123456)'}
                   value={registerPassword}
                   onChange={(e) => setRegisterPassword(e.target.value)}
                   className="w-full pl-10 pr-10 py-2 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"

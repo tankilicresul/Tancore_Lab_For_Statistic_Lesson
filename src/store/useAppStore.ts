@@ -6,14 +6,15 @@ import { isSameStudent } from '../utils/leaderboardHelper';
 import { soundService } from '../services/soundService';
 
 export function isValidStudentEmail(email: string): boolean {
+  if (!email || typeof email !== 'string') return false;
   const e = email.trim().toLowerCase();
   if (!e.includes('@')) return false;
 
   // Custom admin email exception
   if (e === 'admin@tancorelab.com') return true;
 
-  // Student institutional emails (.edu.tr and .edu)
-  return e.endsWith('.edu.tr') || e.endsWith('.edu');
+  // Accept any valid email format
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 }
 
 export const ALL_SYSTEM_MODULE_IDS = [
@@ -225,8 +226,8 @@ function syncUserInList(state: UserState): PublicProfile[] {
     id: profile.id || `usr_${currentEmail}`,
     fullName: profile.fullName || 'Öğrenci',
     schoolEmail: profile.schoolEmail,
-    university: profile.university || 'Marmara Üniversitesi',
-    departmentAndClass: profile.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
+    university: profile.university || '',
+    departmentAndClass: profile.departmentAndClass || '',
     avatarEmoji: profile.avatarEmoji || '👨‍🎓',
     avatarUrl: profile.avatarUrl,
     xp: state.xp,
@@ -262,8 +263,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const newAccount: RegisteredAccount = {
           schoolEmail: email,
           fullName: accountInput.fullName?.trim() || 'Öğrenci',
-          university: accountInput.university?.trim() || 'Marmara Üniversitesi',
-          departmentAndClass: accountInput.departmentAndClass?.trim() || 'Endüstri Mühendisliği - 3. Sınıf',
+          university: accountInput.university?.trim() || '',
+          departmentAndClass: accountInput.departmentAndClass?.trim() || '',
           password: accountInput.password || '',
           avatarEmoji: accountInput.avatarEmoji || '👨‍🎓',
           avatarUrl: accountInput.avatarUrl || currentStore.userProfile?.avatarUrl || undefined,
@@ -352,8 +353,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             id: `usr_${pendingEmail}`,
             fullName: state.userProfile.fullName || 'Öğrenci',
             schoolEmail: pendingEmail,
-            university: state.userProfile.university || 'Marmara Üniversitesi',
-            departmentAndClass: state.userProfile.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
+            university: state.userProfile.university || '',
+            departmentAndClass: state.userProfile.departmentAndClass || '',
             avatarEmoji: state.userProfile.avatarEmoji || '👨‍🎓',
             avatarUrl: state.userProfile?.avatarUrl || undefined,
             isVerified: true,
@@ -413,12 +414,12 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       loginWithPassword: async (email, pass) => {
         const cleanEmail = email.trim().toLowerCase();
 
-        // 1. Check valid student email domain
+        // 1. Check valid email
         if (!isValidStudentEmail(cleanEmail)) {
           return {
             success: false,
             errorType: 'INVALID_EMAIL_DOMAIN',
-            message: 'Lütfen geçerli bir üniversite e-posta adresi giriniz (ör: ad.soyad@universite.edu.tr).',
+            message: 'Lütfen geçerli bir e-posta adresi giriniz.',
           };
         }
 

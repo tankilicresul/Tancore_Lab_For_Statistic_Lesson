@@ -385,11 +385,11 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             <div className="space-y-2 text-xs sm:text-sm font-medium">
               <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
                 <Building2 className="w-4 h-4 text-white shrink-0" />
-                <span className="truncate">{userProfile?.university || 'Marmara Üniversitesi'}</span>
+                <span className="truncate">{userProfile?.university || (language === 'tr' ? 'Belirtilmedi' : 'Not specified')}</span>
               </div>
               <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
                 <GraduationCap className="w-4 h-4 text-white shrink-0" />
-                <span className="truncate">{userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf'}</span>
+                <span className="truncate">{userProfile?.departmentAndClass || (language === 'tr' ? 'Öğrenci' : 'Student')}</span>
               </div>
               <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
                 <Mail className="w-4 h-4 text-white shrink-0" />

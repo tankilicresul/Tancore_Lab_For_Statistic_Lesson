@@ -455,9 +455,9 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, onOpenAuth 
                       setSelectedPublicProfile({
                         id: 'self',
                         fullName: userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student'),
-                        schoolEmail: userProfile?.schoolEmail || 'ogrenci@universite.edu.tr',
-                        university: userProfile?.university || 'Marmara Üniversitesi',
-                        departmentAndClass: userProfile?.departmentAndClass || 'Endüstri Mühendisliği - 3. Sınıf',
+                        schoolEmail: userProfile?.schoolEmail || '',
+                        university: userProfile?.university || (language === 'tr' ? 'Belirtilmedi' : 'Not specified'),
+                        departmentAndClass: userProfile?.departmentAndClass || (language === 'tr' ? 'Öğrenci' : 'Student'),
                         avatarEmoji: userProfile?.avatarEmoji || '👨‍🎓',
                         xp: xp || 0,
                         streak: streak || 1,

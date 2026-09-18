@@ -262,8 +262,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
     if (!isValidStudentEmail(cleanEmail)) {
       setErrorMessage(
         language === 'tr'
-          ? 'Lütfen geçerli bir üniversite öğrenci e-posta adresi giriniz (ör: ad.soyad@universite.edu.tr).'
-          : 'Please enter a valid student university email (e.g., name@university.edu).'
+          ? 'Lütfen geçerli bir e-posta adresi giriniz.'
+          : 'Please enter a valid email address.'
       );
       return;
     }
@@ -896,7 +896,8 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                   <div className="grid grid-cols-2 gap-2.5">
                     <div>
                       <label className="text-xs font-bold text-slate-700 block mb-1">
-                        {language === 'tr' ? 'Üniversite İsmi' : 'University'}
+                        {language === 'tr' ? 'Okul / Üniversite' : 'School / University'}
+                        <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
                       </label>
                       <input
                         type="text"
@@ -905,16 +906,16 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           setUniversity(e.target.value);
                           handleInputChange();
                         }}
-                        placeholder={language === 'tr' ? 'Üniversiteniz' : 'Your University'}
+                        placeholder={language === 'tr' ? 'Örn: Koç Üniversitesi' : 'e.g. University'}
                         autoComplete="off"
                         className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
-                        required
                       />
                     </div>
 
                     <div>
                       <label className="text-xs font-bold text-slate-700 block mb-1">
-                        {language === 'tr' ? 'Bölüm ve Sınıf' : 'Dept & Class'}
+                        {language === 'tr' ? 'Bölüm' : 'Department'}
+                        <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
                       </label>
                       <input
                         type="text"
@@ -923,10 +924,9 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                           setDepartmentAndClass(e.target.value);
                           handleInputChange();
                         }}
-                        placeholder={language === 'tr' ? 'Bölüm ve sınıfınız' : 'Department & Class'}
+                        placeholder={language === 'tr' ? 'Örn: Endüstri Müh.' : 'e.g. Department'}
                         autoComplete="off"
                         className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
-                        required
                       />
                     </div>
                   </div>

@@ -22,8 +22,7 @@ export const isAcademicEmail = (email: string): boolean => {
   if (!email || typeof email !== 'string') return false;
   const e = email.trim().toLowerCase();
   if (!e.includes('@')) return false;
-  if (e === 'admin@tancorelab.com') return true;
-  return e.endsWith('.edu.tr') || e.endsWith('.edu');
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 };
 
 /**
@@ -41,7 +40,7 @@ export async function sendEmailOtp(
   if (!isAcademicEmail(cleanEmail)) {
     return {
       success: false,
-      error: 'Güvenlik Kuralı: Yalnızca geçerli bir üniversite (.edu.tr veya .edu) e-posta adresi ile işlem yapabilirsiniz.',
+      error: 'Lütfen geçerli bir e-posta adresi giriniz.',
     };
   }
 
@@ -130,7 +129,7 @@ export async function signUpWithSupabase(
   if (!isAcademicEmail(cleanEmail)) {
     return {
       success: false,
-      error: 'Güvenlik Kuralı: Kayıt için geçerli bir üniversite (.edu.tr veya .edu) e-posta adresi gereklidir.',
+      error: 'Kayıt için geçerli bir e-posta adresi gereklidir.',
     };
   }
 
@@ -183,7 +182,7 @@ export async function signInWithSupabase(
     return {
       success: false,
       errorType: 'OTHER',
-      error: 'Yalnızca geçerli bir üniversite (.edu.tr veya .edu) e-postası ile giriş yapılabilir.',
+      error: 'Lütfen geçerli bir e-posta adresi giriniz.',
     };
   }
 
@@ -230,7 +229,7 @@ export async function requestPasswordReset(email: string): Promise<{ success: bo
   if (!isAcademicEmail(cleanEmail)) {
     return {
       success: false,
-      error: 'Yalnızca geçerli bir üniversite (.edu.tr veya .edu) e-postası için şifre sıfırlanabilir.',
+      error: 'Şifre sıfırlama için geçerli bir e-posta adresi gereklidir.',
     };
   }
 
