@@ -89,11 +89,11 @@ export const PlusUpgradeModal: React.FC = () => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-md animate-fadeIn font-sans"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-md animate-fade-in font-sans"
       onClick={() => setIsPlusUpgradeModalOpen(false)}
     >
       <div
-        className="relative w-full max-w-[460px] bg-white rounded-3xl shadow-2xl border border-amber-200/90 overflow-hidden text-slate-900"
+        className="relative w-full max-w-[460px] bg-white rounded-3xl animate-modal-enter shadow-2xl border border-amber-200/90 overflow-hidden text-slate-900"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Subtle decorative background glow */}
@@ -246,4 +246,6 @@ export const PlusUpgradeModal: React.FC = () => {
     </div>
   );
 };
+
+
 

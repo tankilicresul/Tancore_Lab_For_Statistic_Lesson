@@ -19,6 +19,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
     language,
     setLanguage,
     streak,
+    xp,
     isAuthenticated,
     isVerified,
     userProfile,
@@ -32,9 +33,27 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
   const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
   const [isLanguagePopoverOpen, setIsLanguagePopoverOpen] = useState(false);
 
+  // XP float-up dopamine animation
+  const [xpDelta, setXpDelta] = useState<number | null>(null);
+  const [showXpFloat, setShowXpFloat] = useState(false);
+  const prevXpRef = useRef<number | null>(null);
+
   const langRef = useRef<HTMLDivElement>(null);
   const isPlus = Boolean(userProfile?.isPremium);
   const displayStreak = streak > 0 ? streak : (isAuthenticated && isVerified ? 1 : 3);
+  const currentXp = xp ?? 0;
+
+  // Detect XP increases and fire float-up animation
+  useEffect(() => {
+    if (prevXpRef.current !== null && currentXp > prevXpRef.current) {
+      const delta = currentXp - prevXpRef.current;
+      setXpDelta(delta);
+      setShowXpFloat(true);
+      const timer = setTimeout(() => setShowXpFloat(false), 1500);
+      return () => clearTimeout(timer);
+    }
+    prevXpRef.current = currentXp;
+  }, [currentXp]);
 
   // Close language popover on click outside
   useEffect(() => {
@@ -94,20 +113,31 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
 
           {/* User Stats & Controls: Streak, Language and Profile / Home Icon */}
           <div className="flex items-center space-x-1 sm:space-x-2 shrink-0 z-10">
-            {/* Streak Button - Click opens cool Streak Modal with sunglasses Tanco */}
-            <button
-              onClick={() => {
-                setIsLanguagePopoverOpen(false);
-                setIsStreakModalOpen(true);
-              }}
-              className="flex items-center space-x-1 sm:space-x-1.5 bg-[#ff7a00]/10 hover:bg-[#ff7a00]/20 active:scale-95 border border-[#ff7a00]/30 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[#ff7a00] font-black text-xs sm:text-sm tracking-wide shadow-xs cursor-pointer transition-all"
-              title={language === 'tr' ? 'Seri Durumunu Gör' : 'View Streak Status'}
-            >
-              <Flame className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 fill-[#ff7a00] text-[#ff7a00] animate-pulse" />
-              <span>
-                {displayStreak} <span className="hidden min-[420px]:inline">{language === 'tr' ? 'gün' : 'days'}</span>
-              </span>
-            </button>
+            {/* Streak Button - Click opens Streak Modal */}
+            <div className="relative">
+              {/* XP Float-up animation — fires when XP increases */}
+              {showXpFloat && xpDelta !== null && (
+                <span
+                  key={currentXp}
+                  className="absolute -top-6 left-1/2 -translate-x-1/2 text-[11px] font-black text-emerald-600 whitespace-nowrap animate-xp-float z-50 pointer-events-none"
+                >
+                  +{xpDelta} XP
+                </span>
+              )}
+              <button
+                onClick={() => {
+                  setIsLanguagePopoverOpen(false);
+                  setIsStreakModalOpen(true);
+                }}
+                className="flex items-center space-x-1 sm:space-x-1.5 bg-[#ff7a00]/10 hover:bg-[#ff7a00]/20 border border-[#ff7a00]/30 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[#ff7a00] font-black text-xs sm:text-sm tracking-wide shadow-xs cursor-pointer transition-colors btn-press"
+                title={language === 'tr' ? 'Seri Durumunu Gör' : 'View Streak Status'}
+              >
+                <Flame className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 fill-[#ff7a00] text-[#ff7a00] animate-pulse" />
+                <span>
+                  {displayStreak} <span className="hidden min-[420px]:inline">{language === 'tr' ? 'gün' : 'days'}</span>
+                </span>
+              </button>
+            </div>
 
             {/* Language Switcher Popover Tab */}
             <div className="relative" ref={langRef}>

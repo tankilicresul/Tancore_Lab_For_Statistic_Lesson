@@ -34,7 +34,7 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
         className="hidden sm:block absolute inset-0 -z-10"
         onClick={onClose}
       />
-      <div className="relative w-full sm:max-w-sm bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl p-5 sm:p-6 text-center border border-slate-100">
+      <div className="relative w-full sm:max-w-sm bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl p-5 sm:p-6 text-center border border-slate-100 animate-modal-enter">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -124,4 +124,6 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
     </div>
   );
 };
+
+
 

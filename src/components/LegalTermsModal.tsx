@@ -18,7 +18,7 @@ export const LegalTermsModal: React.FC<LegalTermsModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in font-sans">
-      <div className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl animate-modal-enter shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-100 bg-slate-50/80">
           <div className="flex items-center space-x-2.5">
@@ -201,3 +201,5 @@ export const LegalTermsModal: React.FC<LegalTermsModalProps> = ({
     </div>
   );
 };
+
+

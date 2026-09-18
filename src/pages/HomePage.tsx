@@ -483,37 +483,37 @@ export const HomePage: React.FC<HomePageProps> = ({
           {language === 'tr' ? 'Endüstri Mühendisliği Temel Dersleri' : 'Core Industrial Engineering Courses'}
         </h2>
         <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:auto-rows-fr">
-        {COURSES_DATA.filter((c) => c.status === 'active').map((course) => {
+        {COURSES_DATA.filter((c) => c.status === 'active').map((course, idx) => {
           const isEn = language === 'en';
           const title = isEn ? course.name.en : course.name.tr;
           const desc = isEn ? course.desc.en : course.desc.tr;
-          const badgeText = isEn ? course.badge.en : course.badge.tr;
           const Icon = course.icon;
+          const stagger = idx === 0 ? 'animate-delay-50' : 'animate-delay-150';
 
           return (
             <button
               key={course.code}
               onClick={() => course.track && onSelectTrack(course.track)}
-              className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between cursor-pointer overflow-hidden ${course.cardStyle}`}
+              className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border text-left flex flex-col justify-between cursor-pointer overflow-hidden card-hover btn-press animate-card-reveal ${stagger} ${course.cardStyle}`}
             >
-              <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform ${course.glowColor}`} />
+              <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-300 ${course.glowColor}`} />
 
               {/* Top row: Icon & Course Code with Arrow */}
               <div className="flex items-center justify-between w-full relative z-10 gap-1.5 sm:gap-2 shrink-0">
                 <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                  <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shrink-0 ${course.iconBg}`}>
+                  <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shrink-0 ${course.iconBg}`}>
                     <Icon className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
                   </div>
-                  <span className="text-sm sm:text-lg lg:text-xl font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors whitespace-nowrap">
+                  <span className="text-sm sm:text-lg lg:text-xl font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors duration-200 whitespace-nowrap">
                     {course.code}
                   </span>
                 </div>
-                <ChevronRight className="w-5 h-5 sm:w-6.5 sm:h-6.5 text-[#ff7a00] stroke-[3.5] shrink-0" />
+                <ChevronRight className="w-5 h-5 sm:w-6.5 sm:h-6.5 text-[#ff7a00] stroke-[3.5] shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" />
               </div>
 
               {/* Middle content: Title & Description */}
               <div className="relative z-10 pt-2 sm:pt-2.5 flex-1 flex flex-col justify-start text-left min-h-0 overflow-hidden">
-                <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors leading-snug line-clamp-2">
+                <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors duration-200 leading-snug line-clamp-2">
                   {title}
                 </h3>
                 <p className="text-[10.5px] sm:text-xs font-medium text-slate-600 line-clamp-5 mt-1.5 leading-relaxed">
@@ -532,35 +532,34 @@ export const HomePage: React.FC<HomePageProps> = ({
           {language === 'tr' ? 'Yakında Eklenecek Endüstri Mühendisliği Dersleri' : 'Upcoming Industrial Engineering Courses'}
         </h2>
         <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:auto-rows-fr">
-          {COURSES_DATA.filter((c) => c.status !== 'active').map((course) => {
+          {COURSES_DATA.filter((c) => c.status !== 'active').map((course, idx) => {
             const isEn = language === 'en';
             const title = isEn ? course.name.en : course.name.tr;
             const desc = isEn ? course.desc.en : course.desc.tr;
-            const badgeText = isEn ? course.badge.en : course.badge.tr;
             const Icon = course.icon;
+            const staggerClass = ['animate-delay-50','animate-delay-100','animate-delay-150','animate-delay-200','animate-delay-250','animate-delay-300'][Math.min(idx, 5)];
 
             return (
               <button
                 key={course.code}
                 onClick={() => onSelectInDesignCourse?.(course)}
-                className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all duration-300 text-left flex flex-col justify-between overflow-hidden cursor-pointer hover:border-amber-400/80 hover:shadow-md ${course.cardStyle}`}
+                className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border text-left flex flex-col justify-between overflow-hidden cursor-pointer card-hover btn-press animate-card-reveal ${staggerClass} ${course.cardStyle}`}
               >
                 <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
 
-                {/* Top row: Icon & Course Code YAKINDA (left-aligned) */}
+                {/* Top row: Icon & Course Code YAKINDA */}
                 <div className="flex items-center justify-start w-full relative z-10 gap-2 sm:gap-3 min-w-0 shrink-0">
-                  <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${course.iconBg}`}>
+                  <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200 ${course.iconBg}`}>
                     <Icon className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
                   </div>
-
-                  <span className="text-xs sm:text-base lg:text-lg font-black tracking-tight uppercase text-amber-700 group-hover:text-amber-800 transition-colors truncate">
+                  <span className="text-xs sm:text-base lg:text-lg font-black tracking-tight uppercase text-amber-700 group-hover:text-amber-800 transition-colors duration-200 truncate">
                     {course.code} {isEn ? 'COMING SOON' : 'YAKINDA'}
                   </span>
                 </div>
 
                 {/* Middle content: Title & Full Description */}
                 <div className="relative z-10 pt-2 sm:pt-2.5 flex-1 flex flex-col justify-start text-left min-h-0 overflow-hidden">
-                  <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors leading-snug line-clamp-2">
+                  <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors duration-200 leading-snug line-clamp-2">
                     {title}
                   </h3>
                   <p className="text-[11px] sm:text-xs font-medium text-slate-600 line-clamp-5 mt-1.5 leading-relaxed">

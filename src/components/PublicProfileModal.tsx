@@ -36,7 +36,7 @@ export const PublicProfileModal: React.FC<PublicProfileModalProps> = ({ profile,
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-md animate-fade-in font-sans">
-      <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
+      <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col animate-modal-enter">
         {/* Floating Close Button */}
         <button
           onClick={onClose}
@@ -208,3 +208,5 @@ export const PublicProfileModal: React.FC<PublicProfileModalProps> = ({ profile,
     </div>
   );
 };
+
+

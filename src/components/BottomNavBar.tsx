@@ -27,88 +27,59 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   return (
     <nav
       aria-label="Mobil ve Alt Navigasyon Çubuğu"
-      className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-2xl px-3 sm:px-6 py-1.5 sm:py-2 pb-[calc(0.4rem+env(safe-area-inset-bottom))] font-sans transition-all duration-300"
+      className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-2xl px-3 sm:px-6 py-1.5 sm:py-2 pb-[calc(0.4rem+env(safe-area-inset-bottom))] font-sans"
     >
       <div className="max-w-md mx-auto flex items-center justify-around relative">
-        {/* 1. Ana Sayfa (Home) Button */}
+
+        {/* 1. Ana Sayfa */}
         <button
           onClick={onGoHome}
-          className={`flex flex-col items-center justify-center flex-1 py-1 px-2 rounded-2xl transition-all cursor-pointer group active:scale-95 ${
-            isHomeActive
-              ? 'text-[#ff7a00] font-black'
-              : 'text-slate-500 hover:text-slate-900 font-medium'
-          }`}
+          className="flex flex-col items-center justify-center flex-1 py-1 px-2 cursor-pointer group btn-press"
           title={language === 'tr' ? 'Ana Sayfa' : 'Home'}
         >
-          <div
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center transition-all ${
-              isHomeActive
-                ? 'bg-[#ff7a00]/15 text-[#ff7a00] scale-105 shadow-xs'
-                : 'group-hover:bg-slate-100 text-slate-500'
-            }`}
-          >
-            <Home className={`w-5 h-5 ${isHomeActive ? 'stroke-[2.5]' : 'stroke-[2]'}`} />
+          <div className={`w-12 h-8 rounded-2xl flex items-center justify-center transition-all duration-200 ${isHomeActive ? 'bg-[#ff7a00]/15 scale-110' : 'group-hover:bg-slate-100 group-hover:scale-105'}`}>
+            <Home className={`transition-all duration-200 ${isHomeActive ? 'w-5 h-5 stroke-[2.5] text-[#ff7a00]' : 'w-5 h-5 stroke-[2] text-slate-500 group-hover:text-slate-800'}`} />
           </div>
-          <span className="text-[11px] mt-0.5 tracking-tight font-bold">
+          <span className={`text-[10px] mt-0.5 tracking-tight transition-all duration-200 ${isHomeActive ? 'font-black text-[#ff7a00]' : 'font-medium text-slate-500 group-hover:text-slate-800'}`}>
             {language === 'tr' ? 'Ana Sayfa' : 'Home'}
           </span>
         </button>
 
-        {/* 2. Genel Skor Tablosu (Leaderboard) Button */}
+        {/* 2. Skor Tablosu */}
         <button
           onClick={onOpenLeaderboard}
-          className={`flex flex-col items-center justify-center flex-1 py-1 px-2 rounded-2xl transition-all cursor-pointer group active:scale-95 ${
-            isLeaderboardActive
-              ? 'text-amber-500 font-black'
-              : 'text-slate-500 hover:text-amber-600 font-medium'
-          }`}
-          title={language === 'tr' ? 'Genel Skor Tablosu & Liderlik' : 'Leaderboard'}
+          className="flex flex-col items-center justify-center flex-1 py-1 px-2 cursor-pointer group btn-press"
+          title={language === 'tr' ? 'Skor Tablosu' : 'Leaderboard'}
         >
-          <div
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center transition-all ${
-              isLeaderboardActive
-                ? 'bg-amber-500/15 text-amber-500 scale-105 shadow-xs ring-2 ring-amber-500/50'
-                : 'group-hover:bg-amber-500/15 text-amber-500 group-hover:scale-105'
-            }`}
-          >
-            <Trophy className={`w-5 h-5 ${isLeaderboardActive ? 'stroke-[2.5]' : 'stroke-[2.25]'} text-amber-500 fill-amber-400/20`} />
+          <div className={`w-12 h-8 rounded-2xl flex items-center justify-center transition-all duration-200 ${isLeaderboardActive ? 'bg-amber-400/20 scale-110' : 'group-hover:bg-amber-400/10 group-hover:scale-105'}`}>
+            <Trophy className={`transition-all duration-200 ${isLeaderboardActive ? 'w-5 h-5 stroke-[2.5] text-amber-500 fill-amber-400/30' : 'w-5 h-5 stroke-[2] text-amber-400 group-hover:text-amber-500'}`} />
           </div>
-          <span className={`text-[11px] mt-0.5 tracking-tight font-bold ${isLeaderboardActive ? 'text-amber-500 font-black' : 'text-slate-700 group-hover:text-amber-600'}`}>
+          <span className={`text-[10px] mt-0.5 tracking-tight transition-all duration-200 ${isLeaderboardActive ? 'font-black text-amber-500' : 'font-medium text-slate-500 group-hover:text-amber-600'}`}>
             {language === 'tr' ? 'Skor Tablosu' : 'Leaderboard'}
           </span>
         </button>
 
-        {/* 3. Profilim (My Profile) Button */}
+        {/* 3. Profil / Giriş */}
         {!isAuthenticated || !isVerified ? (
           <button
             onClick={onOpenAuth}
-            className="flex flex-col items-center justify-center flex-1 py-1 px-2 rounded-2xl transition-all cursor-pointer group active:scale-95 text-slate-500 hover:text-[#ff7a00] font-medium"
+            className="flex flex-col items-center justify-center flex-1 py-1 px-2 cursor-pointer group btn-press"
             title={language === 'tr' ? 'Giriş Yap / Kayıt Ol' : 'Sign In / Sign Up'}
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center transition-all group-hover:bg-[#ff7a00]/15 text-[#ff7a00] group-hover:scale-105">
-              <UserCheck className="w-5 h-5 stroke-[2.25]" />
+            <div className="w-12 h-8 rounded-2xl flex items-center justify-center transition-all duration-200 group-hover:bg-[#ff7a00]/10 group-hover:scale-105">
+              <UserCheck className="w-5 h-5 stroke-[2.25] text-[#ff7a00]" />
             </div>
-            <span className="text-[11px] mt-0.5 tracking-tight font-bold text-slate-700 group-hover:text-[#ff7a00]">
+            <span className="text-[10px] mt-0.5 tracking-tight font-medium text-slate-500 group-hover:text-[#ff7a00] transition-colors duration-200">
               {language === 'tr' ? 'Giriş Yap' : 'Sign In'}
             </span>
           </button>
         ) : (
           <button
             onClick={onOpenProfile}
-            className={`flex flex-col items-center justify-center flex-1 py-1 px-2 rounded-2xl transition-all cursor-pointer group active:scale-95 ${
-              isProfileActive
-                ? 'text-[#ff7a00] font-black'
-                : 'text-slate-500 hover:text-slate-900 font-medium'
-            }`}
+            className="flex flex-col items-center justify-center flex-1 py-1 px-2 cursor-pointer group btn-press"
             title={language === 'tr' ? 'Profilim & Başarılar' : 'My Profile'}
           >
-            <div
-              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center p-0.5 transition-all ${
-                isProfileActive
-                  ? 'ring-2 ring-[#ff7a00] bg-[#ff7a00]/15 scale-105 shadow-xs'
-                  : 'group-hover:bg-slate-100'
-              }`}
-            >
+            <div className={`w-9 h-9 rounded-2xl flex items-center justify-center p-0.5 transition-all duration-200 ${isProfileActive ? 'ring-2 ring-[#ff7a00] bg-[#ff7a00]/15 scale-110' : 'ring-1 ring-slate-200 group-hover:ring-[#ff7a00]/40 group-hover:scale-105'}`}>
               <div className="w-full h-full rounded-xl overflow-hidden flex items-center justify-center">
                 <UserAvatar
                   avatarUrl={userProfile?.avatarUrl}
@@ -119,7 +90,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
                 />
               </div>
             </div>
-            <span className="text-[11px] mt-0.5 tracking-tight font-bold">
+            <span className={`text-[10px] mt-0.5 tracking-tight transition-all duration-200 ${isProfileActive ? 'font-black text-[#ff7a00]' : 'font-medium text-slate-500 group-hover:text-slate-800'}`}>
               {language === 'tr' ? 'Profilim' : 'Profile'}
             </span>
           </button>

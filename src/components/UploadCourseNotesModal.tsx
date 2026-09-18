@@ -203,7 +203,7 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in font-sans">
-      <div className="relative w-full max-w-lg bg-white border border-slate-200/90 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-lg bg-white border border-slate-200/90 rounded-3xl animate-modal-enter shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Modal Header */}
         <div className="relative px-6 py-5 bg-gradient-to-r from-amber-500/10 via-[#ff7a00]/10 to-orange-500/10 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center space-x-3 min-w-0">
@@ -506,4 +506,6 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
     </div>
   );
 };
+
+
 

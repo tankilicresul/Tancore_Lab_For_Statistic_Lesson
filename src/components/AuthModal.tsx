@@ -342,7 +342,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         className="hidden sm:block absolute inset-0 -z-10"
         onClick={onClose}
       />
-      <div className="relative w-full sm:max-w-md bg-white border border-slate-200 rounded-t-3xl sm:rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+      <div className="relative w-full sm:max-w-md bg-white border border-slate-200 rounded-t-3xl sm:rounded-3xl animate-modal-enter p-5 sm:p-7 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -664,3 +664,5 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     </div>
   );
 };
+
+

@@ -460,74 +460,91 @@ export const App: React.FC = () => {
       {/* Main Page Body */}
       <main className="flex-1 pt-20 sm:pt-24 pb-24 sm:pb-28">
         {currentView === 'home' && (
-          <HomePage
-            onSelectTrack={handleSelectTrack}
-            onSelectInDesignCourse={handleSelectInDesignCourse}
-            onOpenProfile={handleOpenProfile}
-          />
-        )}
-
-        {currentView === 'course' && (
-          <CoursePage
-            selectedTrack={selectedTrack}
-            inDesignCourse={selectedInDesignCourse}
-            onSelectLesson={handleSelectLesson}
-            onSelectCaseExam={handleSelectCaseExam}
-            onBackToHome={handleBackToHome}
-            scrollToNodeId={scrollToNodeId}
-            onStartPlacementTest={handleStartPlacementTest}
-            onGuestGateRequired={() => setShowGuestGate(true)}
-          />
-        )}
-
-        {currentView === 'profile' && (
-          (!isAuthenticated || !isVerified) ? (
+          <div key="home" className="animate-page-enter">
             <HomePage
               onSelectTrack={handleSelectTrack}
               onSelectInDesignCourse={handleSelectInDesignCourse}
               onOpenProfile={handleOpenProfile}
             />
-          ) : (
-            <ProfilePage
-              onGoHome={handleBackToHome}
-              onOpenAuth={() => setShowDirectAuthModal(true)}
-              onNavigateLeaderboard={handleOpenLeaderboard}
+          </div>
+        )}
+
+        {currentView === 'course' && (
+          <div key={`course-${selectedTrack}-${selectedInDesignCourse?.code ?? ''}`} className="animate-page-enter">
+            <CoursePage
+              selectedTrack={selectedTrack}
+              inDesignCourse={selectedInDesignCourse}
+              onSelectLesson={handleSelectLesson}
+              onSelectCaseExam={handleSelectCaseExam}
+              onBackToHome={handleBackToHome}
+              scrollToNodeId={scrollToNodeId}
+              onStartPlacementTest={handleStartPlacementTest}
+              onGuestGateRequired={() => setShowGuestGate(true)}
             />
+          </div>
+        )}
+
+        {currentView === 'profile' && (
+          (!isAuthenticated || !isVerified) ? (
+            <div key="profile-guest" className="animate-page-enter">
+              <HomePage
+                onSelectTrack={handleSelectTrack}
+                onSelectInDesignCourse={handleSelectInDesignCourse}
+                onOpenProfile={handleOpenProfile}
+              />
+            </div>
+          ) : (
+            <div key="profile-auth" className="animate-page-enter">
+              <ProfilePage
+                onGoHome={handleBackToHome}
+                onOpenAuth={() => setShowDirectAuthModal(true)}
+                onNavigateLeaderboard={handleOpenLeaderboard}
+              />
+            </div>
           )
         )}
 
         {currentView === 'leaderboard' && (
-          <LeaderboardPage
-            onGoHome={handleBackToHome}
-            onOpenAuth={() => setShowDirectAuthModal(true)}
-            onOpenProfile={handleOpenProfile}
-          />
+          <div key="leaderboard" className="animate-page-enter">
+            <LeaderboardPage
+              onGoHome={handleBackToHome}
+              onOpenAuth={() => setShowDirectAuthModal(true)}
+              onOpenProfile={handleOpenProfile}
+            />
+          </div>
         )}
 
         {currentView === 'lesson' && lessonData && (
-          <LessonPage
-            lesson={lessonData.lesson}
-            module={lessonData.module}
-            onBack={handleBackToCourse}
-            onSelectNextTopic={handleSelectNextTopic}
-            onBackToHomeWithScroll={handleBackToHomeWithScroll}
-          />
+          <div key={`lesson-${selectedLessonId}`} className="animate-page-enter">
+            <LessonPage
+              lesson={lessonData.lesson}
+              module={lessonData.module}
+              onBack={handleBackToCourse}
+              onSelectNextTopic={handleSelectNextTopic}
+              onBackToHomeWithScroll={handleBackToHomeWithScroll}
+            />
+          </div>
         )}
 
         {currentView === 'caseExam' && caseData && (
-          <CaseExamPage
-            caseExam={caseData.caseExam}
-            module={caseData.module}
-            onBack={handleBackToCourse}
-            onSelectNextTopic={handleSelectNextTopic}
-            onBackToHomeWithScroll={handleBackToHomeWithScroll}
-          />
+          <div key={`case-${selectedCaseId}`} className="animate-page-enter">
+            <CaseExamPage
+              caseExam={caseData.caseExam}
+              module={caseData.module}
+              onBack={handleBackToCourse}
+              onSelectNextTopic={handleSelectNextTopic}
+              onBackToHomeWithScroll={handleBackToHomeWithScroll}
+            />
+          </div>
         )}
 
         {currentView === 'placementTest' && (
-          <PlacementTestPage onBackToHome={handleBackToHomeWithScroll} />
+          <div key="placementTest" className="animate-page-enter">
+            <PlacementTestPage onBackToHome={handleBackToHomeWithScroll} />
+          </div>
         )}
       </main>
+
 
       {/* Full-width Bottom Navigation Bar (Ana Sayfa, Skor Tablosu, Profilim) */}
       <BottomNavBar

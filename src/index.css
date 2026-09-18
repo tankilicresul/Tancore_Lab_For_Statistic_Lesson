@@ -11,6 +11,30 @@
     overflow-wrap: break-word;
     word-wrap: break-word;
     overscroll-behavior-x: none;
+    /* Smooth font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Focus ring standardization — consistent & accessible across all interactive elements */
+  :focus-visible {
+    outline: 2px solid rgba(255, 122, 0, 0.7);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+
+  /* Suppress ugly default focus on mouse users */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Respect user motion preferences for all animations */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
@@ -36,6 +60,196 @@ body {
 
 .animate-logo-spin {
   animation: logoSpinAccelDecel 1.3s forwards;
+}
+
+/* ────────────────────────────────────────────────────────
+   PAGE TRANSITION SYSTEM
+   Fade + subtle upward slide for view changes.
+   Gives spatial continuity — user knows where they are.
+   ──────────────────────────────────────────────────────── */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnter 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ────────────────────────────────────────────────────────
+   MODAL / BOTTOM SHEET ENTRANCE
+   Scale from 96% + fade: item "grows" into focus.
+   Psychologically "arrives" rather than "appears".
+   ──────────────────────────────────────────────────────── */
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-enter {
+  animation: modalEnter 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Bottom sheet slide up (mobile modals) */
+@keyframes sheetEnter {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-sheet-enter {
+  animation: sheetEnter 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ────────────────────────────────────────────────────────
+   XP FLOAT-UP NUMBER — Dopamine moment
+   "+15 XP" rises and fades; reward psychology.
+   ──────────────────────────────────────────────────────── */
+@keyframes xpFloat {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  60% {
+    opacity: 0.85;
+    transform: translateY(-32px) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-56px) scale(0.9);
+  }
+}
+
+.animate-xp-float {
+  animation: xpFloat 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: none;
+}
+
+/* ────────────────────────────────────────────────────────
+   CARD REVEAL ON LOAD — Staggered entrance
+   Cards appear in sequence, not all at once.
+   ──────────────────────────────────────────────────────── */
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-card-reveal {
+  animation: cardReveal 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+}
+
+/* Stagger delays for card grids */
+.animate-delay-50  { animation-delay: 50ms; }
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-150 { animation-delay: 150ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-250 { animation-delay: 250ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+
+/* ────────────────────────────────────────────────────────
+   SKELETON SHIMMER — Managed uncertainty
+   Shimmer content placeholders: better than blank space.
+   ──────────────────────────────────────────────────────── */
+@keyframes shimmerSweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f1f5f9 25%,
+    #e8edf3 50%,
+    #f1f5f9 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmerSweep 1.6s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* ────────────────────────────────────────────────────────
+   BUTTON PRESS PHYSICS — Tactile feedback
+   80ms compress, 150ms spring back = natural feel.
+   ──────────────────────────────────────────────────────── */
+.btn-press {
+  transition: transform 80ms ease-in, box-shadow 80ms ease-in;
+}
+.btn-press:active {
+  transform: scale(0.96);
+  transition: transform 80ms ease-in;
+}
+
+/* ────────────────────────────────────────────────────────
+   CARD HOVER LIFT — Spatial affordance
+   Cards float towards user = "I am clickable".
+   ──────────────────────────────────────────────────────── */
+.card-hover {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s ease-out;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.10), 0 4px 8px -2px rgba(0, 0, 0, 0.06);
+}
+.card-hover:active {
+  transform: translateY(-1px);
+  transition-duration: 80ms;
+}
+
+/* ────────────────────────────────────────────────────────
+   FADE-IN (existing, preserved)
+   ──────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.22s ease-out forwards;
+}
+
+/* Scale up */
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* fadeInDown for notifications / success banners */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.22s ease-out forwards;
 }
 
 /* Ultra-smooth breathing animation for Tanco floating assistant */
