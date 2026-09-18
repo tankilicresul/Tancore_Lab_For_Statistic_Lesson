@@ -161,6 +161,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
       // If startRank is greater than userRank, start the 2-phase animation!
       if (startRank !== undefined && startRank > userRank) {
+        localStorage.setItem('tancore_start_climb_rank', String(startRank));
         setAnimatedXp(effectivePrevXp);
         setDisplayRank(startRank);
         setIsCountingXp(true);
@@ -193,15 +194,17 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     const targetXp = xp || 0;
 
     if (animatedXp < targetXp) {
+      soundService.playXpCountTick();
       const delta = targetXp - animatedXp;
       const step = Math.max(1, Math.ceil(delta / 6));
       const timer = setTimeout(() => {
         setAnimatedXp((current) => (current !== null ? Math.min(targetXp, current + step) : targetXp));
-      }, 30);
+      }, 35);
 
       return () => clearTimeout(timer);
     } else if (animatedXp >= targetXp) {
-      // Phase 1 finished! Save XP and start Phase 2 (Rank Climb)
+      // Phase 1 finished! Play satisfying gold coin chime & start Phase 2
+      soundService.playXpCountComplete();
       setIsCountingXp(false);
       localStorage.setItem('tancore_last_seen_xp', String(targetXp));
 
@@ -221,16 +224,22 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     if (!isClimbing || displayRank === null || !userRank) return;
 
     if (displayRank > userRank) {
-      // Play wheel/ratchet tick sound for each rank passed
-      soundService.playWheelTick();
+      // Calculate climb progress towards the top
+      const startRankSaved = parseInt(localStorage.getItem('tancore_start_climb_rank') || '0', 10);
+      const totalSteps = startRankSaved > userRank ? startRankSaved - userRank : 1;
+      const currentStep = startRankSaved > displayRank ? startRankSaved - displayRank : 0;
+      const progress = totalSteps > 0 ? currentStep / totalSteps : 0;
+
+      // Play rising wheel/ratchet tick sound for each rank passed
+      soundService.playWheelTick(progress);
       const timer = setTimeout(() => {
         setDisplayRank((current) => (current ? current - 1 : userRank));
       }, 230);
 
       return () => clearTimeout(timer);
     } else if (displayRank === userRank) {
-      // Phase 2 finished! Play superhero landing impact sound!
-      soundService.playSuperheroLanding();
+      // Phase 2 finished! Play superhero landing impact sound (with victory fanfare if in Top 3)!
+      soundService.playSuperheroLanding(userRank <= 3);
       setIsClimbing(false);
       setJustArrived(true);
 

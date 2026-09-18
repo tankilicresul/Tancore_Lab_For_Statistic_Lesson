@@ -527,65 +527,56 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
           </span>
         </div>
 
-        {/* Weekly Activity Grid (Current Week Top, Previous Week Bottom) */}
+        {/* Weekly Activity Grid */}
         <div className="bg-white rounded-2xl p-3.5 sm:p-4 text-slate-800 shadow-xl my-4 space-y-3">
-          {/* Current Week (Bu Hafta) */}
-          <div>
-            <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-wider text-[#ff7a00] mb-2 px-1">
-              <span>{isTr ? 'Bu Hafta' : 'This Week'}</span>
-              <span className="text-[10px] text-slate-400 font-bold">{isTr ? 'Pzt - Pzr' : 'Mon - Sun'}</span>
-            </div>
-            <div className="grid grid-cols-7 gap-1 sm:gap-2">
-              {currentWeekDays.map((d) => (
-                <div key={d.dayOffset} className="flex flex-col items-center">
-                  <span
-                    className={`text-[11px] sm:text-xs mb-1.5 transition-colors ${
-                      d.isToday
-                        ? 'text-[#ff7a00] font-black scale-105'
-                        : d.isLava
-                        ? 'text-orange-600 font-bold'
-                        : d.isIce
-                        ? 'text-sky-600 font-bold'
-                        : d.isMissed
-                        ? 'text-slate-600 font-bold'
-                        : 'text-slate-400 font-medium'
-                    }`}
-                  >
-                    {d.label}
-                  </span>
+          {/* Current Week (Monday -> Sunday) */}
+          <div className="grid grid-cols-7 gap-1 sm:gap-2">
+            {currentWeekDays.map((d) => (
+              <div key={d.dayOffset} className="flex flex-col items-center">
+                <span
+                  className={`text-[11px] sm:text-xs mb-1.5 transition-colors ${
+                    d.isToday
+                      ? 'text-[#ff7a00] font-black scale-105'
+                      : d.isLava
+                      ? 'text-orange-600 font-bold'
+                      : d.isIce
+                      ? 'text-sky-600 font-bold'
+                      : d.isMissed
+                      ? 'text-slate-600 font-bold'
+                      : 'text-slate-400 font-medium'
+                  }`}
+                >
+                  {d.label}
+                </span>
 
-                  <div className="relative h-10 sm:h-11 flex items-center justify-center">
-                    {d.isLava && (
-                      <div className="relative flex items-center justify-center pt-1">
-                        <LavaRock3D size="md" showFlames={true} isToday={d.isToday} hasSolvedBadge={true} />
-                      </div>
-                    )}
-                    {d.isIce && (
-                      <div className="relative flex items-center justify-center pt-1">
-                        <IceCrystal3D size="md" showSmoke={true} />
-                      </div>
-                    )}
-                    {d.isMissed && (
-                      <div className="relative flex items-center justify-center pt-1">
-                        <ExtinguishedLavaRock3D size="md" />
-                      </div>
-                    )}
-                    {d.isFuture && (
-                      <div className="relative flex items-center justify-center pt-1 opacity-80">
-                        <FutureRock3D size="md" />
-                      </div>
-                    )}
-                  </div>
+                <div className="relative h-10 sm:h-11 flex items-center justify-center">
+                  {d.isLava && (
+                    <div className="relative flex items-center justify-center pt-1">
+                      <LavaRock3D size="md" showFlames={true} isToday={d.isToday} hasSolvedBadge={true} />
+                    </div>
+                  )}
+                  {d.isIce && (
+                    <div className="relative flex items-center justify-center pt-1">
+                      <IceCrystal3D size="md" showSmoke={true} />
+                    </div>
+                  )}
+                  {d.isMissed && (
+                    <div className="relative flex items-center justify-center pt-1">
+                      <ExtinguishedLavaRock3D size="md" />
+                    </div>
+                  )}
+                  {d.isFuture && (
+                    <div className="relative flex items-center justify-center pt-1 opacity-80">
+                      <FutureRock3D size="md" />
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
 
-          {/* Previous Week (Geçen Hafta) - shifts down each new Monday */}
-          <div className="pt-2 border-t border-slate-100">
-            <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2 px-1">
-              <span>{isTr ? 'Geçen Hafta' : 'Last Week'}</span>
-            </div>
+          {/* Previous Week - shifts down each new Monday */}
+          <div className="pt-2.5 border-t border-slate-100">
             <div className="grid grid-cols-7 gap-1 sm:gap-2 opacity-90">
               {prevWeekDays.map((d) => (
                 <div key={d.dayOffset} className="flex flex-col items-center">
@@ -603,7 +594,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                     )}
                     {d.isMissed && (
                       <div className="relative flex items-center justify-center">
-                        <ExtinguishedLavaRock3D size="sm" />
+                        <ExtinguishedLavaRock3D size="md" />
                       </div>
                     )}
                   </div>
