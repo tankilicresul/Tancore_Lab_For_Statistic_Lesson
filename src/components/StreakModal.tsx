@@ -161,6 +161,97 @@ const IceCrystal3D: React.FC<{
   );
 };
 
+const LavaRock3D: React.FC<{
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+  showFlames?: boolean;
+  hasSolvedBadge?: boolean;
+  isToday?: boolean;
+}> = ({
+  className = '',
+  size = 'md',
+  showFlames = true,
+  hasSolvedBadge = true,
+  isToday = false,
+}) => {
+  const [imgError, setImgError] = useState(false);
+
+  const dims = {
+    sm: 'w-4 h-3.5',
+    md: 'w-7 h-6 sm:w-8 sm:h-7',
+    lg: 'w-10 h-8.5',
+  }[size];
+
+  return (
+    <div className={`relative flex items-center justify-center select-none ${className}`}>
+      {/* Background Heat Radiation Orb */}
+      <div
+        className={`absolute rounded-full pointer-events-none blur-md ${
+          isToday
+            ? 'w-9 h-9 bg-gradient-to-tr from-red-600 via-orange-500 to-yellow-400 opacity-80 animate-pulse'
+            : 'w-7 h-7 bg-gradient-to-tr from-red-600/60 via-amber-500/50 to-yellow-400/40 opacity-60'
+        }`}
+      />
+
+      {/* Surging Flame Waves Animation from Crater / Peak */}
+      {showFlames && (
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 pointer-events-none w-7 h-8 flex items-center justify-center z-20">
+          {/* Flame wave 1: Main central fire plume surge */}
+          <div className="absolute w-3.5 h-4.5 rounded-full bg-gradient-to-t from-orange-500 via-amber-400 to-yellow-200 blur-[0.75px] shadow-[0_0_10px_rgba(251,191,36,0.9)] animate-flame-wave-1" />
+          
+          {/* Flame wave 2: Secondary flickering flame tongue */}
+          <div className="absolute w-3 h-4 rounded-full bg-gradient-to-t from-red-500 via-orange-400 to-yellow-100 blur-[0.75px] shadow-[0_0_8px_rgba(249,115,22,0.85)] animate-flame-wave-2" />
+          
+          {/* Flame wave 3: Core hot white-yellow licking flame */}
+          <div className="absolute w-2 h-3 rounded-full bg-gradient-to-t from-amber-300 via-yellow-200 to-white blur-[0.5px] shadow-[0_0_6px_rgba(254,240,138,0.95)] animate-flame-wave-3" />
+
+          {/* Flying burning ember spark 1 */}
+          <div className="absolute -left-1 top-2 w-1.5 h-1.5 rounded-full bg-yellow-300 shadow-[0_0_4px_#fde047] animate-ember-1" />
+          
+          {/* Flying burning ember spark 2 */}
+          <div className="absolute right-0 top-1.5 w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_4px_#fbbf24] animate-ember-2" />
+        </div>
+      )}
+
+      {/* 3D Lava Rock Asset from User's Reference Photo */}
+      {!imgError ? (
+        <img
+          src="/lava-rock-3d.png"
+          alt="3D Burning Lava Rock"
+          className={`${dims} object-contain filter drop-shadow-[0_4px_10px_rgba(239,68,68,0.85)] animate-lava-rock transition-transform`}
+          onError={() => setImgError(true)}
+        />
+      ) : (
+        /* Vector 3D Lava Mountain Fallback */
+        <svg
+          viewBox="0 0 100 90"
+          className={`${dims} overflow-visible filter drop-shadow-[0_4px_10px_rgba(239,68,68,0.85)] animate-lava-rock`}
+          fill="none"
+          xmlns="https://www.w3.org/2000/svg"
+        >
+          <path d="M10 82 Q20 50 45 22 Q52 14 62 22 Q85 45 92 82 Z" fill="#1c1917" stroke="#0c0a09" strokeWidth="2" />
+          <path d="M45 22 Q50 45 35 70 Q42 78 55 80" stroke="#f97316" strokeWidth="3.5" strokeLinecap="round" />
+          <path d="M52 35 Q65 52 75 80" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" />
+          <path d="M48 26 Q50 42 42 58" stroke="#fde047" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      )}
+
+      {/* Solved Checkmark Badge on bottom-right */}
+      {hasSolvedBadge && (
+        <div
+          className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center ring-1 ring-white shadow-xs z-10 ${
+            isToday
+              ? 'bg-amber-500 text-white ring-2 ring-yellow-300 animate-pulse'
+              : 'bg-red-600 text-white'
+          }`}
+        >
+          <Check className="w-2.5 h-2.5 stroke-[3.5]" />
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
   const { language, streak, isAuthenticated, isVerified, activityDates } = useAppStore();
   const [imgError, setImgError] = useState(false);

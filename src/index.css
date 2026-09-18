@@ -289,3 +289,116 @@ body {
 .animate-ice-crystal {
   animation: iceCrystalFloat 3s ease-in-out infinite;
 }
+
+/* 3D Burning Lava Rock Molten Heat & Breathing */
+@keyframes lavaRockBurn {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 2px 8px rgba(239, 68, 68, 0.8)) drop-shadow(0 -4px 10px rgba(245, 158, 11, 0.7));
+  }
+  50% {
+    transform: translateY(-2px) scale(1.05);
+    filter: drop-shadow(0 4px 16px rgba(239, 68, 68, 0.95)) drop-shadow(0 -8px 18px rgba(251, 191, 36, 0.9));
+  }
+}
+
+.animate-lava-rock {
+  animation: lavaRockBurn 2.4s ease-in-out infinite;
+}
+
+/* Flame Wave Surges rising from the lava rock top */
+@keyframes flameWave1 {
+  0% {
+    transform: translateY(0) scaleX(0.8) scaleY(0.7) rotate(-3deg);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(-8px) scaleX(1.15) scaleY(1.35) rotate(4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-16px) scaleX(0.7) scaleY(1.6) rotate(-2deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flameWave2 {
+  0% {
+    transform: translateY(0) scaleX(0.7) scaleY(0.8) rotate(4deg);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(-10px) scaleX(1.25) scaleY(1.45) rotate(-4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-19px) scaleX(0.6) scaleY(1.7) rotate(2deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flameWave3 {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateY(-6px) scale(1.1);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(-14px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.animate-flame-wave-1 {
+  animation: flameWave1 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-flame-wave-2 {
+  animation: flameWave2 1.9s cubic-bezier(0.4, 0, 0.2, 1) 0.5s infinite;
+}
+
+.animate-flame-wave-3 {
+  animation: flameWave3 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.9s infinite;
+}
+
+/* Flying burning ember sparks from lava rock */
+@keyframes emberRise1 {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-12px) translateX(-4px) scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-26px) translateX(-7px) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes emberRise2 {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-14px) translateX(5px) scale(0.9);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-28px) translateX(9px) scale(0.3);
+    opacity: 0;
+  }
+}
+
+.animate-ember-1 {
+  animation: emberRise1 1.8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+.animate-ember-2 {
+  animation: emberRise2 2.1s cubic-bezier(0.25, 1, 0.5, 1) 0.7s infinite;
+}

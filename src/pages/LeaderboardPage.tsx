@@ -193,16 +193,6 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans space-y-4 animate-fade-in relative">
-      {/* Sparkles / Confetti Celebration Overlay on Arrival */}
-      {showSparkles && (
-        <div className="fixed top-20 left-0 right-0 z-50 pointer-events-none flex justify-center items-center">
-          <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 text-white px-5 py-2.5 rounded-full shadow-2xl font-black text-xs sm:text-sm tracking-wide flex items-center space-x-2 animate-bounce border-2 border-amber-300">
-            <Sparkles className="w-5 h-5 text-yellow-300 animate-spin" />
-            <span>{language === 'tr' ? '🎉 PUF! SIRA YÜKSELDİ!' : '🎉 RANK UPGRADE COMPLETE!'}</span>
-            <Sparkles className="w-5 h-5 text-yellow-300 animate-spin" />
-          </div>
-        </div>
-      )}
 
       {/* Unauthenticated Guest Alert Banner */}
       {!isAuthenticated && (
