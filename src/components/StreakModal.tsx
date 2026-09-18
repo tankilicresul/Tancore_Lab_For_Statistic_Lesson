@@ -354,42 +354,92 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
     };
   }, [streak, isAuthenticated, displayStreak]);
 
-  // Week days starting from Sunday (0) to Saturday (6) like Photo 2
+  // Week days starting from Monday (Pt) to Sunday (Pz)
   const daysOfWeek = isTr
     ? [
-        { label: 'Pz', full: 'Pazar', index: 0 },
-        { label: 'Pt', full: 'Pazartesi', index: 1 },
-        { label: 'Sa', full: 'Salı', index: 2 },
-        { label: 'Ça', full: 'Çarşamba', index: 3 },
-        { label: 'Pe', full: 'Perşembe', index: 4 },
-        { label: 'Cu', full: 'Cuma', index: 5 },
-        { label: 'Ct', full: 'Cumartesi', index: 6 },
+        { label: 'Pt', full: 'Pazartesi', dayOffset: 0 },
+        { label: 'Sa', full: 'Salı', dayOffset: 1 },
+        { label: 'Ça', full: 'Çarşamba', dayOffset: 2 },
+        { label: 'Pe', full: 'Perşembe', dayOffset: 3 },
+        { label: 'Cu', full: 'Cuma', dayOffset: 4 },
+        { label: 'Ct', full: 'Cumartesi', dayOffset: 5 },
+        { label: 'Pz', full: 'Pazar', dayOffset: 6 },
       ]
     : [
-        { label: 'Su', full: 'Sunday', index: 0 },
-        { label: 'Mo', full: 'Monday', index: 1 },
-        { label: 'Tu', full: 'Tuesday', index: 2 },
-        { label: 'We', full: 'Wednesday', index: 3 },
-        { label: 'Th', full: 'Thursday', index: 4 },
-        { label: 'Fr', full: 'Friday', index: 5 },
-        { label: 'Sa', full: 'Saturday', index: 6 },
+        { label: 'Mo', full: 'Monday', dayOffset: 0 },
+        { label: 'Tu', full: 'Tuesday', dayOffset: 1 },
+        { label: 'We', full: 'Wednesday', dayOffset: 2 },
+        { label: 'Th', full: 'Thursday', dayOffset: 3 },
+        { label: 'Fr', full: 'Friday', dayOffset: 4 },
+        { label: 'Sa', full: 'Saturday', dayOffset: 5 },
+        { label: 'Su', full: 'Sunday', dayOffset: 6 },
       ];
 
   const now = new Date();
-  const todayIndex = now.getDay(); // 0 = Sunday, ..., 6 = Saturday
+  const jsDay = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  const todayMondayOffset = jsDay === 0 ? 6 : jsDay - 1; // 0 = Mon, 1 = Tue, ..., 6 = Sun
 
-  // Ensure activityDates has valid date list for current week
+  const currentMonday = new Date(now);
+  currentMonday.setDate(now.getDate() - todayMondayOffset);
+
+  const formatDateStr = (d: Date) => d.toISOString().split('T')[0];
+
+  // Recorded activity dates from store or initial demo
   const recordedDates =
     activityDates && activityDates.length > 0
       ? activityDates
       : getInitialDemoActivityDates(displayStreak);
 
-  // Calculate the exact date (YYYY-MM-DD) for each day of the current week (Sunday to Saturday)
-  const getWeekDayDateStr = (dayIdx: number) => {
-    const d = new Date(now);
-    d.setDate(now.getDate() - todayIndex + dayIdx);
-    return d.toISOString().split('T')[0];
-  };
+  // Calculate Current Week Days (Monday -> Sunday)
+  const currentWeekDays = daysOfWeek.map((d) => {
+    const dateObj = new Date(currentMonday);
+    dateObj.setDate(currentMonday.getDate() + d.dayOffset);
+    const dateStr = formatDateStr(dateObj);
+
+    const isToday = d.dayOffset === todayMondayOffset;
+    const isFuture = d.dayOffset > todayMondayOffset;
+    const daysAgo = todayMondayOffset - d.dayOffset;
+
+    const isLava = !isFuture && (daysAgo >= 0 && daysAgo < displayStreak);
+    const isIce = !isFuture && !isLava && recordedDates.includes(dateStr);
+    const isMissed = !isFuture && !isLava && !isIce;
+
+    return {
+      ...d,
+      dateStr,
+      isToday,
+      isFuture,
+      isLava,
+      isIce,
+      isMissed,
+    };
+  });
+
+  // Calculate Previous Week Days (Monday -> Sunday of last week)
+  const prevMonday = new Date(currentMonday);
+  prevMonday.setDate(currentMonday.getDate() - 7);
+
+  const prevWeekDays = daysOfWeek.map((d) => {
+    const dateObj = new Date(prevMonday);
+    dateObj.setDate(prevMonday.getDate() + d.dayOffset);
+    const dateStr = formatDateStr(dateObj);
+
+    const daysAgo = todayMondayOffset + 7 - d.dayOffset;
+
+    const isLava = daysAgo >= 0 && daysAgo < displayStreak;
+    const isIce = !isLava && recordedDates.includes(dateStr);
+    const isMissed = !isLava && !isIce;
+
+    return {
+      ...d,
+      dateStr,
+      isToday: false,
+      isFuture: false,
+      isLava,
+      isIce,
+      isMissed,
+    };
+  });
 
   return (
     <div
@@ -477,35 +527,26 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
           </span>
         </div>
 
-        {/* Days of the Week Card (Duolingo Style: Lava vs Ice) */}
-        <div className="bg-white rounded-2xl p-3.5 sm:p-4 text-slate-800 shadow-xl my-4">
-          <div className="grid grid-cols-7 gap-1 sm:gap-2">
-            {daysOfWeek.map((d) => {
-              const isToday = d.index === todayIndex;
-              const isFuture = d.index > todayIndex;
-              const dayDateStr = getWeekDayDateStr(d.index);
-
-              // 1. LAVLI (Active Streak): exactly displayStreak continuous days up to today
-              // The total number of lava days strictly equals Math.min(displayStreak, todayIndex + 1)
-              const isLava = !isFuture && (todayIndex - d.index < displayStreak);
-
-              // 2. BUZLU (Ice): earlier solved days in this week before an interrupted break
-              const isIce = !isFuture && !isLava && recordedDates.includes(dayDateStr);
-
-              // 3. MISSED: past day that was not solved
-              const isMissed = !isFuture && !isLava && !isIce;
-
-              return (
-                <div key={d.index} className="flex flex-col items-center">
+        {/* Weekly Activity Grid (Current Week Top, Previous Week Bottom) */}
+        <div className="bg-white rounded-2xl p-3.5 sm:p-4 text-slate-800 shadow-xl my-4 space-y-3">
+          {/* Current Week (Bu Hafta) */}
+          <div>
+            <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-wider text-[#ff7a00] mb-2 px-1">
+              <span>{isTr ? 'Bu Hafta' : 'This Week'}</span>
+              <span className="text-[10px] text-slate-400 font-bold">{isTr ? 'Pzt - Pzr' : 'Mon - Sun'}</span>
+            </div>
+            <div className="grid grid-cols-7 gap-1 sm:gap-2">
+              {currentWeekDays.map((d) => (
+                <div key={d.dayOffset} className="flex flex-col items-center">
                   <span
-                    className={`text-[11px] sm:text-xs mb-2 transition-colors ${
-                      isToday
+                    className={`text-[11px] sm:text-xs mb-1.5 transition-colors ${
+                      d.isToday
                         ? 'text-[#ff7a00] font-black scale-105'
-                        : isLava
+                        : d.isLava
                         ? 'text-orange-600 font-bold'
-                        : isIce
+                        : d.isIce
                         ? 'text-sky-600 font-bold'
-                        : isMissed
+                        : d.isMissed
                         ? 'text-slate-600 font-bold'
                         : 'text-slate-400 font-medium'
                     }`}
@@ -513,62 +554,62 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                     {d.label}
                   </span>
 
-                  <div className="relative h-11 sm:h-12 flex items-center justify-center">
-                    {/* LAVLI (3D Burning Lava Rock with Surging Flame Waves) */}
-                    {isLava && (
-                      <div
-                        className="relative flex items-center justify-center pt-2"
-                        title={
-                          isToday
-                            ? (isTr ? 'Bugün (Alev Alev Yanan Lav Kayası!)' : 'Today (Blazing Lava Rock!)')
-                            : (isTr ? 'Alevli Seri Günü (Yanan Lav Kayası)' : 'Active Streak Day (Burning Lava Rock)')
-                        }
-                      >
-                        <LavaRock3D size="md" showFlames={true} isToday={isToday} hasSolvedBadge={true} />
+                  <div className="relative h-10 sm:h-11 flex items-center justify-center">
+                    {d.isLava && (
+                      <div className="relative flex items-center justify-center pt-1">
+                        <LavaRock3D size="md" showFlames={true} isToday={d.isToday} hasSolvedBadge={true} />
                       </div>
                     )}
-
-                    {/* BUZLU (3D Ice Crystal with Cold White Steam Rising) */}
-                    {isIce && (
-                      <div
-                        className="relative flex items-center justify-center pt-2"
-                        title={
-                          isTr
-                            ? 'Buzlu Gün (Önceki Çözülen Dersler)'
-                            : 'Frozen Day (Previous Solved Lessons)'
-                        }
-                      >
+                    {d.isIce && (
+                      <div className="relative flex items-center justify-center pt-1">
                         <IceCrystal3D size="md" showSmoke={true} />
                       </div>
                     )}
-
-                    {/* SÖNMÜŞ LAV KAYASI (Past day not entered/solved - 3D Extinguished Lava Rock) */}
-                    {isMissed && (
-                      <div
-                        className="relative flex items-center justify-center pt-2"
-                        title={
-                          isTr
-                            ? 'Sönmüş Lav Kayası'
-                            : 'Extinguished Lava Rock'
-                        }
-                      >
+                    {d.isMissed && (
+                      <div className="relative flex items-center justify-center pt-1">
                         <ExtinguishedLavaRock3D size="md" />
                       </div>
                     )}
-
-                    {/* GELECEK GÜNLER (Upcoming unreached day - 3D Natural Rock) */}
-                    {isFuture && (
-                      <div
-                        className="relative flex items-center justify-center pt-2 opacity-80 hover:opacity-100 transition-opacity"
-                        title={isTr ? 'Gelecek Gün' : 'Future Day'}
-                      >
+                    {d.isFuture && (
+                      <div className="relative flex items-center justify-center pt-1 opacity-80">
                         <FutureRock3D size="md" />
                       </div>
                     )}
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+          </div>
+
+          {/* Previous Week (Geçen Hafta) - shifts down each new Monday */}
+          <div className="pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2 px-1">
+              <span>{isTr ? 'Geçen Hafta' : 'Last Week'}</span>
+            </div>
+            <div className="grid grid-cols-7 gap-1 sm:gap-2 opacity-90">
+              {prevWeekDays.map((d) => (
+                <div key={d.dayOffset} className="flex flex-col items-center">
+                  <span className="text-[10px] text-slate-400 font-bold mb-1">{d.label}</span>
+                  <div className="relative h-9 sm:h-10 flex items-center justify-center">
+                    {d.isLava && (
+                      <div className="relative flex items-center justify-center">
+                        <LavaRock3D size="sm" showFlames={false} isToday={false} hasSolvedBadge={true} />
+                      </div>
+                    )}
+                    {d.isIce && (
+                      <div className="relative flex items-center justify-center">
+                        <IceCrystal3D size="sm" showSmoke={false} />
+                      </div>
+                    )}
+                    {d.isMissed && (
+                      <div className="relative flex items-center justify-center">
+                        <ExtinguishedLavaRock3D size="sm" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

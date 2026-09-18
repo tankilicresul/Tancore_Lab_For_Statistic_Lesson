@@ -80,13 +80,22 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     };
   }, [xp, userProfile?.avatarUrl]);
 
+  // Effective active profile: logged in user or current local student
+  const effectiveProfile = userProfile || {
+    id: 'active_student',
+    fullName: language === 'tr' ? 'Öğrenci' : 'Student',
+    university: language === 'tr' ? 'Misafir Öğrenci' : 'Guest Student',
+    schoolEmail: '',
+    avatarEmoji: '👨‍🎓',
+  };
+
   // Real Leaderboard Calculation (Strictly Deduplicated via computeUnifiedLeaderboard)
   const completedCount = completedLessons.length + completedCaseExams.length;
 
   const { sortedLeaderboard, userRank } = computeUnifiedLeaderboard({
     dbProfiles,
     registeredUsers,
-    currentUserProfile: isAuthenticated ? userProfile : null,
+    currentUserProfile: effectiveProfile,
     currentXp: xp,
     currentStreak: streak,
     completedCount,
@@ -95,75 +104,111 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   // Rank & XP Climb Animation Initialization
   const startRankClimbAnimation = (fromRankOverride?: number, fromXpOverride?: number) => {
-    if (!isAuthenticated || !userRank || sortedLeaderboard.length === 0) return;
-
-    let prevRank = fromRankOverride;
-    if (prevRank === undefined) {
-      const savedRankStr = localStorage.getItem('tancore_last_seen_rank');
-      prevRank = savedRankStr ? parseInt(savedRankStr, 10) : NaN;
-    }
+    if (!userRank || sortedLeaderboard.length === 0) return;
 
     const currentXpTarget = xp || 0;
+
+    // 1. Determine previous XP
     let prevXp = fromXpOverride;
     if (prevXp === undefined) {
       const savedXpStr = localStorage.getItem('tancore_last_seen_xp');
-      prevXp = savedXpStr ? parseInt(savedXpStr, 10) : NaN;
+      prevXp = savedXpStr !== null && !isNaN(parseInt(savedXpStr, 10))
+        ? parseInt(savedXpStr, 10)
+        : NaN;
     }
 
-    if (isNaN(prevRank) || prevRank === null) {
-      prevRank = Math.min(sortedLeaderboard.length, userRank + 6);
-    }
-    if (isNaN(prevXp) || prevXp === null || prevXp > currentXpTarget) {
-      prevXp = Math.max(0, currentXpTarget - 200);
+    // 2. Determine previous Rank
+    let prevRank = fromRankOverride;
+    if (prevRank === undefined) {
+      const savedRankStr = localStorage.getItem('tancore_last_seen_rank');
+      prevRank = savedRankStr !== null && !isNaN(parseInt(savedRankStr, 10))
+        ? parseInt(savedRankStr, 10)
+        : NaN;
     }
 
-    if (userRank < prevRank || currentXpTarget > prevXp) {
-      // Step 1: Set initial lower XP & lower rank, then start XP count-up!
-      setAnimatedXp(prevXp);
-      setDisplayRank(prevRank);
-      setIsCountingXp(true);
-      setIsClimbing(false);
-      setJustArrived(false);
-    } else {
-      setAnimatedXp(currentXpTarget);
-      setDisplayRank(userRank);
-      setIsCountingXp(false);
-      setIsClimbing(false);
-      localStorage.setItem('tancore_last_seen_rank', String(userRank));
-      localStorage.setItem('tancore_last_seen_xp', String(currentXpTarget));
+    // Has user earned new XP since last visit?
+    const hasGainedXp = !isNaN(prevXp) && currentXpTarget > prevXp;
+    const isFirstTimeWithXp = isNaN(prevXp) && currentXpTarget > 0;
+
+    if (hasGainedXp || isFirstTimeWithXp || fromRankOverride !== undefined) {
+      // Calculate effective previous XP
+      const effectivePrevXp = isNaN(prevXp)
+        ? Math.max(0, currentXpTarget - (currentXpTarget >= 50 ? 50 : 15))
+        : prevXp;
+
+      // How many other students have strictly more XP than effectivePrevXp?
+      const rankWithPrevXp = sortedLeaderboard.filter(
+        (p) => !isSameStudent(p, effectiveProfile) && (p.xp || 0) > effectivePrevXp
+      ).length + 1;
+
+      // Determine starting climb rank (must be STRICTLY lower down than userRank so climb happens!)
+      let startRank = fromRankOverride;
+      if (startRank === undefined) {
+        if (!isNaN(prevRank) && prevRank > userRank) {
+          startRank = prevRank;
+        } else if (rankWithPrevXp > userRank) {
+          startRank = rankWithPrevXp;
+        } else {
+          // If rank didn't mathematically cross a student boundary, guarantee a rewarding climb!
+          const earnedDelta = Math.max(15, currentXpTarget - effectivePrevXp);
+          const climbSteps = Math.max(1, Math.min(4, Math.ceil(earnedDelta / 15)));
+          startRank = Math.min(sortedLeaderboard.length + 1, userRank + climbSteps);
+          if (startRank <= userRank) {
+            startRank = userRank + 1;
+          }
+        }
+      }
+
+      // If startRank is greater than userRank, start the 2-phase animation!
+      if (startRank !== undefined && startRank > userRank) {
+        setAnimatedXp(effectivePrevXp);
+        setDisplayRank(startRank);
+        setIsCountingXp(true);
+        setIsClimbing(false);
+        setJustArrived(false);
+        return;
+      }
     }
+
+    // Static fallback: User has not gained XP, display current position directly
+    setAnimatedXp(currentXpTarget);
+    setDisplayRank(userRank);
+    setIsCountingXp(false);
+    setIsClimbing(false);
+    localStorage.setItem('tancore_last_seen_rank', String(userRank));
+    localStorage.setItem('tancore_last_seen_xp', String(currentXpTarget));
   };
 
   useEffect(() => {
-    if (isLoadingProfiles) return;
-    if (!isAuthenticated || !userRank || sortedLeaderboard.length === 0) return;
+    if (!userRank || sortedLeaderboard.length === 0) return;
     if (hasInitializedAnim) return;
 
     setHasInitializedAnim(true);
     startRankClimbAnimation();
-  }, [isLoadingProfiles, userRank, sortedLeaderboard.length, isAuthenticated, hasInitializedAnim]);
+  }, [userRank, sortedLeaderboard.length, hasInitializedAnim]);
 
   // Phase 1: Rapid XP Count-up Effect (Numbers count up rapidly to target XP)
   useEffect(() => {
-    if (!isCountingXp || animatedXp === null || !xp) return;
+    if (!isCountingXp || animatedXp === null) return;
+    const targetXp = xp || 0;
 
-    if (animatedXp < xp) {
-      const delta = xp - animatedXp;
+    if (animatedXp < targetXp) {
+      const delta = targetXp - animatedXp;
       const step = Math.max(1, Math.ceil(delta / 6));
       const timer = setTimeout(() => {
-        setAnimatedXp((current) => (current !== null ? Math.min(xp, current + step) : xp));
+        setAnimatedXp((current) => (current !== null ? Math.min(targetXp, current + step) : targetXp));
       }, 30);
 
       return () => clearTimeout(timer);
-    } else if (animatedXp >= xp) {
+    } else if (animatedXp >= targetXp) {
       // Phase 1 finished! Save XP and start Phase 2 (Rank Climb)
       setIsCountingXp(false);
-      localStorage.setItem('tancore_last_seen_xp', String(xp));
+      localStorage.setItem('tancore_last_seen_xp', String(targetXp));
 
       if (displayRank !== null && userRank && displayRank > userRank) {
         const climbTimer = setTimeout(() => {
           setIsClimbing(true);
-        }, 350);
+        }, 320);
         return () => clearTimeout(climbTimer);
       } else {
         localStorage.setItem('tancore_last_seen_rank', String(userRank));
@@ -180,7 +225,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       soundService.playWheelTick();
       const timer = setTimeout(() => {
         setDisplayRank((current) => (current ? current - 1 : userRank));
-      }, 220);
+      }, 230);
 
       return () => clearTimeout(timer);
     } else if (displayRank === userRank) {
@@ -201,15 +246,15 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   // Ambient soothing lava flow if user is in Top 3!
   useEffect(() => {
-    if (isAuthenticated && userRank && userRank <= 3 && !isClimbing) {
+    if (userRank && userRank <= 3 && !isClimbing) {
       soundService.playLavaFlow(0.12);
-    } else if (isAuthenticated && userRank && userRank > 3) {
+    } else if (userRank && userRank > 3) {
       soundService.stopAmbient();
     }
     return () => {
       soundService.stopAmbient();
     };
-  }, [isAuthenticated, userRank, isClimbing]);
+  }, [userRank, isClimbing]);
 
   // Auto-Scroll to keep user row in view on load and during climb
   useEffect(() => {
@@ -226,14 +271,14 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   // Construct dynamically positioned leaderboard array during rank climb
   const getRenderedLeaderboard = () => {
-    if (!isAuthenticated || displayRank === null || displayRank === userRank) {
+    if (displayRank === null || displayRank === userRank) {
       return sortedLeaderboard;
     }
 
-    const currentUserObj = sortedLeaderboard.find((p) => isSameStudent(p, userProfile));
+    const currentUserObj = sortedLeaderboard.find((p) => isSameStudent(p, effectiveProfile));
     if (!currentUserObj) return sortedLeaderboard;
 
-    const others = sortedLeaderboard.filter((p) => !isSameStudent(p, userProfile));
+    const others = sortedLeaderboard.filter((p) => !isSameStudent(p, effectiveProfile));
     const targetIdx = Math.max(0, Math.min(others.length, displayRank - 1));
 
     const result = [...others];
@@ -248,9 +293,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   const renderedList = getRenderedLeaderboard();
 
   // Real Top 3 users based on rendered list
-  const user1 = sortedLeaderboard[0] || null;
-  const user2 = sortedLeaderboard[1] || null;
-  const user3 = sortedLeaderboard[2] || null;
+  const user1 = renderedList[0] || sortedLeaderboard[0] || null;
+  const user2 = renderedList[1] || sortedLeaderboard[1] || null;
+  const user3 = renderedList[2] || sortedLeaderboard[2] || null;
 
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans space-y-4 animate-fade-in relative">
