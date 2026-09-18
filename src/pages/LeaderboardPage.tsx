@@ -33,7 +33,8 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   const [hasScrolledInLeaderboard, setHasScrolledInLeaderboard] = useState(false);
   const [dbProfiles, setDbProfiles] = useState<PublicProfile[]>([]);
-  const [_isLoadingProfiles, setIsLoadingProfiles] = useState(false);
+  const [isLoadingProfiles, setIsLoadingProfiles] = useState(true);
+  const [hasInitializedAnim, setHasInitializedAnim] = useState(false);
 
   // Animation State for XP Count-up & Rank Climbing:
   const [animatedXp, setAnimatedXp] = useState<number | null>(null);
@@ -93,7 +94,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   });
 
   // Rank & XP Climb Animation Initialization
-  const startRankClimbAnimation = (fromRankOverride?: number) => {
+  const startRankClimbAnimation = (fromRankOverride?: number, fromXpOverride?: number) => {
     if (!isAuthenticated || !userRank || sortedLeaderboard.length === 0) return;
 
     let prevRank = fromRankOverride;
@@ -103,8 +104,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     }
 
     const currentXpTarget = xp || 0;
-    const savedXpStr = localStorage.getItem('tancore_last_seen_xp');
-    let prevXp = savedXpStr ? parseInt(savedXpStr, 10) : NaN;
+    let prevXp = fromXpOverride;
+    if (prevXp === undefined) {
+      const savedXpStr = localStorage.getItem('tancore_last_seen_xp');
+      prevXp = savedXpStr ? parseInt(savedXpStr, 10) : NaN;
+    }
 
     if (isNaN(prevRank) || prevRank === null) {
       prevRank = Math.min(sortedLeaderboard.length, userRank + 6);
@@ -131,8 +135,13 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   };
 
   useEffect(() => {
+    if (isLoadingProfiles) return;
+    if (!isAuthenticated || !userRank || sortedLeaderboard.length === 0) return;
+    if (hasInitializedAnim) return;
+
+    setHasInitializedAnim(true);
     startRankClimbAnimation();
-  }, [userRank, xp, isAuthenticated, sortedLeaderboard.length]);
+  }, [isLoadingProfiles, userRank, sortedLeaderboard.length, isAuthenticated, hasInitializedAnim]);
 
   // Phase 1: Rapid XP Count-up Effect (Numbers count up rapidly to target XP)
   useEffect(() => {
@@ -140,13 +149,13 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
     if (animatedXp < xp) {
       const delta = xp - animatedXp;
-      const step = Math.max(1, Math.ceil(delta / 5));
+      const step = Math.max(1, Math.ceil(delta / 6));
       const timer = setTimeout(() => {
         setAnimatedXp((current) => (current !== null ? Math.min(xp, current + step) : xp));
-      }, 35);
+      }, 30);
 
       return () => clearTimeout(timer);
-    } else if (animatedXp === xp) {
+    } else if (animatedXp >= xp) {
       // Phase 1 finished! Save XP and start Phase 2 (Rank Climb)
       setIsCountingXp(false);
       localStorage.setItem('tancore_last_seen_xp', String(xp));
@@ -154,8 +163,10 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       if (displayRank !== null && userRank && displayRank > userRank) {
         const climbTimer = setTimeout(() => {
           setIsClimbing(true);
-        }, 300);
+        }, 350);
         return () => clearTimeout(climbTimer);
+      } else {
+        localStorage.setItem('tancore_last_seen_rank', String(userRank));
       }
     }
   }, [isCountingXp, animatedXp, xp, displayRank, userRank]);
@@ -169,7 +180,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       soundService.playWheelTick();
       const timer = setTimeout(() => {
         setDisplayRank((current) => (current ? current - 1 : userRank));
-      }, 210);
+      }, 220);
 
       return () => clearTimeout(timer);
     } else if (displayRank === userRank) {
@@ -200,15 +211,18 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     };
   }, [isAuthenticated, userRank, isClimbing]);
 
-  // Auto-Scroll to keep climbing user row in view
+  // Auto-Scroll to keep user row in view on load and during climb
   useEffect(() => {
-    if (isClimbing && displayRank !== null) {
-      const el = document.getElementById(`leaderboard-row-${displayRank}`);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+    if (displayRank !== null) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(`leaderboard-row-${displayRank}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
     }
-  }, [displayRank, isClimbing]);
+  }, [displayRank, isCountingXp, isClimbing]);
 
   // Construct dynamically positioned leaderboard array during rank climb
   const getRenderedLeaderboard = () => {
@@ -265,7 +279,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-sm relative overflow-hidden">
         <div className="flex items-end justify-center gap-2 sm:gap-4 pt-2 pb-1">
           {/* 2nd Place (Silver) */}
-          <div className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
+          <div id="leaderboard-row-2" className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
             {user2 ? (
               <>
                 <div
@@ -321,7 +335,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
           </div>
 
           {/* 1st Place (Gold / Warm Amber) */}
-          <div className="flex flex-col items-center flex-1 min-w-0 max-w-[125px]">
+          <div id="leaderboard-row-1" className="flex flex-col items-center flex-1 min-w-0 max-w-[125px]">
             {user1 ? (
               <>
                 <div
@@ -377,7 +391,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
           </div>
 
           {/* 3rd Place (Bronze) */}
-          <div className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
+          <div id="leaderboard-row-3" className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
             {user3 ? (
               <>
                 <div
@@ -536,7 +550,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               </span>
               {isAuthenticated && (
                 <button
-                  onClick={() => startRankClimbAnimation(userRank + 6)}
+                  onClick={() => startRankClimbAnimation(userRank + 6, Math.max(0, (xp || 0) - 180))}
                   className="flex items-center space-x-1 px-2 py-0.5 rounded-lg bg-orange-100 hover:bg-orange-200 text-[#ff7a00] font-black text-[10px] transition-colors cursor-pointer active:scale-95"
                   title="Yükselme Animasyonunu Tekrar Test Et"
                 >
