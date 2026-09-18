@@ -104,22 +104,22 @@ const IceCrystal3D: React.FC<{
   const [imgError, setImgError] = useState(false);
 
   const dims = {
-    sm: 'w-3.5 h-5',
-    md: 'w-6 h-8 sm:w-7 sm:h-9',
-    lg: 'w-9 h-12',
+    sm: 'w-2.5 h-3.5',
+    md: 'w-4.5 h-6 sm:w-5 sm:h-7',
+    lg: 'w-6 h-8.5',
   }[size];
 
   return (
     <div className={`relative flex items-center justify-center select-none ${className}`}>
       {/* Rising Cold White/Frost Vapor Animation from Top of Crystal */}
       {showSmoke && (
-        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 pointer-events-none w-6 h-7 flex items-center justify-center z-20">
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 pointer-events-none w-5 h-6 flex items-center justify-center z-20">
           {/* Mist puff 1: Main rising frost wisp */}
-          <div className="absolute w-3 h-3 rounded-full bg-gradient-to-t from-sky-200/90 to-white/95 blur-[0.75px] shadow-[0_0_8px_rgba(56,189,248,0.6)] animate-cold-smoke-1" />
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-gradient-to-t from-sky-200/90 to-white/95 blur-[0.75px] shadow-[0_0_8px_rgba(56,189,248,0.6)] animate-cold-smoke-1" />
           {/* Mist puff 2: Right drift wisp */}
-          <div className="absolute w-2.5 h-2.5 rounded-full bg-gradient-to-t from-cyan-200/85 to-white/95 blur-[0.75px] shadow-[0_0_6px_rgba(14,165,233,0.5)] animate-cold-smoke-2" />
+          <div className="absolute w-2 h-2 rounded-full bg-gradient-to-t from-cyan-200/85 to-white/95 blur-[0.75px] shadow-[0_0_6px_rgba(14,165,233,0.5)] animate-cold-smoke-2" />
           {/* Mist puff 3: Left drift wisp */}
-          <div className="absolute w-3 h-3 rounded-full bg-gradient-to-t from-sky-100/80 to-white/90 blur-[1px] shadow-[0_0_6px_rgba(56,189,248,0.4)] animate-cold-smoke-3" />
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-gradient-to-t from-sky-100/80 to-white/90 blur-[1px] shadow-[0_0_6px_rgba(56,189,248,0.4)] animate-cold-smoke-3" />
         </div>
       )}
 
