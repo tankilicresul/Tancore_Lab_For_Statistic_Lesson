@@ -332,7 +332,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   const clampPosition = useCallback((x: number, y: number) => {
     const isMobile = window.innerWidth < 640;
-    const btnSize = isMobile ? 56 : 60;
+    const btnSize = isMobile ? 46 : 50;
     const padX = 12;
     const padTop = 64;
     const padBottom = isMobile ? 96 : 36;

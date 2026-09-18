@@ -43,7 +43,7 @@ export const FloatingTancoButton: React.FC = () => {
 
   const clampPosition = useCallback((x: number, y: number) => {
     const isMobile = window.innerWidth < 640;
-    const btnSize = isMobile ? 56 : 60;
+    const btnSize = isMobile ? 46 : 50;
     const padX = 12;
     const padTop = 64; // Below navbar
     const padBottom = isMobile ? 96 : 36; // Bottom nav clearance
@@ -210,7 +210,7 @@ export const FloatingTancoButton: React.FC = () => {
               e.stopPropagation();
               setIsTancoChatOpen(true);
             }}
-            className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-slate-900/95 text-white text-[11px] font-bold tracking-wide shadow-lg border border-slate-700/60 backdrop-blur-xs pointer-events-auto cursor-pointer whitespace-nowrap absolute top-1/2 -translate-y-1/2 transition-all duration-300 hover:bg-slate-800 ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#ff7a00] to-orange-500 text-white text-[11px] font-black tracking-wide shadow-md shadow-[#ff7a00]/30 border border-white/50 backdrop-blur-xs pointer-events-auto cursor-pointer whitespace-nowrap absolute top-1/2 -translate-y-1/2 transition-all duration-300 hover:brightness-105 active:scale-95 ${
               isLeftHalf ? 'left-full ml-2.5' : 'right-full mr-2.5'
             }`}
           >
@@ -219,7 +219,7 @@ export const FloatingTancoButton: React.FC = () => {
         )
       )}
 
-      {/* Mascot Draggable Avatar with Awakening, Breathing, and Glowing Halo Effects */}
+      {/* Mascot Draggable Avatar with Awakening, Breathing, and Glowing Halo Effects (Compact Size) */}
       <div
         className={`relative rounded-full p-0.5 bg-white transition-all duration-300 ${
           hasUnread
@@ -227,8 +227,8 @@ export const FloatingTancoButton: React.FC = () => {
             : isDragging
             ? 'scale-110 shadow-2xl ring-4 ring-[#ff7a00]/50'
             : isJustAwakened
-            ? 'ring-4 ring-[#ff7a00]/70 shadow-[0_0_28px_rgba(255,122,0,0.7)] animate-tanco-wakeup'
-            : 'ring-4 ring-[#ff7a00]/50 shadow-[0_0_22px_rgba(255,122,0,0.6)] animate-tanco-breathe hover:scale-105'
+            ? 'ring-4 ring-[#ff7a00]/70 shadow-[0_0_24px_rgba(255,122,0,0.7)] animate-tanco-wakeup'
+            : 'ring-4 ring-[#ff7a00]/50 shadow-[0_0_18px_rgba(255,122,0,0.6)] animate-tanco-breathe hover:scale-105'
         }`}
         title={
           language === 'tr'
@@ -238,15 +238,15 @@ export const FloatingTancoButton: React.FC = () => {
       >
         <div className="relative pointer-events-none">
           <TanCoreMascotAvatar
-            size="lg"
+            size="md"
             className="rounded-full shadow-inner pointer-events-none"
           />
 
           {/* Attention-Grabbing Red/Orange Unread Notification Badge */}
           {hasUnread && (
-            <div className="absolute -top-1.5 -right-1.5 z-20 flex items-center justify-center pointer-events-none">
-              <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-rose-500 opacity-75" />
-              <span className="relative inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-gradient-to-r from-rose-500 to-red-600 text-white text-[10px] font-black shadow-md border-2 border-white ring-1 ring-red-400/50">
+            <div className="absolute -top-1 -right-1 z-20 flex items-center justify-center pointer-events-none">
+              <span className="animate-ping absolute inline-flex h-3.5 w-3.5 rounded-full bg-rose-500 opacity-75" />
+              <span className="relative inline-flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full bg-gradient-to-r from-rose-500 to-red-600 text-white text-[9px] font-black shadow-md border-2 border-white ring-1 ring-red-400/50">
                 1
               </span>
             </div>
