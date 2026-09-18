@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { UserProfile, UserState, PublicProfile, RegisteredAccount } from '../types/stats';
 import { saveUserProfileToSupabase, syncUserProgress, fetchUserProfileFromSupabase, isSupabaseConfigured, signInWithSupabase } from '../lib/supabase';
 import { isSameStudent } from '../utils/leaderboardHelper';
+import { soundService } from '../services/soundService';
 
 export function isValidStudentEmail(email: string): boolean {
   const e = email.trim().toLowerCase();
@@ -57,6 +58,9 @@ interface AppStoreActions {
   setTancoPosition: (pos: { x: number; y: number }, isMoved?: boolean) => void;
   deactivateTanco: () => void;
   markTancoPaymentPending: () => void;
+  isSoundEnabled?: boolean;
+  toggleSound: () => void;
+  setSoundEnabled: (enabled: boolean) => void;
 }
 
 export const TANCO_SESSION_KEY = 'tancore_tanco_session_v2';
@@ -201,6 +205,7 @@ const INITIAL_STATE: UserState = {
   isTancoActive: initialTanco.isTancoActive,
   isTancoMoved: initialTanco.isTancoMoved,
   tancoPosition: initialTanco.tancoPosition,
+  isSoundEnabled: true,
 };
 
 function syncUserInList(state: UserState): PublicProfile[] {
@@ -961,11 +966,27 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           });
         }
       },
+
+      toggleSound: () => {
+        set((state) => {
+          const next = !(state.isSoundEnabled ?? true);
+          soundService.setEnabled(next);
+          return { isSoundEnabled: next };
+        });
+      },
+
+      setSoundEnabled: (enabled: boolean) => {
+        soundService.setEnabled(enabled);
+        set({ isSoundEnabled: enabled });
+      },
     }),
     {
       name: 'tancorelab-statsim-v5',
       onRehydrateStorage: () => (state) => {
         if (state) {
+          // Sync sound state
+          soundService.setEnabled(state.isSoundEnabled ?? true);
+
           // Check Tanco session: if within 1 minute or returning from payment, preserve position; otherwise reset to card!
           const tancoSession = loadTancoSession();
           state.isTancoActive = tancoSession.isTancoActive;
