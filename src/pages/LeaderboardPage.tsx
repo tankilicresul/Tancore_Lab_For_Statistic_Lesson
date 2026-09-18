@@ -625,9 +625,29 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               {language === 'tr' ? 'Tüm Öğrenciler' : 'All Students'}
             </span>
 
-            <span className="text-[11px] text-slate-400 font-medium">
-              {renderedList.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
-            </span>
+            <div className="flex items-center space-x-2">
+              <span className="text-[11px] text-slate-400 font-medium">
+                {renderedList.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
+              </span>
+              <button
+                onClick={() =>
+                  startRankClimbAnimation(
+                    Math.min(sortedLeaderboard.length, userRank + 4),
+                    Math.max(0, (xp || 0) - 60)
+                  )
+                }
+                disabled={animationPhase !== 'idle'}
+                className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-xl font-black text-[11px] transition-all cursor-pointer shadow-xs active:scale-95 ${
+                  animationPhase !== 'idle'
+                    ? 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-60'
+                    : 'bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600 shadow-orange-500/20 ring-2 ring-orange-400/30'
+                }`}
+                title={language === 'tr' ? 'Tırmanış Animasyonunu Dene' : 'Try Climb Animation'}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-200 animate-pulse" />
+                <span>{language === 'tr' ? 'Tırmanışı Dene' : 'Try Climb'}</span>
+              </button>
+            </div>
           </div>
 
           <div
