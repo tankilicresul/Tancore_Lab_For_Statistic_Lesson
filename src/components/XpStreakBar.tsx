@@ -4,6 +4,7 @@ import { Flame, Globe, Zap, Crown, Check } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { PublicProfileModal } from './PublicProfileModal';
 import { StreakModal } from './StreakModal';
+import { soundService } from '../services/soundService';
 
 interface XpStreakBarProps {
   onGoHome?: () => void;
@@ -49,6 +50,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
       const delta = currentXp - prevXpRef.current;
       setXpDelta(delta);
       setShowXpFloat(true);
+      soundService.playXpFloat();
       const timer = setTimeout(() => setShowXpFloat(false), 1500);
       return () => clearTimeout(timer);
     }
@@ -126,6 +128,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
               )}
               <button
                 onClick={() => {
+                  soundService.playModalOpen();
                   setIsLanguagePopoverOpen(false);
                   setIsStreakModalOpen(true);
                 }}
@@ -142,7 +145,10 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             {/* Language Switcher Popover Tab */}
             <div className="relative" ref={langRef}>
               <button
-                onClick={() => setIsLanguagePopoverOpen((prev) => !prev)}
+                onClick={() => {
+                  soundService.playBtnPress();
+                  setIsLanguagePopoverOpen((prev) => !prev);
+                }}
                 className={`flex items-center space-x-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl border text-xs sm:text-sm font-black transition-all cursor-pointer ${
                   isLanguagePopoverOpen
                     ? 'bg-[#ff7a00] text-white border-[#ff7a00] shadow-md shadow-[#ff7a00]/25'
@@ -164,6 +170,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                   {/* Turkish Option */}
                   <button
                     onClick={() => {
+                      soundService.playBtnPress();
                       setLanguage('tr');
                       setIsLanguagePopoverOpen(false);
                     }}
@@ -183,6 +190,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                   {/* English Option */}
                   <button
                     onClick={() => {
+                      soundService.playBtnPress();
                       setLanguage('en');
                       setIsLanguagePopoverOpen(false);
                     }}
@@ -206,7 +214,10 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             {isAuthenticated && isVerified && (
               isPlus ? (
                 <button
-                  onClick={() => setIsPlusUpgradeModalOpen(true)}
+                  onClick={() => {
+                    soundService.playModalOpen();
+                    setIsPlusUpgradeModalOpen(true);
+                  }}
                   className="flex items-center space-x-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 border border-amber-400/80 text-amber-600 font-bold text-xs sm:text-sm tracking-wide shadow-xs cursor-pointer hover:scale-105 transition-transform"
                   title="TanCoreLab Plus Üyeliği Aktif"
                 >
@@ -217,7 +228,10 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                 </button>
               ) : (
                 <button
-                  onClick={() => setIsPlusUpgradeModalOpen(true)}
+                  onClick={() => {
+                    soundService.playModalOpen();
+                    setIsPlusUpgradeModalOpen(true);
+                  }}
                   className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-2xl bg-gradient-to-r from-amber-500 to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-bold text-xs sm:text-sm transition-all shadow-md shadow-orange-500/25 hover:scale-105 active:scale-95 cursor-pointer"
                   title={language === 'tr' ? "TanCoreLab Plus'a Yükselt (3 Gün Ücretsiz)" : 'Upgrade to Plus (3 Days Free)'}
                 >

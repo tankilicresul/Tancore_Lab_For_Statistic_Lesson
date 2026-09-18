@@ -3,6 +3,7 @@ import { VocabTerm } from '../types/stats';
 import { BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { MathFormulaText } from './MathFormulaText';
+import { soundService } from '../services/soundService';
 
 interface VocabBoxProps {
   terms: VocabTerm[];
@@ -20,7 +21,10 @@ export const VocabBox: React.FC<VocabBoxProps> = ({ terms }) => {
 
       {/* Clickable Accordion Header */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          soundService.playFormulaToggle();
+          setIsOpen(!isOpen);
+        }}
         className="w-full p-5 sm:p-6 flex items-center justify-between text-left focus:outline-none group relative z-10"
       >
         <div className="flex items-center space-x-3 min-w-0">

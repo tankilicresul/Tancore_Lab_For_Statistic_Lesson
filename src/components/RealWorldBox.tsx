@@ -3,6 +3,7 @@ import { RealWorldBox as RealWorldBoxType } from '../types/stats';
 import { Code2, Copy, Check, Terminal, FileSpreadsheet, Database, BarChart, ChevronDown, ChevronUp } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
+import { soundService } from '../services/soundService';
 
 interface RealWorldBoxProps {
   data?: RealWorldBoxType;
@@ -18,6 +19,7 @@ export const RealWorldBox: React.FC<RealWorldBoxProps> = ({ data }) => {
   }
 
   const handleCopy = (text: string, key: string) => {
+    soundService.playBtnPress();
     navigator.clipboard.writeText(text);
     setCopiedKey(key);
     setTimeout(() => setCopiedKey(null), 2000);
@@ -27,7 +29,10 @@ export const RealWorldBox: React.FC<RealWorldBoxProps> = ({ data }) => {
     <div className="my-6 rounded-3xl bg-white border border-slate-200 shadow-xs font-sans overflow-hidden transition-all">
       {/* Clickable Accordion Header */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          soundService.playFormulaToggle();
+          setIsOpen(!isOpen);
+        }}
         className="w-full p-5 sm:p-6 flex items-center justify-between text-left focus:outline-none group"
       >
         <div className="flex items-center space-x-3 min-w-0">

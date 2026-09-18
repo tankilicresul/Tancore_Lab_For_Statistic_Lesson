@@ -180,7 +180,338 @@ class SoundService {
   }
 
   // ─────────────────────────────────────────────────────────────
-  // 3. PUANIN ARTMASI SESİ (XP Count-up Tick & Complete)
+  // 3. XP FLOAT-UP SÜZÜLME VE DOPAMİN SESİ (+15 XP Float)
+  // ─────────────────────────────────────────────────────────────
+  public playXpFloat() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      // High-pitched retro coin flutter with Glockenspiel chime
+      const tones = [
+        { freq: 1318.51, time: 0.0, dur: 0.12, vol: 0.18 }, // E6
+        { freq: 1760.0, time: 0.06, dur: 0.14, vol: 0.22 }, // A6
+        { freq: 2093.0, time: 0.12, dur: 0.35, vol: 0.26 }, // C7
+      ];
+
+      tones.forEach((t) => {
+        const startTime = now + t.time;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(t.freq, startTime);
+
+        gain.gain.setValueAtTime(0.0001, startTime);
+        gain.gain.exponentialRampToValueAtTime(t.vol, startTime + 0.005);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + t.dur);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + t.dur + 0.02);
+      });
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 4. MİKRO BUTON KLİĞİ (Tactile Membrane Click - .btn-press)
+  // ─────────────────────────────────────────────────────────────
+  public playBtnPress() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(950, now);
+      osc.frequency.exponentialRampToValueAtTime(220, now + 0.018);
+
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1200, now);
+      filter.Q.setValueAtTime(2.5, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.14, now + 0.002);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.022);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.025);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 5. ALT MENÜ / SEKME DEĞİŞİMİ (Organic Bubble Pop - BottomNav)
+  // ─────────────────────────────────────────────────────────────
+  public playNavSwitch() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(340, now);
+      osc.frequency.exponentialRampToValueAtTime(580, now + 0.035);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.18, now + 0.006);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.05);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 6. MODAL AÇILIŞ VE KAPANIŞ SESLERİ (Elastic Pop & Suction)
+  // ─────────────────────────────────────────────────────────────
+  public playModalOpen() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(240, now);
+      osc.frequency.exponentialRampToValueAtTime(720, now + 0.12);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1200, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.15, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.15);
+    });
+  }
+
+  public playModalClose() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(560, now);
+      osc.frequency.exponentialRampToValueAtTime(180, now + 0.08);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.12, now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.1);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 7. 8 BASAMAKLI OTP RAKAM GİRİŞİ (Ascending Chromatic Crystal Step)
+  // ─────────────────────────────────────────────────────────────
+  public playOtpStep(digitIndex: number = 0) {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const scale = [523.25, 587.33, 659.25, 698.46, 783.99, 880.0, 987.77, 1046.5];
+      const targetFreq = scale[Math.min(digitIndex, scale.length - 1)] || 523.25;
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(targetFreq, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.18, now + 0.004);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.07);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 8. İNTERAKTİF SLIDER / POTANSİYOMETRE (InteractiveCalc Ticks)
+  // ─────────────────────────────────────────────────────────────
+  public playSliderTick() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(1400 + Math.random() * 150, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.06, now + 0.002);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.012);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.015);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 9. SİMÜLASYON TAMAMLANMA & ÇAN (ProbabilityLab / Monte Carlo)
+  // ─────────────────────────────────────────────────────────────
+  public playSimComplete() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const overtone = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const overGain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880.0, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.22, now + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+
+      overtone.type = 'triangle';
+      overtone.frequency.setValueAtTime(1760.0, now);
+      overGain.gain.setValueAtTime(0.0001, now);
+      overGain.gain.exponentialRampToValueAtTime(0.08, now + 0.008);
+      overGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+
+      osc.connect(gain);
+      overtone.connect(overGain);
+      gain.connect(ctx.destination);
+      overGain.connect(ctx.destination);
+
+      osc.start(now);
+      overtone.start(now);
+      osc.stop(now + 0.65);
+      overtone.stop(now + 0.4);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 10. FORMÜL & SÖZLÜK AKORDEON AÇILIŞI (Technical Parchment Snap)
+  // ─────────────────────────────────────────────────────────────
+  public playFormulaToggle() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(450, now);
+      osc.frequency.exponentialRampToValueAtTime(780, now + 0.03);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.12, now + 0.004);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.05);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 11. GÖZLÜK IŞILTISI & KARİZMA PARILTISI (Cool Tanco Lens Gleam)
+  // ─────────────────────────────────────────────────────────────
+  public playSunglassesGleam() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(3135.96, now); // G7
+      osc.frequency.exponentialRampToValueAtTime(4186.01, now + 0.08); // C8
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.14, now + 0.005);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.25);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 12. SIVI LAV DAMLASI (Viscous Lava Drop Pop)
+  // ─────────────────────────────────────────────────────────────
+  public playLavaDrip() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(180, now);
+      osc.frequency.exponentialRampToValueAtTime(420, now + 0.025);
+      osc.frequency.exponentialRampToValueAtTime(120, now + 0.06);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.18, now + 0.006);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.08);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 13. BUZ KRİSTALİ VE AYAZ ÇITIRTISI (Crystal Frost Crackle)
+  // ─────────────────────────────────────────────────────────────
+  public playIceFrost() {
+    this.ensureContext((ctx) => {
+      const now = ctx.currentTime;
+      const tones = [4400, 5600, 6800];
+      tones.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.02);
+
+        gain.gain.setValueAtTime(0.0001, now + idx * 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.08, now + idx * 0.02 + 0.003);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.02 + 0.035);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now + idx * 0.02);
+        osc.stop(now + idx * 0.02 + 0.04);
+      });
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 14. PUANIN ARTMASI SESİ (XP Count-up Tick & Complete)
   // ─────────────────────────────────────────────────────────────
   public playXpCountTick() {
     this.ensureContext((ctx) => {

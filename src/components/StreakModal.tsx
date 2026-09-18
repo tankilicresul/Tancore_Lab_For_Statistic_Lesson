@@ -556,7 +556,10 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
 
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={() => {
+            soundService.playModalClose();
+            onClose();
+          }}
           className="absolute top-4 right-4 p-2 rounded-full bg-black/20 hover:bg-black/35 text-white/90 hover:text-white transition-colors cursor-pointer z-20"
           title={isTr ? 'Kapat' : 'Close'}
         >
@@ -564,7 +567,11 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
         </button>
 
         {/* Real Tanco Mascot with Sunglasses */}
-        <div className="relative mx-auto mt-1 mb-2 flex items-center justify-center">
+        <div
+          className="relative mx-auto mt-1 mb-2 flex items-center justify-center cursor-pointer group"
+          onClick={() => soundService.playSunglassesGleam()}
+          title={isTr ? 'Tanco!' : 'Tanco!'}
+        >
           {/* Pulsing Energy Glow Orb */}
           <div className="absolute w-36 h-36 rounded-full bg-gradient-to-tr from-yellow-300/40 via-amber-400/50 to-orange-500/40 blur-2xl animate-pulse pointer-events-none" />
 
@@ -591,7 +598,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
           </svg>
 
           {/* Official Tanco Character with Enlarged Overlay Sunglasses */}
-          <div className="relative w-32 h-32 sm:w-36 sm:h-36 shrink-0 filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.35)]">
+          <div className="relative w-32 h-32 sm:w-36 sm:h-36 shrink-0 filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.35)] group-hover:scale-105 transition-transform">
             <img
               src={imgError ? '/tancore-mascot.png' : '/tancore-mascot-transparent.png'}
               alt="Tanco"

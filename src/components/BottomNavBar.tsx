@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { Home, Trophy, UserCheck } from 'lucide-react';
 import { UserAvatar } from './UserAvatar';
+import { soundService } from '../services/soundService';
 
 interface BottomNavBarProps {
   currentView: string;
@@ -33,7 +34,10 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
 
         {/* 1. Ana Sayfa */}
         <button
-          onClick={onGoHome}
+          onClick={() => {
+            soundService.playNavSwitch();
+            onGoHome();
+          }}
           className="flex flex-col items-center justify-center flex-1 py-1 px-2 cursor-pointer group btn-press"
           title={language === 'tr' ? 'Ana Sayfa' : 'Home'}
         >
@@ -47,7 +51,10 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
 
         {/* 2. Skor Tablosu */}
         <button
-          onClick={onOpenLeaderboard}
+          onClick={() => {
+            soundService.playNavSwitch();
+            onOpenLeaderboard();
+          }}
           className="flex flex-col items-center justify-center flex-1 py-1 px-2 cursor-pointer group btn-press"
           title={language === 'tr' ? 'Skor Tablosu' : 'Leaderboard'}
         >
@@ -62,7 +69,10 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
         {/* 3. Profil / Giriş */}
         {!isAuthenticated || !isVerified ? (
           <button
-            onClick={onOpenAuth}
+            onClick={() => {
+              soundService.playModalOpen();
+              onOpenAuth();
+            }}
             className="flex flex-col items-center justify-center flex-1 py-1 px-2 cursor-pointer group btn-press"
             title={language === 'tr' ? 'Giriş Yap / Kayıt Ol' : 'Sign In / Sign Up'}
           >
@@ -75,7 +85,10 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
           </button>
         ) : (
           <button
-            onClick={onOpenProfile}
+            onClick={() => {
+              soundService.playNavSwitch();
+              onOpenProfile();
+            }}
             className="flex flex-col items-center justify-center flex-1 py-1 px-2 cursor-pointer group btn-press"
             title={language === 'tr' ? 'Profilim & Başarılar' : 'My Profile'}
           >

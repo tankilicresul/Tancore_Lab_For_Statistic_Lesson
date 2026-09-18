@@ -20,6 +20,7 @@ import {
   Eye,
   EyeOff,
 } from 'lucide-react';
+import { soundService } from '../services/soundService';
 
 interface AuthModalProps {
   onClose: () => void;
@@ -110,16 +111,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     try {
       const res = await loginWithPassword(cleanEmail, loginPassword);
       if (!res.success) {
+        soundService.playWrong();
         setErrorMessage(res.message || (language === 'tr' ? 'Giriş yapılamadı.' : 'Login failed.'));
         return;
       }
 
+      soundService.playCorrect();
       setSuccessMessage(language === 'tr' ? 'Giriş başarılı! Yönlendiriliyorsunuz...' : 'Login successful!');
       setTimeout(() => {
         onSuccess?.();
         onClose();
       }, 700);
     } catch (err: any) {
+      soundService.playWrong();
       setErrorMessage(err.message || (language === 'tr' ? 'Giriş işlemi başarısız.' : 'Login failed.'));
     } finally {
       setLoading(false);
@@ -134,11 +138,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
     const emailClean = formData.schoolEmail.trim().toLowerCase();
     if (!emailClean) {
+      soundService.playWrong();
       setErrorMessage(language === 'tr' ? 'Lütfen e-posta adresinizi girin.' : 'Please enter your email.');
       return;
     }
 
     if (!isValidStudentEmail(emailClean)) {
+      soundService.playWrong();
       setErrorMessage(
         language === 'tr'
           ? 'Lütfen geçerli bir e-posta adresi giriniz.'
@@ -148,6 +154,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
 
     if (!formData.fullName.trim()) {
+      soundService.playWrong();
       setErrorMessage(language === 'tr' ? 'Lütfen Ad Soyad alanını doldurun.' : 'Please enter your full name.');
       return;
     }
@@ -159,6 +166,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       });
 
       if (!res.success) {
+        soundService.playWrong();
         setErrorMessage(res.error || (language === 'tr' ? 'Doğrulama kodu gönderilemedi.' : 'Could not send verification code.'));
         return;
       }
@@ -180,6 +188,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         res.simulatedCode
       );
 
+      soundService.playModalOpen();
       setStep('otp');
       setResendTimer(60);
       setSuccessMessage(
@@ -188,6 +197,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           : `8-digit verification code sent to ${formData.schoolEmail}.`
       );
     } catch (err: any) {
+      soundService.playWrong();
       setErrorMessage(err.message || 'E-posta doğrulama kodu gönderilemedi.');
     } finally {
       setLoading(false);
@@ -211,6 +221,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         if (i < 8) newDigits[i] = char;
       });
       setOtpDigits(newDigits);
+      soundService.playOtpStep(Math.min(pastedCode.length - 1, 7));
       const nextIdx = Math.min(pastedCode.length, 7);
       if (otpInputRefs.current[nextIdx]) {
         otpInputRefs.current[nextIdx]?.focus();
@@ -221,6 +232,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     const newDigits = [...otpDigits];
     newDigits[index] = cleaned;
     setOtpDigits(newDigits);
+    soundService.playOtpStep(index);
 
     if (cleaned && index < 7 && otpInputRefs.current[index + 1]) {
       otpInputRefs.current[index + 1]?.focus();
@@ -258,6 +270,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       if (i < 8) newDigits[i] = c;
     });
     setOtpDigits(newDigits);
+    soundService.playOtpStep(Math.min(chars.length - 1, 7));
     const focusIdx = Math.min(chars.length, 7);
     otpInputRefs.current[focusIdx]?.focus();
   };
@@ -269,6 +282,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     const code = otpDigits.join('').trim();
 
     if (code.length < 8) {
+      soundService.playWrong();
       setErrorMessage(language === 'tr' ? 'Lütfen 8 haneli kodu eksiksiz giriniz.' : 'Please enter the full 8-digit code.');
       return;
     }
@@ -298,12 +312,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         }
       }
 
+      soundService.playCorrect();
       setSuccessMessage(language === 'tr' ? 'Hesabınız başarıyla doğrulandı! Giriş yapılıyor...' : 'Account verified successfully!');
       setTimeout(() => {
         onSuccess?.();
         onClose();
       }, 800);
     } catch (err: any) {
+      soundService.playWrong();
       setErrorMessage(err.message || (language === 'tr' ? 'Doğrulama kodu hatalı. Lütfen tekrar deneyin.' : 'Verification failed.'));
     } finally {
       setLoading(false);
