@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { Flame, Globe, Zap, Crown } from 'lucide-react';
+import { Flame, Globe, Zap, Crown, Check } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { PublicProfileModal } from './PublicProfileModal';
+import { StreakModal } from './StreakModal';
 
 interface XpStreakBarProps {
   onGoHome?: () => void;
@@ -16,7 +17,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
 }) => {
   const {
     language,
-    toggleLanguage,
+    setLanguage,
     streak,
     isAuthenticated,
     isVerified,
@@ -25,10 +26,29 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
     setSelectedPublicProfile,
     setIsPlusUpgradeModalOpen,
   } = useAppStore();
+
   const [showAuth, setShowAuth] = useState(false);
   const [isLogoSpinning, setIsLogoSpinning] = useState(false);
+  const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
+  const [isLanguagePopoverOpen, setIsLanguagePopoverOpen] = useState(false);
 
+  const langRef = useRef<HTMLDivElement>(null);
   const isPlus = Boolean(userProfile?.isPremium);
+
+  // Close language popover on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setIsLanguagePopoverOpen(false);
+      }
+    };
+    if (isLanguagePopoverOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isLanguagePopoverOpen]);
 
   // Trigger logo spin animation every 3 seconds
   useEffect(() => {
@@ -75,22 +95,83 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
 
           {/* User Stats & Controls: Streak, Language and Profile / Home Icon */}
           <div className="flex items-center space-x-1.5 sm:space-x-2.5 shrink-0 z-10">
-            {/* Streak - 0 for unauthenticated guests, real count for logged in */}
-            <div className="flex items-center space-x-1.5 bg-[#ff7a00]/10 border border-[#ff7a00]/30 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[#ff7a00] font-black text-xs sm:text-sm tracking-wide shadow-xs">
+            {/* Streak Button - Click opens cool Streak Modal with sunglasses Tanco */}
+            <button
+              onClick={() => {
+                setIsLanguagePopoverOpen(false);
+                setIsStreakModalOpen(true);
+              }}
+              className="flex items-center space-x-1.5 bg-[#ff7a00]/10 hover:bg-[#ff7a00]/20 active:scale-95 border border-[#ff7a00]/30 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[#ff7a00] font-black text-xs sm:text-sm tracking-wide shadow-xs cursor-pointer transition-all"
+              title={language === 'tr' ? 'Seri Durumunu Gör' : 'View Streak Status'}
+            >
               <Flame className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-[#ff7a00] text-[#ff7a00] animate-pulse" />
               <span>
                 {isAuthenticated && isVerified ? streak : 0} {language === 'tr' ? 'gün' : 'days'}
               </span>
-            </div>
-
-            {/* Language Switcher */}
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center space-x-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-2xl bg-[#ff7a00]/10 hover:bg-[#ff7a00]/20 border border-[#ff7a00]/30 text-[#ff7a00] font-black text-xs sm:text-sm transition-colors cursor-pointer"
-            >
-              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.25]" />
-              <span>{language.toUpperCase()}</span>
             </button>
+
+            {/* Language Switcher Popover Tab */}
+            <div className="relative" ref={langRef}>
+              <button
+                onClick={() => setIsLanguagePopoverOpen((prev) => !prev)}
+                className={`flex items-center space-x-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-2xl border text-xs sm:text-sm font-black transition-all cursor-pointer ${
+                  isLanguagePopoverOpen
+                    ? 'bg-[#ff7a00] text-white border-[#ff7a00] shadow-md shadow-[#ff7a00]/25'
+                    : 'bg-[#ff7a00]/10 hover:bg-[#ff7a00]/20 active:scale-95 border-[#ff7a00]/30 text-[#ff7a00]'
+                }`}
+                title={language === 'tr' ? 'Dili Değiştir' : 'Change Language'}
+              >
+                <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.25]" />
+                <span>{language.toUpperCase()}</span>
+              </button>
+
+              {/* Language Selection Tab / Dropdown */}
+              {isLanguagePopoverOpen && (
+                <div className="absolute right-0 top-full mt-2 w-44 bg-white rounded-2xl p-2 shadow-2xl border border-slate-200/90 z-50 animate-scale-up font-sans">
+                  <div className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-3 py-1">
+                    {language === 'tr' ? 'Dil Seçimi' : 'Language'}
+                  </div>
+
+                  {/* Turkish Option */}
+                  <button
+                    onClick={() => {
+                      setLanguage('tr');
+                      setIsLanguagePopoverOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      language === 'tr'
+                        ? 'bg-orange-50 text-[#ff7a00] font-black shadow-xs'
+                        : 'text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span className="text-base leading-none">🇹🇷</span>
+                      <span>Türkçe</span>
+                    </div>
+                    {language === 'tr' && <Check className="w-4 h-4 text-[#ff7a00] stroke-[2.5]" />}
+                  </button>
+
+                  {/* English Option */}
+                  <button
+                    onClick={() => {
+                      setLanguage('en');
+                      setIsLanguagePopoverOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      language === 'en'
+                        ? 'bg-orange-50 text-[#ff7a00] font-black shadow-xs'
+                        : 'text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span className="text-base leading-none">🇬🇧</span>
+                      <span>English</span>
+                    </div>
+                    {language === 'en' && <Check className="w-4 h-4 text-[#ff7a00] stroke-[2.5]" />}
+                  </button>
+                </div>
+              )}
+            </div>
 
             {/* Plus Upgrade or VIP Badge - ONLY shown for logged-in & verified students */}
             {isAuthenticated && isVerified && (
@@ -119,6 +200,11 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
           </div>
         </div>
       </header>
+
+      {/* Streak Details Modal (Photo 2 Duolingo Style with Cool Sunglasses Tanco) */}
+      {isStreakModalOpen && (
+        <StreakModal onClose={() => setIsStreakModalOpen(false)} />
+      )}
 
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
 
