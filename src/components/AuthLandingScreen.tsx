@@ -268,58 +268,38 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
       return;
     }
 
-    // 3. Validate password match
-    if (password !== confirmPassword) {
-      setErrorMessage(
-        language === 'tr'
-          ? 'Girdiğiniz şifreler birbiriyle eşleşmiyor. Lütfen kontrol edip tekrar giriniz.'
-          : 'Passwords do not match. Please re-check.'
-      );
-      return;
-    }
-
-    if (password.length < 4) {
-      setErrorMessage(
-        language === 'tr' ? 'Şifreniz en az 4 karakter olmalıdır.' : 'Password must be at least 4 characters.'
-      );
-      return;
-    }
-
     setIsSubmitting(true);
     setOtpDigits(['', '', '', '', '', '', '', '']);
 
     try {
-      // 1. Sign up user via Supabase Auth (bcrypt hashed, secure)
-      const res = await signUpWithSupabase(cleanEmail, password, {
+      // Send OTP to user's email via Supabase Auth
+      const res = await sendEmailOtp(cleanEmail, {
         fullName: fullName.trim(),
         university: university.trim(),
         departmentAndClass: departmentAndClass.trim(),
       });
 
       if (!res.success) {
-        setErrorMessage(res.error || (language === 'tr' ? 'Kayıt işlemi gerçekleştirilemedi.' : 'Registration failed.'));
+        setErrorMessage(res.error || (language === 'tr' ? 'Onay kodu gönderilemedi.' : 'Could not send verification code.'));
         return;
       }
 
       const randomEmoji = RANDOM_AVATARS[Math.floor(Math.random() * RANDOM_AVATARS.length)];
 
-      registerAccountAndSendOtp({
-        schoolEmail: cleanEmail,
-        fullName: fullName.trim(),
-        university: university.trim(),
-        departmentAndClass: departmentAndClass.trim(),
-        avatarEmoji: randomEmoji,
-      });
+      registerAccountAndSendOtp(
+        {
+          schoolEmail: cleanEmail,
+          fullName: fullName.trim(),
+          university: university.trim(),
+          departmentAndClass: departmentAndClass.trim(),
+          avatarEmoji: randomEmoji,
+          password: '123456',
+        },
+        res.simulatedCode
+      );
 
-      // If Supabase requires email verification (sends OTP)
-      if (res.needsEmailVerification) {
-        setStep('otp');
-        setResendTimer(60);
-      } else {
-        // Automatically confirmed
-        verifyOtpAndActivateAccount('', true);
-        onSuccess?.();
-      }
+      setStep('otp');
+      setResendTimer(60);
     } catch (err: any) {
       setErrorMessage(err.message || (language === 'tr' ? 'Kayıt işlemi gerçekleştirilemedi.' : 'Registration failed.'));
     } finally {
@@ -893,103 +873,12 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">
-                        {language === 'tr' ? 'Okul / Üniversite' : 'School / University'}
-                        <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
-                      </label>
-                      <input
-                        type="text"
-                        value={university}
-                        onChange={(e) => {
-                          setUniversity(e.target.value);
-                          handleInputChange();
-                        }}
-                        placeholder={language === 'tr' ? 'Örn: Koç Üniversitesi' : 'e.g. University'}
-                        autoComplete="off"
-                        className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">
-                        {language === 'tr' ? 'Bölüm' : 'Department'}
-                        <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
-                      </label>
-                      <input
-                        type="text"
-                        value={departmentAndClass}
-                        onChange={(e) => {
-                          setDepartmentAndClass(e.target.value);
-                          handleInputChange();
-                        }}
-                        placeholder={language === 'tr' ? 'Örn: Endüstri Müh.' : 'e.g. Department'}
-                        autoComplete="off"
-                        className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">
-                        {language === 'tr' ? 'Şifre' : 'Password'}
-                      </label>
-                      <div className="relative">
-                        <input
-                          type={showPassword ? 'text' : 'password'}
-                          value={password}
-                          onChange={(e) => {
-                            setPassword(e.target.value);
-                            handleInputChange();
-                          }}
-                          placeholder="••••••••"
-                          autoComplete="new-password"
-                          className="w-full pl-3 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
-                          required
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword((prev) => !prev)}
-                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
-                          tabIndex={-1}
-                          aria-label={showPassword ? 'Hide password' : 'Show password'}
-                        >
-                          {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">
-                        {language === 'tr' ? 'Şifre Onayı' : 'Confirm Password'}
-                      </label>
-                      <div className="relative">
-                        <input
-                          type={showConfirmPassword ? 'text' : 'password'}
-                          value={confirmPassword}
-                          onChange={(e) => {
-                            setConfirmPassword(e.target.value);
-                            handleInputChange();
-                          }}
-                          placeholder="••••••••"
-                          autoComplete="new-password"
-                          className="w-full pl-3 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white"
-                          required
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowConfirmPassword((prev) => !prev)}
-                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
-                          tabIndex={-1}
-                          aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
-                        >
-                          {showConfirmPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  {/* Helper notice */}
+                  <p className="text-[11px] text-slate-500 text-center pt-1 leading-relaxed">
+                    {language === 'tr'
+                      ? 'Kayıt olduktan sonra hesabınızı düzenle kısmından okul, bölüm ve şifrenizi dilediğiniz gibi belirleyebilirsiniz.'
+                      : 'After registering, you can update your school, department, and password from Edit Account.'}
+                  </p>
 
                   <button
                     type="submit"

@@ -29,7 +29,7 @@ interface AppStoreActions {
   completeCaseExam: (caseId: string, moduleId: string, xpEarned?: number) => void;
   checkAndUpdateStreak: () => void;
   resetProgress: () => void;
-  updateUserProfile: (profile: Partial<UserProfile>) => void;
+  updateUserProfile: (profile: Partial<UserProfile>, newPassword?: string) => void;
   unlockUpToModule: (targetModuleId: string) => void;
 
   // Auth actions
@@ -588,13 +588,34 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         return { success: true, message: 'Şifreniz başarıyla sıfırlandı. Yeni şifrenizle giriş yapabilirsiniz.' };
       },
 
-      updateUserProfile: (profile) => {
+      updateUserProfile: (profile, newPassword) => {
         set((state) => {
           const updatedProfile = { ...state.userProfile, ...profile };
+          if (newPassword && newPassword.trim()) {
+            updatedProfile.password = newPassword.trim();
+          }
+
           saveUserProfileToSupabase(updatedProfile);
-          const newState = { ...state, userProfile: updatedProfile };
+
+          let updatedAccounts = state.userAccounts || [];
+          const currentEmail = (state.userProfile.schoolEmail || '').toLowerCase();
+          const targetEmail = (updatedProfile.schoolEmail || currentEmail).toLowerCase();
+          const accIdx = updatedAccounts.findIndex((a) => a.schoolEmail.toLowerCase() === currentEmail);
+
+          if (accIdx >= 0) {
+            updatedAccounts = [...updatedAccounts];
+            updatedAccounts[accIdx] = {
+              ...updatedAccounts[accIdx],
+              ...updatedProfile,
+              schoolEmail: targetEmail,
+              password: newPassword && newPassword.trim() ? newPassword.trim() : (updatedAccounts[accIdx].password || ''),
+            };
+          }
+
+          const newState = { ...state, userProfile: updatedProfile, userAccounts: updatedAccounts };
           return {
             userProfile: updatedProfile,
+            userAccounts: updatedAccounts,
             registeredUsers: syncUserInList(newState),
           };
         });

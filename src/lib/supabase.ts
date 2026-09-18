@@ -335,12 +335,56 @@ export async function saveUserProfileToSupabase(profile: UserProfile & { xp?: nu
       payload.subscription_renews_at = profile.subscriptionRenewsAt;
     }
 
-    await supabase.from('profiles').upsert(
-      payload,
-      { onConflict: 'email' }
-    );
+    if (profile.id && !profile.id.startsWith('usr_')) {
+      payload.id = profile.id;
+      await supabase.from('profiles').upsert(payload, { onConflict: 'id' });
+    } else {
+      await supabase.from('profiles').upsert(payload, { onConflict: 'email' });
+    }
   } catch (err) {
     console.warn('Supabase profile save warning:', err);
+  }
+}
+
+/**
+ * Update user credentials (password, email, metadata) in Supabase Auth
+ */
+export async function updateUserAccountCredentials(params: {
+  newPassword?: string;
+  newEmail?: string;
+  fullName?: string;
+  university?: string;
+  departmentAndClass?: string;
+}): Promise<{ success: boolean; error?: string }> {
+  if (!supabase || !isSupabaseConfigured) {
+    return { success: false, error: 'Veritabanı bağlantısı bulunamadı.' };
+  }
+
+  try {
+    const authUpdates: any = {};
+    if (params.newPassword && params.newPassword.trim().length >= 4) {
+      authUpdates.password = params.newPassword.trim();
+    }
+    if (params.newEmail && params.newEmail.trim()) {
+      authUpdates.email = params.newEmail.trim().toLowerCase();
+    }
+    const metaUpdates: any = {};
+    if (params.fullName) metaUpdates.full_name = params.fullName.trim();
+    if (params.university !== undefined) metaUpdates.university = params.university.trim();
+    if (params.departmentAndClass !== undefined) metaUpdates.department_and_class = params.departmentAndClass.trim();
+    if (Object.keys(metaUpdates).length > 0) {
+      authUpdates.data = metaUpdates;
+    }
+
+    if (Object.keys(authUpdates).length > 0) {
+      const { error } = await supabase.auth.updateUser(authUpdates);
+      if (error) {
+        return { success: false, error: error.message };
+      }
+    }
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Bilgiler güncellenemedi.' };
   }
 }
 
