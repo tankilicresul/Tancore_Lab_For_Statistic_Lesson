@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { PublicProfile } from '../types/stats';
 import { fetchAllProfilesFromSupabase } from '../lib/supabase';
-import { Crown, Flame, Sparkles } from 'lucide-react';
+import { Crown } from 'lucide-react';
 import { UserAvatar } from '../components/UserAvatar';
 import { computeUnifiedLeaderboard, isSameStudent } from '../utils/leaderboardHelper';
 import { soundService } from '../services/soundService';
@@ -33,20 +33,8 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   const [hasScrolledInLeaderboard, setHasScrolledInLeaderboard] = useState(false);
   const [dbProfiles, setDbProfiles] = useState<PublicProfile[]>([]);
-  const [isLoadingProfiles, setIsLoadingProfiles] = useState(true);
-
-  // Animation Phase State Machine for XP Count-up & Step-by-Step Rank Climbing:
-  type AnimationPhase = 'idle' | 'counting_xp' | 'pause_before_climb' | 'climbing' | 'celebrating';
-  const [animationPhase, setAnimationPhase] = useState<AnimationPhase>('idle');
-  const [animatedXp, setAnimatedXp] = useState<number | null>(null);
-  const [displayRank, setDisplayRank] = useState<number | null>(null);
-  const hasInitializedAnim = useRef(false);
+  const [_isLoadingProfiles, setIsLoadingProfiles] = useState(true);
   const listRef = useRef<HTMLDivElement | null>(null);
-
-  // Derived state flags for JSX compatibility
-  const isCountingXp = animationPhase === 'counting_xp';
-  const isClimbing = animationPhase === 'climbing' || animationPhase === 'pause_before_climb';
-  const justArrived = animationPhase === 'celebrating';
 
   useEffect(() => {
     let isMounted = true;
@@ -106,183 +94,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     unlockedBadges,
   });
 
-  // Keep displayRank synchronized with userRank when not animating
+  // Ambient soothing lava flow if user is in Top 3
   useEffect(() => {
-    if (animationPhase === 'idle' && userRank && displayRank !== userRank) {
-      setDisplayRank(userRank);
-    }
-  }, [animationPhase, userRank, displayRank]);
-
-  // Rank & XP Climb Animation Initialization
-  const startRankClimbAnimation = (fromRankOverride?: number, fromXpOverride?: number) => {
-    if (!userRank || sortedLeaderboard.length === 0) return;
-
-    const currentXpTarget = xp || 0;
-
-    // 1. Determine previous XP
-    let prevXp = fromXpOverride;
-    if (prevXp === undefined) {
-      const savedXpStr = localStorage.getItem('tancore_last_seen_xp');
-      prevXp = savedXpStr !== null && !isNaN(parseInt(savedXpStr, 10))
-        ? parseInt(savedXpStr, 10)
-        : NaN;
-    }
-
-    // 2. Determine previous Rank
-    let prevRank = fromRankOverride;
-    if (prevRank === undefined) {
-      const savedRankStr = localStorage.getItem('tancore_last_seen_rank');
-      prevRank = savedRankStr !== null && !isNaN(parseInt(savedRankStr, 10))
-        ? parseInt(savedRankStr, 10)
-        : NaN;
-    }
-
-    // Has user earned new XP or improved rank since last visit?
-    const hasGainedXp = !isNaN(prevXp) && currentXpTarget > prevXp;
-    const isFirstTimeWithXp = isNaN(prevXp) && currentXpTarget > 0;
-    const hasRankImproved = !isNaN(prevRank) && prevRank > userRank;
-
-    if (hasGainedXp || hasRankImproved || isFirstTimeWithXp || fromRankOverride !== undefined) {
-      // Calculate effective previous XP
-      const effectivePrevXp = isNaN(prevXp)
-        ? Math.max(0, currentXpTarget - (currentXpTarget >= 50 ? 50 : 15))
-        : Math.min(prevXp, currentXpTarget);
-
-      // How many other students have strictly more XP than effectivePrevXp?
-      const rankWithPrevXp = sortedLeaderboard.filter(
-        (p) => !isSameStudent(p, effectiveProfile) && (p.xp || 0) > effectivePrevXp
-      ).length + 1;
-
-      // Determine starting climb rank (must be STRICTLY lower down than userRank so climb happens!)
-      let startRank = fromRankOverride;
-      if (startRank === undefined) {
-        if (!isNaN(prevRank) && prevRank > userRank) {
-          startRank = Math.min(prevRank, userRank + 5);
-        } else if (rankWithPrevXp > userRank) {
-          startRank = Math.min(rankWithPrevXp, userRank + 5);
-        } else {
-          // If rank didn't mathematically cross a student boundary, guarantee a rewarding climb!
-          const earnedDelta = Math.max(15, currentXpTarget - effectivePrevXp);
-          const climbSteps = Math.max(1, Math.min(4, Math.ceil(earnedDelta / 15)));
-          startRank = Math.min(sortedLeaderboard.length + 1, userRank + climbSteps);
-          if (startRank <= userRank) {
-            startRank = userRank + 1;
-          }
-        }
-      }
-
-      // If startRank is greater than userRank, start the multi-phase animation!
-      if (startRank !== undefined && startRank > userRank) {
-        localStorage.setItem('tancore_start_climb_rank', String(startRank));
-        setAnimatedXp(effectivePrevXp);
-        setDisplayRank(startRank);
-
-        if (effectivePrevXp < currentXpTarget) {
-          setAnimationPhase('counting_xp');
-        } else {
-          // XP is already at target, jump directly to climb sequence
-          setAnimationPhase('pause_before_climb');
-        }
-        return;
-      }
-    }
-
-    // Static fallback: User has not gained XP, display current position directly
-    setAnimatedXp(currentXpTarget);
-    setDisplayRank(userRank);
-    setAnimationPhase('idle');
-    localStorage.setItem('tancore_last_seen_rank', String(userRank));
-    localStorage.setItem('tancore_last_seen_xp', String(currentXpTarget));
-  };
-
-  useEffect(() => {
-    if (!userRank || sortedLeaderboard.length === 0) return;
-    if (hasInitializedAnim.current) return;
-
-    hasInitializedAnim.current = true;
-    startRankClimbAnimation();
-  }, [userRank, sortedLeaderboard.length]);
-
-  // Phase 1: Rapid XP Count-up Effect (Numbers count up rapidly to target XP)
-  useEffect(() => {
-    if (animationPhase !== 'counting_xp' || animatedXp === null) return;
-    const targetXp = xp || 0;
-
-    if (animatedXp < targetXp) {
-      soundService.playXpCountTick();
-      const delta = targetXp - animatedXp;
-      const step = Math.max(1, Math.ceil(delta / 6));
-      const timer = setTimeout(() => {
-        setAnimatedXp((current) => (current !== null ? Math.min(targetXp, current + step) : targetXp));
-      }, 35);
-
-      return () => clearTimeout(timer);
-    } else {
-      // Phase 1 finished! Play satisfying gold coin chime & transition to climb pause
-      soundService.playXpCountComplete();
-      localStorage.setItem('tancore_last_seen_xp', String(targetXp));
-
-      if (displayRank !== null && userRank && displayRank > userRank) {
-        setAnimationPhase('pause_before_climb');
-      } else {
-        localStorage.setItem('tancore_last_seen_rank', String(userRank));
-        setAnimationPhase('celebrating');
-      }
-    }
-  }, [animationPhase, animatedXp, xp, displayRank, userRank]);
-
-  // Phase 1 -> Phase 2 Transition Pause: Comfortably paced delay to let the user register target XP
-  useEffect(() => {
-    if (animationPhase !== 'pause_before_climb') return;
-
-    const timer = setTimeout(() => {
-      setAnimationPhase('climbing');
-    }, 700);
-
-    return () => clearTimeout(timer);
-  }, [animationPhase]);
-
-  // Phase 2: Step-by-Step Rank Climbing Interval (Row climbs position by position deliberately & visibly)
-  useEffect(() => {
-    if (animationPhase !== 'climbing' || displayRank === null || !userRank) return;
-
-    if (displayRank > userRank) {
-      // Calculate climb progress towards the top
-      const startRankSaved = parseInt(localStorage.getItem('tancore_start_climb_rank') || '0', 10);
-      const totalSteps = startRankSaved > userRank ? startRankSaved - userRank : 1;
-      const currentStep = startRankSaved > displayRank ? startRankSaved - displayRank : 0;
-      const progress = totalSteps > 0 ? currentStep / totalSteps : 0;
-
-      // Play rising wheel/ratchet tick sound for each rank passed
-      soundService.playWheelTick(progress);
-      const timer = setTimeout(() => {
-        setDisplayRank((current) => (current !== null ? current - 1 : userRank));
-      }, 550);
-
-      return () => clearTimeout(timer);
-    } else {
-      // Phase 2 finished! User reached target rank, start superhero landing celebration!
-      setAnimationPhase('celebrating');
-    }
-  }, [animationPhase, displayRank, userRank]);
-
-  // Phase 3: Superhero Landing Celebration (Bass impact, victory fanfare, glowing pulse)
-  useEffect(() => {
-    if (animationPhase !== 'celebrating' || !userRank) return;
-
-    soundService.playSuperheroLanding(userRank <= 3);
-    localStorage.setItem('tancore_last_seen_rank', String(userRank));
-
-    const celebrationTimer = setTimeout(() => {
-      setAnimationPhase('idle');
-    }, 1500);
-
-    return () => clearTimeout(celebrationTimer);
-  }, [animationPhase, userRank]);
-
-  // Ambient soothing lava flow if user is in Top 3!
-  useEffect(() => {
-    if (userRank && userRank <= 3 && animationPhase === 'idle') {
+    if (userRank && userRank <= 3) {
       soundService.playLavaFlow(0.12);
     } else {
       soundService.stopAmbient();
@@ -290,56 +104,28 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     return () => {
       soundService.stopAmbient();
     };
-  }, [userRank, animationPhase]);
+  }, [userRank]);
 
-  // Auto-Scroll to keep user row in view on load and during climb
+  // Auto-Scroll to keep user row in view on load
   useEffect(() => {
-    if (displayRank !== null) {
+    if (userRank) {
       const timer = setTimeout(() => {
-        const el = document.getElementById(`leaderboard-row-${displayRank}`);
+        const el = document.getElementById(`leaderboard-row-${userRank}`);
         if (el) {
           el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-      }, 80);
+      }, 150);
       return () => clearTimeout(timer);
     }
-  }, [displayRank, animationPhase]);
+  }, [userRank]);
 
-  // Construct dynamically positioned leaderboard array during rank climb
-  const getRenderedLeaderboard = () => {
-    if (
-      displayRank === null ||
-      displayRank === userRank ||
-      animationPhase === 'idle'
-    ) {
-      return sortedLeaderboard;
-    }
-
-    const currentUserObj = sortedLeaderboard.find((p) => isSameStudent(p, effectiveProfile));
-    if (!currentUserObj) return sortedLeaderboard;
-
-    const others = sortedLeaderboard.filter((p) => !isSameStudent(p, effectiveProfile));
-    const targetIdx = Math.max(0, Math.min(others.length, displayRank - 1));
-
-    const result = [...others];
-    result.splice(targetIdx, 0, currentUserObj);
-
-    return result.map((p, idx) => ({
-      ...p,
-      visualRank: idx + 1,
-    }));
-  };
-
-  const renderedList = getRenderedLeaderboard();
-
-  // Real Top 3 users based on rendered list
-  const user1 = renderedList[0] || sortedLeaderboard[0] || null;
-  const user2 = renderedList[1] || sortedLeaderboard[1] || null;
-  const user3 = renderedList[2] || sortedLeaderboard[2] || null;
+  // Real Top 3 users based on sortedLeaderboard
+  const user1 = sortedLeaderboard[0] || null;
+  const user2 = sortedLeaderboard[1] || null;
+  const user3 = sortedLeaderboard[2] || null;
 
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans space-y-4 animate-fade-in relative">
-
       {/* Unauthenticated Guest Alert Banner */}
       {!isAuthenticated && (
         <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md shadow-orange-500/20">
@@ -560,20 +346,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                 unlockedBadges: unlockedBadges,
               })
             }
-            className={`flex items-center justify-between p-3.5 rounded-2xl text-slate-900 cursor-pointer transition-all shadow-xs group ${
-              isCountingXp
-                ? 'bg-amber-100/90 border-2 border-amber-500 text-slate-900 shadow-md ring-2 ring-amber-400/40 animate-pulse'
-                : isClimbing
-                ? 'bg-gradient-to-r from-amber-500/25 via-orange-500/30 to-amber-500/25 border-2 border-amber-400 animate-climb-pulse scale-102'
-                : justArrived
-                ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-xl animate-rank-pop border-2 border-amber-300 ring-4 ring-amber-400/40'
-                : 'bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 hover:from-orange-100 hover:to-amber-100 border-2 border-[#ff7a00]/40'
-            }`}
+            className="flex items-center justify-between p-3.5 rounded-2xl text-slate-900 cursor-pointer transition-all shadow-xs group bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 hover:from-orange-100 hover:to-amber-100 border-2 border-[#ff7a00]/40"
           >
             <div className="flex items-center space-x-2.5 min-w-0">
               <div className="px-2.5 py-1 rounded-xl bg-[#ff7a00] text-white font-black text-xs shadow-xs shrink-0 flex items-center space-x-1">
-                <span>{displayRank !== null ? displayRank : userRank}.</span>
-                {isClimbing && <Flame className="w-3.5 h-3.5 text-yellow-300 animate-pulse" />}
+                <span>{userRank}.</span>
               </div>
               <div className="w-8 h-8 rounded-full bg-white border border-orange-200 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden shadow-2xs">
                 <UserAvatar
@@ -590,12 +367,6 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   <span className="text-[10px] font-black text-[#ff7a00] bg-orange-100 px-1.5 py-0.5 rounded-md">
                     (Sen)
                   </span>
-                  {isClimbing && (
-                    <span className="ml-1.5 text-[9.5px] font-black text-amber-700 bg-amber-200/90 px-1.5 py-0.5 rounded-md inline-flex items-center space-x-1 animate-bounce">
-                      <span>▲</span>
-                      <span>{language === 'tr' ? 'Sıralamada Yükseliyor' : 'Climbing Ranks'}</span>
-                    </span>
-                  )}
                 </span>
                 <span className="text-[10px] text-slate-500 truncate block">
                   {effectiveProfile.university || (language === 'tr' ? 'Üniversite' : 'University')}
@@ -605,49 +376,23 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
             <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black shrink-0">
               <span className="text-amber-500 font-serif">◆</span>
-              <span>
-                {((isCountingXp || isClimbing || justArrived) && animatedXp !== null
-                  ? animatedXp
-                  : (xp || 0)
-                ).toLocaleString('tr-TR')}{' '}
-                XP
-              </span>
+              <span>{(xp || 0).toLocaleString('tr-TR')} XP</span>
             </div>
           </div>
         </div>
       )}
 
       {/* Additional Registered Users (Rank 4+) with onScroll tracking */}
-      {renderedList.length > 3 && (
+      {sortedLeaderboard.length > 3 && (
         <div className="space-y-2.5 pt-1">
           <div className="flex items-center justify-between px-1">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
               {language === 'tr' ? 'Tüm Öğrenciler' : 'All Students'}
             </span>
 
-            <div className="flex items-center space-x-2">
-              <span className="text-[11px] text-slate-400 font-medium">
-                {renderedList.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
-              </span>
-              <button
-                onClick={() =>
-                  startRankClimbAnimation(
-                    Math.min(sortedLeaderboard.length, userRank + 4),
-                    Math.max(0, (xp || 0) - 60)
-                  )
-                }
-                disabled={animationPhase !== 'idle'}
-                className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-xl font-black text-[11px] transition-all cursor-pointer shadow-xs active:scale-95 ${
-                  animationPhase !== 'idle'
-                    ? 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-60'
-                    : 'bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600 shadow-orange-500/20 ring-2 ring-orange-400/30'
-                }`}
-                title={language === 'tr' ? 'Tırmanış Animasyonunu Dene' : 'Try Climb Animation'}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-200 animate-pulse" />
-                <span>{language === 'tr' ? 'Tırmanışı Dene' : 'Try Climb'}</span>
-              </button>
-            </div>
+            <span className="text-[11px] text-slate-400 font-medium">
+              {sortedLeaderboard.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
+            </span>
           </div>
 
           <div
@@ -658,9 +403,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
             }}
             className="space-y-2 max-h-[480px] overflow-y-auto pr-1"
           >
-            {renderedList.slice(3).map((user) => {
+            {sortedLeaderboard.slice(3).map((user) => {
               const isSelf = isSameStudent(user, effectiveProfile);
-              const currentVisualRank = (user as any).visualRank || user.rank;
+              const currentVisualRank = user.rank;
 
               return (
                 <div
@@ -669,13 +414,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   onClick={() => setSelectedPublicProfile(user)}
                   className={`flex items-center justify-between p-3 rounded-2xl border cursor-pointer transition-all duration-300 ${
                     isSelf
-                      ? isCountingXp
-                        ? 'bg-amber-100/90 border-2 border-amber-500 text-slate-900 shadow-md ring-2 ring-amber-400/40 animate-pulse z-20'
-                        : isClimbing
-                        ? 'bg-gradient-to-r from-amber-500/20 via-orange-500/30 to-amber-500/20 border-2 border-amber-400 shadow-xl animate-climb-pulse scale-102 z-20'
-                        : justArrived
-                        ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-2xl animate-rank-pop border-2 border-amber-300 ring-4 ring-amber-400/50 z-20'
-                        : 'bg-orange-50/90 border-2 border-[#ff7a00] text-slate-900 shadow-xs ring-1 ring-[#ff7a00]/30'
+                      ? 'bg-orange-50/90 border-2 border-[#ff7a00] text-slate-900 shadow-xs ring-1 ring-[#ff7a00]/30'
                       : 'bg-white hover:bg-orange-50/40 border-slate-200/80 text-slate-800 shadow-2xs'
                   }`}
                 >
@@ -686,7 +425,6 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                       }`}
                     >
                       <span>{currentVisualRank}.</span>
-                      {isSelf && isClimbing && <Flame className="w-3 h-3 text-yellow-500 animate-pulse" />}
                     </span>
                     <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 shadow-2xs flex items-center justify-center overflow-hidden shrink-0">
                       <UserAvatar
@@ -711,25 +449,13 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                             {language === 'tr' ? 'Sen' : 'You'}
                           </span>
                         )}
-                        {isSelf && isClimbing && (
-                          <span className="text-[9px] font-black text-amber-700 bg-amber-200/90 px-1.5 py-0.5 rounded-md flex items-center space-x-0.5 animate-bounce">
-                            <span>▲</span>
-                            <span>{language === 'tr' ? 'Yükseliyor' : 'Climbing'}</span>
-                          </span>
-                        )}
                       </div>
                       <span className="text-[10px] text-slate-500 truncate block">{user.university}</span>
                     </div>
                   </div>
                   <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black shrink-0">
                     <span className="text-amber-500 font-serif">◆</span>
-                    <span>
-                      {(isSelf && (isCountingXp || isClimbing || justArrived) && animatedXp !== null
-                        ? animatedXp
-                        : user.xp
-                      ).toLocaleString('tr-TR')}{' '}
-                      XP
-                    </span>
+                    <span>{user.xp.toLocaleString('tr-TR')} XP</span>
                   </div>
                 </div>
               );
