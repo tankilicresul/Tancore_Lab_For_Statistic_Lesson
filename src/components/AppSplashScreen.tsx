@@ -1,48 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onComplete }) => {
-  const [stage, setStage] = useState<'loading' | 'flashing' | 'done'>('loading');
+  const [progress, setProgress] = useState(0);
+  const [isFlashing, setIsFlashing] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const startTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Stage 1: Cylinder fills (0s - 1.7s)
-    // Stage 2: Cylinder reaches 100% and flashes (1.7s - 2.0s)
-    const flashTimer = setTimeout(() => {
-      setStage('flashing');
-    }, 1700);
+    const TOTAL_DURATION = 1750; // 1.75s smooth fill
+    let animFrameId: number;
 
-    // Stage 3: Close immediately at 2.0s
-    const finishTimer = setTimeout(() => {
-      setStage('done');
-      onComplete?.();
-    }, 2000);
+    const animateProgress = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const elapsed = timestamp - startTimeRef.current;
+      const linearProgress = Math.min(elapsed / TOTAL_DURATION, 1);
+
+      // Ease out cubic for natural, snappy deceleration
+      const easedProgress = 1 - Math.pow(1 - linearProgress, 3);
+      const currentPercent = Math.round(easedProgress * 100);
+
+      setProgress(currentPercent);
+
+      if (linearProgress < 1) {
+        animFrameId = requestAnimationFrame(animateProgress);
+      } else {
+        // Flash at 100%
+        setIsFlashing(true);
+        setTimeout(() => {
+          setIsFadingOut(true);
+          setTimeout(() => {
+            onComplete?.();
+          }, 250);
+        }, 300);
+      }
+    };
+
+    animFrameId = requestAnimationFrame(animateProgress);
 
     return () => {
-      clearTimeout(flashTimer);
-      clearTimeout(finishTimer);
+      cancelAnimationFrame(animFrameId);
     };
   }, [onComplete]);
 
-  if (stage === 'done') {
-    return null;
-  }
-
   return (
     <div
-      className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#f8fafc] select-none pointer-events-none overflow-hidden"
-      style={{
-        background: '#f8fafc',
-      }}
+      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#f8fafc] select-none pointer-events-none overflow-hidden transition-opacity duration-250 ${
+        isFadingOut ? 'opacity-0' : 'opacity-100'
+      }`}
     >
       {/* Center Brand Container */}
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center px-4">
         {/* Logo and Typography Row */}
         <div className="flex items-center space-x-3.5 sm:space-x-4">
-          {/* Logo Badge */}
+          {/* Logo Badge with Subtle Energy Pulse */}
           <div
             className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#ff7a00] flex items-center justify-center p-1.5 shadow-xl transition-all duration-300 ${
-              stage === 'flashing'
-                ? 'shadow-[0_0_35px_rgba(255,122,0,0.85)] ring-4 ring-orange-300/80 ring-offset-2 scale-105'
-                : 'shadow-[#ff7a00]/30'
+              isFlashing
+                ? 'shadow-[0_0_35px_rgba(255,122,0,0.9)] ring-4 ring-orange-300 scale-105'
+                : 'shadow-[#ff7a00]/25'
             }`}
           >
             <div className="w-full h-full rounded-full border-[2.5px] border-white flex items-center justify-center bg-[#ff7a00]">
@@ -66,50 +81,50 @@ export const AppSplashScreen: React.FC<{ onComplete?: () => void }> = ({ onCompl
             <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-sans leading-none">
               TanCoreLab
             </h1>
-            <span className="text-[11px] sm:text-xs font-bold tracking-wider text-orange-600 uppercase mt-1">
+            <span className="text-[11px] sm:text-xs font-bold tracking-wider text-orange-600 uppercase mt-1.5">
               Endüstri Mühendisliği & Analitik
             </span>
           </div>
         </div>
 
-        {/* 3-Second Filling Cylinder (Progress Bar) */}
-        <div className="mt-8 sm:mt-10">
-          {/* Outer Rounded Cylinder */}
+        {/* Filling Progress Cylinder */}
+        <div className="mt-8 sm:mt-10 flex flex-col items-center w-full max-w-xs">
+          {/* Outer Rounded Track */}
           <div
-            className={`w-64 sm:w-72 h-4 sm:h-4.5 bg-white rounded-full p-0.5 border border-slate-200/90 shadow-inner relative overflow-hidden transition-all duration-300 ${
-              stage === 'flashing'
-                ? 'ring-4 ring-orange-400/50 shadow-[0_0_24px_rgba(255,122,0,0.8)]'
-                : 'shadow-xs'
+            className={`w-64 sm:w-72 h-4 sm:h-4.5 bg-slate-100 rounded-full p-0.5 border border-slate-200/90 shadow-inner relative overflow-hidden transition-all duration-300 ${
+              isFlashing
+                ? 'ring-4 ring-orange-400/50 shadow-[0_0_20px_rgba(255,122,0,0.8)]'
+                : ''
             }`}
           >
-            {/* Filling Orange Bar */}
+            {/* Dynamic Filling Orange Bar */}
             <div
-              className={`h-full rounded-full bg-gradient-to-r from-amber-400 via-[#ff7a00] to-[#ff5500] relative overflow-hidden transition-all ${
-                stage === 'flashing'
-                  ? 'brightness-125 shadow-[0_0_16px_rgba(255,122,0,1)]'
-                  : ''
-              }`}
+              className="h-full rounded-full bg-gradient-to-r from-amber-400 via-[#ff7a00] to-[#ff5500] relative overflow-hidden transition-[width] duration-75 ease-out shadow-xs"
               style={{
-                animation: 'cylinderProgressFill 1.7s cubic-bezier(0.12, 0.8, 0.32, 1) forwards',
+                width: `${Math.max(progress, 4)}%`,
               }}
             >
-              {/* Shimmer / Light Reflection Wave */}
+              {/* Shimmer Light Reflection Wave */}
               <div
                 className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
                 style={{
-                  animation: 'cylinderShimmer 1.4s ease-in-out infinite',
+                  animation: 'cylinderShimmer 1.2s ease-in-out infinite',
                 }}
               />
             </div>
           </div>
 
-          {/* Subtle loading subtitle text */}
-          <div className="flex justify-center items-center mt-2.5 space-x-1.5 text-xs text-slate-400 font-medium tracking-wide">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ff7a00] animate-ping" />
-            <span>Laboratuvar yükleniyor...</span>
+          {/* Loading status & percentage counter */}
+          <div className="flex justify-between items-center w-64 sm:w-72 mt-2 px-1 text-xs text-slate-400 font-medium">
+            <div className="flex items-center space-x-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ff7a00] animate-ping" />
+              <span className="text-[11px] font-semibold text-slate-500">Laboratuvar yükleniyor...</span>
+            </div>
+            <span className="text-[11px] font-mono font-bold text-[#ff7a00]">{progress}%</span>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
