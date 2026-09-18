@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { Flame, Globe, Zap, Crown, Check } from 'lucide-react';
+import { Flame, Globe, Zap, Crown, Check, Volume2, VolumeX } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { PublicProfileModal } from './PublicProfileModal';
 import { StreakModal } from './StreakModal';
@@ -25,6 +25,8 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
     selectedPublicProfile,
     setSelectedPublicProfile,
     setIsPlusUpgradeModalOpen,
+    isSoundEnabled,
+    toggleSound,
   } = useAppStore();
 
   const [showAuth, setShowAuth] = useState(false);
@@ -173,6 +175,28 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                 </div>
               )}
             </div>
+
+            {/* Sound Mute / Unmute Button */}
+            <button
+              onClick={toggleSound}
+              className={`flex items-center justify-center p-1.5 sm:p-2 rounded-2xl border text-xs sm:text-sm font-black transition-all cursor-pointer ${
+                isSoundEnabled ?? true
+                  ? 'bg-[#ff7a00]/10 hover:bg-[#ff7a00]/20 active:scale-95 border-[#ff7a00]/30 text-[#ff7a00]'
+                  : 'bg-slate-100 hover:bg-slate-200 active:scale-95 border-slate-300 text-slate-400'
+              }`}
+              title={
+                language === 'tr'
+                  ? (isSoundEnabled ?? true ? 'Sesi Kapat (Mute)' : 'Sesi Aç (Unmute)')
+                  : (isSoundEnabled ?? true ? 'Mute Audio' : 'Unmute Audio')
+              }
+              aria-label="Toggle Sound"
+            >
+              {(isSoundEnabled ?? true) ? (
+                <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.25]" />
+              ) : (
+                <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.25]" />
+              )}
+            </button>
 
             {/* Plus Upgrade or VIP Badge - ONLY shown for logged-in & verified students */}
             {isAuthenticated && isVerified && (

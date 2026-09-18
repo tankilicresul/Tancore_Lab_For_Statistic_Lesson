@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppStore, getInitialDemoActivityDates } from '../store/useAppStore';
 import { X, Check, Flame, Zap, Sparkles } from 'lucide-react';
+import { soundService } from '../services/soundService';
 
 interface StreakModalProps {
   onClose: () => void;
@@ -258,6 +259,20 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
   const isTr = language === 'tr';
 
   const displayStreak = streak > 0 ? streak : (isAuthenticated && isVerified ? 1 : 3);
+
+  // Play Lava Flow if streak is active, or Cold Wind if streak is 0/ended
+  useEffect(() => {
+    const isStreakActive = streak > 0 || (!isAuthenticated && displayStreak > 0);
+    if (isStreakActive) {
+      soundService.playLavaFlow(0.18);
+    } else {
+      soundService.playColdWind(0.18);
+    }
+
+    return () => {
+      soundService.stopAmbient();
+    };
+  }, [streak, isAuthenticated, displayStreak]);
 
   // Week days starting from Sunday (0) to Saturday (6) like Photo 2
   const daysOfWeek = isTr
