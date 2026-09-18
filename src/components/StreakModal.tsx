@@ -253,6 +253,46 @@ const LavaRock3D: React.FC<{
   );
 };
 
+const ExtinguishedLavaRock3D: React.FC<{
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+}> = ({ className = '', size = 'md' }) => {
+  const [imgError, setImgError] = useState(false);
+
+  const dims = {
+    sm: 'w-4 h-3.5',
+    md: 'w-7 h-6 sm:w-8 sm:h-7',
+    lg: 'w-10 h-8.5',
+  }[size];
+
+  return (
+    <div className={`relative flex items-center justify-center select-none ${className}`}>
+      {/* 3D Extinguished Lava Rock Asset from User's Reference Photo */}
+      {!imgError ? (
+        <img
+          src="/extinguished-lava-rock-3d.png"
+          alt="3D Extinguished Lava Rock"
+          className={`${dims} object-contain filter drop-shadow-[0_3px_6px_rgba(15,23,42,0.65)] animate-dormant-rock transition-transform`}
+          onError={() => setImgError(true)}
+        />
+      ) : (
+        /* Vector 3D Charcoal Rock Fallback */
+        <svg
+          viewBox="0 0 100 90"
+          className={`${dims} overflow-visible filter drop-shadow-[0_3px_6px_rgba(15,23,42,0.65)] animate-dormant-rock`}
+          fill="none"
+          xmlns="https://www.w3.org/2000/svg"
+        >
+          <path d="M14 78 Q22 46 46 22 Q52 14 62 20 Q86 42 90 76 Q70 88 48 86 Q26 86 14 78 Z" fill="#18181b" stroke="#09090b" strokeWidth="2.5" />
+          <path d="M44 26 Q48 44 36 62 Q40 70 50 72" stroke="#b91c1c" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M50 34 Q62 48 70 70" stroke="#991b1b" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M46 28 Q48 40 42 52" stroke="#ea580c" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      )}
+    </div>
+  );
+};
+
 export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
   const { language, streak, isAuthenticated, isVerified, activityDates } = useAppStore();
   const [imgError, setImgError] = useState(false);
@@ -446,6 +486,8 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                         ? 'text-orange-600 font-bold'
                         : isIce
                         ? 'text-sky-600 font-bold'
+                        : isMissed
+                        ? 'text-slate-600 font-bold'
                         : 'text-slate-400 font-medium'
                     }`}
                   >
@@ -481,13 +523,17 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                       </div>
                     )}
 
-                    {/* MISSED (Past day not solved) */}
+                    {/* SÖNMÜŞ LAV KAYASI (Past day not entered/solved - 3D Extinguished Lava Rock) */}
                     {isMissed && (
                       <div
-                        className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 border border-slate-200/90 flex items-center justify-center"
-                        title={isTr ? 'Çözülmedi' : 'Missed'}
+                        className="relative flex items-center justify-center pt-2"
+                        title={
+                          isTr
+                            ? 'Sönmüş Lav Kayası (Girilmemiş Gün)'
+                            : 'Extinguished Lava Rock (Missed Day)'
+                        }
                       >
-                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                        <ExtinguishedLavaRock3D size="md" />
                       </div>
                     )}
 
@@ -504,15 +550,19 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
             })}
           </div>
 
-          {/* Mini Legend for Lava vs Ice */}
-          <div className="flex items-center justify-center gap-3.5 mt-3 pt-2.5 border-t border-slate-100 text-[11px] font-bold text-slate-500">
-            <span className="flex items-center gap-1.5">
+          {/* Mini Legend for Lava vs Ice vs Extinguished */}
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 pt-2.5 border-t border-slate-100 text-[10px] sm:text-[11px] font-bold text-slate-500 flex-wrap">
+            <span className="flex items-center gap-1">
               <LavaRock3D size="sm" showFlames={false} hasSolvedBadge={false} />
               <span className="text-orange-600">{isTr ? 'Lavlı Seri' : 'Active Lava'}</span>
             </span>
-            <span className="flex items-center gap-1.5">
+            <span className="flex items-center gap-1">
               <IceCrystal3D size="sm" showSmoke={false} hasSolvedBadge={false} />
-              <span className="text-sky-600">{isTr ? 'Buzlu Günler' : 'Frozen Ice'}</span>
+              <span className="text-sky-600">{isTr ? 'Buzlu' : 'Frozen'}</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <ExtinguishedLavaRock3D size="sm" />
+              <span className="text-slate-500">{isTr ? 'Sönmüş Lav' : 'Extinguished'}</span>
             </span>
           </div>
         </div>

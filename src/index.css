@@ -402,3 +402,19 @@ body {
 .animate-ember-2 {
   animation: emberRise2 2.1s cubic-bezier(0.25, 1, 0.5, 1) 0.7s infinite;
 }
+
+/* 3D Extinguished/Dormant Lava Rock subtle cooling presence */
+@keyframes dormantRock {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 3px 6px rgba(15, 23, 42, 0.55));
+  }
+  50% {
+    transform: translateY(-1.5px) scale(1.02);
+    filter: drop-shadow(0 4px 9px rgba(15, 23, 42, 0.7)) drop-shadow(0 0 6px rgba(220, 38, 38, 0.25));
+  }
+}
+
+.animate-dormant-rock {
+  animation: dormantRock 4s ease-in-out infinite;
+}
