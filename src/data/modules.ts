@@ -1,4 +1,4 @@
-import { Module } from '../types/stats';
+import { Module, LocalizedText } from '../types/stats';
 import module1 from './module1.json';
 import module2 from './module2.json';
 import module3 from './module3.json';
@@ -55,16 +55,28 @@ export function getCaseExamById(caseId: string) {
   return undefined;
 }
 
+export const PROBABILITY_MODULE_ORDER = [
+  'module-2', 'module-13', 'module-14', 'module-3', 'module-15', 'module-16', 'module-4', 'module-12'
+];
+
+export const STATISTICS_MODULE_ORDER = [
+  'module-1', 'module-5', 'module-6', 'module-7', 'module-8', 'module-9', 'module-10', 'module-11'
+];
+
 export interface SequentialTopicNode {
   id: string;
   type: 'lesson' | 'case';
-  title: { tr: string; en: string };
+  title: LocalizedText;
   module: Module;
 }
 
-export function getAllSequentialTopics(): SequentialTopicNode[] {
+export function getSequentialTopicsForTrack(track: 'probability' | 'statistics'): SequentialTopicNode[] {
+  const moduleOrder = track === 'probability' ? PROBABILITY_MODULE_ORDER : STATISTICS_MODULE_ORDER;
   const topics: SequentialTopicNode[] = [];
-  for (const mod of ALL_MODULES) {
+
+  for (const modId of moduleOrder) {
+    const mod = ALL_MODULES.find((m) => m.id === modId);
+    if (!mod) continue;
     const lessons = mod.lessons || [];
     const cases = mod.caseExams || [];
 
@@ -78,8 +90,27 @@ export function getAllSequentialTopics(): SequentialTopicNode[] {
   return topics;
 }
 
-export function getNextTopicItem(currentId: string): SequentialTopicNode | undefined {
-  const topics = getAllSequentialTopics();
+export function getAllSequentialTopics(): SequentialTopicNode[] {
+  return [
+    ...getSequentialTopicsForTrack('statistics'),
+    ...getSequentialTopicsForTrack('probability'),
+  ];
+}
+
+export function getNextTopicItem(currentId: string, track?: 'probability' | 'statistics'): SequentialTopicNode | undefined {
+  let effectiveTrack = track;
+  if (!effectiveTrack) {
+    const lessonInfo = getLessonById(currentId);
+    const caseInfo = !lessonInfo ? getCaseExamById(currentId) : undefined;
+    const modId = lessonInfo?.module.id || caseInfo?.module.id;
+    if (modId) {
+      effectiveTrack = PROBABILITY_MODULE_ORDER.includes(modId) ? 'probability' : 'statistics';
+    } else {
+      effectiveTrack = 'statistics';
+    }
+  }
+
+  const topics = getSequentialTopicsForTrack(effectiveTrack);
   const currentIndex = topics.findIndex((t) => t.id === currentId);
   if (currentIndex !== -1 && currentIndex + 1 < topics.length) {
     return topics[currentIndex + 1];

@@ -407,6 +407,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                         <input
                           type="number"
                           step="any"
+                          inputMode="decimal"
                           disabled={isSubmitted && isCorrect}
                           value={userAnswer !== undefined ? String(userAnswer) : ''}
                           onChange={(e) =>

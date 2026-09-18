@@ -19,6 +19,8 @@ import {
   UserPlus,
   Eye,
   EyeOff,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 import { soundService } from '../services/soundService';
 
@@ -40,10 +42,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     registerAccountAndSendOtp,
     verifyOtpAndActivateAccount,
     loginWithPassword,
+    updateUserProfile,
   } = useAppStore();
 
   const [activeTab, setActiveTab] = useState<'login' | 'register'>(initialTab);
-  const [step, setStep] = useState<'register' | 'otp'>('register');
+  const [step, setStep] = useState<'form' | 'otp' | 'profileSetup'>('form');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -54,7 +57,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [loginPassword, setLoginPassword] = useState('');
   const [showLoginPassword, setShowLoginPassword] = useState(false);
 
-  // Register Form State
+  // Register Form State (Only Email & Password initially)
   const [formData, setFormData] = useState<UserProfile>({
     fullName: '',
     schoolEmail: '',
@@ -130,7 +133,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
   };
 
-  // Submit Register Form & Request OTP Code
+  // Submit Register Form & Request OTP Code (ONLY EMAIL & PASSWORD)
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -153,16 +156,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
 
-    if (!formData.fullName.trim()) {
+    if (!registerPassword || registerPassword.trim().length < 4) {
       soundService.playWrong();
-      setErrorMessage(language === 'tr' ? 'Lütfen Ad Soyad alanını doldurun.' : 'Please enter your full name.');
+      setErrorMessage(language === 'tr' ? 'Lütfen en az 4 karakterli bir şifre belirleyin.' : 'Password must be at least 4 characters.');
       return;
     }
 
     setLoading(true);
     try {
-      const res = await sendEmailOtp(formData.schoolEmail, {
-        fullName: formData.fullName.trim(),
+      const fallbackName = emailClean.split('@')[0];
+      const res = await sendEmailOtp(emailClean, {
+        fullName: fallbackName,
       });
 
       if (!res.success) {
@@ -182,8 +186,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       registerAccountAndSendOtp(
         {
           ...formData,
+          fullName: fallbackName,
           avatarEmoji: randomEmoji,
-          password: registerPassword || '123456',
+          password: registerPassword.trim(),
         },
         res.simulatedCode
       );
@@ -193,8 +198,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setResendTimer(60);
       setSuccessMessage(
         language === 'tr'
-          ? `${formData.schoolEmail} adresine 8 haneli doğrulama kodu gönderildi.`
-          : `8-digit verification code sent to ${formData.schoolEmail}.`
+          ? `${emailClean} adresine 8 haneli doğrulama kodu gönderildi.`
+          : `8-digit verification code sent to ${emailClean}.`
       );
     } catch (err: any) {
       soundService.playWrong();
@@ -296,16 +301,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       const remoteRes = await verifyEmailOtp(cleanEmail, code);
 
       if (remoteRes.success) {
-        // Authenticate client store with forceActivate flag
         verifyOtpAndActivateAccount(code, true);
 
-        // Sync metadata to Supabase profile
         saveUserProfileToSupabase({
           ...formData,
           isVerified: true,
         });
       } else {
-        // 2. Fallback to local simulated code
         const localRes = verifyOtpAndActivateAccount(code);
         if (!localRes.success) {
           throw new Error(remoteRes.error || localRes.message || (language === 'tr' ? 'Girdiğiniz doğrulama kodu hatalı.' : 'Invalid code.'));
@@ -313,14 +315,50 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       }
 
       soundService.playCorrect();
-      setSuccessMessage(language === 'tr' ? 'Hesabınız başarıyla doğrulandı! Giriş yapılıyor...' : 'Account verified successfully!');
-      setTimeout(() => {
-        onSuccess?.();
-        onClose();
-      }, 800);
+      // Transition to profile setup step after successful email confirmation
+      setStep('profileSetup');
+      setSuccessMessage(language === 'tr' ? 'E-postanız doğrulandı! 🎉 Şimdi profilinizi oluşturun.' : 'Email verified! 🎉 Setup your profile.');
     } catch (err: any) {
       soundService.playWrong();
       setErrorMessage(err.message || (language === 'tr' ? 'Doğrulama kodu hatalı. Lütfen tekrar deneyin.' : 'Verification failed.'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Profile Setup Submit (Name, University, Dept, Avatar)
+  const handleProfileSetupSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setLoading(true);
+
+    try {
+      const cleanName = formData.fullName?.trim() || formData.schoolEmail.split('@')[0];
+      const cleanUni = formData.university?.trim() || 'Üniversite';
+      const cleanDept = formData.departmentAndClass?.trim() || 'Öğrenci';
+
+      updateUserProfile({
+        fullName: cleanName,
+        university: cleanUni,
+        departmentAndClass: cleanDept,
+        avatarEmoji: formData.avatarEmoji || '👨‍🎓',
+      });
+
+      if (formData.schoolEmail) {
+        saveUserProfileToSupabase({
+          ...formData,
+          fullName: cleanName,
+          university: cleanUni,
+          departmentAndClass: cleanDept,
+          isVerified: true,
+        });
+      }
+
+      soundService.playCorrect();
+      setSuccessMessage(language === 'tr' ? 'Profiliniz kaydedildi! Hoş geldiniz 🚀' : 'Profile saved! Welcome 🚀');
+      setTimeout(() => {
+        onSuccess?.();
+        onClose();
+      }, 600);
     } finally {
       setLoading(false);
     }
@@ -369,7 +407,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </button>
 
         {/* Tab Switcher: Giriş Yap | Kayıt Ol */}
-        {step !== 'otp' && (
+        {step === 'form' && (
           <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200/80 mb-5 max-w-xs mx-auto w-full">
             <button
               type="button"
@@ -423,6 +461,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </div>
         )}
 
+        {/* Header Banner - Step 3: Profile Setup */}
+        {step === 'profileSetup' && (
+          <div className="text-center mb-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#ff7a00]/10 text-[#ff7a00] border border-[#ff7a00]/25 shadow-inner mb-2">
+              <Sparkles className="w-6 h-6 stroke-[2] text-[#ff7a00]" />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              {language === 'tr' ? 'Hoş Geldin! 🎉 Profilini Oluştur' : 'Welcome! 🎉 Setup Profile'}
+            </h2>
+            <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
+              {language === 'tr'
+                ? 'Liderlik tablosunda yerini almak için bilgilerini belirle. (Dilediğin zaman değiştirebilirsin)'
+                : 'Set your name to appear on the leaderboard. (Can be updated anytime)'}
+            </p>
+          </div>
+        )}
+
         {/* Error / Success Notifications */}
         {errorMessage && (
           <div className="mb-4 p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center space-x-2">
@@ -439,7 +494,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         )}
 
         {/* ─── TAB 1: GİRİŞ YAP (LOGIN FORM) ─── */}
-        {step !== 'otp' && activeTab === 'login' && (
+        {step === 'form' && activeTab === 'login' && (
           <form onSubmit={handleLoginSubmit} autoComplete="off" className="space-y-3.5 flex-1 overflow-y-auto pr-1">
             {/* Email */}
             <div>
@@ -502,53 +557,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </>
               )}
             </button>
-
-            {/* OTP login fallback for users who registered without a password */}
-            <p className="text-center text-[11px] text-slate-500 mt-2">
-              {language === 'tr' ? 'Şifrenizi hatırlamıyor musunuz? ' : "Don't remember your password? "}
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveTab('register');
-                  setErrorMessage(null);
-                  setSuccessMessage(null);
-                  setFormData((prev) => ({ ...prev, schoolEmail: loginEmail, fullName: ' ' }));
-                  setStep('register');
-                }}
-                className="font-bold text-[#ff7a00] hover:underline cursor-pointer"
-              >
-                {language === 'tr' ? 'E-posta kodu ile giriş yap' : 'Sign in with email code'}
-              </button>
-            </p>
           </form>
         )}
 
-        {/* ─── TAB 2: KAYIT OL (REGISTER FORM) ─── */}
-        {step === 'register' && activeTab === 'register' && (
-          <form onSubmit={handleSendOtp} autoComplete="off" className="space-y-3 flex-1 overflow-y-auto pr-1">
-            {/* Full Name */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                {language === 'tr' ? 'Ad Soyad' : 'Full Name'} *
-              </label>
-              <div className="relative">
-                <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  required
-                  autoComplete="name"
-                  placeholder={language === 'tr' ? 'Adınızı ve soyadınızı giriniz' : 'Enter your full name'}
-                  value={formData.fullName}
-                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
-                />
-              </div>
-            </div>
-
+        {/* ─── TAB 2: KAYIT OL (SADECE E-POSTA VE ŞİFRE) ─── */}
+        {step === 'form' && activeTab === 'register' && (
+          <form onSubmit={handleSendOtp} autoComplete="off" className="space-y-3.5 flex-1 overflow-y-auto pr-1">
             {/* Email */}
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                {language === 'tr' ? 'E-posta' : 'Email'} *
+                {language === 'tr' ? 'E-posta Adresiniz' : 'Email Address'} *
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -564,11 +582,38 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
             </div>
 
+            {/* Password */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                {language === 'tr' ? 'Şifre Belirleyin' : 'Create Password'} *
+              </label>
+              <div className="relative">
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type={showRegisterPassword ? 'text' : 'password'}
+                  required
+                  autoComplete="new-password"
+                  placeholder="••••••••"
+                  value={registerPassword}
+                  onChange={(e) => setRegisterPassword(e.target.value)}
+                  className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowRegisterPassword((prev) => !prev)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                  tabIndex={-1}
+                >
+                  {showRegisterPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
             {/* Helper notice */}
-            <p className="text-[11px] text-slate-500 text-center pt-1 leading-relaxed">
+            <p className="text-[11px] text-slate-500 text-center pt-0.5 leading-relaxed">
               {language === 'tr'
-                ? 'Kayıt olduktan sonra hesabınızı düzenle kısmından okul, bölüm ve şifrenizi dilediğiniz gibi belirleyebilirsiniz.'
-                : 'After registering, you can update your school, department, and password from Edit Account.'}
+                ? 'E-posta onayından sonra isminizi, okulunuzu ve profilinizi kolayca belirleyebilirsiniz.'
+                : 'After email confirmation, you can customize your name, university, and profile.'}
             </p>
 
             {/* Submit Button */}
@@ -582,7 +627,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               ) : (
                 <>
                   <UserPlus className="w-4 h-4" />
-                  <span>{language === 'tr' ? 'Kayıt Ol ve Onay Kodunu Al' : 'Sign Up & Get Code'}</span>
+                  <span>{language === 'tr' ? 'Kayıt Ol ve Onay Kodu Al' : 'Sign Up & Get Code'}</span>
                 </>
               )}
             </button>
@@ -641,7 +686,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 ) : (
                   <>
                     <ShieldCheck className="w-4 h-4 stroke-[2.5]" />
-                    <span>{language === 'tr' ? 'Kodu Doğrula ve Hesaba Gir' : 'Verify Code & Access Account'}</span>
+                    <span>{language === 'tr' ? 'Kodu Doğrula ve Devam Et' : 'Verify Code & Continue'}</span>
                   </>
                 )}
               </button>
@@ -649,10 +694,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500 px-1 pt-1">
                 <button
                   type="button"
-                  onClick={() => setStep('register')}
+                  onClick={() => setStep('form')}
                   className="text-slate-600 hover:text-slate-900 underline underline-offset-2 cursor-pointer"
                 >
-                  {language === 'tr' ? 'Bilgileri Değiştir' : 'Change Info'}
+                  {language === 'tr' ? 'E-postayı Değiştir' : 'Change Email'}
                 </button>
 
                 <button
@@ -673,6 +718,112 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </span>
                 </button>
               </div>
+            </div>
+          </form>
+        )}
+
+        {/* ─── STEP 3: POST-VERIFICATION PROFILE SETUP ─── */}
+        {step === 'profileSetup' && (
+          <form onSubmit={handleProfileSetupSubmit} autoComplete="off" className="space-y-3 flex-1 overflow-y-auto pr-1">
+            {/* Full Name */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                {language === 'tr' ? 'Ad Soyad' : 'Full Name'}
+              </label>
+              <div className="relative">
+                <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder={language === 'tr' ? 'Adınızı ve soyadınızı giriniz' : 'Enter your full name'}
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
+                />
+              </div>
+            </div>
+
+            {/* University */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                {language === 'tr' ? 'Üniversite' : 'University'}
+              </label>
+              <div className="relative">
+                <Building2 className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder={language === 'tr' ? 'örn. Koç Üniversitesi, İTÜ, ODTÜ' : 'e.g. University Name'}
+                  value={formData.university}
+                  onChange={(e) => setFormData({ ...formData, university: e.target.value })}
+                  className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Department & Class */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                {language === 'tr' ? 'Bölüm ve Sınıf' : 'Department & Year'}
+              </label>
+              <div className="relative">
+                <GraduationCap className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder={language === 'tr' ? 'örn. Endüstri Müh. 2. Sınıf' : 'e.g. Industrial Eng. Sophomore'}
+                  value={formData.departmentAndClass}
+                  onChange={(e) => setFormData({ ...formData, departmentAndClass: e.target.value })}
+                  className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Avatar Selection */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                {language === 'tr' ? 'Avatarını Seç' : 'Choose Avatar'}
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {RANDOM_AVATARS.map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, avatarEmoji: emoji })}
+                    className={`w-9 h-9 text-lg rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                      formData.avatarEmoji === emoji
+                        ? 'bg-[#ff7a00]/15 border-2 border-[#ff7a00] scale-110 shadow-xs'
+                        : 'bg-slate-100 hover:bg-slate-200 border border-slate-200'
+                    }`}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="pt-2 space-y-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 px-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider flex items-center justify-center space-x-2 transition-all shadow-md shadow-[#ff7a00]/30 cursor-pointer active:scale-95"
+              >
+                {loading ? (
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
+                ) : (
+                  <>
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>{language === 'tr' ? 'Kaydet ve Başla' : 'Save & Start'}</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleProfileSetupSubmit()}
+                className="w-full py-2.5 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer flex items-center justify-center space-x-1"
+              >
+                <span>{language === 'tr' ? 'Daha Sonra / Derse Başla' : 'Skip & Start'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           </form>
         )}

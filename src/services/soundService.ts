@@ -79,6 +79,13 @@ class SoundService {
   // 1. SORUYU DOĞRU BİLME SESİ (Crystal Bell Success Arpeggio)
   // ─────────────────────────────────────────────────────────────
   public playCorrect() {
+    if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate(15);
+      } catch {
+        // ignore
+      }
+    }
     this.ensureContext((ctx) => {
       const now = ctx.currentTime;
       // Bright, cheerful 4-note ascending major arpeggio: Eb5 (622), G5 (784), Bb5 (932), Eb6 (1244)
@@ -129,6 +136,13 @@ class SoundService {
   // 2. SORUYU YANLIŞ BİLME SESİ (Warm Dual-Tone "Uh-Oh" Buzzer)
   // ─────────────────────────────────────────────────────────────
   public playWrong() {
+    if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate([10, 50, 10]);
+      } catch {
+        // ignore
+      }
+    }
     this.ensureContext((ctx) => {
       const now = ctx.currentTime;
 

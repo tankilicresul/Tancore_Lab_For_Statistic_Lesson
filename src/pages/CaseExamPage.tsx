@@ -153,11 +153,16 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
 
       {/* Dataset Preview Table */}
       <div className="mb-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs">
-        <div className="flex items-center space-x-2.5 text-[#ff7a00] mb-4">
-          <Table className="w-5 h-5 stroke-[2.2] text-[#ff7a00]" />
-          <h3 className="text-xs font-black uppercase tracking-widest">
-            {language === 'tr' ? 'Vaka Veri Seti' : 'Case Dataset'}
-          </h3>
+        <div className="flex items-center justify-between text-[#ff7a00] mb-4">
+          <div className="flex items-center space-x-2.5">
+            <Table className="w-5 h-5 stroke-[2.2] text-[#ff7a00]" />
+            <h3 className="text-xs font-black uppercase tracking-widest">
+              {language === 'tr' ? 'Vaka Veri Seti' : 'Case Dataset'}
+            </h3>
+          </div>
+          <span className="text-[10px] font-bold text-slate-400 sm:hidden">
+            {language === 'tr' ? '← Tabloyu Kaydır →' : '← Scroll Table →'}
+          </span>
         </div>
 
         <div className="overflow-x-auto rounded-2xl border border-slate-200">
@@ -266,6 +271,8 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
                   <div className="mb-4">
                     <input
                       type="number"
+                      step="any"
+                      inputMode="decimal"
                       disabled={isSubmitted}
                       value={userAnswer !== undefined ? String(userAnswer) : ''}
                       onChange={(e) =>

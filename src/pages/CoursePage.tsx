@@ -344,18 +344,19 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
   const globalTargetNodeId = getGlobalTargetNodeId();
 
-  // Scroll to node if requested
+  // Auto-scroll on mount directly to the active lesson node (Duolingo style)
   useEffect(() => {
-    if (scrollToNodeId) {
+    const targetId = scrollToNodeId || globalTargetNodeId;
+    if (targetId) {
       const timer = setTimeout(() => {
-        const el = document.getElementById(`node-${scrollToNodeId}`);
+        const el = document.getElementById(`node-${targetId}`);
         if (el) {
           el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-      }, 250);
+      }, 100);
       return () => clearTimeout(timer);
     }
-  }, [scrollToNodeId]);
+  }, [scrollToNodeId, globalTargetNodeId]);
 
   // Duolingo-style: nodes alternate left/center/right horizontally
   // Pattern: 0=center, 1=right, 2=center, 3=left, 4=center, 5=right …
@@ -888,6 +889,28 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Floating Quick Jump to Active Lesson Node */}
+      {globalTargetNodeId && (
+        <div className="fixed bottom-20 right-4 sm:right-8 z-30 animate-fade-in">
+          <button
+            onClick={() => {
+              const el = document.getElementById(`node-${globalTargetNodeId}`);
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }}
+            className="flex items-center space-x-2 px-4 py-2.5 rounded-full bg-slate-900/95 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/30 backdrop-blur-md border border-slate-700 text-xs font-black transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+            title={language === 'tr' ? 'Sıradaki Derse Odaklan' : 'Jump to Current Lesson'}
+          >
+            <span className="w-2 h-2 rounded-full bg-[#ff7a00] animate-ping inline-block" />
+            <span className="tracking-wide">
+              {language === 'tr' ? 'Sıradaki Ders' : 'Current Lesson'}
+            </span>
+            <ChevronRight className="w-3.5 h-3.5 text-[#ff7a00] group-hover:translate-x-0.5 transition-transform" />
+          </button>
         </div>
       )}
     </div>
