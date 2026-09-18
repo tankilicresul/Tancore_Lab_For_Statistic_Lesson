@@ -95,6 +95,88 @@ const CoolSunglasses: React.FC<{ className?: string }> = ({ className = '' }) =>
   </svg>
 );
 
+const LiquidLavaStream: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <svg
+    viewBox="0 0 160 36"
+    className={`w-36 sm:w-44 h-auto overflow-visible pointer-events-none filter drop-shadow-[0_4px_6px_rgba(185,28,28,0.65)] ${className}`}
+    fill="none"
+    xmlns="https://www.w3.org/2000/svg"
+  >
+    <defs>
+      <linearGradient id="lavaStreamGradModal" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#FFF59D" />
+        <stop offset="25%" stopColor="#FACC15" />
+        <stop offset="50%" stopColor="#FB923C" />
+        <stop offset="75%" stopColor="#EA580C" />
+        <stop offset="100%" stopColor="#B91C1C" />
+      </linearGradient>
+
+      <linearGradient id="lavaCoreGradModal" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.95" />
+        <stop offset="40%" stopColor="#FEF08A" stopOpacity="0.8" />
+        <stop offset="100%" stopColor="#F97316" stopOpacity="0.1" />
+      </linearGradient>
+    </defs>
+
+    {/* Soft Red Ambient Lava Glow behind stream */}
+    <path
+      d="M 10 2 Q 40 8 80 4 Q 120 8 150 2 L 145 12 Q 120 18 80 14 Q 40 18 15 10 Z"
+      fill="#DC2626"
+      fillOpacity="0.5"
+      className="blur-[3px]"
+    />
+
+    {/* Main Liquid Lava Melt & Dripping Molten Lava Flow */}
+    <path
+      d="
+        M 8 0 
+        Q 24 3 40 1 
+        C 42 10, 44 19, 46 25 
+        C 48 30, 52 31, 54 28 
+        C 56 23, 55 12, 60 3 
+        Q 76 6 92 2 
+        C 94 12, 97 25, 99 33 
+        C 101 38, 106 39, 108 35 
+        C 111 29, 109 14, 116 3 
+        Q 134 5 152 0 
+        C 142 8, 138 12, 126 9 
+        C 118 7, 108 14, 96 11 
+        C 86 8, 70 12, 54 8 
+        C 40 5, 24 8, 8 0 
+        Z
+      "
+      fill="url(#lavaStreamGradModal)"
+    />
+
+    {/* Inner White/Yellow Hot Core Highlight */}
+    <path
+      d="
+        M 16 1 
+        Q 28 3 38 2 
+        C 40 8, 42 16, 44 21 
+        C 45 24, 48 25, 49 23 
+        C 50 19, 50 10, 54 2 
+        Q 70 5 86 2 
+        C 88 9, 91 19, 93 27 
+        C 94 31, 98 32, 100 28 
+        C 102 23, 101 11, 107 2 
+        Q 125 4 140 1 
+        Z
+      "
+      fill="url(#lavaCoreGradModal)"
+    />
+
+    {/* Falling Glowing Lava Droplets */}
+    <circle cx="46" cy="34" r="2" fill="#FACC15" className="animate-pulse" />
+    <circle cx="46" cy="34" r="1" fill="#FFFFFF" />
+
+    <circle cx="99" cy="38" r="2.5" fill="#F97316" className="animate-pulse" />
+    <circle cx="99" cy="38" r="1.2" fill="#FEF08A" />
+
+    <circle cx="130" cy="22" r="1.5" fill="#FACC15" />
+  </svg>
+);
+
 const IceCrystal3D: React.FC<{
   className?: string;
   size?: 'sm' | 'md' | 'lg';
@@ -532,15 +614,30 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
           </div>
         </div>
 
-        {/* Big Bold Streak Number Display */}
-        <div className="flex flex-col items-center justify-center">
+        {/* Big Bold Streak Number Display with Liquid Lava Stream & 3D Lava Fire Rock */}
+        <div className="flex flex-col items-center justify-center relative mt-1">
           <div className="flex items-center justify-center space-x-2">
-            <span className="text-6xl sm:text-7xl font-black text-white tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)]">
+            <span className="text-6xl sm:text-7xl font-black text-white tracking-tight drop-shadow-[0_6px_12px_rgba(0,0,0,0.35)] leading-none">
               {displayStreak}
             </span>
-            <Flame className="w-10 h-10 sm:w-12 sm:h-12 text-yellow-300 fill-yellow-300 animate-bounce drop-shadow-md" />
+            {/* 3D Lava Fire Rock Icon (Photo 2 style, static fire effect, no bounce animation) */}
+            <div className="relative flex items-center justify-center ml-1">
+              <LavaRock3D
+                size="lg"
+                showFlames={true}
+                hasSolvedBadge={false}
+                isToday={true}
+                className="scale-125 sm:scale-135 filter drop-shadow-[0_6px_12px_rgba(234,88,12,0.65)]"
+              />
+            </div>
           </div>
-          <span className="text-base sm:text-lg font-black text-amber-100 tracking-wide mt-0.5 drop-shadow-xs">
+
+          {/* Dripping Liquid Lava Stream under the number "3" flowing down to "günlük seri!" */}
+          <div className="flex justify-center -mt-1.5 -mb-0.5">
+            <LiquidLavaStream />
+          </div>
+
+          <span className="text-base sm:text-lg font-black text-amber-100 tracking-wide drop-shadow-sm">
             {isTr ? 'günlük seri!' : 'day streak!'}
           </span>
         </div>
