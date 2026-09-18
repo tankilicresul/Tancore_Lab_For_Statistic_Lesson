@@ -231,18 +231,18 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     }
   }, [animationPhase, animatedXp, xp, displayRank, userRank]);
 
-  // Phase 1 -> Phase 2 Transition Pause: Brief delay to let the completed XP sink in
+  // Phase 1 -> Phase 2 Transition Pause: Comfortably paced delay to let the user register target XP
   useEffect(() => {
     if (animationPhase !== 'pause_before_climb') return;
 
     const timer = setTimeout(() => {
       setAnimationPhase('climbing');
-    }, 350);
+    }, 700);
 
     return () => clearTimeout(timer);
   }, [animationPhase]);
 
-  // Phase 2: Step-by-Step Rank Climbing Interval (Row climbs position by position)
+  // Phase 2: Step-by-Step Rank Climbing Interval (Row climbs position by position deliberately & visibly)
   useEffect(() => {
     if (animationPhase !== 'climbing' || displayRank === null || !userRank) return;
 
@@ -257,7 +257,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       soundService.playWheelTick(progress);
       const timer = setTimeout(() => {
         setDisplayRank((current) => (current !== null ? current - 1 : userRank));
-      }, 230);
+      }, 550);
 
       return () => clearTimeout(timer);
     } else {
@@ -275,7 +275,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
     const celebrationTimer = setTimeout(() => {
       setAnimationPhase('idle');
-    }, 1200);
+    }, 1500);
 
     return () => clearTimeout(celebrationTimer);
   }, [animationPhase, userRank]);
@@ -590,6 +590,12 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   <span className="text-[10px] font-black text-[#ff7a00] bg-orange-100 px-1.5 py-0.5 rounded-md">
                     (Sen)
                   </span>
+                  {isClimbing && (
+                    <span className="ml-1.5 text-[9.5px] font-black text-amber-700 bg-amber-200/90 px-1.5 py-0.5 rounded-md inline-flex items-center space-x-1 animate-bounce">
+                      <span>▲</span>
+                      <span>{language === 'tr' ? 'Sıralamada Yükseliyor' : 'Climbing Ranks'}</span>
+                    </span>
+                  )}
                 </span>
                 <span className="text-[10px] text-slate-500 truncate block">
                   {effectiveProfile.university || (language === 'tr' ? 'Üniversite' : 'University')}
@@ -655,11 +661,12 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                 >
                   <div className="flex items-center space-x-2.5 min-w-0">
                     <span
-                      className={`text-xs font-black w-6 text-center ${
+                      className={`text-xs font-black min-w-6 text-center flex items-center justify-center space-x-0.5 ${
                         isSelf ? 'text-[#ff7a00]' : 'text-slate-400'
                       }`}
                     >
-                      {currentVisualRank}.
+                      <span>{currentVisualRank}.</span>
+                      {isSelf && isClimbing && <Flame className="w-3 h-3 text-yellow-500 animate-pulse" />}
                     </span>
                     <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 shadow-2xs flex items-center justify-center overflow-hidden shrink-0">
                       <UserAvatar
@@ -682,6 +689,12 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                         {isSelf && (
                           <span className="text-[10px] font-black text-[#ff7a00] bg-orange-100 px-1.5 py-0.2 rounded-md">
                             {language === 'tr' ? 'Sen' : 'You'}
+                          </span>
+                        )}
+                        {isSelf && isClimbing && (
+                          <span className="text-[9px] font-black text-amber-700 bg-amber-200/90 px-1.5 py-0.5 rounded-md flex items-center space-x-0.5 animate-bounce">
+                            <span>▲</span>
+                            <span>{language === 'tr' ? 'Yükseliyor' : 'Climbing'}</span>
                           </span>
                         )}
                       </div>
