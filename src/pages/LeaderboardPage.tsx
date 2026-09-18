@@ -34,15 +34,19 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   const [hasScrolledInLeaderboard, setHasScrolledInLeaderboard] = useState(false);
   const [dbProfiles, setDbProfiles] = useState<PublicProfile[]>([]);
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(true);
-  const [hasInitializedAnim, setHasInitializedAnim] = useState(false);
 
-  // Animation State for XP Count-up & Rank Climbing:
+  // Animation Phase State Machine for XP Count-up & Step-by-Step Rank Climbing:
+  type AnimationPhase = 'idle' | 'counting_xp' | 'pause_before_climb' | 'climbing' | 'celebrating';
+  const [animationPhase, setAnimationPhase] = useState<AnimationPhase>('idle');
   const [animatedXp, setAnimatedXp] = useState<number | null>(null);
-  const [isCountingXp, setIsCountingXp] = useState(false);
   const [displayRank, setDisplayRank] = useState<number | null>(null);
-  const [isClimbing, setIsClimbing] = useState(false);
-  const [justArrived, setJustArrived] = useState(false);
+  const hasInitializedAnim = useRef(false);
   const listRef = useRef<HTMLDivElement | null>(null);
+
+  // Derived state flags for JSX compatibility
+  const isCountingXp = animationPhase === 'counting_xp';
+  const isClimbing = animationPhase === 'climbing' || animationPhase === 'pause_before_climb';
+  const justArrived = animationPhase === 'celebrating';
 
   useEffect(() => {
     let isMounted = true;
@@ -102,6 +106,13 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     unlockedBadges,
   });
 
+  // Keep displayRank synchronized with userRank when not animating
+  useEffect(() => {
+    if (animationPhase === 'idle' && userRank && displayRank !== userRank) {
+      setDisplayRank(userRank);
+    }
+  }, [animationPhase, userRank, displayRank]);
+
   // Rank & XP Climb Animation Initialization
   const startRankClimbAnimation = (fromRankOverride?: number, fromXpOverride?: number) => {
     if (!userRank || sortedLeaderboard.length === 0) return;
@@ -126,15 +137,16 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         : NaN;
     }
 
-    // Has user earned new XP since last visit?
+    // Has user earned new XP or improved rank since last visit?
     const hasGainedXp = !isNaN(prevXp) && currentXpTarget > prevXp;
     const isFirstTimeWithXp = isNaN(prevXp) && currentXpTarget > 0;
+    const hasRankImproved = !isNaN(prevRank) && prevRank > userRank;
 
-    if (hasGainedXp || isFirstTimeWithXp || fromRankOverride !== undefined) {
+    if (hasGainedXp || hasRankImproved || isFirstTimeWithXp || fromRankOverride !== undefined) {
       // Calculate effective previous XP
       const effectivePrevXp = isNaN(prevXp)
         ? Math.max(0, currentXpTarget - (currentXpTarget >= 50 ? 50 : 15))
-        : prevXp;
+        : Math.min(prevXp, currentXpTarget);
 
       // How many other students have strictly more XP than effectivePrevXp?
       const rankWithPrevXp = sortedLeaderboard.filter(
@@ -145,9 +157,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       let startRank = fromRankOverride;
       if (startRank === undefined) {
         if (!isNaN(prevRank) && prevRank > userRank) {
-          startRank = prevRank;
+          startRank = Math.min(prevRank, userRank + 5);
         } else if (rankWithPrevXp > userRank) {
-          startRank = rankWithPrevXp;
+          startRank = Math.min(rankWithPrevXp, userRank + 5);
         } else {
           // If rank didn't mathematically cross a student boundary, guarantee a rewarding climb!
           const earnedDelta = Math.max(15, currentXpTarget - effectivePrevXp);
@@ -159,14 +171,18 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         }
       }
 
-      // If startRank is greater than userRank, start the 2-phase animation!
+      // If startRank is greater than userRank, start the multi-phase animation!
       if (startRank !== undefined && startRank > userRank) {
         localStorage.setItem('tancore_start_climb_rank', String(startRank));
         setAnimatedXp(effectivePrevXp);
         setDisplayRank(startRank);
-        setIsCountingXp(true);
-        setIsClimbing(false);
-        setJustArrived(false);
+
+        if (effectivePrevXp < currentXpTarget) {
+          setAnimationPhase('counting_xp');
+        } else {
+          // XP is already at target, jump directly to climb sequence
+          setAnimationPhase('pause_before_climb');
+        }
         return;
       }
     }
@@ -174,23 +190,22 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     // Static fallback: User has not gained XP, display current position directly
     setAnimatedXp(currentXpTarget);
     setDisplayRank(userRank);
-    setIsCountingXp(false);
-    setIsClimbing(false);
+    setAnimationPhase('idle');
     localStorage.setItem('tancore_last_seen_rank', String(userRank));
     localStorage.setItem('tancore_last_seen_xp', String(currentXpTarget));
   };
 
   useEffect(() => {
     if (!userRank || sortedLeaderboard.length === 0) return;
-    if (hasInitializedAnim) return;
+    if (hasInitializedAnim.current) return;
 
-    setHasInitializedAnim(true);
+    hasInitializedAnim.current = true;
     startRankClimbAnimation();
-  }, [userRank, sortedLeaderboard.length, hasInitializedAnim]);
+  }, [userRank, sortedLeaderboard.length]);
 
   // Phase 1: Rapid XP Count-up Effect (Numbers count up rapidly to target XP)
   useEffect(() => {
-    if (!isCountingXp || animatedXp === null) return;
+    if (animationPhase !== 'counting_xp' || animatedXp === null) return;
     const targetXp = xp || 0;
 
     if (animatedXp < targetXp) {
@@ -202,26 +217,34 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       }, 35);
 
       return () => clearTimeout(timer);
-    } else if (animatedXp >= targetXp) {
-      // Phase 1 finished! Play satisfying gold coin chime & start Phase 2
+    } else {
+      // Phase 1 finished! Play satisfying gold coin chime & transition to climb pause
       soundService.playXpCountComplete();
-      setIsCountingXp(false);
       localStorage.setItem('tancore_last_seen_xp', String(targetXp));
 
       if (displayRank !== null && userRank && displayRank > userRank) {
-        const climbTimer = setTimeout(() => {
-          setIsClimbing(true);
-        }, 320);
-        return () => clearTimeout(climbTimer);
+        setAnimationPhase('pause_before_climb');
       } else {
         localStorage.setItem('tancore_last_seen_rank', String(userRank));
+        setAnimationPhase('celebrating');
       }
     }
-  }, [isCountingXp, animatedXp, xp, displayRank, userRank]);
+  }, [animationPhase, animatedXp, xp, displayRank, userRank]);
+
+  // Phase 1 -> Phase 2 Transition Pause: Brief delay to let the completed XP sink in
+  useEffect(() => {
+    if (animationPhase !== 'pause_before_climb') return;
+
+    const timer = setTimeout(() => {
+      setAnimationPhase('climbing');
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [animationPhase]);
 
   // Phase 2: Step-by-Step Rank Climbing Interval (Row climbs position by position)
   useEffect(() => {
-    if (!isClimbing || displayRank === null || !userRank) return;
+    if (animationPhase !== 'climbing' || displayRank === null || !userRank) return;
 
     if (displayRank > userRank) {
       // Calculate climb progress towards the top
@@ -233,37 +256,41 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       // Play rising wheel/ratchet tick sound for each rank passed
       soundService.playWheelTick(progress);
       const timer = setTimeout(() => {
-        setDisplayRank((current) => (current ? current - 1 : userRank));
+        setDisplayRank((current) => (current !== null ? current - 1 : userRank));
       }, 230);
 
       return () => clearTimeout(timer);
-    } else if (displayRank === userRank) {
-      // Phase 2 finished! Play superhero landing impact sound (with victory fanfare if in Top 3)!
-      soundService.playSuperheroLanding(userRank <= 3);
-      setIsClimbing(false);
-      setJustArrived(true);
-
-      localStorage.setItem('tancore_last_seen_rank', String(userRank));
-
-      const popTimer = setTimeout(() => {
-        setJustArrived(false);
-      }, 850);
-
-      return () => clearTimeout(popTimer);
+    } else {
+      // Phase 2 finished! User reached target rank, start superhero landing celebration!
+      setAnimationPhase('celebrating');
     }
-  }, [isClimbing, displayRank, userRank]);
+  }, [animationPhase, displayRank, userRank]);
+
+  // Phase 3: Superhero Landing Celebration (Bass impact, victory fanfare, glowing pulse)
+  useEffect(() => {
+    if (animationPhase !== 'celebrating' || !userRank) return;
+
+    soundService.playSuperheroLanding(userRank <= 3);
+    localStorage.setItem('tancore_last_seen_rank', String(userRank));
+
+    const celebrationTimer = setTimeout(() => {
+      setAnimationPhase('idle');
+    }, 1200);
+
+    return () => clearTimeout(celebrationTimer);
+  }, [animationPhase, userRank]);
 
   // Ambient soothing lava flow if user is in Top 3!
   useEffect(() => {
-    if (userRank && userRank <= 3 && !isClimbing) {
+    if (userRank && userRank <= 3 && animationPhase === 'idle') {
       soundService.playLavaFlow(0.12);
-    } else if (userRank && userRank > 3) {
+    } else {
       soundService.stopAmbient();
     }
     return () => {
       soundService.stopAmbient();
     };
-  }, [userRank, isClimbing]);
+  }, [userRank, animationPhase]);
 
   // Auto-Scroll to keep user row in view on load and during climb
   useEffect(() => {
@@ -273,14 +300,18 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         if (el) {
           el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-      }, 100);
+      }, 80);
       return () => clearTimeout(timer);
     }
-  }, [displayRank, isCountingXp, isClimbing]);
+  }, [displayRank, animationPhase]);
 
   // Construct dynamically positioned leaderboard array during rank climb
   const getRenderedLeaderboard = () => {
-    if (displayRank === null || displayRank === userRank) {
+    if (
+      displayRank === null ||
+      displayRank === userRank ||
+      animationPhase === 'idle'
+    ) {
       return sortedLeaderboard;
     }
 
