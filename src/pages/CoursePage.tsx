@@ -697,46 +697,43 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
       {/* Lesson Detail Dialog */}
       {selectedNode && selectedNode.lesson && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-fade-in">
-          <div className="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl relative">
+        <div
+          onClick={() => setSelectedNode(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl relative animate-scale-up"
+          >
             <button
               onClick={() => setSelectedNode(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold text-lg"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold text-lg cursor-pointer p-1"
             >
               ✕
             </button>
 
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 rounded-full bg-[#ff7a00] text-white flex items-center justify-center shadow-md shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shadow-md shadow-[#ff7a00]/25 shrink-0">
                 {getNodeAnimalIcon(selectedNode.order, 'text-white')}
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug break-words mb-0.5">
+              <div className="flex-1 min-w-0 pr-6">
+                <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug break-words">
                   {selectedNode.title}
                 </h3>
-                <span className="text-[10px] font-black uppercase text-[#ff7a00] tracking-widest font-mono block">
+                <span className="text-[10px] font-black uppercase text-[#ff7a00] tracking-widest font-mono block mt-0.5">
                   {`DERS ${selectedNode.lesson.order || selectedNode.order}`}
                 </span>
               </div>
             </div>
 
-            {(() => {
-              const rawText = getLocalized(selectedNode.lesson.conceptCard, language);
-
-              return (
-                <div className="text-xs text-slate-600 font-medium leading-relaxed mb-4 max-h-48 overflow-y-auto">
-                  <MathFormulaText text={rawText} />
-                </div>
-              );
-            })()}
-
+            {/* Direct Prominent Start Button (Instant Viewport Visibility) */}
             <button
               onClick={() => {
                 const node = selectedNode;
                 setSelectedNode(null);
                 onSelectLesson(node.id);
               }}
-              className="w-full py-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-98"
+              className="w-full py-4 mb-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-98"
             >
               <Play className="w-4 h-4 fill-white" />
               <span>
@@ -749,6 +746,16 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                   : 'START LESSON (+15 XP)'}
               </span>
             </button>
+
+            {(() => {
+              const rawText = getLocalized(selectedNode.lesson.conceptCard, language);
+
+              return (
+                <div className="text-xs text-slate-600 font-medium leading-relaxed max-h-36 overflow-y-auto p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
+                  <MathFormulaText text={rawText} />
+                </div>
+              );
+            })()}
           </div>
         </div>
       )}
@@ -892,24 +899,39 @@ export const CoursePage: React.FC<CoursePageProps> = ({
         </div>
       )}
 
-      {/* Floating Quick Jump to Active Lesson Node */}
+      {/* Floating Direct Start / Quick Action Button */}
       {globalTargetNodeId && (
-        <div className="fixed bottom-20 right-4 sm:right-8 z-30 animate-fade-in">
+        <div className="fixed bottom-20 right-4 sm:right-6 z-30 animate-fade-in">
           <button
             onClick={() => {
-              const el = document.getElementById(`node-${globalTargetNodeId}`);
-              if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              const isCaseHub = globalTargetNodeId.endsWith('-cases');
+              if (isCaseHub) {
+                const targetModId = globalTargetNodeId.replace('-cases', '');
+                const mod = activeModulesList.find((m) => m.id === targetModId);
+                if (mod) setSelectedCaseHubModule(mod);
+              } else {
+                const modWithLesson = activeModulesList.find((m) =>
+                  m.lessons.some((l) => l.id === globalTargetNodeId)
+                );
+                const trackIdx = modWithLesson ? activeModulesList.indexOf(modWithLesson) : 0;
+                const isUnlocked = modWithLesson ? isModuleUnlockedCheck(modWithLesson, trackIdx) : true;
+                if (!isUnlocked && (!isAuthenticated || !isVerified)) {
+                  onGuestGateRequired?.();
+                  return;
+                }
+                onSelectLesson(globalTargetNodeId);
               }
             }}
-            className="flex items-center space-x-2 px-4 py-2.5 rounded-full bg-slate-900/95 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/30 backdrop-blur-md border border-slate-700 text-xs font-black transition-all hover:scale-105 active:scale-95 cursor-pointer group"
-            title={language === 'tr' ? 'Sıradaki Derse Odaklan' : 'Jump to Current Lesson'}
+            className="flex items-center space-x-2.5 px-5 py-3.5 rounded-full bg-gradient-to-r from-[#ff7a00] to-amber-500 hover:from-[#e66e00] hover:to-amber-600 text-white shadow-xl shadow-[#ff7a00]/35 border-2 border-white text-xs sm:text-sm font-black transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+            title={language === 'tr' ? 'Sıradaki Derse Başla' : 'Start Next Lesson'}
           >
-            <span className="w-2 h-2 rounded-full bg-[#ff7a00] animate-ping inline-block" />
-            <span className="tracking-wide">
-              {language === 'tr' ? 'Sıradaki Ders' : 'Current Lesson'}
+            <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+              <Play className="w-3.5 h-3.5 fill-white" />
+            </div>
+            <span className="tracking-wide uppercase">
+              {language === 'tr' ? 'Derse Başla (+15 XP)' : 'Start Lesson (+15 XP)'}
             </span>
-            <ChevronRight className="w-3.5 h-3.5 text-[#ff7a00] group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight className="w-4 h-4 text-white stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
       )}

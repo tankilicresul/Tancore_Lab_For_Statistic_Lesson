@@ -463,18 +463,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {/* Header Banner - Step 3: Profile Setup */}
         {step === 'profileSetup' && (
-          <div className="text-center mb-4">
+          <div className="text-center mb-3">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#ff7a00]/10 text-[#ff7a00] border border-[#ff7a00]/25 shadow-inner mb-2">
               <Sparkles className="w-6 h-6 stroke-[2] text-[#ff7a00]" />
             </div>
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
               {language === 'tr' ? 'Hoş Geldin! 🎉 Profilini Oluştur' : 'Welcome! 🎉 Setup Profile'}
             </h2>
-            <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
-              {language === 'tr'
-                ? 'Liderlik tablosunda yerini almak için bilgilerini belirle. (Dilediğin zaman değiştirebilirsin)'
-                : 'Set your name to appear on the leaderboard. (Can be updated anytime)'}
-            </p>
+            <div className="mt-2 flex items-center justify-center">
+              <button
+                type="button"
+                onClick={() => handleProfileSetupSubmit()}
+                className="px-4 py-1.5 rounded-full bg-orange-50 hover:bg-orange-100 text-[#ff7a00] border border-orange-200 text-xs font-black transition-all cursor-pointer inline-flex items-center space-x-1 shadow-xs"
+              >
+                <span>{language === 'tr' ? 'Hemen Derse Başla ➔' : 'Start Learning Now ➔'}</span>
+              </button>
+            </div>
           </div>
         )}
 
