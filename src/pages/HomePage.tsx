@@ -414,9 +414,17 @@ export const HomePage: React.FC<HomePageProps> = ({
                 : `Hi ${studentDisplayName}! I'm Tanco, your TA.`}
             </h1>
             <p className="text-[11.5px] sm:text-xs text-slate-700 font-medium leading-relaxed">
-              {language === 'tr'
-                ? "Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman fotoğrafıma tıklayarak ulaşabilirsin. Fotoğrafıma dokunup kaydırmayı dene !"
-                : "I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. You can reach me anytime by clicking on my photo. Try tapping and dragging my photo!"}
+              {language === 'tr' ? (
+                <>
+                  Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman fotoğrafıma tıklayarak ulaşabilirsin.{' '}
+                  <strong className="font-black text-[#ff7a00]">Fotoğrafıma dokunup kaydırmayı dene !</strong>
+                </>
+              ) : (
+                <>
+                  I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. You can reach me anytime by clicking on my photo.{' '}
+                  <strong className="font-black text-[#ff7a00]">Try tapping and dragging my photo!</strong>
+                </>
+              )}
             </p>
           </div>
 
