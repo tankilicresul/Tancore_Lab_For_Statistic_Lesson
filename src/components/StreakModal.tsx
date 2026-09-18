@@ -293,6 +293,46 @@ const ExtinguishedLavaRock3D: React.FC<{
   );
 };
 
+const FutureRock3D: React.FC<{
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+}> = ({ className = '', size = 'md' }) => {
+  const [imgError, setImgError] = useState(false);
+
+  const dims = {
+    sm: 'w-4 h-3.5',
+    md: 'w-7 h-6 sm:w-8 sm:h-7',
+    lg: 'w-10 h-8.5',
+  }[size];
+
+  return (
+    <div className={`relative flex items-center justify-center select-none ${className}`}>
+      {/* 3D Natural Rock Boulder Asset from User's Reference Photo */}
+      {!imgError ? (
+        <img
+          src="/future-rock-3d.png"
+          alt="3D Future Rock"
+          className={`${dims} object-contain filter drop-shadow-[0_3px_6px_rgba(71,85,105,0.45)] opacity-85 hover:opacity-100 animate-future-rock transition-all`}
+          onError={() => setImgError(true)}
+        />
+      ) : (
+        /* Vector 3D Stone Fallback */
+        <svg
+          viewBox="0 0 100 90"
+          className={`${dims} overflow-visible filter drop-shadow-[0_3px_6px_rgba(71,85,105,0.45)] animate-future-rock`}
+          fill="none"
+          xmlns="https://www.w3.org/2000/svg"
+        >
+          <path d="M18 72 Q15 42 42 18 Q55 12 70 18 Q90 38 88 72 Q68 85 45 84 Q28 84 18 72 Z" fill="#57534e" stroke="#292524" strokeWidth="2.5" />
+          <path d="M42 22 Q48 40 38 58 Q44 68 54 70" stroke="#78716c" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M52 30 Q68 44 74 68" stroke="#44403c" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M38 48 L58 46" stroke="#a8a29e" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      )}
+    </div>
+  );
+};
+
 export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
   const { language, streak, isAuthenticated, isVerified, activityDates } = useAppStore();
   const [imgError, setImgError] = useState(false);
@@ -537,12 +577,14 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                       </div>
                     )}
 
-                    {/* FUTURE (Unreached upcoming day) */}
+                    {/* GELECEK GÜNLER (Upcoming unreached day - 3D Natural Rock) */}
                     {isFuture && (
                       <div
-                        className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100/70 border border-dashed border-slate-200/80 flex items-center justify-center"
-                        title={isTr ? 'Gelecek Gün' : 'Future Day'}
-                      />
+                        className="relative flex items-center justify-center pt-2 opacity-80 hover:opacity-100 transition-opacity"
+                        title={isTr ? 'Gelecek Gün (Kaya)' : 'Future Day (Rock)'}
+                      >
+                        <FutureRock3D size="md" />
+                      </div>
                     )}
                   </div>
                 </div>
@@ -550,8 +592,8 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
             })}
           </div>
 
-          {/* Mini Legend for Lava vs Ice vs Extinguished */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 pt-2.5 border-t border-slate-100 text-[10px] sm:text-[11px] font-bold text-slate-500 flex-wrap">
+          {/* Mini Legend for Lava vs Ice vs Extinguished vs Future */}
+          <div className="flex items-center justify-center gap-2 sm:gap-2.5 mt-3 pt-2.5 border-t border-slate-100 text-[10px] sm:text-[10.5px] font-bold text-slate-500 flex-wrap">
             <span className="flex items-center gap-1">
               <LavaRock3D size="sm" showFlames={false} hasSolvedBadge={false} />
               <span className="text-orange-600">{isTr ? 'Lavlı Seri' : 'Active Lava'}</span>
@@ -562,7 +604,11 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
             </span>
             <span className="flex items-center gap-1">
               <ExtinguishedLavaRock3D size="sm" />
-              <span className="text-slate-500">{isTr ? 'Sönmüş Lav' : 'Extinguished'}</span>
+              <span className="text-slate-600">{isTr ? 'Sönmüş' : 'Dormant'}</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <FutureRock3D size="sm" />
+              <span className="text-stone-500">{isTr ? 'Gelecek' : 'Future'}</span>
             </span>
           </div>
         </div>

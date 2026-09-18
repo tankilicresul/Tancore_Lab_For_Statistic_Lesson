@@ -418,3 +418,19 @@ body {
 .animate-dormant-rock {
   animation: dormantRock 4s ease-in-out infinite;
 }
+
+/* 3D Future Natural Rock subtle resting presence */
+@keyframes futureRock {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 3px 6px rgba(100, 116, 139, 0.35));
+  }
+  50% {
+    transform: translateY(-1px) scale(1.02);
+    filter: drop-shadow(0 4px 8px rgba(100, 116, 139, 0.5));
+  }
+}
+
+.animate-future-rock {
+  animation: futureRock 3.6s ease-in-out infinite;
+}
