@@ -26,6 +26,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { soundService } from '../services/soundService';
 
 import { ConceptDiagram } from '../components/ConceptDiagram';
 import { MathFormulaText } from '../components/MathFormulaText';
@@ -94,9 +95,12 @@ export const LessonPage: React.FC<LessonPageProps> = ({
     }
 
     if (isCorrect) {
+      soundService.playCorrect();
       completeLesson(lesson.id, module.id, 15);
       setIsCompleted(true);
       triggerConfetti();
+    } else {
+      soundService.playWrong();
     }
   };
 

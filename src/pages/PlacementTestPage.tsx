@@ -15,6 +15,7 @@ import {
   BarChart3,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { soundService } from '../services/soundService';
 
 interface PlacementTestPageProps {
   onBackToHome: (targetNodeId?: string) => void;
@@ -45,6 +46,7 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
       setCurrentIndex((prev) => prev + 1);
     } else {
       // Completed all 10 diagnostic questions
+      soundService.playCorrect();
       confetti({
         particleCount: 80,
         spread: 70,

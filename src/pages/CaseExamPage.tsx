@@ -6,6 +6,7 @@ import { getNextTopicItem } from '../data/modules';
 import { MathFormulaText } from '../components/MathFormulaText';
 import { ArrowLeft, Trophy, CheckCircle2, Table, HelpCircle, Eye, AlertCircle, ArrowRight, Home, RefreshCw, PartyPopper, Check, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { soundService } from '../services/soundService';
 
 interface CaseExamPageProps {
   caseExam: CaseExam;
@@ -78,14 +79,18 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
         : String(userAnswer).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase());
 
     if (isCorrect || !q) {
+      soundService.playCorrect();
       completeCaseExam(caseExam.id, module.id, 50);
       setIsCompleted(true);
       setShowExpectedApproach(true);
       triggerConfetti();
+    } else {
+      soundService.playWrong();
     }
   };
 
   const handleFinishCase = () => {
+    soundService.playCorrect();
     completeCaseExam(caseExam.id, module.id, 50);
     setIsCompleted(true);
     setShowExpectedApproach(true);
