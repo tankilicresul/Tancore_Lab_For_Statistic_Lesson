@@ -94,6 +94,73 @@ const CoolSunglasses: React.FC<{ className?: string }> = ({ className = '' }) =>
   </svg>
 );
 
+const IceCrystal3D: React.FC<{
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+  showSmoke?: boolean;
+  hasSolvedBadge?: boolean;
+}> = ({ className = '', size = 'md', showSmoke = true, hasSolvedBadge = true }) => {
+  const [imgError, setImgError] = useState(false);
+
+  const dims = {
+    sm: 'w-3.5 h-5',
+    md: 'w-6 h-8 sm:w-7 sm:h-9',
+    lg: 'w-9 h-12',
+  }[size];
+
+  return (
+    <div className={`relative flex items-center justify-center select-none ${className}`}>
+      {/* Rising Cold White/Frost Vapor Animation from Top of Crystal */}
+      {showSmoke && (
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 pointer-events-none w-6 h-7 flex items-center justify-center z-20">
+          {/* Mist puff 1: Main rising frost wisp */}
+          <div className="absolute w-3 h-3 rounded-full bg-gradient-to-t from-sky-200/90 to-white/95 blur-[0.75px] shadow-[0_0_8px_rgba(56,189,248,0.6)] animate-cold-smoke-1" />
+          {/* Mist puff 2: Right drift wisp */}
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-gradient-to-t from-cyan-200/85 to-white/95 blur-[0.75px] shadow-[0_0_6px_rgba(14,165,233,0.5)] animate-cold-smoke-2" />
+          {/* Mist puff 3: Left drift wisp */}
+          <div className="absolute w-3 h-3 rounded-full bg-gradient-to-t from-sky-100/80 to-white/90 blur-[1px] shadow-[0_0_6px_rgba(56,189,248,0.4)] animate-cold-smoke-3" />
+        </div>
+      )}
+
+      {/* 3D Ice Crystal from User's Reference Photo */}
+      {!imgError ? (
+        <img
+          src="/ice-crystal-3d.png"
+          alt="3D Ice Crystal"
+          className={`${dims} object-contain filter drop-shadow-[0_4px_8px_rgba(14,165,233,0.55)] animate-ice-crystal transition-transform`}
+          onError={() => setImgError(true)}
+        />
+      ) : (
+        /* Multi-faceted 3D SVG Fallback */
+        <svg
+          viewBox="0 0 100 146"
+          className={`${dims} overflow-visible filter drop-shadow-[0_4px_8px_rgba(14,165,233,0.55)] animate-ice-crystal`}
+          fill="none"
+          xmlns="https://www.w3.org/2000/svg"
+        >
+          <polygon points="36,4 70,18 97,48 50,144 14,50" fill="#0284c7" />
+          <polygon points="36,4 70,18 64,36 30,22" fill="#E0F2FE" />
+          <polygon points="14,50 36,4 30,22 24,78" fill="#38BDF8" />
+          <polygon points="30,22 64,36 50,118" fill="#7DD3FC" />
+          <polygon points="64,36 97,48 84,102 50,118" fill="#0284c7" />
+          <polygon points="24,78 50,118 50,144" fill="#0369A1" />
+          <polygon points="50,118 84,102 50,144" fill="#075985" />
+          <line x1="30" y1="22" x2="64" y2="36" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" opacity="0.9" />
+          <line x1="30" y1="22" x2="50" y2="118" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" opacity="0.85" />
+          <line x1="64" y1="36" x2="50" y2="118" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" opacity="0.85" />
+        </svg>
+      )}
+
+      {/* Solved checkmark badge on bottom-right of crystal */}
+      {hasSolvedBadge && (
+        <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-cyan-600 text-white flex items-center justify-center ring-1 ring-white shadow-xs z-10">
+          <Check className="w-2.5 h-2.5 stroke-[3.5]" />
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
   const { language, streak, isAuthenticated, isVerified, activityDates } = useAppStore();
   const [imgError, setImgError] = useState(false);
@@ -279,7 +346,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                     {d.label}
                   </span>
 
-                  <div className="relative flex items-center justify-center">
+                  <div className="relative h-11 sm:h-12 flex items-center justify-center">
                     {/* LAVLI (Fiery Lava Active Streak Day) */}
                     {isLava && (
                       <div
@@ -298,13 +365,17 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                       </div>
                     )}
 
-                    {/* BUZLU (Icy Frost Broken / Earlier Streak Day) */}
+                    {/* BUZLU (3D Ice Crystal with Cold White Steam Rising) */}
                     {isIce && (
                       <div
-                        className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shadow-md bg-gradient-to-tr from-cyan-400 via-sky-400 to-blue-500 text-white shadow-cyan-400/50 ring-1 ring-cyan-200/90"
-                        title={isTr ? 'Buzlu (Önceki Çözülen Gün)' : 'Frozen (Previous Solved Day)'}
+                        className="relative flex items-center justify-center pt-2"
+                        title={
+                          isTr
+                            ? 'Buzlu Gün (Önceki Çözülen Dersler - Soğuk Duman Tütüyor)'
+                            : 'Frozen Day (Previous Solved Lessons - Steaming Ice)'
+                        }
                       >
-                        <Check className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[3] text-cyan-50 drop-shadow-xs" />
+                        <IceCrystal3D size="md" showSmoke={true} />
                       </div>
                     )}
 
@@ -338,7 +409,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
               <span className="text-orange-600">{isTr ? 'Lavlı Seri' : 'Active Lava'}</span>
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 shadow-xs ring-1 ring-cyan-200" />
+              <IceCrystal3D size="sm" showSmoke={false} hasSolvedBadge={false} />
               <span className="text-sky-600">{isTr ? 'Buzlu Günler' : 'Frozen Ice'}</span>
             </span>
           </div>
