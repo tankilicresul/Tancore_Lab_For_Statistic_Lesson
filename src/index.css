@@ -648,3 +648,116 @@ body {
 .animate-future-rock {
   animation: futureRock 3.6s ease-in-out infinite;
 }
+
+/* ────────────────────────────────────────────────────────
+   PAGE TRANSITION SYSTEM (GPU-Accelerated)
+   ──────────────────────────────────────────────────────── */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnter 0.22s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* ────────────────────────────────────────────────────────
+   MODAL ENTRANCE (GPU-Accelerated)
+   ──────────────────────────────────────────────────────── */
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.animate-modal-enter {
+  animation: modalEnter 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* ────────────────────────────────────────────────────────
+   NODE RING PULSE (100% GPU-Accelerated, Zero Repaints)
+   ──────────────────────────────────────────────────────── */
+@keyframes nodeRingPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.16);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.16);
+    opacity: 0;
+  }
+}
+.animate-node-ring {
+  animation: nodeRingPulse 1.6s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* ────────────────────────────────────────────────────────
+   FLOAT Y — Slow vertical float for labels
+   ──────────────────────────────────────────────────────── */
+@keyframes floatY {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%       { transform: translate3d(0, -4px, 0); }
+}
+.animate-float-y {
+  animation: floatY 2.2s ease-in-out infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* ────────────────────────────────────────────────────────
+   3D BUTTON & PRESS PHYSICS (Zero-Lag 80ms)
+   ──────────────────────────────────────────────────────── */
+.btn-3d {
+  transition: transform 90ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 90ms ease-out;
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+}
+.btn-3d:active {
+  transform: translate3d(0, 4px, 0);
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-press {
+  transition: transform 90ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.btn-press:active {
+  transform: scale(0.96);
+}
+
+/* ────────────────────────────────────────────────────────
+   GLOW CARD — Hover luminous effect
+   ──────────────────────────────────────────────────────── */
+.glow-card {
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.18s ease, box-shadow 0.18s ease;
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+}
+.glow-card:hover {
+  transform: translate3d(0, -2px, 0);
+  box-shadow: 0 10px 25px -5px rgba(255, 122, 0, 0.12), 0 8px 10px -6px rgba(255, 122, 0, 0.08);
+}

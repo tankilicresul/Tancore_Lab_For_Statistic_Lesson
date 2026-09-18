@@ -399,15 +399,16 @@ export const HomePage: React.FC<HomePageProps> = ({
   const studentDisplayName = formatStudentGreetingName(userProfile?.fullName, language === 'tr' ? 'Öğrenci' : 'Student');
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden animate-fade-in space-y-6">
-      {/* Top Welcome Banner: Tanco at bottom-left with speech bubble above */}
-      <div className="relative p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] border border-amber-300/60 shadow-lg shadow-orange-500/15 overflow-hidden text-left">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-yellow-300/25 rounded-full blur-2xl pointer-events-none" />
+    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden space-y-6">
+      {/* ── Hero Welcome Banner ── */}
+      <div className="relative p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#e55a00] border border-amber-300/60 shadow-lg shadow-orange-500/15 overflow-hidden text-left">
+        {/* Crisp static subtle radial highlights */}
+        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full pointer-events-none" />
+        <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-yellow-300/15 rounded-full pointer-events-none" />
 
         <div className="relative z-10 flex flex-col gap-3.5 sm:gap-4">
-          {/* Welcome Message Card: Smooth rounded rectangle without pointy tail */}
-          <div className="relative bg-white text-slate-900 border border-amber-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-md">
+          {/* Speech bubble card */}
+          <div className="relative bg-white text-slate-900 border border-amber-100 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-lg">
             <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug mb-1">
               {language === 'tr'
                 ? `Selam ${studentDisplayName}! Ben Tanco, senin TA'yin olacağım.`
@@ -428,40 +429,32 @@ export const HomePage: React.FC<HomePageProps> = ({
             </p>
           </div>
 
-          {/* Tanco Mascot area at Bottom-Left */}
+          {/* Tanco avatar row */}
           <div className="flex items-center space-x-3 pl-1 min-h-[56px]">
             {!isTancoActive ? (
               <div
                 ref={avatarRef}
                 onPointerDown={handleAvatarPointerDown}
                 className="relative group cursor-pointer select-none touch-none focus:outline-none"
-                title={
-                  language === 'tr'
-                    ? "Tanco'yu canlandırmak ve serbest bırakmak için dokun veya kaydır!"
-                    : "Tap or drag to awaken Tanco!"
-                }
+                title={language === 'tr' ? "Tanco'yu canlandırmak için dokun veya kaydır!" : "Tap or drag to awaken Tanco!"}
               >
                 <TanCoreMascotAvatar
                   size="lg"
                   alt="Tanco Yapay Zeka Öğretim Asistanı"
                   className="shadow-md shadow-black/20 ring-2 ring-white/80 group-hover:scale-105 group-active:scale-95 transition-transform shrink-0"
                 />
-                {/* Enticing touch/drag pulse badge */}
                 <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 pointer-events-none">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-200 opacity-75" />
                   <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-yellow-300 border-2 border-orange-600" />
                 </span>
               </div>
             ) : !isTancoMoved ? (
-              // Active but not moved yet: FloatingTanco is sitting right over this spot
               <div className="w-14 h-14 shrink-0" />
             ) : null}
 
             <div className="flex flex-col">
               <div className="flex items-center space-x-1.5">
-                <span className="text-xs sm:text-sm font-black text-white tracking-tight drop-shadow-xs">
-                  Tanco
-                </span>
+                <span className="text-xs sm:text-sm font-black text-white tracking-tight drop-shadow-xs">Tanco</span>
                 {isTancoActive && (
                   <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-black bg-white/20 text-white border border-white/30 backdrop-blur-xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse" />
@@ -476,6 +469,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
         </div>
       </div>
+
 
       {/* 1. Hazır Olan Dersler (Aktif Modüller) */}
       <section aria-label={language === 'tr' ? 'Aktif Ders Parkurları' : 'Active Course Tracks'}>
@@ -494,7 +488,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <button
               key={course.code}
               onClick={() => course.track && onSelectTrack(course.track)}
-              className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border text-left flex flex-col justify-between cursor-pointer overflow-hidden card-hover btn-press animate-card-reveal ${stagger} ${course.cardStyle}`}
+              className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border-2 text-left flex flex-col justify-between cursor-pointer overflow-hidden glow-card btn-press animate-card-reveal ${stagger} ${course.cardStyle}`}
             >
               <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-300 ${course.glowColor}`} />
 

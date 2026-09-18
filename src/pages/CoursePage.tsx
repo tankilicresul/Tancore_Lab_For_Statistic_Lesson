@@ -357,14 +357,21 @@ export const CoursePage: React.FC<CoursePageProps> = ({
     }
   }, [scrollToNodeId]);
 
-  const getXOffsetClass = (index: number) => {
-    const pattern = [
-      'translate-x-0',
-      'translate-x-12 sm:translate-x-20',
-      'translate-x-0',
-      '-translate-x-12 sm:-translate-x-20',
-    ];
+  // Duolingo-style: nodes alternate left/center/right horizontally
+  // Pattern: 0=center, 1=right, 2=center, 3=left, 4=center, 5=right …
+  const getNodeXOffset = (index: number): number => {
+    const pattern = [0, 60, 0, -60, 0, 60, 0, -60];
     return pattern[index % pattern.length];
+  };
+
+  // Generate SVG cubic bezier path string from (fromX, fromY) to (toX, toY)
+  // Creates a natural S-curve connecting two offset nodes
+  const getSvgCurvePath = (fromX: number, fromY: number, toX: number, toY: number): string => {
+    const cp1x = fromX;
+    const cp1y = fromY + (toY - fromY) * 0.5;
+    const cp2x = toX;
+    const cp2y = fromY + (toY - fromY) * 0.5;
+    return `M ${fromX} ${fromY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${toX} ${toY}`;
   };
 
   return (
@@ -504,122 +511,184 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                 )}
               </div>
 
-              {/* Duolingo Vertical Path */}
-              <div className="relative flex flex-col items-center py-4 space-y-6">
-                <div className="absolute top-4 bottom-4 w-1 bg-slate-200 -z-10 rounded-full" />
+              {/* ── Duolingo SVG Curved Path ── */}
+              {(() => {
+                const NODE_SIZE = 72; // px
+                const NODE_HALF = NODE_SIZE / 2;
+                const ROW_HEIGHT = 120; // vertical spacing between nodes
+                const CANVAS_W = 280; // SVG viewport width
+                const CX = CANVAS_W / 2; // centre x
 
-                {pathNodes.map((node, nIdx) => {
-                  const isCurrentTarget = node.id === globalTargetNodeId;
-                  const offsetClass = getXOffsetClass(nIdx);
+                const totalH = pathNodes.length * ROW_HEIGHT + 40;
+                const nodePositions = pathNodes.map((_, i) => ({
+                  x: CX + getNodeXOffset(i),
+                  y: 20 + i * ROW_HEIGHT + NODE_HALF,
+                }));
 
-                  return (
-                    <div
-                      key={node.id}
-                      id={`node-${node.id}`}
-                      className={`relative flex flex-col items-center transition-all duration-300 ${offsetClass}`}
+                return (
+                  <div className="relative flex flex-col items-center w-full overflow-visible py-4">
+                    {/* SVG connector layer */}
+                    <svg
+                      width={CANVAS_W}
+                      height={totalH}
+                      viewBox={`0 0 ${CANVAS_W} ${totalH}`}
+                      className="absolute top-4 left-1/2 -translate-x-1/2 pointer-events-none overflow-visible"
                     >
-                      {isCurrentTarget && (
-                        <div className="absolute -top-9 z-20 animate-bounce">
-                          <div className="bg-[#ff7a00] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg flex items-center space-x-1 border border-white">
-                            <Play className="w-3 h-3 fill-white" />
-                            <span>{language === 'tr' ? 'SIRADAKİ ADIM' : 'NEXT STEP'}</span>
-                          </div>
-                        </div>
-                      )}
+                      <defs>
+                        <marker id="arrow-done" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                          <circle cx="3" cy="3" r="2" fill="#ff7a00" />
+                        </marker>
+                        <marker id="arrow-pending" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                          <circle cx="3" cy="3" r="2" fill="#cbd5e1" />
+                        </marker>
+                      </defs>
+                      {pathNodes.slice(0, -1).map((node, i) => {
+                        const from = nodePositions[i];
+                        const to = nodePositions[i + 1];
+                        const isSegmentDone = node.isCompleted;
+                        const d = getSvgCurvePath(from.x, from.y, to.x, to.y);
+                        return (
+                          <path
+                            key={`seg-${i}`}
+                            d={d}
+                            fill="none"
+                            stroke={isSegmentDone ? '#ff7a00' : '#e2e8f0'}
+                            strokeWidth={isSegmentDone ? 5 : 4}
+                            strokeLinecap="round"
+                            strokeDasharray={isSegmentDone ? 'none' : '8 6'}
+                            opacity={isSegmentDone ? 0.9 : 0.7}
+                          />
+                        );
+                      })}
+                    </svg>
 
-                      <button
-                        onClick={() => {
-                          if (!node.isUnlocked) {
-                            if (!isAuthenticated || !isVerified) {
-                              onGuestGateRequired?.();
-                            }
-                            return;
-                          }
-                          if (node.type === 'case') {
-                            setSelectedCaseHubModule(node.module);
-                          } else {
-                            setSelectedNode(node);
-                          }
-                        }}
-                        className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center transition-all duration-200 active:translate-y-1 ${
-                          node.type === 'case'
-                            ? node.isCompleted
-                              ? 'bg-gradient-to-tr from-amber-500 to-[#ff7a00] text-white shadow-[0_6px_0_0_#b35300] hover:brightness-110 ring-4 ring-amber-300/40'
-                              : isCurrentTarget
-                              ? 'bg-gradient-to-tr from-amber-500 to-[#ff7a00] text-white shadow-[0_8px_0_0_#b35300] ring-4 ring-amber-400/50 animate-pulse'
-                              : node.isUnlocked
-                              ? 'bg-amber-50 text-[#ff7a00] border-2 border-amber-500 shadow-[0_6px_0_0_#fed7aa]'
-                              : 'bg-slate-200 text-slate-400 shadow-[0_6px_0_0_#cbd5e1] cursor-not-allowed'
-                            : node.isCompleted
-                            ? 'bg-[#ff7a00] text-white shadow-[0_6px_0_0_#cc6100] hover:bg-[#e56d00]'
-                            : isCurrentTarget
-                            ? 'bg-[#ff7a00] text-white shadow-[0_8px_0_0_#cc6100] ring-4 ring-[#ff7a00]/30 animate-pulse'
-                            : node.isUnlocked
-                            ? 'bg-orange-50 text-[#ff7a00] border-2 border-[#ff7a00] shadow-[0_6px_0_0_#ffc299]'
-                            : 'bg-slate-200 text-slate-400 shadow-[0_6px_0_0_#cbd5e1] cursor-not-allowed'
-                        }`}
-                      >
-                        <div
-                          className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 flex items-center justify-center ${
-                            node.isCompleted || isCurrentTarget
-                              ? 'border-white/40'
-                              : node.isUnlocked
-                              ? node.type === 'case' ? 'border-amber-400/50' : 'border-[#ff7a00]/30'
-                              : 'border-slate-300'
-                          }`}
-                        >
-                          {node.type === 'case' ? (
-                            <Trophy
-                              className={`w-7 h-7 sm:w-9 sm:h-9 ${
-                                node.isCompleted || isCurrentTarget
-                                  ? 'text-white'
+                    {/* Nodes rendered over SVG */}
+                    <div
+                      style={{ height: totalH, width: CANVAS_W, position: 'relative' }}
+                      className="mx-auto"
+                    >
+                      {pathNodes.map((node, nIdx) => {
+                        const pos = nodePositions[nIdx];
+                        const isCurrentTarget = node.id === globalTargetNodeId;
+
+                        const nodeLeft = pos.x - NODE_HALF;
+                        const nodeTop = pos.y - NODE_HALF;
+
+                        return (
+                          <div
+                            key={node.id}
+                            id={`node-${node.id}`}
+                            style={{ position: 'absolute', left: nodeLeft, top: nodeTop, width: NODE_SIZE, height: NODE_SIZE }}
+                          >
+                            {/* "SIRADAKI ADIM" float label */}
+                            {isCurrentTarget && (
+                              <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-20 animate-float-y whitespace-nowrap">
+                                <div className="bg-[#ff7a00] text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow-lg flex items-center space-x-1 border-2 border-white">
+                                  <Play className="w-2.5 h-2.5 fill-white flex-shrink-0" />
+                                  <span>{language === 'tr' ? 'SIRADAKİ' : 'NEXT'}</span>
+                                </div>
+                              </div>
+                            )}
+
+                            <button
+                              onClick={() => {
+                                if (!node.isUnlocked) {
+                                  if (!isAuthenticated || !isVerified) onGuestGateRequired?.();
+                                  return;
+                                }
+                                if (node.type === 'case') {
+                                  setSelectedCaseHubModule(node.module);
+                                } else {
+                                  setSelectedNode(node);
+                                }
+                              }}
+                              style={{ width: NODE_SIZE, height: NODE_SIZE }}
+                              className={`relative rounded-full flex items-center justify-center cursor-pointer transition-transform duration-150 active:translate-y-1 btn-3d focus:outline-none ${
+                                !node.isUnlocked ? 'cursor-not-allowed' : ''
+                              } ${
+                                node.type === 'case'
+                                  ? node.isCompleted
+                                    ? 'bg-gradient-to-br from-amber-400 to-[#ff7a00] shadow-[0_8px_0_0_#b35300]'
+                                    : isCurrentTarget
+                                    ? 'bg-gradient-to-br from-amber-400 to-[#ff7a00] shadow-[0_8px_0_0_#b35300]'
+                                    : node.isUnlocked
+                                    ? 'bg-amber-50 border-[3px] border-amber-500 shadow-[0_6px_0_0_#d97706]'
+                                    : 'bg-slate-200 shadow-[0_6px_0_0_#94a3b8]'
+                                  : node.isCompleted
+                                  ? 'bg-gradient-to-br from-[#ff7a00] to-amber-500 shadow-[0_8px_0_0_#b35300]'
+                                  : isCurrentTarget
+                                  ? 'bg-gradient-to-br from-[#ff7a00] to-amber-500 shadow-[0_8px_0_0_#b35300]'
                                   : node.isUnlocked
-                                  ? 'text-[#ff7a00]'
-                                  : 'text-slate-400'
-                              } stroke-[2]`}
-                            />
-                          ) : node.isCompleted ? (
-                            getNodeAnimalIcon(node.order, 'text-white')
-                          ) : isCurrentTarget ? (
-                            getNodeAnimalIcon(node.order, 'text-white')
-                          ) : node.isUnlocked ? (
-                            getNodeAnimalIcon(node.order, 'text-[#ff7a00]')
-                          ) : (
-                            getNodeAnimalIcon(node.order, 'text-slate-400')
-                          )}
-                        </div>
-                      </button>
+                                  ? 'bg-orange-50 border-[3px] border-[#ff7a00] shadow-[0_6px_0_0_#ffc299]'
+                                  : 'bg-slate-200 shadow-[0_6px_0_0_#94a3b8]'
+                              }`}
+                            >
+                              {/* GPU pulse ring for active node */}
+                              {isCurrentTarget && (
+                                <span
+                                  className={`absolute -inset-2.5 rounded-full border-2 ${
+                                    node.type === 'case' ? 'border-amber-400' : 'border-[#ff7a00]'
+                                  } animate-node-ring pointer-events-none`}
+                                />
+                              )}
 
-                      <div className="mt-2 flex flex-col items-center">
-                        <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-extrabold text-slate-800 bg-white/95 backdrop-blur-sm px-2.5 sm:px-3 py-1 rounded-2xl border border-slate-200 shadow-2xs text-center leading-none whitespace-nowrap mb-0.5">
-                          {node.title}
-                        </span>
-                        <span
-                          className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${
-                            node.type === 'case'
-                              ? node.isCompleted
-                                ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                                : 'text-amber-700 bg-amber-50 border-amber-200'
-                              : 'text-[#ff7a00] bg-orange-50 border-orange-200'
-                          }`}
-                        >
-                          {node.type === 'case'
-                            ? node.isCompleted
-                              ? language === 'tr'
-                                ? `✓ ${node.completedCasesCount}/${node.totalCasesCount} VAKA ÇÖZÜLDÜ`
-                                : `✓ ${node.completedCasesCount}/${node.totalCasesCount} CASES SOLVED`
-                              : language === 'tr'
-                              ? '🏆 3 VAKA SEÇENEĞİ'
-                              : '🏆 3 CASE OPTIONS'
-                            : language === 'tr'
-                            ? `DERS ${node.lesson?.order || node.order}`
-                            : `LESSON ${node.lesson?.order || node.order}`}
-                        </span>
-                      </div>
+                              {/* Inner ring */}
+                              <div className={`absolute inset-[6px] rounded-full border-2 flex items-center justify-center ${
+                                node.isCompleted || isCurrentTarget ? 'border-white/30' :
+                                node.isUnlocked ? (node.type === 'case' ? 'border-amber-400/40' : 'border-[#ff7a00]/25') :
+                                'border-slate-300/40'
+                              }`}>
+                                {/* Icon */}
+                                {node.type === 'case' ? (
+                                  <Trophy className={`w-7 h-7 sm:w-8 sm:h-8 stroke-[2] ${
+                                    node.isCompleted || isCurrentTarget ? 'text-white' :
+                                    node.isUnlocked ? 'text-amber-600' : 'text-slate-400'
+                                  }`} />
+                                ) : node.isCompleted ? (
+                                  <Check className="w-7 h-7 text-white stroke-[3]" />
+                                ) : isCurrentTarget ? (
+                                  <BookOpen className="w-7 h-7 text-white stroke-[2]" />
+                                ) : node.isUnlocked ? (
+                                  <BookOpen className="w-6 h-6 text-[#ff7a00] stroke-[2]" />
+                                ) : (
+                                  <Lock className="w-5 h-5 text-slate-400 stroke-[2]" />
+                                )}
+                              </div>
+                            </button>
+
+                            {/* Node label below */}
+                            <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 w-[110px] flex flex-col items-center gap-0.5">
+                              <span className="text-[9px] sm:text-[10px] font-black text-slate-800 bg-white/95 px-2 py-0.5 rounded-xl border border-slate-200 shadow-xs text-center leading-tight line-clamp-2">
+                                {node.title}
+                              </span>
+                              <span className={`text-[8px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-md border ${
+                                node.type === 'case'
+                                  ? node.isCompleted
+                                    ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                                    : 'text-amber-700 bg-amber-50 border-amber-200'
+                                  : node.isCompleted
+                                  ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                                  : 'text-[#ff7a00] bg-orange-50 border-orange-200'
+                              }`}>
+                                {node.type === 'case'
+                                  ? node.isCompleted
+                                    ? `✓ ${node.completedCasesCount}/${node.totalCasesCount}`
+                                    : '🏆 VAKA'
+                                  : node.isCompleted
+                                  ? `✓ DERS ${node.order}`
+                                  : `DERS ${node.order}`}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
-                  );
-                })}
-              </div>
+                    {/* Spacer for labels below last node */}
+                    <div style={{ height: 60 }} />
+                  </div>
+                );
+              })()}
+
             </div>
           );
         })}
