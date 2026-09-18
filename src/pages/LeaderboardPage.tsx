@@ -494,7 +494,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       </div>
 
       {/* Current User Floating/Top Preview Row (Visible only when user is Rank 4+ and has not scrolled down yet) */}
-      {isAuthenticated && userRank > 3 && (
+      {userRank > 3 && (
         <div
           className={`transition-all duration-300 ease-in-out ${
             hasScrolledInLeaderboard
@@ -505,13 +505,13 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
           <div
             onClick={() =>
               setSelectedPublicProfile({
-                id: userProfile?.id || 'current_user',
-                fullName: userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student'),
-                schoolEmail: userProfile?.schoolEmail,
-                university: userProfile?.university || 'Üniversite',
-                departmentAndClass: userProfile?.departmentAndClass || '',
-                avatarEmoji: userProfile?.avatarEmoji || '👨‍🎓',
-                avatarUrl: userProfile?.avatarUrl,
+                id: effectiveProfile.id || 'current_user',
+                fullName: effectiveProfile.fullName || (language === 'tr' ? 'Öğrenci' : 'Student'),
+                schoolEmail: effectiveProfile.schoolEmail,
+                university: effectiveProfile.university || 'Üniversite',
+                departmentAndClass: effectiveProfile.departmentAndClass || '',
+                avatarEmoji: effectiveProfile.avatarEmoji || '👨‍🎓',
+                avatarUrl: effectiveProfile.avatarUrl,
                 xp: xp || 0,
                 streak: streak || 0,
                 rank: userRank,
@@ -537,22 +537,22 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               </div>
               <div className="w-8 h-8 rounded-full bg-white border border-orange-200 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden shadow-2xs">
                 <UserAvatar
-                  avatarUrl={userProfile?.avatarUrl}
-                  avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
-                  fullName={userProfile?.fullName}
+                  avatarUrl={effectiveProfile.avatarUrl}
+                  avatarEmoji={effectiveProfile.avatarEmoji || '👨‍🎓'}
+                  fullName={effectiveProfile.fullName}
                   size="xs"
                   className="w-full h-full"
                 />
               </div>
               <div className="min-w-0">
                 <span className="text-xs font-black text-slate-900 truncate block">
-                  {userProfile?.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')}{' '}
+                  {effectiveProfile.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')}{' '}
                   <span className="text-[10px] font-black text-[#ff7a00] bg-orange-100 px-1.5 py-0.5 rounded-md">
                     (Sen)
                   </span>
                 </span>
                 <span className="text-[10px] text-slate-500 truncate block">
-                  {userProfile?.university || (language === 'tr' ? 'Üniversite' : 'University')}
+                  {effectiveProfile.university || (language === 'tr' ? 'Üniversite' : 'University')}
                 </span>
               </div>
             </div>
@@ -583,16 +583,19 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               <span className="text-[11px] text-slate-400 font-medium">
                 {renderedList.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
               </span>
-              {isAuthenticated && (
-                <button
-                  onClick={() => startRankClimbAnimation(userRank + 6, Math.max(0, (xp || 0) - 180))}
-                  className="flex items-center space-x-1 px-2 py-0.5 rounded-lg bg-orange-100 hover:bg-orange-200 text-[#ff7a00] font-black text-[10px] transition-colors cursor-pointer active:scale-95"
-                  title="Yükselme Animasyonunu Tekrar Test Et"
-                >
-                  <RefreshCw className="w-3 h-3" />
-                  <span>{language === 'tr' ? 'Tırmanışı Test Et' : 'Test Climb'}</span>
-                </button>
-              )}
+              <button
+                onClick={() =>
+                  startRankClimbAnimation(
+                    Math.min(sortedLeaderboard.length, userRank + 4),
+                    Math.max(0, (xp || 0) - 60)
+                  )
+                }
+                className="flex items-center space-x-1 px-2 py-0.5 rounded-lg bg-orange-100 hover:bg-orange-200 text-[#ff7a00] font-black text-[10px] transition-colors cursor-pointer active:scale-95"
+                title="Yükselme Animasyonunu Tekrar Test Et"
+              >
+                <RefreshCw className="w-3 h-3" />
+                <span>{language === 'tr' ? 'Tırmanışı Test Et' : 'Test Climb'}</span>
+              </button>
             </div>
           </div>
 
@@ -605,7 +608,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
             className="space-y-2 max-h-[480px] overflow-y-auto pr-1"
           >
             {renderedList.slice(3).map((user) => {
-              const isSelf = isAuthenticated && isSameStudent(user, userProfile);
+              const isSelf = isSameStudent(user, effectiveProfile);
               const currentVisualRank = (user as any).visualRank || user.rank;
 
               return (
