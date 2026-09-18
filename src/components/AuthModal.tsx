@@ -64,8 +64,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [registerPassword, setRegisterPassword] = useState('');
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
 
-  // OTP State (6 digits)
-  const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
+  // OTP State (8 digits)
+  const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '', '', '']);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [resendTimer, setResendTimer] = useState<number>(60);
 
@@ -184,8 +184,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setResendTimer(60);
       setSuccessMessage(
         language === 'tr'
-          ? `${formData.schoolEmail} adresine 6 haneli doğrulama kodu gönderildi.`
-          : `6-digit verification code sent to ${formData.schoolEmail}.`
+          ? `${formData.schoolEmail} adresine 8 haneli doğrulama kodu gönderildi.`
+          : `8-digit verification code sent to ${formData.schoolEmail}.`
       );
     } catch (err: any) {
       setErrorMessage(err.message || 'E-posta doğrulama kodu gönderilemedi.');
@@ -205,13 +205,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
 
     if (cleaned.length > 1) {
-      const pastedCode = cleaned.slice(0, 6).split('');
+      const pastedCode = cleaned.slice(0, 8).split('');
       const newDigits = [...otpDigits];
       pastedCode.forEach((char, i) => {
-        if (i < 6) newDigits[i] = char;
+        if (i < 8) newDigits[i] = char;
       });
       setOtpDigits(newDigits);
-      const nextIdx = Math.min(pastedCode.length, 5);
+      const nextIdx = Math.min(pastedCode.length, 7);
       if (otpInputRefs.current[nextIdx]) {
         otpInputRefs.current[nextIdx]?.focus();
       }
@@ -222,7 +222,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     newDigits[index] = cleaned;
     setOtpDigits(newDigits);
 
-    if (cleaned && index < 5 && otpInputRefs.current[index + 1]) {
+    if (cleaned && index < 7 && otpInputRefs.current[index + 1]) {
       otpInputRefs.current[index + 1]?.focus();
     }
   };
@@ -242,7 +242,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       }
     } else if (e.key === 'ArrowLeft' && index > 0) {
       otpInputRefs.current[index - 1]?.focus();
-    } else if (e.key === 'ArrowRight' && index < 5) {
+    } else if (e.key === 'ArrowRight' && index < 7) {
       otpInputRefs.current[index + 1]?.focus();
     }
   };
@@ -250,15 +250,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   // Handle Paste event for OTP
   const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const pasteData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+    const pasteData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 8);
     if (!pasteData) return;
     const chars = pasteData.split('');
     const newDigits = [...otpDigits];
     chars.forEach((c, i) => {
-      if (i < 6) newDigits[i] = c;
+      if (i < 8) newDigits[i] = c;
     });
     setOtpDigits(newDigits);
-    const focusIdx = Math.min(chars.length, 5);
+    const focusIdx = Math.min(chars.length, 7);
     otpInputRefs.current[focusIdx]?.focus();
   };
 
@@ -268,8 +268,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
     const code = otpDigits.join('').trim();
 
-    if (code.length < 6) {
-      setErrorMessage(language === 'tr' ? 'Lütfen 6 haneli kodu eksiksiz giriniz.' : 'Please enter the full 6-digit code.');
+    if (code.length < 8) {
+      setErrorMessage(language === 'tr' ? 'Lütfen 8 haneli kodu eksiksiz giriniz.' : 'Please enter the full 8-digit code.');
       return;
     }
 
@@ -401,8 +401,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </h2>
             <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
               {language === 'tr'
-                ? `${formData.schoolEmail} adresine gelen 6 haneli kodu aşağıya giriniz.`
-                : `Enter the 6-digit code sent to ${formData.schoolEmail}`}
+                ? `${formData.schoolEmail} adresine gelen 8 haneli kodu aşağıya giriniz.`
+                : `Enter the 8-digit code sent to ${formData.schoolEmail}`}
             </p>
           </div>
         )}
@@ -558,12 +558,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         {/* ─── STEP 2: OTP VERIFICATION FORM ─── */}
         {step === 'otp' && (
           <form onSubmit={handleVerifyOtp} className="space-y-4">
-            {/* 6 Distinct Slots (3 + 3 with separator) */}
-            <div className="flex items-center justify-center gap-1.5 sm:gap-2.5 my-3">
+            {/* 8 Distinct Slots (4 + 4 with separator) */}
+            <div className="flex items-center justify-center gap-1 sm:gap-2 my-3">
               {otpDigits.map((digit, idx) => (
                 <React.Fragment key={idx}>
-                  {idx === 3 && (
-                    <div className="w-2 sm:w-3 h-0.5 bg-slate-300 rounded-full mx-1" />
+                  {idx === 4 && (
+                    <div className="w-1.5 sm:w-2.5 h-0.5 bg-slate-300 rounded-full mx-0.5 sm:mx-1" />
                   )}
                   <input
                     ref={(el) => (otpInputRefs.current[idx] = el)}
@@ -576,7 +576,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     onKeyDown={(e) => handleKeyDown(idx, e)}
                     onPaste={handleOtpPaste}
                     autoFocus={idx === 0}
-                    className={`w-9 h-12 sm:w-11 sm:h-14 rounded-xl border-2 text-center font-mono font-black text-xl sm:text-2xl transition-all shadow-2xs ${
+                    className={`w-8 h-11 sm:w-10 sm:h-13 rounded-xl border-2 text-center font-mono font-black text-lg sm:text-2xl transition-all shadow-2xs ${
                       digit
                         ? 'bg-orange-50/70 border-[#ff7a00] text-[#ff7a00]'
                         : 'bg-slate-50 border-slate-200 text-slate-900 focus:bg-white focus:border-[#ff7a00] focus:ring-4 focus:ring-[#ff7a00]/15'
@@ -599,7 +599,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <div className="space-y-2 pt-2">
               <button
                 type="submit"
-                disabled={loading || otpDigits.join('').length < 6}
+                disabled={loading || otpDigits.join('').length < 8}
                 className="w-full py-3 px-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black tracking-wide flex items-center justify-center space-x-2 transition-all shadow-md shadow-[#ff7a00]/30 disabled:opacity-50 cursor-pointer"
               >
                 {loading ? (
