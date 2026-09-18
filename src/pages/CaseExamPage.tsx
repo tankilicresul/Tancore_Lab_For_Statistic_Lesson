@@ -38,10 +38,6 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
     setIsNextLoading(true);
 
     setTimeout(() => {
-      if (!isCompleted) {
-        completeCaseExam(caseExam.id, module.id, 50);
-        setIsCompleted(true);
-      }
       if (onSelectNextTopic) {
         onSelectNextTopic(nextTopic.id, nextTopic.type);
       }
@@ -75,7 +71,11 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
     const isCorrect =
       q &&
       (typeof q.correctAnswer === 'number'
-        ? parseFloat(String(userAnswer)) === q.correctAnswer
+        ? (() => {
+            const normalizedStr = String(userAnswer).replace(',', '.').trim();
+            const parsed = parseFloat(normalizedStr);
+            return !isNaN(parsed) && Math.abs(parsed - q.correctAnswer) <= 0.01;
+          })()
         : String(userAnswer).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase());
 
     if (isCorrect || !q) {

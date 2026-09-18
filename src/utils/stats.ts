@@ -22,10 +22,14 @@ export function mode(numbers: number[]): number[] {
     freq[n] = (freq[n] || 0) + 1;
     if (freq[n] > maxFreq) maxFreq = freq[n];
   }
+  // No mode when every value appears only once
+  if (maxFreq === 1) return [];
   const modes: number[] = [];
   for (const key in freq) {
     if (freq[key] === maxFreq) modes.push(Number(key));
   }
+  // No mode when all values have the same frequency (multimodal == no mode)
+  if (modes.length === Object.keys(freq).length) return [];
   return modes;
 }
 

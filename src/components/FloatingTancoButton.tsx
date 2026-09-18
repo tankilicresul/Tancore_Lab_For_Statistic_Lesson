@@ -101,7 +101,11 @@ export const FloatingTancoButton: React.FC = () => {
 
   useEffect(() => {
     checkUnreadNotification();
-    const interval = setInterval(checkUnreadNotification, 12000);
+    const interval = setInterval(() => {
+      // Pause polling when tab is hidden to save battery and bandwidth
+      if (document.visibilityState === 'hidden') return;
+      checkUnreadNotification();
+    }, 60000);
     return () => clearInterval(interval);
   }, [checkUnreadNotification]);
 

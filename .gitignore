@@ -31,3 +31,7 @@ dist-ssr
 # Downloaded student course notes & materials
 gelen_ders_notlari/*
 !gelen_ders_notlari/NOTLAR_OZETI.md
+koç_indr_pdf/
+koç_engr_pdf/
+koc_indr_pdf/
+koc_engr_pdf/

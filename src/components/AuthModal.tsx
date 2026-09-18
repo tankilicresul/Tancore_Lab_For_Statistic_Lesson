@@ -486,6 +486,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </>
               )}
             </button>
+
+            {/* OTP login fallback for users who registered without a password */}
+            <p className="text-center text-[11px] text-slate-500 mt-2">
+              {language === 'tr' ? 'Şifrenizi hatırlamıyor musunuz? ' : "Don't remember your password? "}
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab('register');
+                  setErrorMessage(null);
+                  setSuccessMessage(null);
+                  setFormData((prev) => ({ ...prev, schoolEmail: loginEmail, fullName: ' ' }));
+                  setStep('register');
+                }}
+                className="font-bold text-[#ff7a00] hover:underline cursor-pointer"
+              >
+                {language === 'tr' ? 'E-posta kodu ile giriş yap' : 'Sign in with email code'}
+              </button>
+            </p>
           </form>
         )}
 

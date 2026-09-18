@@ -42,7 +42,7 @@ export default async function handler(req: any, res: any) {
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization, X-Admin-Key'
   );
 
   if (req.method === 'OPTIONS') {
@@ -63,6 +63,12 @@ export default async function handler(req: any, res: any) {
   }
 
   if (req.method === 'GET') {
+    const adminKey = (req.headers['x-admin-key'] || req.query.adminKey) as string | undefined;
+    const configuredKey = process.env.ADMIN_API_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!configuredKey || adminKey !== configuredKey) {
+      return res.status(401).json({ error: 'Unauthorized. Admin access required.' });
+    }
+
     if (supabase) {
       try {
         const { data, error } = await supabase

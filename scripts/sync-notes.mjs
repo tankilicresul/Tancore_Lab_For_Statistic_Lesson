@@ -5,8 +5,13 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Project root is one level up from the scripts/ directory
+const projectRoot = path.resolve(__dirname, '..');
+const outputDir = path.join(projectRoot, 'gelen_ders_notlari');
+
 const targetDirs = [
-  path.join(projectRoot, 'gelen_ders_notlari'),
+  outputDir,
   'C:\\Projects\\tancorelab\\gelen_ders_notlari',
   'C:\\Projects\\statsim-ai-lab\\gelen_ders_notlari',
 ].filter((d, index, self) => self.indexOf(d) === index);

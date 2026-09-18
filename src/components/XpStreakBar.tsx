@@ -51,22 +51,18 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
     };
   }, [isLanguagePopoverOpen]);
 
-  // Trigger logo spin animation every 3 seconds
+  // Single subtle spin on mount, plus spin on hover
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIsLogoSpinning(true);
-      const timer = setTimeout(() => {
-        setIsLogoSpinning(false);
-      }, 1300);
-      return () => clearTimeout(timer);
-    }, 3000);
-
-    return () => clearInterval(interval);
+    setIsLogoSpinning(true);
+    const timer = setTimeout(() => {
+      setIsLogoSpinning(false);
+    }, 1300);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3 sm:py-3.5 font-sans shadow-xs">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-2.5 sm:px-8 py-2.5 sm:py-3.5 font-sans shadow-xs">
         <div className="max-w-6xl mx-auto flex items-center justify-between relative">
           {/* TancoreLab Brand Logo */}
           <a
@@ -77,37 +73,39 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
               e.preventDefault();
               onGoHome?.();
             }}
-            className="flex items-center space-x-2.5 sm:space-x-3 group cursor-pointer shrink-0 z-10"
+            onMouseEnter={() => setIsLogoSpinning(true)}
+            onAnimationEnd={() => setIsLogoSpinning(false)}
+            className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer shrink-0 z-10"
           >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-md shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform p-1">
+            <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#ff7a00] flex items-center justify-center shadow-md shadow-[#ff7a00]/30 group-hover:scale-105 transition-transform p-0.5 sm:p-1">
               <div
-                className={`w-full h-full rounded-full border-2 border-white flex items-center justify-center ${
+                className={`w-full h-full rounded-full border border-white sm:border-2 flex items-center justify-center ${
                   isLogoSpinning ? 'animate-logo-spin' : ''
                 }`}
               >
-                <Zap className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-white fill-white stroke-[2]" />
+                <Zap className="w-4 h-4 sm:w-5.5 sm:h-5.5 text-white fill-white stroke-[2]" />
               </div>
             </div>
 
-            <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-sans">
+            <span className="text-base sm:text-2xl font-black text-slate-900 tracking-tight font-sans">
               TanCoreLab
             </span>
           </a>
 
           {/* User Stats & Controls: Streak, Language and Profile / Home Icon */}
-          <div className="flex items-center space-x-1.5 sm:space-x-2.5 shrink-0 z-10">
+          <div className="flex items-center space-x-1 sm:space-x-2 shrink-0 z-10">
             {/* Streak Button - Click opens cool Streak Modal with sunglasses Tanco */}
             <button
               onClick={() => {
                 setIsLanguagePopoverOpen(false);
                 setIsStreakModalOpen(true);
               }}
-              className="flex items-center space-x-1.5 bg-[#ff7a00]/10 hover:bg-[#ff7a00]/20 active:scale-95 border border-[#ff7a00]/30 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[#ff7a00] font-black text-xs sm:text-sm tracking-wide shadow-xs cursor-pointer transition-all"
+              className="flex items-center space-x-1 sm:space-x-1.5 bg-[#ff7a00]/10 hover:bg-[#ff7a00]/20 active:scale-95 border border-[#ff7a00]/30 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[#ff7a00] font-black text-xs sm:text-sm tracking-wide shadow-xs cursor-pointer transition-all"
               title={language === 'tr' ? 'Seri Durumunu Gör' : 'View Streak Status'}
             >
-              <Flame className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-[#ff7a00] text-[#ff7a00] animate-pulse" />
+              <Flame className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 fill-[#ff7a00] text-[#ff7a00] animate-pulse" />
               <span>
-                {displayStreak} {language === 'tr' ? 'gün' : 'days'}
+                {displayStreak} <span className="hidden min-[420px]:inline">{language === 'tr' ? 'gün' : 'days'}</span>
               </span>
             </button>
 
@@ -115,7 +113,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
             <div className="relative" ref={langRef}>
               <button
                 onClick={() => setIsLanguagePopoverOpen((prev) => !prev)}
-                className={`flex items-center space-x-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-2xl border text-xs sm:text-sm font-black transition-all cursor-pointer ${
+                className={`flex items-center space-x-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl border text-xs sm:text-sm font-black transition-all cursor-pointer ${
                   isLanguagePopoverOpen
                     ? 'bg-[#ff7a00] text-white border-[#ff7a00] shadow-md shadow-[#ff7a00]/25'
                     : 'bg-[#ff7a00]/10 hover:bg-[#ff7a00]/20 active:scale-95 border-[#ff7a00]/30 text-[#ff7a00]'

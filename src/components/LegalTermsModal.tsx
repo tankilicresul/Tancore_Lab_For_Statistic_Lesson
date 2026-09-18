@@ -102,11 +102,12 @@ export const LegalTermsModal: React.FC<LegalTermsModalProps> = ({
                 <li><strong>İletişim Bilgileri:</strong> Üniversite/öğrenci kurumsal e-posta adresi.</li>
                 <li><strong>Eğitim Bilgileri:</strong> Üniversite adı, kayıtlı olunan fakülte, bölüm ve sınıf seviyesi.</li>
                 <li><strong>İşlem ve Performans Bilgileri:</strong> Tamamlanan dersler, çözülen vaka sınavları, kazanılan deneyim puanları (XP), günlük seri (streak) ve liderlik sıralaması verileri.</li>
+                <li><strong>Yapay Zeka Etkileşim Verileri:</strong> Tanco AI asistanına gönderilen soru ve mesaj içerikleri.</li>
               </ul>
 
               <h4 className="font-bold text-slate-900">3. Kişisel Verilerin İşlenme Amaçları ve Hukuki Sebepleri</h4>
               <p>
-                Kişisel verileriniz, KVKK’nın 5. maddesinde belirtilen “Bir sözleşmenin kurulması veya ifasıyla doğrudan doğruya ilgili olması” ve “Veri sorumlusunun meşru menfaatleri” hukuki sebeplerine dayalı olarak şu amaçlarla işlenmektedir:
+                Kişisel verileriniz, KVKK'nın 5. maddesinde belirtilen "Bir sözleşmenin kurulması veya ifasıyla doğrudan doğruya ilgili olması" ve "Veri sorumlusunun meşru menfaatleri" hukuki sebeplerine dayalı olarak şu amaçlarla işlenmektedir:
               </p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Platforma kayıt işlemlerinin gerçekleştirilmesi ve kimlik doğrulamasının yapılması,</li>
@@ -115,9 +116,14 @@ export const LegalTermsModal: React.FC<LegalTermsModalProps> = ({
                 <li>Hesap güvenliğinin sağlanması ve yetkisiz erişimlerin önlenmesi.</li>
               </ul>
 
-              <h4 className="font-bold text-slate-900">4. İlgili Kişi Olarak Haklarınız (KVKK Madde 11)</h4>
+              <h4 className="font-bold text-slate-900">4. Yurt Dışına Veri Aktarımı – Yapay Zeka (AI) Servisleri</h4>
               <p>
-                KVKK’nın 11. maddesi uyarınca dilediğiniz zaman platform yöneticilerimize başvurarak; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse bilgi talep etme, düzeltilmesini veya silinmesini isteme hakkına sahipsiniz. Talepleriniz ivedilikle sonuçlandırılacaktır.
+                Tanco AI asistanına ilettiğiniz mesaj ve soru içerikleri, yapay zeka yanıtı üretmek amacıyla <strong>Google Gemini API</strong> (Amerika Birleşik Devletleri) üzerinden işlenmektedir. Bu aktarım, KVKK'nın 9. maddesi kapsamında kullanıcının açık rızasına ve platform hizmetinin ifasına dayalı olarak gerçekleştirilmektedir. Verileriniz Google'ın gizlilik politikası çerçevesinde korunmakta olup üçüncü taraflarla paylaşılmamaktadır.
+              </p>
+
+              <h4 className="font-bold text-slate-900">5. İlgili Kişi Olarak Haklarınız (KVKK Madde 11)</h4>
+              <p>
+                KVKK'nın 11. maddesi uyarınca dilediğiniz zaman platform yöneticilerimize başvurarak; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse bilgi talep etme, düzeltilmesini veya silinmesini isteme hakkına sahipsiniz. Talepleriniz ivedilikle sonuçlandırılacaktır.
               </p>
             </div>
           )}
@@ -146,6 +152,11 @@ export const LegalTermsModal: React.FC<LegalTermsModalProps> = ({
               <h4 className="font-bold text-slate-900">3. Fikri ve Sınai Mülkiyet Hakları</h4>
               <p>
                 TancoreLab arayüz tasarımı, özgün iş vaka senaryoları, hesaplama algoritmaları ve görsel materyallerin tüm telif hakları TancoreLab'e aittir. Yazılı izin olmaksızın kısmen veya tamamen kopyalanamaz veya çoğaltılamaz.
+              </p>
+
+              <h4 className="font-bold text-slate-900">4. Plus Üyelik ve Ön Bilgilendirme Formu (Mesafeli Satış)</h4>
+              <p>
+                TancoreLab Plus üyeliği; dijital eğitim içeriklerine ve gelişmiş yapay zeka özelliklerine sınırsız erişim sağlayan bir abonelik hizmetidir. Satın alma işlemi tamamlandığında <strong>3 günlük ücretsiz deneme süresi</strong> başlar. Deneme süresinin sonunda seçilen plan kapsamında periyodik ücret tahsilatı gerçekleştirilir. Aboneliğinizi dilediğiniz zaman hesap ayarlarından iptal edebilirsiniz. 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği kapsamında; dijital içeriklere erişim sağlandığı andan itibaren cayma hakkı kullanılamaz.
               </p>
             </div>
           )}

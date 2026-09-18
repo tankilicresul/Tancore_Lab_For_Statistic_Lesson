@@ -65,26 +65,22 @@ export const App: React.FC = () => {
     fetchUserProfileFromSupabase(email)
       .then((remoteProfile) => {
         if (remoteProfile) {
-          if (remoteProfile.full_name) {
-            updateUserProfile({
-              fullName: remoteProfile.full_name,
-              university: remoteProfile.university || userProfile.university,
-              departmentAndClass: remoteProfile.department_and_class || userProfile.departmentAndClass,
-              avatarEmoji: remoteProfile.avatar_emoji || userProfile.avatarEmoji,
-              avatarUrl: remoteProfile.avatar_url || userProfile.avatarUrl,
-            });
-          }
+          updateUserProfile({
+            fullName: remoteProfile.full_name || userProfile.fullName,
+            university: remoteProfile.university || userProfile.university,
+            departmentAndClass: remoteProfile.department_and_class || userProfile.departmentAndClass,
+            avatarEmoji: remoteProfile.avatar_emoji || userProfile.avatarEmoji,
+            avatarUrl: remoteProfile.avatar_url || userProfile.avatarUrl,
+            isPremium: Boolean(remoteProfile.is_premium || remoteProfile.isPremium),
+            subscriptionStatus: remoteProfile.subscription_status || userProfile.subscriptionStatus,
+            subscriptionRenewsAt: remoteProfile.subscription_renews_at || userProfile.subscriptionRenewsAt,
+          });
           if (typeof remoteProfile.xp === 'number' && remoteProfile.xp > 0) {
             useAppStore.setState((state) => ({
               xp: remoteProfile.xp,
               streak: typeof remoteProfile.streak === 'number' ? remoteProfile.streak : state.streak,
             }));
           }
-        } else {
-          // If the profile no longer exists in Supabase (e.g. account was deleted from database),
-          // cleanly reset user to guest state so phantom accounts don't remain in local storage
-          console.info('Account not found in cloud, resetting to guest session.');
-          useAppStore.getState().logout();
         }
       })
       .catch((err) => {

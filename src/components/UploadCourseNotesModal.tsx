@@ -456,6 +456,20 @@ export const UploadCourseNotesModal: React.FC<UploadCourseNotesModalProps> = ({
                 </div>
               )}
 
+              {/* Copyright Confirmation Checkbox */}
+              <label className="flex items-start space-x-2.5 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  required
+                  className="mt-0.5 w-4 h-4 accent-[#ff7a00] shrink-0 cursor-pointer"
+                />
+                <span className="text-[11px] text-slate-600 font-medium leading-relaxed">
+                  {isEn
+                    ? 'I confirm that I have the right to share these files (my own notes, publicly available materials, or files I have permission to share). I agree to the TanCoreLab Terms of Service.'
+                    : 'Bu dosyaları paylaşma hakkına sahip olduğumu onaylıyorum (kendi notlarım, kamuya açık materyaller veya izin aldığım dosyalar). TanCoreLab Kullanım Koşullarını kabul ediyorum.'}
+                </span>
+              </label>
+
               {/* Submit Button with Dynamic Reward Badge */}
               <button
                 type="submit"

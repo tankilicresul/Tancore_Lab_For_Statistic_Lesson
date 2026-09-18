@@ -77,8 +77,8 @@ export const PlusUpgradeModal: React.FC = () => {
     },
     {
       icon: <FileText className="w-4 h-4 text-blue-500 shrink-0" />,
-      title: isTr ? 'Vize/Final Ders Notları & Formüller' : 'Exam Study Notes & PDF Sheets',
-      sub: isTr ? 'Koç, İTÜ, Boğaziçi seviyesinde derlenmiş hazır özetler' : 'High-yield university exam cheat sheets',
+      title: isTr ? 'Vize/Final Ders Notları & Formüller' : 'Exam Study Notes & Formula Sheets',
+      sub: isTr ? 'Endüstri mühendisliği ve istatistik için özgün çalışma notları' : 'Original study notes for industrial engineering & statistics',
     },
     {
       icon: <Briefcase className="w-4 h-4 text-emerald-500 shrink-0" />,

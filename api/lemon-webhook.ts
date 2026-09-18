@@ -51,7 +51,11 @@ export default async function handler(req: any, res: any) {
 
     // HMAC Signature verification if secret is configured
     const signature = (req.headers['x-signature'] as string) || '';
-    if (webhookSecret && signature) {
+    if (webhookSecret) {
+      if (!signature) {
+        console.warn('[LemonWebhook] Missing x-signature header.');
+        return res.status(401).json({ error: 'Signature required' });
+      }
       const hmac = crypto.createHmac('sha256', webhookSecret);
       const digest = Buffer.from(hmac.update(rawBody).digest('hex'), 'utf8');
       const signatureBuffer = Buffer.from(signature, 'utf8');

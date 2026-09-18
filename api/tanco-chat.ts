@@ -4,6 +4,12 @@
  * Supports text and multimodal image analysis.
  */
 
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '';
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || '';
+const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+
 // Simple in-memory rate limiting map (IP -> timestamps array)
 const rateLimitMap = new Map<string, number[]>();
 
@@ -134,7 +140,7 @@ export default async function handler(req: any, res: any) {
     !origin ||
     origin === 'https://tancorelab.com' ||
     origin === 'https://www.tancorelab.com' ||
-    origin.endsWith('.vercel.app') ||
+    origin.includes('tancorelab') ||
     origin.includes('localhost');
 
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -208,11 +214,10 @@ export default async function handler(req: any, res: any) {
 
   try {
     const models = [
-      'gemini-flash-latest',
-      'gemini-3.5-flash',
-      'gemini-flash-lite-latest',
-      'gemini-3.1-flash-lite',
-      'gemini-2.5-flash',
+      'gemini-1.5-flash',
+      'gemini-2.0-flash',
+      'gemini-1.5-flash-8b',
+      'gemini-1.5-pro',
     ];
     let lastError: any = null;
 

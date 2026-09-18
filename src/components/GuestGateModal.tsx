@@ -55,8 +55,8 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
             </h3>
             <p className="text-[11.5px] sm:text-xs text-slate-600 font-medium leading-relaxed">
               {isTr
-                ? 'Daha fazla ilerlemek istemez misin? O zaman gerçek bir insan olduğunu anlayabilmemiz için kayıt ol, tüm özelliklere erişme şansı yakala.'
-                : 'Want to keep going? Sign up so we know you are a real student and unlock all features.'}
+                ? 'Ücretsiz bir hesap oluşturarak ilerlemeni kaydedebilir, Tanco ile soru çözebilir ve tüm modüllere erişebilirsin.'
+                : 'Create a free account to save your progress, ask Tanco for help, and unlock all learning modules.'}
             </p>
 
             {/* Speech Bubble Arrow Tail */}

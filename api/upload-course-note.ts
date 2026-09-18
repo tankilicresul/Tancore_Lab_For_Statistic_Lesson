@@ -42,7 +42,7 @@ export default async function handler(req: any, res: any) {
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization, X-Admin-Key'
   );
 
   if (req.method === 'OPTIONS') {
@@ -63,11 +63,18 @@ export default async function handler(req: any, res: any) {
   }
 
   if (req.method === 'GET') {
-    // List uploaded notes for developer overview
+    // List uploaded notes. Only expose uploader PII (email/name) to authenticated admins.
+    const adminKey = (req.headers['x-admin-key'] || req.query.adminKey) as string | undefined;
+    const configuredKey = process.env.ADMIN_API_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const isAdmin = Boolean(configuredKey && adminKey === configuredKey);
+
     const courseCode = req.query.courseCode;
     if (supabase) {
       try {
-        let query = supabase.from('course_notes').select('*').order('created_at', { ascending: false }).limit(50);
+        const selectFields = isAdmin
+          ? '*'
+          : 'id, course_code, course_title, file_name, file_size, file_type, file_url, note_description, created_at';
+        let query = supabase.from('course_notes').select(selectFields).order('created_at', { ascending: false }).limit(50);
         if (courseCode) {
           query = query.eq('course_code', String(courseCode).slice(0, 20));
         }
