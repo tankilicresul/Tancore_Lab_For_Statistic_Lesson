@@ -506,19 +506,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                     (Sen)
                   </span>
                 </span>
-                {isCountingXp ? (
-                  <span className="text-[10px] font-black text-amber-600 animate-pulse block">
-                    ⚡ PUAN ARTIYOR...
-                  </span>
-                ) : isClimbing ? (
-                  <span className="text-[10px] font-black text-orange-600 animate-pulse block">
-                    🔥 SIRA YÜKSELİYOR! ↑
-                  </span>
-                ) : justArrived ? (
-                  <span className="text-[10px] font-black text-amber-200 block">
-                    🎉 YENİ SIRA YERLEŞTİ!
-                  </span>
-                ) : null}
+                <span className="text-[10px] text-slate-500 truncate block">
+                  {userProfile?.university || (language === 'tr' ? 'Üniversite' : 'University')}
+                </span>
               </div>
             </div>
 
@@ -622,21 +612,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                           </span>
                         )}
                       </div>
-                      {isSelf && isCountingXp ? (
-                        <span className="text-[10px] font-black text-amber-600 animate-pulse block">
-                          ⚡ PUAN ARTIYOR...
-                        </span>
-                      ) : isSelf && isClimbing ? (
-                        <span className="text-[10px] font-black text-orange-600 animate-pulse block">
-                          🔥 SIRA YÜKSELİYOR! ↑
-                        </span>
-                      ) : isSelf && justArrived ? (
-                        <span className="text-[10px] font-black text-amber-200 block">
-                          🎉 PUF! YENİ YERİNE OTURDU!
-                        </span>
-                      ) : (
-                        <span className="text-[10px] text-slate-500 truncate block">{user.university}</span>
-                      )}
+                      <span className="text-[10px] text-slate-500 truncate block">{user.university}</span>
                     </div>
                   </div>
                   <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black shrink-0">
