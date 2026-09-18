@@ -387,35 +387,17 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
       {/* Placement Test CTA Card */}
       {onStartPlacementTest && (
-        <div className="relative mb-8 p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-orange-50/80 via-amber-50/50 to-white border border-[#ff7a00]/30 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
-          <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shadow-md shadow-[#ff7a00]/25 shrink-0">
-              <Target className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[2]" />
-            </div>
-            <div className="text-left min-w-0">
-              <div className="flex items-center space-x-2">
-                <h3 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight">
-                  {language === 'tr' ? 'Seviyeni Belirle' : 'Placement Test'}
-                </h3>
-                <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#ff7a00]/10 text-[#ff7a00] font-mono border border-[#ff7a00]/20">
-                  {language === 'tr' ? 'Hızlı İlerle' : 'Fast-Track'}
-                </span>
-              </div>
-              <p className="text-[10.5px] sm:text-xs text-slate-500 font-medium leading-snug mt-0.5">
-                {language === 'tr'
-                  ? 'Daha önce bu konuları gördün mü? Seviye tespit sınavı ile bildiğin modülleri doğrudan tamamla.'
-                  : 'Already familiar with these topics? Test out of mastered modules directly.'}
-              </p>
-            </div>
-          </div>
+        <div className="relative mb-6 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-orange-50/90 via-amber-50/60 to-white border border-[#ff7a00]/30 shadow-2xs flex items-center justify-between gap-3">
+          <span className="text-xs sm:text-sm font-bold text-slate-800 tracking-tight">
+            {language === 'tr' ? 'İstediğin konudan başlamak için' : 'To start from any topic you want'}
+          </span>
 
           <button
             onClick={onStartPlacementTest}
-            className="w-full sm:w-auto flex items-center justify-center space-x-1.5 px-4 py-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs shadow-[#ff7a00]/25 group shrink-0 whitespace-nowrap cursor-pointer"
+            className="flex items-center justify-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black transition-all shadow-xs shadow-[#ff7a00]/25 group shrink-0 whitespace-nowrap cursor-pointer active:scale-95"
           >
-            <Target className="w-3.5 h-3.5 text-white stroke-[2]" />
-            <span>{language === 'tr' ? 'Sınava Başla' : 'Start Test'}</span>
-            <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
+            <span>{language === 'tr' ? 'Seviyeni Belirle' : 'Take Placement Test'}</span>
+            <ArrowRight className="w-4 h-4 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
       )}
