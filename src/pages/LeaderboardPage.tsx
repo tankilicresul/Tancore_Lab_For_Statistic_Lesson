@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { PublicProfile } from '../types/stats';
 import { fetchAllProfilesFromSupabase } from '../lib/supabase';
-import { Crown, Flame, Sparkles, RefreshCw } from 'lucide-react';
+import { Crown, Flame, Sparkles } from 'lucide-react';
 import { UserAvatar } from '../components/UserAvatar';
 import { computeUnifiedLeaderboard, isSameStudent } from '../utils/leaderboardHelper';
 import { soundService } from '../services/soundService';
@@ -619,24 +619,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               {language === 'tr' ? 'Tüm Öğrenciler' : 'All Students'}
             </span>
 
-            <div className="flex items-center space-x-2">
-              <span className="text-[11px] text-slate-400 font-medium">
-                {renderedList.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
-              </span>
-              <button
-                onClick={() =>
-                  startRankClimbAnimation(
-                    Math.min(sortedLeaderboard.length, userRank + 4),
-                    Math.max(0, (xp || 0) - 60)
-                  )
-                }
-                className="flex items-center space-x-1 px-2 py-0.5 rounded-lg bg-orange-100 hover:bg-orange-200 text-[#ff7a00] font-black text-[10px] transition-colors cursor-pointer active:scale-95"
-                title="Yükselme Animasyonunu Tekrar Test Et"
-              >
-                <RefreshCw className="w-3 h-3" />
-                <span>{language === 'tr' ? 'Tırmanışı Test Et' : 'Test Climb'}</span>
-              </button>
-            </div>
+            <span className="text-[11px] text-slate-400 font-medium">
+              {renderedList.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
+            </span>
           </div>
 
           <div
