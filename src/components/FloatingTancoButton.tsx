@@ -145,7 +145,7 @@ export const FloatingTancoButton: React.FC = () => {
       if (hasMovedRef.current) {
         const nextX = dragStartRef.current.initialX + deltaX;
         const nextY = dragStartRef.current.initialY + deltaY;
-        setTancoPosition(clampPosition(nextX, nextY));
+        setTancoPosition(clampPosition(nextX, nextY), true);
       }
     };
 

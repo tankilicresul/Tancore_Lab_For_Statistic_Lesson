@@ -315,6 +315,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     userProfile,
     setIsTancoChatOpen,
     isTancoActive,
+    isTancoMoved,
     activateTanco,
     setTancoPosition,
   } = useAppStore();
@@ -377,7 +378,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       if (hasMovedRef.current) {
         const nextX = dragStartRef.current.initialX + deltaX;
         const nextY = dragStartRef.current.initialY + deltaY;
-        setTancoPosition(clampPosition(nextX, nextY));
+        setTancoPosition(clampPosition(nextX, nextY), true);
       }
     };
 
@@ -405,11 +406,8 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-yellow-300/25 rounded-full blur-2xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col gap-3.5 sm:gap-4">
-          {/* Speech Bubble coming out from Tanco's head */}
+          {/* Welcome Message Card: Smooth rounded rectangle without pointy tail */}
           <div className="relative bg-white text-slate-900 border border-amber-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-md">
-            {/* Speech bubble tail pointing down towards Tanco's head */}
-            <div className="absolute left-7 sm:left-8 -bottom-2 w-4 h-4 bg-white border-r border-b border-amber-200/90 transform rotate-45" />
-
             <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug mb-1">
               {language === 'tr'
                 ? `Selam ${studentDisplayName}! Ben Tanco, senin TA'yin olacağım.`
@@ -422,8 +420,8 @@ export const HomePage: React.FC<HomePageProps> = ({
             </p>
           </div>
 
-          {/* Tanco Mascot at Bottom-Left */}
-          <div className="flex items-center space-x-3 pl-1">
+          {/* Tanco Mascot area at Bottom-Left */}
+          <div className="flex items-center space-x-3 pl-1 min-h-[56px]">
             {!isTancoActive ? (
               <div
                 ref={avatarRef}
@@ -446,15 +444,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                   <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-yellow-300 border-2 border-orange-600" />
                 </span>
               </div>
-            ) : (
-              <div
-                onClick={() => setIsTancoChatOpen(true)}
-                className="relative group cursor-pointer focus:outline-none w-14 h-14 rounded-full border-2 border-dashed border-white/60 bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all shrink-0"
-                title={language === 'tr' ? "Tanco ile Sohbet Et" : "Chat with Tanco"}
-              >
-                <Sparkles className="w-5 h-5 text-amber-200 animate-pulse" />
-              </div>
-            )}
+            ) : !isTancoMoved ? (
+              // Active but not moved yet: FloatingTanco is sitting right over this spot
+              <div className="w-14 h-14 shrink-0" />
+            ) : null}
 
             <div className="flex flex-col">
               <div className="flex items-center space-x-1.5">

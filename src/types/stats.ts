@@ -160,6 +160,7 @@ export interface UserState {
   guestProgressTimestamp?: number;
   isPlusUpgradeModalOpen?: boolean;
   isTancoActive?: boolean;
+  isTancoMoved?: boolean;
   tancoPosition?: { x: number; y: number } | null;
 }
 

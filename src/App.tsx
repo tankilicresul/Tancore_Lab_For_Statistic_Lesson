@@ -15,7 +15,7 @@ import { AuthModal } from './components/AuthModal';
 import { BottomNavBar } from './components/BottomNavBar';
 import { AppSplashScreen } from './components/AppSplashScreen';
 import { getLessonById, getCaseExamById } from './data/modules';
-import { useAppStore } from './store/useAppStore';
+import { useAppStore, saveTancoSession } from './store/useAppStore';
 import { getLocalized } from './utils/localization';
 import { fetchUserProfileFromSupabase } from './lib/supabase';
 
@@ -91,6 +91,37 @@ export const App: React.FC = () => {
     if (!window.history.state) {
       window.history.replaceState({ view: 'home' }, '');
     }
+  }, []);
+
+  // ── Tanco Inactivity & Session Heartbeat ─────────────────────────
+  // Keeps Tanco alive across page refreshes and short exits (< 1 minute),
+  // while resetting Tanco to welcome card if user leaves for more than 1 minute.
+  useEffect(() => {
+    const persistHeartbeat = () => {
+      const state = useAppStore.getState();
+      if (state.isTancoActive && state.tancoPosition) {
+        saveTancoSession({
+          isTancoActive: true,
+          isTancoMoved: state.isTancoMoved,
+          tancoPosition: state.tancoPosition,
+        });
+      }
+    };
+
+    const interval = setInterval(persistHeartbeat, 8000);
+    window.addEventListener('beforeunload', persistHeartbeat);
+    const onVisChange = () => {
+      if (document.visibilityState === 'hidden') {
+        persistHeartbeat();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisChange);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('beforeunload', persistHeartbeat);
+      document.removeEventListener('visibilitychange', onVisChange);
+    };
   }, []);
 
   // Strict guard: Guests / unauthenticated users must never see profile page on reload/refresh

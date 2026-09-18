@@ -51,10 +51,83 @@ interface AppStoreActions {
   openLemonCheckout: (customEmail?: string) => void;
   setSubscriptionStatus: (isPremium: boolean, status?: string) => void;
   isTancoActive?: boolean;
+  isTancoMoved?: boolean;
   tancoPosition?: { x: number; y: number } | null;
   activateTanco: (initialPos: { x: number; y: number }) => void;
-  setTancoPosition: (pos: { x: number; y: number }) => void;
+  setTancoPosition: (pos: { x: number; y: number }, isMoved?: boolean) => void;
   deactivateTanco: () => void;
+  markTancoPaymentPending: () => void;
+}
+
+export const TANCO_SESSION_KEY = 'tancore_tanco_session_v2';
+const TANCO_TIMEOUT_MS = 60 * 1000; // 1 minute inactivity timeout
+
+export interface TancoStoredSession {
+  isTancoActive: boolean;
+  isTancoMoved: boolean;
+  tancoPosition: { x: number; y: number } | null;
+  lastSeen: number;
+  paymentPending?: boolean;
+}
+
+export function loadTancoSession(): {
+  isTancoActive: boolean;
+  isTancoMoved: boolean;
+  tancoPosition: { x: number; y: number } | null;
+} {
+  try {
+    const raw = localStorage.getItem(TANCO_SESSION_KEY);
+    if (!raw) return { isTancoActive: false, isTancoMoved: false, tancoPosition: null };
+
+    const parsed: TancoStoredSession = JSON.parse(raw);
+    const now = Date.now();
+    const lastSeen = typeof parsed.lastSeen === 'number' ? parsed.lastSeen : 0;
+    const isPaymentPending = Boolean(parsed.paymentPending);
+
+    // If payment was opened, or if less than 1 minute elapsed since user left app:
+    const isValid = isPaymentPending || (now - lastSeen <= TANCO_TIMEOUT_MS);
+
+    if (isValid && parsed.isTancoActive && parsed.tancoPosition) {
+      parsed.lastSeen = now;
+      parsed.paymentPending = false; // Reset payment flag once restored
+      localStorage.setItem(TANCO_SESSION_KEY, JSON.stringify(parsed));
+      return {
+        isTancoActive: true,
+        isTancoMoved: Boolean(parsed.isTancoMoved),
+        tancoPosition: parsed.tancoPosition,
+      };
+    } else {
+      // Expired (> 1 minute elapsed since user closed/left app): return to original card spot!
+      localStorage.removeItem(TANCO_SESSION_KEY);
+      return { isTancoActive: false, isTancoMoved: false, tancoPosition: null };
+    }
+  } catch {
+    return { isTancoActive: false, isTancoMoved: false, tancoPosition: null };
+  }
+}
+
+export function saveTancoSession(data: {
+  isTancoActive: boolean;
+  isTancoMoved?: boolean;
+  tancoPosition: { x: number; y: number } | null;
+  paymentPending?: boolean;
+}) {
+  try {
+    if (!data.isTancoActive || !data.tancoPosition) {
+      localStorage.removeItem(TANCO_SESSION_KEY);
+      return;
+    }
+    const payload: TancoStoredSession = {
+      isTancoActive: true,
+      isTancoMoved: Boolean(data.isTancoMoved),
+      tancoPosition: data.tancoPosition,
+      lastSeen: Date.now(),
+      paymentPending: Boolean(data.paymentPending),
+    };
+    localStorage.setItem(TANCO_SESSION_KEY, JSON.stringify(payload));
+  } catch {
+    // ignore
+  }
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -68,6 +141,8 @@ const DEFAULT_PROFILE: UserProfile = {
 };
 
 const DEFAULT_DEMO_ACCOUNTS: RegisteredAccount[] = [];
+
+const initialTanco = typeof window !== 'undefined' ? loadTancoSession() : { isTancoActive: false, isTancoMoved: false, tancoPosition: null };
 
 const INITIAL_STATE: UserState = {
   language: 'tr',
@@ -93,8 +168,9 @@ const INITIAL_STATE: UserState = {
   customActiveModuleName: null,
   isTancoChatOpen: false,
   isPlusUpgradeModalOpen: false,
-  isTancoActive: false,
-  tancoPosition: null,
+  isTancoActive: initialTanco.isTancoActive,
+  isTancoMoved: initialTanco.isTancoMoved,
+  tancoPosition: initialTanco.tancoPosition,
 };
 
 function syncUserInList(state: UserState): PublicProfile[] {
@@ -727,6 +803,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
 
       openLemonCheckout: (customEmail) => {
         const state = get();
+        state.markTancoPaymentPending();
         const email = customEmail || state.userProfile?.schoolEmail || '';
         const name = state.userProfile?.fullName || '';
         const baseUrl = 'https://tancorelab.lemonsqueezy.com/checkout/buy/7f8fd627-8384-4a2c-9b36-da2f05a7b216';
@@ -779,30 +856,65 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       activateTanco: (initialPos) => {
         set({
           isTancoActive: true,
+          isTancoMoved: false,
+          tancoPosition: initialPos,
+        });
+        saveTancoSession({
+          isTancoActive: true,
+          isTancoMoved: false,
           tancoPosition: initialPos,
         });
       },
 
-      setTancoPosition: (pos) => {
-        set({
-          tancoPosition: pos,
+      setTancoPosition: (pos, isMoved = false) => {
+        set((state) => {
+          const moved = isMoved || Boolean(state.isTancoMoved);
+          saveTancoSession({
+            isTancoActive: true,
+            isTancoMoved: moved,
+            tancoPosition: pos,
+          });
+          return {
+            tancoPosition: pos,
+            isTancoMoved: moved,
+          };
         });
       },
 
       deactivateTanco: () => {
         set({
           isTancoActive: false,
+          isTancoMoved: false,
           tancoPosition: null,
         });
+        saveTancoSession({
+          isTancoActive: false,
+          isTancoMoved: false,
+          tancoPosition: null,
+        });
+      },
+
+      markTancoPaymentPending: () => {
+        const state = get();
+        if (state.isTancoActive && state.tancoPosition) {
+          saveTancoSession({
+            isTancoActive: true,
+            isTancoMoved: state.isTancoMoved,
+            tancoPosition: state.tancoPosition,
+            paymentPending: true,
+          });
+        }
       },
     }),
     {
       name: 'tancorelab-statsim-v5',
       onRehydrateStorage: () => (state) => {
         if (state) {
-          // Tanco must always start inactive and in the welcome banner upon every entry/refresh
-          state.isTancoActive = false;
-          state.tancoPosition = null;
+          // Check Tanco session: if within 1 minute or returning from payment, preserve position; otherwise reset to card!
+          const tancoSession = loadTancoSession();
+          state.isTancoActive = tancoSession.isTancoActive;
+          state.isTancoMoved = tancoSession.isTancoMoved;
+          state.tancoPosition = tancoSession.tancoPosition;
 
           // Anti-tamper sanity check on rehydration
           const completedCount = (state.completedLessons?.length || 0) + (state.completedCaseExams?.length || 0);
