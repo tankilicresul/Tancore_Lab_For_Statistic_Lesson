@@ -5,6 +5,7 @@ import { fetchAllProfilesFromSupabase } from '../lib/supabase';
 import { Crown, Flame, Sparkles, RefreshCw } from 'lucide-react';
 import { UserAvatar } from '../components/UserAvatar';
 import { computeUnifiedLeaderboard, isSameStudent } from '../utils/leaderboardHelper';
+import { soundService } from '../services/soundService';
 
 export interface LeaderboardPageProps {
   onGoHome?: () => void;
@@ -164,13 +165,16 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     if (!isClimbing || displayRank === null || !userRank) return;
 
     if (displayRank > userRank) {
+      // Play wheel/ratchet tick sound for each rank passed
+      soundService.playWheelTick();
       const timer = setTimeout(() => {
         setDisplayRank((current) => (current ? current - 1 : userRank));
       }, 210);
 
       return () => clearTimeout(timer);
     } else if (displayRank === userRank) {
-      // Phase 2 finished! Start Phase 3 (Puf Pop Snap)
+      // Phase 2 finished! Play superhero landing impact sound!
+      soundService.playSuperheroLanding();
       setIsClimbing(false);
       setJustArrived(true);
 
@@ -183,6 +187,18 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       return () => clearTimeout(popTimer);
     }
   }, [isClimbing, displayRank, userRank]);
+
+  // Ambient soothing lava flow if user is in Top 3!
+  useEffect(() => {
+    if (isAuthenticated && userRank && userRank <= 3 && !isClimbing) {
+      soundService.playLavaFlow(0.12);
+    } else if (isAuthenticated && userRank && userRank > 3) {
+      soundService.stopAmbient();
+    }
+    return () => {
+      soundService.stopAmbient();
+    };
+  }, [isAuthenticated, userRank, isClimbing]);
 
   // Auto-Scroll to keep climbing user row in view
   useEffect(() => {
@@ -446,7 +462,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               })
             }
             className={`flex items-center justify-between p-3.5 rounded-2xl text-slate-900 cursor-pointer transition-all shadow-xs group ${
-              isClimbing
+              isCountingXp
+                ? 'bg-amber-100/90 border-2 border-amber-500 text-slate-900 shadow-md ring-2 ring-amber-400/40 animate-pulse'
+                : isClimbing
                 ? 'bg-gradient-to-r from-amber-500/25 via-orange-500/30 to-amber-500/25 border-2 border-amber-400 animate-climb-pulse scale-102'
                 : justArrived
                 ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-xl animate-rank-pop border-2 border-amber-300 ring-4 ring-amber-400/40'
@@ -474,7 +492,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                     (Sen)
                   </span>
                 </span>
-                {isClimbing ? (
+                {isCountingXp ? (
+                  <span className="text-[10px] font-black text-amber-600 animate-pulse block">
+                    ⚡ PUAN ARTIYOR...
+                  </span>
+                ) : isClimbing ? (
                   <span className="text-[10px] font-black text-orange-600 animate-pulse block">
                     🔥 SIRA YÜKSELİYOR! ↑
                   </span>
@@ -488,7 +510,13 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
             <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black shrink-0">
               <span className="text-amber-500 font-serif">◆</span>
-              <span>{(xp || 0).toLocaleString('tr-TR')} XP</span>
+              <span>
+                {((isCountingXp || isClimbing || justArrived) && animatedXp !== null
+                  ? animatedXp
+                  : (xp || 0)
+                ).toLocaleString('tr-TR')}{' '}
+                XP
+              </span>
             </div>
           </div>
         </div>
@@ -538,7 +566,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   onClick={() => setSelectedPublicProfile(user)}
                   className={`flex items-center justify-between p-3 rounded-2xl border cursor-pointer transition-all duration-300 ${
                     isSelf
-                      ? isClimbing
+                      ? isCountingXp
+                        ? 'bg-amber-100/90 border-2 border-amber-500 text-slate-900 shadow-md ring-2 ring-amber-400/40 animate-pulse z-20'
+                        : isClimbing
                         ? 'bg-gradient-to-r from-amber-500/20 via-orange-500/30 to-amber-500/20 border-2 border-amber-400 shadow-xl animate-climb-pulse scale-102 z-20'
                         : justArrived
                         ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-2xl animate-rank-pop border-2 border-amber-300 ring-4 ring-amber-400/50 z-20'
@@ -578,7 +608,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                           </span>
                         )}
                       </div>
-                      {isSelf && isClimbing ? (
+                      {isSelf && isCountingXp ? (
+                        <span className="text-[10px] font-black text-amber-600 animate-pulse block">
+                          ⚡ PUAN ARTIYOR...
+                        </span>
+                      ) : isSelf && isClimbing ? (
                         <span className="text-[10px] font-black text-orange-600 animate-pulse block">
                           🔥 SIRA YÜKSELİYOR! ↑
                         </span>
@@ -593,7 +627,13 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   </div>
                   <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black shrink-0">
                     <span className="text-amber-500 font-serif">◆</span>
-                    <span>{user.xp.toLocaleString('tr-TR')} XP</span>
+                    <span>
+                      {(isSelf && (isCountingXp || isClimbing || justArrived) && animatedXp !== null
+                        ? animatedXp
+                        : user.xp
+                      ).toLocaleString('tr-TR')}{' '}
+                      XP
+                    </span>
                   </div>
                 </div>
               );

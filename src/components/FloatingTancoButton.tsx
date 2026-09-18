@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TanCoreMascotAvatar } from './TanCoreMascotAvatar';
 import { getLatestTancoMessageInfo } from '../lib/supabase';
+import { soundService } from '../services/soundService';
 
 const LAST_READ_KEY = 'tancore_last_read_tanco_chat_v1';
 
@@ -159,6 +160,7 @@ export const FloatingTancoButton: React.FC = () => {
 
       if (!hasMovedRef.current) {
         // Normal click/tap: open Tanco Chat & clear notification badge
+        soundService.playTancoActivation();
         setHasUnread(false);
         localStorage.setItem(LAST_READ_KEY, String(Date.now()));
         setIsTancoChatOpen(true);
@@ -195,6 +197,7 @@ export const FloatingTancoButton: React.FC = () => {
         <div
           onClick={(e) => {
             e.stopPropagation();
+            soundService.playTancoActivation();
             setIsTancoChatOpen(true);
           }}
           className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-red-600 via-rose-500 to-orange-500 text-white text-[11px] font-black tracking-wide shadow-xl shadow-red-500/30 border border-white/40 pointer-events-auto cursor-pointer whitespace-nowrap absolute top-1/2 -translate-y-1/2 animate-bounce transition-all duration-300 ${
@@ -208,6 +211,7 @@ export const FloatingTancoButton: React.FC = () => {
           <div
             onClick={(e) => {
               e.stopPropagation();
+              soundService.playTancoActivation();
               setIsTancoChatOpen(true);
             }}
             className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#ff7a00] to-orange-500 text-white text-[11px] font-black tracking-wide shadow-md shadow-[#ff7a00]/30 border border-white/50 backdrop-blur-xs pointer-events-auto cursor-pointer whitespace-nowrap absolute top-1/2 -translate-y-1/2 transition-all duration-300 hover:brightness-105 active:scale-95 ${
