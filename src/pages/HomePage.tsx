@@ -418,17 +418,16 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="relative z-10">
           {/* Speech bubble card with integrated Tanco mascot */}
           <div className="relative bg-white text-slate-900 border border-amber-100 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-lg">
-            {/* Top 2-line Header spanning full width */}
-            <h1 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight leading-snug">
+            <h1 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight leading-snug">
               {language === 'tr' ? (
                 <>
-                  <span className="block">Selam {studentDisplayName}! Ben Tanco, senin yapay zeka asistanınım.</span>
-                  <span className="block text-slate-700 font-bold mt-0.5">Bana istediğin ismi verebilirsin :)</span>
+                  <span className="block">Selam {studentDisplayName}! Ben Tanco, senin yapay zeka</span>
+                  <span className="block">asistanınım. Bana istediğin ismi verebilirsin :)</span>
                 </>
               ) : (
                 <>
-                  <span className="block">Hi {studentDisplayName}! I'm Tanco, your AI assistant.</span>
-                  <span className="block text-slate-700 font-bold mt-0.5">You can give me any name you want :)</span>
+                  <span className="block">Hi {studentDisplayName}! I'm Tanco, your AI</span>
+                  <span className="block">assistant. You can give me any name you want :)</span>
                 </>
               )}
             </h1>
