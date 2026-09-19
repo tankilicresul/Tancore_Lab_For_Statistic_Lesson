@@ -612,6 +612,37 @@ export async function deleteUserAvatar(userIdentifier: string): Promise<boolean>
 }
 
 /**
+ * Delete user profile from Supabase database, clean up storage avatar and sign out
+ */
+export async function deleteUserProfileFromSupabase(email: string): Promise<{ success: boolean; error?: string }> {
+  if (!supabase || !isSupabaseConfigured) return { success: true };
+
+  try {
+    const cleanEmail = email.trim().toLowerCase();
+    await deleteUserAvatar(cleanEmail);
+
+    const { error } = await supabase
+      .from('profiles')
+      .delete()
+      .eq('email', cleanEmail);
+
+    if (error) {
+      console.warn('Supabase profile delete error:', error.message);
+      return { success: false, error: error.message };
+    }
+
+    try {
+      await supabase.auth.signOut();
+    } catch {}
+
+    return { success: true };
+  } catch (err: any) {
+    console.warn('Supabase profile delete exception:', err);
+    return { success: false, error: err.message || 'Hesap silinemedi.' };
+  }
+}
+
+/**
  * Helper to sync user progress to Supabase database table `user_progress`
  */
 export async function syncUserProgress(data: {

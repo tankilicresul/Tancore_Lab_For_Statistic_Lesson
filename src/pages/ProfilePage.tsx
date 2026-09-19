@@ -36,6 +36,8 @@ import {
   ChevronRight,
   Settings,
   BarChart3,
+  Trash2,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface ProfilePageProps {
@@ -63,6 +65,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     isAuthenticated,
     isVerified,
     logout,
+    deleteAccount,
     registeredUsers,
   } = useAppStore();
 
@@ -86,10 +89,17 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dbProfiles, setDbProfiles] = useState<PublicProfile[]>([]);
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
-  const [editPassword, setEditPassword] = useState('');
-  const [showEditPassword, setShowEditPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
+
+  // Settings Modal State (Mail, Şifre & Hesabı Silme)
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [settingsPassword, setSettingsPassword] = useState('');
+  const [showSettingsPassword, setShowSettingsPassword] = useState(false);
+  const [isSavingSettings, setIsSavingSettings] = useState(false);
+  const [settingsStatus, setSettingsStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   // Keep form fields in sync with userProfile
   useEffect(() => {
@@ -182,41 +192,33 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     setSaveStatus(null);
 
     try {
-      const cleanEmail = formData.schoolEmail?.trim().toLowerCase() || '';
       const cleanName = formData.fullName?.trim() || '';
       const cleanUniversity = formData.university?.trim() || '';
       const cleanDept = formData.departmentAndClass?.trim() || '';
+      const selectedAvatar = formData.avatarUrl || userProfile?.avatarUrl;
 
-      // Always update Supabase Auth user metadata & password
+      // Always update Supabase Auth user metadata
       await updateUserAccountCredentials({
-        newPassword: editPassword.trim().length >= 4 ? editPassword.trim() : undefined,
         fullName: cleanName,
         university: cleanUniversity,
         departmentAndClass: cleanDept,
       });
 
-      const selectedAvatar = formData.avatarUrl || userProfile?.avatarUrl;
-
       // Update local store
-      updateUserProfile(
-        {
-          ...formData,
-          fullName: cleanName,
-          schoolEmail: cleanEmail,
-          university: cleanUniversity,
-          departmentAndClass: cleanDept,
-          avatarUrl: selectedAvatar,
-        },
-        editPassword.trim() ? editPassword.trim() : undefined
-      );
+      updateUserProfile({
+        ...formData,
+        fullName: cleanName,
+        university: cleanUniversity,
+        departmentAndClass: cleanDept,
+        avatarUrl: selectedAvatar,
+      });
 
       // Save to Supabase profiles table
-      if (cleanEmail) {
+      if (userProfile?.schoolEmail) {
         await saveUserProfileToSupabase({
           ...userProfile,
           ...formData,
           fullName: cleanName,
-          schoolEmail: cleanEmail,
           university: cleanUniversity,
           departmentAndClass: cleanDept,
           avatarUrl: selectedAvatar,
@@ -226,16 +228,74 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         });
       }
 
-      setSaveStatus(language === 'tr' ? 'Hesap bilgileriniz başarıyla güncellendi!' : 'Account updated successfully!');
+      setSaveStatus(language === 'tr' ? 'Profil bilgileriniz başarıyla güncellendi!' : 'Profile updated successfully!');
       setTimeout(() => {
         setIsEditing(false);
-        setEditPassword('');
         setSaveStatus(null);
       }, 700);
     } catch (err: any) {
       setSaveStatus(err.message || (language === 'tr' ? 'Güncelleme yapılamadı.' : 'Update failed.'));
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleSaveSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingSettings(true);
+    setSettingsStatus(null);
+
+    try {
+      if (settingsPassword.trim()) {
+        if (settingsPassword.trim().length < 4) {
+          throw new Error(language === 'tr' ? 'Şifre en az 4 karakter olmalıdır.' : 'Password must be at least 4 characters.');
+        }
+
+        const res = await updateUserAccountCredentials({
+          newPassword: settingsPassword.trim(),
+        });
+
+        if (!res.success) {
+          throw new Error(res.error || (language === 'tr' ? 'Şifre güncellenemedi.' : 'Failed to update password.'));
+        }
+
+        updateUserProfile({}, settingsPassword.trim());
+        setSettingsStatus({
+          type: 'success',
+          message: language === 'tr' ? 'Şifreniz başarıyla güncellendi!' : 'Password updated successfully!',
+        });
+        setSettingsPassword('');
+      } else {
+        setSettingsStatus({
+          type: 'success',
+          message: language === 'tr' ? 'Ayarlar kaydedildi.' : 'Settings saved.',
+        });
+      }
+
+      setTimeout(() => {
+        setIsSettingsModalOpen(false);
+        setSettingsStatus(null);
+      }, 1200);
+    } catch (err: any) {
+      setSettingsStatus({
+        type: 'error',
+        message: err.message || (language === 'tr' ? 'Ayarlar kaydedilemedi.' : 'Failed to update settings.'),
+      });
+    } finally {
+      setIsSavingSettings(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setIsDeletingAccount(true);
+    try {
+      await deleteAccount(userProfile?.schoolEmail);
+      setIsDeleteConfirmOpen(false);
+      setIsSettingsModalOpen(false);
+    } catch (err: any) {
+      alert(err.message || (language === 'tr' ? 'Hesap silinirken bir hata oluştu.' : 'Failed to delete account.'));
+    } finally {
+      setIsDeletingAccount(false);
     }
   };
 
@@ -433,7 +493,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-3">
               <div>
                 <label className="text-xs font-bold text-slate-300 block mb-1">
                   {language === 'tr' ? 'İsim Soyisim' : 'Full Name'} *
@@ -446,66 +506,32 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   required
                 />
               </div>
-              <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">
-                  {language === 'tr' ? 'E-posta' : 'Email'} *
-                </label>
-                <input
-                  type="email"
-                  value={formData.schoolEmail}
-                  onChange={(e) => setFormData({ ...formData, schoolEmail: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">
-                  {language === 'tr' ? 'Okul / Üniversite' : 'School / University'}
-                  <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder={language === 'tr' ? 'Örn: Koç Üniversitesi' : 'e.g. University'}
-                  value={formData.university}
-                  onChange={(e) => setFormData({ ...formData, university: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">
-                  {language === 'tr' ? 'Bölüm' : 'Department'}
-                  <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder={language === 'tr' ? 'Örn: Endüstri Mühendisliği' : 'e.g. Department'}
-                  value={formData.departmentAndClass}
-                  onChange={(e) => setFormData({ ...formData, departmentAndClass: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
-                />
-              </div>
-              <div className="sm:col-span-2">
-                <label className="text-xs font-bold text-slate-300 block mb-1">
-                  {language === 'tr' ? 'Şifre Değiştir / Belirle' : 'Change / Set Password'}
-                  <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'Değiştirmek istemiyorsanız boş bırakın' : 'Leave blank to keep unchanged'})</span>
-                </label>
-                <div className="relative">
-                  <Lock className="w-3.5 h-3.5 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-slate-300 block mb-1">
+                    {language === 'tr' ? 'Okul / Üniversite' : 'School / University'}
+                    <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
+                  </label>
                   <input
-                    type={showEditPassword ? 'text' : 'password'}
-                    placeholder={language === 'tr' ? 'Yeni şifreniz (en az 4 karakter)' : 'New password (min 4 chars)'}
-                    value={editPassword}
-                    onChange={(e) => setEditPassword(e.target.value)}
-                    className="w-full pl-9 pr-10 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
+                    type="text"
+                    placeholder={language === 'tr' ? 'Örn: Koç Üniversitesi' : 'e.g. University'}
+                    value={formData.university}
+                    onChange={(e) => setFormData({ ...formData, university: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowEditPassword((prev) => !prev)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/60 hover:text-white cursor-pointer"
-                    tabIndex={-1}
-                  >
-                    {showEditPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-300 block mb-1">
+                    {language === 'tr' ? 'Bölüm' : 'Department'}
+                    <span className="text-[10px] text-slate-400 font-normal ml-1">({language === 'tr' ? 'İsteğe bağlı' : 'Optional'})</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={language === 'tr' ? 'Örn: Endüstri Mühendisliği' : 'e.g. Department'}
+                    value={formData.departmentAndClass}
+                    onChange={(e) => setFormData({ ...formData, departmentAndClass: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
+                  />
                 </div>
               </div>
             </div>
@@ -515,7 +541,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 type="button"
                 onClick={() => {
                   setIsEditing(false);
-                  setEditPassword('');
                   setSaveStatus(null);
                 }}
                 disabled={isSaving}
@@ -805,8 +830,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   onClick={() => {
                     setIsSideMenuOpen(false);
                     if (isAuthenticated) {
-                      setIsEditing(true);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      setIsSettingsModalOpen(true);
                     } else {
                       onOpenAuth?.();
                     }
@@ -822,7 +846,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                         {language === 'tr' ? 'Ayarlar' : 'Settings'}
                       </div>
                       <div className="text-[10px] sm:text-[11px] text-slate-500 font-medium">
-                        {language === 'tr' ? 'Profil, şifre ve hesap tercihleri' : 'Profile, password & preferences'}
+                        {language === 'tr' ? 'E-posta, şifre ve hesap tercihleri' : 'Email, password & preferences'}
                       </div>
                     </div>
                   </div>
@@ -857,6 +881,223 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 </button>
               )}
             </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* Dedicated Settings Modal (Ayarlar Modalı: E-posta, Şifre Değiştir, Dil Tercihi) */}
+      {isSettingsModalOpen && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 font-sans">
+          {/* Backdrop */}
+          <div
+            onClick={() => {
+              if (!isSavingSettings) {
+                setIsSettingsModalOpen(false);
+                setSettingsStatus(null);
+                setSettingsPassword('');
+              }
+            }}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity animate-fade-in"
+          />
+
+          {/* Modal Card */}
+          <div className="relative z-10 w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 p-5 sm:p-6 overflow-hidden animate-scale-up">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-2xl bg-orange-100 text-[#ff7a00] flex items-center justify-center shadow-xs shrink-0">
+                  <Settings className="w-5 h-5 stroke-[2.5]" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-base font-black text-slate-900 truncate">
+                    {language === 'tr' ? 'Hesap Ayarları' : 'Account Settings'}
+                  </h3>
+                  <p className="text-xs text-slate-500 font-semibold truncate">
+                    {language === 'tr' ? 'E-posta, şifre ve dil tercihleri' : 'Email, password & language preferences'}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  if (!isSavingSettings) {
+                    setIsSettingsModalOpen(false);
+                    setSettingsStatus(null);
+                    setSettingsPassword('');
+                  }
+                }}
+                className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer shrink-0"
+                aria-label="Kapat"
+              >
+                <X className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveSettings} className="mt-4 space-y-4">
+              {/* 1. Mail (Kayıtlı E-posta Gösterimi) */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-black text-slate-700 flex items-center space-x-1.5">
+                    <Mail className="w-3.5 h-3.5 text-[#ff7a00]" />
+                    <span>{language === 'tr' ? 'Kayıtlı E-posta' : 'Registered Email'}</span>
+                  </label>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+                    {language === 'tr' ? 'Onaylı Hesap' : 'Verified'}
+                  </span>
+                </div>
+                <div className="px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs font-bold truncate select-all">
+                  {userProfile?.schoolEmail || (language === 'tr' ? 'Belirtilmedi' : 'Not specified')}
+                </div>
+                <p className="text-[10.5px] text-slate-500 font-medium">
+                  {language === 'tr'
+                    ? 'Giriş yapmak ve ilerlemenizi eşitlemek için kullanılan resmi e-posta adresinizdir.'
+                    : 'Official account email used for sign in and syncing.'}
+                </p>
+              </div>
+
+              {/* 2. Şifre (Şifre Değiştirme) */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                <label className="text-xs font-black text-slate-700 flex items-center space-x-1.5">
+                  <Lock className="w-3.5 h-3.5 text-[#ff7a00]" />
+                  <span>{language === 'tr' ? 'Şifre Değiştir' : 'Change Password'}</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type={showSettingsPassword ? 'text' : 'password'}
+                    placeholder={language === 'tr' ? 'Yeni şifrenizi girin (en az 4 karakter)' : 'Enter new password (min 4 chars)'}
+                    value={settingsPassword}
+                    onChange={(e) => setSettingsPassword(e.target.value)}
+                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowSettingsPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 cursor-pointer p-1"
+                    tabIndex={-1}
+                  >
+                    {showSettingsPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <p className="text-[10.5px] text-slate-500 font-medium">
+                  {language === 'tr' ? 'Şifrenizi değiştirmek istemiyorsanız bu alanı boş bırakabilirsiniz.' : 'Leave blank if you do not want to change password.'}
+                </p>
+              </div>
+
+              {/* 3. Hesabı Silme (Delete Account Danger Zone) */}
+              <div className="p-3.5 rounded-2xl bg-rose-50/60 border border-rose-200/80 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-black text-rose-700 flex items-center space-x-1.5">
+                    <Trash2 className="w-3.5 h-3.5 text-rose-500" />
+                    <span>{language === 'tr' ? 'Hesabı Sil' : 'Delete Account'}</span>
+                  </label>
+                </div>
+
+                {!isDeleteConfirmOpen ? (
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-1">
+                    <p className="text-[10.5px] text-rose-600/90 font-medium">
+                      {language === 'tr'
+                        ? 'Hesabınızı ve tüm ilerleme verilerinizi kalıcı olarak siler.'
+                        : 'Permanently deletes your account and all progress data.'}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setIsDeleteConfirmOpen(true)}
+                      className="px-3 py-1.5 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-700 text-xs font-black transition-colors cursor-pointer active:scale-95 shrink-0 flex items-center space-x-1.5"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>{language === 'tr' ? 'Hesabımı Sil' : 'Delete Account'}</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="p-3 rounded-xl bg-white border border-rose-300/80 space-y-2.5 shadow-2xs">
+                    <div className="flex items-start space-x-2 text-rose-800 text-[11px] font-bold leading-tight">
+                      <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                      <span>
+                        {language === 'tr'
+                          ? 'Hesabınızı kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz; tüm XP, seri ve rozetleriniz silinecektir.'
+                          : 'Are you sure you want to permanently delete your account? This action cannot be undone; all XP, streak, and badges will be lost.'}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-end space-x-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setIsDeleteConfirmOpen(false)}
+                        disabled={isDeletingAccount}
+                        className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors cursor-pointer disabled:opacity-50"
+                      >
+                        {language === 'tr' ? 'Vazgeç' : 'Cancel'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDeleteAccount}
+                        disabled={isDeletingAccount}
+                        className="px-3.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-black transition-all shadow-sm cursor-pointer disabled:opacity-50 flex items-center space-x-1.5 active:scale-95"
+                      >
+                        {isDeletingAccount ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span>{language === 'tr' ? 'Siliniyor...' : 'Deleting...'}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>{language === 'tr' ? 'Evet, Hesabımı Kalıcı Olarak Sil' : 'Yes, Delete Account'}</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Status Alert */}
+              {settingsStatus && (
+                <div
+                  className={`p-3 rounded-xl text-xs font-bold flex items-center space-x-2 ${
+                    settingsStatus.type === 'success'
+                      ? 'bg-emerald-50 border border-emerald-200 text-emerald-700'
+                      : 'bg-rose-50 border border-rose-200 text-rose-700'
+                  }`}
+                >
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>{settingsStatus.message}</span>
+                </div>
+              )}
+
+              {/* Footer Buttons */}
+              <div className="pt-2 flex items-center justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSettingsModalOpen(false);
+                    setSettingsStatus(null);
+                    setSettingsPassword('');
+                    setIsDeleteConfirmOpen(false);
+                  }}
+                  disabled={isSavingSettings || isDeletingAccount}
+                  className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors cursor-pointer disabled:opacity-50"
+                >
+                  {language === 'tr' ? 'Vazgeç' : 'Cancel'}
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingSettings || isDeletingAccount}
+                  className="px-5 py-2.5 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-bold transition-all shadow-md shadow-[#ff7a00]/25 cursor-pointer disabled:opacity-50 flex items-center space-x-1.5 active:scale-95"
+                >
+                  {isSavingSettings ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>{language === 'tr' ? 'Kaydediliyor...' : 'Saving...'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-3.5 h-3.5" />
+                      <span>{language === 'tr' ? 'Kaydet' : 'Save Changes'}</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
         </div>,
         document.body

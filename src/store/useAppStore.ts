@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { UserProfile, UserState, PublicProfile, RegisteredAccount } from '../types/stats';
-import { saveUserProfileToSupabase, syncUserProgress, fetchUserProfileFromSupabase, isSupabaseConfigured, signInWithSupabase, supabase } from '../lib/supabase';
+import { saveUserProfileToSupabase, syncUserProgress, fetchUserProfileFromSupabase, isSupabaseConfigured, signInWithSupabase, supabase, deleteUserProfileFromSupabase } from '../lib/supabase';
 import { isSameStudent } from '../utils/leaderboardHelper';
 import { soundService } from '../services/soundService';
 import { getDefaultAvatarForUser } from '../utils/avatarHelper';
@@ -60,6 +60,7 @@ interface AppStoreActions {
   setSelectedTrack: (track: 'probability' | 'statistics' | 'indr100') => void;
   setCustomActiveModuleName: (name: string | null) => void;
   logout: () => void;
+  deleteAccount: (email?: string) => Promise<void>;
   setSelectedPublicProfile: (profile: PublicProfile | null) => void;
   syncRegisteredUserInList: () => void;
   setIsTancoChatOpen: (open: boolean) => void;
@@ -792,6 +793,52 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         set((state) => {
           const newState = {
             ...state,
+            isAuthenticated: false,
+            isVerified: false,
+            pendingOtpEmail: undefined,
+            simulatedOtpCode: undefined,
+            userProfile: DEFAULT_PROFILE,
+            xp: 0,
+            streak: 1,
+            lastActiveDate: new Date().toISOString().split('T')[0],
+            activityDates: [new Date().toISOString().split('T')[0]],
+            completedLessons: [],
+            completedCaseExams: [],
+            currentView: 'home' as const,
+            selectedLessonId: null,
+            selectedCaseId: null,
+            customActiveModuleName: null,
+            unlockedModules: ['module-1', 'module-2'],
+          };
+          return {
+            ...newState,
+            registeredUsers: syncUserInList(newState),
+          };
+        });
+      },
+
+      deleteAccount: async (email?: string) => {
+        const state = get();
+        const currentEmail = (email || state.userProfile?.schoolEmail || '').trim().toLowerCase();
+
+        if (currentEmail) {
+          await deleteUserProfileFromSupabase(currentEmail);
+        }
+
+        if (supabase) {
+          try {
+            await supabase.auth.signOut();
+          } catch {}
+        }
+
+        const remainingAccounts = (state.userAccounts || []).filter(
+          (a) => a.schoolEmail.trim().toLowerCase() !== currentEmail
+        );
+
+        set((prevState) => {
+          const newState = {
+            ...prevState,
+            userAccounts: remainingAccounts,
             isAuthenticated: false,
             isVerified: false,
             pendingOtpEmail: undefined,
