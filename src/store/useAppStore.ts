@@ -249,7 +249,7 @@ function syncUserInList(state: UserState): PublicProfile[] {
     university: profile.university || '',
     departmentAndClass: profile.departmentAndClass || '',
     avatarEmoji: profile.avatarEmoji || '👨‍🎓',
-    avatarUrl: profile.avatarUrl || getDefaultAvatarForUser(currentEmail || profile.fullName),
+    avatarUrl: profile.avatarUrl || getDefaultAvatarForUser(profile.fullName || currentEmail, profile.avatarEmoji),
     xp: state.xp,
     streak: state.streak,
     rank: 1,
@@ -284,7 +284,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       registerAccountAndSendOtp: (accountInput, simulatedCode) => {
         const email = accountInput.schoolEmail?.trim().toLowerCase() || '';
         const currentStore = get();
-        const defaultAvatar = getDefaultAvatarForUser(email || accountInput.fullName);
+        const defaultAvatar = getDefaultAvatarForUser(accountInput.fullName || email, accountInput.avatarEmoji);
         const newAccount: RegisteredAccount = {
           schoolEmail: email,
           fullName: accountInput.fullName?.trim() || 'Öğrenci',
@@ -363,7 +363,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             university: accounts[accIdx].university,
             departmentAndClass: accounts[accIdx].departmentAndClass,
             avatarEmoji: accounts[accIdx].avatarEmoji || '👨‍🎓',
-            avatarUrl: accounts[accIdx].avatarUrl || state.userProfile?.avatarUrl || getDefaultAvatarForUser(pendingEmail),
+            avatarUrl: accounts[accIdx].avatarUrl || state.userProfile?.avatarUrl || getDefaultAvatarForUser(accounts[accIdx].fullName || pendingEmail, accounts[accIdx].avatarEmoji),
             isVerified: true,
             createdAt: new Date().toISOString(),
           };
@@ -381,7 +381,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             university: state.userProfile.university || '',
             departmentAndClass: state.userProfile.departmentAndClass || '',
             avatarEmoji: state.userProfile.avatarEmoji || '👨‍🎓',
-            avatarUrl: state.userProfile?.avatarUrl || getDefaultAvatarForUser(pendingEmail),
+            avatarUrl: state.userProfile?.avatarUrl || getDefaultAvatarForUser(state.userProfile.fullName || pendingEmail, state.userProfile.avatarEmoji),
             isVerified: true,
             createdAt: new Date().toISOString(),
           };
@@ -471,7 +471,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             university: remoteProfile?.university || 'Üniversite',
             departmentAndClass: remoteProfile?.department_and_class || 'Öğrenci',
             avatarEmoji: remoteProfile?.avatar_emoji || '👨‍🎓',
-            avatarUrl: remoteProfile?.avatar_url || state.userProfile?.avatarUrl || getDefaultAvatarForUser(cleanEmail),
+            avatarUrl: remoteProfile?.avatar_url || state.userProfile?.avatarUrl || getDefaultAvatarForUser(remoteProfile?.full_name || cleanEmail, remoteProfile?.avatar_emoji),
             isVerified: true,
             createdAt: new Date().toISOString(),
             isPremium: Boolean(remoteProfile?.is_premium || remoteProfile?.isPremium),
@@ -638,7 +638,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           university: remoteProfile?.university || 'Üniversite',
           departmentAndClass: remoteProfile?.department_and_class || 'Öğrenci',
           avatarEmoji: remoteProfile?.avatar_emoji || '👨‍🎓',
-          avatarUrl: remoteProfile?.avatar_url || state.userProfile?.avatarUrl || getDefaultAvatarForUser(cleanEmail),
+          avatarUrl: remoteProfile?.avatar_url || state.userProfile?.avatarUrl || getDefaultAvatarForUser(remoteProfile?.full_name || sessionUser?.user_metadata?.full_name || cleanEmail, remoteProfile?.avatar_emoji),
           isVerified: true,
           createdAt: new Date().toISOString(),
           isPremium: Boolean(remoteProfile?.is_premium || remoteProfile?.isPremium),

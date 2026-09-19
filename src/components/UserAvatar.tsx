@@ -33,10 +33,10 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
 }) => {
   const [imgError, setImgError] = useState(false);
 
-  // Determine effective image URL
+  // Determine effective image URL with gender-aware matching
   const defaultAvatar = disableDefaultFallback
     ? null
-    : getDefaultAvatarForUser(fullName || avatarEmoji || 'student');
+    : getDefaultAvatarForUser(fullName, avatarEmoji);
   const effectiveUrl = avatarUrl || defaultAvatar;
 
   // Reset error when URL changes

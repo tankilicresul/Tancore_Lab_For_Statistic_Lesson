@@ -363,7 +363,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                           if (userProfile?.schoolEmail) {
                             await deleteUserAvatar(userProfile.schoolEmail);
                           }
-                          const defaultAv = getDefaultAvatarForUser(userProfile?.schoolEmail || userProfile?.fullName);
+                          const defaultAv = getDefaultAvatarForUser(userProfile?.fullName || userProfile?.schoolEmail, userProfile?.avatarEmoji);
                           updateUserProfile({ avatarUrl: defaultAv });
                           setFormData((prev) => ({ ...prev, avatarUrl: defaultAv }));
                         }}
@@ -383,7 +383,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 </p>
                 <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
                   {DEFAULT_AVATARS.map((avatarPath, idx) => {
-                    const currentEffective = formData.avatarUrl || userProfile?.avatarUrl || getDefaultAvatarForUser(userProfile?.schoolEmail || userProfile?.fullName);
+                    const currentEffective = formData.avatarUrl || userProfile?.avatarUrl || getDefaultAvatarForUser(userProfile?.fullName || userProfile?.schoolEmail, userProfile?.avatarEmoji);
                     const isSelected = currentEffective === avatarPath;
                     return (
                       <button
