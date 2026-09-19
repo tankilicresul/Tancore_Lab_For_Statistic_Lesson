@@ -134,175 +134,177 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   const user3 = sortedLeaderboard[2] || null;
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans space-y-4 animate-fade-in relative">
+    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans space-y-4 relative">
       {/* Seamless Top 3 Leaderboard Podium (Sticky at top in fixed view) */}
-      <div className="sticky top-18 sm:top-22 z-20 bg-white/95 backdrop-blur-md rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-md relative overflow-hidden transition-all">
-        <div className="flex items-end justify-center gap-2 sm:gap-4 pt-2 pb-1">
-          {/* 2nd Place (Silver) */}
-          <div id="leaderboard-row-2" className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
-            {user2 ? (
-              <>
-                <div
-                  className="relative mb-2 flex flex-col items-center group cursor-pointer"
-                  onClick={() => setSelectedPublicProfile(user2)}
-                >
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-slate-300 bg-slate-100 flex items-center justify-center text-xl shadow-md overflow-hidden group-hover:scale-105 transition-transform ring-2 ring-slate-300/80 animate-podium-2">
-                    <UserAvatar
-                      avatarUrl={user2.avatarUrl}
-                      avatarEmoji={user2.avatarEmoji || '👨‍🎓'}
-                      fullName={user2.fullName}
-                      size="md"
-                      className="w-full h-full"
-                    />
+      <div className="sticky top-[52px] sm:top-[68px] z-30 pt-1 pb-1 bg-[#f8fafc]/95 backdrop-blur-md">
+        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-md relative overflow-hidden transition-all">
+          <div className="flex items-end justify-center gap-2 sm:gap-4 pt-2 pb-1">
+            {/* 2nd Place (Silver) */}
+            <div id="leaderboard-row-2" className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
+              {user2 ? (
+                <>
+                  <div
+                    className="relative mb-2 flex flex-col items-center group cursor-pointer"
+                    onClick={() => setSelectedPublicProfile(user2)}
+                  >
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-slate-300 bg-slate-100 flex items-center justify-center text-xl shadow-md overflow-hidden group-hover:scale-105 transition-transform ring-2 ring-slate-300/80 animate-podium-2">
+                      <UserAvatar
+                        avatarUrl={user2.avatarUrl}
+                        avatarEmoji={user2.avatarEmoji || '👨‍🎓'}
+                        fullName={user2.fullName}
+                        size="md"
+                        className="w-full h-full"
+                      />
+                    </div>
+                    <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-800 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
+                      2
+                    </div>
                   </div>
-                  <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-800 text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
-                    2
+                  <button
+                    onClick={() => setSelectedPublicProfile(user2)}
+                    className="text-xs font-bold text-slate-800 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
+                    title={user2.fullName}
+                  >
+                    {user2.fullName}
+                  </button>
+                  <div className="flex items-center space-x-1 text-slate-600 text-[10px] font-black my-1">
+                    <span className="text-amber-500 font-serif">◆</span>
+                    <span>{user2.xp.toLocaleString('tr-TR')}</span>
                   </div>
-                </div>
-                <button
-                  onClick={() => setSelectedPublicProfile(user2)}
-                  className="text-xs font-bold text-slate-800 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
-                  title={user2.fullName}
-                >
-                  {user2.fullName}
-                </button>
-                <div className="flex items-center space-x-1 text-slate-600 text-[10px] font-black my-1">
-                  <span className="text-amber-500 font-serif">◆</span>
-                  <span>{user2.xp.toLocaleString('tr-TR')}</span>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="relative mb-2 flex flex-col items-center">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400 shadow-xs">
-                    <span className="text-xs font-black text-slate-400">2</span>
+                </>
+              ) : (
+                <>
+                  <div className="relative mb-2 flex flex-col items-center">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400 shadow-xs">
+                      <span className="text-xs font-black text-slate-400">2</span>
+                    </div>
+                    <div className="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-black flex items-center justify-center shadow-xs -mt-2.5 border border-slate-200 z-10">
+                      2
+                    </div>
                   </div>
-                  <div className="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-black flex items-center justify-center shadow-xs -mt-2.5 border border-slate-200 z-10">
-                    2
+                  <span className="text-xs font-bold text-slate-400 truncate max-w-full text-center">
+                    {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
+                  </span>
+                  <div className="flex items-center space-x-1 text-slate-400 text-[9.5px] font-bold my-1">
+                    <span>{language === 'tr' ? 'Sıradaki Sen Ol' : 'Next is You'}</span>
                   </div>
-                </div>
-                <span className="text-xs font-bold text-slate-400 truncate max-w-full text-center">
-                  {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
-                </span>
-                <div className="flex items-center space-x-1 text-slate-400 text-[9.5px] font-bold my-1">
-                  <span>{language === 'tr' ? 'Sıradaki Sen Ol' : 'Next is You'}</span>
-                </div>
-              </>
-            )}
-            <div className="w-full h-16 sm:h-20 bg-gradient-to-b from-slate-200 via-slate-300 to-slate-400/90 rounded-t-2xl border-t-2 border-slate-100 shadow-inner flex items-center justify-center">
-              <span className="text-xs sm:text-sm font-black text-slate-700">2.</span>
+                </>
+              )}
+              <div className="w-full h-16 sm:h-20 bg-gradient-to-b from-slate-200 via-slate-300 to-slate-400/90 rounded-t-2xl border-t-2 border-slate-100 shadow-inner flex items-center justify-center">
+                <span className="text-xs sm:text-sm font-black text-slate-700">2.</span>
+              </div>
             </div>
-          </div>
 
-          {/* 1st Place (Gold / Warm Amber) */}
-          <div id="leaderboard-row-1" className="flex flex-col items-center flex-1 min-w-0 max-w-[125px]">
-            {user1 ? (
-              <>
-                <div
-                  className="relative mb-2 flex flex-col items-center group cursor-pointer"
-                  onClick={() => setSelectedPublicProfile(user1)}
-                >
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-amber-400 bg-amber-50 flex items-center justify-center shadow-lg overflow-hidden group-hover:scale-105 transition-transform ring-4 ring-amber-300/80 animate-podium-1">
-                    <UserAvatar
-                      avatarUrl={user1.avatarUrl}
-                      avatarEmoji={user1.avatarEmoji || '👨‍🎓'}
-                      fullName={user1.fullName}
-                      size="lg"
-                      className="w-full h-full"
-                    />
+            {/* 1st Place (Gold / Warm Amber) */}
+            <div id="leaderboard-row-1" className="flex flex-col items-center flex-1 min-w-0 max-w-[125px]">
+              {user1 ? (
+                <>
+                  <div
+                    className="relative mb-2 flex flex-col items-center group cursor-pointer"
+                    onClick={() => setSelectedPublicProfile(user1)}
+                  >
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-amber-400 bg-amber-50 flex items-center justify-center shadow-lg overflow-hidden group-hover:scale-105 transition-transform ring-4 ring-amber-300/80 animate-podium-1">
+                      <UserAvatar
+                        avatarUrl={user1.avatarUrl}
+                        avatarEmoji={user1.avatarEmoji || '👨‍🎓'}
+                        fullName={user1.fullName}
+                        size="lg"
+                        className="w-full h-full"
+                      />
+                    </div>
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-amber-400 to-[#ff7a00] text-white text-xs font-black flex items-center justify-center shadow-md -mt-3 border border-white z-10">
+                      1
+                    </div>
                   </div>
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-amber-400 to-[#ff7a00] text-white text-xs font-black flex items-center justify-center shadow-md -mt-3 border border-white z-10">
-                    1
+                  <button
+                    onClick={() => setSelectedPublicProfile(user1)}
+                    className="text-xs sm:text-sm font-black text-slate-900 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
+                    title={user1.fullName}
+                  >
+                    {user1.fullName}
+                  </button>
+                  <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black my-1">
+                    <span className="text-amber-500 font-serif">◆</span>
+                    <span>{user1.xp.toLocaleString('tr-TR')}</span>
                   </div>
-                </div>
-                <button
-                  onClick={() => setSelectedPublicProfile(user1)}
-                  className="text-xs sm:text-sm font-black text-slate-900 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
-                  title={user1.fullName}
-                >
-                  {user1.fullName}
-                </button>
-                <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black my-1">
-                  <span className="text-amber-500 font-serif">◆</span>
-                  <span>{user1.xp.toLocaleString('tr-TR')}</span>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="relative mb-2 flex flex-col items-center">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-dashed border-amber-300 bg-amber-50/50 flex items-center justify-center text-amber-500 shadow-xs">
-                    <span className="text-sm font-black text-amber-500/70">1</span>
+                </>
+              ) : (
+                <>
+                  <div className="relative mb-2 flex flex-col items-center">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-dashed border-amber-300 bg-amber-50/50 flex items-center justify-center text-amber-500 shadow-xs">
+                      <span className="text-sm font-black text-amber-500/70">1</span>
+                    </div>
+                    <div className="w-6 h-6 rounded-full bg-amber-100 text-amber-600 text-xs font-black flex items-center justify-center shadow-xs -mt-3 border border-amber-300 z-10">
+                      1
+                    </div>
                   </div>
-                  <div className="w-6 h-6 rounded-full bg-amber-100 text-amber-600 text-xs font-black flex items-center justify-center shadow-xs -mt-3 border border-amber-300 z-10">
-                    1
+                  <span className="text-xs font-black text-amber-600 truncate max-w-full text-center">
+                    {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
+                  </span>
+                  <div className="flex items-center space-x-1 text-amber-500 text-[10px] font-bold my-1">
+                    <span>{language === 'tr' ? 'Sıradaki Sen Ol' : 'Next is You'}</span>
                   </div>
-                </div>
-                <span className="text-xs font-black text-amber-600 truncate max-w-full text-center">
-                  {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
-                </span>
-                <div className="flex items-center space-x-1 text-amber-500 text-[10px] font-bold my-1">
-                  <span>{language === 'tr' ? 'Sıradaki Sen Ol' : 'Next is You'}</span>
-                </div>
-              </>
-            )}
-            <div className="w-full h-24 sm:h-28 bg-gradient-to-b from-amber-400 via-[#ff7a00] to-[#ea580c] rounded-t-2xl border-t-2 border-amber-300 shadow-md flex items-center justify-center">
-              <Crown className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-white/90 animate-pulse" />
+                </>
+              )}
+              <div className="w-full h-24 sm:h-28 bg-gradient-to-b from-amber-400 via-[#ff7a00] to-[#ea580c] rounded-t-2xl border-t-2 border-amber-300 shadow-md flex items-center justify-center">
+                <Crown className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-white/90 animate-pulse" />
+              </div>
             </div>
-          </div>
 
-          {/* 3rd Place (Bronze) */}
-          <div id="leaderboard-row-3" className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
-            {user3 ? (
-              <>
-                <div
-                  className="relative mb-2 flex flex-col items-center group cursor-pointer"
-                  onClick={() => setSelectedPublicProfile(user3)}
-                >
-                  <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-amber-700 bg-amber-50 flex items-center justify-center text-lg shadow-md overflow-hidden group-hover:scale-105 transition-transform ring-2 ring-amber-600/60 animate-podium-3">
-                    <UserAvatar
-                      avatarUrl={user3.avatarUrl}
-                      avatarEmoji={user3.avatarEmoji || '👨‍🎓'}
-                      fullName={user3.fullName}
-                      size="md"
-                      className="w-full h-full"
-                    />
+            {/* 3rd Place (Bronze) */}
+            <div id="leaderboard-row-3" className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
+              {user3 ? (
+                <>
+                  <div
+                    className="relative mb-2 flex flex-col items-center group cursor-pointer"
+                    onClick={() => setSelectedPublicProfile(user3)}
+                  >
+                    <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-amber-700 bg-amber-50 flex items-center justify-center text-lg shadow-md overflow-hidden group-hover:scale-105 transition-transform ring-2 ring-amber-600/60 animate-podium-3">
+                      <UserAvatar
+                        avatarUrl={user3.avatarUrl}
+                        avatarEmoji={user3.avatarEmoji || '👨‍🎓'}
+                        fullName={user3.fullName}
+                        size="md"
+                        className="w-full h-full"
+                      />
+                    </div>
+                    <div className="w-5 h-5 rounded-full bg-amber-700 text-white text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
+                      3
+                    </div>
                   </div>
-                  <div className="w-5 h-5 rounded-full bg-amber-700 text-white text-[10px] font-black flex items-center justify-center shadow-md -mt-2.5 border border-white z-10">
-                    3
+                  <button
+                    onClick={() => setSelectedPublicProfile(user3)}
+                    className="text-xs font-bold text-slate-800 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
+                    title={user3.fullName}
+                  >
+                    {user3.fullName}
+                  </button>
+                  <div className="flex items-center space-x-1 text-amber-800 text-[10px] font-black my-1">
+                    <span className="text-amber-500 font-serif">◆</span>
+                    <span>{user3.xp.toLocaleString('tr-TR')}</span>
                   </div>
-                </div>
-                <button
-                  onClick={() => setSelectedPublicProfile(user3)}
-                  className="text-xs font-bold text-slate-800 text-center hover:text-[#ff7a00] truncate max-w-full px-0.5 cursor-pointer"
-                  title={user3.fullName}
-                >
-                  {user3.fullName}
-                </button>
-                <div className="flex items-center space-x-1 text-amber-800 text-[10px] font-black my-1">
-                  <span className="text-amber-500 font-serif">◆</span>
-                  <span>{user3.xp.toLocaleString('tr-TR')}</span>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="relative mb-2 flex flex-col items-center">
-                  <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-dashed border-amber-200 bg-amber-50/50 flex items-center justify-center text-amber-700 shadow-xs">
-                    <span className="text-xs font-black text-amber-700/70">3</span>
+                </>
+              ) : (
+                <>
+                  <div className="relative mb-2 flex flex-col items-center">
+                    <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-dashed border-amber-200 bg-amber-50/50 flex items-center justify-center text-amber-700 shadow-xs">
+                      <span className="text-xs font-black text-amber-700/70">3</span>
+                    </div>
+                    <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-black flex items-center justify-center shadow-xs -mt-2.5 border border-amber-200 z-10">
+                      3
+                    </div>
                   </div>
-                  <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-black flex items-center justify-center shadow-xs -mt-2.5 border border-amber-200 z-10">
-                    3
+                  <span className="text-xs font-bold text-slate-400 truncate max-w-full text-center">
+                    {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
+                  </span>
+                  <div className="flex items-center space-x-1 text-slate-400 text-[9.5px] font-bold my-1">
+                    <span>{language === 'tr' ? 'Sıradaki Sen Ol' : 'Next is You'}</span>
                   </div>
-                </div>
-                <span className="text-xs font-bold text-slate-400 truncate max-w-full text-center">
-                  {language === 'tr' ? 'Açık Sıra' : 'Open Spot'}
-                </span>
-                <div className="flex items-center space-x-1 text-slate-400 text-[9.5px] font-bold my-1">
-                  <span>{language === 'tr' ? 'Sıradaki Sen Ol' : 'Next is You'}</span>
-                </div>
-              </>
-            )}
-            <div className="w-full h-12 sm:h-16 bg-gradient-to-b from-amber-500 via-amber-600 to-amber-700 rounded-t-2xl border-t-2 border-amber-400 shadow-xs flex items-center justify-center">
-              <span className="text-xs sm:text-sm font-black text-white drop-shadow-xs">3.</span>
+                </>
+              )}
+              <div className="w-full h-12 sm:h-16 bg-gradient-to-b from-amber-500 via-amber-600 to-amber-700 rounded-t-2xl border-t-2 border-amber-400 shadow-xs flex items-center justify-center">
+                <span className="text-xs sm:text-sm font-black text-white drop-shadow-xs">3.</span>
+              </div>
             </div>
           </div>
         </div>

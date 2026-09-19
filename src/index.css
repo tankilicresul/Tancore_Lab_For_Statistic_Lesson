@@ -10,6 +10,7 @@
     -ms-hyphens: auto;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    overflow-x: clip;
     overscroll-behavior-x: none;
     /* Smooth font rendering */
     -webkit-font-smoothing: antialiased;
@@ -70,11 +71,11 @@ body {
 @keyframes pageEnter {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 

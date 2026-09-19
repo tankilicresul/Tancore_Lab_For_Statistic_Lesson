@@ -443,7 +443,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans flex flex-col selection:bg-[#ff7a00] selection:text-white overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans flex flex-col selection:bg-[#ff7a00] selection:text-white overflow-x-clip relative">
 
       {/* 3-Second App Loading Splash Screen with Logo Animation */}
       {isSplashVisible && (
