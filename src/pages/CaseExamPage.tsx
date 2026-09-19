@@ -121,7 +121,9 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
 
         <div className="flex items-center space-x-2 shrink-0 self-start xs:self-auto">
           <div className="flex items-center space-x-1.5 sm:space-x-2 text-[11px] sm:text-xs font-extrabold text-[#ff7a00] bg-[#ff7a00]/10 px-3 py-1.5 rounded-full border border-[#ff7a00]/30 max-w-full">
-            <span className="whitespace-nowrap">{getLocalized(module.title, language)}</span>
+            <span className="whitespace-nowrap">
+              <MathFormulaText text={getLocalized(module.title, language)} inline />
+            </span>
           </div>
           <span className={`text-[11px] sm:text-xs font-black uppercase px-3 py-1 rounded-full border tracking-wider ${difficultyColor}`}>
             {caseExam.difficulty}
@@ -136,7 +138,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
           <span>{language === 'tr' ? 'Şirket Vaka Sınavı (Case Exam)' : 'Company Case Exam'}</span>
         </div>
         <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight mb-2">
-          {getLocalized(caseExam.title, language)}
+          <MathFormulaText text={getLocalized(caseExam.title, language)} inline />
         </h1>
         <div className="h-1.5 w-20 bg-[#ff7a00] rounded-full" />
       </div>
@@ -410,11 +412,15 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
               {isNextLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin text-white" />
-                  <span>{getLocalized(nextTopic.title, language)}</span>
+                  <span>
+                    <MathFormulaText text={getLocalized(nextTopic.title, language)} inline />
+                  </span>
                 </>
               ) : (
                 <>
-                  <span>{getLocalized(nextTopic.title, language)}</span>
+                  <span>
+                    <MathFormulaText text={getLocalized(nextTopic.title, language)} inline />
+                  </span>
                   <Check className="w-4 h-4 text-[#ff7a00] stroke-[2.5]" />
                 </>
               )}

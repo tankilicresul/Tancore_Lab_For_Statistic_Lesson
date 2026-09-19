@@ -143,7 +143,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
         {/* Lesson Main Header */}
         <div className="mb-6">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight mb-2">
-            {getLocalized(lesson.title, language)}
+            <MathFormulaText text={getLocalized(lesson.title, language)} inline />
           </h1>
           <div className="h-1.5 w-24 bg-[#ff7a00] rounded-full" />
         </div>
@@ -220,7 +220,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                 ) : (
                   <>
                     <span>
-                      {language === 'tr' ? `Başla: ${getLocalized(nextTopic.title, language)}` : `Start: ${getLocalized(nextTopic.title, language)}`}
+                      <MathFormulaText text={(language === 'tr' ? 'Başla: ' : 'Start: ') + getLocalized(nextTopic.title, language)} inline />
                     </span>
                     <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                   </>
@@ -246,14 +246,16 @@ export const LessonPage: React.FC<LessonPageProps> = ({
         </button>
 
         <div className="flex items-center text-[10.5px] sm:text-xs font-extrabold text-[#ff7a00] bg-[#ff7a00]/10 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#ff7a00]/30 min-w-0 max-w-[60%] xs:max-w-none">
-          <span className="truncate whitespace-nowrap">{getLocalized(module.title, language)}</span>
+          <span className="truncate whitespace-nowrap">
+            <MathFormulaText text={getLocalized(module.title, language)} inline />
+          </span>
         </div>
       </div>
 
       {/* Lesson Main Header */}
       <div className="mb-6">
         <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight mb-2">
-          {getLocalized(lesson.title, language)}
+          <MathFormulaText text={getLocalized(lesson.title, language)} inline />
         </h1>
         <div className="h-1.5 w-20 bg-[#ff7a00] rounded-full" />
       </div>
@@ -573,11 +575,15 @@ export const LessonPage: React.FC<LessonPageProps> = ({
               {isNextLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin text-white" />
-                  <span>{getLocalized(nextTopic.title, language)}</span>
+                  <span>
+                    <MathFormulaText text={getLocalized(nextTopic.title, language)} inline />
+                  </span>
                 </>
               ) : (
                 <>
-                  <span>{getLocalized(nextTopic.title, language)}</span>
+                  <span>
+                    <MathFormulaText text={getLocalized(nextTopic.title, language)} inline />
+                  </span>
                   <Check className="w-4 h-4 text-[#ff7a00] stroke-[2.5]" />
                 </>
               )}

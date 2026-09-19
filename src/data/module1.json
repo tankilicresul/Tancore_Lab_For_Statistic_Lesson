@@ -402,8 +402,8 @@
       "order": 6,
       "difficulty": "orta",
       "title": {
-        "tr": "Çeyreklikler (Q₁, Q₂, Q₃) ve Ranj",
-        "en": "Quartiles (Q₁, Q₂, Q₃) and Range"
+        "tr": "Çeyreklikler ($Q_1, Q_2, Q_3$) ve Ranj",
+        "en": "Quartiles ($Q_1, Q_2, Q_3$) and Range"
       },
       "conceptCard": {
         "tr": "Veri yayılımını özetleyen temel parçalanmalar:\n\n1. **Ranj (Açıklık):** $\\text{Ranj} = x_{max} - x_{min}$\n2. **Birinci Çeyreklik ($Q_1$):** Verilerin %25'inin altında kaldığı 25. yüzdelik.\n3. **İkinci Çeyreklik ($Q_2$):** Medyan (50. yüzdelik).\n4. **Üçüncü Çeyreklik ($Q_3$):** Verilerin %75'inin altında kaldığı 75. yüzdelik.\n5. **Çeyrekler Açıklığı ($IQR$):** $IQR = Q_3 - Q_1$ (Orta %50'lik çekirdek yayılım).",
@@ -451,8 +451,8 @@
       "order": 7,
       "difficulty": "orta",
       "title": {
-        "tr": "Varyans ve Serbestlik Derecesi (n-1)",
-        "en": "Variance and Degrees of Freedom (n-1)"
+        "tr": "Varyans ve Serbestlik Derecesi ($n-1$)",
+        "en": "Variance and Degrees of Freedom ($n-1$)"
       },
       "conceptCard": {
         "tr": "Varyans, gözlemlerin ortalamadan sapmalarının karelerinin ortalamasıdır:\n\n1. **Popülasyon Varyansı ($\\sigma^2$):** $\\sigma^2 = \\frac{1}{N}\\sum_{i=1}^N (X_i - \\mu)^2$\n2. **Örneklem Varyansı ($s^2$):** $s^2 = \\frac{1}{n-1}\\sum_{i=1}^n (x_i - \\bar{x})^2$\n\n**Neden $n-1$ (Bessel Düzeltmesi)?**\nÖrneklem ortalaması $\\bar{x}$, anakütle $\\mu$'ye göre örneklem verisine daha yakın olduğundan sapmayı underestimate eder. $n-1$ serbestlik derecesi kullanarak $s^2$'nin **sapmasız (unbiased)** olması sağlanır ($E[s^2] = \\sigma^2$).",
@@ -500,8 +500,8 @@
       "order": 8,
       "difficulty": "orta",
       "title": {
-        "tr": "Standart Sapma ve Değişim Katsayısı (CV)",
-        "en": "Standard Deviation and Coefficient of Variation (CV)"
+        "tr": "Standart Sapma ve Değişim Katsayısı ($CV$)",
+        "en": "Standard Deviation and Coefficient of Variation ($CV$)"
       },
       "conceptCard": {
         "tr": "Varyansın karesel birimini orijinal birime çevirmek ve bağıl riski ölçmek için kullanılır:\n\n1. **Standart Sapma ($s$):** $s = \\sqrt{s^2}$\n2. **Değişim Katsayısı ($CV$):**\n$$CV = \\frac{s}{\\bar{x}} \\times 100\\%$$\nFarklı birim veya ölçekteki veri gruplarının nispi değişkenliğini kıyaslar.",

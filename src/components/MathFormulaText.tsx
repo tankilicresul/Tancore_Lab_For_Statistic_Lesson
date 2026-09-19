@@ -5,12 +5,14 @@ interface MathFormulaTextProps {
   text: string;
   className?: string;
   darkBg?: boolean;
+  inline?: boolean;
 }
 
 export const MathFormulaText: React.FC<MathFormulaTextProps> = ({
   text,
   className = '',
   darkBg = false,
+  inline = false,
 }) => {
   if (!text || typeof text !== 'string') return null;
 
@@ -18,6 +20,10 @@ export const MathFormulaText: React.FC<MathFormulaTextProps> = ({
   const normalizedText = text
     .replace(/\\\[([\s\S]*?)\\\]/g, '$$$$$1$$$$')
     .replace(/\\\(([\s\S]*?)\\\)/g, '$$$1$$');
+
+  if (inline) {
+    return <InlineMathParser text={normalizedText} className={className} darkBg={darkBg} />;
+  }
 
   // Process block formulas ($$...$$) first
   const blockRegex = /\$\$([\s\S]*?)\$\$/g;
@@ -106,7 +112,7 @@ const InlineMathParser: React.FC<{ text: string; className?: string; darkBg?: bo
         <span
           key={`inline-${matchIndex}`}
           className={`inline-block align-baseline mx-0.5 font-normal max-w-full overflow-x-auto touch-pan-x whitespace-nowrap ${
-            darkBg ? 'text-amber-300' : 'text-slate-900'
+            darkBg ? 'text-amber-300' : 'text-inherit'
           }`}
         >
           <KatexFormula formula={formulaContent} displayMode={false} />

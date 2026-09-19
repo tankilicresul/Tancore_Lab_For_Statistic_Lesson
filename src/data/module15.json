@@ -17,8 +17,8 @@
       "order": 1,
       "difficulty": "orta",
       "title": {
-        "tr": "Poisson Dağılımı ve Oran Parametresi λ",
-        "en": "Poisson Distribution & Rate Parameter λ"
+        "tr": "Poisson Dağılımı ve Oran Parametresi $\\lambda$",
+        "en": "Poisson Distribution & Rate Parameter $\\lambda$"
       },
       "conceptCard": {
         "tr": "Belirli bir zaman veya alan aralığında gerçekleşen bağımsız olay sayısı dağılımı (`ENGR 200`):\n\n$$P(X = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}, \\quad k = 0, 1, 2, \\dots$$\n\n- $\\lambda$: Birim aralıktaki ortalama varış/olay sayısı.\n- **Kritik Eşitlik:** $$E[X] = Var(X) = \\lambda$$\nOrtalama ile varyans birbirine eşittir.",

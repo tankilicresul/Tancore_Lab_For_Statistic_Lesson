@@ -182,8 +182,8 @@
       "order": 4,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Ki-Kare Hücre Birleştirme (Eᵢⱼ < 5 Kuralı)",
-        "en": "Chi-Square Cell Merging (Eᵢⱼ < 5 Rule)"
+        "tr": "Ki-Kare Hücre Birleştirme ($E_{ij} < 5$ Kuralı)",
+        "en": "Chi-Square Cell Merging ($E_{ij} < 5$ Rule)"
       },
       "conceptCard": {
         "tr": "Ki-Kare ($chi^2$) bağımsızlık ve uyum iyiliği testinin geçerli olabilmesi için temel kural (`INDR 252 Case Rules`, `Lecture 16`):\n\n**Hücre Birleştirme Kuralı:**\nTablodaki beklenen frekans değerlerinin ($E_{ij}$) hiçbirisi 5'ten küçük olmamalıdır ($E_{ij} \\ge 5$).\n\n- Eğer $E_{ij} < 5$ olan hücreler varsa, testin $p$-değeri güvenilmez olur.\n- **Çözüm:** Benzer özellik taşıyan bitişik kategoriler veya düşük frekanslı sınıflar birleştirilerek tek bir kategori yapılır ve serbestlik derecesi yeniden hesaplanır.",

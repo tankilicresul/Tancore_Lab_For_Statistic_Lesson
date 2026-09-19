@@ -473,7 +473,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                       {language === 'tr' ? `MODÜL ${trackModuleOrder}` : `MODULE ${trackModuleOrder}`}
                     </span>
                     <h2 className="text-base xs:text-lg sm:text-xl font-black tracking-tight leading-snug mt-0.5">
-                      {getLocalized(module.title, language)}
+                      <MathFormulaText text={getLocalized(module.title, language)} inline />
                     </h2>
                     <p className="text-xs sm:text-sm opacity-90 font-medium mt-1 leading-relaxed">
                       {getLocalized(module.description, language)}
@@ -661,7 +661,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                             {/* Node label below */}
                             <div className="absolute top-full mt-4 sm:mt-4.5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-10 pointer-events-none">
                               <span className="text-[9px] sm:text-[10px] font-black text-slate-800 bg-white/95 px-2.5 py-1 rounded-xl border border-slate-200/90 shadow-xs text-center leading-none whitespace-nowrap max-w-[220px] sm:max-w-[260px] truncate backdrop-blur-xs">
-                                {node.title}
+                                <MathFormulaText text={node.title} inline />
                               </span>
                               <span className={`text-[8px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-md border whitespace-nowrap ${
                                 node.type === 'case'
@@ -722,7 +722,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug break-words">
-                  {selectedNode.title}
+                  <MathFormulaText text={selectedNode.title} inline />
                 </h3>
                 <span className="text-[10px] font-black uppercase text-[#ff7a00] tracking-widest font-mono block mt-0.5">
                   {`DERS ${selectedNode.lesson.order || selectedNode.order}`}
@@ -817,7 +817,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                     {language === 'tr' ? 'MODÜL BİTİRME VAKALARI' : 'MODULE CAPSTONE CASES'}
                   </span>
                   <h3 className="text-base sm:text-lg font-black text-white leading-tight">
-                    {getLocalized(selectedCaseHubModule.title, language)}
+                    <MathFormulaText text={getLocalized(selectedCaseHubModule.title, language)} inline />
                   </h3>
                 </div>
               </div>
@@ -878,7 +878,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                     </div>
 
                     <h4 className="text-sm sm:text-base font-black text-slate-900 mb-1 leading-snug">
-                      {getLocalized(caseItem.title, language)}
+                      <MathFormulaText text={getLocalized(caseItem.title, language)} inline />
                     </h4>
 
                     <div className="text-xs text-slate-600 font-medium line-clamp-2 leading-relaxed mb-3">

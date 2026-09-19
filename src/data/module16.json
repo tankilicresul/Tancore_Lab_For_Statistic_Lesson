@@ -133,8 +133,8 @@
       "order": 3,
       "difficulty": "orta",
       "title": {
-        "tr": "Normal Dağılım (N(μ, σ²)) & Ampirik Kural",
-        "en": "Normal Distribution (N(μ, σ²)) & Empirical Rule"
+        "tr": "Normal Dağılım ($N(\\mu, \\sigma^2)$) & Ampirik Kural",
+        "en": "Normal Distribution ($N(\\mu, \\sigma^2)$) & Empirical Rule"
       },
       "conceptCard": {
         "tr": "Doğadaki ve mühendislikteki süreçlerin çoğunu modelleyen simetrik çan eğrisi:\n\n$$f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}$$\n\n**Ampirik Kural (68 - 95 - 99.7 Kuralı):**\n1. $[mu - sigma, mu + sigma]$: Verilerin yaklaşık **%68.27**'si\n2. $[mu - 2sigma, mu + 2sigma]$: Verilerin yaklaşık **%95.45**'i\n3. $[mu - 3sigma, mu + 3sigma]$: Verilerin yaklaşık **%99.73**'ü",
@@ -182,8 +182,8 @@
       "order": 4,
       "difficulty": "orta",
       "title": {
-        "tr": "Standart Normal Dağılım (Z) & Z-Tablosu",
-        "en": "Standard Normal Distribution (Z) & Z-Table"
+        "tr": "Standart Normal Dağılım ($Z$) & Z-Tablosu",
+        "en": "Standard Normal Distribution ($Z$) & Z-Table"
       },
       "conceptCard": {
         "tr": "Herhangi bir $N(\\mu, \\sigma^2)$ dağılımı $Z$-skoru dönüşümü ile Standart Normal $N(0, 1)$ dağılımına dönüştürülür:\n\n$$Z = \\frac{X - \\mu}{\\sigma}$$\n\n1. **$Z$-Tablosu:** $\\Phi(z) = P(Z \\le z)$ kümülatif alanını verir.\n2. **Simetri Kuralı:** $\\Phi(-z) = 1 - \\Phi(z)$\n3. **Ters Dönüşüm (Kuantil):** $X = \\mu + Z \\cdot \\sigma$",

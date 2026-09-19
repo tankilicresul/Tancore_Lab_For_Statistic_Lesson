@@ -133,8 +133,8 @@
       "order": 3,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Endüstriyel A/B Testi & Etki Büyüklüğü (Cohen's d) [Bonus]",
-        "en": "Industrial A/B Testing & Effect Size (Cohen's d) [Bonus]"
+        "tr": "Endüstriyel A/B Testi & Etki Büyüklüğü (Cohen's $d$) [Bonus]",
+        "en": "Industrial A/B Testing & Effect Size (Cohen's $d$) [Bonus]"
       },
       "conceptCard": {
         "tr": "Büyük veri setlerinde ($n = 100.000$) en önemsiz farklar bile $p < 0.05$ çıkabilir. Bu nedenle istatistiksel anlamlılık ile **pratik etki büyüklüğü** birlikte incelenir:\n\n**Cohen's $d$ (Etki Büyüklüğü):**\n$$d = \\frac{\\bar{x}_1 - \\bar{x}_2}{s_p}$$\n- **$d \\approx 0.20$:** Küçük etki\n- **$d \\approx 0.50$:** Orta düzey etki\n- **$d \\ge 0.80$:** Büyük ve kritik etki",
