@@ -15,66 +15,66 @@
       "id": "m12-l1",
       "moduleId": "module-12",
       "order": 1,
-      "difficulty": "orta",
+      "difficulty": "basit",
       "title": {
-        "tr": "Stokastik Süreç Tanımı & Markov Özelliği",
-        "en": "Stochastic Process & Markov Property"
+        "tr": "Stokastik Süreç Tanımı ve Durum Uzayı",
+        "en": "Stochastic Processes & State Space"
       },
       "conceptCard": {
-        "tr": "1. **Stokastik Süreç ($X_t$):** Zaman içinde evrilen rastgele değişkenler ailesi.\n2. **Markov Özelliği (Hafızasızlık):** Gelecekteki durumun olasılık dağılımı geçmişteki tüm geçmişe değil, **yalnızca şu anki mevcut duruma** bağlıdır:\n$$P(X_{n+1} = j \\mid X_n = i, X_{n-1} = i_{n-1}, \\dots, X_0 = i_0) = P(X_{n+1} = j \\mid X_n = i)$$\n3. **Durum Uzayı ($S$):** Sürecin bulunabileceği olası tüm durumların kümesi ($S = \\{1, 2, \\dots, M\\}$).",
-        "en": "1. **Stochastic Process ($X_t$):** A collection of random variables indexed by time.\n2. **Markov Property (Memorylessness):** The conditional probability distribution of future states depends only upon the present state, not on the sequence of events that preceded it:\n$$P(X_{n+1} = j \\mid X_n = i, \\dots) = P(X_{n+1} = j \\mid X_n = i)$$\n3. **State Space ($S$):** The set of all possible states."
+        "tr": "Zaman içinde rastgele gelişen değişkenler ailesine **Stokastik Süreç** denir: $\\{X_t, t \\in T\\}$.\n\n- **Durum Uzayı ($S$):** Sistemin bulunabileceği tüm olası durumların kümesidir.\n- **Zaman Parametresi ($T$):** Ayrık zaman ($t=0, 1, 2, \\dots$) veya sürekli zaman ($t \\ge 0$).",
+        "en": "A stochastic process is a collection of random variables indexed by time $\\{X_t\\}$ taking values in state space $S$."
       },
       "companyExample": {
-        "tr": "Bir bulut sunucunun yarınki durumu (Çalışıyor / Arızalı), sunucunun geçmişteki 1 yıllık tarihçesinden bağımsız, sadece bugünkü sağlık durumuna bağlı olarak modellenir.",
-        "en": "A server's operational status tomorrow (Operational / Down) depends solely on its condition today, satisfying the Markov property."
+        "tr": "**Örnek Soru:** Bir müşterinin aylık abonelik durumu $S = \\{\\text{Aktif}, \\text{Askıda}, \\text{İptal}\\}$ olsun. Bu bir stokastik durum uzayı mıdır?\n\n**Çözüm:** Evet, 3 durumlu sonlu bir ayrık durum uzayıdır.",
+        "en": "**Worked Example:** Subscription status {Active, Paused, Churned} forms a 3-state stochastic state space."
       },
       "vocabTerms": [
         {
-          "term_en": "Markov property",
-          "explanation_tr": "Geleceğin geçmişten bağımsız olarak yalnızca şimdiki duruma bağlı olması özelliği (Hafızasızlık).",
-          "explanation_en": "A stochastic process property where the future is conditionally independent of the past given the present.",
-          "exampleSentence_en": "Discrete-time Markov chains satisfy the Markov memoryless property."
+          "term_en": "stochastic process",
+          "explanation_tr": "Olasılıksal kurallarla zaman içinde evrilen rastgele sistem.",
+          "explanation_en": "A mathematical object defined as a collection of random variables.",
+          "exampleSentence_en": "Stock prices are modeled as continuous stochastic processes."
         }
       ],
       "questions": [
         {
           "id": "m12-l1-q1",
-          "type": "multiple_choice",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "Bir stokastik sürecin Markov özelliğini sağlaması için hangi şart gereklidir?",
-            "en": "What condition is required for a stochastic process to satisfy the Markov property?"
+            "tr": "Stokastik bir süreçte sistemin alabileceği tüm olası durumların kümesine ne denir?",
+            "en": "What is the set of all possible states in a stochastic process called?"
           },
           "options": [
             {
-              "tr": "Gelecekteki durumun sadece şimdiki duruma bağlı olması",
-              "en": "Future state depends only on the current state"
+              "tr": "Durum Uzayı (State Space)",
+              "en": "State Space"
             },
             {
-              "tr": "Geleceğin tüm geçmişe eşit ağırlıkla bağlı olması",
-              "en": "Future depends equally on entire history"
+              "tr": "Kovaryans Matrisi",
+              "en": "Covariance Matrix"
             },
             {
-              "tr": "Durumların hiçbir zaman değişmemesi",
-              "en": "States never change"
+              "tr": "Örneklem Varyansı",
+              "en": "Sample Variance"
             },
             {
-              "tr": "Varyansın sıfır olması",
-              "en": "Variance equals zero"
+              "tr": "Normallik Eğrisi",
+              "en": "Normality Curve"
             }
           ],
-          "correctAnswer": "Gelecekteki durumun sadece şimdiki duruma bağlı olması",
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "Markov özelliği \"Şimdiki durum bilindiğinde geçmiş gelecek hakkında ek bilgi sağlamaz\" ilkesidir.",
-            "en": "Given the present, the future is conditionally independent of the past."
+            "tr": "Sistemin bulunabileceği olası durumlar kümesi Durum Uzayı (State Space) olarak adlandırılır.",
+            "en": "The state space comprises all admissible values of the process."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=Durum_Geçişi",
-        "pythonCode": "# Markov property simulation\nimport numpy as np\nnext_state = np.random.choice(states, p=P[current_state])",
+        "excelFormula": "=DURUM_SEÇ()",
+        "pythonCode": "states = ['Active', 'Paused', 'Churned']",
         "powerBiNote": {
-          "tr": "Müşteri yaşam döngüsü geçiş durumları akış diyagramında gösterilir.",
-          "en": "Render customer journey states on Sankey diagrams."
+          "tr": "Müşteri yaşam döngüsü durum diyagramı",
+          "en": "Customer state transition diagram"
         }
       }
     },
@@ -82,66 +82,66 @@
       "id": "m12-l2",
       "moduleId": "module-12",
       "order": 2,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Geçiş Matrisi ($P$) ve Chapman-Kolmogorov Eşitliği",
-        "en": "Transition Matrix ($P$) & Chapman-Kolmogorov Equation"
+        "tr": "Markov Özelliği (Hafızasızlık)",
+        "en": "Markov Property"
       },
       "conceptCard": {
-        "tr": "1. **Bir Adımlı Geçiş Matrisi ($P$):** $p_{ij} = P(X_1 = j \\mid X_0 = i)$\n- Her $p_{ij} \\ge 0$\n- Her satırın toplamı tam olarak 1'dir: $\\sum_j p_{ij} = 1$\n\n2. **Chapman-Kolmogorov Eşitliği ($n$-Adım Geçiş):**\n$n$ adım sonra $i$ durumundan $j$ durumuna geçme olasılığı matrisin $n$. kuvveti ile bulunur:\n$$P^{(n)} = P^n$$\n$$p_{ij}^{(m+n)} = \\sum_k p_{ik}^{(m)} p_{kj}^{(n)}$$",
-        "en": "1. **Transition Probability Matrix ($P$):** $p_{ij} = P(X_1 = j \\mid X_0 = i)$\n- All $p_{ij} \\ge 0$\n- Each row sums to exactly 1: $\\sum_j p_{ij} = 1$\n\n2. **Chapman-Kolmogorov Equations ($n$-Step Transitions):**\nThe $n$-step transition probability matrix is the $n$-th power of the 1-step matrix:\n$$P^{(n)} = P^n$$\n$$p_{ij}^{(m+n)} = \\sum_k p_{ik}^{(m)} p_{kj}^{(n)}$$"
+        "tr": "**Markov Özelliği (Memorylessness):** Gelecekteki durum ($X_{n+1}$), geçmişteki tüm geçmiş durumlardan bağımsız olup **yalnızca şu anki mevcut duruma ($X_n$)** bağlıdır:\n\n$$P(X_{n+1} = j \\mid X_n = i, X_{n-1} = i_{n-1}, \\dots, X_0 = i_0) = P(X_{n+1} = j \\mid X_n = i) = P_{ij}$$\n\n'Gelecek, şimdiki durum bilindiğinde geçmişten bağımsızdır.'",
+        "en": "Markov Property: Future state depends only on current state, independent of past history."
       },
       "companyExample": {
-        "tr": "Bulut sunucu matrisi $P = \\begin{pmatrix} 0.90 & 0.10 \\\\ 0.60 & 0.40 \\end{pmatrix}$. 2 gün sonraki durum matrisi $P^2 = P \\times P = \\begin{pmatrix} 0.87 & 0.13 \\\\ 0.78 & 0.22 \\end{pmatrix}$. Bugün çalışan sunucunun 2 gün sonra çalışıyor olma olasılığı %87'dir.",
-        "en": "Server transition $P = [[0.90, 0.10], [0.60, 0.40]]$. 2-step matrix $P^2 = [[0.87, 0.13], [0.78, 0.22]]$. Probability of being up in 2 days from up today is 87%."
+        "tr": "**Örnek Soru:** Yarınki hava durumu sadece bugünkü havaya bağlı olarak tahmin ediliyorsa bu model Markov özelliği taşır mı?\n\n**Çözüm:** Evet, geçmiş günlerin geçmişi değil sadece 'bugün' geleceği belirlediği için Markov özelliğidir.",
+        "en": "**Worked Example:** Weather depending solely on today's state satisfies the Markov property."
       },
       "vocabTerms": [
         {
-          "term_en": "transition probability matrix",
-          "explanation_tr": "Her bir durumdan diğer durumlara geçiş olasılıklarını içeren satır toplamı 1 olan kare matris.",
-          "explanation_en": "A square matrix containing the probabilities of transitioning from one state to another.",
-          "exampleSentence_en": "The n-step transition matrix is obtained by raising P to the power n."
+          "term_en": "Markov property",
+          "explanation_tr": "Geleceğin geçmişten bağımsız olarak yalnızca mevcut duruma bağlı olması özelliği.",
+          "explanation_en": "Conditional probability of future state depends only on the present state.",
+          "exampleSentence_en": "First-order Markov chains satisfy the standard Markovian assumption."
         }
       ],
       "questions": [
         {
           "id": "m12-l2-q1",
-          "type": "multiple_choice",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "Bir durum geçiş matrisinde ($P$) her bir satırın elemanları toplamı kaç olmak ZORUNDADIR?",
-            "en": "What must the sum of elements in every row of a transition matrix ($P$) equal?"
+            "tr": "Markov özelliğinin ana ilkesi nedir?",
+            "en": "What is the primary principle of the Markov property?"
           },
           "options": [
             {
-              "tr": "Tam olarak 1",
-              "en": "Exactly 1"
+              "tr": "Gelecek durum yalnızca şimdiki duruma bağlıdır",
+              "en": "Future depends solely on the current state"
             },
             {
-              "tr": "0",
-              "en": "0"
+              "tr": "Gelecek geçmişin tamamına bağlıdır",
+              "en": "Future depends on the entire past history"
             },
             {
-              "tr": "Sonsuz",
-              "en": "Infinity"
+              "tr": "Durumlar arasında geçiş imkansızdır",
+              "en": "Transitions are impossible"
             },
             {
-              "tr": "Sütun sayısına bağlı olarak değişir",
-              "en": "Varies by column count"
+              "tr": "Olasılıklar her adımda rastgele değişir",
+              "en": "Probabilities vary unpredictably"
             }
           ],
-          "correctAnswer": "Tam olarak 1",
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "Bir durumdan çıkıldığında gidilebilecek tüm olası durumların olasılıkları toplamı 1 (kesin olay) olmalıdır.",
-            "en": "Each row represents a conditional probability distribution, so row sum must equal 1."
+            "tr": "Markov özelliği gereği geçmişin etkisi şimdiki durumun içinde özetlenmiştir.",
+            "en": "Current state contains all relevant predictive information."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=DÇARP(P_Matrisi; P_Matrisi)  (P^2 Hesabı)",
-        "pythonCode": "import numpy as np\nP = np.array([[0.9, 0.1], [0.6, 0.4]])\nP_2 = np.linalg.matrix_power(P, 2)",
+        "excelFormula": "=P_ij",
+        "pythonCode": "# Markov transition\nnext_state = np.random.choice(states, p=P[current_state])",
         "powerBiNote": {
-          "tr": "Geçiş matrisi ısı haritası matris görselinde gösterilir.",
-          "en": "Transition matrices are visualized using Heatmap matrices."
+          "tr": "Durum geçiş akışları",
+          "en": "State transition sankey chart"
         }
       }
     },
@@ -149,66 +149,48 @@
       "id": "m12-l3",
       "moduleId": "module-12",
       "order": 3,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Durağan Denge Dağılımı Vektörü ($\\pi^*$)",
-        "en": "Stationary Steady-State Distribution ($\\pi^*$)"
+        "tr": "Geçiş Matrisi ($P$) ve Stokastik Matrisler",
+        "en": "Transition Probability Matrix ($P$)"
       },
       "conceptCard": {
-        "tr": "İndirgenemez ve aperiodik (ergodik) bir Markov zincirinde $n \\to \\infty$ olduğunda durum olasılıkları sabit bir dengeye ulaşır (`ENGR 200 Lecture`):\n\n**Denge Denklemleri:**\n$$\\pi^* P = \\pi^*$$\n$$\\sum_{i=1}^M \\pi_i^* = 1$$\n\n- $\\pi_i^*$: Sistemin uzun vadede $i$ durumunda bulunma yüzdesidir.\n- Başlangıç durumundan ($X_0$) tamamen bağımsızdır.",
-        "en": "For an irreducible and aperiodic Markov chain as $n \\to \\infty$, probabilities converge to a unique steady-state vector (`ENGR 200`):\n\n**Steady-State System:**\n$$\\pi^* P = \\pi^*$$\n$$\\sum_{i=1}^M \\pi_i^* = 1$$\n\n- $\\pi_i^*$: Long-run proportion of time the process spends in state $i$.\n- Independent of the initial starting state $X_0$."
+        "tr": "$i$ durumundan $j$ durumuna tek adımda geçiş olasılıkları matrisi:\n\n$$P = \\begin{bmatrix} P_{11} & P_{12} & \\dots & P_{1k} \\\\ P_{21} & P_{22} & \\dots & P_{2k} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ P_{k1} & P_{k2} & \\dots & P_{kk} \\end{bmatrix}$$\n\n**Stokastik Matris Özelliği:** Her satırın toplamı tam olarak **1**'e eşittir ($\\sum_j P_{ij} = 1$).",
+        "en": "Transition matrix $P$: entries $P_{ij} \\ge 0$, and every row sums to 1 ($\\sum_j P_{ij} = 1$)."
       },
       "companyExample": {
-        "tr": "Müşterilerin A ve B markaları arasındaki geçiş matrisi $P = \\begin{pmatrix} 0.8 & 0.2 \\\\ 0.3 & 0.7 \\end{pmatrix}$. Denge denklemi çözüldüğünde $\\pi_A^* = 0.60$ ve $\\pi_B^* = 0.40$ bulunur. Uzun vadede A markasının pazar payı %60'ta dengelenir.",
-        "en": "Brand loyalty matrix: Long-run equilibrium yields $\\pi_A^* = 0.60, \\pi_B^* = 0.40$. Brand A stabilizes at 60% market share."
+        "tr": "**Örnek Soru:** 2 durumlu matris: $P = \\begin{bmatrix} 0.8 & 0.2 \\\\ 0.3 & x \\end{bmatrix}$. $x$ değeri kaçtır?\n\n**Çözüm:** Satır toplamı 1 olmalıdır: $0.3 + x = 1 \\implies x = 0.7$.",
+        "en": "**Worked Example:** Row sum rule: $0.3 + x = 1 \\implies x = 0.7$."
       },
       "vocabTerms": [
         {
-          "term_en": "steady-state vector",
-          "explanation_tr": "Markov zincirinin uzun vadede ulaştığı sabit olasılık dağılımı (\\pi^*).",
-          "explanation_en": "A probability distribution that remains unchanged across transitions: $\\pi P = \\pi$.",
-          "exampleSentence_en": "The steady-state distribution represents long-term market share."
+          "term_en": "transition matrix",
+          "explanation_tr": "Durumlar arası geçiş olasılıklarını içeren, satır toplamları 1 olan stokastik matris.",
+          "explanation_en": "A square matrix describing the transition probabilities of a Markov chain.",
+          "exampleSentence_en": "The transition matrix governs user churn and retention flows."
         }
       ],
       "questions": [
         {
           "id": "m12-l3-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Durağan denge vektörü $\\pi^*$ hesaplanırken $\\pi P = \\pi$ denklemine ek olarak hangi normalizasyon kuralı eklenmelidir?",
-            "en": "Along with $\\pi P = \\pi$, which normalization constraint must be included to solve for $\\pi^*$?"
+            "tr": "Bir geçiş matrisinin ilk satırı $[0.4, 0.35, x]$ ise $x$ kaçtır (Satır toplamı = 1)?",
+            "en": "If row 1 of transition matrix is $[0.4, 0.35, x]$, what is $x$?"
           },
-          "options": [
-            {
-              "tr": "Tüm πi elemanlarının toplamının 1 olması (∑ πi = 1)",
-              "en": "Sum of all πi elements equals 1 (∑ πi = 1)"
-            },
-            {
-              "tr": "π1 = 0 olması",
-              "en": "π1 = 0"
-            },
-            {
-              "tr": "Determinantın 0 olması",
-              "en": "Determinant equals 0"
-            },
-            {
-              "tr": "Matrisin tersinin alınması",
-              "en": "Inverting the matrix"
-            }
-          ],
-          "correctAnswer": "Tüm πi elemanlarının toplamının 1 olması (∑ πi = 1)",
+          "correctAnswer": 0.25,
           "explanation": {
-            "tr": "$\\pi P = \\pi$ sistemi bağımlı denklem ürettiği için $\\sum \\pi_i = 1$ toplam olasılık kuralı ile tekil çözüm bulunur.",
-            "en": "Probability normalization $\\sum \\pi_i = 1$ is required to resolve linear dependency."
+            "tr": "$$x = 1 - (0.40 + 0.35) = 0.25$$",
+            "en": "$$x = 1 - 0.75 = 0.25$$"
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=DÖZVEKTÖR_Hesabı",
-        "pythonCode": "# Solve pi * P = pi and sum(pi) = 1\nimport scipy.linalg as la\nevals, evecs = la.eig(P.T)\npi = evecs[:, np.isclose(evals, 1)].real\npi = pi / np.sum(pi)",
+        "excelFormula": "=1 - TOPLA(A1:B1)",
+        "pythonCode": "import numpy as np\nP = np.array([[0.8, 0.2], [0.3, 0.7]])\nassert np.all(P.sum(axis=1) == 1.0)",
         "powerBiNote": {
-          "tr": "Uzun vadeli pazar payı pasta grafiğinde denge vektörü gösterilir.",
-          "en": "Equilibrium market shares are visualized on donut charts."
+          "tr": "Geçiş olasılığı matrisi görseli",
+          "en": "Transition matrix visual"
         }
       }
     },
@@ -216,66 +198,316 @@
       "id": "m12-l4",
       "moduleId": "module-12",
       "order": 4,
-      "difficulty": "zor",
+      "difficulty": "orta",
       "title": {
-        "tr": "Yutucu Durumlar ve Temel Matris ($N$)",
-        "en": "Absorbing Chains and Fundamental Matrix ($N$)"
+        "tr": "$n$-Adımlı Geçiş ve Chapman-Kolmogorov Eşitliği",
+        "en": "Chapman-Kolmogorov Equations"
       },
       "conceptCard": {
-        "tr": "Bir duruma girildiğinde bir daha asla çıkılamıyorsa ($p_{ii} = 1$) bu duruma **Yutucu Durum (Absorbing State)** denir (`ENGR 200 Lecture`):\n\n1. **Kanonik Form:** $P = \\begin{pmatrix} I & 0 \\\\ R & Q \\end{pmatrix}$\n- $Q$: Geçici durumlardan geçici durumlara geçişler\n- $R$: Geçici durumlardan yutucu durumlara geçişler\n\n2. **Temel Matris (Fundamental Matrix $N$):**\n$$N = (I - Q)^{-1}$$\n$N_{ij}$: $i$ durumunda başlayan sürecin yutulmadan önce $j$ durumunu ziyaret etme ortalama sayısıdır.\n3. **Yutulmaya Kadar Geçen Ortalama Süre:** $t = N \\mathbf{1}$\n4. **Yutulma Olasılıkları:** $B = N R$",
-        "en": "A state $i$ is **Absorbing** if $p_{ii} = 1$ (`ENGR 200`):\n\n1. **Canonical Form:** $P = \\begin{pmatrix} I & 0 \\\\ R & Q \\end{pmatrix}$\n2. **Fundamental Matrix ($N$):**\n$$N = (I - Q)^{-1}$$\n$N_{ij}$ represents the expected number of visits to transient state $j$ starting from $i$.\n3. **Time to Absorption:** $t = N \\mathbf{1}$\n4. **Absorption Probabilities:** $B = N R$"
+        "tr": "$n$ adım sonrasındaki geçiş olasılıkları matrisi, tek adımlı geçiş matrisi $P$'nin $n$. kuvvetine eşittir:\n\n$$P^{(n)} = P^n$$\n\n**Chapman-Kolmogorov:**\n$$P_{ij}^{(m+n)} = \\sum_{k} P_{ik}^{(m)} P_{kj}^{(n)}$$",
+        "en": "$n$-step transition matrix is given by matrix power $P^{(n)} = P^n$ via Chapman-Kolmogorov equations."
       },
       "companyExample": {
-        "tr": "Kredi derecelendirmesinde \"Temerrüt/İflas (Default)\" ve \"Kredi Borcunu Kapatma\" yutucu durumlardır. $N = (I-Q)^{-1}$ ile müşterinin iflas etmeden önce kaç ay ödeme yapacağı hesaplanır.",
-        "en": "Credit rating: Default and Fully Paid are absorbing states. Fundamental matrix $N = (I-Q)^{-1}$ calculates expected months until default."
+        "tr": "**Örnek Soru:** 2 adım sonrasındaki durum dağılımını bulmak için matris işlemi nedir?\n\n**Çözüm:** $P^{(2)} = P \\times P = P^2$ (Matris çarpımı).",
+        "en": "**Worked Example:** Two-step transition probabilities equal $P^2$."
       },
       "vocabTerms": [
         {
-          "term_en": "absorbing state",
-          "explanation_tr": "Zincirin içine girdikten sonra bir daha ayrılamadığı durum ($p_{ii} = 1$).",
-          "explanation_en": "A state that once entered, cannot be left ($p_{ii} = 1$).",
-          "exampleSentence_en": "Bankruptcy is an absorbing state in credit risk transition models."
+          "term_en": "Chapman-Kolmogorov equations",
+          "explanation_tr": "Çok adımlı geçiş olasılıklarını ara durumlar üzerinden matris çarpımıyla hesaplayan teorem.",
+          "explanation_en": "Equations expressing multi-step transitions as products of single-step matrices.",
+          "exampleSentence_en": "We compute 12-month retention through $P^{12}$."
         }
       ],
       "questions": [
         {
           "id": "m12-l4-q1",
-          "type": "multiple_choice",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "Yutucu Markov zincirinde Temel Matris $N$ hangi formülle hesaplanır?",
-            "en": "What formula calculates the Fundamental Matrix $N$ in absorbing Markov chains?"
+            "tr": "Markov zincirinde 3 adım sonrasındaki geçiş olasılıkları matrisi ($P^{(3)}$) nasıl bulunur?",
+            "en": "How is the 3-step transition matrix $P^{(3)}$ calculated?"
           },
           "options": [
             {
-              "tr": "N = (I - Q)^(-1)",
-              "en": "N = (I - Q)^(-1)"
+              "tr": "P matrisinin 3. kuvveti (P^3)",
+              "en": "Matrix power P^3"
             },
             {
-              "tr": "N = I + Q",
-              "en": "N = I + Q"
+              "tr": "3 * P",
+              "en": "3 * P"
             },
             {
-              "tr": "N = Q * R",
-              "en": "N = Q * R"
+              "tr": "P / 3",
+              "en": "P / 3"
             },
             {
-              "tr": "N = (I - R)^(-1)",
-              "en": "N = (I - R)^(-1)"
+              "tr": "P + P + P",
+              "en": "P + P + P"
             }
           ],
-          "correctAnswer": "N = (I - Q)^(-1)",
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "Geçici durumların geometrik serisi toplamından $N = (I - Q)^{-1}$ temel matrisi türetilir.",
-            "en": "Fundamental matrix $N = (I - Q)^{-1}$ inverts the transient transition identity difference."
+            "tr": "Chapman-Kolmogorov eşitliği gereği n adımlı geçiş $P^n$ matris kuvvetidir.",
+            "en": "Multi-step transitions equal matrix power $P^n$."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=DTERS(BİRİM.MATRİS - Q_Matrisi)",
-        "pythonCode": "import numpy as np\nI = np.eye(Q.shape[0])\nN = np.linalg.inv(I - Q)\nt = N.dot(np.ones(Q.shape[0]))",
+        "excelFormula": "=DÇARP(P, P)",
+        "pythonCode": "P_3 = np.linalg.matrix_power(P, 3)",
         "powerBiNote": {
-          "tr": "Müşteri yaşam süresi (Customer Lifetime) tahmininde $t = N\\mathbf{1}$ kullanılır.",
-          "en": "Customer lifetime is modeled via $t = N\\mathbf{1}$."
+          "tr": "Çok dönemli müşteri tahminleme",
+          "en": "Multi-period customer forecasting"
+        }
+      }
+    },
+    {
+      "id": "m12-l5",
+      "moduleId": "module-12",
+      "order": 5,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Durumların Sınıflandırılması (İndirgenemezlik & Periyot)",
+        "en": "Classification of States"
+      },
+      "conceptCard": {
+        "tr": "1. **İletişim Kurabilirlik ($i \\leftrightarrow j$):** Her iki durumdan birbirine ulaşmak mümkündür.\n2. **İndirgenemez (Irreducible):** Tüm durumlar birbiriyle iletişim kurabiliyorsa zincir indirgenemezdir.\n3. **Periyodiklik:** Sistemin bir duruma yalnızca $d > 1$ adımın katlarında dönebilmesidir. $d=1$ ise zincir **Aperiyodiktir**.",
+        "en": "States communicate if reachable mutually. A chain is irreducible if all states communicate, and aperiodic if period $d=1$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Tüm müşterilerin her durumdan diğerine geçebildiği bir model indirgenemez midir?\n\n**Çözüm:** Evet, her durumdan her duruma pozitif olasılıkla ulaşılabiliyorsa zincir **İndirgenemez (Irreducible)**dir.",
+        "en": "**Worked Example:** If all states communicate, the chain is irreducible."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "ergodic Markov chain",
+          "explanation_tr": "Hem indirgenemez hem aperiyodik olan ve tek bir kararlı denge dağılımına sahip zincir.",
+          "explanation_en": "A Markov chain that is both irreducible and aperiodic.",
+          "exampleSentence_en": "Ergodicity guarantees a unique steady-state distribution."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m12-l5-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Tüm durumların birbiriyle karşılıklı iletişim kurabildiği Markov zincirine ne ad verilir?",
+            "en": "What is a Markov chain where all states communicate called?"
+          },
+          "options": [
+            {
+              "tr": "İndirgenemez (Irreducible)",
+              "en": "Irreducible"
+            },
+            {
+              "tr": "Yutucu (Absorbing)",
+              "en": "Absorbing"
+            },
+            {
+              "tr": "Periyodik",
+              "en": "Periodic"
+            },
+            {
+              "tr": "Kararsız",
+              "en": "Unstable"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Tüm durumlar arası geçiş mümkünse zincir İndirgenemez (Irreducible) olarak adlandırılır.",
+            "en": "Irreducible chains have a single communicating class."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=DURUM_SINIFI()",
+        "pythonCode": "import networkx as nx\nG = nx.from_numpy_array(P, create_using=nx.DiGraph)\nnx.is_strongly_connected(G)",
+        "powerBiNote": {
+          "tr": "Ağ grafiği (Network Graph)",
+          "en": "State transition network graph"
+        }
+      }
+    },
+    {
+      "id": "m12-l6",
+      "moduleId": "module-12",
+      "order": 6,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Durağan Denge Dağılımı Vektörü ($\\pi^*$)",
+        "en": "Steady-State Distribution ($\\pi^*$)"
+      },
+      "conceptCard": {
+        "tr": "Ergodik bir Markov zincirinde zaman sonsuza giderken durum olasılıkları sabit bir **durağan denge vektörüne ($\\pi$)** yakınsar:\n\n$$\\pi P = \\pi$$\n\n$$\\sum_{i=1}^{k} \\pi_i = 1$$\n\nBu denklem sistemi Google PageRank algoritmasının temel matematiğidir.",
+        "en": "Steady-state distribution $\\pi$ satisfies: $\\pi P = \\pi$ and $\\sum \\pi_i = 1$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** $P = \\begin{bmatrix} 0.8 & 0.2 \\\\ 0.4 & 0.6 \\end{bmatrix}$. Denge dağılımı $\\pi = [\\pi_1, \\pi_2]$ nedir?\n\n**Çözüm:**\n$$\\pi_1 = 0.8\\pi_1 + 0.4\\pi_2 \\implies 0.2\\pi_1 = 0.4\\pi_2 \\implies \\pi_1 = 2\\pi_2$$\n$$\\pi_1 + \\pi_2 = 1 \\implies 3\\pi_2 = 1 \\implies \\pi_2 = 1/3, \\quad \\pi_1 = 2/3$$",
+        "en": "**Worked Example:** Solving $\\pi P = \\pi$ yields $\\pi_1 = 2/3, \\pi_2 = 1/3$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "steady-state distribution (stationary)",
+          "explanation_tr": "Sistemin uzun vadede her bir durumda bulunma oranlarını gösteren sabit olasılık vektörü.",
+          "explanation_en": "A probability distribution that remains invariant under transition matrix $P$.",
+          "exampleSentence_en": "PageRank is the stationary distribution of the web graph random walk."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m12-l6-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Durağan denge dağılımı $\\pi$ hangi matris denklemini sağlamalıdır?",
+            "en": "Which matrix equation defines stationary distribution $\\pi$?"
+          },
+          "options": [
+            {
+              "tr": "pi * P = pi",
+              "en": "pi * P = pi"
+            },
+            {
+              "tr": "P * pi = 0",
+              "en": "P * pi = 0"
+            },
+            {
+              "tr": "pi + P = I",
+              "en": "pi + P = I"
+            },
+            {
+              "tr": "P^2 = pi",
+              "en": "P^2 = pi"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Durağan dağılım geçiş matrisiyle çarpıldığında değişmez: $\\pi P = \\pi$.",
+            "en": "Stationary vector satisfies $\\pi P = \\pi$ with unit sum."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=DÖNGÜSEL_DENGE()",
+        "pythonCode": "eigenvals, eigenvecs = np.linalg.eig(P.T)\npi = eigenvecs[:, 0] / eigenvecs[:, 0].sum()",
+        "powerBiNote": {
+          "tr": "Uzun vadeli pazar payı tahmini",
+          "en": "Long-term market share forecast"
+        }
+      }
+    },
+    {
+      "id": "m12-l7",
+      "moduleId": "module-12",
+      "order": 7,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Yutucu Durumlar ve Temel Matris ($N$)",
+        "en": "Absorbing States & Fundamental Matrix"
+      },
+      "conceptCard": {
+        "tr": "1. **Yutucu Durum (Absorbing State):** Bir kez girildiğinde bir daha çıkılamayan durumdur ($P_{ii} = 1$).\n2. **Kanonik Form:**\n$$P = \\begin{bmatrix} Q & R \\\\ 0 & I \\end{bmatrix}$$\n3. **Temel Matris ($N$):** Geçici durumlarda geçirilen ortalama adım sayısını verir:\n$$N = (I - Q)^{-1}$$",
+        "en": "Absorbing Markov chains have canonical form $\\begin{bmatrix} Q & R \\\\ 0 & I \\end{bmatrix}$. Fundamental matrix: $N = (I - Q)^{-1}$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Kredi kartı analizinde 'Borç Ödendi' ve 'İflas/Batık' durumları yutucu durumlardır. Bu model kanonik formda çözülür.",
+        "en": "**Worked Example:** Credit default and paid-in-full are absorbing terminal states."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "fundamental matrix",
+          "explanation_tr": "Yutucu zincirlerde yutulmadan önce geçici durumlarda harcanan ortalama ziyaret sayıları matrisi $N = (I-Q)^{-1}$.",
+          "explanation_en": "Matrix giving the expected number of times the process visits each transient state before absorption.",
+          "exampleSentence_en": "The fundamental matrix computes expected customer lifetime before churn."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m12-l7-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir durumdan ayrılma olasılığı 0 ise ($P_{ii} = 1$) bu duruma ne ad verilir?",
+            "en": "What is a state with $P_{ii} = 1$ called?"
+          },
+          "options": [
+            {
+              "tr": "Yutucu Durum (Absorbing State)",
+              "en": "Absorbing State"
+            },
+            {
+              "tr": "Dönemsel Durum",
+              "en": "Periodic State"
+            },
+            {
+              "tr": "Geçici Durum",
+              "en": "Transient State"
+            },
+            {
+              "tr": "Ergodik Durum",
+              "en": "Ergodic State"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Girildikten sonra terk edilemeyen durumlara Yutucu (Absorbing) durum denir.",
+            "en": "A state that cannot be left once entered is absorbing."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=DİZİ.TERS(BİRİM.MATRİS - Q)",
+        "pythonCode": "N = np.linalg.inv(np.eye(len(Q)) - Q)",
+        "powerBiNote": {
+          "tr": "Kredi batık / iflas modelleri",
+          "en": "Credit default absorption model"
+        }
+      }
+    },
+    {
+      "id": "m12-l8",
+      "moduleId": "module-12",
+      "order": 8,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Yutulma Olasılıkları ve Ortalama Adım Sayısı",
+        "en": "Absorption Probabilities & Time to Absorption"
+      },
+      "conceptCard": {
+        "tr": "1. **Yutulmaya Kadar Geçen Ortalama Süre ($t$):**\n$$t = N \\mathbf{1}$$\n(Temel matris $N$'in satır toplamlarıdır).\n\n2. **Yutulma Olasılıkları Matrisi ($B$):** Belirli bir geçici durumdan başlayıp belirli bir yutucu duruma ulaşma olasılığıdır:\n$$B = N \\times R$$",
+        "en": "Time to absorption: $t = N \\mathbf{1}$. Absorption probabilities: $B = N R$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** $N = \\begin{bmatrix} 2 & 1 \\\\ 0.5 & 1.5 \\end{bmatrix}$. 1. durumdan başlayarak yutulana kadar geçen ortalama adım sayısı nedir?\n\n**Çözüm:** $t_1 = 2 + 1 = 3$ adım.",
+        "en": "**Worked Example:** Row sum of $N$: $2 + 1 = 3$ steps to absorption."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "absorption probability",
+          "explanation_tr": "Sistemin hangi nihai terminal yutucu duruma ulaşacağını veren olasılık $B = NR$.",
+          "explanation_en": "The probability that a process starting in a transient state ends up in a specific absorbing state.",
+          "exampleSentence_en": "We evaluated bankruptcy vs. recovery absorption probabilities."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m12-l8-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Temel matris $N$'in bir satır elemanları $3$ ve $2$ ise bu durumdan başlayarak yutulmaya kadar geçen ortalama adım sayısı ($3+2$) kaçtır?",
+            "en": "What is expected time to absorption for row [3, 2] in matrix $N$?"
+          },
+          "correctAnswer": 5,
+          "explanation": {
+            "tr": "$$t = 3 + 2 = 5 \\text{ adım}$$",
+            "en": "$$t = 3 + 2 = 5$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=DÇARP(N, R)",
+        "pythonCode": "B = np.dot(N, R)\ntime_to_absorb = N.sum(axis=1)",
+        "powerBiNote": {
+          "tr": "Müşteri ömür boyu değer (LTV) matrisi",
+          "en": "Customer LTV absorption matrix"
         }
       }
     }

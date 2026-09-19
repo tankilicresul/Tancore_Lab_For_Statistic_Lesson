@@ -1,0 +1,255 @@
+const fs = require('fs');
+const path = require('path');
+const modulesDir = path.join(__dirname, '../src/data');
+
+function updateModule(num, newLessons) {
+  const file = path.join(modulesDir, `module${num}.json`);
+  const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+  data.lessons = newLessons;
+  fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+  console.log(`✓ Module ${num} written with ${newLessons.length} separated lessons.`);
+}
+
+// ==========================================
+// MODULE 5: Nokta Tahmini & Güven Aralıkları (10 Lessons)
+// ==========================================
+updateModule(5, [
+  {
+    id: "m5-l1", moduleId: "module-5", order: 1, difficulty: "basit",
+    title: { tr: "Nokta Tahmini ve Sapmasızlık (Unbiasedness)", en: "Point Estimation & Unbiasedness" },
+    conceptCard: {
+      tr: "Bilinmeyen bir popülasyon parametresi $\\theta$'yı tahmin etmek için örneklemden hesaplanan tek bir değere **Nokta Tahmin Edici ($\\hat{\\theta}$)** denir.\n\n**Sapmasızlık (Unbiasedness):** Tahmin edicinin beklenen değeri tam olarak parametreye eşitse tahmin edici sapmasızdır:\n\n$$\\text{Bias}(\\hat{\\theta}) = E[\\hat{\\theta}] - \\theta = 0 \\iff E[\\hat{\\theta}] = \\theta$$\n\nÖrneklem ortalaması $\\bar{X}$, popülasyon ortalaması $\\mu$'nün sapmasız bir tahmincisidir ($E[\\bar{X}] = \\mu$).",
+      en: "A point estimator $\\hat{\\theta}$ is unbiased if $E[\\hat{\\theta}] = \\theta$."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** $E[\\hat{\\theta}] = 100$ ve gerçek popülasyon değeri $\\theta = 100$ ise tahmin edicinin sapması nedir?\n\n**Çözüm:** $\\text{Bias} = 100 - 100 = 0$ (Tamamen sapmasızdır).",
+      en: "**Worked Example:** $\\text{Bias} = E[\\hat{\\theta}] - \\theta = 100 - 100 = 0$."
+    },
+    vocabTerms: [{ term_en: "unbiased estimator", explanation_tr: "Beklenen değeri hedef parametreye tam olarak eşit olan tahmin edici.", explanation_en: "An estimator whose expected value equals the true population parameter.", exampleSentence_en: "Sample mean is an unbiased estimator of the population mean." }],
+    questions: [{
+      id: "m5-l1-q1", type: "multiple-choice",
+      prompt: { tr: "$E[\\hat{\\theta}] = \\theta$ eşitliğini sağlayan bir tahmin ediciye ne ad verilir?", en: "What is an estimator with $E[\\hat{\\theta}] = \\theta$ called?" },
+      options: [
+        { tr: "Sapmasız (Unbiased)", en: "Unbiased" },
+        { tr: "Sapmalı (Biased)", en: "Biased" },
+        { tr: "Tutarsız (Inconsistent)", en: "Inconsistent" },
+        { tr: "Varyansı Sonsuz", en: "Infinite Variance" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "Beklenen değeri parametreye eşit olan tahmin ediciler sapmasızdır.", en: "Zero bias defines an unbiased estimator." }
+    }],
+    realWorldBox: { excelFormula: "=ORTALAMA(A1:A100)", pythonCode: "theta_hat = np.mean(sample)", powerBiNote: { tr: "Nokta tahmin KPI kartı", en: "Point estimate KPI" } }
+  },
+  {
+    id: "m5-l2", moduleId: "module-5", order: 2, difficulty: "orta",
+    title: { tr: "Tahmin Edici Etkinliği ve MVUE", en: "Efficiency & MVUE" },
+    conceptCard: {
+      tr: "İki sapmasız tahmin edici arasında daha küçük varyansa sahip olan tahmin edici daha **etkindir (efficient)**.\n\n**MVUE (Minimum Variance Unbiased Estimator):** Tüm sapmasız tahmin ediciler içinde en küçük varyansa sahip olan en iyi tahmin edicidir.\n\n**Cramér-Rao Alt Sınırı:** Bir sapmasız tahmin edicinin varyansının inebileceği teorik alt sınırdır.",
+      en: "Efficiency favors the estimator with lower variance. MVUE achieves minimum variance among unbiased estimators."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** İki sapmasız tahmin ediciden $\\text{Var}(\\hat{\\theta}_1) = 4$, $\\text{Var}(\\hat{\\theta}_2) = 9$. Hangisi tercih edilir?\n\n**Çözüm:** $\\hat{\\theta}_1$ daha küçük varyansa sahip olduğu için daha etkindir ve tercih edilir.",
+      en: "**Worked Example:** Estimator 1 with variance 4 is more efficient than estimator 2 with variance 9."
+    },
+    vocabTerms: [{ term_en: "relative efficiency", explanation_tr: "İki tahmin edicinin varyanslarının birbirine oranı.", explanation_en: "Ratio of the variances of two unbiased estimators.", exampleSentence_en: "Sample mean is more efficient than sample median for normal data." }],
+    questions: [{
+      id: "m5-l2-q1", type: "multiple-choice",
+      prompt: { tr: "Sapmasız iki tahmin edici arasında seçim yaparken hangi kriter aranır?", en: "What criterion is preferred when choosing between two unbiased estimators?" },
+      options: [
+        { tr: "Daha küçük varyansa sahip olması (Etkinlik)", en: "Lower variance (Efficiency)" },
+        { tr: "Daha büyük varyansa sahip olması", en: "Higher variance" },
+        { tr: "Sıfıra eşit olması", en: "Equal to zero" },
+        { tr: "Hesaplanmasının zor olması", en: "Higher complexity" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "Daha düşük varyans daha yüksek kesinlik ve etkinlik demektir.", en: "Lower variance yields narrower confidence intervals and greater precision." }
+    }],
+    realWorldBox: { excelFormula: "=VAR.S(A:A)", pythonCode: "eff = np.var(est1) / np.var(est2)", powerBiNote: { tr: "Tahmin güvenilirliği göstergesi", en: "Estimation reliability KPI" } }
+  },
+  {
+    id: "m5-l3", moduleId: "module-5", order: 3, difficulty: "ileri",
+    title: { tr: "En Çok Olabilirlik Tahmini (MLE)", en: "Maximum Likelihood Estimation (MLE)" },
+    conceptCard: {
+      tr: "MLE, gözlemlenen örneklem verisini üretme olasılığı en yüksek (en olası) olan parametre değerini bulur:\n\n$$L(\\theta) = \\prod_{i=1}^{n} f(x_i \\mid \\theta)$$\n\n**Log-Olabilirlik (Log-Likelihood):** Çarpımı toplama dönüştürmek için logaritması alınır ve türevi sıfıra eşitlenir:\n$$\\ln L(\\theta) = \\sum_{i=1}^{n} \\ln f(x_i \\mid \\theta) \\implies \\frac{\\partial \\ln L}{\\partial \\theta} = 0$$",
+      en: "MLE finds the parameter maximizing likelihood: $\\frac{\\partial \\ln L(\\theta)}{\\partial \\theta} = 0$."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** Bernoulli denemesinde $n$ gözlemde $k$ başarı elde edilmiştir. Başarı olasılığı $p$'nin MLE tahmincisi nedir?\n\n**Çözüm:** $\\hat{p}_{\\text{MLE}} = \\frac{k}{n}$ (Örneklem oranı).",
+      en: "**Worked Example:** For Bernoulli, $\\hat{p}_{MLE} = k / n$."
+    },
+    vocabTerms: [{ term_en: "maximum likelihood (MLE)", explanation_tr: "Gözlemlenen veriyi maksimize eden parametreyi türevle bulan en yaygın kestirim yöntemi.", explanation_en: "Method of estimating parameters by maximizing a likelihood function.", exampleSentence_en: "Logistic regression coefficients are fitted via Maximum Likelihood Estimation." }],
+    questions: [{
+      id: "m5-l3-q1", type: "multiple-choice",
+      prompt: { tr: "MLE yönteminde çarpım halindeki olabilirlik fonksiyonunu basitleştirmek için hangi matematiksel işlem uygulanır?", en: "What transformation simplifies the product in MLE optimization?" },
+      options: [
+        { tr: "Doğal Logaritma (Log-Likelihood)", en: "Natural Logarithm (Log-Likelihood)" },
+        { tr: "Karekök alma", en: "Square root" },
+        { tr: "Faktöriyel", en: "Factorial" },
+        { tr: "İntegral alma", en: "Integration" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "Logaritma çarpımları toplama çevirerek türev almayı kolaylaştırır.", en: "Log transform converts products into sums for easy differentiation." }
+    }],
+    realWorldBox: { excelFormula: "=LOG.OLABİLİRLİK()", pythonCode: "from scipy.optimize import minimize\nres = minimize(lambda p: -log_likelihood(p, data), x0=[0.5])", powerBiNote: { tr: "Lojistik regresyon parametreleri", en: "Logistic regression MLE visual" } }
+  },
+  {
+    id: "m5-l4", moduleId: "module-5", order: 4, difficulty: "orta",
+    title: { tr: "Momentler Yöntemi (Method of Moments)", en: "Method of Moments (MOM)" },
+    conceptCard: {
+      tr: "Örneklem momentlerini teorik popülasyon momentlerine eşitleyerek parametreleri çözen klasik tahmin yöntemidir:\n\n- 1. Moment (Ortalama): $m_1 = \\frac{1}{n} \\sum x_i = E[X] = \\mu(\\theta)$\n- 2. Moment (Karelerin Ortalaması): $m_2 = \\frac{1}{n} \\sum x_i^2 = E[X^2]$",
+      en: "Method of Moments equates sample moments $m_k = \\frac{1}{n}\\sum x_i^k$ to theoretical moments $E[X^k]$."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** $\\text{Uniform}(0, \\theta)$ dağılımında $E[X] = \\theta / 2$'dir. $\\bar{x} = 6$ ise $\\theta$'nın moment tahmincisi nedir?\n\n**Çözüm:** $\\bar{x} = \\hat{\\theta} / 2 \\implies \\hat{\\theta} = 2\\bar{x} = 2 \\times 6 = 12$.",
+      en: "**Worked Example:** $\\bar{x} = \\theta/2 \\implies \\hat{\\theta} = 2\\bar{x} = 12$."
+    },
+    vocabTerms: [{ term_en: "method of moments", explanation_tr: "Örneklem ortalamalarını teorik beklentilere eşitleyerek parametre bulan yöntem.", explanation_en: "Estimation method equating sample moments to population moments.", exampleSentence_en: "Method of moments provides simple initial estimates for iterative algorithms." }],
+    questions: [{
+      id: "m5-l4-q1", type: "numeric",
+      prompt: { tr: "Üstel dağılımda $E[X] = 1/\\lambda$'dır. Örneklem ortalaması $\\bar{x} = 0.2$ ise $\\lambda$ moment tahmincisi kaçtır ($1 / 0.2$)?", en: "For Exponential with $E[X] = 1/\\lambda$, if $\\bar{x} = 0.2$, what is $\\hat{\\lambda}$?" },
+      correctAnswer: 5,
+      explanation: { tr: "$$\\hat{\\lambda} = \\frac{1}{\\bar{x}} = \\frac{1}{0.2} = 5$$", en: "$$\\hat{\\lambda} = 1 / 0.2 = 5$$" }
+    }],
+    realWorldBox: { excelFormula: "=1 / ORTALAMA(A1:A50)", pythonCode: "lambda_mom = 1.0 / np.mean(sample)", powerBiNote: { tr: "Başlangıç parametre kestirimi", en: "Parameter initialization" } }
+  },
+  {
+    id: "m5-l5", moduleId: "module-5", order: 5, difficulty: "orta",
+    title: { tr: "Ortalama İçin Güven Aralığı ($\\sigma$ Bilinen / $Z$)", en: "Confidence Interval for Mean ($\\sigma$ Known / $Z$)" },
+    conceptCard: {
+      tr: "Popülasyon standart sapması $\\sigma$ bilindiğinde $1 - \\alpha$ güven aralığı $Z$-dağılımı ile kurulur:\n\n$$\\bar{x} \\pm z_{\\alpha/2} \\cdot \\frac{\\sigma}{\\sqrt{n}}$$\n\n- %90 Güven ($z=1.645$)\n- %95 Güven ($z=1.960$)\n- %99 Güven ($z=2.576$)",
+      en: "Confidence interval when $\\sigma$ is known: $\\bar{x} \\pm z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}$."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** $\\bar{x} = 100, \\sigma = 10, n = 25$. %95 Güven Aralığı ($z=1.96$) hata payı nedir?\n\n**Çözüm:**\n$$E = 1.96 \\times \\frac{10}{\\sqrt{25}} = 1.96 \\times 2 = 3.92 \\implies [96.08, 103.92]$$",
+      en: "**Worked Example:** Margin of error $E = 1.96 \\times (10/5) = 3.92 \\implies [96.08, 103.92]$."
+    },
+    vocabTerms: [{ term_en: "margin of error", explanation_tr: "Güven aralığında nokta tahminin sağına ve soluna eklenen belirsizlik payı ($z \\cdot \\text{SE}$).", explanation_en: "The radius of the confidence interval representing estimation uncertainty.", exampleSentence_en: "The poll has a margin of error of $\\pm 3.92$ points." }],
+    questions: [{
+      id: "m5-l5-q1", type: "numeric",
+      prompt: { tr: "$\\bar{x} = 50$, $z = 2$, $\\sigma = 6$ ve $n = 9$ için hata payı ($z \\cdot \\sigma / \\sqrt{n}$) kaçtır?", en: "Calculate margin of error for $\\bar{x}=50, z=2, \\sigma=6, n=9$." },
+      correctAnswer: 4,
+      explanation: { tr: "$$E = 2 \\times \\frac{6}{\\sqrt{9}} = 2 \\times \\frac{6}{3} = 4$$", en: "$$E = 2 \\times 2 = 4$$" }
+    }],
+    realWorldBox: { excelFormula: "=GÜVENİRLİK.NORM(0.05, sigma, n)", pythonCode: "from scipy.stats import norm\nci = norm.interval(0.95, loc=mean, scale=sigma/np.sqrt(n))", powerBiNote: { tr: "DAX ile %95 güven bandı", en: "DAX 95% confidence bands" } }
+  },
+  {
+    id: "m5-l6", moduleId: "module-5", order: 6, difficulty: "orta",
+    title: { tr: "Ortalama İçin Güven Aralığı ($\\sigma$ Bilinmeyen / $t$)", en: "Confidence Interval for Mean ($\\sigma$ Unknown / $t$)" },
+    conceptCard: {
+      tr: "Gerçek hayatta $\\sigma$ bilinmez; yerine örneklem standart sapması $s$ kullanılır ve **Student's $t$-dağılımı** ($df = n-1$) uygulanır:\n\n$$\\bar{x} \\pm t_{\\alpha/2, n-1} \\cdot \\frac{s}{\\sqrt{n}}$$\n\n$t$-dağılımı normal dağılıma göre daha kalın kuyruklara (heavy tails) sahiptir.",
+      en: "When $\\sigma$ is unknown, use sample $s$ and Student's $t$ with $df = n-1$: $\\bar{x} \\pm t_{\\alpha/2, n-1} \\frac{s}{\\sqrt{n}}$."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** $n=16, \\bar{x}=50, s=8, t_{0.025, 15}=2.131$. Hata payı nedir?\n\n**Çözüm:**\n$$E = 2.131 \\times \\frac{8}{\\sqrt{16}} = 2.131 \\times 2 = 4.262$$",
+      en: "**Worked Example:** $E = 2.131 \\times (8/4) = 4.262$."
+    },
+    vocabTerms: [{ term_en: "Student's t-distribution", explanation_tr: "Küçük örneklemlerde ve standart sapma bilinmediğinde kullanılan kalın kuyruklu simetrik dağılım.", explanation_en: "Continuous probability distribution used when estimating mean with unknown variance.", exampleSentence_en: "With $n=16$, we used a t-distribution with 15 degrees of freedom." }],
+    questions: [{
+      id: "m5-l6-q1", type: "numeric",
+      prompt: { tr: "10 elemanlı bir örneklemde $t$-dağılımının serbestlik derecesi ($df = n-1$) kaçtır?", en: "What is degrees of freedom ($df = n-1$) for $n=10$?" },
+      correctAnswer: 9,
+      explanation: { tr: "$$df = 10 - 1 = 9$$", en: "$$df = 10 - 1 = 9$$" }
+    }],
+    realWorldBox: { excelFormula: "=GÜVENİRLİK.T(0.05, s, n)", pythonCode: "from scipy.stats import t\nci = t.interval(0.95, df=n-1, loc=mean, scale=s/np.sqrt(n))", powerBiNote: { tr: "Küçük örneklem güven aralıkları", en: "Small sample t-confidence interval" } }
+  },
+  {
+    id: "m5-l7", moduleId: "module-5", order: 7, difficulty: "orta",
+    title: { tr: "Oranlar İçin Güven Aralığı & Agresti-Coull", en: "Confidence Interval for Proportions" },
+    conceptCard: {
+      tr: "Popülasyon oranı $p$ için standart Wald güven aralığı:\n\n$$\\hat{p} \\pm z_{\\alpha/2} \\sqrt{\\frac{\\hat{p}(1 - \\hat{p})}{n}}$$\n\n**Agresti-Coull (Plus-4) Düzeltmesi:** Küçük örneklemlerde 2 başarı ve 2 başarısızlık ekleyerek ($\tilde{n} = n + 4, \\tilde{p} = \\frac{x+2}{n+4}$) aralık başarısını mükemmelleştirir.",
+      en: "Wald interval for proportion: $\\hat{p} \\pm z \\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$. Agresti-Coull adds 2 successes and 2 failures."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** $n=100$ kullanıcıda 40 başarı ($\\hat{p}=0.40$). Standart hata nedir?\n\n**Çözüm:**\n$$\\text{SE} = \\sqrt{\\frac{0.40 \\times 0.60}{100}} = \\sqrt{\\frac{0.24}{100}} = \\sqrt{0.0024} \\approx 0.049$$",
+      en: "**Worked Example:** $\\text{SE} = \\sqrt{0.4 \\times 0.6 / 100} = 0.049$."
+    },
+    vocabTerms: [{ term_en: "proportion confidence interval", explanation_tr: "Müşteri memnuniyet veya dönüşüm oranı gibi yüzdelerin güven sınırları.", explanation_en: "Interval estimate for a population proportion.", exampleSentence_en: "Conversion rate was estimated at 40% $\\pm 4.9%$." }],
+    questions: [{
+      id: "m5-l7-q1", type: "numeric",
+      prompt: { tr: "$n = 100$ ve $\\hat{p} = 0.50$ için varyans terimi $\\hat{p}(1-\\hat{p}) / n$ kaçtır?", en: "Calculate $\\hat{p}(1-\\hat{p}) / n$ for $\\hat{p}=0.50, n=100$." },
+      correctAnswer: 0.0025,
+      explanation: { tr: "$$\\frac{0.50 \\times 0.50}{100} = \\frac{0.25}{100} = 0.0025$$", en: "$$0.25 / 100 = 0.0025$$" }
+    }],
+    realWorldBox: { excelFormula: "=p_hat +- z * KAREKÖK(p_hat*(1-p_hat)/n)", pythonCode: "from statsmodels.stats.proportion import proportion_confint\nci = proportion_confint(count, nobs, method='agresti_coull')", powerBiNote: { tr: "A/B testi dönüşüm güven aralığı", en: "A/B conversion rate confidence limits" } }
+  },
+  {
+    id: "m5-l8", moduleId: "module-5", order: 8, difficulty: "ileri",
+    title: { tr: "Popülasyon Varyansı İçin Güven Aralığı ($\\chi^2$)", en: "Confidence Interval for Variance ($\\chi^2$)" },
+    conceptCard: {
+      tr: "Popülasyon varyansı $\\sigma^2$ için güven aralığı **Ki-Kare ($\\chi^2$)** dağılımı ($df = n-1$) ile kurulur:\n\n$$\\left[ \\frac{(n-1)s^2}{\\chi^2_{\\alpha/2, n-1}}, \\; \\frac{(n-1)s^2}{\\chi^2_{1-\\alpha/2, n-1}} \\right]$$\n\nKi-Kare dağılımı asimetrik olduğu için aralık ortalamaya göre simetrik değildir.",
+      en: "Confidence interval for variance $\\sigma^2$ uses Chi-Square distribution with $df=n-1$."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** $n=11, s^2=20, \\chi^2_{0.025, 10}=20.483$. Üst sınır paydası nedir?\n\n**Çözüm:** $(n-1)s^2 = 10 \\times 20 = 200$. Sol sınır = $200 / 20.483 = 9.76$.",
+      en: "**Worked Example:** $(n-1)s^2 / \\chi^2 = 200 / 20.483 = 9.76$."
+    },
+    vocabTerms: [{ term_en: "Chi-Square distribution", explanation_tr: "Bağımsız standart normal değişkenlerin kareleri toplamının dağılımı (\\chi^2).", explanation_en: "Distribution of sum of squares of $k$ independent standard normal variables.", exampleSentence_en: "Variance inference requires the Chi-Square distribution." }],
+    questions: [{
+      id: "m5-l8-q1", type: "multiple-choice",
+      prompt: { tr: "Popülasyon varyansı için güven aralığı kurulurken hangi teorik dağılım kullanılır?", en: "Which theoretical distribution is used for variance confidence intervals?" },
+      options: [
+        { tr: "Ki-Kare Dağılımı (Chi-Square)", en: "Chi-Square Distribution" },
+        { tr: "Normal Dağılım", en: "Normal Distribution" },
+        { tr: "Poisson Dağılımı", en: "Poisson Distribution" },
+        { tr: "Geometrik Dağılım", en: "Geometric Distribution" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "Örneklem varyansının örnekleme dağılımı Ki-Kare dağılımına uyar.", en: "Sample variance is distributed as Chi-Square." }
+    }],
+    realWorldBox: { excelFormula: "=(n-1)*VAR.S / KİKARE.TERS.SAĞ(0.025, n-1)", pythonCode: "from scipy.stats import chi2\nci = ((n-1)*s2 / chi2.ppf(0.975, n-1), (n-1)*s2 / chi2.ppf(0.025, n-1))", powerBiNote: { tr: "Üretim tolerans varyans sınırları", en: "Variance tolerance limits" } }
+  },
+  {
+    id: "m5-l9", moduleId: "module-5", order: 9, difficulty: "ileri",
+    title: { tr: "Tahmin Aralığı (Prediction Interval - PI)", en: "Prediction Interval (PI)" },
+    conceptCard: {
+      tr: "Güven aralığı popülasyon *ortalamasını* ($\mu$) tahmin ederken, **Tahmin Aralığı (PI)** gelecekteki **tek bir yeni gözlemi ($X_{n+1}$)** tahmin eder:\n\n$$\\bar{x} \\pm t_{\\alpha/2, n-1} \\cdot s \\sqrt{1 + \\frac{1}{n}}$$\n\nBireysel varyasyon eklendiği için tahmin aralığı (PI) daima güven aralığından (CI) **çok daha geniştir**.",
+      en: "Prediction Interval (PI) predicts a single future observation: $\\bar{x} \\pm t \\cdot s \\sqrt{1 + 1/n}$. PI is always wider than CI."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** Gelecek ay gelecek tek bir müşterinin faturasını tahmin etmek için CI mı PI mı kullanılır?\n\n**Çözüm:** Tekil yeni bir gözlem tahmin edildiği için **Tahmin Aralığı (PI)** kullanılır.",
+      en: "**Worked Example:** Predicting a single individual transaction requires a Prediction Interval."
+    },
+    vocabTerms: [{ term_en: "prediction interval", explanation_tr: "Gelecekteki tek bir yeni gözlemin düşeceği aralığı veren geniş aralık.", explanation_en: "An estimate of an interval in which a single future observation will fall.", exampleSentence_en: "The 95% prediction interval for the next server latency is [10ms, 85ms]." }],
+    questions: [{
+      id: "m5-l9-q1", type: "multiple-choice",
+      prompt: { tr: "Aynı veri seti için Tahmin Aralığı (PI) ile Güven Aralığı (CI) genişliği nasıldır?", en: "How does the width of a Prediction Interval (PI) compare to a Confidence Interval (CI)?" },
+      options: [
+        { tr: "PI daima CI'dan daha geniştir", en: "PI is always wider than CI" },
+        { tr: "CI daima PI'dan daha geniştir", en: "CI is always wider than PI" },
+        { tr: "İkisi daima birbirine eşittir", en: "They are always identical" },
+        { tr: "PI her zaman sıfırdır", en: "PI is always zero" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "PI bireysel gözlem varyansını ($1 + 1/n$) içerdiğinden ortalamanın güven aralığından belirgin şekilde geniştir.", en: "PI incorporates individual observation variance, making it strictly wider." }
+    }],
+    realWorldBox: { excelFormula: "=x_bar +- t * s * KAREKÖK(1 + 1/n)", pythonCode: "pi = [mean - t_crit * s * np.sqrt(1 + 1/n), mean + t_crit * s * np.sqrt(1 + 1/n)]", powerBiNote: { tr: "Gelecek dönem tekil talep tahmin bandı", en: "Single-point forecast prediction band" } }
+  },
+  {
+    id: "m5-l10", moduleId: "module-5", order: 10, difficulty: "ileri",
+    title: { tr: "Tolerans Aralığı (Tolerance Interval - TI)", en: "Tolerance Interval (TI)" },
+    conceptCard: {
+      tr: "**Tolerans Aralığı (TI):** Popülasyonun en az $\%p$'sini (Örn: %99'unu), $1-\\alpha$ (Örn: %95) güvenle kapsayan mühendislik aralığıdır:\n\n$$\\bar{x} \\pm k_2 \\cdot s$$\n\n($k_2$ tolerans faktörüdür). Endüstride ürün kalite kabul şartnamelerinde ve Six Sigma süreç yeterliliğinde kullanılır.",
+      en: "Tolerance Interval (TI) covers at least a proportion $p$ of the population with confidence $1-\\alpha$: $\\bar{x} \\pm k_2 s$."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** Havacılık parça üretiminde üretilen parçaların en az %99'unun %95 güvenle standartlara uyması için hangi aralık hesaplanır?\n\n**Çözüm:** **Tolerans Aralığı (Tolerance Interval)** hesaplanır.",
+      en: "**Worked Example:** Quality compliance covering 99% of parts uses a Tolerance Interval."
+    },
+    vocabTerms: [{ term_en: "tolerance interval", explanation_tr: "Popülasyonun belirli bir yüzdesini kapsama garantisi veren mühendislik aralığı.", explanation_en: "A statistical interval within which a specified proportion of the population falls.", exampleSentence_en: "Aviation specs require a 99%/95% tolerance interval." }],
+    questions: [{
+      id: "m5-l10-q1", type: "multiple-choice",
+      prompt: { tr: "Popülasyonun en az %99'unun sınırları içinde kalmasını garantileyen mühendislik aralığı hangisidir?", en: "Which statistical interval guarantees covering at least 99% of population items?" },
+      options: [
+        { tr: "Tolerans Aralığı (Tolerance Interval)", en: "Tolerance Interval" },
+        { tr: "Güven Aralığı (CI)", en: "Confidence Interval" },
+        { tr: "Ranj (Range)", en: "Range" },
+        { tr: "Aritmetik Ortalama", en: "Arithmetic Mean" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "Popülasyonun belirli bir yüzdesini kapsayan aralık Tolerans Aralığı'dır.", en: "Tolerance intervals guarantee population coverage proportion." }
+    }],
+    realWorldBox: { excelFormula: "=x_bar +- k * s", pythonCode: "# Tolerance interval calculation using non-central t distribution", powerBiNote: { tr: "Kalite kontrol tolerans limiti", en: "Quality tolerance band" } }
+  }
+]);
+
+console.log('Finished Module 5.');

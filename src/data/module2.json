@@ -16,91 +16,49 @@
       "moduleId": "module-2",
       "order": 1,
       "difficulty": "basit",
-      "isOrientation": true,
       "title": {
-        "tr": "Ders Tanıtımı & Yol Haritası",
-        "en": "Course Overview & Roadmap"
+        "tr": "Ders Tanıtımı & Olasılık Mantığı",
+        "en": "Introduction & Logic of Probability"
       },
       "conceptCard": {
-        "tr": "Mühendisler İçin Olasılık ve Rastgele Değişkenler dersinde öğreneceğin tüm modüller, konular ve başarı yol haritası.",
-        "en": "Comprehensive learning roadmap and modules for Probability & Random Variables."
+        "tr": "Olasılık kuramı, rastgelelik ve belirsizlik içeren olayların matematiksel modellemesidir.\n\nBir $A$ olayının olasılığı her zaman 0 ile 1 arasındadır:\n$$0 \\le P(A) \\le 1$$\n- $P(A) = 0$: İmkansız Olay\n- $P(A) = 1$: Kesin Olay",
+        "en": "Probability models randomness and uncertainty mathematically. For any event $A$: $0 \\le P(A) \\le 1$."
       },
       "companyExample": {
-        "tr": "Fintech fraud analizinden Monte Carlo ve yapay zeka olasılık modellerine kadar endüstriyel rehber.",
-        "en": "Industrial guide from fintech fraud analytics to Monte Carlo and AI probabilistic models."
+        "tr": "**Örnek Soru:** Bir sunucunun 24 saat içinde çökme olasılığı $0.02$ olarak verilmiştir. Çökmeme olasılığı nedir?\n\n**Çözüm:** $P(\\text{Çökmeme}) = 1 - 0.02 = 0.98$ (%98).",
+        "en": "**Worked Example:** Server crash probability is 0.02. Probability of no crash?\n\n**Solution:** $1 - 0.02 = 0.98$ (98%)."
       },
-      "tancoSpeech": {
-        "tr": "Selam, ben Tanco! 🎲 Bu ders boyunca Olasılık ve Rastgele Değişkenler dersinin en temellerinden olan Örneklem Uzayı, Olaylar ve Olasılık Aksiyomları bilgilerinden başlayıp; Koşullu Olasılık & Bayes Teoremi, Kesikli ve Sürekli Dağılımlar, Beklenen Değer, Varyans ve Hata Yayılımı konularını adım adım öğreneceğiz!",
-        "en": "Hi, I'm Tanco! 🎲 Throughout this course, we will start from the core fundamentals of Probability—Sample Space, Events, and Axioms—and advance through Conditional Probability, Bayes' Rule, Discrete/Continuous Distributions, Expected Value, Variance, and Error Propagation!"
-      },
-      "roadmapModules": [
-        {
-          "order": 1,
-          "title": {
-            "tr": "Olasılık Temelleri & Olay Cebiri",
-            "en": "Probability Fundamentals & Events"
-          },
-          "summary": {
-            "tr": "Örneklem Uzayı, Aksiyomlar, Koşullu Olasılık ve Bayes Teoremi",
-            "en": "Sample Space, Axioms, Conditional Probability and Bayes' Theorem"
-          }
-        },
-        {
-          "order": 2,
-          "title": {
-            "tr": "Kesikli ve Sürekli Dağılımlar",
-            "en": "Discrete and Continuous Distributions"
-          },
-          "summary": {
-            "tr": "PMF, PDF, CDF, Binom, Poisson ve Normal Dağılım",
-            "en": "PMF, PDF, CDF, Binomial, Poisson and Normal Distributions"
-          }
-        },
-        {
-          "order": 3,
-          "title": {
-            "tr": "Birleşik Dağılımlar & CLT",
-            "en": "Joint Distributions & Central Limit Theorem"
-          },
-          "summary": {
-            "tr": "Kovaryans, Doğrusal Kombinasyonlar, Hata Yayılımı ve CLT",
-            "en": "Covariance, Linear Combinations, Error Propagation and CLT"
-          }
-        }
-      ],
       "vocabTerms": [
         {
-          "term_en": "sample space",
-          "explanation_tr": "Bir deneyin tüm olası sonuçlarının kümesi ($S$).",
-          "explanation_en": "The set of all possible outcomes of an experiment ($S$).",
-          "exampleSentence_en": "The sample space of flipping a coin is {Heads, Tails}."
+          "term_en": "probability",
+          "explanation_tr": "Bir olayın gerçekleşme olasılığının 0 ile 1 arasındaki sayısal ölçüsüdür.",
+          "explanation_en": "A numerical measure of the likelihood that an event will occur.",
+          "exampleSentence_en": "The probability of failure is 0.02."
         }
       ],
       "questions": [
         {
           "id": "m2-l0-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Bir madeni para 2 kez atıldığında örneklem uzayının eleman sayısı $|S|$ kaçtır?",
-            "en": "What is the size of the sample space $|S|$ when flipping a coin twice?"
+            "tr": "Bir sistemin başarı olasılığı 0.85 ise başarısızlık olasılığı kaçtır?",
+            "en": "If success probability is 0.85, what is failure probability?"
           },
-          "options": [
-            {
-              "tr": "4: {YY, YT, TY, TT}",
-              "en": "4: {HH, HT, TH, TT}"
-            },
-            {
-              "tr": "2: {Y, T}",
-              "en": "2: {H, T}"
-            }
-          ],
-          "correctAnswer": "4: {YY, YT, TY, TT}",
+          "correctAnswer": 0.15,
           "explanation": {
-            "tr": "Her atışta 2 olası sonuç vardır: $2 \\times 2 = 4$.",
-            "en": "Each toss has 2 outcomes: $2 \\times 2 = 4$."
+            "tr": "$$P(\\text{Başarısızlık}) = 1 - 0.85 = 0.15$$",
+            "en": "$$1 - 0.85 = 0.15$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=1 - A1",
+        "pythonCode": "p_fail = 1.0 - 0.85",
+        "powerBiNote": {
+          "tr": "Olasılık oranları yüzde kartlarında gösterilir.",
+          "en": "Probabilities are shown as percentage cards."
+        }
+      }
     },
     {
       "id": "m2-l1",
@@ -108,80 +66,72 @@
       "order": 2,
       "difficulty": "basit",
       "title": {
-        "tr": "Örneklem Uzayı & Olaylar Cebiri",
-        "en": "Sample Space & Algebra of Events"
+        "tr": "Örneklem Uzayı ($S$) ve Olaylar",
+        "en": "Sample Space ($S$) and Events"
       },
       "conceptCard": {
-        "tr": "Bir rassal deneyin tüm olası sonuçlarının kümesine **Örneklem Uzayı ($S$)**, bu kümenin herhangi bir alt kümesine ise **Olay ($A \\subseteq S$)** denir (`ENGR 200 Lecture 1`).\n\n- **Birleşim ($A \\cup B$):** $A$ veya $B$'den en az birinin gerçekleşmesi.\n- **Kesişim ($A \\cap B$):** Hem $A$ hem $B$'nin aynı anda gerçekleşmesi.\n- **Tümleyen ($A^c$ veya $A'$):** $A$'nın gerçekleşmeme olayı.\n- **Ayrık Olaylar (Mutually Exclusive):** $A \\cap B = \\emptyset$ ise iki olay aynı anda gerçekleşemez.",
-        "en": "The set of all possible outcomes is the Sample Space ($S$), and any subset is an Event ($A \\subseteq S$). Union is $A \\cup B$, intersection is $A \\cap B$, and complement is $A^c$. If $A \\cap B = \\emptyset$, the events are Mutually Exclusive."
+        "tr": "1. **Örneklem Uzayı ($S$):** Bir rastgele deneyin tüm olası çıktılarının oluşturduğu evrensel kümedir.\n2. **Olay ($A$):** Örneklem uzayının herhangi bir alt kümesidir ($A \\subseteq S$).\n\n**Klasik Olasılık Tanımı:**\n$$P(A) = \\frac{n(A)}{n(S)} = \\frac{\\text{İstenen Çıktı Sayısı}}{\\text{Tüm Çıktı Sayısı}}$$",
+        "en": "Sample space ($S$) is the set of all possible outcomes. An event $A$ is a subset ($A \\subseteq S$). Classical probability: $P(A) = \\frac{n(A)}{n(S)}$."
       },
       "companyExample": {
-        "tr": "FraudShield güvenlik motoru, gelen bir web isteğini 'mobil/masaüstü' ve 'yurt içi/yurt dışı' şeklinde 4 temel sonuçtan oluşan bir örneklem uzayında ($S$) modeller. Şüpheli IP olay kümesi $A$, yurt dışı olay kümesi $B$ ise $A \\cap B$ her iki riski birden barındıran kritik işlemleri temsil eder.",
-        "en": "FraudShield security engine models incoming requests in a 4-outcome sample space ($S$): mobile/desktop and domestic/foreign. High-risk IP is set $A$, foreign is $B$, and $A \\cap B$ represents high-risk foreign requests."
+        "tr": "**Örnek Soru:** Düzgün bir zar atıldığında çift sayı gelme olasılığı kaçtır?\n\n**Çözüm:** $S = \\{1, 2, 3, 4, 5, 6\\} \\implies n(S) = 6$. Çift sayılar: $A = \\{2, 4, 6\\} \\implies n(A) = 3$.\n$$P(A) = \\frac{3}{6} = 0.5$$",
+        "en": "**Worked Example:** Probability of rolling an even number on a 6-sided die?\n\n**Solution:** $S=\\{1..6\\}, A=\\{2,4,6\\} \\implies P(A) = 3/6 = 0.5$."
       },
-      "interactiveType": "venn_diagram",
       "vocabTerms": [
         {
-          "term_en": "mutually exclusive",
-          "explanation_tr": "Aynı anda gerçekleşmesi imkansız olan, kesişimleri boş küme olan ayrık olaylar.",
-          "explanation_en": "Events that cannot happen simultaneously ($A \\cap B = \\emptyset$).",
-          "exampleSentence_en": "Being under 18 and over 65 are mutually exclusive categories."
+          "term_en": "sample space",
+          "explanation_tr": "Rastgele bir deneyin tüm olası sonuçlarının kümesi ($S$).",
+          "explanation_en": "The set of all possible outcomes of a random experiment.",
+          "exampleSentence_en": "The sample space of a coin toss is {Heads, Tails}."
         }
       ],
       "questions": [
         {
           "id": "m2-l1-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "$A$ ve $B$ ayrık (mutually exclusive) iki olay ise $P(A \\cap B)$ kaçtır?",
-            "en": "If $A$ and $B$ are mutually exclusive events, what is $P(A \\cap B)$?"
+            "tr": "1'den 10'a kadar numaralandırılmış kartlardan rastgele çekilen bir kartın asal sayı (2, 3, 5, 7) olma olasılığı kaçtır?",
+            "en": "Probability of picking a prime (2, 3, 5, 7) from cards 1 to 10?"
           },
-          "options": [
-            {
-              "tr": "0",
-              "en": "0"
-            },
-            {
-              "tr": "1",
-              "en": "1"
-            },
-            {
-              "tr": "P(A) * P(B)",
-              "en": "P(A) * P(B)"
-            }
-          ],
-          "correctAnswer": "0",
+          "correctAnswer": 0.4,
           "explanation": {
-            "tr": "Ayrık olaylar aynı anda gerçekleşemez, bu nedenle kesişimleri boş kümedir ve olasılığı 0'dır.",
-            "en": "Mutually exclusive events cannot occur simultaneously, so their intersection has probability 0."
+            "tr": "$$P(A) = \\frac{4}{10} = 0.4$$",
+            "en": "$$P(A) = 4/10 = 0.4$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=4/10",
+        "pythonCode": "len(prime_set) / len(total_set)",
+        "powerBiNote": {
+          "tr": "Boyutlar örneklem uzayı kategorilerini temsil eder.",
+          "en": "Dimensions define sample space categories."
+        }
+      }
     },
     {
       "id": "m2-l2",
       "moduleId": "module-2",
       "order": 3,
-      "difficulty": "orta",
+      "difficulty": "basit",
       "title": {
-        "tr": "Olasılık Aksiyomları & Toplam Kuralı",
-        "en": "Probability Axioms & Addition Rule"
+        "tr": "Olaylar Cebiri (Kesişim, Birleşim, Tümleyen)",
+        "en": "Algebra of Events"
       },
       "conceptCard": {
-        "tr": "**Kolmogorov Olasılık Aksiyomları (`ENGR 200`):**\n1. Her olay $A$ için $0 \\le P(A) \\le 1$.\n2. Örneklem uzayı için kesin olay: $P(S) = 1$.\n3. Ayrık olaylar dizisi için: $P(A_1 \\cup A_2 \\cup \\dots) = \\sum P(A_i)$.\n\n**Genel Toplam Kuralı (Inclusion-Exclusion Principle):**\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$\nÜçlü olaylar için:\n$$P(A \\cup B \\cup C) = P(A)+P(B)+P(C) - P(AB) - P(AC) - P(BC) + P(ABC)$$",
-        "en": "Kolmogorov Axioms: 1. $0 \\le P(A) \\le 1$, 2. $P(S) = 1$, 3. For disjoint events $P(A \\cup B) = P(A) + P(B)$. General Addition Rule: $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$."
+        "tr": "Olaylar arasındaki mantıksal ilişkiler küme işlemleriyle ifade edilir:\n\n1. **Tümleyen ($A'$ veya $A^c$):** $A$ olayının gerçekleşmeme durumudur ($P(A') = 1 - P(A)$).\n2. **Kesişim ($A \\cap B$):** Hem $A$ hem $B$'nin birlikte gerçekleşmesi ($A \\text{ VE } B$).\n3. **Birleşim ($A \\cup B$):** $A$ veya $B$'den en az birinin gerçekleşmesi ($A \\text{ VEYA } B$).",
+        "en": "Event operations:\n1. Complement: $P(A') = 1 - P(A)$\n2. Intersection: $A \\cap B$ (Both occur)\n3. Union: $A \\cup B$ (At least one occurs)"
       },
       "companyExample": {
-        "tr": "FraudShield'da bir kullanıcının VPN kullanma olasılığı $P(A) = 0.20$, şüpheli kart denemesi olasılığı $P(B) = 0.15$, her ikisini birden yapma olasılığı $P(A \\cap B) = 0.05$'tir. Kullanıcının en az bir riskli davranış sergileme olasılığı $P(A \\cup B) = 0.20 + 0.15 - 0.05 = 0.30$ (%30) olur.",
-        "en": "In FraudShield, VPN usage $P(A) = 0.20$, suspicious card trial $P(B) = 0.15$, both $P(A \\cap B) = 0.05$. The probability of displaying at least one risk factor is $P(A \\cup B) = 0.20 + 0.15 - 0.05 = 0.30$ (30%)."
+        "tr": "**Örnek Soru:** Müşterilerin %60'ı e-posta bültenine, %40'ı SMS bültenine, %20'si ise her ikisine de üyedir. En az birine üye olma oranı nedir?\n\n**Çözüm:** $P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = 0.60 + 0.40 - 0.20 = 0.80$ (%80).",
+        "en": "**Worked Example:** Email: 60%, SMS: 40%, Both: 20%. Find union.\n\n**Solution:** $0.60 + 0.40 - 0.20 = 0.80$."
       },
-      "interactiveType": "venn_diagram",
       "vocabTerms": [
         {
-          "term_en": "addition rule",
-          "explanation_tr": "İki olayın birleşiminin olasılığını hesaplayan kural ($P(A)+P(B)-P(A \\cap B)$).",
-          "explanation_en": "Rule for computing the probability of union of events.",
-          "exampleSentence_en": "Use the addition rule when events can co-occur."
+          "term_en": "union and intersection",
+          "explanation_tr": "Birleşim (Veya) iki olayın toplamını, kesişim (Ve) ortak gerçekleşmeyi ifade eder.",
+          "explanation_en": "Union is either/or; intersection is both simultaneously.",
+          "exampleSentence_en": "The intersection represents active users across both platforms."
         }
       ],
       "questions": [
@@ -189,58 +139,91 @@
           "id": "m2-l2-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$P(A) = 0.4$, $P(B) = 0.5$ ve $P(A \\cap B) = 0.2$ ise $P(A \\cup B)$ kaçtır?",
-            "en": "If $P(A) = 0.4$, $P(B) = 0.5$, and $P(A \\cap B) = 0.2$, what is $P(A \\cup B)$?"
+            "tr": "Bir fabrikada parça kusurlu olma olasılığı $P(A) = 0.08$ olduğuna göre, parçanın kusursuz ($A'$) olma olasılığı kaçtır?",
+            "en": "If defect probability $P(A) = 0.08$, what is $P(A')$?"
           },
-          "correctAnswer": 0.7,
+          "correctAnswer": 0.92,
           "explanation": {
-            "tr": "$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = 0.4 + 0.5 - 0.2 = 0.7$$",
-            "en": "$$P(A \\cup B) = 0.4 + 0.5 - 0.2 = 0.7$$"
+            "tr": "$$P(A') = 1 - 0.08 = 0.92$$",
+            "en": "$$P(A') = 1 - 0.08 = 0.92$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=1 - A2",
+        "pythonCode": "p_clean = 1.0 - p_defect",
+        "powerBiNote": {
+          "tr": "Venn şemaları kesişim analizlerinde kullanılır.",
+          "en": "Venn diagrams display intersections."
+        }
+      }
     },
     {
       "id": "m2-l3",
       "moduleId": "module-2",
       "order": 4,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Koşullu Olasılık & Çarpım Kuralı",
-        "en": "Conditional Probability & Multiplication Rule"
+        "tr": "Kolmogorov Olasılık Aksiyomları",
+        "en": "Kolmogorov Probability Axioms"
       },
       "conceptCard": {
-        "tr": "$B$ olayının gerçekleştiği bilindiğinde $A$ olayının koşullu olasılığı ($P(B) > 0$ olmak üzere):\n\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}$$\n\n**Çarpım Kuralı (Multiplication Rule):**\n$$P(A \\cap B) = P(B) \\cdot P(A \\mid B) = P(A) \\cdot P(B \\mid A)$$\n\n**Zincir Kuralı (Chain Rule):**\n$$P(A_1 \\cap A_2 \\cap \\dots \\cap A_n) = P(A_1) P(A_2 \\mid A_1) P(A_3 \\mid A_1 \\cap A_2) \\dots P(A_n \\mid A_1 \\cap \\dots \\cap A_{n-1})$$",
-        "en": "Conditional probability given $B$ has occurred: $P(A|B) = \\frac{P(A \\cap B)}{P(B)}$. Multiplication rule: $P(A \\cap B) = P(B) \\cdot P(A|B)$."
+        "tr": "Modern olasılık teorisi 3 temel aksiyom üzerine kuruludur:\n\n1. **Aksiyom 1 (Negatif Olmama):** Herhangi bir $A$ olayı için $P(A) \\ge 0$.\n2. **Aksiyom 2 (Evrensel Küme):** Tüm örneklem uzayının olasılığı $P(S) = 1$.\n3. **Aksiyom 3 (Ayrık Toplanabilirlik):** Ayrık ($A \\cap B = \\emptyset$) olaylar için:\n$$P(A \\cup B) = P(A) + P(B)$$",
+        "en": "Three Kolmogorov Axioms:\n1. $P(A) \\ge 0$\n2. $P(S) = 1$\n3. If disjoint: $P(A \\cup B) = P(A) + P(B)$."
       },
       "companyExample": {
-        "tr": "FraudShield verilerine göre yurt dışından gelen işlemlerin genel oranı $P(B) = 0.10$, hem yurt dışı hem sahte işlem oranı $P(A \\cap B) = 0.04$'tür. Bir işlemin yurt dışından geldiği bilindiğinde sahte (fraud) olma olasılığı $P(A|B) = 0.04 / 0.10 = 0.40$ (%40) olarak güncellenir.",
-        "en": "According to FraudShield, foreign transactions account for $P(B) = 0.10$, and foreign fraud is $P(A \\cap B) = 0.04$. Given that a transaction is foreign, its fraud probability is $P(A|B) = 0.04 / 0.10 = 0.40$ (40%)."
+        "tr": "**Örnek Soru:** Bir web sayfasında kullanıcı ya 'Satın Alır' ($P=0.05$), ya 'Sepete Ekle' der ($P=0.15$), ya da 'Terk Eder' ($P=0.80$). Bu olasılıkların toplamı kaçtır?\n\n**Çözüm:** $0.05 + 0.15 + 0.80 = 1.00$ (Aksiyom 2 gereği tam $1$'dir).",
+        "en": "**Worked Example:** Conversion paths sum to $0.05 + 0.15 + 0.80 = 1.00$."
       },
-      "interactiveType": "conditional_prob_tree",
       "vocabTerms": [
         {
-          "term_en": "conditional probability",
-          "explanation_tr": "Bir olayın başka bir bilginin ışığında güncellenmiş gerçekleşme olasılığı.",
-          "explanation_en": "Probability of an event given that another event has occurred.",
-          "exampleSentence_en": "Conditional probability is the foundation of Bayesian reasoning."
+          "term_en": "mutually exclusive (disjoint)",
+          "explanation_tr": "Aynı anda gerçekleşmesi imkansız olan ($A \\cap B = \\emptyset$) ayrık olaylar.",
+          "explanation_en": "Events that cannot happen at the same time.",
+          "exampleSentence_en": "A coin landing Heads and Tails are mutually exclusive events."
         }
       ],
       "questions": [
         {
           "id": "m2-l3-q1",
-          "type": "numeric",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "$P(B) = 0.25$ ve $P(A \\cap B) = 0.10$ ise $P(A|B)$ koşullu olasılığı kaçtır?",
-            "en": "If $P(B) = 0.25$ and $P(A \\cap B) = 0.10$, what is $P(A|B)$?"
+            "tr": "Ayrık iki olay ($A \\cap B = \\emptyset$) için $P(A \\cup B)$ eşitliği nedir?",
+            "en": "For disjoint events, what is $P(A \\cup B)$?"
           },
-          "correctAnswer": 0.4,
+          "options": [
+            {
+              "tr": "P(A) + P(B)",
+              "en": "P(A) + P(B)"
+            },
+            {
+              "tr": "P(A) * P(B)",
+              "en": "P(A) * P(B)"
+            },
+            {
+              "tr": "P(A) / P(B)",
+              "en": "P(A) / P(B)"
+            },
+            {
+              "tr": "P(A) - P(B)",
+              "en": "P(A) - P(B)"
+            }
+          ],
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "$$P(A|B) = \\frac{P(A \\cap B)}{P(B)} = \\frac{0.10}{0.25} = 0.40$$",
-            "en": "$$P(A|B) = \\frac{0.10}{0.25} = 0.40$$"
+            "tr": "Ayrık olaylarda kesişim sıfır olduğu için birleşim doğrudan toplamlarına eşittir.",
+            "en": "For disjoint events, $P(A \\cup B) = P(A) + P(B)$."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=TOPLA(A1:A3)",
+        "pythonCode": "assert sum(probabilities) == 1.0",
+        "powerBiNote": {
+          "tr": "Dağılım toplamları 100%'e eşitlenmelidir.",
+          "en": "Distribution totals must equal 100%."
+        }
+      }
     },
     {
       "id": "m2-l4",
@@ -248,24 +231,23 @@
       "order": 5,
       "difficulty": "orta",
       "title": {
-        "tr": "Bağımsız Olaylar (Independence)",
-        "en": "Independent Events"
+        "tr": "Olasılıkta Toplam Kuralı",
+        "en": "General Addition Rule"
       },
       "conceptCard": {
-        "tr": "İki olay $A$ ve $B$ için, birinin gerçekleşmesi diğerinin olasılığını değiştirmiyorsa bu olaylar **İstatistiksel Olarak Bağımsızdır (Independent)** (`ENGR 200`):\n\n$$P(A \\mid B) = P(A) \\iff P(A \\cap B) = P(A) \\cdot P(B)$$\n\n> **Kritik Üniversite Sınav Kuralı:** Ayrık olaylar ($A \\cap B = \\emptyset$) ile Bağımsız olaylar ($P(A \\cap B) = P(A)P(B)$) tamamen farklıdır! Pozitif olasılıklı iki ayrık olay asla bağımsız olamaz, çünkü biri olduğunda diğeri imkansız hale gelir ($P(A|B)=0$).",
-        "en": "Two events are independent if $P(A|B) = P(A)$, which is equivalent to $P(A \\cap B) = P(A)P(B)$. Disjoint events with non-zero probabilities can never be independent."
+        "tr": "Herhangi iki olay $A$ ve $B$ için genel toplam kuralı:\n\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$\n\n**Mantık:** $P(A)$ ve $P(B)$ toplandığında ortak kesişim bölgesi ($A \\cap B$) iki kez sayılmış olur. Bu yüzden fazladan sayılan bir kesişim çıkarılır.",
+        "en": "General Addition Rule for any events:\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$"
       },
       "companyExample": {
-        "tr": "FraudShield sunucu kümesinde iki bağımsız sunucu çalışmaktadır. Sunucu 1'in çökme olasılığı $P(S_1) = 0.01$, Sunucu 2'nin çökme olasılığı $P(S_2) = 0.02$'dir. İki sunucu bağımsız olduğundan her ikisinin aynı anda çökme olasılığı $P(S_1 \\cap S_2) = 0.01 \\times 0.02 = 0.0002$ (on binde iki)'dir.",
-        "en": "In FraudShield's infrastructure, Server 1 failure rate is $P(S_1) = 0.01$, Server 2 is $P(S_2) = 0.02$. Since failures are independent, the joint failure probability is $P(S_1 \\cap S_2) = 0.01 \\times 0.02 = 0.0002$."
+        "tr": "**Örnek Soru:** $P(A) = 0.50$, $P(B) = 0.40$ ve $P(A \\cap B) = 0.15$. $P(A \\cup B)$ nedir?\n\n**Çözüm:**\n$$P(A \\cup B) = 0.50 + 0.40 - 0.15 = 0.75$$",
+        "en": "**Worked Example:** $P(A)=0.5, P(B)=0.4, P(A \\cap B)=0.15$. Find $P(A \\cup B)$.\n\n**Solution:** $0.5 + 0.4 - 0.15 = 0.75$."
       },
-      "interactiveType": "venn_diagram",
       "vocabTerms": [
         {
-          "term_en": "statistical independence",
-          "explanation_tr": "Bir olayın gerçekleşmesinin diğer olayın olasılığına etki etmemesi durumu.",
-          "explanation_en": "Condition where the occurrence of one event does not affect the probability of another.",
-          "exampleSentence_en": "Independent coin tosses have no memory."
+          "term_en": "addition rule",
+          "explanation_tr": "İki olayın birleşim olasılığını hesaplayan temel formül.",
+          "explanation_en": "Formula to compute the probability of the union of events.",
+          "exampleSentence_en": "We applied the addition rule subtracting double-counted overlap."
         }
       ],
       "questions": [
@@ -273,72 +255,269 @@
           "id": "m2-l4-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$A$ ve $B$ bağımsız olaylar olup $P(A) = 0.3$ ve $P(B) = 0.4$ ise $P(A \\cap B)$ kaçtır?",
-            "en": "If $A$ and $B$ are independent with $P(A) = 0.3$ and $P(B) = 0.4$, what is $P(A \\cap B)$?"
+            "tr": "$P(A) = 0.30$, $P(B) = 0.40$ ve $P(A \\cap B) = 0.10$ olduğuna göre $P(A \\cup B)$ kaçtır?",
+            "en": "If $P(A) = 0.3, P(B) = 0.4, P(A \\cap B) = 0.1$, find $P(A \\cup B)$."
           },
-          "correctAnswer": 0.12,
+          "correctAnswer": 0.6,
           "explanation": {
-            "tr": "Bağımsız olaylar için $P(A \\cap B) = P(A) \\cdot P(B) = 0.3 \\times 0.4 = 0.12$.",
-            "en": "For independent events, $P(A \\cap B) = P(A) \\cdot P(B) = 0.3 \\times 0.4 = 0.12$."
+            "tr": "$$P(A \\cup B) = 0.30 + 0.40 - 0.10 = 0.60$$",
+            "en": "$$0.30 + 0.40 - 0.10 = 0.60$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=A2 + B2 - C2",
+        "pythonCode": "p_union = p_a + p_b - p_ab",
+        "powerBiNote": {
+          "tr": "DAX: CALCULATE([Metric], FILTER(...))",
+          "en": "DAX: Union filtering"
+        }
+      }
     },
     {
       "id": "m2-l5",
       "moduleId": "module-2",
       "order": 6,
-      "difficulty": "ileri",
+      "difficulty": "orta",
       "title": {
-        "tr": "Toplam Olasılık Yasası & Bayes Teoremi",
-        "en": "Law of Total Probability & Bayes' Rule"
+        "tr": "Koşullu Olasılık ($P(A|B)$)",
+        "en": "Conditional Probability"
       },
       "conceptCard": {
-        "tr": "Örneklem uzayı $B_1, B_2, \\dots, B_k$ şeklinde ayrık parçalara bölünmüşse (Partition: $\\bigcup B_i = S, B_i \\cap B_j = \\emptyset$):\n\n**1. Toplam Olasılık Yasası (Law of Total Probability):**\n$$P(A) = \\sum_{i=1}^k P(A \\mid B_i) P(B_i)$$\n\n**2. Bayes Teoremi (Posterior Probability / Sonsal Olasılık):**\n$$P(B_j \\mid A) = \\frac{P(A \\mid B_j) P(B_j)}{\\sum_{i=1}^k P(A \\mid B_i) P(B_i)}$$",
-        "en": "Law of Total Probability: $P(A) = \\sum P(A|B_i)P(B_i)$. Bayes' Rule updates prior beliefs to posterior probabilities: $P(B_j|A) = \\frac{P(A|B_j)P(B_j)}{\\sum P(A|B_i)P(B_i)}$."
+        "tr": "$B$ olayının gerçekleştiği bilindiğinde, $A$ olayının gerçekleşme olasılığına **koşullu olasılık** denir:\n\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}, \\quad (P(B) > 0)$$\n\n**Etkisi:** Örneklem uzayı $S$'den $B$'ye daraltılmış olur.",
+        "en": "Probability of $A$ given $B$ occurred:\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}$$"
       },
       "companyExample": {
-        "tr": "FraudShield'da popülasyonda fraud oranı $P(F) = 0.01$'dir. Algoritmanın alarm verme hassasiyeti $P(\\text{Alarm}|F) = 0.90$, sahte alarm oranı $P(\\text{Alarm}|F') = 0.05$'tir. Alarm çalan bir işlemin gerçekten fraud olma olasılığı Bayes Teoremi ile hesaplanır: $P(F|\\text{Alarm}) = \\frac{0.90 \\times 0.01}{(0.90 \\times 0.01) + (0.05 \\times 0.99)} = \\frac{0.009}{0.009 + 0.0495} \\approx 0.1538$ (%15.4).",
-        "en": "Fraud prevalence is $P(F) = 0.01$. Alert sensitivity is $P(\\text{Alert}|F) = 0.90$, false alarm rate $P(\\text{Alert}|F') = 0.05$. Given an alert, the true fraud probability is $P(F|\\text{Alert}) = \\frac{0.009}{0.009 + 0.0495} \\approx 15.4\\%$."
+        "tr": "**Örnek Soru:** Müşterilerin %30'u sepetine ürün eklemekte ($B$), %12'si ise hem sepete ekleyip hem satın almaktadır ($A \\cap B$). Sepete ekleyen birinin satın alma olasılığı $P(A|B)$ nedir?\n\n**Çözüm:**\n$$P(A \\mid B) = \\frac{0.12}{0.30} = 0.40 \\quad (\\%40)$$",
+        "en": "**Worked Example:** Added to cart $P(B)=0.30$, both added and bought $P(A \\cap B)=0.12$. Find $P(A|B)$.\n\n**Solution:** $0.12 / 0.30 = 0.40$ (40%)."
       },
-      "interactiveType": "bayes_calculator",
       "vocabTerms": [
         {
-          "term_en": "posterior probability",
-          "explanation_tr": "Yeni kanıtlar elde edildikten sonra güncellenen nihai olasılık ($P(H|E)$).",
-          "explanation_en": "The updated probability of hypothesis after observing evidence.",
-          "exampleSentence_en": "Bayes' rule computes the posterior probability."
+          "term_en": "conditional probability",
+          "explanation_tr": "Önceden bir koşul veya olayın gerçekleştiği bilgisi altında hesaplanan olasılık.",
+          "explanation_en": "Probability of an event occurring given that another event has already occurred.",
+          "exampleSentence_en": "Conditional probability models conversion after clicking an ad."
         }
       ],
       "questions": [
         {
           "id": "m2-l5-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Bayes Teoremi'nde $P(A|B)$'yi hesaplamak için paydada kullanılan toplam olasılık açılımı hangi yasaya dayanır?",
-            "en": "Which law is used in the denominator of Bayes' Rule to compute $P(B)$?"
+            "tr": "$P(A \\cap B) = 0.15$ ve $P(B) = 0.50$ olduğuna göre $P(A \\mid B)$ kaçtır?",
+            "en": "If $P(A \\cap B) = 0.15$ and $P(B) = 0.50$, what is $P(A \\mid B)$?"
           },
-          "options": [
-            {
-              "tr": "Toplam Olasılık Yasası (Law of Total Probability)",
-              "en": "Law of Total Probability"
-            },
-            {
-              "tr": "Merkezi Limit Teoremi",
-              "en": "Central Limit Theorem"
-            },
-            {
-              "tr": "Büyük Sayılar Yasası",
-              "en": "Law of Large Numbers"
-            }
-          ],
-          "correctAnswer": "Toplam Olasılık Yasası (Law of Total Probability)",
+          "correctAnswer": 0.3,
           "explanation": {
-            "tr": "Paydadaki $P(B) = \\sum P(B|A_i)P(A_i)$ ifadesi Toplam Olasılık Yasasıdır.",
-            "en": "The denominator $P(B) = \\sum P(B|A_i)P(A_i)$ is the Law of Total Probability."
+            "tr": "$$P(A \\mid B) = \\frac{0.15}{0.50} = 0.30$$",
+            "en": "$$0.15 / 0.50 = 0.30$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=A2 / B2",
+        "pythonCode": "p_a_given_b = p_ab / p_b",
+        "powerBiNote": {
+          "tr": "Segment filtreleri altında koşullu oranlar incelenir.",
+          "en": "Evaluate conditional rates under segment filters."
+        }
+      }
+    },
+    {
+      "id": "m2-l6",
+      "moduleId": "module-2",
+      "order": 7,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Olasılıkta Çarpım Kuralı",
+        "en": "General Multiplication Rule"
+      },
+      "conceptCard": {
+        "tr": "İki olayın birlikte gerçekleşme olasılığı ($P(A \\cap B)$), çarpım kuralı ile hesaplanır:\n\n$$P(A \\cap B) = P(B) \\times P(A \\mid B) = P(A) \\times P(B \\mid A)$$\n\nBu kural karar ağaçları ve çok adımlı süreçlerin modellenmesinde kullanılır.",
+        "en": "Multiplication rule for joint occurrence:\n$$P(A \\cap B) = P(B) \\times P(A \\mid B)$$"
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir kullanıcının siteye kaydolma olasılığı $P(B) = 0.20$'dir. Kaydolan bir kullanıcının ilk gün alışveriş yapma olasılığı $P(A|B) = 0.35$'tir. Rastgele seçilen bir kullanıcının hem kaydolup hem alışveriş yapma olasılığı nedir?\n\n**Çözüm:**\n$$P(A \\cap B) = 0.20 \\times 0.35 = 0.07 \\quad (\\%7)$$",
+        "en": "**Worked Example:** Sign up $P(B)=0.20$, buy given sign up $P(A|B)=0.35$. Find joint probability.\n\n**Solution:** $0.20 \\times 0.35 = 0.07$ (7%)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "multiplication rule",
+          "explanation_tr": "Kesişim olasılığını marjinal ve koşullu olasılıkların çarpımı olarak hesaplayan kural.",
+          "explanation_en": "Rule expressing joint probability as the product of marginal and conditional probabilities.",
+          "exampleSentence_en": "The multiplication rule traces the probability along tree branches."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m2-l6-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$P(B) = 0.40$ ve $P(A \\mid B) = 0.25$ olduğuna göre $P(A \\cap B)$ kaçtır?",
+            "en": "If $P(B) = 0.40$ and $P(A \\mid B) = 0.25$, find $P(A \\cap B)$."
+          },
+          "correctAnswer": 0.1,
+          "explanation": {
+            "tr": "$$P(A \\cap B) = 0.40 \\times 0.25 = 0.10$$",
+            "en": "$$0.40 \\times 0.25 = 0.10$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=A2 * B2",
+        "pythonCode": "p_joint = p_b * p_a_given_b",
+        "powerBiNote": {
+          "tr": "Funnel analizi aşama geçişlerinde çarpım kuralı geçerlidir.",
+          "en": "Funnel analysis uses the multiplication rule."
+        }
+      }
+    },
+    {
+      "id": "m2-l7",
+      "moduleId": "module-2",
+      "order": 8,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Bağımsız Olaylar (Independence)",
+        "en": "Independent Events"
+      },
+      "conceptCard": {
+        "tr": "İki olaydan birinin gerçekleşmesi diğerinin gerçekleşme olasılığını değiştirmiyorsa bu olaylar **bağımsızdır**.\n\n**Bağımsızlık Koşulları (Herhangi biri yeterlidir):**\n1. $P(A \\mid B) = P(A)$\n2. $P(B \\mid A) = P(B)$\n3. $$P(A \\cap B) = P(A) \\times P(B)$$",
+        "en": "Events $A$ and $B$ are independent if one occurring does not affect the other:\n$$P(A \\cap B) = P(A) \\times P(B)$$"
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** İki bağımsız sunucunun arızalanma olasılıkları $P(A) = 0.05$ ve $P(B) = 0.02$'dir. Her iki sunucunun aynı anda arızalanma olasılığı nedir?\n\n**Çözüm:**\n$$P(A \\cap B) = 0.05 \\times 0.02 = 0.001 \\quad (\\%0.1)$$",
+        "en": "**Worked Example:** Independent servers fail with $P(A)=0.05, P(B)=0.02$. Joint failure?\n\n**Solution:** $0.05 \\times 0.02 = 0.001$ (0.1%)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "statistical independence",
+          "explanation_tr": "Bir olayın bilgisinin diğerinin gerçekleşme ihtimalini hiçbir şekilde etkilememesi durumu.",
+          "explanation_en": "Condition where the occurrence of one event does not change the probability of another.",
+          "exampleSentence_en": "Independent servers provide redundant backup reliability."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m2-l7-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$A$ ve $B$ bağımsız iki olaydır. $P(A) = 0.50$ ve $P(B) = 0.30$ olduğuna göre $P(A \\cap B)$ kaçtır?",
+            "en": "If $A$ and $B$ are independent with $P(A) = 0.50, P(B) = 0.30$, find $P(A \\cap B)$."
+          },
+          "correctAnswer": 0.15,
+          "explanation": {
+            "tr": "$$P(A \\cap B) = 0.50 \\times 0.30 = 0.15$$",
+            "en": "$$0.50 \\times 0.30 = 0.15$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=A2 * B2",
+        "pythonCode": "p_indep = p_a * p_b",
+        "powerBiNote": {
+          "tr": "Bağımsızlık hipotezleri Ki-Kare testleriyle doğrulanır.",
+          "en": "Verify independence via Chi-Square tests."
+        }
+      }
+    },
+    {
+      "id": "m2-l8",
+      "moduleId": "module-2",
+      "order": 9,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Toplam Olasılık Yasası",
+        "en": "Law of Total Probability"
+      },
+      "conceptCard": {
+        "tr": "Örneklem uzayı $B_1, B_2, \\dots, B_k$ ayrık alt kümelere bölünmüşse, herhangi bir $A$ olayının toplam olasılığı:\n\n$$P(A) = \\sum_{i=1}^{k} P(B_i) \\times P(A \\mid B_i)$$\n\nHer bir yolun olasılığı ile o yoldaki koşullu olasılığın çarpımlarının toplamıdır.",
+        "en": "Law of Total Probability partitions sample space into $B_1..B_k$:\n$$P(A) = \\sum_{i=1}^{k} P(B_i) P(A \\mid B_i)$$"
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir fabrikanın %60 üretimini Makine 1 ($B_1$), %40'ını Makine 2 ($B_2$) yapmaktadır. Makine 1'in fire oranı %2, Makine 2'nin fire oranı %5'tir. Toplam fire olasılığı $P(A)$ nedir?\n\n**Çözüm:**\n$$P(A) = (0.60 \\times 0.02) + (0.40 \\times 0.05) = 0.012 + 0.020 = 0.032 \\quad (\\%3.2)$$",
+        "en": "**Worked Example:** Machine 1 makes 60% with 2% defect; Machine 2 makes 40% with 5% defect. Total defect rate?\n\n**Solution:** $(0.60 \\times 0.02) + (0.40 \\times 0.05) = 0.032$ (3.2%)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "law of total probability",
+          "explanation_tr": "Bir olayın marjinal olasılığını tüm olası koşulların ağırlıklı toplamı olarak hesaplayan teorem.",
+          "explanation_en": "Theorem relating marginal probabilities to conditional probabilities across a partition.",
+          "exampleSentence_en": "Total defect rate was computed using the law of total probability."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m2-l8-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Üretimin %70'i A hattında (%1 kusur), %30'u B hattında (%3 kusur) üretilmektedir. Toplam kusur oranı kaçtır?",
+            "en": "70% from line A (1% defect), 30% from line B (3% defect). Total defect rate?"
+          },
+          "correctAnswer": 0.016,
+          "explanation": {
+            "tr": "$$P(\\text{Kusur}) = (0.70 \\times 0.01) + (0.30 \\times 0.03) = 0.007 + 0.009 = 0.016$$",
+            "en": "$$(0.70 \\times 0.01) + (0.30 \\times 0.03) = 0.016$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=TOPLA.ÇARPIM(A1:A2, B1:B2)",
+        "pythonCode": "total_p = np.dot(weights, rates)",
+        "powerBiNote": {
+          "tr": "Ağırlıklı ortalama DAX: SUMX(Table, [Weight] * [Rate])",
+          "en": "Weighted average DAX calculation."
+        }
+      }
+    },
+    {
+      "id": "m2-l9",
+      "moduleId": "module-2",
+      "order": 10,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Bayes Teoremi (Prior / Posterior Analizi)",
+        "en": "Bayes' Theorem"
+      },
+      "conceptCard": {
+        "tr": "Bayes Teoremi, yeni bir kanıt ($A$) gözlemlendiğinde başlangıç inancımızı / öncül olasılığı ($P(B)$) güncelleyerek soncul olasılığı ($P(B|A)$) hesaplamamızı sağlar:\n\n$$P(B \\mid A) = \\frac{P(A \\mid B) \\times P(B)}{P(A)}$$\n\n**Bileşenler:**\n- $P(B)$: Prior (Öncül Olasılık)\n- $P(A|B)$: Likelihood (Olabilirlik)\n- $P(A)$: Evidence (Toplam Kanıt Olasılığı)\n- $P(B|A)$: Posterior (Soncul Olasılık)",
+        "en": "Bayes' theorem updates prior probability $P(B)$ given evidence $A$:\n$$P(B \\mid A) = \\frac{P(A \\mid B) P(B)}{P(A)}$$"
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Kusurlu parça oranı $P(A) = 0.032$'dir. Makine 2'den çıkma olasılığı $P(B_2)=0.40$ ve Makine 2'nin fire verme oranı $P(A|B_2)=0.05$'tir. Kusurlu bulunan bir parçanın Makine 2 tarafından üretilmiş olma olasılığı $P(B_2|A)$ nedir?\n\n**Çözüm:**\n$$P(B_2 \\mid A) = \\frac{0.05 \\times 0.40}{0.032} = \\frac{0.020}{0.032} = 0.625 \\quad (\\%62.5)$$",
+        "en": "**Worked Example:** Find posterior probability of defect coming from Machine 2:\n\n**Solution:** $\\frac{0.05 \\times 0.40}{0.032} = 0.625$ (62.5%)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "posterior probability",
+          "explanation_tr": "Yeni veriler ve kanıtlar ışığında güncellenmiş soncul olasılık.",
+          "explanation_en": "The revised probability of an event occurring after taking into consideration new information.",
+          "exampleSentence_en": "Bayesian spam filters calculate the posterior probability that an email is spam."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m2-l9-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$P(B) = 0.20$, $P(A \\mid B) = 0.80$ ve $P(A) = 0.40$ olduğuna göre $P(B \\mid A)$ kaçtır?",
+            "en": "If $P(B) = 0.20, P(A \\mid B) = 0.80, P(A) = 0.40$, find $P(B \\mid A)$."
+          },
+          "correctAnswer": 0.4,
+          "explanation": {
+            "tr": "$$P(B \\mid A) = \\frac{0.80 \\times 0.20}{0.40} = \\frac{0.16}{0.40} = 0.40$$",
+            "en": "$$(0.80 \\times 0.20) / 0.40 = 0.40$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(A2 * B2) / C2",
+        "pythonCode": "posterior = (likelihood * prior) / evidence",
+        "powerBiNote": {
+          "tr": "A/B testi Bayesian analizlerinde posterior karşılaştırılır.",
+          "en": "Bayesian A/B testing monitors posterior distributions."
+        }
+      }
     }
   ],
   "caseExams": [

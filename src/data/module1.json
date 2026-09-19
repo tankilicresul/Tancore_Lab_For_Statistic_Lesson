@@ -16,115 +16,67 @@
       "moduleId": "module-1",
       "order": 1,
       "difficulty": "basit",
-      "isOrientation": true,
       "title": {
         "tr": "Ders Tanıtımı & Yol Haritası",
-        "en": "Course Overview & Roadmap"
+        "en": "Course Introduction & Roadmap"
       },
       "conceptCard": {
-        "tr": "Uygulamalı İstatistik dersinde öğreneceğin tüm modüller, konular ve başarı yol haritası.",
-        "en": "Comprehensive learning roadmap and modules for the Applied Statistics course."
+        "tr": "İstatistiğin amacı, ham veriyi anlamlı içgörülere dönüştürerek belirsizlik altında doğru kararlar almayı sağlamaktır.\n\n**İki Temel Kol:**\n1. **Tanımlayıcı İstatistik:** Mevcut veriyi özetler, görselleştirir ve temel kalıpları ortaya çıkarır.\n2. **Çıkarımsal İstatistik:** Örneklemden hareketle popülasyon hakkında genellemeler yapar.",
+        "en": "Statistics transforms raw data into actionable insights for decision making under uncertainty.\n\n**Two Pillars:**\n1. **Descriptive:** Summarizes and visualizes data patterns.\n2. **Inferential:** Draws conclusions about populations from samples."
       },
       "companyExample": {
-        "tr": "İş dünyasında A/B testlerinden kâr optimizasyonuna ve makine öğrenimi temellerine kadar analitik rehber.",
-        "en": "Analytical guide from A/B testing to profit optimization and data-driven corporate decision making."
+        "tr": "**Örnek Senaryo:** Bir e-ticaret platformu günlük 50.000 sipariş verisini analiz ederek ortalama sepet tutarını hesaplar ve teslimat sürelerini optimize eder.",
+        "en": "**Example Scenario:** An e-commerce platform analyzes 50,000 daily orders to compute average basket size and optimize delivery times."
       },
-      "tancoSpeech": {
-        "tr": "Selam, ben Tanco! 🚀 Bu ders boyunca Uygulamalı İstatistik'in en temellerinden olan Veri Türleri, Merkezi Eğilim (Ortalama, Medyan, Mod) ve Yayılım Ölçüleri (Varyans, Standart Sapma) bilgilerinden başlayıp; Olasılık Dağılımları, Örnekleme ve Merkezi Limit Teoremi, Güven Aralıkları, Hipotez Testleri (z-testi, t-testi, ANOVA, Ki-Kare) konularından taa en zor ve analitik problemlerden olan Doğrusal ve Çoklu Regresyon, A/B Testleri ve Veriye Dayalı Karar Verme Modelleri konularını adım adım öğreneceğiz!",
-        "en": "Hi, I'm Tanco! 🚀 Throughout this course, we will start from the very fundamentals of Applied Statistics—Data Types, Measures of Central Tendency (Mean, Median, Mode) and Spread (Variance, Standard Deviation)—and journey through Probability Distributions, Sampling, CLT, Confidence Intervals, Hypothesis Testing (z-test, t-test, ANOVA, Chi-Square), all the way to advanced analytics like Linear & Multiple Regression, A/B Testing, and Business Decision Models!"
-      },
-      "roadmapModules": [
+      "vocabTerms": [
         {
-          "order": 1,
-          "title": {
-            "tr": "Tanımlayıcı İstatistik & Veri Özetleme",
-            "en": "Descriptive Statistics & Summaries"
-          },
-          "summary": {
-            "tr": "Ortalama, Medyan, Mod, Varyans, Standart Sapma, Çeyreklikler & Outlier Tespiti",
-            "en": "Mean, Median, Mode, Variance, Standard Deviation, Quartiles & Outlier Detection"
-          }
-        },
+          "term_en": "population vs. sample",
+          "explanation_tr": "Popülasyon incelenen tüm kitle, örneklem ise bu kitleden seçilen alt gruptur.",
+          "explanation_en": "Population is the entire group, sample is the subset selected for analysis.",
+          "exampleSentence_en": "We took a sample of 500 customers from the whole population."
+        }
+      ],
+      "questions": [
         {
-          "order": 2,
-          "title": {
-            "tr": "Rastgele Değişkenler & Dağılımlar",
-            "en": "Random Variables & Distributions"
+          "id": "m1-l0-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Tüm kitleyi incelemek yerine rastgele seçilen temsilci gruba ne ad verilir?",
+            "en": "What is the term for a representative subset selected from the entire population?"
           },
-          "summary": {
-            "tr": "Kesikli ve Sürekli Dağılımlar, Binom, Poisson, Normal Dağılım & Z-Skorları",
-            "en": "Discrete & Continuous Distributions, Binomial, Poisson, Normal Distribution & Z-Scores"
-          }
-        },
-        {
-          "order": 3,
-          "title": {
-            "tr": "Örnekleme & Merkezi Limit Teoremi",
-            "en": "Sampling & Central Limit Theorem"
-          },
-          "summary": {
-            "tr": "Örnekleme Dağılımları, Standart Hata (SE), Büyük Sayılar Yasası ve CLT",
-            "en": "Sampling Distributions, Standard Error (SE), Law of Large Numbers & CLT"
-          }
-        },
-        {
-          "order": 4,
-          "title": {
-            "tr": "Güven Aralıkları (Confidence Intervals)",
-            "en": "Confidence Intervals"
-          },
-          "summary": {
-            "tr": "Anakütle Ortalaması ve Oranı için Güven Aralıkları, Student's t Dağılımı",
-            "en": "Confidence Intervals for Population Means and Proportions, Student's t Distribution"
-          }
-        },
-        {
-          "order": 5,
-          "title": {
-            "tr": "Tek Örneklem Hipotez Testleri",
-            "en": "One-Sample Hypothesis Testing"
-          },
-          "summary": {
-            "tr": "Sıfır Hipotezi, Alternatif Hipotez, Tip I/II Hata, p-Değeri, Z ve t Testleri",
-            "en": "Null/Alternative Hypotheses, Type I/II Errors, p-Values, One-Sample Z and t Tests"
-          }
-        },
-        {
-          "order": 6,
-          "title": {
-            "tr": "İki Örneklem Testleri & ANOVA",
-            "en": "Two-Sample Tests & ANOVA"
-          },
-          "summary": {
-            "tr": "Bağımsız ve Eşleştirilmiş t-Testleri, Tek Yönlü ANOVA ve F Dağılımı",
-            "en": "Independent and Paired t-Tests, One-Way ANOVA and F Distribution"
-          }
-        },
-        {
-          "order": 7,
-          "title": {
-            "tr": "Ki-Kare Testleri & Bağımsızlık",
-            "en": "Chi-Square Tests & Independence"
-          },
-          "summary": {
-            "tr": "Uyum İyiliği Testi (Goodness-of-Fit) ve Kontenjans Tablosu Bağımsızlık Testi",
-            "en": "Goodness-of-Fit Tests and Contingency Table Independence Testing"
-          }
-        },
-        {
-          "order": 8,
-          "title": {
-            "tr": "Regresyon Analizi & Karar Verme",
-            "en": "Regression Analysis & Decision Making"
-          },
-          "summary": {
-            "tr": "Basit ve Çoklu Doğrusal Regresyon, R², A/B Testleri ve İş Dünyası Karar Analitiği",
-            "en": "Simple & Multiple Linear Regression, R-Squared, A/B Testing & Business Analytics"
+          "options": [
+            {
+              "tr": "Örneklem (Sample)",
+              "en": "Sample"
+            },
+            {
+              "tr": "Popülasyon (Population)",
+              "en": "Population"
+            },
+            {
+              "tr": "Parametre (Parameter)",
+              "en": "Parameter"
+            },
+            {
+              "tr": "Varyans (Variance)",
+              "en": "Variance"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Örneklem (Sample), popülasyondan seçilen ve analize tabi tutulan temsilci alt kümedir.",
+            "en": "A sample is a representative subset drawn from the whole population."
           }
         }
       ],
-      "vocabTerms": [],
-      "questions": []
+      "realWorldBox": {
+        "excelFormula": "=BAĞ_DEĞ_DOLU_SAY(A:A)",
+        "pythonCode": "import pandas as pd\ndf = pd.read_csv('orders.csv')\nprint(df.describe())",
+        "powerBiNote": {
+          "tr": "Tanımlayıcı istatistikler KPI kartlarında özetlenir.",
+          "en": "Descriptive metrics are summarized in KPI cards."
+        }
+      }
     },
     {
       "id": "m1-l1",
@@ -136,66 +88,60 @@
         "en": "Data Types (Categorical vs. Numerical)"
       },
       "conceptCard": {
-        "tr": "İstatistikte veriler temel olarak ikiye ayrılır:\n\n1. **Kategorik (Nitel) Veriler:**\n- **Nominal:** Sırasız etiketler (Cinsiyet, Departman, Kan grubu)\n- **Ordinal:** Doğal sıralı kategoriler (Memnuniyet derecesi 1-5, Eğitim seviyesi)\n\n2. **Sayısal (Nicel) Veriler:**\n- **Kesikli (Discrete):** Sayılabilir tam değerler (Kusurlu ürün sayısı, Çağrı adedi)\n- **Sürekli (Continuous):** Ölçülebilir reel değerler (Boy, Ağırlık, Ciro, Süre)",
-        "en": "Data is classified into:\n\n1. **Categorical (Qualitative) Data:**\n- **Nominal:** Unordered labels (Gender, Department, Blood type)\n- **Ordinal:** Naturally ordered categories (Satisfaction rating 1-5, Education level)\n\n2. **Numerical (Quantitative) Data:**\n- **Discrete:** Countable integer values (Defect count, Call volume)\n- **Continuous:** Measurable real values (Height, Weight, Revenue, Duration)"
+        "tr": "Doğru analiz yöntemi verinin ölçek türüne göre belirlenir:\n\n1. **Kategorik (Nitel) Veriler:**\n- **Nominal:** Sıralama yok (Örn: Cinsiyet, Şehir, Kan Grubu).\n- **Ordinal:** Doğal sıralama var (Örn: Memnuniyet düzeyi: Düşük < Orta < Yüksek).\n\n2. **Sayısal (Nicel) Veriler:**\n- **Aralık (Interval):** Mutlak sıfır yok, farklar anlamlı (Örn: Sıcaklık °C).\n- **Oran (Ratio):** Mutlak gerçek sıfır var (Örn: Gelir, Yaş, Sipariş Tutarı).",
+        "en": "Data scale dictates valid statistical methods:\n\n1. **Categorical:**\n- **Nominal:** Unordered labels (City, Gender).\n- **Ordinal:** Ordered ranks (Low < Med < High).\n\n2. **Numerical:**\n- **Interval:** Arbitrary zero (°C temperature).\n- **Ratio:** True absolute zero (Income, Age)."
       },
       "companyExample": {
-        "tr": "NovaMarket veri tabanında: Müşteri Şehri = Nominal, Üyelik Statüsü (Bronz/Gümüş/Altın) = Ordinal, Sepetteki Ürün Sayısı = Kesikli Sayısal, Sepet Tutarı ($) = Sürekli Sayısal olarak modellenir.",
-        "en": "In NovaMarket database: Customer City = Nominal, Membership Tier (Bronze/Silver/Gold) = Ordinal, Item Count = Discrete Numerical, Cart Value ($) = Continuous Numerical."
+        "tr": "**Örnek Soru:** Müşteri memnuniyet anketi (1: Çok Memnuniyetsiz ... 5: Çok Memnun) hangi veri türüdür?\n\n**Çözüm:** Seçenekler arasında hiyerarşik bir sıralama bulunduğu için bu veri **Ordinal (Sıralı Kategorik)** türdedir.",
+        "en": "**Worked Example:** Customer satisfaction score (1 to 5) belongs to which data type?\n\n**Solution:** Because categories follow a natural order, it is an **Ordinal** variable."
       },
       "vocabTerms": [
         {
-          "term_en": "categorical data",
-          "explanation_tr": "Nitelik ve grupları temsil eden veri türü.",
-          "explanation_en": "Data representing qualitative attributes or groups.",
-          "exampleSentence_en": "Customer segment is a categorical variable."
-        },
-        {
-          "term_en": "continuous variable",
-          "explanation_tr": "Belirli bir aralıkta kesintisiz değerler alabilen sayısal değişken.",
-          "explanation_en": "A numerical variable that can take infinite values within a range.",
-          "exampleSentence_en": "Delivery duration is a continuous variable."
+          "term_en": "ratio scale",
+          "explanation_tr": "Mutlak sıfır noktasına sahip, oranlama yapılabilen en güçlü sayısal ölçektir.",
+          "explanation_en": "Measurement scale with a true zero point, allowing ratio comparisons.",
+          "exampleSentence_en": "Income is measured on a ratio scale because zero means absence of income."
         }
       ],
       "questions": [
         {
           "id": "m1-l1-q1",
-          "type": "multiple_choice",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "Bir çağrı merkezinde 'Müşteri Memnuniyet Derecesi (1: Çok Kötü ... 5: Çok İyi)' değişkeni hangi veri türüne girer?",
-            "en": "In a call center, what data type is 'Customer Satisfaction Rating (1: Very Poor ... 5: Excellent)'?"
+            "tr": "Bir depodaki aylık stok miktarı (adet) hangi ölçek türüne girer?",
+            "en": "Monthly warehouse stock count belongs to which scale?"
           },
           "options": [
             {
-              "tr": "Nominal Kategorik",
-              "en": "Nominal Categorical"
+              "tr": "Oran Ölçeği (Ratio)",
+              "en": "Ratio Scale"
             },
             {
-              "tr": "Ordinal (Sıralı) Kategorik",
-              "en": "Ordinal Categorical"
+              "tr": "Nominal Ölçek",
+              "en": "Nominal Scale"
             },
             {
-              "tr": "Sürekli Sayısal",
-              "en": "Continuous Numerical"
+              "tr": "Ordinal Ölçek",
+              "en": "Ordinal Scale"
             },
             {
-              "tr": "Rassal Süreç",
-              "en": "Random Process"
+              "tr": "Aralık Ölçeği (Interval)",
+              "en": "Interval Scale"
             }
           ],
-          "correctAnswer": "Ordinal (Sıralı) Kategorik",
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "Kategoriler arasında hiyerarşik bir derece sıralaması olduğu için Ordinal kategorik değişkendir.",
-            "en": "Because there is a natural hierarchical ordering, it is an Ordinal categorical variable."
+            "tr": "Adet sayılabilir ve 0 adet hiç ürün olmaması anlamına gelir (mutlak sıfır). Dolayısıyla Oran (Ratio) ölçeğidir.",
+            "en": "Stock count has a true zero (0 items = none), making it a Ratio scale."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=EĞER(ESAYIYSA(A2); \"Sayısal\"; \"Kategorik\")",
-        "pythonCode": "import pandas as pd\ndf[\"tier\"] = df[\"tier\"].astype(\"category\")",
+        "excelFormula": "=EĞER(ESAYIYSA(A2), \"Sayısal\", \"Kategorik\")",
+        "pythonCode": "df.dtypes\ncat_cols = df.select_dtypes(include=['object', 'category']).columns",
         "powerBiNote": {
-          "tr": "Sütun tipini Text veya Whole Number olarak ayarlayın.",
-          "en": "Set column data type to Text or Whole Number."
+          "tr": "Sütun veri türünü Modeling sekmesinden ayarlayabilirsiniz.",
+          "en": "Adjust column data types in Modeling tab."
         }
       }
     },
@@ -209,66 +155,42 @@
         "en": "Arithmetic Mean"
       },
       "conceptCard": {
-        "tr": "İstatistikte veriler temel olarak ikiye ayrılır:\n\n1. **Kategorik (Nitel) Veriler:**\n- **Nominal:** Sırasız etiketler (Cinsiyet, Departman, Kan grubu)\n- **Ordinal:** Doğal sıralı kategoriler (Memnuniyet derecesi 1-5, Eğitim seviyesi)\n\n2. **Sayısal (Nicel) Veriler:**\n- **Kesikli (Discrete):** Sayılabilir tam değerler (Kusurlu ürün sayısı, Çağrı adedi)\n- **Sürekli (Continuous):** Ölçülebilir reel değerler (Boy, Ağırlık, Ciro, Süre)",
-        "en": "Data is classified into:\n\n1. **Categorical (Qualitative) Data:**\n- **Nominal:** Unordered labels (Gender, Department, Blood type)\n- **Ordinal:** Naturally ordered categories (Satisfaction rating 1-5, Education level)\n\n2. **Numerical (Quantitative) Data:**\n- **Discrete:** Countable integer values (Defect count, Call volume)\n- **Continuous:** Measurable real values (Height, Weight, Revenue, Duration)"
+        "tr": "Aritmetik ortalama, tüm gözlem değerlerinin toplanıp toplam gözlem sayısına bölünmesiyle elde edilen merkezi eğilim ölçüsüdür:\n\n$$\\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i$$\n\n**Önemli Özellik:** Aşırı uç (aykırı) değerlere karşı oldukça duyarlıdır.",
+        "en": "The arithmetic mean sums all observations and divides by total count:\n\n$$\\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i$$\n\n**Key Trait:** Highly sensitive to extreme outliers."
       },
       "companyExample": {
-        "tr": "NovaMarket veri tabanında: Müşteri Şehri = Nominal, Üyelik Statüsü (Bronz/Gümüş/Altın) = Ordinal, Sepetteki Ürün Sayısı = Kesikli Sayısal, Sepet Tutarı ($) = Sürekli Sayısal olarak modellenir.",
-        "en": "In NovaMarket database: Customer City = Nominal, Membership Tier (Bronze/Silver/Gold) = Ordinal, Item Count = Discrete Numerical, Cart Value ($) = Continuous Numerical."
+        "tr": "**Örnek Soru:** Bir çağrı merkezinde 5 temsilcinin çözdüğü çağrı sayıları: 12, 18, 15, 25, 30. Ortalama çağrı sayısı kaçtır?\n\n**Çözüm:**\n$$\\bar{x} = \\frac{12 + 18 + 15 + 25 + 30}{5} = \\frac{100}{5} = 20$$",
+        "en": "**Worked Example:** Calls handled: 12, 18, 15, 25, 30. Calculate the mean.\n\n**Solution:**\n$$\\bar{x} = \\frac{100}{5} = 20$$"
       },
       "vocabTerms": [
         {
-          "term_en": "categorical data",
-          "explanation_tr": "Nitelik ve grupları temsil eden veri türü.",
-          "explanation_en": "Data representing qualitative attributes or groups.",
-          "exampleSentence_en": "Customer segment is a categorical variable."
-        },
-        {
-          "term_en": "continuous variable",
-          "explanation_tr": "Belirli bir aralıkta kesintisiz değerler alabilen sayısal değişken.",
-          "explanation_en": "A numerical variable that can take infinite values within a range.",
-          "exampleSentence_en": "Delivery duration is a continuous variable."
+          "term_en": "arithmetic mean",
+          "explanation_tr": "Tüm değerlerin toplamının gözlem sayısına oranıdır.",
+          "explanation_en": "Sum of values divided by number of values.",
+          "exampleSentence_en": "The mean response time was 20 milliseconds."
         }
       ],
       "questions": [
         {
-          "id": "m1-l1-q1",
-          "type": "multiple_choice",
+          "id": "m1-l2-q1",
+          "type": "numeric",
           "prompt": {
-            "tr": "Bir çağrı merkezinde 'Müşteri Memnuniyet Derecesi (1: Çok Kötü ... 5: Çok İyi)' değişkeni hangi veri türüne girer?",
-            "en": "In a call center, what data type is 'Customer Satisfaction Rating (1: Very Poor ... 5: Excellent)'?"
+            "tr": "Veri seti: 10, 20, 30, 40, 50. Bu verilerin aritmetik ortalaması kaçtır?",
+            "en": "Dataset: 10, 20, 30, 40, 50. What is the arithmetic mean?"
           },
-          "options": [
-            {
-              "tr": "Nominal Kategorik",
-              "en": "Nominal Categorical"
-            },
-            {
-              "tr": "Ordinal (Sıralı) Kategorik",
-              "en": "Ordinal Categorical"
-            },
-            {
-              "tr": "Sürekli Sayısal",
-              "en": "Continuous Numerical"
-            },
-            {
-              "tr": "Rassal Süreç",
-              "en": "Random Process"
-            }
-          ],
-          "correctAnswer": "Ordinal (Sıralı) Kategorik",
+          "correctAnswer": 30,
           "explanation": {
-            "tr": "Kategoriler arasında hiyerarşik bir derece sıralaması olduğu için Ordinal kategorik değişkendir.",
-            "en": "Because there is a natural hierarchical ordering, it is an Ordinal categorical variable."
+            "tr": "$$\\bar{x} = \\frac{10+20+30+40+50}{5} = \\frac{150}{5} = 30$$",
+            "en": "$$\\bar{x} = \\frac{150}{5} = 30$$"
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=EĞER(ESAYIYSA(A2); \"Sayısal\"; \"Kategorik\")",
-        "pythonCode": "import pandas as pd\ndf[\"tier\"] = df[\"tier\"].astype(\"category\")",
+        "excelFormula": "=ORTALAMA(A1:A50)",
+        "pythonCode": "import numpy as np\nmean_val = np.mean([10, 20, 30, 40, 50])",
         "powerBiNote": {
-          "tr": "Sütun tipini Text veya Whole Number olarak ayarlayın.",
-          "en": "Set column data type to Text or Whole Number."
+          "tr": "DAX: AVERAGE(Sales[Amount])",
+          "en": "DAX: AVERAGE(Sales[Amount])"
         }
       }
     },
@@ -279,60 +201,45 @@
       "difficulty": "basit",
       "title": {
         "tr": "Medyan (Median / Ortanca)",
-        "en": "Median (Robust Center)"
+        "en": "Median"
       },
       "conceptCard": {
-        "tr": "Aritmetik ortalama (\\bar{x}), bir veri kümesindeki tüm gözlem değerlerinin toplamının toplam gözlem sayısına ($n$) bölünmesiyle hesaplanan merkezi eğilim ölçüsüdür:\n\n$$\\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i$$\n\nAnakütle (popülasyon) ortalaması ise $\\mu = \\frac{1}{N}\\sum_{i=1}^{N} X_i$ formülü ile gösterilir. Aşırı uç değerlerden (outlier) oldukça etkilenir.",
-        "en": "The sample arithmetic mean (\\bar{x}) is a measure of central tendency calculated by dividing the sum of all observed values by the total sample size ($n$):\n\n$$\\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i$$\n\nPopulation mean is denoted as $\\mu = \\frac{1}{N}\\sum_{i=1}^{N} X_i$. It is sensitive to extreme outliers."
+        "tr": "Medyan, küçükten büyüğe sıralanmış bir veri setinde tam ortada yer alan değerdir.\n\n- Gözlem sayısı $n$ tek ise: $\\frac{n+1}{2}$. sıradaki değerdir.\n- Gözlem sayısı $n$ çift ise: Ortadaki iki değerin aritmetik ortalamasıdır.\n\n**Avantajı:** Aykırı değerlerden etkilenmez (sağlam/robust ölçü).",
+        "en": "The median is the middle value in a sorted dataset.\n\n- If $n$ is odd: value at index $\\frac{n+1}{2}$.\n- If $n$ is even: average of the two middle values.\n\n**Advantage:** Robust to extreme outliers."
       },
       "companyExample": {
-        "tr": "NovaMarket e-ticaret platformunun son 6 çeyrekteki kârları sırasıyla $x = [10, 12, 12, 15, 9, 50]$ milyon $'dır. Ortalama kâr:\n\n$$\\bar{x} = \\frac{10 + 12 + 12 + 15 + 9 + 50}{6} = \\frac{108}{6} = 18 \\text{ M USD}$$",
-        "en": "NovaMarket's quarterly profits over the last 6 quarters are 10, 12, 12, 15, 9, and 50 million $. To find the average quarterly profit, we add up all quarterly profits ($108M) and divide by the number of quarters (6), resulting in an average quarterly profit of $18M."
+        "tr": "**Örnek Soru:** 6 çalışanın maaşları (bin TL): 20, 25, 30, 35, 40, 300. Medyan maaş kaçtır?\n\n**Çözüm:** Sıralı dizide ortadaki iki değer 30 ve 35'tir:\n$$\\text{Medyan} = \\frac{30 + 35}{2} = 32.5 \\text{ bin TL}$$",
+        "en": "**Worked Example:** Salaries in kTL: 20, 25, 30, 35, 40, 300. Find median.\n\n**Solution:** Middle two numbers are 30 and 35:\n$$\\text{Median} = \\frac{30 + 35}{2} = 32.5$$"
       },
-      "interactiveType": "mean_median_mode",
-      "interactiveInitialData": [
-        10,
-        12,
-        12,
-        15,
-        9,
-        50
-      ],
       "vocabTerms": [
         {
-          "term_en": "average",
-          "explanation_tr": "Ortalama; İngilizce'de günlük konuşmada da sıkça kullanılır.",
-          "explanation_en": "Average = mean. Commonly used in everyday English too.",
-          "exampleSentence_en": "The average price of coffee is $5."
-        },
-        {
-          "term_en": "outlier",
-          "explanation_tr": "Diğer verilerden çok farklı olan, aşırı yüksek veya düşük bir değer.",
-          "explanation_en": "A value that is very different from the rest of the data — extremely high or low.",
-          "exampleSentence_en": "That data point is an outlier — it doesn't fit the pattern."
+          "term_en": "median",
+          "explanation_tr": "Sıralanmış veriyi tam %50 - %50 ikiye bölen ortanca değer.",
+          "explanation_en": "The middle score that divides ranked data into two equal halves.",
+          "exampleSentence_en": "Median income is preferred when data is highly skewed."
         }
       ],
       "questions": [
         {
-          "id": "m1-l1-q1",
+          "id": "m1-l3-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "Bir veri setinde $n = 5$ gözlem için değerler toplamı $\\sum x_i = 125$ ise aritmetik ortalama $\\bar{x}$ kaçtır?",
-            "en": "If the sum of $n = 5$ observations is $\\sum x_i = 125$, what is the arithmetic mean $\\bar{x}$?"
+            "tr": "Sıralı veri seti: 4, 7, 9, 12, 18. Bu verilerin medyanı kaçtır?",
+            "en": "Sorted dataset: 4, 7, 9, 12, 18. What is the median?"
           },
-          "correctAnswer": 25,
+          "correctAnswer": 9,
           "explanation": {
-            "tr": "$$\\bar{x} = \\frac{\\sum x_i}{n} = \\frac{125}{5} = 25$$",
-            "en": "$$\\bar{x} = \\frac{\\sum x_i}{n} = \\frac{125}{5} = 25$$"
+            "tr": "5 gözlemli tek sayılı dizide ortadaki 3. eleman 9'dur.",
+            "en": "For 5 elements, the 3rd element is 9."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=ORTALAMA(A1:A6)  (EN: =AVERAGE(A1:A6))",
-        "pythonCode": "import statistics\nstatistics.mean([10, 12, 12, 15, 9, 50])",
+        "excelFormula": "=ORTANCA(A1:A50)",
+        "pythonCode": "import numpy as np\nmed = np.median([4, 7, 9, 12, 18])",
         "powerBiNote": {
-          "tr": "Bir kart görselinde 'Ortalama Kâr' ölçüsü olarak eklenir.",
-          "en": "Added as an 'Average Profit' measure in a card visual."
+          "tr": "DAX: MEDIAN(Sales[Amount])",
+          "en": "DAX: MEDIAN(Sales[Amount])"
         }
       }
     },
@@ -340,85 +247,74 @@
       "id": "m1-l4",
       "moduleId": "module-1",
       "order": 5,
-      "difficulty": "orta",
+      "difficulty": "basit",
       "title": {
         "tr": "Mod (Mode / Tepe Değer)",
         "en": "Mode"
       },
       "conceptCard": {
-        "tr": "Medyan ($Q_2$), küçükten büyüğe sıralanmış bir veri setini tam ortadan iki eşit yarıya (%50 alt, %50 üst) ayıran değerdir. Veri sayısı $n$ tek ise medyan $\\frac{n+1}{2}$. sıradaki değer; $n$ çift ise ortadaki iki değerin aritmetik ortalamasıdır:\n\n$$x_{\\text{medyan}} = \\begin{cases} x_{\\left(\\frac{n+1}{2}\\right)}, & n \\text{ tek} \\\\[6pt] \\frac{x_{\\left(\\frac{n}{2}\\right)} + x_{\\left(\\frac{n}{2} + 1\\right)}}{2}, & n \\text{ çift} \\end{cases}$$\n\nUç değerlere (outlier) karşı dayanıklıdır (robust).",
-        "en": "The median ($Q_2$) splits ordered data into two equal halves (50% below, 50% above). For odd $n$, it is the $\\frac{n+1}{2}$-th observation; for even $n$, it is the average of the two middle observations:\n\n$$x_{\\text{median}} = \\begin{cases} x_{\\left(\\frac{n+1}{2}\\right)}, & n \\text{ odd} \\\\[6pt] \\frac{x_{\\left(\\frac{n}{2}\\right)} + x_{\\left(\\frac{n}{2} + 1\\right)}}{2}, & n \\text{ even} \\end{cases}$$\n\nIt is resistant (robust) to outliers."
+        "tr": "Mod (Tepe Değer), bir veri setinde en sık (en yüksek frekansla) tekrar eden değerdir.\n\n- Bir veride tek bir mod olabilir (Unimodal).\n- İki farklı mod olabilir (Bimodal).\n- Hiçbir tekrar yoksa mod bulunmayabilir.\n\n**Kullanım Alanı:** Kategorik verilerde merkezi eğilimi ölçmek için en uygun metriktir.",
+        "en": "The mode is the value that appears most frequently in a dataset.\n\n- Can be unimodal, bimodal, or multimodal.\n- Uniquely applicable to categorical nominal data."
       },
       "companyExample": {
-        "tr": "NovaMarket kârları sıralandığında: $x_{(i)} = [9, 10, 12, 12, 15, 50]$ milyon $'dır. $n = 6$ (çift) olduğundan medyan ortadaki 3. ve 4. değerlerin ortalamasıdır:\n\n$$x_{\\text{medyan}} = \\frac{12 + 12}{2} = 12 \\text{ M USD}$$",
-        "en": "Sorting NovaMarket's profit data from smallest to largest (9, 10, 12, 12, 15, 50), the two middle values are 12 and 12. Taking their average gives a median of $12M. While the $50M outlier inflates the mean to 18, the median clearly shows the company's typical quarterly profit is $12M."
+        "tr": "**Örnek Soru:** Mağazada satılan tişört bedenleri: M, L, S, M, XL, M, L. Mod nedir?\n\n**Çözüm:** 'M' bedeni 3 kez tekrar ederek en yüksek frekansa ulaştığı için Mod = 'M'dir.",
+        "en": "**Worked Example:** T-shirt sizes sold: M, L, S, M, XL, M, L. What is the mode?\n\n**Solution:** 'M' appears 3 times, so Mode = 'M'."
       },
-      "interactiveType": "mean_median_mode",
-      "interactiveInitialData": [
-        9,
-        10,
-        12,
-        12,
-        15,
-        50
-      ],
       "vocabTerms": [
         {
-          "term_en": "median",
-          "explanation_tr": "Latince 'medius' (orta) kökünden gelir.",
-          "explanation_en": "From Latin 'medius' meaning middle.",
-          "exampleSentence_en": "The median income gives a better picture than the mean when there are outliers."
-        },
-        {
-          "term_en": "typical value",
-          "explanation_tr": "Bir grubu en iyi temsil eden 'tipik' değer.",
-          "explanation_en": "The value that best represents a 'typical' member of the group.",
-          "exampleSentence_en": "The median store sales figure is more typical than the mean."
+          "term_en": "mode",
+          "explanation_tr": "Veri kümesinde en çok tekrar eden değer veya kategori.",
+          "explanation_en": "The most frequently occurring value in a data set.",
+          "exampleSentence_en": "The modal category of product defect was packaging."
         }
       ],
       "questions": [
         {
-          "id": "m1-l2-q1",
+          "id": "m1-l4-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "Sıralı veri seti $x = [4, 7, 10, 14, 18, 22]$ için medyan ($Q_2$) değeri kaçtır?",
-            "en": "What is the median ($Q_2$) of the ordered dataset $x = [4, 7, 10, 14, 18, 22]$?"
+            "tr": "Veri seti: 3, 5, 8, 8, 8, 12, 15. Bu veri setinin modu kaçtır?",
+            "en": "Dataset: 3, 5, 8, 8, 8, 12, 15. What is the mode?"
           },
-          "correctAnswer": 12,
+          "correctAnswer": 8,
           "explanation": {
-            "tr": "$n = 6$ (çift) olduğu için ortadaki 3. ($10$) ve 4. ($14$) elemanların ortalaması alınır: $$\\text{Medyan} = \\frac{10 + 14}{2} = 12$$",
-            "en": "Since $n = 6$ (even), take the average of 3rd ($10$) and 4th ($14$) items: $$\\text{Median} = \\frac{10 + 14}{2} = 12$$"
+            "tr": "8 sayısı 3 kez tekrarlayarak en yüksek frekansa sahiptir, mod = 8'dir.",
+            "en": "8 occurs 3 times (highest frequency), so mode = 8."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=ORTANCA(A1:A6)  (EN: =MEDIAN(A1:A6))",
-        "pythonCode": "import statistics\nstatistics.median([10, 12, 12, 15, 9, 50])"
+        "excelFormula": "=ENÇOK_OLAN.TEK(A1:A50)",
+        "pythonCode": "from scipy import stats\nmode_val = stats.mode([3, 5, 8, 8, 8, 12, 15])",
+        "powerBiNote": {
+          "tr": "DAX: TOPN(1, VALUES(Sales[Product]), [Count], DESC)",
+          "en": "DAX: TOPN for highest frequency category"
+        }
       }
     },
     {
       "id": "m1-l5",
       "moduleId": "module-1",
       "order": 6,
-      "difficulty": "orta",
+      "difficulty": "basit",
       "title": {
-        "tr": "Çeyreklikler ($Q_1, Q_2, Q_3$) ve Ranj",
-        "en": "Quartiles ($Q_1, Q_2, Q_3$) and Range"
+        "tr": "Ranj (Range / Açıklık)",
+        "en": "Range"
       },
       "conceptCard": {
-        "tr": "Veri yayılımını özetleyen temel parçalanmalar:\n\n1. **Ranj (Açıklık):** $\\text{Ranj} = x_{max} - x_{min}$\n2. **Birinci Çeyreklik ($Q_1$):** Verilerin %25'inin altında kaldığı 25. yüzdelik.\n3. **İkinci Çeyreklik ($Q_2$):** Medyan (50. yüzdelik).\n4. **Üçüncü Çeyreklik ($Q_3$):** Verilerin %75'inin altında kaldığı 75. yüzdelik.\n5. **Çeyrekler Açıklığı ($IQR$):** $IQR = Q_3 - Q_1$ (Orta %50'lik çekirdek yayılım).",
-        "en": "Key partitioning metrics for data spread:\n\n1. **Range:** $\\text{Range} = x_{max} - x_{min}$\n2. **First Quartile ($Q_1$):** 25th percentile (25% below).\n3. **Second Quartile ($Q_2$):** Median (50th percentile).\n4. **Third Quartile ($Q_3$):** 75th percentile (75% below).\n5. **Interquartile Range ($IQR$):** $IQR = Q_3 - Q_1$ (Spread of middle 50%)."
+        "tr": "Ranj, bir veri kümesindeki en büyük (maksimum) değer ile en küçük (minimum) değer arasındaki farktır:\n\n$$\\text{Ranj} = x_{\\max} - x_{\\min}$$\n\n**Kullanımı:** Yayılımı hesaplamanın en hızlı yoludur ancak aradaki değerlerin nasıl dağıldığı hakkında bilgi vermez.",
+        "en": "Range is the difference between maximum and minimum values:\n\n$$\\text{Range} = x_{\\max} - x_{\\min}$$\n\n**Usage:** Quickest measure of dispersion, but relies only on extremes."
       },
       "companyExample": {
-        "tr": "Perakende zincirinde müşteri sepet tutarları incelendiğinde; ilk çeyrek $Q_1 = 40$ TL, medyan $Q_2 = 70$ TL ve üçüncü çeyrek $Q_3 = 120$ TL bulunmuştur. Çeyrekler açıklığı $IQR = Q_3 - Q_1 = 120 - 40 = 80$ TL olarak hesaplanır. Müşterilerin orta %50'lik dilimi 40 TL ile 120 TL arasında harcama yapmaktadır.",
-        "en": "In a retail chain basket study, the first quartile is $Q_1 = 40$ USD, median $Q_2 = 70$ USD, and third quartile $Q_3 = 120$ USD. The interquartile range is $IQR = Q_3 - Q_1 = 120 - 40 = 80$ USD. The middle 50% of customers spend between 40 USD and 120 USD."
+        "tr": "**Örnek Soru:** Bir kargo teslimat süresi verileri (dakika): 15, 22, 18, 45, 12. Ranj kaçtır?\n\n**Çözüm:**\n$$\\text{Ranj} = 45 - 12 = 33 \\text{ dakika}$$",
+        "en": "**Worked Example:** Delivery times: 15, 22, 18, 45, 12. Compute range.\n\n**Solution:**\n$$\\text{Range} = 45 - 12 = 33$$"
       },
       "vocabTerms": [
         {
-          "term_en": "interquartile range",
-          "explanation_tr": "Üçüncü ve birinci çeyreklik arasındaki fark ($IQR$).",
-          "explanation_en": "Difference between the 3rd and 1st quartiles ($IQR$).",
-          "exampleSentence_en": "IQR represents the spread of the middle 50% of the dataset."
+          "term_en": "range",
+          "explanation_tr": "Maksimum ve minimum gözlemler arasındaki toplam açıklık.",
+          "explanation_en": "The distance between the largest and smallest measurements.",
+          "exampleSentence_en": "The price range spans from 12 to 45 dollars."
         }
       ],
       "questions": [
@@ -426,22 +322,22 @@
           "id": "m1-l5-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$Q_1 = 30$ ve $Q_3 = 95$ olan bir veri setinde $IQR$ kaçtır?",
-            "en": "For a dataset with $Q_1 = 30$ and $Q_3 = 95$, what is $IQR$?"
+            "tr": "Veri seti: 50, 62, 75, 95, 30. Bu veri setinin ranjı kaçtır?",
+            "en": "Dataset: 50, 62, 75, 95, 30. What is the range?"
           },
           "correctAnswer": 65,
           "explanation": {
-            "tr": "$$IQR = Q_3 - Q_1 = 95 - 30 = 65$$",
-            "en": "$$IQR = Q_3 - Q_1 = 95 - 30 = 65$$"
+            "tr": "$$\\text{Ranj} = x_{\\max} - x_{\\min} = 95 - 30 = 65$$",
+            "en": "$$\\text{Range} = 95 - 30 = 65$$"
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=DÖRTTEBİRLİK.DÂHİL(A1:A100; 3) - DÖRTTEBİRLİK.DÂHİL(A1:A100; 1)",
-        "pythonCode": "import numpy as np\nq75, q25 = np.percentile(data, [75, 25])\niqr = q75 - q25",
+        "excelFormula": "=MAK(A1:A50) - MİN(A1:A50)",
+        "pythonCode": "r = np.ptp([50, 62, 75, 95, 30])  # peak-to-peak",
         "powerBiNote": {
-          "tr": "Box & Whisker görselinde IQR otomatik gösterilir.",
-          "en": "IQR is rendered automatically in Box & Whisker visuals."
+          "tr": "DAX: MAX(Table[Col]) - MIN(Table[Col])",
+          "en": "DAX: MAX(Table[Col]) - MIN(Table[Col])"
         }
       }
     },
@@ -451,23 +347,23 @@
       "order": 7,
       "difficulty": "orta",
       "title": {
-        "tr": "Varyans ve Serbestlik Derecesi ($n-1$)",
-        "en": "Variance and Degrees of Freedom ($n-1$)"
+        "tr": "Çeyreklikler ($Q_1, Q_2, Q_3$) & IQR",
+        "en": "Quartiles & Interquartile Range (IQR)"
       },
       "conceptCard": {
-        "tr": "Varyans, gözlemlerin ortalamadan sapmalarının karelerinin ortalamasıdır:\n\n1. **Popülasyon Varyansı ($\\sigma^2$):** $\\sigma^2 = \\frac{1}{N}\\sum_{i=1}^N (X_i - \\mu)^2$\n2. **Örneklem Varyansı ($s^2$):** $s^2 = \\frac{1}{n-1}\\sum_{i=1}^n (x_i - \\bar{x})^2$\n\n**Neden $n-1$ (Bessel Düzeltmesi)?**\nÖrneklem ortalaması $\\bar{x}$, anakütle $\\mu$'ye göre örneklem verisine daha yakın olduğundan sapmayı underestimate eder. $n-1$ serbestlik derecesi kullanarak $s^2$'nin **sapmasız (unbiased)** olması sağlanır ($E[s^2] = \\sigma^2$).",
-        "en": "Variance measures average squared deviations from the mean:\n\n1. **Population Variance ($\\sigma^2$):** $\\sigma^2 = \\frac{1}{N}\\sum_{i=1}^N (X_i - \\mu)^2$\n2. **Sample Variance ($s^2$):** $s^2 = \\frac{1}{n-1}\\sum_{i=1}^n (x_i - \\bar{x})^2$\n\n**Why $n-1$ (Bessel Correction)?**\nDividing by $n-1$ compensates for sample bias, ensuring $s^2$ is an **unbiased estimator** ($E[s^2] = \\sigma^2$)."
+        "tr": "Çeyreklikler, sıralı veriyi 4 eşit parçaya bölen 3 noktadır:\n\n- **$Q_1$ (1. Çeyreklik):** Verinin %25'inin altında kaldığı değer.\n- **$Q_2$ (2. Çeyreklik):** Medyan (%50).\n- **$Q_3$ (3. Çeyreklik):** Verinin %75'inin altında kaldığı değer.\n- **Çeyrekler Açıklığı (IQR):** Ortadaki %50'lik ana kütlenin yayılımıdır:\n\n$$\\text{IQR} = Q_3 - Q_1$$",
+        "en": "Quartiles partition ordered data into 4 quarters:\n\n- $Q_1$: 25th percentile.\n- $Q_2$: 50th percentile (Median).\n- $Q_3$: 75th percentile.\n- $\\text{IQR} = Q_3 - Q_1$ (spread of middle 50%)."
       },
       "companyExample": {
-        "tr": "İki sunucunun ortalama gecikmesi 50 ms iken, 1. sunucunun varyansı $s_1^2 = 4 \\text{ ms}^2$, 2. sunucunun varyansı $s_2^2 = 400 \\text{ ms}^2$ çıkmıştır. 2. sunucu kararsızdır.",
-        "en": "Both servers average 50ms, but Server 1 has variance $4\\text{ ms}^2$ while Server 2 has $400\\text{ ms}^2$, revealing high instability."
+        "tr": "**Örnek Soru:** Bir web sitesi bekleme süresinde $Q_1 = 4$ sn, $Q_3 = 12$ sn olarak ölçülmüştür. IQR nedir?\n\n**Çözüm:**\n$$\\text{IQR} = Q_3 - Q_1 = 12 - 4 = 8 \\text{ sn}$$",
+        "en": "**Worked Example:** Latency quartiles: $Q_1 = 4$, $Q_3 = 12$. Calculate IQR.\n\n**Solution:**\n$$\\text{IQR} = 12 - 4 = 8$$"
       },
       "vocabTerms": [
         {
-          "term_en": "degrees of freedom",
-          "explanation_tr": "Bir istatistik hesabında bağımsızca değişebilen değer adedi ($n-1$).",
-          "explanation_en": "Number of values free to vary in a final statistical calculation.",
-          "exampleSentence_en": "Sample variance uses n-1 degrees of freedom."
+          "term_en": "interquartile range (IQR)",
+          "explanation_tr": "3. çeyreklik ile 1. çeyreklik arasındaki farktır, uç değerlere dirençlidir.",
+          "explanation_en": "The range of the central 50% of values: Q3 - Q1.",
+          "exampleSentence_en": "IQR is used to define boxplot whisker boundaries."
         }
       ],
       "questions": [
@@ -475,22 +371,22 @@
           "id": "m1-l6-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$n = 6$ gözlemde kareler toplamı $\\sum (x_i - \\bar{x})^2 = 50$ ise örneklem varyansı $s^2$ kaçtır?",
-            "en": "For $n = 6$, if sum of squared deviations $\\sum (x_i - \\bar{x})^2 = 50$, what is $s^2$?"
+            "tr": "Bir veri kümesinde $Q_1 = 15$ ve $Q_3 = 35$ olduğuna göre IQR değeri kaçtır?",
+            "en": "If $Q_1 = 15$ and $Q_3 = 35$, what is the IQR?"
           },
-          "correctAnswer": 10,
+          "correctAnswer": 20,
           "explanation": {
-            "tr": "$$s^2 = \\frac{50}{6-1} = \\frac{50}{5} = 10$$",
-            "en": "$$s^2 = \\frac{50}{6-1} = \\frac{50}{5} = 10$$"
+            "tr": "$$\\text{IQR} = Q_3 - Q_1 = 35 - 15 = 20$$",
+            "en": "$$\\text{IQR} = 35 - 15 = 20$$"
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=VAR.S(A1:A10)",
-        "pythonCode": "import numpy as np\nnp.var(data, ddof=1)",
+        "excelFormula": "=DÖRTTEBİRLİK.DAHİL(A1:A50, 3) - DÖRTTEBİRLİK.DAHİL(A1:A50, 1)",
+        "pythonCode": "from scipy.stats import iqr\nval = iqr(data)",
         "powerBiNote": {
-          "tr": "DAX: VAR.S(Tablo[Değer])",
-          "en": "DAX: VAR.S(Table[Value])"
+          "tr": "Boxplot görselinde IQR otomatik hesaplanır.",
+          "en": "Boxplot visual auto-computes IQR."
         }
       }
     },
@@ -500,23 +396,23 @@
       "order": 8,
       "difficulty": "orta",
       "title": {
-        "tr": "Standart Sapma ve Değişim Katsayısı ($CV$)",
-        "en": "Standard Deviation and Coefficient of Variation ($CV$)"
+        "tr": "Varyans ve Serbestlik Derecesi ($n-1$)",
+        "en": "Variance & Degrees of Freedom ($n-1$)"
       },
       "conceptCard": {
-        "tr": "Varyansın karesel birimini orijinal birime çevirmek ve bağıl riski ölçmek için kullanılır:\n\n1. **Standart Sapma ($s$):** $s = \\sqrt{s^2}$\n2. **Değişim Katsayısı ($CV$):**\n$$CV = \\frac{s}{\\bar{x}} \\times 100\\%$$\nFarklı birim veya ölçekteki veri gruplarının nispi değişkenliğini kıyaslar.",
-        "en": "Used to return variance to original units and evaluate relative risk:\n\n1. **Standard Deviation ($s$):** $s = \\sqrt{s^2}$\n2. **Coefficient of Variation ($CV$):**\n$$CV = \\frac{s}{\\bar{x}} \\times 100\\%$$\nCompares relative variation across datasets with different units or scales."
+        "tr": "Varyans, her bir veri noktasının ortalamadan olan uzaklıklarının karelerinin ortalamasıdır.\n\n**Örneklem Varyansı Formülü:**\n$$s^2 = \\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2$$\n\n**Neden $n-1$?** (Bessel Düzeltmesi): Örneklem varyansının popülasyon varyansını sapmasız (unbiased) tahmin etmesini sağlar.",
+        "en": "Variance measures average squared deviations from the mean.\n\n**Sample Variance:**\n$$s^2 = \\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2$$\n\n**Why $n-1$?** Bessel's correction removes sample estimation bias."
       },
       "companyExample": {
-        "tr": "Fintech ödeme altyapısında Sunucu A: $\\bar{x} = 100$ ms, $s = 10$ ms ($CV = 10\\%$); Sunucu B: $\\bar{x} = 200$ ms, $s = 50$ ms ($CV = 25\\%$). B sunucusunun bağıl değişkenliği çok daha yüksektir ve risklidir.",
-        "en": "In fintech latency analytics, Server A: $\\bar{x} = 100$ ms, $s = 10$ ms ($CV = 10\\%$); Server B: $\\bar{x} = 200$ ms, $s = 50$ ms ($CV = 25\\%$). Server B has much higher relative variability."
+        "tr": "**Örnek Soru:** 3 gözlemli bir örneklem: 2, 4, 6 (Ortalama = 4). Örneklem varyansı $s^2$ kaçtır?\n\n**Çözüm:**\n$$(2-4)^2 + (4-4)^2 + (6-4)^2 = 4 + 0 + 4 = 8$$\n$$s^2 = \\frac{8}{3-1} = \\frac{8}{2} = 4$$",
+        "en": "**Worked Example:** Sample: 2, 4, 6 (Mean = 4). Calculate sample variance $s^2$.\n\n**Solution:**\n$$s^2 = \\frac{(2-4)^2 + 0 + (6-4)^2}{3-1} = \\frac{8}{2} = 4$$"
       },
       "vocabTerms": [
         {
-          "term_en": "coefficient of variation",
-          "explanation_tr": "Standart sapmanın ortalamaya bağıl oranı ($s/\\bar{x}$).",
-          "explanation_en": "Ratio of standard deviation to mean ($s/\\bar{x}$).",
-          "exampleSentence_en": "CV allows unit-independent risk comparison."
+          "term_en": "degrees of freedom (df)",
+          "explanation_tr": "Bir parametre tahmin edildikten sonra serbestçe değişebilen bağımsız gözlem sayısıdır ($n-1$).",
+          "explanation_en": "The number of independent values that are free to vary ($n-1$).",
+          "exampleSentence_en": "Estimating the sample mean consumes 1 degree of freedom."
         }
       ],
       "questions": [
@@ -524,22 +420,22 @@
           "id": "m1-l7-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "Ortalaması $\\bar{x} = 80$ ve standart sapması $s = 8$ olan sürecin $CV$ yüzdesi kaçtır?",
-            "en": "If mean $\\bar{x} = 80$ and $s = 8$, what is the percentage $CV$?"
+            "tr": "Gözlem değerleri 1, 3, 5 olan 3 elemanlı bir örneklemin varyansı ($s^2$) kaçtır?",
+            "en": "What is the sample variance ($s^2$) of 1, 3, 5?"
           },
-          "correctAnswer": 10,
+          "correctAnswer": 4,
           "explanation": {
-            "tr": "$$CV = (8 / 80) \\times 100 = 10\\%$$",
-            "en": "$$CV = (8 / 80) \\times 100 = 10\\%$$"
+            "tr": "Ortalama = 3. Sapmaların kareleri: $(1-3)^2 + (3-3)^2 + (5-3)^2 = 4 + 0 + 4 = 8$. $s^2 = \\frac{8}{3-1} = 4$.",
+            "en": "Mean = 3. Squared deviations sum = 8. $s^2 = \\frac{8}{2} = 4$."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=STDSAPMA.S(A1:A10) / ORTALAMA(A1:A10)",
-        "pythonCode": "import numpy as np\ncv = (np.std(data, ddof=1) / np.mean(data)) * 100",
+        "excelFormula": "=VAR.S(A1:A50)",
+        "pythonCode": "import numpy as np\nvar = np.var([1, 3, 5], ddof=1)",
         "powerBiNote": {
-          "tr": "KPI kartlarında volatilite metriği olarak gösterilir.",
-          "en": "Rendered as a volatility metric in KPI cards."
+          "tr": "DAX: VARX.S(Table, [Col])",
+          "en": "DAX: VARX.S(Table, [Col])"
         }
       }
     },
@@ -549,23 +445,23 @@
       "order": 9,
       "difficulty": "orta",
       "title": {
-        "tr": "Aykırı Değer (Outlier) Tespiti ve Boxplot",
-        "en": "Outlier Detection and Boxplot Interpretation"
+        "tr": "Standart Sapma ($s$)",
+        "en": "Standard Deviation ($s$)"
       },
       "conceptCard": {
-        "tr": "Tukey'in $1.5 \\times IQR$ kuralı:\n\n1. **Alt Sınır:** $LF = Q_1 - 1.5 \\times IQR$\n2. **Üst Sınır:** $UF = Q_3 + 1.5 \\times IQR$\n\n$[LF, UF]$ aralığı dışındaki tüm değerler **Aykırı Değer (Outlier)** kabul edilir ve kutu grafiğinde tekil noktalar olarak gösterilir.",
-        "en": "Tukey's $1.5 \\times IQR$ rule:\n\n1. **Lower Fence:** $LF = Q_1 - 1.5 \\times IQR$\n2. **Upper Fence:** $UF = Q_3 + 1.5 \\times IQR$\n\nPoints outside $[LF, UF]$ are designated as **Outliers**."
+        "tr": "Standart sapma, varyansın kareköküdür. En büyük avantajı, veri ile **aynı birime** sahip olmasıdır:\n\n$$s = \\sqrt{s^2} = \\sqrt{\\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2}$$\n\nStandart sapma ne kadar küçükse, veriler ortalamanın etrafında o kadar sıkı toplanmıştır.",
+        "en": "Standard deviation is the square root of variance, restoring original data units:\n\n$$s = \\sqrt{\\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2}$$"
       },
       "companyExample": {
-        "tr": "Sipariş verilerinde $Q_1 = 40$ TL, $Q_3 = 120$ TL ve $IQR = 80$ TL olsun. Üst sınır: $UF = Q_3 + 1.5 \\times IQR = 120 + 1.5(80) = 240$ TL'dir. 300 TL'lik bir sipariş $300 > 240$ olduğu için sisteme potansiyel dolandırıcılık veya kurumsal sipariş (aykırı değer / outlier) olarak işaretlenir.",
-        "en": "In transaction data, with $Q_1 = 40$ USD, $Q_3 = 120$ USD, and $IQR = 80$ USD, Upper Fence is $UF = Q_3 + 1.5 \\times IQR = 120 + 1.5(80) = 240$ USD. A 300 USD order is flagged as an outlier since $300 > 240$."
+        "tr": "**Örnek Soru:** Bir üretim hattında varyans $s^2 = 16 \\text{ mm}^2$ bulunmuştur. Standart sapma $s$ kaç mm'dir?\n\n**Çözüm:**\n$$s = \\sqrt{16} = 4 \\text{ mm}$$",
+        "en": "**Worked Example:** Production line variance is $s^2 = 16$. Find standard deviation.\n\n**Solution:**\n$$s = \\sqrt{16} = 4$$"
       },
       "vocabTerms": [
         {
-          "term_en": "outlier",
-          "explanation_tr": "Genel dağılım paterninden belirgin şekilde sapan uç nokta.",
-          "explanation_en": "A data point that differs significantly from other observations.",
-          "exampleSentence_en": "Outliers can distort mean and variance."
+          "term_en": "standard deviation",
+          "explanation_tr": "Verilerin ortalamadan ortalama sapma miktarını özgün birimde gösteren yayılım ölçüsü.",
+          "explanation_en": "Square root of variance, measuring typical distance from the mean.",
+          "exampleSentence_en": "A standard deviation of 4 mm indicates tight quality tolerance."
         }
       ],
       "questions": [
@@ -573,22 +469,22 @@
           "id": "m1-l8-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$Q_1 = 20$ ve $Q_3 = 50$ ise Üst Sınır (Upper Fence) kaçtır?",
-            "en": "If $Q_1 = 20$ and $Q_3 = 50$, what is the Upper Fence?"
+            "tr": "Varyansı $s^2 = 49$ olan bir veri setinin standart sapması ($s$) kaçtır?",
+            "en": "What is the standard deviation ($s$) for variance $s^2 = 49$?"
           },
-          "correctAnswer": 95,
+          "correctAnswer": 7,
           "explanation": {
-            "tr": "$$IQR = 30, UF = 50 + 1.5(30) = 95$$",
-            "en": "$$IQR = 30, UF = 50 + 1.5(30) = 95$$"
+            "tr": "$$s = \\sqrt{49} = 7$$",
+            "en": "$$s = \\sqrt{49} = 7$$"
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=EĞER(A2 > (Q3 + 1.5*IQR); \"Outlier\"; \"Normal\")",
-        "pythonCode": "import seaborn as sns\nsns.boxplot(x=data)",
+        "excelFormula": "=STDSAPMA.S(A1:A50)",
+        "pythonCode": "import numpy as np\nstd = np.std(data, ddof=1)",
         "powerBiNote": {
-          "tr": "Box & Whisker görseli ile anomaliler incelenir.",
-          "en": "Use Box & Whisker to inspect anomalies."
+          "tr": "DAX: STDEV.S(Sales[Amount])",
+          "en": "DAX: STDEV.S(Sales[Amount])"
         }
       }
     },
@@ -596,66 +492,231 @@
       "id": "m1-l9",
       "moduleId": "module-1",
       "order": 10,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Normallik Olasılık Grafiği (Q-Q Plot) & Çarpıklık",
-        "en": "Normal Probability Plot (Q-Q Plot) & Skewness"
+        "tr": "Değişim Katsayısı ($CV$)",
+        "en": "Coefficient of Variation ($CV$)"
       },
       "conceptCard": {
-        "tr": "Parametrik testlerden önce normallik ve çarpıklık doğrulanmalıdır (`INDR 252 Case Rules`):\n\n1. **Q-Q Plot:** Noktalar $45^\\circ$ köşegen doğru boyunca diziliyorsa veri normale uygundur.\n2. **Çarpıklık (Skewness):**\n- **Sağa Çarpık (Pozitif):** $\\text{Ortalama} > \\text{Medyan}$\n- **Sola Çarpık (Negatif):** $\\text{Ortalama} < \\text{Medyan}$\n\n> **Önemli Kural:** Normallik grafiği rassallığı (randomness) göstermez! Rassallık zaman serisi grafiğiyle bağımsız kontrol edilmelidir.",
-        "en": "Normality and skewness verification (`INDR 252 Case Rules`):\n\n1. **Q-Q Plot:** If points follow the $45^\\circ$ reference diagonal line, normality holds.\n2. **Skewness:**\n- **Right Skewed:** $\\text{Mean} > \\text{Median}$\n- **Left Skewed:** $\\text{Mean} < \\text{Median}$\n\n> **Crucial Rule:** Normality plots do not check randomness! Randomness requires time-series inspection."
+        "tr": "Değişim Katsayısı ($CV$), standart sapmanın ortalamaya oranlanmasıyla elde edilen **birimsiz** göreli değişkenlik ölçüsüdür:\n\n$$CV = \\frac{s}{\\bar{x}} \\times 100\\%$$\n\n**Kullanım Alanı:** Farklı birimlere veya çok farklı ölçeklere sahip iki farklı değişkenin risk/oynaklığını karşılaştırmak için kullanılır.",
+        "en": "Coefficient of variation ($CV$) is unitless relative dispersion:\n\n$$CV = \\frac{s}{\\bar{x}} \\times 100\\%$$\n\n**Purpose:** Compares variability across different units or scales."
       },
       "companyExample": {
-        "tr": "E-ticaret cirolarında Ortalama = 180 TL, Medyan = 70 TL çıkmıştır. Q-Q grafiğinde sağ üstte eğrilme görülür; veri sağa çarpıktır ve normal dağılmamaktadır.",
-        "en": "Payment processing durations are plotted on a Normal Q-Q plot. The points fall on a straight 45-degree line, confirming normality and validating parametric Z-score limits."
+        "tr": "**Örnek Soru:** A hissesinin ortalaması 100 TL, standart sapması 10 TL'dir. B hissesinin ortalaması 10 TL, standart sapması 2 TL'dir. Hangi hisse daha risklidir?\n\n**Çözüm:**\n$$CV_A = \\frac{10}{100} \\times 100 = 10\\%$$\n$$CV_B = \\frac{2}{10} \\times 100 = 20\\%$$\nB hissesi göreli olarak 2 kat daha yüksek oynaklığa ($CV$) sahiptir.",
+        "en": "**Worked Example:** Stock A: $\\bar{x}=100, s=10$. Stock B: $\\bar{x}=10, s=2$. Compare risks.\n\n**Solution:** $CV_A = 10\\%$, $CV_B = 20\\%$. Stock B is relatively twice as volatile."
       },
       "vocabTerms": [
         {
-          "term_en": "Q-Q plot",
-          "explanation_tr": "Örneklem kuantilleri ile teorik dağılım kuantillerini kıyaslayan grafik.",
-          "explanation_en": "Quantile-quantile probability plot verifying distribution assumptions.",
-          "exampleSentence_en": "The Q-Q plot points closely follow the straight line."
+          "term_en": "coefficient of variation (CV)",
+          "explanation_tr": "Standart sapmanın ortalamaya yüzdelik oranı olan birimsiz risk metriği.",
+          "explanation_en": "Ratio of standard deviation to mean expressed as a percentage.",
+          "exampleSentence_en": "Financial analysts use CV to assess risk-to-reward ratio."
         }
       ],
       "questions": [
         {
           "id": "m1-l9-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Ortalama = 120, Medyan = 75 ve Mod = 60 olan bir gelir dağılımının şekli nasıldır?",
-            "en": "If Mean = 120, Median = 75, and Mode = 60, what is the shape of this income distribution?"
+            "tr": "Bir veri setinde $\\bar{x} = 50$ ve $s = 10$ olduğuna göre Değişim Katsayısı ($CV$) yüzde kaçtır?",
+            "en": "If $\\bar{x} = 50$ and $s = 10$, what is the percentage $CV$?"
           },
-          "options": [
-            {
-              "tr": "Sağa Çarpık (Pozitif Çarpık)",
-              "en": "Right-Skewed (Positive)"
-            },
-            {
-              "tr": "Sola Çarpık (Negatif Çarpık)",
-              "en": "Left-Skewed (Negative)"
-            },
-            {
-              "tr": "Simetrik Normal",
-              "en": "Symmetric Normal"
-            },
-            {
-              "tr": "Tekdüze (Uniform)",
-              "en": "Uniform"
-            }
-          ],
-          "correctAnswer": "Sağa Çarpık (Pozitif Çarpık)",
+          "correctAnswer": 20,
           "explanation": {
-            "tr": "Ortalama > Medyan > Mod ilişkisi verinin sağa çarpık olduğunu kanıtlar.",
-            "en": "Mean > Median > Mode indicates a right-skewed distribution with a long upper tail."
+            "tr": "$$CV = \\frac{s}{\\bar{x}} \\times 100 = \\frac{10}{50} \\times 100 = 20\\%$$",
+            "en": "$$CV = \\frac{10}{50} \\times 100 = 20\\%$$"
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=ÇARPIKLIK(A1:A100)",
-        "pythonCode": "import scipy.stats as stats\nstats.probplot(data, dist=\"norm\", plot=plt)",
+        "excelFormula": "=(STDSAPMA.S(A1:A50)/ORTALAMA(A1:A50))*100",
+        "pythonCode": "cv = (np.std(data, ddof=1) / np.mean(data)) * 100",
         "powerBiNote": {
-          "tr": "Python Visual ile probplot çizdirilir.",
-          "en": "Render probplot via Python Visual in Power BI."
+          "tr": "DAX: DIVIDE([StdDev], [Mean])",
+          "en": "DAX: DIVIDE([StdDev], [Mean])"
+        }
+      }
+    },
+    {
+      "id": "m1-l10",
+      "moduleId": "module-1",
+      "order": 11,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Aykırı Değer (Outlier) ve Boxplot",
+        "en": "Outlier Detection & Boxplot"
+      },
+      "conceptCard": {
+        "tr": "Tukey'in 1.5 IQR Kuralı ile aykırı değer sınırları hesaplanır:\n\n- **Alt Sınır:** $\\text{Alt} = Q_1 - 1.5 \\times \\text{IQR}$\n- **Üst Sınır:** $\\text{Üst} = Q_3 + 1.5 \\times \\text{IQR}$\n\nBu sınırların dışında kalan noktalar **aykırı değer (outlier)** olarak kabul edilir.",
+        "en": "Tukey's 1.5 IQR fences identify anomalies:\n\n- $\\text{Lower} = Q_1 - 1.5 \\times \\text{IQR}$\n- $\\text{Upper} = Q_3 + 1.5 \\times \\text{IQR}$"
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** $Q_1 = 20$, $Q_3 = 40$ ($\text{IQR} = 20$). Üst sınır nedir?\n\n**Çözüm:**\n$$\\text{Üst Sınır} = 40 + (1.5 \\times 20) = 40 + 30 = 70$$\n70'in üzerindeki tüm değerler aykırı değerdir.",
+        "en": "**Worked Example:** $Q_1 = 20, Q_3 = 40$ ($\\text{IQR}=20$). Calculate upper fence.\n\n**Solution:** $\\text{Upper} = 40 + 1.5(20) = 70$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "outlier",
+          "explanation_tr": "Genel veri örüntüsünden belirgin şekilde sapan aşırı uç gözlem.",
+          "explanation_en": "An observation that lies an abnormal distance from other values.",
+          "exampleSentence_en": "The transaction of 1M dollars was flagged as an outlier."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m1-l10-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$Q_1 = 10$ ve $\\text{IQR} = 4$ olan bir dağılımda alt aykırı değer sınırı kaçtır?",
+            "en": "If $Q_1 = 10$ and $\\text{IQR} = 4$, what is the lower fence?"
+          },
+          "correctAnswer": 4,
+          "explanation": {
+            "tr": "$$\\text{Alt Sınır} = Q_1 - 1.5 \\times \\text{IQR} = 10 - 1.5 \\times 4 = 10 - 6 = 4$$",
+            "en": "$$\\text{Lower Fence} = 10 - 6 = 4$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Q1 - 1.5*IQR",
+        "pythonCode": "import seaborn as sns\nsns.boxplot(x=df['sales'])",
+        "powerBiNote": {
+          "tr": "Boxplot görselinde bıyık sınırları 1.5 IQR'dır.",
+          "en": "Boxplot whiskers are set at 1.5 IQR."
+        }
+      }
+    },
+    {
+      "id": "m1-l11",
+      "moduleId": "module-1",
+      "order": 12,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Çarpıklık ve Basıklık (Skewness & Kurtosis)",
+        "en": "Skewness & Kurtosis"
+      },
+      "conceptCard": {
+        "tr": "1. **Çarpıklık (Skewness):** Dağılımın simetrisini ölçer.\n- **Simetrik:** $\\text{Skew} = 0$ (Ortalama = Medyan = Mod)\n- **Sağa Çarpık (Pozitif):** $\\text{Skew} > 0$ (Mod < Medyan < Ortalama)\n- **Sola Çarpık (Negatif):** $\\text{Skew} < 0$ (Ortalama < Medyan < Mod)\n\n2. **Basıklık (Kurtosis):** Kuyruk kalınlığını ve sivrilik derecesini ölçer.",
+        "en": "1. **Skewness:** Measures asymmetry (Right-skewed: Mean > Median; Left-skewed: Mean < Median).\n2. **Kurtosis:** Measures tail weight and peakedness relative to Normal."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir ülkede gelir dağılımında Ortalama = 45.000 TL, Medyan = 28.000 TL'dir. Dağılım ne tür bir çarpıklığa sahiptir?\n\n**Çözüm:** Ortalama > Medyan olduğu için dağılım **Sağa Çarpık (Pozitif Çarpık)** yapıdadır.",
+        "en": "**Worked Example:** Mean income is 45k, median is 28k. Describe skewness.\n\n**Solution:** Because Mean > Median, the distribution is **Right-Skewed (Positive)**."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "skewness",
+          "explanation_tr": "Olasılık dağılımının simetriden ne kadar saptığının ölçüsüdür.",
+          "explanation_en": "A measure of the asymmetry of the probability distribution.",
+          "exampleSentence_en": "Income data typically exhibits high positive skewness."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m1-l11-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Ortalamanın medyandan daha küçük olduğu (Ortalama < Medyan) bir dağılım nasıldır?",
+            "en": "What type of distribution has Mean < Median?"
+          },
+          "options": [
+            {
+              "tr": "Sola Çarpık (Negatif)",
+              "en": "Left-Skewed (Negative)"
+            },
+            {
+              "tr": "Sağa Çarpık (Pozitif)",
+              "en": "Right-Skewed (Positive)"
+            },
+            {
+              "tr": "Mükemmel Simetrik",
+              "en": "Perfect Symmetrical"
+            },
+            {
+              "tr": "Üniform Dağılım",
+              "en": "Uniform Distribution"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Ortalama sol kuyruktaki aşırı küçük değerler tarafından aşağı çekildiği için dağılım Sola Çarpıktır.",
+            "en": "Extremely low values pull the mean left, creating a Left-Skewed distribution."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=ÇARPIKLIK(A1:A50)",
+        "pythonCode": "from scipy.stats import skew, kurtosis\nprint(skew(data), kurtosis(data))",
+        "powerBiNote": {
+          "tr": "Dağılım şekli Histogram ile incelenir.",
+          "en": "Distribution shape is visually verified via Histogram."
+        }
+      }
+    },
+    {
+      "id": "m1-l12",
+      "moduleId": "module-1",
+      "order": 13,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Normallik Grafiği (Q-Q Plot)",
+        "en": "Normality Assessment & Q-Q Plot"
+      },
+      "conceptCard": {
+        "tr": "Quantile-Quantile (Q-Q) Grafiği, örneklem çeyrekliklerini teorik normal dağılım çeyreklikleriyle karşılaştırır:\n\n- Noktalar $45^\\circ$'lik referans doğrusu üzerinde diziliyorsa veri **Normal Dağılım** gösterir.\n- Doğrudan sapan S-şekli veya yaylar çarpıklık ve ağır kuyruk varlığını gösterir.",
+        "en": "A Q-Q Plot compares sample quantiles against theoretical normal quantiles.\n\n- Points falling along the $45^\\circ$ line confirm normality."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir regülasyon analizinde 1000 pil ömrü verisinin Q-Q grafiğinde noktaların tümü $y=x$ doğrusuna tam oturmaktadır. Karar nedir?\n\n**Çözüm:** Veriler normal dağılım varsayımını mükemmel şekilde karşılamaktadır.",
+        "en": "**Worked Example:** Battery lifetime data falls directly on the 45-degree line. Conclusion?\n\n**Solution:** The data satisfies the normal distribution assumption."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Q-Q Plot",
+          "explanation_tr": "Verinin teorik bir dağılıma (özellikle Normal) uygunluğunu gösteren grafiksel tanı aracı.",
+          "explanation_en": "A visual tool to assess if a dataset follows a theoretical distribution.",
+          "exampleSentence_en": "The Q-Q plot showed mild deviations in the heavy tails."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m1-l12-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Q-Q grafiğinde noktaların $45^\\circ$'lik düz doğru üzerinde toplanması neyi gösterir?",
+            "en": "What does alignment along the 45-degree line in a Q-Q plot indicate?"
+          },
+          "options": [
+            {
+              "tr": "Verinin Normal Dağılıma uyduğunu",
+              "en": "Data follows a Normal Distribution"
+            },
+            {
+              "tr": "Verinin iki modlu (bimodal) olduğunu",
+              "en": "Data is Bimodal"
+            },
+            {
+              "tr": "Çok fazla aykırı değer olduğunu",
+              "en": "High presence of outliers"
+            },
+            {
+              "tr": "Verinin kategorik olduğunu",
+              "en": "Data is categorical"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "45 derecelik doğruya uyum, verilerin teorik normal dağılım ile örtüştüğünü kanıtlar.",
+            "en": "Close alignment with the reference line indicates normal distribution fit."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=STANDARTLAŞTIRMA(x, ortalama, ss)",
+        "pythonCode": "import statsmodels.api as sm\nimport matplotlib.pyplot as plt\nsm.qqplot(data, line='45')\nplt.show()",
+        "powerBiNote": {
+          "tr": "R / Python visual eklentisiyle Q-Q grafiği çizdirilebilir.",
+          "en": "Render Q-Q plots using R/Python visual script."
         }
       }
     }

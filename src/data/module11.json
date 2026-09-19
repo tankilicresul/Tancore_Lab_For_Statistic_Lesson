@@ -18,63 +18,63 @@
       "difficulty": "orta",
       "title": {
         "tr": "Uçtan Uca Veri Analitiği Süreci & Veri Temizleme",
-        "en": "End-to-End Analytics Workflow & Data Cleaning"
+        "en": "End-to-End Analytics Workflow & Cleaning"
       },
       "conceptCard": {
-        "tr": "Profesyonel bir veri analitiği projesinin 5 adımı (`INDR 252 Case Exam Information`):\n\n1. **Veri Tanıma & İçe Aktarma:** Veri tiplerinin doğru formatlanması.\n2. **Eksik ve Aykırı Değer Yönetimi:** Aykırı değerlerin neden kaynaklandığının belirlenmesi; mantıklı gerekçe olmadan veriden çıkarılmaması kuralı.\n3. **Keşifçi Veri Analizi (EDA):** Histogram, Boxplot ve Zaman serisi grafikleriyle dağılımın incelenmesi.\n4. **İstatistiksel Hipotez Modellemesi:** Parametrik/Non-parametrik testler, regresyon.\n5. **İş Kararı & Yönetici Sunumu:** Sonuçların yönetici diliyle raporlanması.",
-        "en": "The 5-stage professional data analytics workflow (`INDR 252 Case Exam Information`):\n\n1. **Data Ingestion:** Formatting data types.\n2. **Missing & Outlier Strategy:** Diagnosing root causes; never drop outliers without domain justification.\n3. **Exploratory Data Analysis (EDA):** Visualizing via histograms, boxplots, and time series.\n4. **Statistical Modeling:** Hypothesis tests, regression, confidence intervals.\n5. **Executive Actionable Reporting:** Translating statistical numbers into business recommendations."
+        "tr": "Profesyonel veri analitiği yaşam döngüsü:\n\n1. **Problem Tanımı:** İş hedeflerinin belirlenmesi\n2. **Veri Temizleme (Data Cleaning):** Eksik veri (imputation), aykırı değer ayıklama, tip dönüşümleri\n3. **Keşifçi Analiz (EDA):** Dağılımlar, korelasyonlar ve görselleştirme\n4. **Modelleme & Hipotez:** İstatistiksel testler ve regresyon\n5. **Karar & Raporlama:** Eyleme dönüştürülebilir iş tavsiyeleri",
+        "en": "End-to-end workflow: Problem Definition -> Data Cleaning -> EDA -> Statistical Modeling -> Business Recommendations."
       },
       "companyExample": {
-        "tr": "MarkIE Call Center projesinde 5 günlük 30 dakikalık çağrı verileri yüklenip aykırı değerler incelenmiş, öğle saatlerindeki dönemsellik zaman serisiyle tespit edilmiştir (`MarkIE 2026`).",
-        "en": "MarkIE Call Center project ingests 5-day call logs, inspects outliers, and isolates midday operational patterns (`MarkIE 2026`)."
+        "tr": "**Örnek Soru:** %20 eksik veri içeren yaş sütununda eksik değerler nasıl doldurulmalıdır?\n\n**Çözüm:** Dağılım çarpıksa **Medyan**, simetrikse **Ortalama** ile doldurulmalıdır (Imputation).",
+        "en": "**Worked Example:** Fill missing values with median for skewed distributions."
       },
       "vocabTerms": [
         {
-          "term_en": "exploratory data analysis",
-          "explanation_tr": "Veri setini modellemeden önce görsel ve sayısal özetlerle tanıma süreci (EDA).",
-          "explanation_en": "An approach of analyzing data sets to summarize their main characteristics with visual methods.",
-          "exampleSentence_en": "EDA reveals distribution skewness, outliers, and time dependencies."
+          "term_en": "data imputation",
+          "explanation_tr": "Eksik verilerin medyan, ortalama veya model tahmini ile uygun şekilde doldurulması süreci.",
+          "explanation_en": "Process of replacing missing data with substituted values.",
+          "exampleSentence_en": "Median imputation preserved the distribution integrity."
         }
       ],
       "questions": [
         {
           "id": "m11-l1-q1",
-          "type": "multiple_choice",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "İstatistiksel vaka raporlamasında aykırı değerlerle (outliers) ilgili hangi yaklaşım DOĞRUDUR (`Case Rules`)?",
-            "en": "Which approach regarding outliers is correct in statistical case reports (`Case Rules`)?"
+            "tr": "Çarpık bir dağılıma sahip eksik verileri doldururken en sağlam (robust) istatistik hangisidir?",
+            "en": "Which robust statistic is preferred for imputing skewed missing data?"
           },
           "options": [
             {
-              "tr": "Aykırı değerler gerekçelendirilerek analiz edilmeli; keyfi olarak veriden silinmemelidir",
-              "en": "Outliers must be justified and evaluated; never deleted arbitrarily"
+              "tr": "Medyan (Ortanca)",
+              "en": "Median"
             },
             {
-              "tr": "Tüm aykırı değerler analizi bozduğu için hemen silinmelidir",
-              "en": "All outliers must be instantly deleted"
+              "tr": "Maksimum",
+              "en": "Maximum"
             },
             {
-              "tr": "Aykırı değer varsa test yapılamaz",
-              "en": "Tests cannot be performed if outliers exist"
+              "tr": "Minimum",
+              "en": "Minimum"
             },
             {
-              "tr": "Aykırı değerler ortalamayı etkilemez",
-              "en": "Outliers do not affect the mean"
+              "tr": "Ranj",
+              "en": "Range"
             }
           ],
-          "correctAnswer": "Aykırı değerler gerekçelendirilerek analiz edilmeli; keyfi olarak veriden silinmemelidir",
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "INDR 252 kuralları gereği aykırı değerlerin neden oluştuğu açıklanmalı ve raporda iş etkisi tartışılmalıdır.",
-            "en": "Statistical guidelines require documenting the business cause and impact of outliers."
+            "tr": "Medyan aykırı değerlerden etkilenmediği için çarpık verilerde en güvenli doldurma yöntemidir.",
+            "en": "Median is unaffected by outliers."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=Veri Temizleme ve Koşullu Biçimlendirme",
-        "pythonCode": "df.describe().T\ndf.isnull().sum()",
+        "excelFormula": "=EĞER(EHATALIYSA(A2), MEDYAN(A:A), A2)",
+        "pythonCode": "df['age'] = df['age'].fillna(df['age'].median())",
         "powerBiNote": {
-          "tr": "Power Query ile veri temizleme adımları otomatikleştirilir.",
-          "en": "Power Query automates ETL data preparation steps."
+          "tr": "Power Query veri temizleme adımları",
+          "en": "Power Query data transformation steps"
         }
       }
     },
@@ -82,48 +82,66 @@
       "id": "m11-l2",
       "moduleId": "module-11",
       "order": 2,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Keşifçi Veri Analizi, Normallik & Varyans F-Testi",
-        "en": "EDA, Normality Verification & Variance F-Test"
+        "tr": "Keşifçi Veri Analizi ve Dağılım Karşılaştırma",
+        "en": "Exploratory Data Analysis (EDA)"
       },
       "conceptCard": {
-        "tr": "Analiz öncesi 3 doğrulama (`MarkIE Case 2026`):\n\n1. **Dağılım Şekli & Çarpıklık:** Ortalama vs Medyan kıyası ve Histogram.\n2. **Normallik Kontrolü:** Normal Probability Plot (Q-Q Plot) düz çizgiye oturuyor mu?\n3. **Varyans Eşitliği Doğrulaması:** İki popülasyon kıyaslanacaksa $F = s_1^2 / s_2^2$ testi ile homojenlik kontrol edilmelidir.",
-        "en": "The 3 verification steps before running inferential models (`MarkIE Case 2026`):\n\n1. **Distribution Shape & Skewness:** Mean vs Median comparison and Histograms.\n2. **Normality Check:** Normal Q-Q plot linear fit.\n3. **Variance Homogeneity:** $F = s_1^2 / s_2^2$ test prior to two-sample comparisons."
+        "tr": "Modelleme öncesinde değişkenler arasındaki temel ilişkileri ve veri dağılımlarını ortaya çıkarır:\n\n- Sayısal değişkenler için: Histogram, Boxplot, Q-Q Plot\n- İki değişkenli ilişkiler için: Scatter plot, Korelasyon Isı Haritası\n- Kategorik yapılar için: Çapraz tablolar ve frekans çubukları",
+        "en": "EDA visualizes distributions and associations before modeling using histograms, boxplots, and correlation heatmaps."
       },
       "companyExample": {
-        "tr": "MarkIE çağrı sayılarında $\\bar{x} = 618$ çağrı/30dk, Medyan = 616 bulunmuştur. Q-Q grafiği normale yakın çıkmış, tek örneklem $t$-testi için normallik sağlanmıştır.",
-        "en": "MarkIE calls: $\\bar{x}=618$, Median=616. Q-Q plot confirms normality, justifying one-sample $t$-test against 615 limit."
+        "tr": "**Örnek Soru:** Satışlar ile Reklam Harcaması arasındaki ilişkinin doğrusal olup olmadığını görmek için hangi grafik çizilir?\n\n**Çözüm:** **Saçılım Grafiği (Scatter Plot)** çizilir.",
+        "en": "**Worked Example:** Scatter plots verify linearity between sales and advertising."
       },
       "vocabTerms": [
         {
-          "term_en": "normality verification",
-          "explanation_tr": "Parametrik testlerin gerektirdiği normallik koşulunun grafik ve testlerle doğrulanması.",
-          "explanation_en": "Validating the assumption of normally distributed data before applying parametric procedures.",
-          "exampleSentence_en": "Normality verification is mandatory prior to calculating t-intervals."
+          "term_en": "Exploratory Data Analysis (EDA)",
+          "explanation_tr": "Veri setinin temel özelliklerini özetlemek için görsel ve sayısal teknikler uygulama süreci.",
+          "explanation_en": "An approach of analyzing data sets to summarize their main characteristics.",
+          "exampleSentence_en": "EDA revealed a strong non-linear relationship between customer tenure and retention."
         }
       ],
       "questions": [
         {
           "id": "m11-l2-q1",
-          "type": "numeric",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "Grup 1 varyansı $s_1^2 = 32$ ve Grup 2 varyansı $s_2^2 = 8$ ise varyans eşitliği için hesaplanan $F$-istatistiği kaçtır?",
-            "en": "If Group 1 variance is $s_1^2 = 32$ and Group 2 variance is $s_2^2 = 8$, what is test $F$?"
+            "tr": "İki sürekli sayısal değişken arasındaki doğrusal ilişkiyi görsel olarak incelemek için en uygun grafik hangisidir?",
+            "en": "Which plot is ideal for inspecting the relationship between two continuous variables?"
           },
-          "correctAnswer": 4,
+          "options": [
+            {
+              "tr": "Saçılım Grafiği (Scatter Plot)",
+              "en": "Scatter Plot"
+            },
+            {
+              "tr": "Pasta Grafiği (Pie Chart)",
+              "en": "Pie Chart"
+            },
+            {
+              "tr": "Ağaç Haritası (Treemap)",
+              "en": "Treemap"
+            },
+            {
+              "tr": "Huni Grafiği",
+              "en": "Funnel Chart"
+            }
+          ],
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "$$F = \\frac{s_1^2}{s_2^2} = \\frac{32}{8} = 4$$",
-            "en": "$$F = \\frac{32}{8} = 4$$"
+            "tr": "İki değişkenli ilişki ve eğilim saçılım grafiği (scatter plot) ile net olarak görülür.",
+            "en": "Scatter plots display bivariate association and patterns."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=F.TEST(A1:A30; B1:B30)",
-        "pythonCode": "stats.probplot(calls_data, dist=\"norm\", plot=plt)\nplt.title(\"Q-Q Plot\")",
+        "excelFormula": "=SAÇILIM_GRAFİĞİ()",
+        "pythonCode": "import seaborn as sns\nsns.pairplot(df)",
         "powerBiNote": {
-          "tr": "Histogram ve Q-Q grafiği yan yana sunulur.",
-          "en": "Render Histogram alongside Q-Q plot for executive review."
+          "tr": "Korelasyon matrisi ve scatter matrix",
+          "en": "Correlation matrix and scatter matrix"
         }
       }
     },
@@ -131,48 +149,66 @@
       "id": "m11-l3",
       "moduleId": "module-11",
       "order": 3,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Endüstriyel A/B Testi & Etki Büyüklüğü (Cohen's $d$) [Bonus]",
-        "en": "Industrial A/B Testing & Effect Size (Cohen's $d$) [Bonus]"
+        "tr": "Endüstriyel A/B Testi Tasarımı",
+        "en": "Industrial A/B Testing Design"
       },
       "conceptCard": {
-        "tr": "Büyük veri setlerinde ($n = 100.000$) en önemsiz farklar bile $p < 0.05$ çıkabilir. Bu nedenle istatistiksel anlamlılık ile **pratik etki büyüklüğü** birlikte incelenir:\n\n**Cohen's $d$ (Etki Büyüklüğü):**\n$$d = \\frac{\\bar{x}_1 - \\bar{x}_2}{s_p}$$\n- **$d \\approx 0.20$:** Küçük etki\n- **$d \\approx 0.50$:** Orta düzey etki\n- **$d \\ge 0.80$:** Büyük ve kritik etki",
-        "en": "In large datasets ($n=100K$), tiny trivial differences become $p < 0.05$. Thus, evaluate practical effect size:\n\n**Cohen's $d$ (Effect Size):**\n$$d = \\frac{\\bar{x}_1 - \\bar{x}_2}{s_p}$$\n- **$d \\approx 0.20$:** Small effect\n- **$d \\approx 0.50$:** Medium effect\n- **$d \\ge 0.80$:** Large business impact"
+        "tr": "Dijital ürünlerde karar almanın bilimsel yöntemidir:\n\n1. **Randomizasyon:** Kullanıcılar A (Kontrol) ve B (Varyant) gruplarına tamamen rastgele atanır.\n2. **Kukla Değişken ve Örneklem Büyüklüğü:** İstenen güç ($1-\\beta = 0.80$) ve anlamlılık ($\\alpha = 0.05$) için yeterli süre beklenir.\n3. **Metrik:** Birincil KPI (Örn: Dönüşüm Oranı / ARPU).",
+        "en": "A/B testing evaluates product variants via randomized controlled experiments controlling $\\alpha$ and power."
       },
       "companyExample": {
-        "tr": "Web sitesi buton rengi testinde $p = 0.002$ çıkmasına rağmen Cohen's $d = 0.04$ (ihmal edilebilir etki) çıkmıştır. Yazılım ekibine geliştirme yatırımı yapmama kararı alınmıştır.",
-        "en": "Button color A/B test gave $p=0.002$ but $d=0.04$ (negligible effect size), avoiding costly wasteful UI refactoring."
+        "tr": "**Örnek Soru:** A/B testinde her iki gruba da 10.000 kullanıcı atanmıştır. A dönüşümü %2.0, B dönüşümü %2.5. Bu artışın testi hangi yöntemle yapılır?\n\n**Çözüm:** İki örneklem oran testi ($Z$-testi) ile yapılır.",
+        "en": "**Worked Example:** Comparing 2.0% vs 2.5% across 10k users uses a two-sample proportion Z-test."
       },
       "vocabTerms": [
         {
-          "term_en": "effect size",
-          "explanation_tr": "İki grup arasındaki farkın örneklem boyutundan bağımsız standartlaştırılmış pratik büyüklüğü.",
-          "explanation_en": "A quantitative measure of the magnitude of the experimental effect.",
-          "exampleSentence_en": "Reporting effect size distinguishes statistical significance from practical significance."
+          "term_en": "A/B testing",
+          "explanation_tr": "İki sürümün performansını rastgele seçilmiş kullanıcı gruplarıyla istatiksel olarak kıyaslama.",
+          "explanation_en": "Randomized experiment with two variants to test a hypothesis.",
+          "exampleSentence_en": "The A/B test demonstrated a statistically significant 12% revenue increase."
         }
       ],
       "questions": [
         {
           "id": "m11-l3-q1",
-          "type": "numeric",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "$\\bar{x}_1 = 110$, $\\bar{x}_2 = 100$ ve havuzlu standart sapma $s_p = 20$ ise Cohen's $d$ etki büyüklüğü kaçtır?",
-            "en": "If $\\bar{x}_1 = 110, \\bar{x}_2 = 100$, and $s_p = 20$, what is Cohen's $d$?"
+            "tr": "A/B testinde kullanıcıların gruplara seçiminde dış etkenleri (bias) sıfırlamak için en kritik ilke nedir?",
+            "en": "What is the critical principle to eliminate bias in A/B testing?"
           },
-          "correctAnswer": 0.5,
+          "options": [
+            {
+              "tr": "Tam Rastgele Atama (Randomization)",
+              "en": "Randomization"
+            },
+            {
+              "tr": "Sadece en aktif kullanıcıları seçmek",
+              "en": "Selecting only active users"
+            },
+            {
+              "tr": "Gündüzleri A, geceleri B grubunu çalıştırmak",
+              "en": "Time-based allocation"
+            },
+            {
+              "tr": "Testi ilk saatte bitirmek",
+              "en": "Stopping early"
+            }
+          ],
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "$$d = \\frac{110 - 100}{20} = \\frac{10}{20} = 0.50 \\text{ (Orta düzey etki)}$$",
-            "en": "$$d = \\frac{10}{20} = 0.50$$"
+            "tr": "Rastgele atama bilinmeyen tüm gürültü faktörlerini iki gruba eşit dağıtır.",
+            "en": "Randomization balances confounding variables across groups."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=(x_bar1 - x_bar2) / s_pooled",
-        "pythonCode": "d = (np.mean(g1) - np.mean(g2)) / np.sqrt((np.var(g1) + np.var(g2)) / 2)",
+        "excelFormula": "=A/B Test Z-skoru",
+        "pythonCode": "from statsmodels.stats.proportion import proportions_ztest\nz, p = proportions_ztest([250, 200], [10000, 10000])",
         "powerBiNote": {
-          "tr": "A/B test deney skor kartlarında Cohen's d raporlanır.",
-          "en": "Report Cohen's d in experiment scorecard."
+          "tr": "A/B testi canlı dönüşüm panosu",
+          "en": "Live A/B testing dashboard"
         }
       }
     },
@@ -180,66 +216,48 @@
       "id": "m11-l4",
       "moduleId": "module-11",
       "order": 4,
-      "difficulty": "zor",
+      "difficulty": "ileri",
       "title": {
-        "tr": "Çok Değişkenli Modelleme ve Kalıntı Doğrulaması",
-        "en": "Multivariate Modeling & Residual Diagnostics"
+        "tr": "Etki Büyüklüğü (Cohen's $d$) ve Güç Analizi",
+        "en": "Effect Size (Cohen's $d$) & Power"
       },
       "conceptCard": {
-        "tr": "Büyük veri vaka projelerinde nihai tahmin modeli kurulumu ve kalite kontrolü (`MarkIE 2026`, `INDR 252 Capstone`):\n\n1. **Çoklu Regresyon Kurulumu:** Değişken seçimi ($VIF < 5$, $C_p \\approx p$).\n2. **Kalıntı Kontrolleri:** Eşvaryanslık (Homoskedasticity), Normallik ve Durbin-Watson ($d \\approx 2$).\n3. **Model Karşılaştırması:** Adjusted $R^2$ ve RMSE kıyaslaması.",
-        "en": "Developing and validating multivariate predictive models (`MarkIE 2026`, `INDR 252 Capstone`):\n\n1. **Model Specification:** Variable selection ($VIF < 5, C_p \\approx p$).\n2. **Diagnostic Checking:** Homoskedasticity, Q-Q residuals, Durbin-Watson ($d \\approx 2$).\n3. **Model Selection:** Adjusted $R^2$ and RMSE comparison."
+        "tr": "İstatistiksel anlamlılık ($p < 0.05$) sadece farkın gerçek olduğunu söyler; farkın **büyüklüğünü** söylemez. **Cohen's $d$** etki büyüklüğünü standart sapma cinsinden ölçer:\n\n$$d = \\frac{\\bar{X}_1 - \\bar{X}_2}{s_p}$$\n\n- $d = 0.2$: Küçük Etki\n- $d = 0.5$: Orta Etki\n- $d = 0.8$: Büyük Etki",
+        "en": "Cohen's $d = \\frac{\\bar{X}_1 - \\bar{X}_2}{s_p}$ quantifies practical significance in standard deviation units."
       },
       "companyExample": {
-        "tr": "MarkIE çağrı merkezinde yanıtlanan çağrı sayısı ($A$) bağımlı değişken; yapılan çağrı ($M$), operatör tecrübesi ve gün saati bağımsız değişken olarak modellenmiş ve $R_{adj}^2 = 0.81$ elde edilmiştir.",
-        "en": "MarkIE answered calls ($A$) modeled as function of calls made ($M$), operator tenure, and time of day ($R_{adj}^2 = 0.81$)."
+        "tr": "**Örnek Soru:** İki grubun ortalama farkı 5 birim, ortak standart sapma $s_p = 10$'dur. Cohen's $d$ nedir?\n\n**Çözüm:** $d = 5 / 10 = 0.50$ (Orta düzeyde pratik etki büyüklüğü).",
+        "en": "**Worked Example:** $d = 5 / 10 = 0.50$ (Medium effect size)."
       },
       "vocabTerms": [
         {
-          "term_en": "model diagnostics",
-          "explanation_tr": "Kurulan regresyon modelinin matematiksel varsayımları sağlayıp sağlamadığını denetleme süreci.",
-          "explanation_en": "Procedures to assess the validity of statistical assumptions underlying an estimated model.",
-          "exampleSentence_en": "Model diagnostics prevent drawing erroneous inferences from misspecified regressions."
+          "term_en": "effect size (Cohen's d)",
+          "explanation_tr": "İki grup arasındaki farkın standart sapma cinsinden pratik büyüklük ölçüsü.",
+          "explanation_en": "Quantitative measure of the magnitude of the experimental effect.",
+          "exampleSentence_en": "Even with a tiny p-value, Cohen's d of 0.05 revealed negligible practical impact."
         }
       ],
       "questions": [
         {
           "id": "m11-l4-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Regresyon modelinin güvenilir kabul edilmesi için kalıntıların hangi özelliği sağlaması ZORUNLUDUR?",
-            "en": "Which property must residuals satisfy for a regression model to be valid?"
+            "tr": "Ortalama farkı $\\bar{X}_1 - \\bar{X}_2 = 8$ ve havuzlanmış standart sapma $s_p = 10$ olduğuna göre Cohen's $d$ kaçtır?",
+            "en": "Calculate Cohen's $d$ for mean difference 8 and $s_p = 10$."
           },
-          "options": [
-            {
-              "tr": "Kalıntıların sıfır ortalamalı, sabit varyanslı ve bağımsız normal dağılması",
-              "en": "Residuals are independent, normally distributed with mean 0 and constant variance"
-            },
-            {
-              "tr": "Kalıntıların her zaman pozitif olması",
-              "en": "Residuals must always be positive"
-            },
-            {
-              "tr": "Kalıntıların değişken sayısına eşit olması",
-              "en": "Residuals must equal number of predictors"
-            },
-            {
-              "tr": "Kalıntıların toplamının 100 olması",
-              "en": "Residual sum must equal 100"
-            }
-          ],
-          "correctAnswer": "Kalıntıların sıfır ortalamalı, sabit varyanslı ve bağımsız normal dağılması",
+          "correctAnswer": 0.8,
           "explanation": {
-            "tr": "LINE varsayımları gereği hatalar sıfır ortalamalı, sabit varyanslı (homoscedastic), bağımsız ve normal olmalıdır.",
-            "en": "Standard OLS requires i.i.d. normal errors with constant variance."
+            "tr": "$$d = \\frac{8}{10} = 0.80$$",
+            "en": "$$d = 8 / 10 = 0.80$$"
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=Kalıntı_Grafikleri_Menüsü",
-        "pythonCode": "import statsmodels.api as sm\nmodel = sm.OLS(y, X).fit()\nprint(model.summary())",
+        "excelFormula": "=(Ort1 - Ort2) / Sp",
+        "pythonCode": "d = (np.mean(g1) - np.mean(g2)) / np.sqrt((np.var(g1) + np.var(g2))/2)",
         "powerBiNote": {
-          "tr": "Tahmin vs Gerçekleşen saçılım panosu oluşturulur.",
-          "en": "Fitted vs Actual scatter visual tracks model accuracy."
+          "tr": "Etki büyüklüğü KPI kartı",
+          "en": "Effect size magnitude visual"
         }
       }
     },
@@ -247,66 +265,133 @@
       "id": "m11-l5",
       "moduleId": "module-11",
       "order": 5,
-      "difficulty": "orta-ustu",
+      "difficulty": "ileri",
       "title": {
-        "tr": "Yönetici Düzeyi Raporlama ve Sayısal Karar Önerileri",
-        "en": "Executive Reporting & Actionable Decision Formulation"
+        "tr": "Çok Değişkenli Modelleme ve Kalıntı Doğrulaması",
+        "en": "Multivariate Modeling & Diagnostics"
       },
       "conceptCard": {
-        "tr": "Akademik analizleri iş dünyası kararına dönüştürme ilkeleri (`INDR 252 Case Report Rubric`):\n\n1. **Yönetici Özeti (Executive Summary):** Karmaşık istatistiksel terimleri arındırıp temel bulguyu 1-2 cümlede açıklamak.\n2. **Rakam Formatı Kuralı:** Rapor metninde tüm sayısal değerler en fazla **3 basamak** hassasiyetle yazılmalıdır (Örn: $p = 0.014$, $\\bar{x} = 24.5$).\n3. **Ekler (Appendix):** Tüm Python çıktıları, tablolar ve grafikler rapora değil, Ekler bölümüne konulmalı ve metinden doğrudan referans verilmelidir (`Bakınız: Ek Tablo 1`).\n4. **Aksiyon Önerileri:** Salt sayı vermek yerine şirketin ne yapması gerektiği netleştirilmelidir (Örn: \"Operatör sayısı 30'dan 28'e indirilerek yasal sınırın altında kalınabilir\").",
-        "en": "Translating statistical analyses into corporate executive decisions (`INDR 252 Case Report Rubric`):\n\n1. **Executive Summary:** Clear non-technical takeaway in opening paragraph.\n2. **Number Precision:** Report numbers with at most **three decimal digits**.\n3. **Appendix Referencing:** Place charts and tables in the appendix and reference them directly in prose (`See Table A1`).\n4. **Actionable Recommendations:** Provide concrete operational adjustments (e.g. shift schedule optimization)."
+        "tr": "Üretim ortamına sunulacak bir regresyon modelinde tam tanı kontrolü yapılır:\n\n1. Katsayı anlamlılığı ($p < 0.05$)\n2. Çoklu doğrusallık kontrolü ($VIF < 5$)\n3. Kalıntıların normalliği (Q-Q plot)\n4. Eşvaryanslık (Breusch-Pagan)\n5. Otokorelasyon bağımsızlığı ($DW \\approx 2$)",
+        "en": "Full regression audit pipeline: Coefficient significance, $VIF < 5$, Normality, Homoskedasticity, and $DW \\approx 2$."
       },
       "companyExample": {
-        "tr": "MarkIE Call Center raporu sonuç paragrafı: \"30 operatörle ortalama çağrı sayısı 618.4 çıkmış ve 615 yasal sınırı aşılmıştır ($p = 0.032$). Vardiya başlangıçları 15 dakika kaydırılarak yasa uyumu sağlanabilir\" (`MarkIE Report`).",
-        "en": "MarkIE executive conclusion: \"Operating with 30 agents averages 618.4 calls, exceeding 615 statutory ceiling ($p = 0.032$). Staggering shift starts by 15 mins restores full compliance.\""
+        "tr": "**Örnek Soru:** Modelde bir değişkenin $p = 0.001$, $VIF = 2.1$, kalıntı $DW = 1.95$. Model canlıya alınabilir mi?\n\n**Çözüm:** Tüm tanı testleri mükemmel düzeyde başarılıdır; model canlı karar destek sistemine güvenle alınabilir.",
+        "en": "**Worked Example:** All diagnostic checks pass ($p<0.05, VIF<5, DW \\approx 2$)."
       },
       "vocabTerms": [
         {
-          "term_en": "actionable recommendation",
-          "explanation_tr": "İstatistiksel verilerden türetilmiş, yönetim tarafından doğrudan uygulanabilir stratejik öneri.",
-          "explanation_en": "A strategic suggestion derived directly from empirical data analysis that management can implement.",
-          "exampleSentence_en": "The case report concludes with actionable operational recommendations."
+          "term_en": "model validation pipeline",
+          "explanation_tr": "Bir istatistiksel modelin canlı kararlara uygulanmadan önce tüm varsayımlarının doğrulanması süreci.",
+          "explanation_en": "Systematic auditing of model assumptions and performance before deployment.",
+          "exampleSentence_en": "Model validation pipeline confirmed robust generalization without bias."
         }
       ],
       "questions": [
         {
           "id": "m11-l5-q1",
-          "type": "multiple_choice",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "INDR 252 vaka raporlama kurallarına göre (`Case Rubric`) rapor metnindeki sayılar en fazla kaç basamaklı yazılmalıdır?",
-            "en": "According to INDR 252 Case Rubric, what is the maximum number of digits when writing numbers in reports?"
+            "tr": "Bir çoklu regresyon modelini canlıya almadan önce hangi kontrollerin tamamı başarıyla geçilmelidir?",
+            "en": "Which set of diagnostic checks must be verified before deploying a model?"
           },
           "options": [
             {
-              "tr": "En fazla 3 basamak (at most three digits)",
-              "en": "At most three digits"
+              "tr": "VIF < 5, Breusch-Pagan p > 0.05, Durbin-Watson ~ 2",
+              "en": "VIF < 5, Breusch-Pagan p > 0.05, Durbin-Watson ~ 2"
             },
             {
-              "tr": "En az 8 basamak",
-              "en": "At least 8 digits"
+              "tr": "Sadece R-kare değerinin 1 olması",
+              "en": "Only R-squared = 1"
             },
             {
-              "tr": "Yalnızca tam sayı",
-              "en": "Only integers"
+              "tr": "Katsayıların tamamının sıfır olması",
+              "en": "All coefficients zero"
             },
             {
-              "tr": "Basamak sınırı yoktur",
-              "en": "No digit limitation"
+              "tr": "Örneklemin 5 olması",
+              "en": "Sample size = 5"
             }
           ],
-          "correctAnswer": "En fazla 3 basamak (at most three digits)",
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "Resmi INDR 252 rapor rubriği gereği rapor gövdesinde sayılar en fazla 3 basamakla yazılmalıdır.",
-            "en": "Official INDR 252 rubric mandates formatting numbers with at most 3 digits."
+            "tr": "Çoklu doğrusallık, eşvaryanslık ve hata bağımsızlığı testlerinin tümü sağlanmalıdır.",
+            "en": "Full suite of diagnostic criteria must be verified."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=YUVARLA(A1; 3)",
-        "pythonCode": "print(f\"p-value: {p_val:.3f}, Mean: {x_bar:.2f}\")",
+        "excelFormula": "=MODEL_TANI()",
+        "pythonCode": "print(model.summary())\nprint('VIF:', vif_series)",
         "powerBiNote": {
-          "tr": "Dashboard kartlarında format 0.00 olarak ayarlanır.",
-          "en": "Format dashboard KPI cards to 2-3 decimal places."
+          "tr": "Model tanı ve denetim paneli",
+          "en": "Model diagnostic audit dashboard"
+        }
+      }
+    },
+    {
+      "id": "m11-l6",
+      "moduleId": "module-11",
+      "order": 6,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Yönetici Düzeyi Karar Raporlaması",
+        "en": "Executive Decision Reporting & Storytelling"
+      },
+      "conceptCard": {
+        "tr": "İstatistiksel bulguları üst yönetim için stratejik kararlara dönüştürme ilkeleri:\n\n1. **Önce Sonuç (BLUF - Bottom Line Up Front):** Ana karar ve finansal etki en başta net söylenir.\n2. **Sayısal Güven:** Nokta tahminler yerine güven aralıkları verilir (Örn: 'Gelir artışı %95 güvenle 1.2M - 1.8M TL arasındadır').\n3. **Eyleme Dönüştürülebilir Öneri:** Yalnızca tespit değil, somut aksiyon adımı sunulur.",
+        "en": "Executive storytelling: Lead with the bottom line (BLUF), present financial confidence intervals, and recommend concrete actions."
+      },
+      "companyExample": {
+        "tr": "**Örnek Rapor Özeti:** 'Yeni algoritma sepet tutarını %95 güvenle ortalama 45 TL ($\\pm 5$ TL) artırmaktadır. Yıllık ciroya net katkısı 12.5 Milyon TL öngörüldüğünden modelin tüm kullanıcılara açılması tavsiye edilir.'",
+        "en": "**Worked Example:** Executive decision summary linking statistical lift to bottom-line revenue."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "data storytelling",
+          "explanation_tr": "Karmaşık istatistiksel sonuçları yöneticilerin anlayacağı sade ve eyleme dönük bir dille aktarma sanatı.",
+          "explanation_en": "Communicating data insights using compelling narratives and actionable recommendations.",
+          "exampleSentence_en": "Effective data storytelling translated p-values into strategic business ROI."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m11-l6-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Üst yöneticiye sunulan bir veri analitiği raporunun en kritik özelliği ne olmalıdır?",
+            "en": "What is the most critical attribute of an executive data report?"
+          },
+          "options": [
+            {
+              "tr": "Somut finansal etkiyi ve eyleme dönük kararı net sunması",
+              "en": "Presenting clear business impact and actionable decisions"
+            },
+            {
+              "tr": "Sadece karmaşık formül türetimleri içermesi",
+              "en": "Only complex formula derivations"
+            },
+            {
+              "tr": "Raporun 100 sayfadan uzun olması",
+              "en": "Being 100+ pages long"
+            },
+            {
+              "tr": "Grafik içermemesi",
+              "en": "Containing no visuals"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Yönetici raporları doğrudan iş kararına ve finansal ROI'ye odaklanmalıdır.",
+            "en": "Executive reporting focuses on actionable business ROI."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=YÖNETİCİ_ÖZETİ()",
+        "pythonCode": "print(f'Financial ROI: {roi_estimate:,.2f} USD')",
+        "powerBiNote": {
+          "tr": "Yönetici KPI özet panosu",
+          "en": "Executive summary KPI dashboard"
         }
       }
     }

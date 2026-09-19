@@ -15,66 +15,48 @@
       "id": "m9-l1",
       "moduleId": "module-9",
       "order": 1,
-      "difficulty": "orta",
+      "difficulty": "basit",
       "title": {
-        "tr": "Çoklu Grup Karşılaştırma & Tip 1 Hata Şişmesi",
-        "en": "Multiple Group Comparisons & Family-Wise Error Rate"
+        "tr": "Çoklu Grup Kıyaslama ve Tip 1 Hata Şişmesi",
+        "en": "Multiple Comparisons & Error Inflation"
       },
       "conceptCard": {
-        "tr": "3 veya daha fazla bağımsız grubun ortalamalarını ($k \\ge 3$) kıyaslarken art arda ikili $t$-testleri yapmak büyük hatadır (`INDR 252 Lecture 16`):\n\n**Tip 1 Hata Şişmesi (Family-Wise Error Rate):**\n$$\\alpha_{family} = 1 - (1 - \\alpha)^m$$\n- $m = \\binom{k}{2}$ ikili test sayısı.\n- 5 grup için $m = 10$ test yapılırsa: $\\alpha_{family} = 1 - (0.95)^{10} \\approx 0.40$ (%40 yalancı pozitif riski!). Bu nedenle **ANOVA** kullanılır.",
-        "en": "Running pairwise $t$-tests across $k \\ge 3$ groups causes severe error inflation (`INDR 252 Lecture 16`):\n\n**Family-Wise Error Rate:**\n$$\\alpha_{family} = 1 - (1 - \\alpha)^m$$\n- For $k=5$ groups, $m=10$ pairwise tests yield $\\alpha_{family} \\approx 0.40$ (40% chance of false positive!). **ANOVA** solves this by testing all means simultaneously."
+        "tr": "3 veya daha fazla grubu ikili $t$-testleriyle arka arkaya kıyaslamak genel Tip 1 hata oranını katlayarak şişirir:\n\n$$\\alpha_{\\text{aile}} = 1 - (1 - \\alpha)^C, \\quad C = \\binom{k}{2}$$\n\nÖrneğin 5 grup için $C = 10$ test yapılır ve hata payı $\\%5$'ten **$\\%40.1$'e fırlar**. Bu yüzden tüm gruplar tek bir **ANOVA** testiyle topluca test edilmelidir.",
+        "en": "Multiple pairwise t-tests inflate familywise error rate: $\\alpha_{\\text{family}} = 1 - (1-\\alpha)^C$. ANOVA controls this by testing all groups simultaneously."
       },
       "companyExample": {
-        "tr": "MediaImpact 4 farklı reklam kampanyasını kıyaslamak istiyor. $\\binom{4}{2} = 6$ ayrı $t$-testi yapmak yerine tek bir ANOVA testi ile hata riski %5'te tutulur.",
-        "en": "Comparing 4 ad campaigns: Instead of 6 pairwise t-tests with 26% error risk, One-Way ANOVA controls overall $\\alpha$ at 5%."
+        "tr": "**Örnek Soru:** 4 farklı web sayfası tasarımını ikili testlerle kıyaslamak için kaç farklı test gerekir?\n\n**Çözüm:** $C = \\binom{4}{2} = \\frac{4 \\times 3}{2} = 6$ test gerekir (Hata oranı %26'ya şişer).",
+        "en": "**Worked Example:** 4 variants require $\\binom{4}{2} = 6$ pairwise comparisons."
       },
       "vocabTerms": [
         {
-          "term_en": "family-wise error rate",
-          "explanation_tr": "Birden fazla hipotez testi yapıldığında en az bir Tip 1 hata yapma birleşik olasılığı.",
-          "explanation_en": "The probability of making at least one Type I error across a family of statistical tests.",
-          "exampleSentence_en": "ANOVA protects against family-wise error rate inflation."
+          "term_en": "familywise error rate",
+          "explanation_tr": "Birden fazla hipotez testi yapıldığında en az birinde Tip 1 hatası yapma kümülatif olasılığı.",
+          "explanation_en": "The probability of making one or more false discoveries among all hypotheses tested.",
+          "exampleSentence_en": "ANOVA prevents familywise error rate inflation."
         }
       ],
       "questions": [
         {
           "id": "m9-l1-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "3 veya daha fazla grubun ortalamalarını kıyaslarken ikili t-testleri yerine neden ANOVA tercih edilir?",
-            "en": "Why is ANOVA preferred over multiple t-tests for 3+ groups?"
+            "tr": "5 farklı tedavi grubunu ikişerli karşılaştırmak için kaç ikili test ($\\binom{5}{2}$) gerekir?",
+            "en": "How many pairwise tests are needed for 5 groups ($\\binom{5}{2}$)?"
           },
-          "options": [
-            {
-              "tr": "Tip 1 hata şişmesini önlemek ve tüm grupları tek seferde test etmek için",
-              "en": "To prevent Type 1 error inflation and test all groups simultaneously"
-            },
-            {
-              "tr": "ANOVA varyansı sıfıra indirdiği için",
-              "en": "Because ANOVA reduces variance to zero"
-            },
-            {
-              "tr": "t-testi formülü bilinmediği için",
-              "en": "Because t-test cannot be computed"
-            },
-            {
-              "tr": "Sadece 2 grup olduğunda çalıştığı için",
-              "en": "Because it only works for 2 groups"
-            }
-          ],
-          "correctAnswer": "Tip 1 hata şişmesini önlemek ve tüm grupları tek seferde test etmek için",
+          "correctAnswer": 10,
           "explanation": {
-            "tr": "ANOVA $\\alpha$ hata payını %5'te sabitleyerek tüm grup ortalamalarının eşitliğini tek $F$-testi ile sınar.",
-            "en": "ANOVA controls overall $\\alpha$ while testing equality of all group means in a single omnibus test."
+            "tr": "$$\\binom{5}{2} = \\frac{5 \\times 4}{2} = 10$$",
+            "en": "$$\\binom{5}{2} = 10$$"
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=ANOVA: Tek Etken Veri Analiz Aracı",
-        "pythonCode": "from scipy.stats import f_oneway\nf_stat, p_val = f_oneway(group1, group2, group3)",
+        "excelFormula": "=1 - (1 - 0.05)^10",
+        "pythonCode": "family_alpha = 1 - (1 - 0.05)**math.comb(k, 2)",
         "powerBiNote": {
-          "tr": "Grup karşılaştırma kutu grafiklerinde ANOVA p-değeri raporlanır.",
-          "en": "Report ANOVA p-values on group boxplot charts."
+          "tr": "Çoklu varyant A/B test paneli",
+          "en": "Multi-arm bandit A/B testing visual"
         }
       }
     },
@@ -82,48 +64,66 @@
       "id": "m9-l2",
       "moduleId": "module-9",
       "order": 2,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Tek Yönlü ANOVA ve $F$-İstatistiği Hesabı",
-        "en": "One-Way ANOVA and $F$-Statistic Calculation"
+        "tr": "Tek Yönlü ANOVA (One-Way ANOVA) Mantığı",
+        "en": "One-Way ANOVA Logic"
       },
       "conceptCard": {
-        "tr": "ANOVA, toplam varyansı gruplar arası ve grup içi olarak ikiye ayırır (`INDR 252 Lecture 16`):\n\n1. **$H_0: \\mu_1 = \\mu_2 = \\dots = \\mu_k$**\n2. **Gruplar Arası Kareler Ortalaması ($MSB$):** $MSB = \\frac{SSB}{k - 1}$\n3. **Grup İçi Kareler Ortalaması ($MSW$):** $MSW = \\frac{SSW}{N - k}$\n4. **$F$-İstatistiği:**\n$$F = \\frac{MSB}{MSW}, \\quad df_1 = k - 1, \\quad df_2 = N - k$$\n- $F > F_{crit} \\implies$ En az bir grup ortalaması diğerlerinden anlamlı derecede farklıdır.",
-        "en": "One-Way ANOVA partitions total variance into between-group and within-group (`INDR 252 Lecture 16`):\n\n1. **$H_0: \\mu_1 = \\mu_2 = \\dots = \\mu_k$**\n2. **Between-Group Mean Square ($MSB$):** $MSB = \\frac{SSB}{k - 1}$\n3. **Within-Group Mean Square ($MSW$):** $MSW = \\frac{SSW}{N - k}$\n4. **$F$-Statistic:**\n$$F = \\frac{MSB}{MSW}, \\quad df_1 = k - 1, \\quad df_2 = N - k$$\n- $F > F_{crit} \\implies$ At least one group mean is significantly different."
+        "tr": "3 veya daha fazla grup ortalamasının eşitliğini ($H_0: \\mu_1 = \\mu_2 = \\dots = \\mu_k$) test eder:\n\nToplam varyansı iki kaynağa ayırır:\n1. **Gruplar Arası Varyans (Between Groups):** Grupların uygulanan işlemden kaynaklanan farkları.\n2. **Grup İçi Varyans (Within Groups / Error):** Rastgele örnekleme gürültüsü.",
+        "en": "One-Way ANOVA tests $H_0: \\mu_1 = \\dots = \\mu_k$ by partitioning variance into Between-group and Within-group sources."
       },
       "companyExample": {
-        "tr": "MediaImpact 3 kampanya satışlarında ($k=3, N=30$): $MSB = 150, MSW = 30$ bulmuştur. $F = 150 / 30 = 5.0$. $p < 0.05$ olduğundan en az bir kampanyanın satış etkisi farklıdır.",
-        "en": "3 campaigns ($k=3, N=30$): $MSB=150, MSW=30 \\implies F = 5.0$. $p < 0.05$ confirms marketing performance differs significantly."
+        "tr": "**Örnek Soru:** 3 farklı pazarlama kanalının (SEO, Sosyal Medya, E-posta) getirdiği ortalama sepet tutarları eşit midir?\n\n**Çözüm:** $H_0: \\mu_{\\text{SEO}} = \\mu_{\\text{Sosyal}} = \\mu_{\\text{E-posta}}$ hipotezi Tek Yönlü ANOVA ile test edilir.",
+        "en": "**Worked Example:** Testing mean basket size across 3 marketing channels uses One-Way ANOVA."
       },
       "vocabTerms": [
         {
-          "term_en": "mean square between",
-          "explanation_tr": "Grup ortalamalarının genel ortalamadan olan değişkenliği ($MSB$).",
-          "explanation_en": "Variance estimate based on differences between group sample means.",
-          "exampleSentence_en": "A large MSB relative to MSW results in a significant F-statistic."
+          "term_en": "Analysis of Variance (ANOVA)",
+          "explanation_tr": "Üç veya daha fazla grup ortalamasının eşitliğini varyans oranları üzerinden test eden yöntem.",
+          "explanation_en": "Statistical method used to test differences between two or more means.",
+          "exampleSentence_en": "One-Way ANOVA confirmed a significant difference between regional stores."
         }
       ],
       "questions": [
         {
           "id": "m9-l2-q1",
-          "type": "numeric",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "Bir ANOVA tablosunda $MSB = 80$ ve $MSW = 20$ ise $F$-istatistiği kaçtır?",
-            "en": "If an ANOVA table has $MSB = 80$ and $MSW = 20$, what is the $F$-statistic?"
+            "tr": "Tek Yönlü ANOVA'nın sıfır hipotezi ($H_0$) nedir?",
+            "en": "What is the null hypothesis of One-Way ANOVA?"
           },
-          "correctAnswer": 4,
+          "options": [
+            {
+              "tr": "Tüm grup ortalamaları birbirine eşittir (mu1 = mu2 = ... = muk)",
+              "en": "All group means are equal"
+            },
+            {
+              "tr": "Tüm varyanslar sıfırdır",
+              "en": "All variances are zero"
+            },
+            {
+              "tr": "Hiçbir grup birbirine eşit değildir",
+              "en": "No groups are equal"
+            },
+            {
+              "tr": "Ortalamaların toplamı birdir",
+              "en": "Sum of means is 1"
+            }
+          ],
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "$$F = \\frac{MSB}{MSW} = \\frac{80}{20} = 4$$",
-            "en": "$$F = \\frac{MSB}{MSW} = \\frac{80}{20} = 4$$"
+            "tr": "Sıfır hipotezi tüm grupların aynı popülasyon ortalamasından geldiğini savunur.",
+            "en": "Null hypothesis states equality of all group means."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=F.DAĞ.SAĞ(F_Değeri; df1; df2)",
-        "pythonCode": "import statsmodels.api as sm\nfrom statsmodels.formula.api import ols\nanova_table = sm.stats.anova_lm(ols(\"sales ~ C(campaign)\", data=df).fit())",
+        "excelFormula": "=ANOVA: TEK ETKEN",
+        "pythonCode": "from scipy.stats import f_oneway\nf_stat, p_val = f_oneway(g1, g2, g3)",
         "powerBiNote": {
-          "tr": "ANOVA özet tablosu rapor görseli olarak eklenir.",
-          "en": "ANOVA summary table is rendered on executive dashboards."
+          "tr": "Kanal bazlı sepet ortalaması matrisi",
+          "en": "Channel cohort performance visual"
         }
       }
     },
@@ -131,66 +131,48 @@
       "id": "m9-l3",
       "moduleId": "module-9",
       "order": 3,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "ANOVA Varsayımları & Levene Varyans Homojenlik Testi",
-        "en": "ANOVA Assumptions & Levene Test of Homogeneity"
+        "tr": "ANOVA $F$-İstatistiği ve Tablo Hesabı",
+        "en": "ANOVA $F$-Statistic & Table"
       },
       "conceptCard": {
-        "tr": "ANOVA'nın geçerli olması için gereken 3 şart (`INDR 252 Lecture 16`):\n\n1. **Bağımsızlık:** Gruplar ve gözlemler bağımsız olmalıdır.\n2. **Normallik:** Her gruptaki popülasyon yaklaşık normal dağılmalıdır (Q-Q plot ile kontrol edilir).\n3. **Varyans Homojenliği (Homoscedasticity):** Tüm grupların popülasyon varyansları eşit olmalıdır ($\\sigma_1^2 = \\sigma_2^2 = \\dots = \\sigma_k^2$).\n\n**Levene Testi ($H_0: \\sigma_1^2 = \\dots = \\sigma_k^2$):**\n- $p > 0.05 \\implies$ Varyanslar eşittir (ANOVA güvenle uygulanır).\n- $p \\le 0.05 \\implies$ Varyanslar eşit değildir (Welch ANOVA kullanılır).",
-        "en": "The 3 core assumptions for valid ANOVA (`INDR 252 Lecture 16`):\n\n1. **Independence:** Independent observations.\n2. **Normality:** Each group normally distributed.\n3. **Homogeneity of Variances:** $\\sigma_1^2 = \\sigma_2^2 = \\dots = \\sigma_k^2$.\n\n**Levene's Test ($H_0: \\sigma_1^2 = \\dots = \\sigma_k^2$):**\n- $p > 0.05 \\implies$ Homogeneous variances (standard ANOVA valid).\n- $p \\le 0.05 \\implies$ Heterogeneous variances (use Welch ANOVA)."
+        "tr": "ANOVA $F$-oranı:\n\n$$F = \\frac{\\text{MSB}}{\\text{MSW}} = \\frac{\\text{SSB} / (k - 1)}{\\text{SSW} / (N - k)}$$\n\n- $\\text{MSB}$: Gruplar arası ortalama kare\n- $\\text{MSW}$: Grup içi ortalama kare (Hata)\n\n$F > F_{\\text{kritik}}$ ($p < 0.05$) ise en az bir grubun ortalaması diğerlerinden farklıdır.",
+        "en": "ANOVA $F$-statistic: $F = \\frac{\\text{MSB}}{\\text{MSW}} = \\frac{\\text{SSB}/(k-1)}{\\text{SSW}/(N-k)}$."
       },
       "companyExample": {
-        "tr": "3 üretim hattı numunelerinde Levene testi $p = 0.32$ bulunmuştur ($p > 0.05$). Varyanslar homojendir, standart ANOVA güvenle çalıştırılır.",
-        "en": "Levene test across 3 production lines yields $p = 0.32 > 0.05$, validating equal variance assumption."
+        "tr": "**Örnek Soru:** $\\text{MSB} = 80, \\text{MSW} = 10$. $F$-değeri nedir?\n\n**Çözüm:** $F = 80 / 10 = 8.00$.",
+        "en": "**Worked Example:** $F = 80 / 10 = 8.00$."
       },
       "vocabTerms": [
         {
-          "term_en": "Levene test",
-          "explanation_tr": "Gruplar arası varyansların eşitliğini test eden parametrik olmayan dayanıklı test.",
-          "explanation_en": "An inferential statistic used to assess the equality of variances across groups.",
-          "exampleSentence_en": "Levene test verifies ANOVA homogeneity assumption."
+          "term_en": "mean square between (MSB)",
+          "explanation_tr": "Gruplar arası kareler toplamının serbestlik derecesine bölünmesiyle bulunan işlem varyansı.",
+          "explanation_en": "Variance estimate based on the differences between group means.",
+          "exampleSentence_en": "A large MSB relative to MSW produces a significant F-statistic."
         }
       ],
       "questions": [
         {
           "id": "m9-l3-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Levene varyans homojenlik testinde $p = 0.01$ çıkması ne anlama gelir?",
-            "en": "What does $p = 0.01$ in Levene's test indicate?"
+            "tr": "$\\text{MSB} = 90$ ve $\\text{MSW} = 18$ olduğuna göre ANOVA $F$-istatistiği ($90 / 18$) kaçtır?",
+            "en": "Calculate ANOVA F-statistic for $\\text{MSB}=90, \\text{MSW}=18$."
           },
-          "options": [
-            {
-              "tr": "Grup varyansları eşit DEĞİLDİR (Homojenlik varsayımı ihlal edilmiştir)",
-              "en": "Group variances are NOT equal (Homogeneity violated)"
-            },
-            {
-              "tr": "Grup varyansları tamamen eşittir",
-              "en": "Group variances are perfectly equal"
-            },
-            {
-              "tr": "Grupların ortalamaları eşittir",
-              "en": "Group means are equal"
-            },
-            {
-              "tr": "Veriler normal dağılmamaktadır",
-              "en": "Data is not normal"
-            }
-          ],
-          "correctAnswer": "Grup varyansları eşit DEĞİLDİR (Homojenlik varsayımı ihlal edilmiştir)",
+          "correctAnswer": 5,
           "explanation": {
-            "tr": "$p < 0.05$ olduğunda eşit varyans $H_0$ hipotezi reddedilir.",
-            "en": "$p < 0.05$ rejects equal variance null hypothesis."
+            "tr": "$$F = \\frac{90}{18} = 5.0$$",
+            "en": "$$F = 90 / 18 = 5.0$$"
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=Varyans_Homojenlik_Kontrolü",
-        "pythonCode": "from scipy.stats import levene\nstat, p_val = levene(g1, g2, g3)",
+        "excelFormula": "=MSB / MSW",
+        "pythonCode": "import statsmodels.api as sm\nfrom statsmodels.formula.api import ols\nanova_table = sm.stats.anova_lm(ols('sales ~ C(channel)', data=df).fit())",
         "powerBiNote": {
-          "tr": "Varyans eşitliği onay kartı eklenir.",
-          "en": "Include variance homogeneity verification card."
+          "tr": "ANOVA özet tablosu",
+          "en": "ANOVA summary table"
         }
       }
     },
@@ -198,66 +180,66 @@
       "id": "m9-l4",
       "moduleId": "module-9",
       "order": 4,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Post-Hoc Testleri: Tukey HSD ve Bonferroni",
-        "en": "Post-Hoc Tests: Tukey HSD and Bonferroni"
+        "tr": "ANOVA Varsayımları & Levene Testi",
+        "en": "ANOVA Assumptions & Levene's Test"
       },
       "conceptCard": {
-        "tr": "ANOVA $H_0$'ı reddettiğinde \"Hangi gruplar birbirinden farklı?\" sorusuna yanıt vermek için **Post-Hoc** çoklu karşılaştırma yapılır (`INDR 252 Lecture 16`):\n\n1. **Tukey HSD (Honestly Significant Difference):**\n$$HSD = q_{\\alpha, k, N-k} \\sqrt{\\frac{MSW}{n}}$$\nİki grup ortalama farkı $|\\bar{x}_i - \\bar{x}_j| > HSD$ ise bu iki grup birbirinden anlamlı derecede farklıdır.\n\n2. **Bonferroni Düzeltmesi:** Anlamlılık sınırını test sayısına böler: $\\alpha_{yeni} = \\frac{\\alpha}{m}$.",
-        "en": "When ANOVA rejects $H_0$, Post-Hoc tests determine which specific group pairs differ (`INDR 252 Lecture 16`):\n\n1. **Tukey HSD (Honestly Significant Difference):**\n$$HSD = q_{\\alpha, k, N-k} \\sqrt{\\frac{MSW}{n}}$$\nIf $|\\bar{x}_i - \\bar{x}_j| > HSD$, the pair differs significantly.\n\n2. **Bonferroni Correction:** Adjusts threshold: $\\alpha_{new} = \\alpha / m$."
+        "tr": "ANOVA'nın geçerli olması için 3 varsayım gereklidir:\n\n1. **Normallik:** Her gruptaki gözlemler Normal dağılmalıdır.\n2. **Bağımsızlık:** Gözlemler birbirinden bağımsız olmalıdır.\n3. **Varyans Homojenliği (Homoscedasticity):** Tüm grupların varyansları eşit olmalıdır ($\\sigma_1^2 = \\dots = \\sigma_k^2$). Bu varsayım **Levene Testi** ile doğrulanır.",
+        "en": "ANOVA requires Normality, Independence, and Homogeneity of Variances (tested via Levene's test)."
       },
       "companyExample": {
-        "tr": "3 kampanyada ANOVA anlamlı çıkmıştır ($p < 0.05$). Tukey HSD testi ile Kampanya A ve B arasında fark olmadığı ($p=0.45$), ancak Kampanya C'nin hem A'dan hem B'den anlamlı derecede üstün olduğu ($p < 0.01$) kanıtlanmıştır.",
-        "en": "Tukey HSD reveals Campaign C significantly outperforms both A and B ($p < 0.01$), while A and B have no significant difference."
+        "tr": "**Örnek Soru:** Levene testinde $p = 0.42$ ($p > 0.05$) bulunmuştur. Varyans homojenliği sağlanmış mıdır?\n\n**Çözüm:** $p > 0.05$ olduğu için $H_0$ reddedilemez; varyanslar homojendir ve ANOVA güvenle uygulanabilir.",
+        "en": "**Worked Example:** Levene $p = 0.42 > 0.05$ confirms equal variances."
       },
       "vocabTerms": [
         {
-          "term_en": "Tukey HSD",
-          "explanation_tr": "ANOVA sonrası hangi grup çiftlerinin birbirinden anlamlı derecede farklı olduğunu belirleyen post-hoc test.",
-          "explanation_en": "A single-step multiple comparison procedure used to find means that are significantly different from each other.",
-          "exampleSentence_en": "Tukey HSD maintains the family-wise error rate at alpha."
+          "term_en": "Levene's test",
+          "explanation_tr": "İki veya daha fazla grubun varyanslarının homojenliğini test eden güvenilir yöntem.",
+          "explanation_en": "Inferential statistic used to assess the equality of variances for a variable calculated for two or more groups.",
+          "exampleSentence_en": "Levene's test verified variance homogeneity prior to running ANOVA."
         }
       ],
       "questions": [
         {
           "id": "m9-l4-q1",
-          "type": "multiple_choice",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "Tukey HSD testi hangi aşamada uygulanır?",
-            "en": "At what stage is the Tukey HSD test performed?"
+            "tr": "Gruplar arası varyansların eşit olup olmadığını test etmek için hangi test kullanılır?",
+            "en": "Which test evaluates the equality of variances across groups?"
           },
           "options": [
             {
-              "tr": "Yalnızca ANOVA testi anlamlı çıkıp H0 reddedildikten sonra",
-              "en": "Only after ANOVA test is significant and H0 is rejected"
+              "tr": "Levene Testi",
+              "en": "Levene's Test"
             },
             {
-              "tr": "ANOVA testinden önce",
-              "en": "Before running ANOVA"
+              "tr": "Durbin-Watson Testi",
+              "en": "Durbin-Watson Test"
             },
             {
-              "tr": "ANOVA testi anlamsız çıktığında",
-              "en": "When ANOVA test is not significant"
+              "tr": "Z-Testi",
+              "en": "Z-Test"
             },
             {
-              "tr": "Yalnızca 2 grup varken",
-              "en": "Only when there are 2 groups"
+              "tr": "Cook's Distance",
+              "en": "Cook's Distance"
             }
           ],
-          "correctAnswer": "Yalnızca ANOVA testi anlamlı çıkıp H0 reddedildikten sonra",
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "Post-hoc testler sadece genel ANOVA testi gruplar arası fark olduğunu ispatladığında ($p < \\alpha$) hangi grubun farklı olduğunu bulmak için yapılır.",
-            "en": "Post-hoc multiple comparisons are conducted only following a significant omnibus ANOVA result."
+            "tr": "Varyans homojenliği Levene testi ile kontrol edilir.",
+            "en": "Levene's test evaluates homogeneity of variance."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=Tukey_HSD_Formülü",
-        "pythonCode": "from statsmodels.stats.multicomp import pairwise_tukeyhsd\ntukey = pairwise_tukeyhsd(df[\"sales\"], df[\"group\"], alpha=0.05)",
+        "excelFormula": "=VARYANS.HOMOJENLİK()",
+        "pythonCode": "from scipy.stats import levene\nstat, p_val = levene(g1, g2, g3)",
         "powerBiNote": {
-          "tr": "Farklı çıkan gruplar sütun grafiklerinde harflerle (A, B, C) işaretlenir.",
-          "en": "Group difference letters (A, B, C) are added to column charts."
+          "tr": "Grup varyans karşılaştırma kutusu",
+          "en": "Group variance boxplot"
         }
       }
     },
@@ -265,48 +247,66 @@
       "id": "m9-l5",
       "moduleId": "module-9",
       "order": 5,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Ki-Kare ($\\chi^2$) Uyum İyiliği ve Bağımsızlık Testleri",
-        "en": "Chi-Square ($\\chi^2$) Goodness-of-Fit and Independence Tests"
+        "tr": "Post-Hoc Testleri: Tukey HSD",
+        "en": "Post-Hoc Tests: Tukey's HSD"
       },
       "conceptCard": {
-        "tr": "Kategorik sayım verilerini analiz etme (`INDR 252 Lecture 16`, `CEx14`):\n\n1. **Ki-Kare Test İstatistiği:**\n$$\\chi^2 = \\sum \\frac{(O - E)^2}{E}$$\n- $O$: Gözlenen Frekans (Observed)\n- $E$: Beklenen Frekans (Expected)\n\n2. **Bağımsızlık Testi ($r \\times c$ Tablosu):**\n$$E_{ij} = \\frac{\\text{Satır } i \\text{ Toplamı} \\times \\text{Sütun } j \\text{ Toplamı}}{\\text{Genel Toplam}}, \\quad df = (r-1)(c-1)$$\n- $H_0$: İki kategorik değişken birbirinden bağımsızdır.",
-        "en": "Analyzing categorical frequency counts (`INDR 252 Lecture 16`, `CEx14`):\n\n1. **Chi-Square Test Statistic:**\n$$\\chi^2 = \\sum \\frac{(O - E)^2}{E}$$\n- $O$: Observed Frequency, $E$: Expected Frequency\n\n2. **Test of Independence ($r \\times c$ Table):**\n$$E_{ij} = \\frac{\\text{Row } i \\text{ Total} \\times \\text{Column } j \\text{ Total}}{\\text{Grand Total}}, \\quad df = (r-1)(c-1)$$\n- $H_0$: The two categorical variables are independent."
+        "tr": "ANOVA testi anlamlı çıktığında ($p < 0.05$), 'Hangi grupların birbirinden farklı olduğunu' bulmak için **Tukey HSD (Honestly Significant Difference)** testi yapılır:\n\n$$\\text{HSD} = q_{\\alpha, k, N-k} \\sqrt{\\frac{\\text{MSW}}{n}}$$\n\nİki grup ortalaması arasındaki fark HSD'den büyükse ($|\\bar{x}_i - \\bar{x}_j| > \\text{HSD}$), aralarındaki fark istatistiksel olarak anlamlıdır.",
+        "en": "Tukey's HSD identifies which specific pairs of group means differ significantly while controlling familywise error."
       },
       "companyExample": {
-        "tr": "Fabrika işçi tipleri (Mavi Yaka / Beyaz Yaka) ile Emeklilik Planı tercihi (Plan A, B, C) arasındaki çapraz tabloda $\\chi^2 = 14.8, df = (2-1)(3-1) = 2$ bulunmuştur (`CEx14`). $p < 0.01$ ile işçi tipi ile plan tercihi arasında anlamlı bağımlılık ispatlanır.",
-        "en": "Worker type vs Pension plan choice cross-tabulation yields $\\chi^2 = 14.8, df=2$ (`CEx14`). $p < 0.01$ confirms significant dependency."
+        "tr": "**Örnek Soru:** $\\text{HSD} = 4.2$. A grubu ortalaması 50, B grubu ortalaması 56. Fark ($6.0$) anlamlı mıdır?\n\n**Çözüm:** $|56 - 50| = 6.0 > 4.2$ olduğu için A ve B grupları arasındaki fark istatistiksel olarak anlamlıdır.",
+        "en": "**Worked Example:** Difference $6.0 > 4.2$ confirms a significant pairwise difference."
       },
       "vocabTerms": [
         {
-          "term_en": "chi-square test of independence",
-          "explanation_tr": "İki kategorik değişken arasında istatistiksel bağımlılık olup olmadığını test eden yöntem.",
-          "explanation_en": "Hypothesis test determining whether two categorical variables are associated.",
-          "exampleSentence_en": "Chi-square test of independence confirms customer segment affects device choice."
+          "term_en": "Tukey's HSD test",
+          "explanation_tr": "ANOVA sonrasında tüm çiftler arası farkları Tip 1 hatasını koruyarak test eden post-hoc analiz.",
+          "explanation_en": "Single-step multiple comparison procedure used in conjunction with ANOVA.",
+          "exampleSentence_en": "Tukey HSD revealed that variant C significantly outperformed variant A and B."
         }
       ],
       "questions": [
         {
           "id": "m9-l5-q1",
-          "type": "numeric",
+          "type": "multiple-choice",
           "prompt": {
-            "tr": "Satır toplamı 40, sütun toplamı 50 ve genel toplam 200 olan bir hücrenin Beklenen Değeri ($E_{ij}$) kaçtır?",
-            "en": "If row total is 40, column total is 50, and grand total is 200, what is expected cell frequency $E_{ij}$?"
+            "tr": "ANOVA testinde genel bir fark bulunduktan sonra hangi spesifik grupların farklı olduğunu belirlemek için ne uygulanır?",
+            "en": "What is applied after a significant ANOVA to identify which specific groups differ?"
           },
-          "correctAnswer": 10,
+          "options": [
+            {
+              "tr": "Post-Hoc Testi (Örn: Tukey HSD)",
+              "en": "Post-Hoc Test (e.g. Tukey HSD)"
+            },
+            {
+              "tr": "Verileri silme",
+              "en": "Delete data"
+            },
+            {
+              "tr": "Testi iptal etme",
+              "en": "Cancel test"
+            },
+            {
+              "tr": "Rastgele seçim",
+              "en": "Random choice"
+            }
+          ],
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "$$E_{ij} = \\frac{40 \\times 50}{200} = \\frac{2000}{200} = 10$$",
-            "en": "$$E_{ij} = \\frac{40 \\times 50}{200} = 10$$"
+            "tr": "Grup çiftleri arasındaki spesifik farklar Post-Hoc testleriyle (Tukey HSD) tespit edilir.",
+            "en": "Post-hoc tests pinpoint exact group differences."
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=KİKARE.TEST(Gözlenen_Tablo; Beklenen_Tablo)",
-        "pythonCode": "from scipy.stats import chi2_contingency\nchi2, p, dof, ex = chi2_contingency(contingency_table)",
+        "excelFormula": "=TUKEY_HSD()",
+        "pythonCode": "from statsmodels.stats.multicomp import pairwise_tukeyhsd\ntukey = pairwise_tukeyhsd(endog=df['sales'], groups=df['channel'], alpha=0.05)\nprint(tukey)",
         "powerBiNote": {
-          "tr": "Çapraz Matris (Matrix Table) ile ki-kare frekansları gösterilir.",
-          "en": "Cross-tabulation matrix displays observed vs expected counts."
+          "tr": "Çiftli grup güven aralığı görseli",
+          "en": "Pairwise confidence intervals visual"
         }
       }
     },
@@ -314,66 +314,280 @@
       "id": "m9-l6",
       "moduleId": "module-9",
       "order": 6,
-      "difficulty": "zor",
+      "difficulty": "orta",
       "title": {
-        "tr": "Kısmi F-Testi & Model Seçiminde Mallows' $C_p$",
-        "en": "Partial F-Test & Mallows' $C_p$ Model Selection"
+        "tr": "Post-Hoc Düzeltmeleri: Bonferroni & Scheffé",
+        "en": "Bonferroni & Scheffé Corrections"
       },
       "conceptCard": {
-        "tr": "Regresyon modelinden bir grup değişkeni elemenin doğruluğunu test etme (`INDR 252 Lecture 23`):\n\n1. **Kısmi $F$-Testi (Full vs. Reduced Model):**\n$$F = \\frac{(SSE_{red} - SSE_{full}) / q}{MSE_{full}}, \\quad df_1 = q, \\quad df_2 = n - k_{full} - 1$$\n- $q$: Elenmek istenen değişken sayısı. $p > 0.05$ ise $q$ adet değişken modelden güvenle çıkarılır.\n\n2. **Mallows' $C_p$ Kriteri:**\n$$C_p = \\frac{SSE_p}{S^2} - (n - 2p)$$\n- $p$: Modele alınan değişken sayısı + 1 (kesen).\n- **Kural:** $C_p \\approx p$ ve $C_p \\le p$ olan model en az sapmalı (optimum) modeldir.",
-        "en": "Testing whether a subset of predictors can be dropped (`INDR 252 Lecture 23`):\n\n1. **Partial $F$-Test (Full vs. Reduced):**\n$$F = \\frac{(SSE_{red} - SSE_{full}) / q}{MSE_{full}}, \\quad df_1 = q, \\quad df_2 = n - k_{full} - 1$$\n\n2. **Mallows' $C_p$ Criterion:**\n$$C_p = \\frac{SSE_p}{S^2} - (n - 2p)$$\n- **Rule:** A model with $C_p \\approx p$ and small $C_p$ indicates low bias and optimum complexity."
+        "tr": "1. **Bonferroni Düzeltmesi:** Yapılan $C$ adet test için anlamlılık düzeyini $C$'ye böler:\n$$\\alpha_{\\text{yeni}} = \\frac{\\alpha}{C}$$\n(Çok muhafazakar ama garantili bir yöntemdir).\n\n2. **Scheffé Yöntemi:** Karmaşık ve planlanmamış tüm doğrusal kontrastları test eden en esnek yöntemdir.",
+        "en": "Bonferroni adjusts threshold to $\\alpha / C$. Scheffé handles complex arbitrary linear contrasts."
       },
       "companyExample": {
-        "tr": "DataVal 8 değişkenli regresyon modelinde 3 değişkeni eleyerek $C_p = 4.2 \\approx 5$ olan 4 değişkenli sade modeli seçmiştir. Model performans kaybetmeden sadeleşmiştir.",
-        "en": "DataVal drops 3 redundant predictors, achieving $C_p = 4.2 \\approx 5$ for an optimal parsimonious model."
+        "tr": "**Örnek Soru:** $\\alpha = 0.05$ için 10 adet ikili karşılaştırma yapılacaksa Bonferroni anlamlılık eşiği nedir?\n\n**Çözüm:** $\\alpha_{\\text{yeni}} = 0.05 / 10 = 0.005$. Her test $p < 0.005$ ise anlamlı kabul edilir.",
+        "en": "**Worked Example:** $\\alpha_{adj} = 0.05 / 10 = 0.005$."
       },
       "vocabTerms": [
         {
-          "term_en": "Mallows Cp",
-          "explanation_tr": "En uygun regresyon alt modelini seçmek için sapma ve varyansı dengeleyen kriter ($C_p$).",
-          "explanation_en": "A metric assessing the fit of a regression model that has been estimated using OLS, penalizing complexity.",
-          "exampleSentence_en": "An optimal subset model has Mallows Cp close to p."
+          "term_en": "Bonferroni correction",
+          "explanation_tr": "Çoklu testlerde anlamlılık düzeyini test sayısına bölerek Tip 1 hatasını sıkı kontrol eden düzeltme.",
+          "explanation_en": "Adjustment to p-value thresholds in multiple testing by dividing alpha by number of tests.",
+          "exampleSentence_en": "We applied Bonferroni correction across the 10 marketing segments."
         }
       ],
       "questions": [
         {
           "id": "m9-l6-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Mallows' $C_p$ model seçim kriterinde en ideal model hangi koşulu sağlar?",
-            "en": "In Mallows' $C_p$ model selection, what characterizes the optimal model?"
+            "tr": "$\\alpha = 0.06$ için 3 test yapılacaksa Bonferroni düzeltilmiş $\\alpha$ eşiği ($0.06 / 3$) kaçtır?",
+            "en": "Calculate Bonferroni alpha for $\\alpha=0.06$ across 3 tests."
           },
-          "options": [
-            {
-              "tr": "Cp değerinin p parametre sayısına yakın (Cp ≈ p) ve küçük olması",
-              "en": "Cp is close to p (Cp ≈ p) and small"
-            },
-            {
-              "tr": "Cp değerinin sıfır olması",
-              "en": "Cp equals zero"
-            },
-            {
-              "tr": "Cp değerinin n örneklem boyutuna eşit olması",
-              "en": "Cp equals sample size n"
-            },
-            {
-              "tr": "Cp değerinin negatif ve sonsuz olması",
-              "en": "Cp is infinitely negative"
-            }
-          ],
-          "correctAnswer": "Cp değerinin p parametre sayısına yakın (Cp ≈ p) ve küçük olması",
+          "correctAnswer": 0.02,
           "explanation": {
-            "tr": "$C_p \\approx p$ olması modelin sapmasız olduğunu ve gereksiz değişken içermediğini gösterir.",
-            "en": "$C_p \\approx p$ indicates the model is unbiased with optimal parameter balance."
+            "tr": "$$\\alpha_{\\text{yeni}} = \\frac{0.06}{3} = 0.02$$",
+            "en": "$$\\alpha_{new} = 0.06 / 3 = 0.02$$"
           }
         }
       ],
       "realWorldBox": {
-        "excelFormula": "=Kısmi_F_Hesabı",
-        "pythonCode": "import statsmodels.api as sm\n# anova_lm compares two nested models (reduced vs full)\nsm.stats.anova_lm(model_red, model_full)",
+        "excelFormula": "=alpha / C",
+        "pythonCode": "from statsmodels.stats.multitest import multipletests\nreject, pvals_corrected, _, _ = multipletests(pvals, alpha=0.05, method='bonferroni')",
         "powerBiNote": {
-          "tr": "Model değişken seçim panosunda Cp grafiği çizdirilir.",
-          "en": "Display Cp vs p curves in model selection visual."
+          "tr": "Düzeltilmiş p-değeri metriği",
+          "en": "Adjusted p-value metric"
+        }
+      }
+    },
+    {
+      "id": "m9-l7",
+      "moduleId": "module-9",
+      "order": 7,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "İki Yönlü ANOVA (Two-Way ANOVA) & Etkileşim",
+        "en": "Two-Way ANOVA & Interactions"
+      },
+      "conceptCard": {
+        "tr": "İki farklı bağımsız faktörün ($A$ ve $B$) ve aralarındaki **etkileşimin ($A \\times B$)** hedef değişken üzerindeki etkisini aynı anda inceler:\n\n1. Faktör A Ana Etkisi\n2. Faktör B Ana Etkisi\n3. $A \\times B$ Etkileşim Etkisi (Bir faktörün etkisi diğer faktörün düzeyine göre değişiyorsa etkileşim vardır).",
+        "en": "Two-Way ANOVA evaluates two factors and their interaction ($A \\times B$) on response $y$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** İndirim oranı (%10 vs %30) ve İletişim Kanalı (SMS vs E-posta) birlikte test ediliyor. Grafikte çizgiler kesişiyorsa ne vardır?\n\n**Çözüm:** Çizgilerin paralel olmaması **Etkileşim (Interaction)** olduğunu gösterir.",
+        "en": "**Worked Example:** Non-parallel interaction plot lines confirm a significant interaction effect."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "interaction effect",
+          "explanation_tr": "Bir faktörün etkisinin ikinci faktörün hangi düzeyde olduğuna bağlı olarak değişmesi durumu.",
+          "explanation_en": "Effect where the impact of one factor depends on the level of another factor.",
+          "exampleSentence_en": "A significant price-by-channel interaction emerged."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m9-l7-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "İki Yönlü ANOVA etkileşim grafiğinde çizgilerin paralel olmaması (kesişmesi) neyi gösterir?",
+            "en": "What does non-parallel lines in a Two-Way ANOVA plot indicate?"
+          },
+          "options": [
+            {
+              "tr": "Anlamlı bir etkileşim (Interaction) etkisi olduğunu",
+              "en": "Significant interaction effect"
+            },
+            {
+              "tr": "Modelin geçersiz olduğunu",
+              "en": "Invalid model"
+            },
+            {
+              "tr": "Verilerin silinmesi gerektiğini",
+              "en": "Data needs deletion"
+            },
+            {
+              "tr": "Varyansın sıfır olduğunu",
+              "en": "Zero variance"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Kesişen çizgiler bir faktörün etkisinin diğeri değiştikçe farklılaştığını (etkileşim) kanıtlar.",
+            "en": "Crossing lines demonstrate significant interaction between factors."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=ANOVA: ÇİFT ETKEN",
+        "pythonCode": "model = ols('sales ~ C(factorA) * C(factorB)', data=df).fit()\nsm.stats.anova_lm(model)",
+        "powerBiNote": {
+          "tr": "Etkileşim çizgisi (Interaction Plot)",
+          "en": "Interaction plot visual"
+        }
+      }
+    },
+    {
+      "id": "m9-l8",
+      "moduleId": "module-9",
+      "order": 8,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Ki-Kare ($\\chi^2$) Uyum İyiliği Testi",
+        "en": "Chi-Square Goodness-of-Fit Test"
+      },
+      "conceptCard": {
+        "tr": "Kategorik tek bir değişkenin gözlemlenen frekanslarının ($O_i$), teorik beklenen frekanslara ($E_i$) uyup uymadığını test eder ($df = k - 1$):\n\n$$\\chi^2 = \\sum_{i=1}^{k} \\frac{(O_i - E_i)^2}{E_i}$$",
+        "en": "Goodness-of-fit test compares observed $O_i$ against expected $E_i$: $\\chi^2 = \\sum \\frac{(O_i - E_i)^2}{E_i}$ with $df = k-1$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Düzgün bir zarda her yüzün 10 kez gelmesi beklenirken 6 yüzü 16 kez gelmiştir ($O=16, E=10$). Bu hücrenin katkısı nedir?\n\n**Çözüm:** $(16 - 10)^2 / 10 = 36 / 10 = 3.6$.",
+        "en": "**Worked Example:** $(16-10)^2 / 10 = 3.6$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "goodness-of-fit",
+          "explanation_tr": "Gözlenen frekansların teorik bir dağılıma (örn. eşit dağılım veya genetik oranlar) uygunluğunu ölçen test.",
+          "explanation_en": "Statistical test assessing whether observed categorical frequencies match expected frequencies.",
+          "exampleSentence_en": "Chi-Square goodness-of-fit test verified equal weekday website traffic."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m9-l8-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$O = 25$ ve $E = 20$ olan bir kategori için $(O - E)^2 / E$ katkısı kaçtır ($25 / 20$)?",
+            "en": "Calculate $(O - E)^2 / E$ for $O=25, E=20$."
+          },
+          "correctAnswer": 1.25,
+          "explanation": {
+            "tr": "$$\\frac{(25 - 20)^2}{20} = \\frac{5^2}{20} = \\frac{25}{20} = 1.25$$",
+            "en": "$$25 / 20 = 1.25$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=KİKARE.TEST(Gözlenen, Beklenen)",
+        "pythonCode": "from scipy.stats import chisquare\nstat, p_val = chisquare(f_obs=obs, f_exp=exp)",
+        "powerBiNote": {
+          "tr": "Gözlenen vs Beklenen frekans sütunları",
+          "en": "Observed vs Expected bar chart"
+        }
+      }
+    },
+    {
+      "id": "m9-l9",
+      "moduleId": "module-9",
+      "order": 9,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Ki-Kare ($\\chi^2$) Bağımsızlık Testi",
+        "en": "Chi-Square Test of Independence"
+      },
+      "conceptCard": {
+        "tr": "İki kategorik değişken arasında bağımlılık/ilişki olup olmadığını test eder ($df = (r-1)(c-1)$).\n\n**Hücre Beklenen Frekansı ($E_{ij}$):**\n$$E_{ij} = \\frac{\\text{Satır Toplamı} \\times \\text{Sütun Toplamı}}{\\text{Genel Toplam}}$$\n\n$$\\chi^2 = \\sum_{i=1}^{r} \\sum_{j=1}^{c} \\frac{(O_{ij} - E_{ij})^2}{E_{ij}}$$",
+        "en": "Test of independence across $r \\times c$ contingency table: $E_{ij} = \\frac{\\text{Row Total} \\times \\text{Col Total}}{\\text{Grand Total}}$, $df = (r-1)(c-1)$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** $2 \\times 3$ boyutlu bir çapraz tablonun serbestlik derecesi nedir?\n\n**Çözüm:** $df = (2 - 1) \\times (3 - 1) = 1 \\times 2 = 2$.",
+        "en": "**Worked Example:** $df = (2-1)(3-1) = 2$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "contingency table",
+          "explanation_tr": "İki kategorik değişkenin ortak frekanslarını gösteren çapraz tablo.",
+          "explanation_en": "A table showing the distribution of one variable in rows and another in columns.",
+          "exampleSentence_en": "A $2\\times 2$ contingency table evaluated customer churn across device types."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m9-l9-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$3 \\times 4$ boyutlu bir çapraz tablonun Ki-Kare serbestlik derecesi ($(3-1)(4-1)$) kaçtır?",
+            "en": "What is Chi-Square degrees of freedom for a $3 \\times 4$ table?"
+          },
+          "correctAnswer": 6,
+          "explanation": {
+            "tr": "$$df = (3 - 1) \\times (4 - 1) = 2 \\times 3 = 6$$",
+            "en": "$$df = 2 \\times 3 = 6$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=KİKARE.TEST(Tablo, BeklenenTablo)",
+        "pythonCode": "from scipy.stats import chi2_contingency\nchi2_stat, p_val, dof, expected = chi2_contingency(table)",
+        "powerBiNote": {
+          "tr": "Çapraz ilişki matrisi",
+          "en": "Contingency matrix visual"
+        }
+      }
+    },
+    {
+      "id": "m9-l10",
+      "moduleId": "module-9",
+      "order": 10,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Kısmi $F$-Testi & Model Seçimi ($C_p$, AIC, BIC)",
+        "en": "Partial $F$-Test & Model Selection"
+      },
+      "conceptCard": {
+        "tr": "1. **Kısmi $F$-Testi (Nested Models):** Eklenen bir grup değişkenin modeli anlamlı derecede iyileştirip iyileştirmediğini test eder:\n$$F = \\frac{(\\text{SSE}_{\\text{kısıtlı}} - \\text{SSE}_{\\text{tam}}) / q}{\\text{MSE}_{\\text{tam}}}$$\n\n2. **Model Seçim Kriterleri (Düşük olan tercih edilir):**\n- **Mallows' $C_p$:** $C_p \\approx p$ olmalıdır.\n- **AIC & BIC:** Aşırı parametreyi cezalandıran bilgi kriterleridir.",
+        "en": "Partial $F$-test compares nested models. Model selection metrics (AIC, BIC, Mallows' $C_p$) select the most parsimonious model."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** İki modelden Model 1 AIC = 450, Model 2 AIC = 410'dur. Hangi model seçilir?\n\n**Çözüm:** AIC değeri daha düşük olan Model 2 daha iyi bir uyum/karmaşıklık dengesine sahiptir ve tercih edilir.",
+        "en": "**Worked Example:** Lower AIC (410 vs 450) selects Model 2."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Akaike Information Criterion (AIC)",
+          "explanation_tr": "Modelin uyum kalitesini karmaşıklıkla dengeleyen model seçim metriği.",
+          "explanation_en": "Estimator of out-of-sample prediction error penalizing model complexity.",
+          "exampleSentence_en": "Stepwise regression selected the feature set minimizing AIC."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m9-l10-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "AIC ve BIC kriterleriyle model karşılaştırması yapılırken hangi model tercih edilir?",
+            "en": "Which model is chosen when evaluating AIC/BIC criteria?"
+          },
+          "options": [
+            {
+              "tr": "Daha düşük AIC/BIC değerine sahip model",
+              "en": "Model with lower AIC/BIC"
+            },
+            {
+              "tr": "Daha yüksek AIC/BIC değerine sahip model",
+              "en": "Model with higher AIC/BIC"
+            },
+            {
+              "tr": "En çok değişkene sahip model",
+              "en": "Model with most predictors"
+            },
+            {
+              "tr": "Sıfır olan model",
+              "en": "Zero model"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Daha düşük AIC/BIC değeri daha az bilgi kaybı ve daha iyi model anlamına gelir.",
+            "en": "Lower AIC/BIC indicates superior balance of fit and parsimony."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=AIC_HESABI()",
+        "pythonCode": "print(model.aic, model.bic)",
+        "powerBiNote": {
+          "tr": "Model karşılaştırma paneli",
+          "en": "Model selection leaderboard"
         }
       }
     }

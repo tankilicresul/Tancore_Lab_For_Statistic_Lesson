@@ -1,0 +1,249 @@
+const fs = require('fs');
+const path = require('path');
+const modulesDir = path.join(__dirname, '../src/data');
+
+function updateModule(num, newLessons) {
+  const file = path.join(modulesDir, `module${num}.json`);
+  const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+  data.lessons = newLessons;
+  fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+  console.log(`✓ Module ${num} written with ${newLessons.length} separated lessons.`);
+}
+
+// ==========================================
+// MODULE 8: Çoklu Doğrusal Regresyon (10 Lessons)
+// ==========================================
+updateModule(8, [
+  {
+    id: "m8-l1", moduleId: "module-8", order: 1, difficulty: "orta",
+    title: { tr: "Çoklu Doğrusal Regresyon Denklemi", en: "Multiple Linear Regression Equation" },
+    conceptCard: {
+      tr: "Birden fazla bağımsız değişken ($x_1, x_2, \\dots, x_k$) ile hedef değişken $y$ arasındaki ilişkiyi modeller:\n\n$$\\hat{y} = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \\dots + \\beta_k x_k$$\n\nMatris formunda: $\\hat{\\mathbf{y}} = \\mathbf{X}\\boldsymbol{\\beta}$.",
+      en: "Multiple regression models $y$ from predictors $x_1..x_k$: $\\hat{y} = \\beta_0 + \\sum_{j=1}^k \\beta_j x_j$."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** Satış = $10 + 2(\\text{TV}) + 5(\\text{Dijital})$. TV=10, Dijital=4 ise tahmini satış nedir?\n\n**Çözüm:** $\\hat{y} = 10 + 2(10) + 5(4) = 10 + 20 + 20 = 50$.",
+      en: "**Worked Example:** $\\hat{y} = 10 + 2(10) + 5(4) = 50$."
+    },
+    vocabTerms: [{ term_en: "multiple linear regression", explanation_tr: "Hedef değişkeni birden fazla açıklayıcı değişkenle tahmin eden model.", explanation_en: "Regression model with two or more explanatory variables.", exampleSentence_en: "Multiple regression controls for confounding customer attributes." }],
+    questions: [{
+      id: "m8-l1-q1", type: "numeric",
+      prompt: { tr: "$\\hat{y} = 20 + 3x_1 + 4x_2$ denkleminde $x_1 = 2$ ve $x_2 = 5$ için $\\hat{y}$ kaçtır?", en: "Calculate $\\hat{y} = 20 + 3x_1 + 4x_2$ for $x_1=2, x_2=5$." },
+      correctAnswer: 46,
+      explanation: { tr: "$$\\hat{y} = 20 + (3 \\times 2) + (4 \\times 5) = 20 + 6 + 20 = 46$$", en: "$$\\hat{y} = 20 + 6 + 20 = 46$$" }
+    }],
+    realWorldBox: { excelFormula: "=ÇOKLU_REGRESYON()", pythonCode: "import statsmodels.api as sm\nmodel = sm.OLS(y, sm.add_constant(X)).fit()", powerBiNote: { tr: "Çok değişkenli tahminleme modeli", en: "Multivariate regression visual" } }
+  },
+  {
+    id: "m8-l2", moduleId: "module-8", order: 2, difficulty: "orta",
+    title: { tr: "Kısmi Eğim Katsayıları ve Yorumlanması", en: "Partial Slope Coefficients" },
+    conceptCard: {
+      tr: "Kısmi eğim katsayısı $\\beta_j$, **diğer tüm değişkenler sabit tutulduğunda (ceteris paribus)**, $x_j$'deki 1 birimlik artışın $y$ üzerinde yaratacağı ortalama net değişimi gösterir.",
+      en: "Partial slope $\\beta_j$ represents the net change in $y$ per unit increase in $x_j$, holding all other variables constant."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** Ev Fiyatı = $100 + 50(\\text{Oda}) + 1.2(\\text{m}^2)$. 'Oda' katsayısının yorumu nedir?\n\n**Çözüm:** Metrekare ($m^2$) sabit tutulduğunda, fazladan her 1 oda ev fiyatını ortalama 50 bin TL artırır.",
+      en: "**Worked Example:** Holding size constant, each additional room adds 50k to price."
+    },
+    vocabTerms: [{ term_en: "ceteris paribus (all else equal)", explanation_tr: "Diğer tüm açıklayıcı faktörlerin sabit tutulması varsayımı.", explanation_en: "Latin phrase meaning 'all other things being equal'.", exampleSentence_en: "Holding price constant, advertising significantly lifts brand awareness." }],
+    questions: [{
+      id: "m8-l2-q1", type: "multiple-choice",
+      prompt: { tr: "Çoklu regresyonda bir katsayının yorumundaki en kritik şart nedir?", en: "What is the critical condition when interpreting partial regression coefficients?" },
+      options: [
+        { tr: "Diğer tüm değişkenlerin sabit tutulması", en: "Holding all other variables constant" },
+        { tr: "R-kare değerinin sıfır olması", en: "R-squared being zero" },
+        { tr: "Tüm katsayıların pozitif olması", en: "All coefficients being positive" },
+        { tr: "Örneklemin sonsuz olması", en: "Infinite sample size" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "Kısmi katsayılar diğer tüm değişkenlerin etkisi kontrol altında tutulduğundaki net etkiyi ifade eder.", en: "Partial coefficients isolate the effect by holding other predictors fixed." }
+    }],
+    realWorldBox: { excelFormula: "=Katsayı Yorumu", pythonCode: "print(model.params)", powerBiNote: { tr: "Katsayı etki büyüklüğü grafiği", en: "Feature importance coefficient plot" } }
+  },
+  {
+    id: "m8-l3", moduleId: "module-8", order: 3, difficulty: "orta",
+    title: { tr: "Düzeltilmiş $R^2$ (Adjusted $R^2$)", en: "Adjusted $R^2$" },
+    conceptCard: {
+      tr: "Modele anlamsız değişkenler eklense bile standart $R^2$ asla azalmaz (şişer). **Düzeltilmiş $R^2$ ($R^2_{\\text{adj}}$)**, değişken sayısını ($k$) cezalandırır:\n\n$$R^2_{\\text{adj}} = 1 - \\left[ \\frac{(1 - R^2)(n - 1)}{n - k - 1} \\right]$$\n\nModel karşılaştırmalarında ve gereksiz değişken elemede standart $R^2$'ye tercih edilir.",
+      en: "Adjusted $R^2$ penalizes adding non-informative variables: $R^2_{\\text{adj}} = 1 - \\frac{(1-R^2)(n-1)}{n-k-1}$."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** Modele tamamen rastgele gürültü içeren bir sütun eklendiğinde $R^2$ ve $R^2_{\\text{adj}}$ nasıl değişir?\n\n**Çözüm:** Standart $R^2$ hafifçe artabilir veya aynı kalır, ancak $R^2_{\\text{adj}}$ cezalandırma yüzünden **azalır**.",
+      en: "**Worked Example:** Adding noise increases raw $R^2$ slightly but decreases $R^2_{adj}$."
+    },
+    vocabTerms: [{ term_en: "Adjusted R-squared", explanation_tr: "Serbestlik derecesi ve değişken sayısını hesaba katarak düzeltilmiş model uyum ölçüsü.", explanation_en: "Modified version of $R^2$ that accounts for number of predictors.", exampleSentence_en: "Adjusted $R^2$ dropped from 0.78 to 0.74, indicating model overfitting." }],
+    questions: [{
+      id: "m8-l3-q1", type: "multiple-choice",
+      prompt: { tr: "Modele anlamsız, gereksiz bir değişken eklendiğinde Düzeltilmiş R-kare ($R^2_{\\text{adj}}$) nasıl tepki verir?", en: "How does Adjusted $R^2$ react when adding an irrelevant predictor?" },
+      options: [
+        { tr: "Azalır (Ceza mekanizması çalışır)", en: "Decreases (Penalized)" },
+        { tr: "Daima 1'e fırlar", en: "Always jumps to 1" },
+        { tr: "Kesinlikle iki katına çıkar", en: "Doubles" },
+        { tr: "Hiçbir zaman hesaplanamaz", en: "Cannot be computed" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "Değişken sayısının yarattığı serbestlik kaybı açıklanan varyansı aşarsa $R^2_{adj}$ düşer.", en: "Penalty for extra parameters reduces $R^2_{adj}$ if gain is negligible." }
+    }],
+    realWorldBox: { excelFormula: "=1 - (1 - R2)*(n-1)/(n-k-1)", pythonCode: "adj_r2 = model.rsquared_adj", powerBiNote: { tr: "Düzeltilmiş model kalite metriği", en: "Adjusted R-squared metric" } }
+  },
+  {
+    id: "m8-l4", moduleId: "module-8", order: 4, difficulty: "orta",
+    title: { tr: "Model Genel Anlamlılık $F$-Testi (ANOVA)", en: "Overall Model $F$-Test" },
+    conceptCard: {
+      tr: "Modeldeki değişkenlerin topluca hedef değişkeni açıklamakta anlamlı olup olmadığını test eder ($H_0: \\beta_1 = \\beta_2 = \\dots = \\beta_k = 0$):\n\n$$F = \\frac{\\text{MSR}}{\\text{MSE}} = \\frac{\\text{SSR} / k}{\\text{SSE} / (n - k - 1)}$$\n\n$p < 0.05$ ise en az bir değişken sıfırdan farklı ve anlamlıdır.",
+      en: "Overall $F$-test evaluates $H_0: \\beta_1 = \\dots = \\beta_k = 0$ via $F = \\frac{\\text{MSR}}{\\text{MSE}}$."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** $\\text{MSR} = 120, \\text{MSE} = 10$. $F$-istatistiği nedir?\n\n**Çözüm:** $F = 120 / 10 = 12.00$.",
+      en: "**Worked Example:** $F = 120 / 10 = 12.00$."
+    },
+    vocabTerms: [{ term_en: "overall F-test", explanation_tr: "Regresyon modelinin bir bütün olarak sıfır modelden (sadece sabit) anlamlı derecede iyi olduğunu kanıtlayan test.", explanation_en: "Test determining whether linear relationship exists between response and subset of predictors.", exampleSentence_en: "With $F=12.0, p < 0.001$, the regression model is highly significant." }],
+    questions: [{
+      id: "m8-l4-q1", type: "numeric",
+      prompt: { tr: "$\\text{MSR} = 150$ ve $\\text{MSE} = 15$ olduğuna göre ANOVA $F$-istatistiği ($150 / 15$) kaçtır?", en: "Calculate F-statistic for $\\text{MSR}=150, \\text{MSE}=15$." },
+      correctAnswer: 10,
+      explanation: { tr: "$$F = \\frac{150}{15} = 10.0$$", en: "$$F = 150 / 15 = 10.0$$" }
+    }],
+    realWorldBox: { excelFormula: "=MSR / MSE", pythonCode: "print(model.fvalue, model.f_pvalue)", powerBiNote: { tr: "Regresyon ANOVA özeti", en: "Regression ANOVA summary" } }
+  },
+  {
+    id: "m8-l5", moduleId: "module-8", order: 5, difficulty: "orta",
+    title: { tr: "Kalıntı Analizi ve Normallik Doğrulaması", en: "Residual Analysis & Normality" },
+    conceptCard: {
+      tr: "Kalıntı ($e_i = y_i - \\hat{y}_i$), modelin tahmin hatasıdır. OLS varsayımlarının doğrulanması için kalıntılar incelenir:\n\n1. Kalıntıların ortalaması sıfırdır ($E[e_i] = 0$).\n2. Kalıntılar Normal Dağılım göstermelidir (Q-Q grafiği ve Shapiro-Wilk testi ile kontrol edilir).",
+      en: "Residuals $e_i = y_i - \\hat{y}_i$ must have mean zero and follow a Normal distribution."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** Gerçek $y = 120$, modelin tahmini $\\hat{y} = 115$. Kalıntı ($e$) nedir?\n\n**Çözüm:** $e = 120 - 115 = +5$.",
+      en: "**Worked Example:** Residual $e = 120 - 115 = 5$."
+    },
+    vocabTerms: [{ term_en: "residuals (errors)", explanation_tr: "Gerçek gözlem değeri ile regresyon doğrusunun tahmin değeri arasındaki fark ($y - \\hat{y}$).", explanation_en: "Differences between observed values and values predicted by the model.", exampleSentence_en: "Residual diagnostics confirmed normality with no severe patterns." }],
+    questions: [{
+      id: "m8-l5-q1", type: "numeric",
+      prompt: { tr: "Gerçek değer $y = 85$ ve model tahmini $\\hat{y} = 80$ olduğuna göre kalıntı ($e = y - \\hat{y}$) kaçtır?", en: "Find residual $e = y - \\hat{y}$ for $y=85, \\hat{y}=80$." },
+      correctAnswer: 5,
+      explanation: { tr: "$$e = 85 - 80 = 5$$", en: "$$e = 85 - 80 = 5$$" }
+    }],
+    realWorldBox: { excelFormula: "=Gerçek - Tahmin", pythonCode: "residuals = model.resid", powerBiNote: { tr: "Kalıntı dağılım histogramı", en: "Residual distribution histogram" } }
+  },
+  {
+    id: "m8-l6", moduleId: "module-8", order: 6, difficulty: "ileri",
+    title: { tr: "Eşvaryanslık (Homoskedasticity) ve Breusch-Pagan", en: "Homoskedasticity & Breusch-Pagan Test" },
+    conceptCard: {
+      tr: "1. **Eşvaryanslık (Homoskedasticity):** Kalıntıların varyansının tüm tahmin değerleri boyunca **sabit** olmasıdır ($\\text{Var}(e_i) = \\sigma^2$).\n2. **Değişen Varyans (Heteroskedasticity):** Hata saçılımının huni gibi açılmasıdır. Katsayı standart hatalarını bozar. Breusch-Pagan ve White testleriyle tespit edilir.",
+      en: "Homoskedasticity requires constant residual variance. Heteroskedasticity (funnel patterns) is tested via Breusch-Pagan."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** Kalıntı grafiğinde tahminler büyüdükçe hataların yayılımı huni şeklinde genişliyorsa ne vardır?\n\n**Çözüm:** Huni şekli **Değişen Varyans (Heteroskedasticity)** göstergesidir; logaritmik dönüşüm veya Robust SE gerekir.",
+      en: "**Worked Example:** Funnel-shaped residual fan indicates heteroskedasticity."
+    },
+    vocabTerms: [{ term_en: "homoskedasticity", explanation_tr: "Hata terimlerinin tüm tahmin düzeylerinde sabit bir saçılıma/varyansa sahip olması varsayımı.", explanation_en: "Assumption that variance of residual terms is constant across all predictor levels.", exampleSentence_en: "Breusch-Pagan p-value > 0.05 confirmed homoskedasticity." }],
+    questions: [{
+      id: "m8-l6-q1", type: "multiple-choice",
+      prompt: { tr: "Kalıntıların saçılım grafiğinde huni (fan) şeklinde genişlemesi hangi varsayımın bozulduğunu gösterir?", en: "A funnel pattern in residuals indicates violation of which assumption?" },
+      options: [
+        { tr: "Eşvaryanslık (Değişen Varyans / Heteroskedasticity oluşmuştur)", en: "Homoskedasticity (Heteroskedasticity present)" },
+        { tr: "Doğrusallık", en: "Linearity" },
+        { tr: "Çoklu Doğrusallık", en: "Multicollinearity" },
+        { tr: "Otokorelasyon", en: "Autocorrelation" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "Huni saçılımı varyansın sabit olmadığını (Heteroskedasticity) kanıtlar.", en: "Funnel shape reflects non-constant residual variance." }
+    }],
+    realWorldBox: { excelFormula: "=Kalıntı Saçılımı", pythonCode: "from statsmodels.stats.diagnostic import het_breuschpagan\nlm, p_val, _, _ = het_breuschpagan(model.resid, model.model.exog)", powerBiNote: { tr: "Heteroskedastisite tanı grafiği", en: "Fitted vs Residual diagnostic plot" } }
+  },
+  {
+    id: "m8-l7", moduleId: "module-8", order: 7, difficulty: "ileri",
+    title: { tr: "Hataların Bağımsızlığı & Otokorelasyon (Durbin-Watson)", en: "Autocorrelation & Durbin-Watson" },
+    conceptCard: {
+      tr: "Kalııntıların birbirini takip eden zaman adımlarında bağımsız olması gerekir. **Durbin-Watson ($DW$)** istatistiği ($0 \\le DW \\le 4$):\n\n- **$DW \\approx 2.0$:** Otokorelasyon yok (İdeal durum)\n- **$DW < 1.5$:** Pozitif otokorelasyon var\n- **$DW > 2.5$:** Negatif otokorelasyon var",
+      en: "Durbin-Watson ($DW$) tests residual autocorrelation: $DW \\approx 2$ indicates independence, $DW < 1.5$ indicates positive autocorrelation."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** Zaman serisi regresyonunda $DW = 1.98$ bulunmuştur. Yorum nedir?\n\n**Çözüm:** $DW \\approx 2$ olduğundan kalıntılar arasında otokorelasyon yoktur (bağımsızlık varsayımı sağlanmıştır).",
+      en: "**Worked Example:** $DW = 1.98 \\implies$ No autocorrelation."
+    },
+    vocabTerms: [{ term_en: "Durbin-Watson statistic", explanation_tr: "Kalıntılarda 1. dereceden seri korelasyonu (otokorelasyonu) test eden 0-4 arası istatistik.", explanation_en: "Test statistic used to detect autocorrelation in residuals from a regression analysis.", exampleSentence_en: "A Durbin-Watson statistic of 2.0 confirms independent errors." }],
+    questions: [{
+      id: "m8-l7-q1", type: "multiple-choice",
+      prompt: { tr: "Durbin-Watson testinde otokorelasyonun olmadığını (hataların bağımsız olduğunu) gösteren ideal değer kaçtır?", en: "What is the ideal Durbin-Watson value indicating zero autocorrelation?" },
+      options: [
+        { tr: "2.0", en: "2.0" },
+        { tr: "0.0", en: "0.0" },
+        { tr: "4.0", en: "4.0" },
+        { tr: "-1.0", en: "-1.0" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "Durbin-Watson değerinin 2.0 civarında olması otokorelasyon olmadığını gösterir.", en: "DW around 2.0 confirms serial independence." }
+    }],
+    realWorldBox: { excelFormula: "=DURBIN_WATSON()", pythonCode: "from statsmodels.stats.stattools import durbin_watson\ndw = durbin_watson(model.resid)", powerBiNote: { tr: "Zaman serisi kalıntı korelogramı", en: "Time series residual correlogram" } }
+  },
+  {
+    id: "m8-l8", moduleId: "module-8", order: 8, difficulty: "ileri",
+    title: { tr: "Çoklu Doğrusallık ve Varyans Şişme Faktörü ($VIF$)", en: "Multicollinearity & VIF" },
+    conceptCard: {
+      tr: "Bağımsız değişkenlerin birbirleriyle yüksek korelasyona sahip olması durumuna **Çoklu Doğrusallık (Multicollinearity)** denir. Katsayıların standart hatalarını şişirir.\n\n**Varyans Şişme Faktörü (VIF):**\n$$VIF_j = \\frac{1}{1 - R_j^2}$$\n- $VIF < 5$: Güvenli / Normal\n- $VIF > 5$ veya $VIF > 10$: Ciddi çoklu doğrusallık var (Değişken elenmeli veya birleştirilmelidir).",
+      en: "Multicollinearity inflates coefficient variance. $VIF = \\frac{1}{1 - R_j^2}$. $VIF > 5$ indicates high collinearity."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** Bir değişkenin diğer değişkenler üzerindeki $R_j^2 = 0.90$'dır. $VIF$ değeri nedir?\n\n**Çözüm:**\n$$VIF = \\frac{1}{1 - 0.90} = \\frac{1}{0.10} = 10.0$$\n(Ciddi çoklu doğrusallık tespit edilmiştir).",
+      en: "**Worked Example:** $R_j^2 = 0.90 \\implies VIF = 1 / 0.10 = 10.0$."
+    },
+    vocabTerms: [{ term_en: "Variance Inflation Factor (VIF)", explanation_tr: "Çoklu doğrusallığın bir katsayının varyansını kaç kat şişirdiğini ölçen indeks.", explanation_en: "Measure of the amount of multicollinearity in a set of multiple regression variables.", exampleSentence_en: "Variables with VIF > 10 were dropped to stabilize coefficient estimates." }],
+    questions: [{
+      id: "m8-l8-q1", type: "numeric",
+      prompt: { tr: "$R_j^2 = 0.80$ olan bir değişkenin $VIF$ değeri kaçtır ($1 / (1 - 0.80)$)?", en: "Calculate VIF for $R_j^2 = 0.80$." },
+      correctAnswer: 5,
+      explanation: { tr: "$$VIF = \\frac{1}{1 - 0.80} = \\frac{1}{0.20} = 5.0$$", en: "$$VIF = 1 / 0.20 = 5.0$$" }
+    }],
+    realWorldBox: { excelFormula: "=1 / (1 - RKARE)", pythonCode: "from statsmodels.stats.outliers_influence import variance_inflation_factor\nvif = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]", powerBiNote: { tr: "VIF risk paneli", en: "VIF multicollinearity audit" } }
+  },
+  {
+    id: "m8-l9", moduleId: "module-8", order: 9, difficulty: "orta",
+    title: { tr: "Kukla Değişkenler (Dummy Variables)", en: "Dummy / Indicator Variables" },
+    conceptCard: {
+      tr: "Kategorik değişkenleri regresyona dahil etmek için 0 veya 1 değerini alan **Kukla (Dummy) Değişkenler** tanımlanır.\n\n**Kukla Değişken Tuzağı (Dummy Variable Trap):** $k$ kategorili bir değişken için daima **$k - 1$** adet kukla değişken oluşturulmalıdır (Dışarıda bırakılan kategori referans/baz kategoridir).",
+      en: "Dummy variables encode categorical features as 0/1. For $k$ categories, use $k-1$ dummies to avoid perfect collinearity."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** 4 mevsimi (İlkbahar, Yaz, Sonbahar, Kış) modellemek için kaç kukla değişken oluşturulmalıdır?\n\n**Çözüm:** $k - 1 = 4 - 1 = 3$ adet kukla değişken oluşturulur (1 tanesi referans baz alınır).",
+      en: "**Worked Example:** 4 seasons require $4 - 1 = 3$ dummy variables."
+    },
+    vocabTerms: [{ term_en: "dummy variable trap", explanation_tr: "Tüm kategoriler için kukla değişken açıldığında oluşan mükemmel çoklu doğrusallık çıkmazı.", explanation_en: "Collinearity issue occurring when $k$ categories are represented by $k$ dummy variables.", exampleSentence_en: "Dropping one category avoided the dummy variable trap." }],
+    questions: [{
+      id: "m8-l9-q1", type: "numeric",
+      prompt: { tr: "3 farklı eğitim düzeyi (Lise, Lisans, Yüksek Lisans) için modele kaç adet kukla değişken eklenmelidir?", en: "How many dummy variables are needed for 3 education levels ($k-1$)?" },
+      correctAnswer: 2,
+      explanation: { tr: "$$k - 1 = 3 - 1 = 2$$", en: "$$3 - 1 = 2$$" }
+    }],
+    realWorldBox: { excelFormula: "=EĞER(A2=\"Lise\", 1, 0)", pythonCode: "import pandas as pd\npd.get_dummies(df['education'], drop_first=True)", powerBiNote: { tr: "Kategorik filtreleme sütunları", en: "One-hot dummy encoding" } }
+  },
+  {
+    id: "m8-l10", moduleId: "module-8", order: 10, difficulty: "ileri",
+    title: { tr: "Etkin Gözlemler, Kaldıraç (Leverage) & Cook's Distance", en: "Influential Points & Cook's Distance" },
+    conceptCard: {
+      tr: "1. **Kaldıraç (Leverage - $h_{ii}$):** Gözlemin $X$-uzayındaki aşırılığıdır.\n2. **Cook's Distance ($D_i$):** Bir gözlem modelden çıkarıldığında tüm tahminlerin ne kadar değişeceğini ölçer:\n- $D_i > 1.0$ veya $D_i > 4/n$: Model katsayılarını tek başına saptıran **etkin (influential) aykırı değerdir**.",
+      en: "Cook's Distance measures influence on fitted values. $D_i > 4/n$ flags influential outliers."
+    },
+    companyExample: {
+      tr: "**Örnek Soru:** $n=100$ gözlemli modelde $4/n = 0.04$'tür. $D_i = 0.15$ olan bir nokta nasıl değerlendirilir?\n\n**Çözüm:** $D_i > 0.04$ olduğundan bu gözlem model eğimini tek başına çeken etkin bir noktadır; özel incelenmelidir.",
+      en: "**Worked Example:** $D_i = 0.15 > 0.04 \\implies$ Influential point requiring scrutiny."
+    },
+    vocabTerms: [{ term_en: "Cook's distance", explanation_tr: "Tek bir veri noktasının regresyon modelinin parametreleri üzerindeki genel etki gücü.", explanation_en: "Estimate of the influence of a data point when performing a least-squares regression analysis.", exampleSentence_en: "Cook's distance identified an anomalous corporate client skewing the slope." }],
+    questions: [{
+      id: "m8-l10-q1", type: "multiple-choice",
+      prompt: { tr: "Regresyon modelinde bir gözlemin model katsayılarını aşırı derecede saptırdığını (etkin nokta) gösteren metrik hangisidir?", en: "Which metric identifies influential observations skewing regression coefficients?" },
+      options: [
+        { tr: "Cook's Distance", en: "Cook's Distance" },
+        { tr: "Aritmetik Ortalama", en: "Arithmetic Mean" },
+        { tr: "Durbin-Watson", en: "Durbin-Watson" },
+        { tr: "Standart Sapma", en: "Standard Deviation" }
+      ],
+      correctAnswer: 0,
+      explanation: { tr: "Cook's Distance gözlemin regresyon tahminleri üzerindeki toplam etki gücünü ölçer.", en: "Cook's distance quantifies individual observation influence." }
+    }],
+    realWorldBox: { excelFormula: "=COOK_MESAFESİ()", pythonCode: "influence = model.get_influence()\ncooks_d = influence.cooks_distance[0]", powerBiNote: { tr: "Etkin aykırı gözlem scatter grafiği", en: "Leverage vs Residuals scatter plot" } }
+  }
+]);
+
+console.log('Finished Module 8.');

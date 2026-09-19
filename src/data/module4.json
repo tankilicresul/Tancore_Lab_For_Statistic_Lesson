@@ -17,24 +17,23 @@
       "order": 1,
       "difficulty": "orta",
       "title": {
-        "tr": "Birleşik (Joint) Dağılımlar, Kovaryans ve Korelasyon",
-        "en": "Joint Distributions, Covariance & Correlation"
+        "tr": "İki Değişkenli Ortak Dağılım (Joint PMF)",
+        "en": "Joint Probability Distributions"
       },
       "conceptCard": {
-        "tr": "İki rastgele değişken $X$ ve $Y$ arasındaki ortak davranış Birleşik PMF $p(x, y) = P(X=x, Y=y)$ ile belirlenir (`INDR 252 Lecture 2`):\n\n**Kovaryans:**\n$$\\text{Cov}(X, Y) = \\sigma_{XY} = \\mathbb{E}[(X - \\mu_X)(Y - \\mu_Y)] = \\mathbb{E}[XY] - \\mathbb{E}[X]\\mathbb{E}[Y]$$\n\n**Pearson Korelasyon Katsayısı (Boyutsuz Ölçü):**\n$$\\rho_{XY} = \\frac{\\text{Cov}(X, Y)}{\\sigma_X \\sigma_Y}, \\qquad -1 \\le \\rho_{XY} \\le 1$$\n- $X$ ve $Y$ bağımsız ise $\\text{Cov}(X, Y) = 0$ ve $\\rho = 0$'dır.",
-        "en": "Joint PMF is $p(x,y)=P(X=x,Y=y)$. Covariance is $\\text{Cov}(X,Y)=\\mathbb{E}[XY]-\\mathbb{E}[X]\\mathbb{E}[Y]$. Correlation is $\\rho = \\frac{\\text{Cov}(X,Y)}{\\sigma_X \\sigma_Y} \\in [-1, 1]$."
+        "tr": "İki rastgele değişkenin ($X, Y$) aynı anda belirli değerleri alma olasılığını gösterir:\n\n$$p(x, y) = P(X = x, Y = y)$$\n\n**Koşul:** $\\sum_x \\sum_y p(x, y) = 1$",
+        "en": "Joint PMF models simultaneous behavior of $(X, Y)$: $\\sum_x \\sum_y p(x, y) = 1$."
       },
       "companyExample": {
-        "tr": "SurveyPulse sunucularında CPU kullanımı ($X$) ile bellek kullanımı ($Y$) arasındaki kovaryans $\\text{Cov}(X,Y) = 24$, standart sapmalar $\\sigma_X = 5, \\sigma_Y = 6$ ise aralarındaki korelasyon $\\rho = 24 / (5 \\times 6) = 0.80$'dir. Bu, iki sistem kaynağı arasında güçlü bir pozitif doğrusal bağ olduğunu gösterir.",
-        "en": "CPU load ($X$) and RAM load ($Y$) have $\\text{Cov}(X,Y)=24$, $\\sigma_X=5, \\sigma_Y=6$. The correlation is $\\rho = 24/30 = 0.80$, showing a strong positive linear relationship."
+        "tr": "**Örnek Soru:** $X$: Ziyaret süresi, $Y$: Satın alma. Ortak tabloda tüm hücrelerin toplamı kaçtır?\n\n**Çözüm:** Tüm ortak olasılıkların toplamı 1.0'dır.",
+        "en": "**Worked Example:** Total sum across joint probability table equals 1.0."
       },
-      "interactiveType": "correlation_scatter",
       "vocabTerms": [
         {
-          "term_en": "covariance",
-          "explanation_tr": "İki rastgele değişkenin birlikte ne derece değiştiklerini gösteren istatistiksel ölçü.",
-          "explanation_en": "A measure of the joint variability of two random variables.",
-          "exampleSentence_en": "Positive covariance indicates variables increase together."
+          "term_en": "joint distribution",
+          "explanation_tr": "Birden fazla rastgele değişkenin eşzamanlı olasılık yapısını tanımlayan dağılım.",
+          "explanation_en": "Probability distribution giving the probability that each of $X, Y$ falls in any particular range.",
+          "exampleSentence_en": "The joint distribution captures co-movement of user interactions."
         }
       ],
       "questions": [
@@ -42,41 +41,48 @@
           "id": "m4-l1-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$\\mathbb{E}[XY] = 26$, $\\mathbb{E}[X] = 4$ ve $\\mathbb{E}[Y] = 5$ ise $\\text{Cov}(X, Y)$ kaçtır?",
-            "en": "If $\\mathbb{E}[XY] = 26$, $\\mathbb{E}[X] = 4$, and $\\mathbb{E}[Y] = 5$, what is $\\text{Cov}(X, Y)$?"
+            "tr": "Bir ortak dağılım tablosundaki tüm hücre olasılıklarının toplamı kaç olmalıdır?",
+            "en": "What must the sum of all joint probabilities equal?"
           },
-          "correctAnswer": 6,
+          "correctAnswer": 1,
           "explanation": {
-            "tr": "$$\\text{Cov}(X, Y) = \\mathbb{E}[XY] - \\mathbb{E}[X]\\mathbb{E}[Y] = 26 - (4 \\times 5) = 26 - 20 = 6$$",
-            "en": "$$\\text{Cov}(X, Y) = 26 - (4 \\times 5) = 6$$"
+            "tr": "Tüm olası çıktılar örneklem uzayını oluşturduğundan toplam daima 1'dir.",
+            "en": "Sum of joint probabilities across entire domain is always 1."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=TOPLA(B2:D4)",
+        "pythonCode": "joint_table.values.sum() == 1.0",
+        "powerBiNote": {
+          "tr": "Çapraz tablo (Matrix) ısı haritası",
+          "en": "Matrix heatmap visual"
+        }
+      }
     },
     {
       "id": "m4-l2",
       "moduleId": "module-4",
       "order": 2,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Rastgele Değişkenlerin Doğrusal Kombinasyonları",
-        "en": "Linear Combinations of Random Variables"
+        "tr": "Marjinal ve Koşullu Dağılımlar",
+        "en": "Marginal & Conditional Distributions"
       },
       "conceptCard": {
-        "tr": "$X_1, X_2, \\dots, X_n$ rastgele değişkenlerinin doğrusal kombinasyonu $Y = \\sum a_i X_i$ için (`INDR 252 Lecture 2`):\n\n**1. Beklenen Değer (Her zaman geçerlidir):**\n$$\\mathbb{E}[Y] = \\sum_{i=1}^n a_i \\mathbb{E}[X_i]$$\n\n**2. Genel Varyans Formülü:**\n$$\\text{Var}(Y) = \\sum_{i=1}^n a_i^2 \\text{Var}(X_i) + 2 \\sum_{i < j} a_i a_j \\text{Cov}(X_i, X_j)$$\n\n**3. Bağımsız Değişkenler İçin:**\n$$\\text{Var}(X_1 - X_2) = (1)^2 \\text{Var}(X_1) + (-1)^2 \\text{Var}(X_2) = \\text{Var}(X_1) + \\text{Var}(X_2)$$",
-        "en": "For linear combination $Y = \\sum a_i X_i$, expectation is $\\mathbb{E}[Y] = \\sum a_i \\mathbb{E}[X_i]$. For independent RVs, variance is $\\text{Var}(Y) = \\sum a_i^2 \\text{Var}(X_i)$."
+        "tr": "1. **Marjinal PMF:** Diğer değişken üzerinden toplayarak tek bir değişkenin dağılımını elde etmektir:\n$$p_X(x) = \\sum_y p(x, y)$$\n\n2. **Koşullu PMF:**\n$$p_{Y|X}(y \\mid x) = \\frac{p(x, y)}{p_X(x)}$$",
+        "en": "Marginal PMF sums out the other variable: $p_X(x) = \\sum_y p(x, y)$. Conditional PMF: $p(y \\mid x) = p(x, y) / p_X(x)$."
       },
       "companyExample": {
-        "tr": "Bir montaj hattında iki bağımsız parçanın uzunlukları $X_1 \\sim \\mathcal{N}(50, 4)$ ve $X_2 \\sim \\mathcal{N}(30, 9)$'dur. Toplam uzunluk $Y = X_1 + X_2$ için beklenen değer $\\mathbb{E}[Y] = 50 + 30 = 80$, varyans $\\text{Var}(Y) = 4 + 9 = 13$, standart sapma $\\sigma_Y = \\sqrt{13} \\approx 3.61$ mm olur.",
-        "en": "Two independent assembled parts have lengths $X_1 \\sim \\mathcal{N}(50, 4)$ and $X_2 \\sim \\mathcal{N}(30, 9)$. Total length $Y = X_1 + X_2$ has $\\mathbb{E}[Y] = 80$ and $\\text{Var}(Y) = 4 + 9 = 13$."
+        "tr": "**Örnek Soru:** $p(x=1, y=1)=0.15, p(x=1, y=2)=0.25$. $X=1$ için marjinal olasılık $p_X(1)$ nedir?\n\n**Çözüm:** $p_X(1) = 0.15 + 0.25 = 0.40$.",
+        "en": "**Worked Example:** $p_X(1) = 0.15 + 0.25 = 0.40$."
       },
-      "interactiveType": "linear_comb_calc",
       "vocabTerms": [
         {
-          "term_en": "linear combination",
-          "explanation_tr": "Rastgele değişkenlerin sabit katsayılarla çarpılıp toplanması işlemi.",
-          "explanation_en": "An expression constructed from a set of terms by multiplying each term by a constant and adding the results.",
-          "exampleSentence_en": "The sum of independent normal random variables is also normal."
+          "term_en": "marginal probability",
+          "explanation_tr": "Diğer değişkenlerin etkisini toplayarak dışarıda bırakan tekil değişken olasılığı.",
+          "explanation_en": "Probability of an event irrespective of the outcome of other variables.",
+          "exampleSentence_en": "Marginal distributions appear in the row and column totals of contingency tables."
         }
       ],
       "questions": [
@@ -84,72 +90,73 @@
           "id": "m4-l2-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$X_1$ ve $X_2$ bağımsız iki değişken olup $\\text{Var}(X_1) = 9$ ve $\\text{Var}(X_2) = 16$ ise $\\text{Var}(X_1 - X_2)$ kaçtır?",
-            "en": "If $X_1$ and $X_2$ are independent with $\\text{Var}(X_1) = 9$ and $\\text{Var}(X_2) = 16$, what is $\\text{Var}(X_1 - X_2)$?"
+            "tr": "$p(1, 1) = 0.2$ ve $p(1, 2) = 0.3$ olduğuna göre marjinal $p_X(1)$ kaçtır?",
+            "en": "If $p(1, 1)=0.2$ and $p(1, 2)=0.3$, what is marginal $p_X(1)$?"
           },
-          "correctAnswer": 25,
+          "correctAnswer": 0.5,
           "explanation": {
-            "tr": "Varyanslar her zaman toplanır: $\\text{Var}(X_1 - X_2) = (1)^2 \\text{Var}(X_1) + (-1)^2 \\text{Var}(X_2) = 9 + 16 = 25$.",
-            "en": "Variances always add up: $\\text{Var}(X_1 - X_2) = 1^2 \\times 9 + (-1)^2 \\times 16 = 25$."
+            "tr": "$$p_X(1) = 0.2 + 0.3 = 0.5$$",
+            "en": "$$0.2 + 0.3 = 0.5$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=TOPLA(B2:D2)",
+        "pythonCode": "marginal_x = joint_df.sum(axis=1)",
+        "powerBiNote": {
+          "tr": "Satır ve sütun marjinal toplamları",
+          "en": "Row/column subtotal DAX"
+        }
+      }
     },
     {
       "id": "m4-l3",
       "moduleId": "module-4",
       "order": 3,
-      "difficulty": "ileri",
+      "difficulty": "orta",
       "title": {
-        "tr": "Hata Yayılımı (Propagation of Error / Taylor Yaklaşımı)",
-        "en": "Propagation of Error (Taylor Series Approximation)"
+        "tr": "Kovaryans ($\\text{Cov}(X,Y)$)",
+        "en": "Covariance"
       },
       "conceptCard": {
-        "tr": "**Hata Yayılımı (Propagation of Error / Taylor Yaklaşımı - `INDR 252 Lecture 3`, `CEx3`):**\n\nDoğrusal olmayan bir fonksiyon $Y = f(X_1, X_2, \\dots, X_k)$ verildiğinde, birinci derece çok değişkenli Taylor serisi açılımı ile yaklaşık varyans:\n\n$$\\sigma_Y^2 = \\text{Var}(Y) \\approx \\sum_{i=1}^k \\left( \\frac{\\partial f}{\\partial X_i} \\right)^2 \\sigma_{X_i}^2$$\n\nDeğişkenler arasında kovaryans varsa:\n$$\\text{Var}(Y) \\approx \\sum_{i=1}^k \\left( \\frac{\\partial f}{\\partial X_i} \\right)^2 \\sigma_{X_i}^2 + 2 \\sum_{i < j} \\left( \\frac{\\partial f}{\\partial X_i} \\right) \\left( \\frac{\\partial f}{\\partial X_j} \\right) \\text{Cov}(X_i, X_j)$$",
-        "en": "For non-linear function $Y = f(X_1,\\dots,X_k)$, first-order Taylor expansion yields $\\sigma_Y^2 \\approx \\sum (\\frac{\\partial f}{\\partial X_i})^2 \\sigma_{X_i}^2$."
+        "tr": "Kovaryans, iki rastgele değişkenin birlikte nasıl değiştiğini (ortak yönelimini) ölçer:\n\n$$\\text{Cov}(X, Y) = E[(X - \\mu_X)(Y - \\mu_Y)] = E[XY] - E[X]E[Y]$$\n\n- $\\text{Cov} > 0$: Değişkenler aynı yönde hareket eder.\n- $\\text{Cov} < 0$: Ters yönde hareket eder.\n- $X$ ve $Y$ bağımsız ise $\\text{Cov}(X, Y) = 0$.",
+        "en": "Covariance measures linear association: $\\text{Cov}(X, Y) = E[XY] - E[X]E[Y]$."
       },
       "companyExample": {
-        "tr": "Elektrik devresinde güç $P = I^2 R$ formülüyle hesaplanmaktadır. Akım $I = 10$ A ($\\sigma_I = 0.2$), Direnç $R = 50\\,\\Omega$ ($\\sigma_R = 1$) bağımsızdır. $\\frac{\\partial P}{\\partial I} = 2IR = 2(10)(50) = 1000$, $\\frac{\\partial P}{\\partial R} = I^2 = 100$. Gücün varyansı $\\sigma_P^2 \\approx (1000)^2 (0.2)^2 + (100)^2 (1)^2 = 40000 + 10000 = 50000$ $\\text{W}^2$ (Standart sapma $\\sigma_P \\approx 223.6$ W) bulunur.",
-        "en": "Electrical power is $P = I^2 R$. With $I=10\\,(\\sigma_I=0.2)$ and $R=50\\,(\\sigma_R=1)$, partial derivatives give $\\sigma_P^2 \\approx (1000)^2(0.2)^2 + (100)^2(1)^2 = 50000$, so $\\sigma_P \\approx 223.6$ W."
+        "tr": "**Örnek Soru:** $E[XY] = 26, E[X] = 5, E[Y] = 4$. Kovaryans nedir?\n\n**Çözüm:**\n$$\\text{Cov}(X, Y) = 26 - (5 \\times 4) = 26 - 20 = 6$$",
+        "en": "**Worked Example:** $\\text{Cov}(X, Y) = 26 - 20 = 6$."
       },
-      "interactiveType": "taylor_error_calc",
       "vocabTerms": [
         {
-          "term_en": "propagation of error",
-          "explanation_tr": "Girdi değişkenlerindeki ölçüm belirsizliklerinin doğrusal olmayan bir fonksiyondan geçerek çıktıya nasıl yansıdığını hesaplayan yöntem.",
-          "explanation_en": "Method for determining the uncertainty of a non-linear function based on input uncertainties.",
-          "exampleSentence_en": "Error propagation uses partial derivatives from Taylor series."
+          "term_en": "covariance",
+          "explanation_tr": "İki değişkenin ortalamalarından olan sapmalarının çarpımlarının beklenen değeri.",
+          "explanation_en": "Measure of the joint variability of two random variables.",
+          "exampleSentence_en": "Positive covariance indicates that advertising spend and revenue rise together."
         }
       ],
       "questions": [
         {
           "id": "m4-l3-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Hata Yayılımı (Propagation of Error) formülü doğrusal olmayan fonksiyonları yaklaşık olarak hesaplamak için hangi matematiksel aracı kullanır?",
-            "en": "Which mathematical tool is used by the Propagation of Error formula to approximate non-linear functions?"
+            "tr": "$E[XY] = 50$, $E[X] = 10$ ve $E[Y] = 4$ olduğuna göre $\\text{Cov}(X, Y)$ kaçtır?",
+            "en": "If $E[XY]=50, E[X]=10, E[Y]=4$, what is $\\text{Cov}(X, Y)$?"
           },
-          "options": [
-            {
-              "tr": "1. Derece Taylor Serisi Açılımı (Kısmi Türevler)",
-              "en": "First-Order Taylor Series Expansion (Partial Derivatives)"
-            },
-            {
-              "tr": "Fourier Dönüşümü",
-              "en": "Fourier Transform"
-            },
-            {
-              "tr": "L'Hopital Kuralı",
-              "en": "L'Hopital's Rule"
-            }
-          ],
-          "correctAnswer": "1. Derece Taylor Serisi Açılımı (Kısmi Türevler)",
+          "correctAnswer": 10,
           "explanation": {
-            "tr": "Hata yayılımı, fonksiyonun beklenen değer etrafında 1. derece Taylor serisine açılmasıyla (kısmi türevlerle) türetilir.",
-            "en": "Error propagation is derived using first-order Taylor expansion around the mean."
+            "tr": "$$\\text{Cov}(X, Y) = 50 - (10 \\times 4) = 50 - 40 = 10$$",
+            "en": "$$50 - 40 = 10$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=KOVARYANS.S(A1:A50, B1:B50)",
+        "pythonCode": "import numpy as np\nnp.cov(x, y)[0, 1]",
+        "powerBiNote": {
+          "tr": "Portföy risk ve kovaryans matrisi",
+          "en": "Portfolio covariance matrix"
+        }
+      }
     },
     {
       "id": "m4-l4",
@@ -157,24 +164,23 @@
       "order": 4,
       "difficulty": "orta",
       "title": {
-        "tr": "Örneklem Dağılımı ve Standart Hata",
-        "en": "Sampling Distribution & Standard Error"
+        "tr": "Korelasyon Katsayısı ($\\rho$)",
+        "en": "Correlation Coefficient ($\\rho$)"
       },
       "conceptCard": {
-        "tr": "Anakütleden çekilen $n$ birimlik bağımsız örneklemlerin ortalaması $\\bar{X}$ bir rastgele değişkendir (`INDR 252 Lecture 3`):\n\n$$\\mathbb{E}[\\bar{X}] = \\mu_{\\bar{X}} = \\mu, \\qquad \\sigma_{\\bar{X}} = \\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$$\n\n**İki Bağımsız Örneklem Ortalamasının Farkı Dağılımı ($\\bar{X}_1 - \\bar{X}_2$):**\n$$\\mathbb{E}[\\bar{X}_1 - \\bar{X}_2] = \\mu_1 - \\mu_2, \\qquad \\sigma_{\\bar{X}_1 - \\bar{X}_2} = \\sqrt{\\frac{\\sigma_1^2}{n_1} + \\frac{\\sigma_2^2}{n_2}}$$",
-        "en": "The sample mean $\\bar{X}$ has expectation $\\mu$ and standard error $\\text{SE} = \\sigma / \\sqrt{n}$. The difference of two independent sample means has $\\text{SE} = \\sqrt{\\sigma_1^2/n_1 + \\sigma_2^2/n_2}$."
+        "tr": "Korelasyon, kovaryansın standart sapmalara bölünerek **$[-1, +1]$** aralığına normalize edilmiş **birimsiz** halidir:\n\n$$\\rho_{X, Y} = \\frac{\\text{Cov}(X, Y)}{\\sigma_X \\sigma_Y}$$\n\n- $\\rho = +1$: Mükemmel pozitif doğrusal ilişki\n- $\\rho = -1$: Mükemmel negatif doğrusal ilişki\n- $\\rho = 0$: Doğrusal ilişki yok",
+        "en": "Pearson correlation coefficient: $\\rho = \\frac{\\text{Cov}(X, Y)}{\\sigma_X \\sigma_Y} \\in [-1, 1]$."
       },
       "companyExample": {
-        "tr": "SurveyPulse harcama araştırmasında kütle standart sapması $\\sigma = 20$ TL'dir. $n = 100$ kişilik örneklemde $\\text{SE} = 20 / \\sqrt{100} = 2$ TL'dir. Örneklem hacmi 4 katına çıkarılıp $n = 400$ yapıldığında $\\text{SE} = 20 / \\sqrt{400} = 1$ TL'ye düşer.",
-        "en": "In SurveyPulse's study, $\\sigma = $20. For $n=100$, $\\text{SE} = 20/10 = $2. Quadrupling to $n=400$ cuts the standard error in half to $\\text{SE} = $1."
+        "tr": "**Örnek Soru:** $\\text{Cov}(X,Y) = 12, \\sigma_X = 3, \\sigma_Y = 5$. Korelasyon $\\rho$ nedir?\n\n**Çözüm:**\n$$\\rho = \\frac{12}{3 \\times 5} = \\frac{12}{15} = 0.80$$",
+        "en": "**Worked Example:** $\\rho = 12 / 15 = 0.80$."
       },
-      "interactiveType": "sample_size",
       "vocabTerms": [
         {
-          "term_en": "standard error (SE)",
-          "explanation_tr": "Bir örneklem istatistiğinin (örneğin ortalamanın) örnekleme dağılımının standart sapması.",
-          "explanation_en": "The standard deviation of a sampling distribution.",
-          "exampleSentence_en": "Standard error decreases inversely with the square root of sample size."
+          "term_en": "correlation coefficient",
+          "explanation_tr": "İki değişken arasındaki doğrusal ilişkinin yönünü ve gücünü gösteren -1 ile +1 arası indeks.",
+          "explanation_en": "Dimensionless measure of the strength and direction of linear relationship.",
+          "exampleSentence_en": "A correlation of 0.80 represents strong positive association."
         }
       ],
       "questions": [
@@ -182,50 +188,204 @@
           "id": "m4-l4-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "Standart sapması $\\sigma = 30$ olan bir kütleden $n = 100$ kişilik örneklem çekilirse Standart Hata ($\\text{SE}$) kaç olur?",
-            "en": "If population std dev $\\sigma = 30$ and sample size $n = 100$, what is the Standard Error ($\\text{SE}$)?"
+            "tr": "$\\text{Cov}(X, Y) = 16, \\sigma_X = 4, \\sigma_Y = 5$ olduğuna göre korelasyon katsayısı $\\rho$ kaçtır?",
+            "en": "If $\\text{Cov}(X,Y)=16, \\sigma_X=4, \\sigma_Y=5$, find $\\rho$."
           },
-          "correctAnswer": 3,
+          "correctAnswer": 0.8,
           "explanation": {
-            "tr": "$$\\text{SE} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{30}{\\sqrt{100}} = \\frac{30}{10} = 3$$",
-            "en": "$$\\text{SE} = \\frac{30}{10} = 3$$"
+            "tr": "$$\\rho = \\frac{16}{4 \\times 5} = \\frac{16}{20} = 0.80$$",
+            "en": "$$\\rho = 16/20 = 0.80$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=KORELASYON(A1:A50, B1:B50)",
+        "pythonCode": "from scipy.stats import pearsonr\nr, _ = pearsonr(x, y)",
+        "powerBiNote": {
+          "tr": "Korelasyon matrisi görseli",
+          "en": "Correlation matrix visual"
+        }
+      }
     },
     {
       "id": "m4-l5",
       "moduleId": "module-4",
       "order": 5,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Merkezi Limit Teoremi (CLT) & Örneklem Büyüklüğü",
-        "en": "Central Limit Theorem (CLT) & Sample Size"
+        "tr": "Rastgele Değişkenlerin Doğrusal Kombinasyonları",
+        "en": "Linear Combinations of Random Variables"
       },
       "conceptCard": {
-        "tr": "**Merkezi Limit Teoremi (Central Limit Theorem - CLT) (`INDR 252 Lecture 3`):**\n\nAna kütlenin dağılımı ne olursa olsun (çarpık, düzgün, üstel), bağımsız ve özdeş dağılmış (i.i.d.) örneklemlerde $n \\ge 30$ olduğunda örneklem ortalamaları dağılımı yaklaşık olarak Normal Dağılıma yakınsar:\n\n$$\\bar{X} \\xrightarrow{d} \\mathcal{N}\\left(\\mu, \\frac{\\sigma^2}{n}\\right), \\qquad Z = \\frac{\\bar{X} - \\mu}{\\frac{\\sigma}{\\sqrt{n}}} \\sim \\mathcal{N}(0, 1)$$\n\n> **Büyük Sayılar Yasası (LLN):** $n \\to \\infty$ iken $\\bar{X} \\to \\mu$ olasılıkta yakınsar.",
-        "en": "Central Limit Theorem guarantees that sample means converge to a normal distribution $\\mathcal{N}(\\mu, \\sigma^2/n)$ as $n \\ge 30$, regardless of the underlying population shape."
+        "tr": "$W = aX + bY$ şeklinde oluşturulan doğrusal kombinasyonlar için:\n\n1. **Beklenen Değer (Daima geçerli):**\n$$E[aX + bY] = a E[X] + b E[Y]$$\n\n2. **Varyans (Genel Formül):**\n$$\\text{Var}(aX + bY) = a^2 \\text{Var}(X) + b^2 \\text{Var}(Y) + 2ab \\text{Cov}(X, Y)$$\n($X, Y$ bağımsız ise kovaryans terimi sıfır olur).",
+        "en": "For $W = aX + bY$: $E[W] = aE[X] + bE[Y]$, $\\text{Var}(W) = a^2\\text{Var}(X) + b^2\\text{Var}(Y) + 2ab\\text{Cov}(X,Y)$."
       },
       "companyExample": {
-        "tr": "SurveyPulse platformunda kullanıcı kalış süreleri aşırı sağa çarpıktır (çoğu kişi 1 dk kalırken bazıları saatlerce kalır). Ancak rastgele $n = 50$ kişilik gruplar alınıp ortalamaları hesaplandığında, bu ortalamaların dağılımı CLT sayesinde kusursuz bir simetrik çan eğrisi oluşturur.",
-        "en": "User session durations are highly right-skewed. However, repeatedly averaging random samples of $n = 50$ yields a perfectly symmetric bell curve due to CLT."
+        "tr": "**Örnek Soru:** $X$ ve $Y$ bağımsızdır. $\\text{Var}(X) = 4, \\text{Var}(Y) = 9$. $W = X - Y$ farkının varyansı nedir?\n\n**Çözüm:**\n$$\\text{Var}(X - Y) = 1^2 \\text{Var}(X) + (-1)^2 \\text{Var}(Y) = 4 + 9 = 13$$\n(Fark alınsa bile varyanslar daima toplanır!).",
+        "en": "**Worked Example:** For independent $X, Y$: $\\text{Var}(X - Y) = \\text{Var}(X) + \\text{Var}(Y) = 4 + 9 = 13$."
       },
-      "interactiveType": "sample_size",
       "vocabTerms": [
         {
-          "term_en": "Central Limit Theorem (CLT)",
-          "explanation_tr": "Örneklem büyüklüğü arttıkça örneklem ortalamasının normale yakınsayacağını kanıtlayan teorem.",
-          "explanation_en": "Theorem stating that sample means approach normality as sample size increases.",
-          "exampleSentence_en": "CLT is the cornerstone of classical statistical inference."
+          "term_en": "linear combination variance",
+          "explanation_tr": "Bağımsız değişkenlerin farkı alınsa bile varyanslarının karesel olarak toplanması kuralı.",
+          "explanation_en": "Variance of difference of independent variables equals the sum of their variances.",
+          "exampleSentence_en": "Variances always add up, even when subtracting random variables."
         }
       ],
       "questions": [
         {
           "id": "m4-l5-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Ana kütle sağa çarpık olduğunda örneklem ortalamasının yaklaşık normal dağılması için genel kural olarak minimum $n$ kaç olmalıdır?",
-            "en": "What is the general rule of thumb for minimum $n$ for sample means to be approximately normal?"
+            "tr": "$X$ ve $Y$ bağımsız iki değişken olup $\\text{Var}(X) = 10$ ve $\\text{Var}(Y) = 15$'tir. $\\text{Var}(X + Y)$ kaçtır?",
+            "en": "If independent $\\text{Var}(X)=10$ and $\\text{Var}(Y)=15$, find $\\text{Var}(X+Y)$."
+          },
+          "correctAnswer": 25,
+          "explanation": {
+            "tr": "$$\\text{Var}(X + Y) = 10 + 15 = 25$$",
+            "en": "$$10 + 15 = 25$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=A2 + B2",
+        "pythonCode": "var_combined = var_x + var_y",
+        "powerBiNote": {
+          "tr": "Toplam portföy varyansı",
+          "en": "Combined risk variance"
+        }
+      }
+    },
+    {
+      "id": "m4-l6",
+      "moduleId": "module-4",
+      "order": 6,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Hata Yayılımı (Propagation of Error / Delta Metodu)",
+        "en": "Propagation of Error"
+      },
+      "conceptCard": {
+        "tr": "Doğrusal olmayan bir $Y = g(X)$ fonksiyonunda, Taylor serisi 1. derece yaklaşımıyla varyans aktarımı hesaplanır:\n\n$$\\text{Var}(Y) \\approx \\left[ g'(\\mu_X) \\right]^2 \\text{Var}(X)$$\n\nİki değişkenli $Y = g(X_1, X_2)$ için kısmi türevlerin kareleriyle yayılır.",
+        "en": "Delta method / error propagation via Taylor expansion: $\\text{Var}(g(X)) \\approx [g'(\\mu_X)]^2 \\text{Var}(X)$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** $Y = 3X^2$, $\\mu_X = 2, \\sigma_X = 0.1$. $Y$'nin standart sapması nedir?\n\n**Çözüm:** $g'(X) = 6X \\implies g'(2) = 12$.\n$$\\sigma_Y \\approx |g'(2)| \\times \\sigma_X = 12 \\times 0.1 = 1.2$$",
+        "en": "**Worked Example:** $\\sigma_Y \\approx 12 \\times 0.1 = 1.2$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "error propagation (Delta method)",
+          "explanation_tr": "Girdi değişkenlerindeki ölçüm belirsizliklerinin fonksiyonel çıktıya nasıl yansıdığını hesaplayan yöntem.",
+          "explanation_en": "Approximation method using derivatives to estimate variance of transformed variables.",
+          "exampleSentence_en": "Error propagation quantified measurement uncertainty in volume calculations."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m4-l6-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$g(X) = 4X$, $\\sigma_X = 0.5$ olduğuna göre çıktının standart sapması ($\\sigma_Y = 4 \\times 0.5$) kaçtır?",
+            "en": "If $g(X) = 4X$ and $\\sigma_X = 0.5$, what is output standard deviation?"
+          },
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "$$\\sigma_Y = 4 \\times 0.5 = 2.0$$",
+            "en": "$$\\sigma_Y = 2.0$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=TÜREV * SIGMA",
+        "pythonCode": "sigma_y = abs(deriv) * sigma_x",
+        "powerBiNote": {
+          "tr": "Duyarlılık ve tolerans analizi",
+          "en": "Sensitivity analysis"
+        }
+      }
+    },
+    {
+      "id": "m4-l7",
+      "moduleId": "module-4",
+      "order": 7,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Örneklem Ortalamasının Dağılımı ve Standart Hata",
+        "en": "Sampling Distribution of the Mean"
+      },
+      "conceptCard": {
+        "tr": "Ortalaması $\\mu$ ve varyansı $\\sigma^2$ olan bir popülasyondan çekilen $n$ elemanlı örneklemin ortalaması $\\bar{X}$'in dağılımı:\n\n- **Beklenen Değer:** $E[\\bar{X}] = \\mu$\n- **Varyans:** $\\text{Var}(\\bar{X}) = \\frac{\\sigma^2}{n}$\n- **Standart Hata (SE):**\n$$\\text{SE} = \\sigma_{\\bar{X}} = \\frac{\\sigma}{\\sqrt{n}}$$",
+        "en": "Sampling distribution of mean $\\bar{X}$: $E[\\bar{X}] = \\mu, \\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** $\\sigma = 20$ olan bir kitlede $n = 100$ örneğin standart hatası (SE) nedir?\n\n**Çözüm:**\n$$\\text{SE} = \\frac{20}{\\sqrt{100}} = \\frac{20}{10} = 2.0$$",
+        "en": "**Worked Example:** $\\text{SE} = 20 / \\sqrt{100} = 2.0$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "standard error (SE)",
+          "explanation_tr": "Örneklem ortalamasının örnekleme değişkenliğini gösteren standart sapması (\\sigma / \\sqrt{n}).",
+          "explanation_en": "Standard deviation of the sampling distribution of a statistic.",
+          "exampleSentence_en": "Quadrupling the sample size cuts the standard error in half."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m4-l7-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Popülasyon standart sapması $\\sigma = 18$ ve örneklem boyutu $n = 36$ ise Standart Hata ($\\text{SE}$) kaçtır?",
+            "en": "If $\\sigma = 18$ and $n = 36$, what is Standard Error ($\\text{SE}$)?"
+          },
+          "correctAnswer": 3,
+          "explanation": {
+            "tr": "$$\\text{SE} = \\frac{18}{\\sqrt{36}} = \\frac{18}{6} = 3$$",
+            "en": "$$\\text{SE} = 18/6 = 3$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=STDSAPMA / KAREKÖK(N)",
+        "pythonCode": "se = std_pop / np.sqrt(n)",
+        "powerBiNote": {
+          "tr": "Hata çubukları (Error bars) grafiği",
+          "en": "Error bar visual parameter"
+        }
+      }
+    },
+    {
+      "id": "m4-l8",
+      "moduleId": "module-4",
+      "order": 8,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Merkezi Limit Teoremi (CLT)",
+        "en": "Central Limit Theorem (CLT)"
+      },
+      "conceptCard": {
+        "tr": "**Merkezi Limit Teoremi:** Popülasyonun orijinal dağılımı ne olursa olsun (çarpık, üniform, bimodal), örneklem boyutu yeterince büyük olduğunda ($n \\ge 30$), örneklem ortalaması $\\bar{X}$'in dağılımı **Normal Dağılıma** yaklaşır:\n\n$$\\bar{X} \\xrightarrow{d} N\\left(\\mu, \\frac{\\sigma^2}{n}\\right)$$\n\nİstatistikte hipotez testleri ve güven aralıklarının en temel taşıdır.",
+        "en": "Regardless of population distribution, sample mean $\\bar{X}$ converges to Normal $N(\\mu, \\sigma^2/n)$ as $n \\ge 30$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Çok sağa çarpık müşteri harcama dağılımından $n=100$ örneklem çekilirse $\\bar{X}$'in dağılımı ne olur?\n\n**Çözüm:** CLT gereği $n=100 \\ge 30$ olduğundan örneklem ortalaması yaklaşık Normal Dağılım gösterir.",
+        "en": "**Worked Example:** By CLT, sample mean of $n=100$ follows a Normal distribution."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Central Limit Theorem",
+          "explanation_tr": "Yeterli örneklem büyüklüğünde örneklem ortalamasının normale yakınsayacağını bildiren teorem.",
+          "explanation_en": "Theorem establishing that sample averages approach normality as sample size grows.",
+          "exampleSentence_en": "CLT allows parametric inference on non-normal business metrics."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m4-l8-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Merkezi Limit Teoremi'nin geçerli olması için genel kabul gören minimum örneklem büyüklüğü kuralı nedir?",
+            "en": "What is the standard rule of thumb for sample size in CLT?"
           },
           "options": [
             {
@@ -239,15 +399,76 @@
             {
               "tr": "n >= 1000",
               "en": "n >= 1000"
+            },
+            {
+              "tr": "n = 1",
+              "en": "n = 1"
             }
           ],
-          "correctAnswer": "n >= 30",
+          "correctAnswer": 0,
           "explanation": {
-            "tr": "İstatistik literatüründe Merkezi Limit Teoremi'nin güvenle uygulanabilmesi için genel eşik kuralı $n \\ge 30$'dur.",
-            "en": "In statistics, $n \\ge 30$ is the standard rule of thumb for applying the Central Limit Theorem."
+            "tr": "İstatistikte genel kural olarak $n \\ge 30$ olduğunda CLT yeterli normal yakınsamayı sağlar.",
+            "en": "Standard statistical threshold is $n \\ge 30$."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=NORM.DAĞ(x_bar, mu, sigma/KAREKÖK(n), DOĞRU)",
+        "pythonCode": "means = [np.mean(np.random.exponential(scale=5, size=50)) for _ in range(1000)]",
+        "powerBiNote": {
+          "tr": "Örnekleme simülasyonu",
+          "en": "Sampling distribution simulation"
+        }
+      }
+    },
+    {
+      "id": "m4-l9",
+      "moduleId": "module-4",
+      "order": 9,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "CLT Uygulamaları ve Örneklem Büyüklüğü",
+        "en": "CLT Applications & Sample Sizing"
+      },
+      "conceptCard": {
+        "tr": "CLT sayesinde örneklem ortalaması için $Z$-dönüşümü yapılabilir:\n\n$$Z = \\frac{\\bar{X} - \\mu}{\\sigma / \\sqrt{n}}$$\n\nİstenen bir hata payı ($E$) ve güven düzeyi için gerekli minimum örneklem boyutu:\n$$n = \\left( \\frac{z_{\\alpha/2} \\cdot \\sigma}{E} \\right)^2$$",
+        "en": "Standardized sample mean: $Z = \\frac{\\bar{X} - \\mu}{\\sigma / \\sqrt{n}}$. Sample size for margin of error $E$: $n = \\left(\\frac{z \\sigma}{E}\\right)^2$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** $\\sigma = 10$, izin verilen hata payı $E = 1$, $z = 2$ için gereken örneklem boyutu $n$ nedir?\n\n**Çözüm:**\n$$n = \\left( \\frac{2 \\times 10}{1} \\right)^2 = 20^2 = 400$$",
+        "en": "**Worked Example:** $n = (2 \\times 10 / 1)^2 = 400$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "sample size planning",
+          "explanation_tr": "İstenen istatistiksel hassasiyet ve güven düzeyini sağlamak için gereken gözlem adedini hesaplama.",
+          "explanation_en": "Determining sample size necessary to achieve desired statistical power and margin of error.",
+          "exampleSentence_en": "We calculated $n=400$ to limit margin of error to $\\pm 1$ unit."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m4-l9-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$\\sigma = 5, E = 0.5, z = 2$ için gerekli örneklem boyutu $n = ((2 \\times 5)/0.5)^2$ kaçtır?",
+            "en": "Calculate required sample size for $\\sigma=5, E=0.5, z=2$."
+          },
+          "correctAnswer": 400,
+          "explanation": {
+            "tr": "$$n = \\left(\\frac{10}{0.5}\\right)^2 = 20^2 = 400$$",
+            "en": "$$n = 20^2 = 400$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(z*sigma/E)^2",
+        "pythonCode": "n_req = ((z * sigma) / margin_error)**2",
+        "powerBiNote": {
+          "tr": "A/B testi örneklem büyüklüğü hesaplayıcı",
+          "en": "A/B test sample size estimator"
+        }
+      }
     }
   ],
   "caseExams": [
