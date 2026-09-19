@@ -100,18 +100,14 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
         allow="autoplay; encrypted-media"
       />
 
-      {/* Styled Floating Music Badge */}
+      {/* Minimal Floating Music Player (No Panel / Background) */}
       <div
         onClick={togglePlay}
-        className={`group relative flex items-center gap-2 px-3 py-1 rounded-full cursor-pointer transition-all duration-300 select-none border shadow-xs ${
-          isPlaying
-            ? 'bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-amber-300/80 text-amber-900 ring-2 ring-amber-300/40 shadow-amber-500/10'
-            : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-800'
-        }`}
+        className="group relative flex items-center gap-2 py-0.5 cursor-pointer transition-all duration-200 select-none text-slate-700 hover:text-slate-900"
         title={language === 'tr' ? 'İlk 3 Şampiyon Müziği: Kır Çiçeği (made by solorijin)' : 'Top 3 Champion Theme: Wildflower (made by solorijin)'}
       >
         {/* Animated Equalizer or Music Icon */}
-        <div className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500/20 text-[#ff7a00]">
+        <div className="flex items-center justify-center w-5 h-5 text-[#ff7a00]">
           {isPlaying ? (
             <div className="flex items-end gap-0.5 h-3">
               <span className="w-0.5 bg-[#ff7a00] rounded-full animate-pulse h-3" />
@@ -119,7 +115,7 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
               <span className="w-0.5 bg-[#ff7a00] rounded-full animate-pulse h-3" />
             </div>
           ) : (
-            <Music className="w-3 h-3 text-slate-400 group-hover:text-[#ff7a00] transition-colors" />
+            <Music className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#ff7a00] transition-colors" />
           )}
         </div>
 
