@@ -481,7 +481,7 @@ export const App: React.FC = () => {
       />
 
       {/* Main Page Body */}
-      <main className="flex-1 pt-20 sm:pt-24 pb-24 sm:pb-28">
+      <main className="flex-1 pt-[68px] sm:pt-[88px] pb-24 sm:pb-28">
         {currentView === 'home' && (
           <div key="home" className="animate-page-enter">
             <HomePage
