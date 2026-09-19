@@ -83,12 +83,12 @@ export const CaseExamIcon: React.FC<{ className?: string }> = ({ className }) =>
   </svg>
 );
 
-export const getModuleMascotIcon = (moduleOrder: number, isUnlocked: boolean) => {
+export const getModuleMascotIcon = (moduleOrder: number, isUnlocked: boolean, sizeClass: string = 'w-4 h-4') => {
   const iconColorClass = isUnlocked ? 'text-white' : 'text-slate-500';
-  const strokeClass = 'w-6 h-6 stroke-[2]';
+  const strokeClass = `${sizeClass} stroke-[2]`;
 
   if (!isUnlocked) {
-    return <Lock className={`w-5 h-5 ${iconColorClass}`} />;
+    return <Lock className={`${sizeClass} ${iconColorClass}`} />;
   }
 
   switch (moduleOrder) {
@@ -470,49 +470,48 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                     : 'bg-slate-200 text-slate-500 border-slate-300'
                 }`}
               >
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="flex-1 min-w-0">
-                    <h2 className="text-base xs:text-lg sm:text-xl font-black tracking-tight leading-snug">
-                      <span className={isModuleUnlocked ? 'text-slate-950 mr-1.5' : 'text-slate-700 mr-1.5'}>
-                        {language === 'tr' ? `Modül ${trackModuleOrder}:` : `Module ${trackModuleOrder}:`}
-                      </span>
-                      <span className={isModuleUnlocked ? 'text-white' : 'text-slate-600'}>
-                        <MathFormulaText text={rawTitle} inline />
-                      </span>
-                    </h2>
-                    <p className="text-xs sm:text-sm opacity-90 font-medium mt-1.5 leading-relaxed">
-                      {getLocalized(module.description, language)}
-                    </p>
-                    {!isModuleUnlocked && (
-                      trackIdx >= 2 && (!isAuthenticated || !isVerified) ? (
-                        <button
-                          onClick={onGuestGateRequired}
-                          className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white hover:bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer"
-                        >
-                          <span>🔒 {language === 'tr' ? '3. Modül ve sonrası için ücretsiz kayıt olun' : 'Sign up to unlock Module 3+'}</span>
-                        </button>
-                      ) : (
-                        <div className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-slate-300/80 text-slate-700 text-[11px] font-bold border border-slate-300">
-                          <span>🔒 {language === 'tr' ? 'Önceki modülü tamamlayarak kilidi açın' : 'Complete previous module to unlock'}</span>
-                        </div>
-                      )
-                    )}
-                  </div>
-
-                  <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shrink-0 shadow-xs">
-                    {getModuleMascotIcon(trackModuleOrder, isModuleUnlocked)}
-                  </div>
+                <div className="mb-3">
+                  <h2 className="text-base xs:text-lg sm:text-xl font-black tracking-tight leading-snug">
+                    <span className={isModuleUnlocked ? 'text-slate-950 mr-1.5' : 'text-slate-700 mr-1.5'}>
+                      {language === 'tr' ? `Modül ${trackModuleOrder}:` : `Module ${trackModuleOrder}:`}
+                    </span>
+                    <span className={isModuleUnlocked ? 'text-white' : 'text-slate-600'}>
+                      <MathFormulaText text={rawTitle} inline />
+                    </span>
+                  </h2>
+                  <p className="text-xs sm:text-sm opacity-90 font-medium mt-1.5 leading-relaxed">
+                    {getLocalized(module.description, language)}
+                  </p>
+                  {!isModuleUnlocked && (
+                    trackIdx >= 2 && (!isAuthenticated || !isVerified) ? (
+                      <button
+                        onClick={onGuestGateRequired}
+                        className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white hover:bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer"
+                      >
+                        <span>🔒 {language === 'tr' ? '3. Modül ve sonrası için ücretsiz kayıt olun' : 'Sign up to unlock Module 3+'}</span>
+                      </button>
+                    ) : (
+                      <div className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-slate-300/80 text-slate-700 text-[11px] font-bold border border-slate-300">
+                        <span>🔒 {language === 'tr' ? 'Önceki modülü tamamlayarak kilidi açın' : 'Complete previous module to unlock'}</span>
+                      </div>
+                    )
+                  )}
                 </div>
 
                 {isModuleUnlocked && (
-                  <div className="pt-2 border-t border-white/20">
-                    <div className="flex items-center justify-between text-xs font-bold mb-1">
+                  <div className="pt-2.5 border-t border-white/20">
+                    <div className="flex items-center justify-between text-xs font-bold mb-1.5">
                       <span className="opacity-90">
                         {language === 'tr'
                           ? `${completedNodesCount}/${totalNodesCount} Aşama Tamamlandı`
                           : `${completedNodesCount}/${totalNodesCount} Steps Completed`}
                       </span>
-                      <span className="font-mono">{progressPercent}%</span>
+                      <div className="flex items-center space-x-1.5">
+                        <span className="font-mono">{progressPercent}%</span>
+                        <span className="opacity-90 flex items-center">
+                          {getModuleMascotIcon(trackModuleOrder, isModuleUnlocked, 'w-4 h-4')}
+                        </span>
+                      </div>
                     </div>
                     <div className="w-full h-2.5 bg-black/20 rounded-full overflow-hidden p-0.5 border border-white/20">
                       <div
