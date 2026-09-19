@@ -22,6 +22,8 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
   useEffect(() => {
     if (isTop3User) {
       setIsPlaying(true);
+    } else {
+      setIsPlaying(false);
     }
   }, [isTop3User]);
 
@@ -42,6 +44,8 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
   const DEFAULT_VOLUME = 20;
 
   useEffect(() => {
+    if (!isTop3User) return;
+
     if (isPlaying) {
       if (!hasStartedRef.current) {
         sendCommand('seekTo', [START_SECONDS, true]);
@@ -57,7 +61,7 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
     } else {
       sendCommand('pauseVideo');
     }
-  }, [isPlaying, isMuted]);
+  }, [isPlaying, isMuted, isTop3User]);
 
   // Clean up when unmounting
   useEffect(() => {
@@ -67,11 +71,13 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
   }, []);
 
   const togglePlay = () => {
+    if (!isTop3User) return;
     setIsPlaying((prev) => !prev);
   };
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!isTop3User) return;
     setIsMuted((prev) => {
       const next = !prev;
       if (next) {
@@ -85,29 +91,45 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
   };
 
   const handleIframeLoad = () => {
+    if (!isTop3User) return;
     sendCommand('setVolume', [DEFAULT_VOLUME]);
     sendCommand('seekTo', [START_SECONDS, true]);
-    if (isTop3User) {
-      sendCommand('playVideo');
-    }
+    sendCommand('playVideo');
   };
+
+  // If user is NOT in the Top 3, do not load iframe and show locked exclusive indicator
+  if (!isTop3User) {
+    return (
+      <div className="w-full flex items-center justify-center mb-2">
+        <div
+          className="flex items-center gap-1.5 py-1 px-3.5 rounded-full bg-slate-100/90 border border-slate-200/70 text-[10.5px] font-bold text-slate-500 select-none shadow-2xs"
+          title={language === 'tr' ? 'Bu özel tema müziği yalnızca ilk 3 sıradaki kullanıcılar için çalar' : 'This exclusive theme music plays only for top 3 ranked users'}
+        >
+          <span className="text-xs">🔒</span>
+          <span>
+            {language === 'tr'
+              ? 'İlk 3 Şampiyon Müziği (Yalnızca İlk 3\'e Özel)'
+              : 'Top 3 Champion Theme (Exclusive to Top 3)'}
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex items-center justify-center mb-2">
-      {/* Hidden YouTube IFrame */}
+      {/* Hidden YouTube IFrame - Loaded ONLY for Top 3 users */}
       <iframe
         ref={iframeRef}
         id="top3-yt-iframe"
         title="Top 3 Theme Music"
         onLoad={handleIframeLoad}
         className="hidden w-0 h-0 pointer-events-none opacity-0 absolute -z-50"
-        src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?enablejsapi=1&start=${START_SECONDS}&autoplay=${
-          isTop3User ? '1' : '0'
-        }&loop=1&playlist=${YOUTUBE_VIDEO_ID}&playsinline=1&controls=0&rel=0`}
+        src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?enablejsapi=1&start=${START_SECONDS}&autoplay=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}&playsinline=1&controls=0&rel=0`}
         allow="autoplay; encrypted-media"
       />
 
-      {/* Minimal Floating Music Player (No Panel / Background) */}
+      {/* Minimal Floating Music Player (Exclusive for Top 3) */}
       <div
         onClick={togglePlay}
         className="group relative flex items-center gap-2 py-0.5 cursor-pointer transition-all duration-200 select-none text-slate-700 hover:text-slate-900"
@@ -132,11 +154,9 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
             🎵 {language === 'tr' ? 'Kır Çiçeği' : 'Wildflower'}{' '}
             <span className="font-medium opacity-75 text-[10px] text-slate-500">· made by solorijin</span>
           </span>
-          {isTop3User && (
-            <span className="text-[9.5px] bg-amber-500 text-white font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider shrink-0">
-              TOP 3
-            </span>
-          )}
+          <span className="text-[9.5px] bg-amber-500 text-white font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider shrink-0">
+            TOP 3
+          </span>
         </div>
 
         {/* Play/Pause Button */}
@@ -146,7 +166,7 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
             e.stopPropagation();
             togglePlay();
           }}
-          className="p-1 rounded-full text-slate-500 hover:text-[#ff7a00] transition-colors"
+          className="p-1 rounded-full text-slate-500 hover:text-[#ff7a00] transition-colors cursor-pointer"
         >
           {isPlaying ? (
             <Pause className="w-3.5 h-3.5 fill-current" />
@@ -160,7 +180,7 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
           <button
             type="button"
             onClick={toggleMute}
-            className="p-1 -ml-1 rounded-full text-slate-500 hover:text-amber-600 transition-colors"
+            className="p-1 -ml-1 rounded-full text-slate-500 hover:text-amber-600 transition-colors cursor-pointer"
           >
             {isMuted ? (
               <VolumeX className="w-3.5 h-3.5 text-rose-500" />
