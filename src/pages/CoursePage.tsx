@@ -944,43 +944,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
         document.body
       )}
 
-      {/* Floating Direct Start / Quick Action Button (Rendered via Portal to viewport) */}
-      {globalTargetNodeId && typeof document !== 'undefined' && createPortal(
-        <div className="fixed bottom-20 right-4 sm:right-6 z-30 animate-fade-in">
-          <button
-            onClick={() => {
-              const isCaseHub = globalTargetNodeId.endsWith('-cases');
-              if (isCaseHub) {
-                const targetModId = globalTargetNodeId.replace('-cases', '');
-                const mod = activeModulesList.find((m) => m.id === targetModId);
-                if (mod) setSelectedCaseHubModule(mod);
-              } else {
-                const modWithLesson = activeModulesList.find((m) =>
-                  m.lessons.some((l) => l.id === globalTargetNodeId)
-                );
-                const trackIdx = modWithLesson ? activeModulesList.indexOf(modWithLesson) : 0;
-                const isUnlocked = modWithLesson ? isModuleUnlockedCheck(modWithLesson, trackIdx) : true;
-                if (!isUnlocked && (!isAuthenticated || !isVerified) && trackIdx >= 2) {
-                  onGuestGateRequired?.();
-                  return;
-                }
-                onSelectLesson(globalTargetNodeId);
-              }
-            }}
-            className="flex items-center space-x-2.5 px-5 py-3.5 rounded-full bg-gradient-to-r from-[#ff7a00] to-amber-500 hover:from-[#e66e00] hover:to-amber-600 text-white shadow-xl shadow-[#ff7a00]/35 border-2 border-white text-xs sm:text-sm font-black transition-all hover:scale-105 active:scale-95 cursor-pointer group"
-            title={language === 'tr' ? 'Sıradaki Derse Başla' : 'Start Next Lesson'}
-          >
-            <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-              <Play className="w-3.5 h-3.5 fill-white" />
-            </div>
-            <span className="tracking-wide uppercase">
-              {language === 'tr' ? 'Derse Başla (+15 XP)' : 'Start Lesson (+15 XP)'}
-            </span>
-            <ChevronRight className="w-4 h-4 text-white stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
-          </button>
-        </div>,
-        document.body
-      )}
+      {/* (Floating Direct Start button removed per request) */}
     </div>
   );
 };
