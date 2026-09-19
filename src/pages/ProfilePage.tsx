@@ -586,21 +586,23 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
         <button
           onClick={() => setIsEditing(true)}
-          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-white hover:bg-orange-50/60 border border-slate-200/90 hover:border-[#ff7a00]/40 shadow-[0_4px_0_0_#d1d5db] hover:shadow-[0_2px_0_0_#fbd38d] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center text-center group cursor-pointer"
+          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] hover:from-amber-500 hover:via-[#f06d00] hover:to-[#e04f00] border border-amber-300/60 shadow-[0_4px_0_0_#c2540a] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center text-center group cursor-pointer relative overflow-hidden"
         >
-          <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-[#ff7a00] transition-colors whitespace-nowrap truncate text-center">
+          <div className="absolute top-0 right-0 w-16 h-16 bg-white/15 rounded-full blur-2xl -mr-4 -mt-4 pointer-events-none" />
+          <span className="text-xs sm:text-sm font-black text-white drop-shadow-sm whitespace-nowrap truncate text-center relative z-10">
             {language === 'tr' ? 'Profili Düzenle' : 'Edit Profile'}
           </span>
         </button>
 
         <button
           onClick={() => onNavigateLeaderboard?.()}
-          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-white hover:bg-amber-50/60 border border-slate-200/90 hover:border-amber-400/50 shadow-[0_4px_0_0_#d1d5db] hover:shadow-[0_2px_0_0_#fcd34d] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center text-center group cursor-pointer"
+          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] hover:from-amber-500 hover:via-[#f06d00] hover:to-[#e04f00] border border-amber-300/60 shadow-[0_4px_0_0_#c2540a] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center text-center group cursor-pointer relative overflow-hidden"
           title={language === 'tr' ? 'Genel Sıralamayı Gör' : 'View Leaderboard'}
         >
-          <div className="flex items-center justify-center space-x-1.5 min-w-0">
-            <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 shrink-0 stroke-[2.2]" />
-            <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-amber-600 transition-colors whitespace-nowrap truncate">
+          <div className="absolute top-0 right-0 w-16 h-16 bg-white/15 rounded-full blur-2xl -mr-4 -mt-4 pointer-events-none" />
+          <div className="flex items-center justify-center space-x-1.5 min-w-0 relative z-10">
+            <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-100 shrink-0 stroke-[2.2]" />
+            <span className="text-xs sm:text-sm font-black text-white drop-shadow-sm whitespace-nowrap truncate">
               {userRank}. {language === 'tr' ? 'Sıra' : 'Rank'}
             </span>
           </div>
