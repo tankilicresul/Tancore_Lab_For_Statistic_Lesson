@@ -44,6 +44,7 @@ interface AppStoreActions {
   registerAccountAndSendOtp: (account: Partial<RegisteredAccount>, simulatedCode?: string) => void;
   verifyOtpAndActivateAccount: (token: string, forceActivate?: boolean) => { success: boolean; message?: string };
   loginWithPassword: (email: string, pass: string) => Promise<{ success: boolean; errorType?: 'INVALID_EMAIL_DOMAIN' | 'EMAIL_NOT_FOUND' | 'WRONG_PASSWORD'; message?: string }>;
+  loginWithOtpSession: (email: string, sessionUser?: any) => Promise<{ success: boolean; message?: string }>;
   resetPasswordWithOtp: (email: string, token: string, newPass: string) => { success: boolean; message?: string };
   // Navigation actions (persisted on refresh)
   setCurrentView: (view: 'home' | 'course' | 'profile' | 'leaderboard' | 'lesson' | 'caseExam' | 'placementTest') => void;
@@ -572,6 +573,90 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedLessons: mergedLessons,
           completedCaseExams: mergedCases,
           unlockedModules,
+        });
+
+        return { success: true };
+      },
+
+      loginWithOtpSession: async (email, sessionUser) => {
+        const cleanEmail = email.trim().toLowerCase();
+        const state = get();
+
+        let remoteProfile = null;
+        if (isSupabaseConfigured) {
+          remoteProfile = await fetchUserProfileFromSupabase(cleanEmail);
+        }
+
+        const loggedInProfile: UserProfile = {
+          id: sessionUser?.id || remoteProfile?.id || `usr_${cleanEmail}`,
+          fullName: remoteProfile?.full_name || sessionUser?.user_metadata?.full_name || cleanEmail.split('@')[0],
+          schoolEmail: cleanEmail,
+          university: remoteProfile?.university || 'Üniversite',
+          departmentAndClass: remoteProfile?.department_and_class || 'Öğrenci',
+          avatarEmoji: remoteProfile?.avatar_emoji || '👨‍🎓',
+          avatarUrl: remoteProfile?.avatar_url || state.userProfile?.avatarUrl || undefined,
+          isVerified: true,
+          createdAt: new Date().toISOString(),
+          isPremium: Boolean(remoteProfile?.is_premium || remoteProfile?.isPremium),
+          subscriptionStatus: remoteProfile?.subscription_status || undefined,
+          subscriptionRenewsAt: remoteProfile?.subscription_renews_at || undefined,
+        };
+
+        const guestLessons = state.completedLessons || [];
+        const guestCases = state.completedCaseExams || [];
+        const remoteLessonsCount = typeof remoteProfile?.completed_lessons === 'number' ? remoteProfile.completed_lessons : 0;
+        const mergedLessons = Array.from(new Set(guestLessons));
+        const mergedCases = Array.from(new Set(guestCases));
+        const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
+        const userXp = remoteXp > 0 ? remoteXp : Math.max(15, state.xp || 15);
+        const remoteStreak = typeof remoteProfile?.streak === 'number' ? remoteProfile.streak : 1;
+        const userStreak = Math.max(remoteStreak, state.streak || 1);
+
+        const remoteUnlocked = Array.isArray(remoteProfile?.unlocked_modules) && remoteProfile.unlocked_modules.length > 0
+          ? remoteProfile.unlocked_modules
+          : ['module-1', 'module-2'];
+        const unlockedModules = Array.from(new Set([...remoteUnlocked, ...(state.unlockedModules || [])]));
+
+        const nextState = {
+          ...state,
+          userProfile: loggedInProfile,
+          isAuthenticated: true,
+          isVerified: true,
+          xp: userXp,
+          streak: userStreak,
+          completedLessons: mergedLessons,
+          completedCaseExams: mergedCases,
+          unlockedModules,
+        };
+
+        const updatedUsers = syncUserInList(nextState);
+
+        set({
+          userProfile: loggedInProfile,
+          isAuthenticated: true,
+          isVerified: true,
+          xp: userXp,
+          streak: userStreak,
+          completedLessons: mergedLessons,
+          completedCaseExams: mergedCases,
+          unlockedModules,
+          pendingOtpEmail: undefined,
+          simulatedOtpCode: undefined,
+          registeredUsers: updatedUsers,
+        });
+
+        saveUserProfileToSupabase({
+          ...loggedInProfile,
+          xp: userXp,
+          streak: userStreak,
+          completedLessons: Math.max(remoteLessonsCount, mergedLessons.length + mergedCases.length),
+        });
+        syncUserProgress({
+          totalXp: userXp,
+          level: Math.floor(userXp / 100) + 1,
+          streak: userStreak,
+          completedLessons: mergedLessons,
+          completedCaseExams: mergedCases,
         });
 
         return { success: true };

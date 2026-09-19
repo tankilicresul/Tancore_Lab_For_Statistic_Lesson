@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore, isValidStudentEmail } from '../store/useAppStore';
-import { sendEmailOtp, verifyEmailOtp, saveUserProfileToSupabase } from '../lib/supabase';
+import { sendEmailOtp, verifyEmailOtp, signUpWithSupabase, saveUserProfileToSupabase, supabase } from '../lib/supabase';
 import { UserProfile } from '../types/stats';
 import {
   X,
@@ -42,13 +42,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     registerAccountAndSendOtp,
     verifyOtpAndActivateAccount,
     loginWithPassword,
+    loginWithOtpSession,
     updateUserProfile,
   } = useAppStore();
 
   const [activeTab, setActiveTab] = useState<'login' | 'register'>(initialTab);
-  const [step, setStep] = useState<'form' | 'otp' | 'profileSetup'>('form');
+  const [loginMode, setLoginMode] = useState<'password' | 'otp'>('password');
+  const [step, setStep] = useState<'form' | 'otp' | 'otp_login' | 'profileSetup'>('form');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showOtpFallbackBtn, setShowOtpFallbackBtn] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [simulatedCode, setSimulatedCode] = useState<string | null>(null);
 
@@ -76,7 +79,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   // Countdown timer for resend OTP
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (step === 'otp' && resendTimer > 0) {
+    if ((step === 'otp' || step === 'otp_login') && resendTimer > 0) {
       timer = setInterval(() => {
         setResendTimer((prev) => prev - 1);
       }, 1000);
@@ -84,19 +87,72 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     return () => clearInterval(timer);
   }, [step, resendTimer]);
 
+  // Handle Switch to OTP Login Directly
+  const handleStartOtpLogin = async (targetEmail?: string) => {
+    const cleanEmail = (targetEmail || loginEmail).trim().toLowerCase();
+    if (!cleanEmail) {
+      soundService.playWrong();
+      setErrorMessage(language === 'tr' ? 'Lütfen e-posta adresinizi girin.' : 'Please enter your email.');
+      return;
+    }
+    if (!isValidStudentEmail(cleanEmail)) {
+      soundService.playWrong();
+      setErrorMessage(language === 'tr' ? 'Lütfen geçerli bir e-posta adresi giriniz.' : 'Please enter a valid email address.');
+      return;
+    }
+
+    setLoading(true);
+    setErrorMessage(null);
+    setShowOtpFallbackBtn(false);
+
+    try {
+      const res = await sendEmailOtp(cleanEmail);
+      if (!res.success) {
+        soundService.playWrong();
+        setErrorMessage(res.error || (language === 'tr' ? 'Doğrulama kodu gönderilemedi.' : 'Could not send verification code.'));
+        return;
+      }
+
+      if (res.simulatedCode) {
+        setSimulatedCode(res.simulatedCode);
+      } else {
+        setSimulatedCode(null);
+      }
+
+      setLoginEmail(cleanEmail);
+      setOtpDigits(['', '', '', '', '', '', '', '']);
+      setStep('otp_login');
+      setResendTimer(60);
+      soundService.playModalOpen();
+      setSuccessMessage(
+        language === 'tr'
+          ? `${cleanEmail} adresine 8 haneli tek kullanımlık giriş kodu gönderildi.`
+          : `8-digit login code sent to ${cleanEmail}.`
+      );
+    } catch (err: any) {
+      soundService.playWrong();
+      setErrorMessage(err.message || 'Giriş kodu gönderilemedi.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Submit Login Form
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
+    setShowOtpFallbackBtn(false);
 
     const cleanEmail = loginEmail.trim().toLowerCase();
     if (!cleanEmail) {
+      soundService.playWrong();
       setErrorMessage(language === 'tr' ? 'Lütfen e-posta adresinizi girin.' : 'Please enter your email.');
       return;
     }
 
     if (!isValidStudentEmail(cleanEmail)) {
+      soundService.playWrong();
       setErrorMessage(
         language === 'tr'
           ? 'Lütfen geçerli bir e-posta adresi giriniz.'
@@ -105,7 +161,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
 
+    if (loginMode === 'otp') {
+      await handleStartOtpLogin(cleanEmail);
+      return;
+    }
+
     if (!loginPassword) {
+      soundService.playWrong();
       setErrorMessage(language === 'tr' ? 'Lütfen şifrenizi girin.' : 'Please enter your password.');
       return;
     }
@@ -116,6 +178,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       if (!res.success) {
         soundService.playWrong();
         setErrorMessage(res.message || (language === 'tr' ? 'Giriş yapılamadı.' : 'Login failed.'));
+        setShowOtpFallbackBtn(true);
         return;
       }
 
@@ -128,6 +191,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     } catch (err: any) {
       soundService.playWrong();
       setErrorMessage(err.message || (language === 'tr' ? 'Giriş işlemi başarısız.' : 'Login failed.'));
+      setShowOtpFallbackBtn(true);
     } finally {
       setLoading(false);
     }
@@ -165,22 +229,25 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setLoading(true);
     try {
       const fallbackName = emailClean.split('@')[0];
-      const res = await sendEmailOtp(emailClean, {
+      
+      // Try signup with Supabase
+      const signUpRes = await signUpWithSupabase(emailClean, registerPassword.trim(), {
         fullName: fallbackName,
       });
 
-      if (!res.success) {
-        soundService.playWrong();
-        setErrorMessage(res.error || (language === 'tr' ? 'Doğrulama kodu gönderilemedi.' : 'Could not send verification code.'));
-        return;
+      let simulated = null;
+      if (!signUpRes.success) {
+        // Fallback to OTP send if already partially registered or OTP mode
+        const otpRes = await sendEmailOtp(emailClean, { fullName: fallbackName });
+        if (!otpRes.success) {
+          soundService.playWrong();
+          setErrorMessage(otpRes.error || signUpRes.error || (language === 'tr' ? 'Doğrulama kodu gönderilemedi.' : 'Could not send verification code.'));
+          return;
+        }
+        if (otpRes.simulatedCode) simulated = otpRes.simulatedCode;
       }
 
-      if (res.simulatedCode) {
-        setSimulatedCode(res.simulatedCode);
-      } else {
-        setSimulatedCode(null);
-      }
-
+      setSimulatedCode(simulated);
       const randomEmoji = RANDOM_AVATARS[Math.floor(Math.random() * RANDOM_AVATARS.length)];
 
       registerAccountAndSendOtp(
@@ -190,7 +257,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           avatarEmoji: randomEmoji,
           password: registerPassword.trim(),
         },
-        res.simulatedCode
+        simulated || undefined
       );
 
       soundService.playModalOpen();
@@ -280,7 +347,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     otpInputRefs.current[focusIdx]?.focus();
   };
 
-  // Submit OTP Verification Code
+  // Submit OTP Verification Code for Registration
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -301,6 +368,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       const remoteRes = await verifyEmailOtp(cleanEmail, code);
 
       if (remoteRes.success) {
+        if (supabase && registerPassword.trim()) {
+          try {
+            await supabase.auth.updateUser({ password: registerPassword.trim() });
+          } catch (pwErr) {
+            console.warn('Could not update user password:', pwErr);
+          }
+        }
+
         verifyOtpAndActivateAccount(code, true);
 
         saveUserProfileToSupabase({
@@ -321,6 +396,44 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     } catch (err: any) {
       soundService.playWrong();
       setErrorMessage(err.message || (language === 'tr' ? 'Doğrulama kodu hatalı. Lütfen tekrar deneyin.' : 'Verification failed.'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Submit OTP Login Code (Passwordless instant login)
+  const handleVerifyLoginOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+    const code = otpDigits.join('').trim();
+
+    if (code.length < 8) {
+      soundService.playWrong();
+      setErrorMessage(language === 'tr' ? 'Lütfen 8 haneli kodu eksiksiz giriniz.' : 'Please enter the full 8-digit code.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const cleanEmail = loginEmail.trim().toLowerCase();
+      const remoteRes = await verifyEmailOtp(cleanEmail, code);
+
+      if (!remoteRes.success) {
+        soundService.playWrong();
+        setErrorMessage(remoteRes.error || (language === 'tr' ? 'Doğrulama kodu hatalı veya süresi dolmuş.' : 'Invalid or expired code.'));
+        return;
+      }
+
+      await loginWithOtpSession(cleanEmail, remoteRes.user);
+      soundService.playCorrect();
+      setSuccessMessage(language === 'tr' ? 'Giriş başarılı! Hoş geldiniz 🎉' : 'Login successful! Welcome 🎉');
+      setTimeout(() => {
+        onSuccess?.();
+        onClose();
+      }, 700);
+    } catch (err: any) {
+      soundService.playWrong();
+      setErrorMessage(err.message || 'Giriş işlemi başarısız.');
     } finally {
       setLoading(false);
     }
@@ -370,17 +483,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
     setLoading(true);
     try {
-      const res = await sendEmailOtp(formData.schoolEmail);
+      const targetEmail = step === 'otp_login' ? loginEmail : formData.schoolEmail;
+      const res = await sendEmailOtp(targetEmail);
       if (res.simulatedCode) setSimulatedCode(res.simulatedCode);
-      const randomEmoji = RANDOM_AVATARS[Math.floor(Math.random() * RANDOM_AVATARS.length)];
-      registerAccountAndSendOtp(
-        {
-          ...formData,
-          avatarEmoji: randomEmoji,
-          password: registerPassword || '123456',
-        },
-        res.simulatedCode
-      );
+      if (step === 'otp') {
+        const randomEmoji = RANDOM_AVATARS[Math.floor(Math.random() * RANDOM_AVATARS.length)];
+        registerAccountAndSendOtp(
+          {
+            ...formData,
+            avatarEmoji: randomEmoji,
+            password: registerPassword || '123456',
+          },
+          res.simulatedCode
+        );
+      }
       setResendTimer(60);
       setSuccessMessage(language === 'tr' ? 'Yeni kod tekrar gönderildi.' : 'New code sent.');
     } catch (err: any) {
@@ -415,6 +531,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 setActiveTab('login');
                 setErrorMessage(null);
                 setSuccessMessage(null);
+                setShowOtpFallbackBtn(false);
               }}
               className={`flex-1 py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
                 activeTab === 'login'
@@ -431,6 +548,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 setActiveTab('register');
                 setErrorMessage(null);
                 setSuccessMessage(null);
+                setShowOtpFallbackBtn(false);
               }}
               className={`flex-1 py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
                 activeTab === 'register'
@@ -444,7 +562,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </div>
         )}
 
-        {/* Header Banner - Only for OTP verification */}
+        {/* Header Banner - Registration OTP */}
         {step === 'otp' && (
           <div className="text-center mb-5">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#ff7a00]/10 text-[#ff7a00] border border-[#ff7a00]/25 shadow-inner mb-2.5">
@@ -457,6 +575,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               {language === 'tr'
                 ? `${formData.schoolEmail} adresine gelen 8 haneli kodu aşağıya giriniz.`
                 : `Enter the 8-digit code sent to ${formData.schoolEmail}`}
+            </p>
+          </div>
+        )}
+
+        {/* Header Banner - OTP Login */}
+        {step === 'otp_login' && (
+          <div className="text-center mb-5">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#ff7a00]/10 text-[#ff7a00] border border-[#ff7a00]/25 shadow-inner mb-2.5">
+              <KeyRound className="w-6 h-6 stroke-[2] animate-bounce" />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              {language === 'tr' ? 'Giriş Kodunu Girin' : 'Enter Login Code'}
+            </h2>
+            <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
+              {language === 'tr'
+                ? `${loginEmail} adresine gönderilen 8 haneli tek kullanımlık giriş kodunu giriniz.`
+                : `Enter the 8-digit single-use login code sent to ${loginEmail}`}
             </p>
           </div>
         )}
@@ -484,9 +619,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {/* Error / Success Notifications */}
         {errorMessage && (
-          <div className="mb-4 p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center space-x-2">
-            <Info className="w-4 h-4 shrink-0 text-rose-500" />
-            <span>{errorMessage}</span>
+          <div className="mb-4 p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold space-y-2">
+            <div className="flex items-center space-x-2">
+              <Info className="w-4 h-4 shrink-0 text-rose-500" />
+              <span>{errorMessage}</span>
+            </div>
+            {showOtpFallbackBtn && (
+              <button
+                type="button"
+                onClick={() => handleStartOtpLogin(loginEmail)}
+                className="w-full py-2 px-3 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black flex items-center justify-center space-x-1.5 transition-all cursor-pointer shadow-xs"
+              >
+                <KeyRound className="w-3.5 h-3.5" />
+                <span>{language === 'tr' ? 'E-postama Doğrulama Kodu Göndererek Giriş Yap ➔' : 'Sign in via Email Code ➔'}</span>
+              </button>
+            )}
           </div>
         )}
 
@@ -500,6 +647,33 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         {/* ─── TAB 1: GİRİŞ YAP (LOGIN FORM) ─── */}
         {step === 'form' && activeTab === 'login' && (
           <form onSubmit={handleLoginSubmit} autoComplete="off" className="space-y-3.5 flex-1 overflow-y-auto pr-1">
+            {/* Login Method Toggle (Şifre / Kod ile Giriş) */}
+            <div className="flex items-center justify-between px-1 pb-1">
+              <span className="text-xs font-bold text-slate-700">
+                {language === 'tr' ? 'Giriş Yöntemi' : 'Sign-In Method'}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setLoginMode(loginMode === 'password' ? 'otp' : 'password');
+                  setErrorMessage(null);
+                  setShowOtpFallbackBtn(false);
+                }}
+                className="text-xs font-bold text-[#ff7a00] hover:underline cursor-pointer flex items-center space-x-1"
+              >
+                <KeyRound className="w-3.5 h-3.5" />
+                <span>
+                  {loginMode === 'password'
+                    ? language === 'tr'
+                      ? '🔑 E-posta Kodu ile Giriş'
+                      : '🔑 Sign In with Code'
+                    : language === 'tr'
+                    ? '🔒 Şifre ile Giriş'
+                    : '🔒 Sign In with Password'}
+                </span>
+              </button>
+            </div>
+
             {/* Email */}
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
@@ -519,33 +693,44 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
             </div>
 
-            {/* Password */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                {language === 'tr' ? 'Şifre' : 'Password'} *
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
-                  type={showLoginPassword ? 'text' : 'password'}
-                  required
-                  autoComplete="current-password"
-                  placeholder="••••••••"
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowLoginPassword((prev) => !prev)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
-                  tabIndex={-1}
-                  aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
+            {/* Password (Only in Password mode) */}
+            {loginMode === 'password' && (
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-bold text-slate-700">
+                    {language === 'tr' ? 'Şifre' : 'Password'} *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => handleStartOtpLogin(loginEmail)}
+                    className="text-[11px] font-bold text-[#ff7a00] hover:underline cursor-pointer"
+                  >
+                    {language === 'tr' ? 'Şifremi unuttum' : 'Forgot password?'}
+                  </button>
+                </div>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type={showLoginPassword ? 'text' : 'password'}
+                    required
+                    autoComplete="current-password"
+                    placeholder="••••••••"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowLoginPassword((prev) => !prev)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                    tabIndex={-1}
+                    aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
 
             <button
               type="submit"
@@ -557,7 +742,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               ) : (
                 <>
                   <LogIn className="w-4 h-4" />
-                  <span>{language === 'tr' ? 'Giriş Yap' : 'Sign In'}</span>
+                  <span>
+                    {loginMode === 'password'
+                      ? language === 'tr'
+                        ? 'Giriş Yap'
+                        : 'Sign In'
+                      : language === 'tr'
+                      ? 'Giriş Kodu Gönder'
+                      : 'Send Login Code'}
+                  </span>
                 </>
               )}
             </button>
@@ -638,7 +831,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </form>
         )}
 
-        {/* ─── STEP 2: OTP VERIFICATION FORM ─── */}
+        {/* ─── STEP 2: REGISTRATION OTP VERIFICATION FORM ─── */}
         {step === 'otp' && (
           <form onSubmit={handleVerifyOtp} className="space-y-4">
             {/* 8 Distinct Slots (4 + 4 with separator) */}
@@ -691,6 +884,94 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <>
                     <ShieldCheck className="w-4 h-4 stroke-[2.5]" />
                     <span>{language === 'tr' ? 'Kodu Doğrula ve Devam Et' : 'Verify Code & Continue'}</span>
+                  </>
+                )}
+              </button>
+
+              <div className="flex items-center justify-between text-xs font-semibold text-slate-500 px-1 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setStep('form')}
+                  className="text-slate-600 hover:text-slate-900 underline underline-offset-2 cursor-pointer"
+                >
+                  {language === 'tr' ? 'E-postayı Değiştir' : 'Change Email'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleResendCode}
+                  disabled={resendTimer > 0 || loading}
+                  className="text-[#ff7a00] hover:underline disabled:opacity-40 disabled:no-underline flex items-center space-x-1 cursor-pointer"
+                >
+                  <RefreshCw className="w-3 h-3" />
+                  <span>
+                    {resendTimer > 0
+                      ? language === 'tr'
+                        ? `Tekrar Kod (${resendTimer}s)`
+                        : `Resend (${resendTimer}s)`
+                      : language === 'tr'
+                      ? 'Tekrar Kod Gönder'
+                      : 'Resend Code'}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </form>
+        )}
+
+        {/* ─── STEP 2 (ALT): LOGIN OTP VERIFICATION FORM ─── */}
+        {step === 'otp_login' && (
+          <form onSubmit={handleVerifyLoginOtp} className="space-y-4">
+            {/* 8 Distinct Slots (4 + 4 with separator) */}
+            <div className="flex items-center justify-center gap-1 sm:gap-2 my-3">
+              {otpDigits.map((digit, idx) => (
+                <React.Fragment key={idx}>
+                  {idx === 4 && (
+                    <div className="w-1.5 sm:w-2.5 h-0.5 bg-slate-300 rounded-full mx-0.5 sm:mx-1" />
+                  )}
+                  <input
+                    ref={(el) => (otpInputRefs.current[idx] = el)}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleOtpDigitChange(idx, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(idx, e)}
+                    onPaste={handleOtpPaste}
+                    autoFocus={idx === 0}
+                    className={`w-8 h-11 sm:w-10 sm:h-13 rounded-xl border-2 text-center font-mono font-black text-lg sm:text-2xl transition-all shadow-2xs ${
+                      digit
+                        ? 'bg-orange-50/70 border-[#ff7a00] text-[#ff7a00]'
+                        : 'bg-slate-50 border-slate-200 text-slate-900 focus:bg-white focus:border-[#ff7a00] focus:ring-4 focus:ring-[#ff7a00]/15'
+                    } focus:outline-none`}
+                  />
+                </React.Fragment>
+              ))}
+            </div>
+
+            {simulatedCode && (
+              <div className="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold text-center flex items-center justify-center space-x-2">
+                <Loader2 className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>
+                  {language === 'tr' ? 'Test Onay Kodu: ' : 'Test Verification Code: '}
+                  <strong className="font-mono text-sm tracking-wider text-[#ff7a00] ml-1">{simulatedCode}</strong>
+                </span>
+              </div>
+            )}
+
+            <div className="space-y-2 pt-2">
+              <button
+                type="submit"
+                disabled={loading || otpDigits.join('').length < 8}
+                className="w-full py-3 px-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black tracking-wide flex items-center justify-center space-x-2 transition-all shadow-md shadow-[#ff7a00]/30 disabled:opacity-50 cursor-pointer"
+              >
+                {loading ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <LogIn className="w-4 h-4" />
+                    <span>{language === 'tr' ? 'Doğrula ve Giriş Yap' : 'Verify & Sign In'}</span>
                   </>
                 )}
               </button>
@@ -835,5 +1116,3 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     </div>
   );
 };
-
-

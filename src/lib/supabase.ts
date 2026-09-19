@@ -79,17 +79,18 @@ export async function sendEmailOtp(
 export async function verifyEmailOtp(
   email: string,
   token: string
-): Promise<{ success: boolean; user?: any; error?: string }> {
+): Promise<{ success: boolean; user?: any; session?: any; error?: string }> {
   if (!supabase || !isSupabaseConfigured) {
     return { success: false, error: 'Veritabanı bağlantısı bulunamadı.' };
   }
 
+  const cleanEmail = email.trim().toLowerCase();
   const cleanToken = token.trim();
 
   try {
     // 1. Try 'email' type first (used by signInWithOtp)
     let res = await supabase.auth.verifyOtp({
-      email: email.trim().toLowerCase(),
+      email: cleanEmail,
       token: cleanToken,
       type: 'email',
     });
@@ -97,9 +98,27 @@ export async function verifyEmailOtp(
     // 2. If 'email' fails, try 'signup' type (used by signUp)
     if (res.error) {
       res = await supabase.auth.verifyOtp({
-        email: email.trim().toLowerCase(),
+        email: cleanEmail,
         token: cleanToken,
         type: 'signup',
+      });
+    }
+
+    // 3. If 'signup' fails, try 'magiclink'
+    if (res.error) {
+      res = await supabase.auth.verifyOtp({
+        email: cleanEmail,
+        token: cleanToken,
+        type: 'magiclink',
+      });
+    }
+
+    // 4. If 'magiclink' fails, try 'recovery'
+    if (res.error) {
+      res = await supabase.auth.verifyOtp({
+        email: cleanEmail,
+        token: cleanToken,
+        type: 'recovery',
       });
     }
 
@@ -107,7 +126,7 @@ export async function verifyEmailOtp(
       return { success: false, error: res.error.message || 'Geçersiz veya süresi dolmuş doğrulama kodu.' };
     }
 
-    return { success: true, user: res.data.user };
+    return { success: true, user: res.data.user, session: res.data.session };
   } catch (err: any) {
     return { success: false, error: err.message || 'Doğrulama hatası oluştu.' };
   }
