@@ -542,43 +542,61 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             </div>
           </form>
         ) : (
-          <div className="mt-4 pt-4 border-t border-white/30 space-y-3.5 relative z-10">
-            <div className="space-y-2 text-xs sm:text-sm font-medium">
-              <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
-                <Building2 className="w-4 h-4 text-white shrink-0" />
-                <span className="truncate">{userProfile?.university || (language === 'tr' ? 'Belirtilmedi' : 'Not specified')}</span>
-              </div>
-              <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
-                <GraduationCap className="w-4 h-4 text-white shrink-0" />
-                <span className="truncate">{userProfile?.departmentAndClass || (language === 'tr' ? 'Öğrenci' : 'Student')}</span>
-              </div>
-              <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
-                <Mail className="w-4 h-4 text-white shrink-0" />
-                <span className="truncate">{userProfile?.schoolEmail || (language === 'tr' ? 'Giriş yapılmadı' : 'Not signed in')}</span>
-              </div>
+          <div className="mt-3.5 pt-3.5 border-t border-white/25 space-y-2 relative z-10 text-xs sm:text-sm font-medium">
+            <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
+              <Building2 className="w-4 h-4 text-white shrink-0" />
+              <span className="truncate">{userProfile?.university || (language === 'tr' ? 'Üniversite belirtilmedi' : 'University not specified')}</span>
             </div>
-
-            {/* Bottom Row: Edit button on Bottom-Left, Leaderboard rank button on Bottom-Right */}
-            <div className="flex items-center justify-between gap-2.5 pt-2.5 border-t border-white/30">
-              <button
-                onClick={() => setIsEditing(true)}
-                className="flex items-center space-x-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/20 hover:bg-white/30 border border-white/30 text-xs sm:text-sm font-black transition-all shadow-xs shrink-0 whitespace-nowrap cursor-pointer text-white group hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white group-hover:rotate-12 transition-transform" />
-                <span>{language === 'tr' ? 'Düzenle' : 'Edit'}</span>
-              </button>
-
-              <button
-                onClick={() => onNavigateLeaderboard?.()}
-                className="flex items-center space-x-2 px-4 sm:px-4.5 py-2 sm:py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white border border-white/30 text-xs sm:text-sm font-black transition-all shadow-md group shrink-0 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-                title={language === 'tr' ? 'Genel Sıralamayı Gör' : 'View Leaderboard'}
-              >
-                <Trophy className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
-                <span>{userRank}. {language === 'tr' ? 'Sıra' : 'Rank'}</span>
-              </button>
+            <div className="flex items-center space-x-2.5 text-white/90 min-w-0">
+              <GraduationCap className="w-4 h-4 text-white shrink-0" />
+              <span className="truncate">{userProfile?.departmentAndClass || (language === 'tr' ? 'Bölüm belirtilmedi' : 'Department not specified')}</span>
             </div>
           </div>
         )}
+      </div>
+
+      {/* Standalone Action Panels: Profili Düzenle & Sıralama (Leaderboard) */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
+        <button
+          onClick={() => setIsEditing(true)}
+          className="p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl bg-white hover:bg-orange-50/60 border border-slate-200/90 hover:border-[#ff7a00]/40 shadow-xs transition-all flex items-center justify-between group cursor-pointer active:scale-98 text-left"
+        >
+          <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-orange-100/80 text-[#ff7a00] group-hover:scale-105 transition-transform shrink-0">
+              <Edit3 className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.2]" />
+            </div>
+            <div className="min-w-0">
+              <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-[#ff7a00] transition-colors truncate block">
+                {language === 'tr' ? 'Profili Düzenle' : 'Edit Profile'}
+              </span>
+              <span className="text-[10px] text-slate-500 font-medium hidden xs:block truncate">
+                {language === 'tr' ? 'Hesap & Bilgiler' : 'Account & Info'}
+              </span>
+            </div>
+          </div>
+          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7a00] group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
+        </button>
+
+        <button
+          onClick={() => onNavigateLeaderboard?.()}
+          className="p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl bg-white hover:bg-amber-50/60 border border-slate-200/90 hover:border-amber-400/50 shadow-xs transition-all flex items-center justify-between group cursor-pointer active:scale-98 text-left"
+          title={language === 'tr' ? 'Genel Sıralamayı Gör' : 'View Leaderboard'}
+        >
+          <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-amber-100/80 text-amber-600 group-hover:scale-105 transition-transform shrink-0">
+              <Trophy className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.2]" />
+            </div>
+            <div className="min-w-0">
+              <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-amber-600 transition-colors truncate block">
+                {userRank}. {language === 'tr' ? 'Sıra' : 'Rank'}
+              </span>
+              <span className="text-[10px] text-slate-500 font-medium hidden xs:block truncate">
+                {language === 'tr' ? 'Liderlik Tablosu' : 'Leaderboard'}
+              </span>
+            </div>
+          </div>
+          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
+        </button>
       </div>
 
       {/* Guest CTA Card: shown only when not authenticated */}
