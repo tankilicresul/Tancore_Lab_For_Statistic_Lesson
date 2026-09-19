@@ -2,10 +2,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { PublicProfile } from '../types/stats';
 import { fetchAllProfilesFromSupabase } from '../lib/supabase';
-import { Crown } from 'lucide-react';
+import { Crown, Lock } from 'lucide-react';
 import { UserAvatar } from '../components/UserAvatar';
 import { computeUnifiedLeaderboard, isSameStudent } from '../utils/leaderboardHelper';
 import { soundService } from '../services/soundService';
+
+const DUMMY_BLURRED_STUDENTS = [
+  { rank: 4, name: 'Zeynep Kaya', university: 'İTÜ - Endüstri Mühendisliği', emoji: '👩‍💻', xp: 420 },
+  { rank: 5, name: 'Burak Demir', university: 'ODTÜ - Bilgisayar Mühendisliği', emoji: '👨‍🎓', xp: 390 },
+  { rank: 6, name: 'Selin Yılmaz', university: 'Boğaziçi Üniversitesi', emoji: '👩‍🔬', xp: 360 },
+  { rank: 7, name: 'Emre Akın', university: 'Koç Üniversitesi', emoji: '🧑‍💻', xp: 315 },
+  { rank: 8, name: 'Elif Şahin', university: 'Bilkent Üniversitesi', emoji: '👩‍🎓', xp: 280 },
+  { rank: 9, name: 'Caner Özkan', university: 'Sabancı Üniversitesi', emoji: '👨‍💼', xp: 240 },
+  { rank: 10, name: 'Merve Çelik', university: 'Yıldız Teknik Üniversitesi', emoji: '👩‍🎨', xp: 195 },
+  { rank: 11, name: 'Deniz Aydın', university: 'Hacettepe Üniversitesi', emoji: '🧑‍🎓', xp: 150 },
+  { rank: 12, name: 'Berk Tan', university: 'TOBB ETÜ', emoji: '👨‍💻', xp: 90 },
+];
 
 export interface LeaderboardPageProps {
   onGoHome?: () => void;
@@ -379,86 +391,155 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         </div>
       )}
 
-      {/* Additional Registered Users (Rank 4+) with onScroll tracking */}
-      {sortedLeaderboard.length > 3 && (
+      {/* Additional Registered Users (Rank 4+) or Blurred Preview when Unauthenticated */}
+      {!isAuthenticated ? (
         <div className="space-y-2.5 pt-1">
           <div className="flex items-center justify-between px-1">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              {language === 'tr' ? 'Tüm Öğrenciler' : 'All Students'}
+              {language === 'tr' ? 'Üniversite Ligi Sıralaması' : 'University League Ranking'}
             </span>
-
-            <span className="text-[11px] text-slate-400 font-medium">
-              {sortedLeaderboard.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
+            <span className="text-[11px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
+              🔥 {language === 'tr' ? 'Canlı Lig' : 'Live League'}
             </span>
           </div>
 
-          <div
-            ref={listRef}
-            onScroll={(e) => {
-              const st = e.currentTarget.scrollTop;
-              setHasScrolledInLeaderboard(st > 35);
-            }}
-            className="space-y-2 max-h-[480px] overflow-y-auto pr-1"
-          >
-            {sortedLeaderboard.slice(3).map((user) => {
-              const isSelf = Boolean(isAuthenticated && effectiveProfile && isSameStudent(user, effectiveProfile));
-              const currentVisualRank = user.rank;
-
-              return (
+          {/* Blurred Background Mock Students List with Centered Frosted Lock Card */}
+          <div className="relative rounded-3xl overflow-hidden border border-slate-200/90 bg-white p-3 shadow-xs">
+            <div className="space-y-2 select-none pointer-events-none filter blur-[4.5px] opacity-35">
+              {DUMMY_BLURRED_STUDENTS.map((item) => (
                 <div
-                  id={`leaderboard-row-${currentVisualRank}`}
-                  key={user.id}
-                  onClick={() => setSelectedPublicProfile(user)}
-                  className={`flex items-center justify-between p-3 rounded-2xl border cursor-pointer transition-all duration-300 ${
-                    isSelf
-                      ? 'bg-orange-50/90 border-2 border-[#ff7a00] text-slate-900 shadow-xs ring-1 ring-[#ff7a00]/30'
-                      : 'bg-white hover:bg-orange-50/40 border-slate-200/80 text-slate-800 shadow-2xs'
-                  }`}
+                  key={item.rank}
+                  className="flex items-center justify-between p-3 rounded-2xl bg-slate-50/80 border border-slate-200/80 shadow-2xs"
                 >
-                  <div className="flex items-center space-x-2.5 min-w-0">
-                    <span
-                      className={`text-xs font-black min-w-6 text-center flex items-center justify-center space-x-0.5 ${
-                        isSelf ? 'text-[#ff7a00]' : 'text-slate-400'
-                      }`}
-                    >
-                      <span>{currentVisualRank}.</span>
+                  <div className="flex items-center space-x-2.5">
+                    <span className="text-xs font-black min-w-6 text-slate-400 text-center">
+                      {item.rank}.
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 shadow-2xs flex items-center justify-center overflow-hidden shrink-0">
-                      <UserAvatar
-                        avatarUrl={user.avatarUrl}
-                        avatarEmoji={user.avatarEmoji || '👨‍🎓'}
-                        fullName={user.fullName}
-                        size="xs"
-                        className="w-full h-full"
-                      />
+                    <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-sm shadow-2xs">
+                      {item.emoji}
                     </div>
-                    <div className="min-w-0">
-                      <div className="flex items-center space-x-1.5">
-                        <span
-                          className={`text-xs truncate block ${
-                            isSelf ? 'font-black text-slate-900' : 'font-bold text-slate-800'
-                          }`}
-                        >
-                          {user.fullName}
-                        </span>
-                        {isSelf && (
-                          <span className="text-[10px] font-black text-[#ff7a00] bg-orange-100 px-1.5 py-0.2 rounded-md">
-                            {language === 'tr' ? 'Sen' : 'You'}
-                          </span>
-                        )}
-                      </div>
-                      <span className="text-[10px] text-slate-500 truncate block">{user.university}</span>
+                    <div>
+                      <span className="text-xs font-bold text-slate-800 block">{item.name}</span>
+                      <span className="text-[10px] text-slate-400 block">{item.university}</span>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black shrink-0">
+                  <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black">
                     <span className="text-amber-500 font-serif">◆</span>
-                    <span>{user.xp.toLocaleString('tr-TR')} XP</span>
+                    <span>{item.xp} XP</span>
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Lock / Sign Up CTA Overlay in Center */}
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-t from-white via-white/85 to-white/40 backdrop-blur-[1.5px]">
+              <div className="w-13 h-13 rounded-3xl bg-gradient-to-tr from-[#ff7a00] to-amber-400 text-white flex items-center justify-center shadow-lg shadow-[#ff7a00]/30 mb-3 animate-pulse">
+                <Lock className="w-6 h-6 stroke-[2.5]" />
+              </div>
+
+              <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight mb-1 max-w-xs">
+                {language === 'tr'
+                  ? 'Tüm Sıralamayı ve Kendi Dereceni Gör'
+                  : 'Unlock Full Leaderboard & Your Rank'}
+              </h3>
+
+              <p className="text-xs text-slate-600 font-medium max-w-sm mb-4 leading-relaxed">
+                {language === 'tr'
+                  ? 'Ücretsiz kayıt ol, dersleri tamamlayarak XP kazan ve üniversiteni liderlik tablosunun zirvesine taşı!'
+                  : 'Sign up for free, earn XP by finishing lessons, and carry your university to the top of the leaderboard!'}
+              </p>
+
+              <button
+                onClick={onOpenAuth}
+                className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-[#ff7a00] to-amber-500 hover:from-[#e66e00] hover:to-amber-600 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 active:scale-95 transition-all cursor-pointer flex items-center space-x-2"
+              >
+                <span>{language === 'tr' ? 'Ücretsiz Kayıt Ol / Giriş Yap' : 'Sign Up / Sign In Free'}</span>
+              </button>
+            </div>
           </div>
         </div>
+      ) : (
+        /* Authenticated: Render real list when rank > 3 */
+        sortedLeaderboard.length > 3 ? (
+          <div className="space-y-2.5 pt-1">
+            <div className="flex items-center justify-between px-1">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                {language === 'tr' ? 'Tüm Öğrenciler' : 'All Students'}
+              </span>
+
+              <span className="text-[11px] text-slate-400 font-medium">
+                {sortedLeaderboard.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
+              </span>
+            </div>
+
+            <div
+              ref={listRef}
+              onScroll={(e) => {
+                const st = e.currentTarget.scrollTop;
+                setHasScrolledInLeaderboard(st > 35);
+              }}
+              className="space-y-2 max-h-[480px] overflow-y-auto pr-1"
+            >
+              {sortedLeaderboard.slice(3).map((user) => {
+                const isSelf = Boolean(isAuthenticated && effectiveProfile && isSameStudent(user, effectiveProfile));
+                const currentVisualRank = user.rank;
+
+                return (
+                  <div
+                    id={`leaderboard-row-${currentVisualRank}`}
+                    key={user.id}
+                    onClick={() => setSelectedPublicProfile(user)}
+                    className={`flex items-center justify-between p-3 rounded-2xl border cursor-pointer transition-all duration-300 ${
+                      isSelf
+                        ? 'bg-orange-50/90 border-2 border-[#ff7a00] text-slate-900 shadow-xs ring-1 ring-[#ff7a00]/30'
+                        : 'bg-white hover:bg-orange-50/40 border-slate-200/80 text-slate-800 shadow-2xs'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2.5 min-w-0">
+                      <span
+                        className={`text-xs font-black min-w-6 text-center flex items-center justify-center space-x-0.5 ${
+                          isSelf ? 'text-[#ff7a00]' : 'text-slate-400'
+                        }`}
+                      >
+                        <span>{currentVisualRank}.</span>
+                      </span>
+                      <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 shadow-2xs flex items-center justify-center overflow-hidden shrink-0">
+                        <UserAvatar
+                          avatarUrl={user.avatarUrl}
+                          avatarEmoji={user.avatarEmoji || '👨‍🎓'}
+                          fullName={user.fullName}
+                          size="xs"
+                          className="w-full h-full"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center space-x-1.5">
+                          <span
+                            className={`text-xs truncate block ${
+                              isSelf ? 'font-black text-slate-900' : 'font-bold text-slate-800'
+                            }`}
+                          >
+                            {user.fullName}
+                          </span>
+                          {isSelf && (
+                            <span className="text-[10px] font-black text-[#ff7a00] bg-orange-100 px-1.5 py-0.2 rounded-md">
+                              {language === 'tr' ? 'Sen' : 'You'}
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-[10px] text-slate-500 truncate block">{user.university}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black shrink-0">
+                      <span className="text-amber-500 font-serif">◆</span>
+                      <span>{user.xp.toLocaleString('tr-TR')} XP</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : null
       )}
     </div>
   );
