@@ -17,8 +17,8 @@
       "order": 1,
       "difficulty": "basit",
       "title": {
-        "tr": "Sıfır ($H_0$) ve Alternatif ($H_1$) Hipotez Kurgusu",
-        "en": "Null ($H_0$) and Alternative ($H_1$) Hypotheses"
+        "tr": "Sıfır (H₀) ve Alternatif (H₁) Hipotez Kurgusu",
+        "en": "Null (H₀) and Alternative (H₁) Hypotheses"
       },
       "conceptCard": {
         "tr": "1. **Sıfır Hipotezi ($H_0$):** Değişimin, etkinin veya farkın olmadığını savunan varsayılan iddia ($=, \\le, \\ge$).\n2. **Alternatif Hipotez ($H_1$ veya $H_a$):** Kanıtlanmaya çalışılan yenilik veya araştırma iddiası ($\\neq, <, >$).\n3. **Test Yönü:**\n- Çift Yönlü: $H_0: \\mu = \\mu_0$ vs $H_1: \\mu \\neq \\mu_0$\n- Tek Yönlü (Sağ): $H_0: \\mu \\le \\mu_0$ vs $H_1: \\mu > \\mu_0$\n- Tek Yönlü (Sol): $H_0: \\mu \\ge \\mu_0$ vs $H_1: \\mu < \\mu_0$",
@@ -84,8 +84,8 @@
       "order": 2,
       "difficulty": "orta",
       "title": {
-        "tr": "Tip 1 ($alpha$), Tip 2 ($\beta$) Hataları ve Test Gücü",
-        "en": "Type 1 ($alpha$), Type 2 ($\beta$) Errors and Statistical Power"
+        "tr": "Tip 1 (α), Tip 2 (\beta) Hataları ve Test Gücü",
+        "en": "Type 1 (α), Type 2 (\beta) Errors and Statistical Power"
       },
       "conceptCard": {
         "tr": "Karar matrisindeki iki temel hata türü (`INDR 252 CEx11`):\n\n1. **Tip 1 Hata ($\\alpha$ / Yalancı Pozitif / Üretici Riski):** $H_0$ gerçekte doğruyken $H_0$'ı reddetmek ($P(\\text{H0 Red} | \\text{H0 Doğru}) = \\alpha$).\n2. **Tip 2 Hata ($\\beta$ / Yalancı Negatif / Tüketici Riski):** $H_0$ gerçekte yanlışken $H_0$'ı reddedememek.\n3. **Testin Gücü (Power = $1 - \\beta$):** $H_0$ yanlış olduğunda onu doğru şekilde reddedebilme olasılığı.",
@@ -267,8 +267,8 @@
       "order": 5,
       "difficulty": "orta",
       "title": {
-        "tr": "Tek Popülasyon Oran Testi ($Z$)",
-        "en": "One-Sample Proportion Test ($Z$)"
+        "tr": "Tek Popülasyon Oran Testi (Z)",
+        "en": "One-Sample Proportion Test (Z)"
       },
       "conceptCard": {
         "tr": "Bir anakütle oranının $p_0$ değerine eşitliğini test etmek için kullanılır (`INDR 252 Lecture 13`):\n\n$$z = \\frac{\\hat{p} - p_0}{\\sqrt{\\frac{p_0(1-p_0)}{n}}}$$\n\n- Şart: $n p_0 \\ge 5$ ve $n(1-p_0) \\ge 5$ olmalıdır.\n- Standart normal dağılım ($Z$) tablosu kullanılır.",
@@ -316,8 +316,8 @@
       "order": 6,
       "difficulty": "zor",
       "title": {
-        "tr": "Tek Popülasyon Varyans Testi ($chi^2$)",
-        "en": "One-Sample Population Variance Test ($chi^2$)"
+        "tr": "Tek Popülasyon Varyans Testi (χ²)",
+        "en": "One-Sample Population Variance Test (χ²)"
       },
       "conceptCard": {
         "tr": "Normal dağılan bir popülasyonda varyansın $\\sigma_0^2$ hedef değerine eşitliğini test etme (`INDR 252 FormulaSheet`):\n\n$$\\chi^2 = \\frac{(n-1)s^2}{\\sigma_0^2}, \\quad df = n - 1$$\n\n- $H_0: \\sigma^2 = \\sigma_0^2$\n- Kalite kontrolde varyasyonun izin verilen toleransı aşıp aşmadığını test etmekte kullanılır.",

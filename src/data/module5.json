@@ -133,8 +133,8 @@
       "order": 3,
       "difficulty": "orta",
       "title": {
-        "tr": "Ortalama İçin Güven Aralığı ($sigma$ Bilinen / $Z$)",
-        "en": "Confidence Interval for Mean ($sigma$ Known / $Z$)"
+        "tr": "Ortalama İçin Güven Aralığı (σ Bilinen / Z)",
+        "en": "Confidence Interval for Mean (σ Known / Z)"
       },
       "conceptCard": {
         "tr": "Anakütle standart sapması $\\sigma$ bilindiğinde veya $n \\ge 30$ iken %$100(1-\\alpha)$ Güven Aralığı:\n\n$$\\bar{x} \\pm z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}$$\n\n1. **%95 Güven Düzeyi:** $z_{0.025} = 1.96$\n2. **%99 Güven Düzeyi:** $z_{0.005} = 2.576$\n3. **Hata Payı:** $E = z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}$",
@@ -182,8 +182,8 @@
       "order": 4,
       "difficulty": "orta",
       "title": {
-        "tr": "t-Dağılımı ile Güven Aralığı ($sigma$ Bilinmeyen)",
-        "en": "Confidence Interval with t-Distribution ($sigma$ Unknown)"
+        "tr": "t-Dağılımı ile Güven Aralığı (σ Bilinmeyen)",
+        "en": "Confidence Interval with t-Distribution (σ Unknown)"
       },
       "conceptCard": {
         "tr": "Anakütle varyansı bilinmediğinde ve popülasyon yaklaşık normal olduğunda Student's $t$-dağılımı kullanılır (`INDR 252 Lecture 8`):\n\n$$\\bar{x} \\pm t_{\\alpha/2, n-1} \\frac{s}{\\sqrt{n}}$$\n\n- $df = n - 1$ (Serbestlik Derecesi)\n- Örneklem boyutu $n$ büyüdükçe $t$-dağılımı $Z$-dağılımına yakınsar.",
@@ -280,8 +280,8 @@
       "order": 6,
       "difficulty": "zor",
       "title": {
-        "tr": "Tek Popülasyon Varyansı İçin Güven Aralığı ($chi^2$)",
-        "en": "Confidence Interval for Population Variance ($chi^2$)"
+        "tr": "Tek Popülasyon Varyansı İçin Güven Aralığı (χ²)",
+        "en": "Confidence Interval for Population Variance (χ²)"
       },
       "conceptCard": {
         "tr": "**Tek Popülasyon Varyansı İçin Güven Aralığı ($chi^2$ Dağılımı - `INDR 252 Lecture 5`):**\n\nNormal dağılan bir popülasyondan çekilen $n$ gözlem için varyans $\\sigma^2$ güven aralığı:\n\n$$\\frac{(n-1)s^2}{\\chi^2_{\\alpha/2, n-1}} \\le \\sigma^2 \\le \\frac{(n-1)s^2}{\\chi^2_{1-\\alpha/2, n-1}}$$\n\n- $\\chi^2$ dağılımı simetrik değildir ($0$ ile $+\\infty$ arası), bu yüzden alt ve üst kritik değerler tablodan ayrı ayrı okunur.",

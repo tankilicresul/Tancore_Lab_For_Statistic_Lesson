@@ -84,8 +84,8 @@
       "order": 2,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Geçiş Matrisi ($P$) ve Chapman-Kolmogorov Eşitliği",
-        "en": "Transition Matrix ($P$) & Chapman-Kolmogorov Equation"
+        "tr": "Geçiş Matrisi (P) ve Chapman-Kolmogorov Eşitliği",
+        "en": "Transition Matrix (P) & Chapman-Kolmogorov Equation"
       },
       "conceptCard": {
         "tr": "1. **Bir Adımlı Geçiş Matrisi ($P$):** $p_{ij} = P(X_1 = j \\mid X_0 = i)$\n- Her $p_{ij} \\ge 0$\n- Her satırın toplamı tam olarak 1'dir: $\\sum_j p_{ij} = 1$\n\n2. **Chapman-Kolmogorov Eşitliği ($n$-Adım Geçiş):**\n$n$ adım sonra $i$ durumundan $j$ durumuna geçme olasılığı matrisin $n$. kuvveti ile bulunur:\n$$P^{(n)} = P^n$$\n$$p_{ij}^{(m+n)} = \\sum_k p_{ik}^{(m)} p_{kj}^{(n)}$$",
@@ -151,8 +151,8 @@
       "order": 3,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Durağan Denge Dağılımı Vektörü ($pi^*$)",
-        "en": "Stationary Steady-State Distribution ($pi^*$)"
+        "tr": "Durağan Denge Dağılımı Vektörü (π*)",
+        "en": "Stationary Steady-State Distribution (π*)"
       },
       "conceptCard": {
         "tr": "İndirgenemez ve aperiodik (ergodik) bir Markov zincirinde $n \\to \\infty$ olduğunda durum olasılıkları sabit bir dengeye ulaşır (`ENGR 200 Lecture`):\n\n**Denge Denklemleri:**\n$$\\pi^* P = \\pi^*$$\n$$\\sum_{i=1}^M \\pi_i^* = 1$$\n\n- $\\pi_i^*$: Sistemin uzun vadede $i$ durumunda bulunma yüzdesidir.\n- Başlangıç durumundan ($X_0$) tamamen bağımsızdır.",
@@ -218,8 +218,8 @@
       "order": 4,
       "difficulty": "zor",
       "title": {
-        "tr": "Yutucu Durumlar ve Temel Matris ($N$)",
-        "en": "Absorbing Chains and Fundamental Matrix ($N$)"
+        "tr": "Yutucu Durumlar ve Temel Matris (N)",
+        "en": "Absorbing Chains and Fundamental Matrix (N)"
       },
       "conceptCard": {
         "tr": "Bir duruma girildiğinde bir daha asla çıkılamıyorsa ($p_{ii} = 1$) bu duruma **Yutucu Durum (Absorbing State)** denir (`ENGR 200 Lecture`):\n\n1. **Kanonik Form:** $P = \\begin{pmatrix} I & 0 \\\\ R & Q \\end{pmatrix}$\n- $Q$: Geçici durumlardan geçici durumlara geçişler\n- $R$: Geçici durumlardan yutucu durumlara geçişler\n\n2. **Temel Matris (Fundamental Matrix $N$):**\n$$N = (I - Q)^{-1}$$\n$N_{ij}$: $i$ durumunda başlayan sürecin yutulmadan önce $j$ durumunu ziyaret etme ortalama sayısıdır.\n3. **Yutulmaya Kadar Geçen Ortalama Süre:** $t = N \\mathbf{1}$\n4. **Yutulma Olasılıkları:** $B = N R$",

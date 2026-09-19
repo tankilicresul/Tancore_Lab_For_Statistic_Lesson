@@ -84,8 +84,8 @@
       "order": 2,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Tek Yönlü ANOVA ve $F$-İstatistiği Hesabı",
-        "en": "One-Way ANOVA and $F$-Statistic Calculation"
+        "tr": "Tek Yönlü ANOVA ve F-İstatistiği Hesabı",
+        "en": "One-Way ANOVA and F-Statistic Calculation"
       },
       "conceptCard": {
         "tr": "ANOVA, toplam varyansı gruplar arası ve grup içi olarak ikiye ayırır (`INDR 252 Lecture 16`):\n\n1. **$H_0: \\mu_1 = \\mu_2 = \\dots = \\mu_k$**\n2. **Gruplar Arası Kareler Ortalaması ($MSB$):** $MSB = \\frac{SSB}{k - 1}$\n3. **Grup İçi Kareler Ortalaması ($MSW$):** $MSW = \\frac{SSW}{N - k}$\n4. **$F$-İstatistiği:**\n$$F = \\frac{MSB}{MSW}, \\quad df_1 = k - 1, \\quad df_2 = N - k$$\n- $F > F_{crit} \\implies$ En az bir grup ortalaması diğerlerinden anlamlı derecede farklıdır.",
@@ -267,8 +267,8 @@
       "order": 5,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Ki-Kare ($chi^2$) Uyum İyiliği ve Bağımsızlık Testleri",
-        "en": "Chi-Square ($chi^2$) Goodness-of-Fit and Independence Tests"
+        "tr": "Ki-Kare (χ²) Uyum İyiliği ve Bağımsızlık Testleri",
+        "en": "Chi-Square (χ²) Goodness-of-Fit and Independence Tests"
       },
       "conceptCard": {
         "tr": "Kategorik sayım verilerini analiz etme (`INDR 252 Lecture 16`, `CEx14`):\n\n1. **Ki-Kare Test İstatistiği:**\n$$\\chi^2 = \\sum \\frac{(O - E)^2}{E}$$\n- $O$: Gözlenen Frekans (Observed)\n- $E$: Beklenen Frekans (Expected)\n\n2. **Bağımsızlık Testi ($r \\times c$ Tablosu):**\n$$E_{ij} = \\frac{\\text{Satır } i \\text{ Toplamı} \\times \\text{Sütun } j \\text{ Toplamı}}{\\text{Genel Toplam}}, \\quad df = (r-1)(c-1)$$\n- $H_0$: İki kategorik değişken birbirinden bağımsızdır.",
@@ -316,8 +316,8 @@
       "order": 6,
       "difficulty": "zor",
       "title": {
-        "tr": "Kısmi $F$-Testi & Model Seçiminde Mallows' $C_p$",
-        "en": "Partial $F$-Test & Mallows' $C_p$ Model Selection"
+        "tr": "Kısmi F-Testi & Model Seçiminde Mallows' Cp",
+        "en": "Partial F-Test & Mallows' Cp Model Selection"
       },
       "conceptCard": {
         "tr": "Regresyon modelinden bir grup değişkeni elemenin doğruluğunu test etme (`INDR 252 Lecture 23`):\n\n1. **Kısmi $F$-Testi (Full vs. Reduced Model):**\n$$F = \\frac{(SSE_{red} - SSE_{full}) / q}{MSE_{full}}, \\quad df_1 = q, \\quad df_2 = n - k_{full} - 1$$\n- $q$: Elenmek istenen değişken sayısı. $p > 0.05$ ise $q$ adet değişken modelden güvenle çıkarılır.\n\n2. **Mallows' $C_p$ Kriteri:**\n$$C_p = \\frac{SSE_p}{S^2} - (n - 2p)$$\n- $p$: Modele alınan değişken sayısı + 1 (kesen).\n- **Kural:** $C_p \\approx p$ ve $C_p \\le p$ olan model en az sapmalı (optimum) modeldir.",

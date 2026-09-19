@@ -84,8 +84,8 @@
       "order": 2,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "İki Popülasyon Varyans Kıyaslaması ($F$-Testi)",
-        "en": "Two-Sample Variance Comparison ($F$-Test)"
+        "tr": "İki Popülasyon Varyans Kıyaslaması (F-Testi)",
+        "en": "Two-Sample Variance Comparison (F-Test)"
       },
       "conceptCard": {
         "tr": "İki bağımsız $t$-testi yapmadan önce varyansların eşit olup olmadığını doğrulamak için $F$-testi yapılır (`INDR 252 FormulaSheet`, `CEx8`):\n\n$$H_0: \\sigma_1^2 = \\sigma_2^2 \\quad \\text{vs} \\quad H_1: \\sigma_1^2 \\neq \\sigma_2^2$$\n$$F = \\frac{s_1^2}{s_2^2}, \\quad df_1 = n_1 - 1, \\quad df_2 = n_2 - 1$$\n(Adet gereği büyük varyans paya yazılır, $F \\ge 1$).",
@@ -200,8 +200,8 @@
       "order": 4,
       "difficulty": "orta",
       "title": {
-        "tr": "İki Popülasyon Oran Farkı Testi (Pooled $hat{p}$)",
-        "en": "Two-Sample Proportion Test (Pooled $hat{p}$)"
+        "tr": "İki Popülasyon Oran Farkı Testi (Pooled p̂)",
+        "en": "Two-Sample Proportion Test (Pooled p̂)"
       },
       "conceptCard": {
         "tr": "İki bağımsız grubun dönüşüm veya başarı oranlarını kıyaslama ($H_0: p_1 = p_2$) (`INDR 252 Lecture 15`):\n\n1. **Havuzlanmış Oran (Pooled $\\hat{p}$):**\n$$\\hat{p} = \\frac{x_1 + x_2}{n_1 + n_2}$$\n2. **Test İstatistiği:**\n$$z = \\frac{\\hat{p}_1 - \\hat{p}_2}{\\sqrt{\\hat{p}(1-\\hat{p})\\left(\\frac{1}{n_1} + \\frac{1}{n_2}\\right)}}$$",
@@ -249,8 +249,8 @@
       "order": 5,
       "difficulty": "orta",
       "title": {
-        "tr": "Pearson Korelasyon Katsayısı ($r$) ve Anlamlılık Testi",
-        "en": "Pearson Correlation ($r$) and Significance Testing"
+        "tr": "Pearson Korelasyon Katsayısı (r) ve Anlamlılık Testi",
+        "en": "Pearson Correlation (r) and Significance Testing"
       },
       "conceptCard": {
         "tr": "İki sayısal değişken arasındaki doğrusal ilişkinin yönü ve gücü (`INDR 252 Lecture 17`):\n\n1. **Pearson $r$ Formülü:**\n$$r = \\frac{SS_{xy}}{\\sqrt{SS_{xx} SS_{yy}}} = \\frac{\\sum (x-\\bar{x})(y-\\bar{y})}{\\sqrt{\\sum(x-\\bar{x})^2 \\sum(y-\\bar{y})^2}}, \\quad -1 \\le r \\le 1$$\n2. **Korelasyonun Anlamlılık $t$-Testi ($H_0: \\rho = 0$):**\n$$t = \\frac{r \\sqrt{n-2}}{\\sqrt{1 - r^2}}, \\quad df = n - 2$$\n\n> **Kural:** Korelasyon $\\ne$ Nedensellik!",
@@ -365,8 +365,8 @@
       "order": 7,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Kareler Toplamı Ayrışımı ($SST=SSR+SSE$) ve $R^2$",
-        "en": "Sum of Squares Partitioning ($SST=SSR+SSE$) and $R^2$"
+        "tr": "Kareler Toplamı Ayrışımı (SST = SSR + SSE) ve R²",
+        "en": "Sum of Squares Partitioning (SST = SSR + SSE) and R²"
       },
       "conceptCard": {
         "tr": "Regresyonda toplam varyans iki parçaya ayrılır (`INDR 252 Lecture 18`):\n\n1. **$SST$ (Total):** $\\sum (y_i - \\bar{y})^2$ (Verideki toplam değişkenlik)\n2. **$SSR$ (Regression):** $\\sum (\\hat{y}_i - \\bar{y})^2$ (Modelin açıkladığı değişkenlik)\n3. **$SSE$ (Error):** $\\sum (y_i - \\hat{y}_i)^2$ (Açıklanamayan artık değişkenlik)\n$$SST = SSR + SSE$$\n\n4. **Belirtme Katsayısı ($R^2$):**\n$$R^2 = \\frac{SSR}{SST} = 1 - \\frac{SSE}{SST}$$\n$Y$'deki değişkenliğin yüzde kaçının $X$ modeli tarafından açıklandığını gösterir.",

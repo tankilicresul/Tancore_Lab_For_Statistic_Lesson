@@ -84,8 +84,8 @@
       "order": 2,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Düzeltilmiş $R^2$ ve Model ANOVA $F$-Testi",
-        "en": "Adjusted $R^2$ and Overall Model ANOVA $F$-Test"
+        "tr": "Düzeltilmiş R² ve Model ANOVA F-Testi",
+        "en": "Adjusted R² and Overall Model ANOVA F-Test"
       },
       "conceptCard": {
         "tr": "1. **Düzeltilmiş Belirtme Katsayısı ($R_{adj}^2$):** Modele anlamsız değişken eklendikçe standart $R^2$ yapay olarak artar. $R_{adj}^2$ değişken sayısına ($k$) ceza uygular (`INDR 252 Lecture 20`):\n$$R_{adj}^2 = 1 - \\frac{SSE / (n - k - 1)}{SST / (n - 1)}$$\n\n2. **Genel Model ANOVA $F$-Testi ($H_0: \\beta_1 = \\beta_2 = \\dots = \\beta_k = 0$):**\n$$F = \\frac{MSR}{MSE} = \\frac{SSR / k}{SSE / (n - k - 1)}, \\quad df_1 = k, \\quad df_2 = n - k - 1$$",
@@ -267,8 +267,8 @@
       "order": 5,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Çoklu Doğrusallık ve Varyans Şişme Faktörü ($VIF$)",
-        "en": "Multicollinearity and Variance Inflation Factor ($VIF$)"
+        "tr": "Çoklu Doğrusallık ve Varyans Şişme Faktörü (VIF)",
+        "en": "Multicollinearity and Variance Inflation Factor (VIF)"
       },
       "conceptCard": {
         "tr": "Bağımsız değişkenlerin kendi aralarında yüksek korelasyona sahip olması durumuna **Çoklu Doğrusallık (Multicollinearity)** denir (`INDR 252 Lecture 22`):\n\n**Varyans Şişme Faktörü (VIF):**\n$$VIF_j = \\frac{1}{1 - R_j^2}$$\n- $R_j^2$: $x_j$ değişkeninin diğer tüm bağımsız değişkenler üzerine regresyonundaki $R^2$.\n- **$VIF < 5$:** Güvenli / Düşük doğrusallık.\n- **$VIF > 5$ veya $> 10$:** Ciddi çoklu doğrusallık! Katsayıların standart hatası aşırı şişer, $p$-değerleri yanıltıcı çıkar.",

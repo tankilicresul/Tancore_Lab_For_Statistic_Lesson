@@ -17,8 +17,8 @@
       "order": 1,
       "difficulty": "basit",
       "title": {
-        "tr": "Temel Sayma İlkesi & Faktöriyel ($n!$)",
-        "en": "Fundamental Counting Principle & Factorial ($n!$)"
+        "tr": "Temel Sayma İlkesi & Faktöriyel (n!)",
+        "en": "Fundamental Counting Principle & Factorial (n!)"
       },
       "conceptCard": {
         "tr": "1. **Çarpma Kuralı:** Birinci işlem $n_1$, ikinci işlem $n_2$, $\\dots$, $k$. işlem $n_k$ yolla yapılabiliyorsa tüm dizi $n_1 \\times n_2 \\times \\dots \\times n_k$ yolla yapılabilir.\n2. **Toplama Kuralı:** Ayrık $k$ farklı seçenekten biri $n_1 + n_2 + \\dots + n_k$ yolla seçilir.\n3. **Faktöriyel:** $n$ farklı nesnenin yan yana diziliş sayısı:\n$$n! = n \\times (n-1) \\times \\dots \\times 2 \\times 1, \\quad 0! = 1$$",
