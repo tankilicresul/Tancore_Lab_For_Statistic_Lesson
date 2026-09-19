@@ -2,8 +2,8 @@
   "id": "module-18",
   "order": 18,
   "title": {
-    "tr": "Modül 18: Tipik EM Problemleri Galerisi",
-    "en": "Module 18: Gallery of Industrial Engineering Problems"
+    "tr": "Tipik EM Problemleri Galerisi",
+    "en": "Gallery of Industrial Engineering Problems"
   },
   "description": {
     "tr": "Newsvendor (Gazeteci Çocuk) envanter modeli, kritik oran, kuyruk teorisi, Little yasası, iş çizelgeleme ve tesis konumlandırma.",

@@ -2,8 +2,8 @@
   "id": "module-20",
   "order": 20,
   "title": {
-    "tr": "Modül 20: Kapasite Planlama & Başa Baş Analizi",
-    "en": "Module 20: Capacity Planning & Break-Even Analysis"
+    "tr": "Kapasite Planlama & Başa Baş Analizi",
+    "en": "Capacity Planning & Break-Even Analysis"
   },
   "description": {
     "tr": "Tasarım ve efektif kapasite, kullanım oranı, kapasite verimliliği, başa baş noktası ve Make-or-Buy analizleri.",

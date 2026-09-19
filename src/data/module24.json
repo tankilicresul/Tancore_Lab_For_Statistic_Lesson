@@ -2,8 +2,8 @@
   "id": "module-24",
   "order": 24,
   "title": {
-    "tr": "Modül 24: Modelleme Kavramları & Doğrusal Programlama",
-    "en": "Module 24: Modeling Concepts & Linear Programming"
+    "tr": "Modelleme Kavramları & Doğrusal Programlama",
+    "en": "Modeling Concepts & Linear Programming"
   },
   "description": {
     "tr": "Optimizasyon modeli bileşenleri, LP formülasyonu, grafik çözüm, köşe noktaları yöntemi, artık/bağlayıcı kısıtlar ve ağ modelleri.",

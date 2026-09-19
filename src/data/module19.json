@@ -2,8 +2,8 @@
   "id": "module-19",
   "order": 19,
   "title": {
-    "tr": "Modül 19: Üretim Sistemleri & Süreç Seçimi",
-    "en": "Module 19: Production Systems & Process Selection"
+    "tr": "Üretim Sistemleri & Süreç Seçimi",
+    "en": "Production Systems & Process Selection"
   },
   "description": {
     "tr": "Job Shop, Batch, Repetitive ve Continuous süreç yapıları, Hayes-Wheelwright ürün-süreç matrisi ve süreç teknolojileri.",

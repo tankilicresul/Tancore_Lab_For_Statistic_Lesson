@@ -2,8 +2,8 @@
   "id": "module-22",
   "order": 22,
   "title": {
-    "tr": "Modül 22: Hat Dengeleme & Montaj Hattı Tasarımı",
-    "en": "Module 22: Line Balancing & Assembly Line Design"
+    "tr": "Hat Dengeleme & Montaj Hattı Tasarımı",
+    "en": "Line Balancing & Assembly Line Design"
   },
   "description": {
     "tr": "Çevrim süresi, teorik minimum istasyon sayısı, öncelik diyagramları, hat verimliliği ve denge gecikmesi optimizasyonu.",

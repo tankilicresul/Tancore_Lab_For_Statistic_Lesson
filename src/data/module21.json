@@ -2,8 +2,8 @@
   "id": "module-21",
   "order": 21,
   "title": {
-    "tr": "Modül 21: Tesis Yerleşimi & Akış Şemaları",
-    "en": "Module 21: Facility Layout & Process Flow"
+    "tr": "Tesis Yerleşimi & Akış Şemaları",
+    "en": "Facility Layout & Process Flow"
   },
   "description": {
     "tr": "Süreç, ürün, hücresel ve sabit konumlu yerleşim tipleri, akış süreç şemaları, From-To matrisi ve Muther REL diyagramı.",
