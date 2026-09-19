@@ -84,8 +84,8 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-2.5 sm:px-8 py-2.5 sm:py-3.5 font-sans shadow-xs">
-        <div className="max-w-6xl mx-auto flex items-center justify-between relative">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 py-2.5 sm:py-3.5 font-sans shadow-xs">
+        <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 flex items-center justify-between relative">
           {/* TancoreLab Brand Logo */}
           <a
             href="/"
