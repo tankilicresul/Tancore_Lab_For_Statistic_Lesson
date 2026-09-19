@@ -315,14 +315,15 @@ export async function completePasswordReset(newPassword: string): Promise<{ succ
 /**
  * Save / update user profile in Supabase profiles table (Strictly non-sensitive fields)
  */
-export async function saveUserProfileToSupabase(profile: UserProfile & { xp?: number; streak?: number; completedLessons?: number }): Promise<void> {
-  if (!supabase || !isSupabaseConfigured) return;
+export async function saveUserProfileToSupabase(profile: UserProfile & { xp?: number; streak?: number; completedLessons?: number }): Promise<{ success: boolean; error?: string }> {
+  if (!supabase || !isSupabaseConfigured) return { success: false, error: 'Supabase not configured' };
 
   try {
     const sanitizeText = (txt?: string, maxLen = 120) => (txt || '').replace(/<[^>]*>/g, '').trim().slice(0, maxLen);
+    const cleanEmail = profile.schoolEmail.trim().toLowerCase();
 
     const payload: any = {
-      email: profile.schoolEmail.trim().toLowerCase(),
+      email: cleanEmail,
       full_name: sanitizeText(profile.fullName, 80),
       university: sanitizeText(profile.university, 100),
       department_and_class: sanitizeText(profile.departmentAndClass, 100),
@@ -354,14 +355,67 @@ export async function saveUserProfileToSupabase(profile: UserProfile & { xp?: nu
       payload.subscription_renews_at = profile.subscriptionRenewsAt;
     }
 
-    if (profile.id && !profile.id.startsWith('usr_')) {
-      payload.id = profile.id;
-      await supabase.from('profiles').upsert(payload, { onConflict: 'id' });
-    } else {
-      await supabase.from('profiles').upsert(payload, { onConflict: 'email' });
+    // 1. Resolve exact Supabase auth UUID if available
+    let resolvedId: string | undefined = undefined;
+    try {
+      const { data: authData } = await supabase.auth.getUser();
+      if (authData?.user?.id) {
+        resolvedId = authData.user.id;
+      }
+    } catch {}
+
+    if (!resolvedId && profile.id && !profile.id.startsWith('usr_')) {
+      resolvedId = profile.id;
     }
+
+    if (!resolvedId) {
+      try {
+        const { data: existingRow } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('email', cleanEmail)
+          .maybeSingle();
+        if (existingRow?.id) {
+          resolvedId = existingRow.id;
+        }
+      } catch {}
+    }
+
+    if (resolvedId) {
+      payload.id = resolvedId;
+    }
+
+    // 2. Perform upsert into public.profiles table
+    const { error: upsertErr } = await supabase
+      .from('profiles')
+      .upsert(payload, { onConflict: resolvedId ? 'id' : 'email' });
+
+    if (upsertErr) {
+      console.warn('Supabase profile upsert warning, attempting update by email:', upsertErr.message);
+      const { error: updateErr } = await supabase
+        .from('profiles')
+        .update(payload)
+        .eq('email', cleanEmail);
+      if (updateErr) {
+        console.warn('Supabase profile update by email error:', updateErr.message);
+      }
+    }
+
+    // 3. Keep Supabase Auth metadata in sync
+    try {
+      await supabase.auth.updateUser({
+        data: {
+          full_name: payload.full_name,
+          university: payload.university,
+          department_and_class: payload.department_and_class,
+        },
+      });
+    } catch {}
+
+    return { success: true };
   } catch (err) {
     console.warn('Supabase profile save warning:', err);
+    return { success: false, error: String(err) };
   }
 }
 
@@ -388,7 +442,7 @@ export async function updateUserAccountCredentials(params: {
       authUpdates.email = params.newEmail.trim().toLowerCase();
     }
     const metaUpdates: any = {};
-    if (params.fullName) metaUpdates.full_name = params.fullName.trim();
+    if (params.fullName !== undefined) metaUpdates.full_name = params.fullName.trim();
     if (params.university !== undefined) metaUpdates.university = params.university.trim();
     if (params.departmentAndClass !== undefined) metaUpdates.department_and_class = params.departmentAndClass.trim();
     if (Object.keys(metaUpdates).length > 0) {
@@ -398,6 +452,7 @@ export async function updateUserAccountCredentials(params: {
     if (Object.keys(authUpdates).length > 0) {
       const { error } = await supabase.auth.updateUser(authUpdates);
       if (error) {
+        console.warn('Supabase updateUser warning:', error.message);
         return { success: false, error: error.message };
       }
     }

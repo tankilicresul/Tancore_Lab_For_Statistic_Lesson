@@ -178,16 +178,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       const cleanUniversity = formData.university?.trim() || '';
       const cleanDept = formData.departmentAndClass?.trim() || '';
 
-      // Update Supabase Auth if credentials changed (password or email)
-      if (editPassword.trim() || (cleanEmail && cleanEmail !== userProfile?.schoolEmail?.toLowerCase())) {
-        await updateUserAccountCredentials({
-          newPassword: editPassword.trim().length >= 4 ? editPassword.trim() : undefined,
-          newEmail: cleanEmail !== userProfile?.schoolEmail?.toLowerCase() ? cleanEmail : undefined,
-          fullName: cleanName,
-          university: cleanUniversity,
-          departmentAndClass: cleanDept,
-        });
-      }
+      // Always update Supabase Auth user metadata & password
+      await updateUserAccountCredentials({
+        newPassword: editPassword.trim().length >= 4 ? editPassword.trim() : undefined,
+        fullName: cleanName,
+        university: cleanUniversity,
+        departmentAndClass: cleanDept,
+      });
 
       const selectedAvatar = formData.avatarUrl || userProfile?.avatarUrl;
 

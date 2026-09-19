@@ -110,13 +110,14 @@ export const App: React.FC = () => {
       } else if (session?.user && !useAppStore.getState().isAuthenticated) {
         const meta = session.user.user_metadata || {};
         const email = session.user.email || '';
+        const currentStored = useAppStore.getState().userProfile;
         if (email) {
           updateUserProfile({
             id: session.user.id,
             schoolEmail: email,
-            fullName: meta.full_name || meta.name || email.split('@')[0],
-            university: meta.university || '',
-            departmentAndClass: meta.department_and_class || '',
+            fullName: currentStored?.fullName || meta.full_name || meta.name || email.split('@')[0],
+            university: currentStored?.university || meta.university || '',
+            departmentAndClass: currentStored?.departmentAndClass || meta.department_and_class || '',
             isVerified: true,
           });
           useAppStore.setState({ isAuthenticated: true, isVerified: true });
