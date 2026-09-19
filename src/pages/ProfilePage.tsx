@@ -82,6 +82,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
 
+  // Keep form fields in sync with userProfile
+  useEffect(() => {
+    if (userProfile && !isEditing) {
+      setFormData(userProfile);
+    }
+  }, [userProfile, isEditing]);
+
   useEffect(() => {
     let isMounted = true;
     setIsLoadingProfiles(true);
@@ -182,6 +189,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         });
       }
 
+      const selectedAvatar = formData.avatarUrl || userProfile?.avatarUrl;
+
       // Update local store
       updateUserProfile(
         {
@@ -190,7 +199,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           schoolEmail: cleanEmail,
           university: cleanUniversity,
           departmentAndClass: cleanDept,
-          avatarUrl: userProfile?.avatarUrl,
+          avatarUrl: selectedAvatar,
         },
         editPassword.trim() ? editPassword.trim() : undefined
       );
@@ -204,7 +213,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           schoolEmail: cleanEmail,
           university: cleanUniversity,
           departmentAndClass: cleanDept,
-          avatarUrl: userProfile?.avatarUrl,
+          avatarUrl: selectedAvatar,
           xp: xp || 0,
           streak: streak || 1,
           completedLessons: completedLessons.length + completedCaseExams.length,
