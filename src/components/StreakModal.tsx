@@ -428,8 +428,6 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
   const [imgError, setImgError] = useState(false);
   const isTr = language === 'tr';
 
-  const displayStreak = Math.max(1, streak || 1);
-
   // Play Lava Flow if streak is active
   useEffect(() => {
     soundService.playLavaFlow(0.18);
@@ -475,7 +473,24 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
     ? activityDates
     : [todayStr];
 
-  // Calculate Current Week Days (Monday -> Sunday)
+  // Active continuous streak count (unbroken chain of active days leading up to today)
+  let activeStreakCount = 1; // today is active
+  for (let offset = todayMondayOffset - 1; offset >= 0; offset--) {
+    const d = new Date(currentMonday);
+    d.setDate(currentMonday.getDate() + offset);
+    if (recordedDates.includes(formatDateStr(d))) {
+      activeStreakCount++;
+    } else {
+      break;
+    }
+  }
+  const displayStreak = Math.max(activeStreakCount, streak || 1);
+
+  // Calculate Current Week Days (Monday -> Sunday) according to the exact streak rule:
+  // - Buz: Never entered / missed days (hiç girilmemiş)
+  // - Sönmüş Ateş: Entered in the past, but streak broke because an intervening day was missed (sönmüş lav kayası)
+  // - Ateş: Entered and part of the continuous, unbroken active streak leading up to today with no ice in between (alevli lav kayası)
+  // - Gelecek: Upcoming days of the week (doğal taş)
   const currentWeekDays = daysOfWeek.map((d) => {
     const dateObj = new Date(currentMonday);
     dateObj.setDate(currentMonday.getDate() + d.dayOffset);
@@ -483,18 +498,44 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
 
     const isToday = d.dayOffset === todayMondayOffset;
     const isFuture = d.dayOffset > todayMondayOffset;
-    const daysAgo = todayMondayOffset - d.dayOffset;
-
     const wasRecorded = recordedDates.includes(dateStr);
 
-    // Active continuous streak: today or consecutive days before today within current streak
-    const isLava = !isFuture && (isToday || (daysAgo >= 0 && daysAgo < displayStreak && wasRecorded));
+    let isLava = false;
+    let isExtinguished = false;
+    let isIce = false;
 
-    // Solved previously, but streak broke -> Sönmüş Lav Kayası (Extinguished)
-    const isExtinguished = !isFuture && !isLava && wasRecorded;
+    if (isFuture) {
+      // Future day -> stone boulder
+    } else if (isToday) {
+      // Today: active on the app -> Burning Lava Rock
+      isLava = true;
+    } else {
+      // Past day in the current week
+      if (!wasRecorded) {
+        // Never entered / missed -> Buz Kristali (Ice)
+        isIce = true;
+      } else {
+        // Entered on this day. Check if all intermediate days between this day and today were also entered
+        let isStreakContinuousToToday = true;
+        for (let offset = d.dayOffset + 1; offset <= todayMondayOffset; offset++) {
+          const intermediateDate = new Date(currentMonday);
+          intermediateDate.setDate(currentMonday.getDate() + offset);
+          const intermediateStr = formatDateStr(intermediateDate);
+          if (!recordedDates.includes(intermediateStr)) {
+            isStreakContinuousToToday = false;
+            break;
+          }
+        }
 
-    // Never entered / missed past days -> Buz Kristali (Ice)
-    const isIce = !isFuture && !isLava && !wasRecorded;
+        if (isStreakContinuousToToday) {
+          // Unbroken chain of activity with no ice between this day and today -> Ateş (Burning Lava Rock)
+          isLava = true;
+        } else {
+          // Interrupted by at least one missed day -> Sönmüş Ateş (Extinguished Lava Rock)
+          isExtinguished = true;
+        }
+      }
+    }
 
     return {
       ...d,
