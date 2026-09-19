@@ -488,7 +488,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         <h2 className="sr-only">
           {language === 'tr' ? 'Endüstri Mühendisliği Temel Dersleri' : 'Core Industrial Engineering Courses'}
         </h2>
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:auto-rows-fr">
+        <div className="grid grid-cols-2 gap-2 sm:gap-2.5 sm:auto-rows-fr">
         {COURSES_DATA.filter((c) => c.status === 'active').map((course, idx) => {
           const isEn = language === 'en';
           const title = isEn ? course.name.en : course.name.tr;
@@ -500,7 +500,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <button
               key={course.code}
               onClick={() => course.track && onSelectTrack(course.track)}
-              className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border-2 text-left flex flex-col justify-between cursor-pointer overflow-hidden glow-card btn-press animate-card-reveal ${stagger} ${course.cardStyle}`}
+              className={`group relative w-full aspect-square p-3 sm:p-5 rounded-2xl sm:rounded-3xl border-2 text-left flex flex-col justify-between cursor-pointer overflow-hidden glow-card btn-press animate-card-reveal ${stagger} ${course.cardStyle}`}
             >
               <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-300 ${course.glowColor}`} />
 
@@ -542,7 +542,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         <h2 className="sr-only">
           {language === 'tr' ? 'Yakında Eklenecek Endüstri Mühendisliği Dersleri' : 'Upcoming Industrial Engineering Courses'}
         </h2>
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:auto-rows-fr">
+        <div className="grid grid-cols-2 gap-2 sm:gap-2.5 sm:auto-rows-fr">
           {COURSES_DATA.filter((c) => c.status !== 'active').map((course, idx) => {
             const isEn = language === 'en';
             const title = isEn ? course.name.en : course.name.tr;
@@ -554,7 +554,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <button
                 key={course.code}
                 onClick={() => onSelectInDesignCourse?.(course)}
-                className={`group relative w-full min-h-[175px] sm:min-h-[220px] p-3 sm:p-5 rounded-2xl sm:rounded-3xl border text-left flex flex-col justify-between overflow-hidden cursor-pointer card-hover btn-press animate-card-reveal ${staggerClass} ${course.cardStyle}`}
+                className={`group relative w-full aspect-square p-3 sm:p-5 rounded-2xl sm:rounded-3xl border text-left flex flex-col justify-between overflow-hidden cursor-pointer card-hover btn-press animate-card-reveal ${staggerClass} ${course.cardStyle}`}
               >
                 <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${course.glowColor}`} />
 
