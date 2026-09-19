@@ -313,6 +313,8 @@ export const HomePage: React.FC<HomePageProps> = ({
   const {
     language,
     userProfile,
+    isAuthenticated,
+    isVerified,
     setIsTancoChatOpen,
     isTancoActive,
     isTancoMoved,
@@ -395,8 +397,15 @@ export const HomePage: React.FC<HomePageProps> = ({
   };
 
   // Format student greeting name according to user rule:
-  // 1-2 words -> first name; 3+ words -> First letter. Second name
-  const studentDisplayName = formatStudentGreetingName(userProfile?.fullName, language === 'tr' ? 'Öğrenci' : 'Student');
+  // - If unauthenticated or guest: "kanka" (TR) or "friend" (EN)
+  // - If registered with name:
+  //   * 1-2 words -> first name (e.g. "Resul Tankılıç" -> "Resul")
+  //   * 3+ words -> First letter. Second name (e.g. "Mehmet Ali Yılmaz" -> "M. Ali")
+  const isUserRegistered = Boolean(isAuthenticated && isVerified && userProfile?.fullName?.trim());
+  const fallbackGreeting = language === 'tr' ? 'kanka' : 'friend';
+  const studentDisplayName = isUserRegistered
+    ? formatStudentGreetingName(userProfile?.fullName, fallbackGreeting)
+    : fallbackGreeting;
 
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden space-y-6">
