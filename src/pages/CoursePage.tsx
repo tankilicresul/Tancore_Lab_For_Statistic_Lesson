@@ -426,13 +426,17 @@ export const CoursePage: React.FC<CoursePageProps> = ({
           const pathNodes: PathNodeItem[] = [];
 
           lessons.forEach((lesson, lIdx) => {
+            const isCompleted = completedLessons.includes(lesson.id);
+            const isPreviousCompleted = lIdx === 0 || completedLessons.includes(lessons[lIdx - 1].id);
+            const isLessonUnlocked = isModuleUnlocked && (isPreviousCompleted || isCompleted);
+
             pathNodes.push({
               id: lesson.id,
               type: 'lesson',
               title: getLocalized(lesson.title, language),
               order: lIdx + 1,
-              isCompleted: completedLessons.includes(lesson.id),
-              isUnlocked: isModuleUnlocked,
+              isCompleted,
+              isUnlocked: isLessonUnlocked,
               lesson,
               module,
             });
@@ -440,13 +444,16 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
           // 2. Single Capstone Case node at the END of the module
           if (cases.length > 0) {
+            const allLessonsDone = lessons.every((l) => completedLessons.includes(l.id));
+            const isCaseUnlocked = isModuleUnlocked && (allLessonsDone || isAnyCaseCompleted);
+
             pathNodes.push({
               id: `${module.id}-cases`,
               type: 'case',
               title: language === 'tr' ? 'Şirket Vaka Sınavları' : 'Company Case Studies',
               order: lessons.length + 1,
               isCompleted: isAnyCaseCompleted,
-              isUnlocked: isModuleUnlocked,
+              isUnlocked: isCaseUnlocked,
               module,
               completedCasesCount,
               totalCasesCount: cases.length,
@@ -672,17 +679,25 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
                             {/* Node label below */}
                             <div className="absolute top-full mt-4 sm:mt-4.5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-10 pointer-events-none">
-                              <span className="text-[9px] sm:text-[10px] font-black text-slate-800 bg-white/95 px-2.5 py-1 rounded-xl border border-slate-200/90 shadow-xs text-center leading-none whitespace-nowrap max-w-[220px] sm:max-w-[260px] truncate backdrop-blur-xs">
+                              <span className={`text-[9px] sm:text-[10px] font-black px-2.5 py-1 rounded-xl border shadow-xs text-center leading-none whitespace-nowrap max-w-[220px] sm:max-w-[260px] truncate backdrop-blur-xs ${
+                                node.isUnlocked
+                                  ? 'text-slate-800 bg-white/95 border-slate-200/90'
+                                  : 'text-slate-400 bg-slate-100/90 border-slate-200/70'
+                              }`}>
                                 <MathFormulaText text={node.title} inline />
                               </span>
                               <span className={`text-[8px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-md border whitespace-nowrap ${
                                 node.type === 'case'
                                   ? node.isCompleted
                                     ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                                    : 'text-amber-700 bg-amber-50 border-amber-200'
+                                    : node.isUnlocked
+                                    ? 'text-amber-700 bg-amber-50 border-amber-200'
+                                    : 'text-slate-400 bg-slate-100 border-slate-200'
                                   : node.isCompleted
                                   ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                                  : 'text-[#ff7a00] bg-orange-50 border-orange-200'
+                                  : node.isUnlocked
+                                  ? 'text-[#ff7a00] bg-orange-50 border-orange-200'
+                                  : 'text-slate-400 bg-slate-100 border-slate-200'
                               }`}>
                                 {node.type === 'case'
                                   ? node.isCompleted
