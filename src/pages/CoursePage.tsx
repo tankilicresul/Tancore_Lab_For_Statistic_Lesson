@@ -659,11 +659,11 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                             </button>
 
                             {/* Node label below */}
-                            <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 w-[110px] flex flex-col items-center gap-0.5">
-                              <span className="text-[9px] sm:text-[10px] font-black text-slate-800 bg-white/95 px-2 py-0.5 rounded-xl border border-slate-200 shadow-xs text-center leading-tight line-clamp-2">
+                            <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-0.5 z-10 pointer-events-none">
+                              <span className="text-[9px] sm:text-[10px] font-black text-slate-800 bg-white/95 px-2.5 py-1 rounded-xl border border-slate-200/90 shadow-xs text-center leading-none whitespace-nowrap max-w-[220px] sm:max-w-[260px] truncate backdrop-blur-xs">
                                 {node.title}
                               </span>
-                              <span className={`text-[8px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-md border ${
+                              <span className={`text-[8px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-md border whitespace-nowrap ${
                                 node.type === 'case'
                                   ? node.isCompleted
                                     ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
