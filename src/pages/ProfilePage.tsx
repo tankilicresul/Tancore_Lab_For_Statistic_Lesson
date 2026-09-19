@@ -559,26 +559,24 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
         <button
           onClick={() => setIsEditing(true)}
-          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-white hover:bg-orange-50/60 border border-slate-200/90 hover:border-[#ff7a00]/40 shadow-xs transition-all flex items-center justify-between group cursor-pointer active:scale-98 text-left"
+          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-white hover:bg-orange-50/60 border border-slate-200/90 hover:border-[#ff7a00]/40 shadow-xs transition-all flex items-center justify-center text-center group cursor-pointer active:scale-98"
         >
-          <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-[#ff7a00] transition-colors whitespace-nowrap truncate">
+          <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-[#ff7a00] transition-colors whitespace-nowrap truncate text-center">
             {language === 'tr' ? 'Profili Düzenle' : 'Edit Profile'}
           </span>
-          <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-[#ff7a00] group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
         </button>
 
         <button
           onClick={() => onNavigateLeaderboard?.()}
-          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-white hover:bg-amber-50/60 border border-slate-200/90 hover:border-amber-400/50 shadow-xs transition-all flex items-center justify-between group cursor-pointer active:scale-98 text-left"
+          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-white hover:bg-amber-50/60 border border-slate-200/90 hover:border-amber-400/50 shadow-xs transition-all flex items-center justify-center text-center group cursor-pointer active:scale-98"
           title={language === 'tr' ? 'Genel Sıralamayı Gör' : 'View Leaderboard'}
         >
-          <div className="flex items-center space-x-1.5 min-w-0">
+          <div className="flex items-center justify-center space-x-1.5 min-w-0">
             <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 shrink-0 stroke-[2.2]" />
             <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-amber-600 transition-colors whitespace-nowrap truncate">
               {userRank}. {language === 'tr' ? 'Sıra' : 'Rank'}
             </span>
           </div>
-          <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
         </button>
       </div>
 
