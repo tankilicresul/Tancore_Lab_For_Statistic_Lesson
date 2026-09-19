@@ -254,7 +254,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans space-y-6 animate-fade-in">
+    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pt-1 sm:pt-2 pb-8 font-sans space-y-5 sm:space-y-6 animate-fade-in">
       {/* User Profile Identity Card */}
       <div className="bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] rounded-3xl p-5 sm:p-6 text-white shadow-xl relative overflow-hidden border border-amber-300/60">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
