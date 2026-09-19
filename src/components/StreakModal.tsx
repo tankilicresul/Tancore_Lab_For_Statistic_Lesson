@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAppStore, getInitialDemoActivityDates } from '../store/useAppStore';
+import { useAppStore } from '../store/useAppStore';
 import { X, Check, Flame } from 'lucide-react';
 import { soundService } from '../services/soundService';
 
@@ -424,25 +424,20 @@ const FutureRock3D: React.FC<{
 };
 
 export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
-  const { language, streak, isAuthenticated, isVerified, activityDates } = useAppStore();
+  const { language, streak, activityDates } = useAppStore();
   const [imgError, setImgError] = useState(false);
   const isTr = language === 'tr';
 
-  const displayStreak = streak > 0 ? streak : (isAuthenticated && isVerified ? 1 : 3);
+  const displayStreak = Math.max(1, streak || 1);
 
-  // Play Lava Flow if streak is active, or Cold Wind if streak is 0/ended
+  // Play Lava Flow if streak is active
   useEffect(() => {
-    const isStreakActive = streak > 0 || (!isAuthenticated && displayStreak > 0);
-    if (isStreakActive) {
-      soundService.playLavaFlow(0.18);
-    } else {
-      soundService.playColdWind(0.18);
-    }
+    soundService.playLavaFlow(0.18);
 
     return () => {
       soundService.stopAmbient();
     };
-  }, [streak, isAuthenticated, displayStreak]);
+  }, []);
 
   // Week days starting from Monday (Pt) to Sunday (Pz)
   const daysOfWeek = isTr
@@ -473,12 +468,12 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
   currentMonday.setDate(now.getDate() - todayMondayOffset);
 
   const formatDateStr = (d: Date) => d.toISOString().split('T')[0];
+  const todayStr = formatDateStr(now);
 
-  // Recorded activity dates from store or initial demo
-  const recordedDates =
-    activityDates && activityDates.length > 0
-      ? activityDates
-      : getInitialDemoActivityDates(displayStreak);
+  // Real recorded activity dates from store
+  const recordedDates = Array.isArray(activityDates) && activityDates.length > 0
+    ? activityDates
+    : [todayStr];
 
   // Calculate Current Week Days (Monday -> Sunday)
   const currentWeekDays = daysOfWeek.map((d) => {
@@ -491,12 +486,14 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
     const daysAgo = todayMondayOffset - d.dayOffset;
 
     const wasRecorded = recordedDates.includes(dateStr);
-    const isLava = !isFuture && (daysAgo >= 0 && daysAgo < displayStreak);
+
+    // Active continuous streak: today or consecutive days before today within current streak
+    const isLava = !isFuture && (isToday || (daysAgo >= 0 && daysAgo < displayStreak && wasRecorded));
 
     // Solved previously, but streak broke -> Sönmüş Lav Kayası (Extinguished)
     const isExtinguished = !isFuture && !isLava && wasRecorded;
 
-    // Never entered / missed -> Buz Kristali (Ice)
+    // Never entered / missed past days -> Buz Kristali (Ice)
     const isIce = !isFuture && !isLava && !wasRecorded;
 
     return {
@@ -504,37 +501,6 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
       dateStr,
       isToday,
       isFuture,
-      isLava,
-      isExtinguished,
-      isIce,
-    };
-  });
-
-  // Calculate Previous Week Days (Monday -> Sunday of last week)
-  const prevMonday = new Date(currentMonday);
-  prevMonday.setDate(currentMonday.getDate() - 7);
-
-  const prevWeekDays = daysOfWeek.map((d) => {
-    const dateObj = new Date(prevMonday);
-    dateObj.setDate(prevMonday.getDate() + d.dayOffset);
-    const dateStr = formatDateStr(dateObj);
-
-    const daysAgo = todayMondayOffset + 7 - d.dayOffset;
-
-    const wasRecorded = recordedDates.includes(dateStr);
-    const isLava = daysAgo >= 0 && daysAgo < displayStreak;
-
-    // Solved previously, but streak broke -> Sönmüş Lav Kayası (Extinguished)
-    const isExtinguished = !isLava && wasRecorded;
-
-    // Never entered / missed -> Buz Kristali (Ice)
-    const isIce = !isLava && !wasRecorded;
-
-    return {
-      ...d,
-      dateStr,
-      isToday: false,
-      isFuture: false,
       isLava,
       isExtinguished,
       isIce,
@@ -627,7 +593,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
             <span className="text-6xl sm:text-7xl font-black text-white tracking-tight drop-shadow-[0_6px_12px_rgba(0,0,0,0.35)] leading-none">
               {displayStreak}
             </span>
-            {/* 3D Lava Fire Rock Icon (Photo 2 style, static fire effect, no bounce animation) */}
+            {/* 3D Lava Fire Rock Icon */}
             <div className="relative flex items-center justify-center ml-1">
               <LavaRock3D
                 size="lg"
@@ -639,7 +605,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
             </div>
           </div>
 
-          {/* Dripping Liquid Lava Stream under the number "3" flowing down to "günlük seri!" */}
+          {/* Dripping Liquid Lava Stream under the number flowing down to "günlük seri!" */}
           <div className="flex justify-center -mt-1.5 -mb-0.5">
             <LiquidLavaStream />
           </div>
@@ -650,9 +616,19 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
         </div>
 
         {/* Weekly Activity Grid */}
-        <div className="bg-white rounded-2xl p-3.5 sm:p-4 text-slate-800 shadow-xl my-4 space-y-3">
+        <div className="bg-white rounded-2xl p-4 text-slate-800 shadow-xl my-4 space-y-2.5">
+          <div className="flex items-center justify-between px-1 pb-1 border-b border-slate-100">
+            <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
+              {isTr ? 'Bu Haftaki İlerlemen' : 'This Week Progress'}
+            </span>
+            <span className="text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60 flex items-center gap-1">
+              <Flame className="w-3 h-3 fill-amber-500 text-amber-500" />
+              {displayStreak} {isTr ? 'günlük seri' : 'day streak'}
+            </span>
+          </div>
+
           {/* Current Week (Monday -> Sunday) */}
-          <div className="grid grid-cols-7 gap-1 sm:gap-2">
+          <div className="grid grid-cols-7 gap-1 sm:gap-2 pt-1">
             {currentWeekDays.map((d) => (
               <div key={d.dayOffset} className="flex flex-col items-center">
                 <span
@@ -684,7 +660,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                       <ExtinguishedLavaRock3D size="md" hasSolvedBadge={true} />
                     </div>
                   )}
-                  {/* Never entered / missed -> 3D Ice Crystal */}
+                  {/* Never entered / missed past day -> 3D Ice Crystal */}
                   {d.isIce && (
                     <div className="relative flex items-center justify-center pt-1">
                       <IceCrystal3D size="md" showSmoke={true} hasSolvedBadge={false} />
@@ -699,37 +675,6 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Previous Week - shifts down each new Monday */}
-          <div className="pt-2.5 border-t border-slate-100">
-            <div className="grid grid-cols-7 gap-1 sm:gap-2 opacity-90">
-              {prevWeekDays.map((d) => (
-                <div key={d.dayOffset} className="flex flex-col items-center">
-                  <span className="text-[10px] text-slate-400 font-bold mb-1">{d.label}</span>
-                  <div className="relative h-9 sm:h-10 flex items-center justify-center">
-                    {/* Active continuous streak -> 3D Burning Lava Rock */}
-                    {d.isLava && (
-                      <div className="relative flex items-center justify-center">
-                        <LavaRock3D size="sm" showFlames={false} isToday={false} hasSolvedBadge={true} />
-                      </div>
-                    )}
-                    {/* Solved previously, but streak broke -> 3D Extinguished Lava Rock */}
-                    {d.isExtinguished && (
-                      <div className="relative flex items-center justify-center">
-                        <ExtinguishedLavaRock3D size="sm" hasSolvedBadge={true} />
-                      </div>
-                    )}
-                    {/* Never entered / missed -> 3D Ice Crystal */}
-                    {d.isIce && (
-                      <div className="relative flex items-center justify-center">
-                        <IceCrystal3D size="sm" showSmoke={false} hasSolvedBadge={false} />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 
@@ -751,3 +696,4 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
     </div>
   );
 };
+

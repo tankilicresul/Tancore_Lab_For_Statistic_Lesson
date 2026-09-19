@@ -41,7 +41,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
 
   const langRef = useRef<HTMLDivElement>(null);
   const isPlus = Boolean(userProfile?.isPremium);
-  const displayStreak = streak > 0 ? streak : (isAuthenticated && isVerified ? 1 : 3);
+  const displayStreak = Math.max(1, streak || 1);
   const currentXp = xp ?? 0;
 
   // Detect XP increases and fire float-up animation

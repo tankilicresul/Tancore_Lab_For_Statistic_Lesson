@@ -156,43 +156,14 @@ const DEFAULT_PROFILE: UserProfile = {
 
 const DEFAULT_DEMO_ACCOUNTS: RegisteredAccount[] = [];
 
-export function getInitialDemoActivityDates(streakCount = 3): string[] {
-  const dates: string[] = [];
-  const now = new Date();
-  const todayIndex = now.getDay(); // 0 = Sunday, 1 = Monday, ... 6 = Saturday
-
-  // 1. Current continuous active streak days leading up to today
-  for (let s = 0; s < streakCount; s++) {
-    const d = new Date(now);
-    d.setDate(now.getDate() - s);
-    dates.push(d.toISOString().split('T')[0]);
-  }
-
-  // 2. If today is Wednesday or later, include Sunday (& Monday) as earlier solved days
-  // before an interrupted streak day (e.g. Tuesday was missed) so they appear icy (buzlu)
-  if (todayIndex >= 3) {
-    const sunDate = new Date(now);
-    sunDate.setDate(now.getDate() - todayIndex);
-    dates.push(sunDate.toISOString().split('T')[0]);
-
-    if (todayIndex >= 4) {
-      const monDate = new Date(now);
-      monDate.setDate(now.getDate() - todayIndex + 1);
-      dates.push(monDate.toISOString().split('T')[0]);
-    }
-  }
-
-  return Array.from(new Set(dates));
-}
-
 const initialTanco = typeof window !== 'undefined' ? loadTancoSession() : { isTancoActive: false, isTancoMoved: false, tancoPosition: null };
 
 const INITIAL_STATE: UserState = {
   language: 'tr',
   xp: 0,
-  streak: 3,
+  streak: 1,
   lastActiveDate: new Date().toISOString().split('T')[0],
-  activityDates: getInitialDemoActivityDates(3),
+  activityDates: [new Date().toISOString().split('T')[0]],
   completedLessons: [],
   completedCaseExams: [],
   unlockedModules: ['module-1', 'module-2'],
@@ -758,9 +729,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const today = new Date().toISOString().split('T')[0];
         const state = get();
         const lastActive = state.lastActiveDate;
-        const currentDates = state.activityDates && state.activityDates.length > 0
-          ? state.activityDates
-          : getInitialDemoActivityDates(state.streak || 3);
+        const currentDates = Array.isArray(state.activityDates) ? state.activityDates : [];
         const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
 
         if (!lastActive) {
@@ -771,27 +740,30 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           return;
         }
 
-        const lastDateObj = new Date(lastActive);
-        const todayDateObj = new Date(today);
-        const diffTime = Math.abs(todayDateObj.getTime() - lastDateObj.getTime());
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (lastActive === today) {
+          // Already logged in today
+          const realStreak = Math.max(1, state.streak || 1);
+          set({ streak: realStreak, activityDates: updatedDates });
+          return;
+        }
+
+        const lastParts = lastActive.split('-').map(Number);
+        const todayParts = today.split('-').map(Number);
+        const lastDateUTC = Date.UTC(lastParts[0], lastParts[1] - 1, lastParts[2]);
+        const todayDateUTC = Date.UTC(todayParts[0], todayParts[1] - 1, todayParts[2]);
+        const diffDays = Math.round((todayDateUTC - lastDateUTC) / (1000 * 60 * 60 * 24));
 
         if (diffDays === 1) {
-          const newStreak = state.streak + 1;
+          const newStreak = (state.streak || 0) + 1;
           set({ streak: newStreak, lastActiveDate: today, activityDates: updatedDates });
           if (state.userProfile?.schoolEmail) {
             saveUserProfileToSupabase({ ...state.userProfile, streak: newStreak, xp: state.xp, completedLessons: state.completedLessons.length + state.completedCaseExams.length });
           }
         } else if (diffDays > 1) {
-          // Interrupted streak: reset active streak to 1, but retain historical dates so older days appear icy (buzlu)
+          // Interrupted streak: reset active streak to 1, starting fresh today
           set({ streak: 1, lastActiveDate: today, activityDates: updatedDates });
           if (state.userProfile?.schoolEmail) {
             saveUserProfileToSupabase({ ...state.userProfile, streak: 1, xp: state.xp, completedLessons: state.completedLessons.length + state.completedCaseExams.length });
-          }
-        } else {
-          // Same day: ensure activityDates has today
-          if (!currentDates.includes(today)) {
-            set({ activityDates: updatedDates });
           }
         }
       },
@@ -816,9 +788,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const guestTimestamp = !state.isAuthenticated ? Date.now() : state.guestProgressTimestamp;
 
         const today = new Date().toISOString().split('T')[0];
-        const currentDates = state.activityDates && state.activityDates.length > 0
-          ? state.activityDates
-          : getInitialDemoActivityDates(state.streak || 3);
+        const currentDates = Array.isArray(state.activityDates) ? state.activityDates : [];
         const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
 
         const nextState: UserState = {
@@ -892,9 +862,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const guestTimestamp = !state.isAuthenticated ? Date.now() : state.guestProgressTimestamp;
 
         const today = new Date().toISOString().split('T')[0];
-        const currentDates = state.activityDates && state.activityDates.length > 0
-          ? state.activityDates
-          : getInitialDemoActivityDates(state.streak || 3);
+        const currentDates = Array.isArray(state.activityDates) ? state.activityDates : [];
         const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
 
         const nextState: UserState = {

@@ -55,6 +55,11 @@ export const App: React.FC = () => {
     try { sessionStorage.setItem('tanco_guest_views', String(getGuestViewCount() + 1)); } catch {}
   };
 
+  // Automatically evaluate and update daily streak on initial load
+  useEffect(() => {
+    useAppStore.getState().checkAndUpdateStreak();
+  }, []);
+
   // Automatically sync profile details from Supabase cloud so registered name is always present
   useEffect(() => {
     // Only perform sync if user is authenticated and has an email
