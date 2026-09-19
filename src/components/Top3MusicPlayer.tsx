@@ -108,7 +108,7 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
             ? 'bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-amber-300/80 text-amber-900 ring-2 ring-amber-300/40 shadow-amber-500/10'
             : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-800'
         }`}
-        title={language === 'tr' ? 'İlk 3 Şampiyon Müziği (Kır Çiçeği)' : 'Top 3 Champion Theme (Wildflower)'}
+        title={language === 'tr' ? 'İlk 3 Şampiyon Müziği: Kır Çiçeği (made by solorijin)' : 'Top 3 Champion Theme: Wildflower (made by solorijin)'}
       >
         {/* Animated Equalizer or Music Icon */}
         <div className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500/20 text-[#ff7a00]">
@@ -125,11 +125,12 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
 
         {/* Track Title */}
         <div className="flex items-center gap-1.5 text-[11px] font-bold">
-          <span className="truncate max-w-[130px] sm:max-w-[180px]">
-            🎵 {language === 'tr' ? 'Kır Çiçeği' : 'Wildflower'}
+          <span className="truncate max-w-[190px] sm:max-w-[280px]">
+            🎵 {language === 'tr' ? 'Kır Çiçeği' : 'Wildflower'}{' '}
+            <span className="font-medium opacity-75 text-[10px] text-slate-500">· made by solorijin</span>
           </span>
           {isTop3User && (
-            <span className="text-[9.5px] bg-amber-500 text-white font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider">
+            <span className="text-[9.5px] bg-amber-500 text-white font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider shrink-0">
               TOP 3
             </span>
           )}
