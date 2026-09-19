@@ -124,9 +124,9 @@ export const LessonPage: React.FC<LessonPageProps> = ({
   // Dedicated Orientation / Roadmap view for the first introductory lesson
   if (lesson.isOrientation) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8 font-sans animate-fade-in">
+      <div className="max-w-4xl mx-auto px-4 pt-1 sm:pt-2 pb-8 font-sans animate-fade-in">
         {/* Top Breadcrumb Navigation */}
-        <div className="flex items-center justify-between gap-2 mb-6">
+        <div className="flex items-center justify-between gap-2 mb-3.5 sm:mb-4">
           <button
             onClick={() => (onBackToHomeWithScroll ? onBackToHomeWithScroll(lesson.id) : onBack())}
             className="flex items-center space-x-1.5 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 bg-white px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-slate-200 shadow-2xs transition-colors shrink-0 cursor-pointer"
@@ -234,9 +234,9 @@ export const LessonPage: React.FC<LessonPageProps> = ({
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 font-sans animate-fade-in">
+    <div className="max-w-4xl mx-auto px-4 pt-1 sm:pt-2 pb-8 font-sans animate-fade-in">
       {/* Top Breadcrumb Navigation */}
-      <div className="flex items-center justify-between gap-2 mb-6">
+      <div className="flex items-center justify-between gap-2 mb-3.5 sm:mb-4">
         <button
           onClick={() => (onBackToHomeWithScroll ? onBackToHomeWithScroll(lesson.id) : onBack())}
           className="flex items-center space-x-1.5 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 bg-white px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-slate-200 shadow-2xs transition-colors shrink-0"

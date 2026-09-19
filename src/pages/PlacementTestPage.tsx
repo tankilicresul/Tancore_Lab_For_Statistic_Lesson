@@ -122,9 +122,9 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
   );
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8 font-sans">
+    <div className="max-w-3xl mx-auto px-4 pt-1 sm:pt-2 pb-8 font-sans">
       {/* Navigation Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3.5 sm:mb-4">
         <button
           onClick={() => onBackToHome()}
           className="flex items-center space-x-2 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors bg-white px-3.5 py-2 rounded-xl border border-slate-200 self-start"

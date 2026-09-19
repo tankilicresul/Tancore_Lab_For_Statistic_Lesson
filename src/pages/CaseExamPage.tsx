@@ -108,9 +108,9 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 font-sans animate-fade-in">
+    <div className="max-w-4xl mx-auto px-4 pt-1 sm:pt-2 pb-8 font-sans animate-fade-in">
       {/* Top Breadcrumb */}
-      <div className="flex flex-col xs:flex-row gap-2.5 xs:items-center justify-between mb-6">
+      <div className="flex flex-col xs:flex-row gap-2.5 xs:items-center justify-between mb-3.5 sm:mb-4">
         <button
           onClick={onBack}
           className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 bg-white px-3.5 py-2 rounded-2xl border border-slate-200 shadow-2xs transition-colors shrink-0 self-start xs:self-auto"

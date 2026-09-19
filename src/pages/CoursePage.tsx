@@ -389,7 +389,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pt-2 sm:pt-3 pb-8 font-sans overflow-x-hidden animate-fade-in">
+    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pt-1 sm:pt-2 pb-8 font-sans overflow-x-hidden animate-fade-in">
       {/* Top Header Navigation Bar */}
       <div className="flex items-center justify-between mb-3.5 sm:mb-4 gap-2">
         <button

@@ -122,9 +122,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   const user3 = sortedLeaderboard[2] || null;
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans -mt-4 sm:-mt-6 relative">
+    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pt-1 sm:pt-2 pb-8 font-sans relative">
       {/* Pinned Top Podium & Section Subtitle (Sticky with zero initial jump) */}
-      <div className="sticky top-[52px] sm:top-[68px] z-30 pt-1 pb-1.5 bg-[#f8fafc]">
+      <div className="sticky top-[53px] sm:top-[73px] z-30 pt-1 pb-1.5 bg-[#f8fafc]">
         {/* Seamless Top 3 Leaderboard Podium */}
         <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-md relative overflow-hidden transition-all">
           {/* Top 3 Royalty-Free Music Player (Kır Çiçeği) */}
