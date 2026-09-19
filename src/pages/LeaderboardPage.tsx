@@ -456,60 +456,6 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
           </div>
         ) : null
       )}
-
-      {/* Floating Persistent My Rank Bar for Authenticated Users */}
-      {isAuthenticated && effectiveProfile && userRank > 0 && (
-        <div className="sticky bottom-20 sm:bottom-6 z-30 mt-4 animate-fade-in">
-          <div
-            onClick={() => {
-              const el = document.getElementById(`leaderboard-row-${userRank}`);
-              if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }
-            }}
-            className="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-[#ff7a00] via-amber-500 to-[#ff7a00] text-white shadow-xl shadow-orange-500/25 border-2 border-white/60 cursor-pointer hover:scale-[1.01] active:scale-95 transition-all"
-          >
-            <div className="flex items-center space-x-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-xl bg-white text-[#ff7a00] font-black text-xs sm:text-sm flex items-center justify-center shadow-xs shrink-0">
-                #{userRank}
-              </div>
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/20 border border-white/60 flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
-                <UserAvatar
-                  avatarUrl={effectiveProfile.avatarUrl}
-                  avatarEmoji={effectiveProfile.avatarEmoji || '👨‍🎓'}
-                  fullName={effectiveProfile.fullName}
-                  size="xs"
-                  className="w-full h-full"
-                />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center space-x-1.5">
-                  <span className="text-xs sm:text-sm font-black truncate text-white">
-                    {effectiveProfile.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')}
-                  </span>
-                  <span className="text-[10px] font-extrabold bg-white/25 text-white px-1.5 py-0.5 rounded-md leading-none">
-                    {language === 'tr' ? 'Sen' : 'You'}
-                  </span>
-                </div>
-                <span className="text-[10.5px] text-white/85 truncate block">
-                  {effectiveProfile.university || (language === 'tr' ? 'Üniversite' : 'University')}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-2 shrink-0 pl-2">
-              <div className="text-right">
-                <span className="text-xs sm:text-sm font-black text-white block leading-none">
-                  {(xp || 0).toLocaleString('tr-TR')} XP
-                </span>
-                <span className="text-[9px] font-bold text-white/75 block mt-0.5">
-                  {language === 'tr' ? 'Konumuma Git ↑' : 'Go to Rank ↑'}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
