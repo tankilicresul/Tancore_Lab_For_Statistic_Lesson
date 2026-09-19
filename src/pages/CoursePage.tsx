@@ -517,7 +517,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               {(() => {
                 const NODE_SIZE = 72; // px
                 const NODE_HALF = NODE_SIZE / 2;
-                const ROW_HEIGHT = 120; // vertical spacing between nodes
+                const ROW_HEIGHT = 132; // vertical spacing between nodes (generous breathing room)
                 const CANVAS_W = 280; // SVG viewport width
                 const CX = CANVAS_W / 2; // centre x
 
@@ -659,7 +659,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                             </button>
 
                             {/* Node label below */}
-                            <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-0.5 z-10 pointer-events-none">
+                            <div className="absolute top-full mt-4 sm:mt-4.5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-10 pointer-events-none">
                               <span className="text-[9px] sm:text-[10px] font-black text-slate-800 bg-white/95 px-2.5 py-1 rounded-xl border border-slate-200/90 shadow-xs text-center leading-none whitespace-nowrap max-w-[220px] sm:max-w-[260px] truncate backdrop-blur-xs">
                                 {node.title}
                               </span>
