@@ -5,7 +5,7 @@ import { fetchAllProfilesFromSupabase } from '../lib/supabase';
 import { Crown, Lock } from 'lucide-react';
 import { UserAvatar } from '../components/UserAvatar';
 import { computeUnifiedLeaderboard, isSameStudent } from '../utils/leaderboardHelper';
-import { soundService } from '../services/soundService';
+import { Top3MusicPlayer } from '../components/Top3MusicPlayer';
 
 const DUMMY_BLURRED_STUDENTS = [
   { rank: 4, name: 'Zeynep Kaya', university: 'İTÜ - Endüstri Mühendisliği', emoji: '👩‍💻', xp: 420 },
@@ -103,19 +103,6 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     unlockedBadges,
   });
 
-  // Ambient chill blues music for Top 3
-  useEffect(() => {
-    // If authenticated user is in Top 3, or on the leaderboard podium view
-    if (isAuthenticated && userRank && userRank <= 3) {
-      soundService.playBluesMusic(0.20);
-    } else {
-      soundService.stopAmbient();
-    }
-    return () => {
-      soundService.stopAmbient();
-    };
-  }, [userRank, isAuthenticated]);
-
   // Auto-Scroll to keep user row in view on load
   useEffect(() => {
     if (isAuthenticated && userRank) {
@@ -140,6 +127,12 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       <div className="sticky top-[52px] sm:top-[68px] z-30 pt-1 pb-1.5 bg-[#f8fafc]">
         {/* Seamless Top 3 Leaderboard Podium */}
         <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-md relative overflow-hidden transition-all">
+          {/* Top 3 Royalty-Free Music Player (Kır Çiçeği) */}
+          <Top3MusicPlayer
+            isTop3User={Boolean(isAuthenticated && userRank && userRank <= 3)}
+            language={language}
+          />
+
           <div className="flex items-end justify-center gap-2 sm:gap-4 pt-2 pb-1">
             {/* 2nd Place (Silver) */}
             <div id="leaderboard-row-2" className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
