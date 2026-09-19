@@ -415,93 +415,82 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full pointer-events-none" />
         <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-yellow-300/15 rounded-full pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col gap-3.5 sm:gap-4">
-          {/* Speech bubble card */}
+        <div className="relative z-10">
+          {/* Speech bubble card with integrated Tanco mascot on the right */}
           <div className="relative bg-white text-slate-900 border border-amber-100 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-lg">
-            <h1 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight leading-snug">
-              {language === 'tr'
-                ? `Selam ${studentDisplayName}! Ben Tanco, senin yapay zeka asistanınım. Bana istediğin ismi verebilirsin :)`
-                : `Hi ${studentDisplayName}! I'm Tanco, your AI assistant. You can give me any name you want :)`}
-            </h1>
-            {language === 'tr' ? (
-              <div className="mt-2.5">
-                <ul className="space-y-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                  <li className="flex items-center space-x-1.5">
-                    <span className="text-[#ff7a00] font-bold">•</span>
-                    <span>Benimle sohbet edebilir,</span>
-                  </li>
-                  <li className="flex items-center space-x-1.5">
-                    <span className="text-[#ff7a00] font-bold">•</span>
-                    <span>Konular hakkında soru sorabilir,</span>
-                  </li>
-                  <li className="flex items-center space-x-1.5">
-                    <span className="text-[#ff7a00] font-bold">•</span>
-                    <span>Fotoğraf ve ses gönderebilirsin.</span>
-                  </li>
-                </ul>
-                <p className="text-xs sm:text-sm text-[#ff7a00] font-black mt-2.5">
-                  Fotoğrafıma dokunup kaydırmayı dene !
-                </p>
-              </div>
-            ) : (
-              <div className="mt-2.5">
-                <ul className="space-y-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                  <li className="flex items-center space-x-1.5">
-                    <span className="text-[#ff7a00] font-bold">•</span>
-                    <span>Chat with me,</span>
-                  </li>
-                  <li className="flex items-center space-x-1.5">
-                    <span className="text-[#ff7a00] font-bold">•</span>
-                    <span>Ask questions about your courses,</span>
-                  </li>
-                  <li className="flex items-center space-x-1.5">
-                    <span className="text-[#ff7a00] font-bold">•</span>
-                    <span>Send photos and voice messages.</span>
-                  </li>
-                </ul>
-                <p className="text-xs sm:text-sm text-[#ff7a00] font-black mt-2.5">
-                  Try tapping and dragging my photo!
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Tanco avatar row */}
-          <div className="flex items-center space-x-3 pl-1 min-h-[56px]">
-            {!isTancoActive ? (
-              <div
-                ref={avatarRef}
-                onPointerDown={handleAvatarPointerDown}
-                className="relative group cursor-pointer select-none touch-none focus:outline-none"
-                title={language === 'tr' ? "Tanco'yu canlandırmak için dokun veya kaydır!" : "Tap or drag to awaken Tanco!"}
-              >
-                <TanCoreMascotAvatar
-                  size="lg"
-                  alt="Tanco Yapay Zeka Öğretim Asistanı"
-                  className="shadow-md shadow-black/20 ring-2 ring-white/80 group-hover:scale-105 group-active:scale-95 transition-transform shrink-0"
-                />
-                <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 pointer-events-none">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-200 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-yellow-300 border-2 border-orange-600" />
-                </span>
-              </div>
-            ) : !isTancoMoved ? (
-              <div className="w-14 h-14 shrink-0" />
-            ) : null}
-
-            <div className="flex flex-col">
-              <div className="flex items-center space-x-1.5">
-                <span className="text-xs sm:text-sm font-black text-white tracking-tight drop-shadow-xs">Tanco</span>
-                {isTancoActive && (
-                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-black bg-white/20 text-white border border-white/30 backdrop-blur-xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse" />
-                    {language === 'tr' ? 'Aktif' : 'Active'}
-                  </span>
+            <div className="flex items-center sm:items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight leading-snug">
+                  {language === 'tr'
+                    ? `Selam ${studentDisplayName}! Ben Tanco, senin yapay zeka asistanınım. Bana istediğin ismi verebilirsin :)`
+                    : `Hi ${studentDisplayName}! I'm Tanco, your AI assistant. You can give me any name you want :)`}
+                </h1>
+                {language === 'tr' ? (
+                  <div className="mt-2.5">
+                    <ul className="space-y-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
+                      <li className="flex items-center space-x-1.5">
+                        <span className="text-[#ff7a00] font-bold">•</span>
+                        <span>Benimle sohbet edebilir,</span>
+                      </li>
+                      <li className="flex items-center space-x-1.5">
+                        <span className="text-[#ff7a00] font-bold">•</span>
+                        <span>Konular hakkında soru sorabilir,</span>
+                      </li>
+                      <li className="flex items-center space-x-1.5">
+                        <span className="text-[#ff7a00] font-bold">•</span>
+                        <span>Fotoğraf ve ses gönderebilirsin.</span>
+                      </li>
+                    </ul>
+                    <p className="text-xs sm:text-sm text-[#ff7a00] font-black mt-2.5">
+                      Fotoğrafıma dokunup kaydırmayı dene !
+                    </p>
+                  </div>
+                ) : (
+                  <div className="mt-2.5">
+                    <ul className="space-y-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
+                      <li className="flex items-center space-x-1.5">
+                        <span className="text-[#ff7a00] font-bold">•</span>
+                        <span>Chat with me,</span>
+                      </li>
+                      <li className="flex items-center space-x-1.5">
+                        <span className="text-[#ff7a00] font-bold">•</span>
+                        <span>Ask questions about your courses,</span>
+                      </li>
+                      <li className="flex items-center space-x-1.5">
+                        <span className="text-[#ff7a00] font-bold">•</span>
+                        <span>Send photos and voice messages.</span>
+                      </li>
+                    </ul>
+                    <p className="text-xs sm:text-sm text-[#ff7a00] font-black mt-2.5">
+                      Try tapping and dragging my photo!
+                    </p>
+                  </div>
                 )}
               </div>
-              <span className="text-[10px] sm:text-[11px] font-semibold text-amber-100">
-                {language === 'tr' ? 'Öğretim Asistanı' : 'Teaching Assistant'}
-              </span>
+
+              {/* Tanco avatar located in the right-hand empty space */}
+              <div className="shrink-0 self-center sm:self-end pt-1 sm:pt-0">
+                {!isTancoActive ? (
+                  <div
+                    ref={avatarRef}
+                    onPointerDown={handleAvatarPointerDown}
+                    className="relative group cursor-pointer select-none touch-none focus:outline-none"
+                    title={language === 'tr' ? "Tanco'yu canlandırmak için dokun veya kaydır!" : "Tap or drag to awaken Tanco!"}
+                  >
+                    <TanCoreMascotAvatar
+                      size="lg"
+                      alt="Tanco Yapay Zeka Asistanı"
+                      className="shadow-md shadow-orange-500/20 ring-2 ring-[#ff7a00]/30 group-hover:scale-105 group-active:scale-95 transition-transform shrink-0"
+                    />
+                    <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 pointer-events-none">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-500 border-2 border-white" />
+                    </span>
+                  </div>
+                ) : !isTancoMoved ? (
+                  <div className="w-14 h-14 shrink-0" />
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
