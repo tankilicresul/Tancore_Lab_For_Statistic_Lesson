@@ -527,7 +527,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors duration-200 leading-snug line-clamp-2">
                   {title}
                 </h3>
-                <p className="text-[10.5px] sm:text-xs font-medium text-slate-600 line-clamp-5 mt-1.5 leading-relaxed">
+                <p className="text-[10.5px] sm:text-xs font-medium text-slate-600 line-clamp-3 mt-1.5 leading-relaxed">
                   {desc}
                 </p>
               </div>
@@ -573,7 +573,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   <h3 className="text-xs sm:text-base font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors duration-200 leading-snug line-clamp-2">
                     {title}
                   </h3>
-                  <p className="text-[11px] sm:text-xs font-medium text-slate-600 line-clamp-5 mt-1.5 leading-relaxed">
+                  <p className="text-[11px] sm:text-xs font-medium text-slate-600 line-clamp-3 mt-1.5 leading-relaxed">
                     {desc}
                   </p>
                 </div>
