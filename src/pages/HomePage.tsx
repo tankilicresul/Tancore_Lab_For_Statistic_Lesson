@@ -408,7 +408,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     : fallbackGreeting;
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden space-y-6">
+    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pt-2 sm:pt-3 pb-8 font-sans overflow-x-hidden space-y-5 sm:space-y-6">
       {/* ── Hero Welcome Banner ── */}
       <div className="relative p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#e55a00] border border-amber-300/60 shadow-lg shadow-orange-500/15 overflow-hidden text-left">
         {/* Crisp static subtle radial highlights */}
