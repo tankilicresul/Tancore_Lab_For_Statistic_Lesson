@@ -53,9 +53,13 @@ body {
   max-width: 100% !important;
   -webkit-overflow-scrolling: touch !important;
   padding: 0.4rem 0.25rem !important;
-  margin: 0.6rem 0 !important;
+  margin: 0.5rem 0 !important;
   text-align: center;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+}
+
+.katex-display::-webkit-scrollbar {
+  display: none;
 }
 
 .katex-display > .katex {
@@ -65,22 +69,24 @@ body {
 }
 
 .katex {
-  font-size: 1.05em;
+  font-size: 1.02em;
   text-rendering: optimizeLegibility;
+  line-height: inherit;
 }
 
 /* Prevent inline math from breaking in the middle of symbols */
 .katex-html {
   white-space: nowrap;
+  vertical-align: baseline;
 }
 
 @media (max-width: 640px) {
   .katex {
-    font-size: 0.92em;
+    font-size: 0.95em;
   }
   .katex-display {
-    padding: 0.3rem 0.15rem !important;
-    margin: 0.4rem 0 !important;
+    padding: 0.25rem 0.1rem !important;
+    margin: 0.35rem 0 !important;
   }
 }
 

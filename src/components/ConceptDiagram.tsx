@@ -89,7 +89,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'probability_venn') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'GÖRSEL KÜME & OLASILIK ŞEMASI' : 'SET THEORY & PROBABILITY VENN DIAGRAM'}
@@ -98,7 +98,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
               {language === 'tr' ? 'Venn Şeması: Kesişim (A ∩ B) & Birleşim (A ∪ B)' : 'Venn Diagram: Intersection (A ∩ B) & Union (A ∪ B)'}
             </h4>
           </div>
-          <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
             <KatexFormula formula="P(A \cup B)" displayMode={false} />
           </span>
         </div>
@@ -151,7 +151,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'normal_curve') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'GÖRSEL KAVRAM ŞEMASI' : 'VISUAL CONCEPT DIAGRAM'}
@@ -160,7 +160,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
               {language === 'tr' ? 'Normal Dağılım (Çan Eğrisi) & Ampirik Kural (%68 - %95 - %99.7)' : 'Normal Distribution (Bell Curve) & Empirical Rule'}
             </h4>
           </div>
-          <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
             <KatexFormula formula="\mathcal{N}(\mu, \sigma^2)" displayMode={false} />
           </span>
         </div>
@@ -234,7 +234,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'discrete_binomial') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'KESİKLİ DAĞILIM ŞEMASI' : 'DISCRETE DISTRIBUTION PMF'}
@@ -243,7 +243,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
               {language === 'tr' ? 'Olasılık Kütle Fonksiyonu (PMF): Binom & Poisson' : 'Probability Mass Function (PMF)'}
             </h4>
           </div>
-          <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
             <KatexFormula formula="P(X = k)" displayMode={false} />
           </span>
         </div>
@@ -292,7 +292,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'sample_clt') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'MÜHENDİSLİK ŞEMASI' : 'ENGINEERING DIAGRAM'}
@@ -301,7 +301,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
               {language === 'tr' ? 'Merkezi Limit Teoremi (CLT) & Standart Hata Daralması' : 'Central Limit Theorem (CLT) Shrinkage'}
             </h4>
           </div>
-          <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
             <KatexFormula formula="\text{SE} = \frac{\sigma}{\sqrt{n}}" displayMode={false} />
           </span>
         </div>
@@ -341,7 +341,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'boxplot_histogram') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'GÖRSEL KAVRAM ŞEMASI' : 'VISUAL CONCEPT DIAGRAM'}
@@ -398,7 +398,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'confidence_interval') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'MÜHENDİSLİK & İSTATİSTİK ŞEMASI' : 'ENGINEERING & STATISTICS DIAGRAM'}
@@ -450,7 +450,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'hypothesis_test') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'GÖRSEL HIPOTEZ ŞEMASI' : 'HYPOTHESIS VISUAL DIAGRAM'}
@@ -502,7 +502,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'regression_scatter') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'REGRESYON ŞEMASI' : 'REGRESSION DIAGRAM'}
@@ -553,7 +553,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'anova_f') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'VARYANS ANALİZİ ŞEMASI' : 'ANOVA F-RATIO DIAGRAM'}
@@ -562,7 +562,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
               {language === 'tr' ? 'ANOVA: Gruplar Arası Varyans (MSB) / Grup İçi Varyans (MSW)' : 'ANOVA F-Ratio Decomposition'}
             </h4>
           </div>
-          <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
             <KatexFormula formula="F = \frac{\text{MSB}}{\text{MSW}}" displayMode={false} />
           </span>
         </div>
@@ -606,7 +606,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'markov_chain') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'STOKASTİK SÜREÇ ŞEMASI' : 'STOCHASTIC PROCESS DIAGRAM'}
@@ -615,7 +615,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
               {language === 'tr' ? 'Markov Zinciri: Durum Geçişleri & Geçiş Matrisi (P)' : 'Markov Chain State Transitions'}
             </h4>
           </div>
-          <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
             <KatexFormula formula="\boldsymbol{\pi} P = \boldsymbol{\pi}" displayMode={false} />
           </span>
         </div>
@@ -663,7 +663,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'bayes_tree') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'BAYES OĞAÇ ŞEMASI' : 'BAYESIAN PROBABILITY TREE'}
@@ -672,7 +672,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
               {language === 'tr' ? 'Bayes Karar Ağacı: Prior Olasılık → Olabilirlik → Posterior' : 'Bayesian Decision Tree'}
             </h4>
           </div>
-          <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
             <KatexFormula formula="P(A \mid B)" displayMode={false} />
           </span>
         </div>
@@ -721,7 +721,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'combinatorics') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'KOMBİNATORİK & SAYMA ŞEMASI' : 'COMBINATORICS & COUNTING'}
@@ -730,7 +730,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
               {language === 'tr' ? 'Permütasyon (Sıralı) vs. Kombinasyon (Sırasız Küme)' : 'Permutations (Ordered) vs. Combinations (Unordered)'}
             </h4>
           </div>
-          <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
             <KatexFormula formula="\binom{n}{k} = \frac{n!}{k!(n-k)!}" displayMode={false} />
           </span>
         </div>
@@ -770,7 +770,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'poisson_timeline') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'POISSON SÜRECİ & GELİŞ ZAMANLARI' : 'POISSON PROCESS TIMELINE'}
@@ -779,7 +779,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
               {language === 'tr' ? 'Nadir Olaylar (λ Hızı) & Bekleme Süresi Dağılımı' : 'Poisson Event Arrivals & Waiting Times'}
             </h4>
           </div>
-          <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
             <KatexFormula formula="P(N(t) = k) = \frac{(\lambda t)^k e^{-\lambda t}}{k!}" displayMode={false} />
           </span>
         </div>
@@ -832,7 +832,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'timeseries_trend') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'ZAMAN SERİSİ AYRIŞTIRMA' : 'TIME SERIES DECOMPOSITION'}
@@ -841,7 +841,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
               {language === 'tr' ? 'Trend (Tt) + Mevsimsellik (St) + Rastgele Gürültü (et)' : 'Trend + Seasonality + Noise'}
             </h4>
           </div>
-          <span className="px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold">
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
             <KatexFormula formula="Y_t = T_t + S_t + \epsilon_t" displayMode={false} />
           </span>
         </div>
@@ -885,7 +885,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   if (activeType === 'full_pipeline') {
     return (
       <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
               {language === 'tr' ? 'UÇTAN UCA ANALİTİK PİPELİNE' : 'DATA ANALYTICS PIPELINE'}
@@ -939,7 +939,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
   // 16. Fallback Default Diagram
   return (
     <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
         <div>
           <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
             {language === 'tr' ? 'GÖRSEL KAVRAM ŞEMASI' : 'CONCEPT DIAGRAM'}

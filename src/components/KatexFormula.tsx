@@ -23,9 +23,18 @@ export const KatexFormula: React.FC<KatexFormulaProps> = ({
       throwOnError: false,
     });
 
+    if (displayMode) {
+      return (
+        <div
+          className={`block text-center max-w-full overflow-x-auto overflow-y-hidden py-1 touch-pan-x scrollbar-none ${className}`}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      );
+    }
+
     return (
       <span
-        className={`inline-block align-middle max-w-full overflow-x-auto ${className}`}
+        className={`inline-flex items-center align-baseline font-normal ${className}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );
