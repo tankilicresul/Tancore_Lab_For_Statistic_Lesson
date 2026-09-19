@@ -3,11 +3,11 @@
   "order": 14,
   "title": {
     "tr": "Koşullu Olasılık & Bayes Teoremi",
-    "en": "Conditional Probability & Bayes Theorem"
+    "en": "Conditional Probability & Bayes' Rule"
   },
   "description": {
-    "tr": "Koşullu olasılık P(A|B), bağımsız olaylar, Toplam Olasılık Yasası ve Bayes Teoremi. Medikal test ve spam filtresi teşhis vakaları.",
-    "en": "Conditional probability P(A|B), independent events, Law of Total Probability, and Bayes Theorem. Medical diagnostic & spam filter cases."
+    "tr": "Koşullu olasılık, olay bağımsızlığı, Toplam Olasılık Yasası ve Bayesian sonsal çıkarım.",
+    "en": "Conditional probability, independence, Law of Total Probability, and Bayesian posterior inference."
   },
   "iconName": "GitMerge",
   "lessons": [
@@ -15,26 +15,25 @@
       "id": "m14-l1",
       "moduleId": "module-14",
       "order": 1,
-      "difficulty": "basit",
+      "difficulty": "orta",
       "title": {
         "tr": "Koşullu Olasılık & Olayların Bağımsızlığı",
-        "en": "Conditional Probability & Event Independence"
+        "en": "Conditional Probability & Independence"
       },
       "conceptCard": {
-        "tr": "Koşullu Olasılık ve Olayların Bağımsızlığı:\n\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}, \\qquad P(B) > 0$$\n\n$A$ ve $B$ bağımsız ise $P(A \\mid B) = P(A)$ ve $P(A \\cap B) = P(A) \\cdot P(B)$ sağlanır.",
-        "en": "Conditional probability measures event A given event B occurred: P(A|B) = P(A ∩ B) / P(B). If independent, P(A|B) = P(A)."
+        "tr": "1. **Koşullu Olasılık ($P(A \\mid B)$):** $B$ olayının gerçekleştiği bilindiğinde $A$'nın gerçekleşme olasılığıdır (Örneklem uzayı $B$'ye daralır):\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}, \\quad P(B) > 0$$\n\n2. **Bağımsızlık:** $A$ ve $B$ bağımsız ise $B$'nin bilinmesi $A$'nın olasılığını değiştirmez:\n$$P(A \\mid B) = P(A) \\iff P(A \\cap B) = P(A)P(B)$$",
+        "en": "1. **Conditional Probability ($P(A \\mid B)$):** Probability of event $A$ given that $B$ has occurred:\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}, \\quad P(B) > 0$$\n\n2. **Independence:**\n$$P(A \\mid B) = P(A) \\iff P(A \\cap B) = P(A)P(B)$$"
       },
       "companyExample": {
-        "tr": "CyberPass spam filtresinde, gelen e-postanın 'Hediye' kelimesini içerme olasılığı P(Hediye) = 0.20'dir. Hem spam hem 'Hediye' içerme olasılığı P(Spam ∩ Hediye) = 0.15'tir. 'Hediye' içeren bir e-postanın spam olma olasılığı P(Spam|Hediye) = 0.15 / 0.20 = 0.75 (%75)'tir.",
-        "en": "CyberPass spam filter finds P(Gift) = 0.20 and P(Spam ∩ Gift) = 0.15. Thus P(Spam|Gift) = 0.15 / 0.20 = 0.75 (75%)."
+        "tr": "Bir müşterinin sepete ürün ekleme olasılığı $P(B) = 0.25$, sepete ekleyip satın alma olasılığı $P(A \\cap B) = 0.20$ ise, sepete ekleyen müşterinin satın alma koşullu olasılığı $P(A|B) = 0.20 / 0.25 = 0.80$ (%80)'dir.",
+        "en": "Cart add $P(B)=0.25$, add and buy $P(A \\cap B)=0.20$. Checkout given cart add $P(A|B) = 0.20 / 0.25 = 0.80$."
       },
-      "interactiveType": "conditional_prob",
       "vocabTerms": [
         {
           "term_en": "conditional probability",
-          "explanation_tr": "Bir olayın başka bir olayın gerçekleşmiş olması koşulu altındaki olasılığı.",
-          "explanation_en": "Probability of an event given that another event has occurred.",
-          "exampleSentence_en": "Conditional probability is fundamental to Bayesian statistics."
+          "explanation_tr": "Başka bir olayın gerçekleştiği ön bilgisi altında bir olayın olasılığı ($P(A|B)$).",
+          "explanation_en": "The probability of an event occurring given that another event has already occurred.",
+          "exampleSentence_en": "Conditional probability models conversion rate conditioned on marketing channel."
         }
       ],
       "questions": [
@@ -42,41 +41,48 @@
           "id": "m14-l1-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$P(A \\cap B) = 0.12$ ve $P(B) = 0.40$ ise koşullu olasılık $P(A \\mid B)$ kaçtır?",
-            "en": "If P(A ∩ B) = 0.12 and P(B) = 0.40, what is P(A|B)?"
+            "tr": "$P(B) = 0.50$ ve $P(A \\cap B) = 0.15$ ise Koşullu Olasılık $P(A \\mid B)$ kaçtır?",
+            "en": "If $P(B) = 0.50$ and $P(A \\cap B) = 0.15$, what is $P(A \\mid B)$?"
           },
           "correctAnswer": 0.3,
           "explanation": {
-            "tr": "$$P(A \\mid B) = \\frac{0.12}{0.40} = 0.30$$",
-            "en": "P(A|B) = 0.12 / 0.40 = 0.30."
+            "tr": "$$P(A \\mid B) = \\frac{0.15}{0.50} = 0.30$$",
+            "en": "$$P(A \\mid B) = 0.15 / 0.50 = 0.30$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=P_AnB / P_B",
+        "pythonCode": "p_a_given_b = p_a_and_b / p_b",
+        "powerBiNote": {
+          "tr": "Huni (funnel) adımlarında koşullu dönüşüm oranları izlenir.",
+          "en": "Conversion funnels display step-by-step conditional rates."
+        }
+      }
     },
     {
       "id": "m14-l2",
       "moduleId": "module-14",
       "order": 2,
-      "difficulty": "orta",
+      "difficulty": "orta-ustu",
       "title": {
-        "tr": "Toplam Olasılık Yasası",
+        "tr": "Toplam Olasılık Yasası (Law of Total Probability)",
         "en": "Law of Total Probability"
       },
       "conceptCard": {
-        "tr": "Toplam Olasılık Yasası, örneklem uzayını bölen $B_1, \\dots, B_n$ ayrık olaylar ailesi için marjinal olasılığı ağırlıklandırır:\n\n$$P(A) = \\sum_{i=1}^{n} P(A \\mid B_i) \\cdot P(B_i)$$",
-        "en": "If the sample space is partitioned into disjoint B1, B2, ..., Bn, then P(A) = ∑ P(A|Bi) * P(Bi)."
+        "tr": "Örneklem uzayı $S$, birbirini dışlayan (ayrık) ve evreni kaplayan bölüntülere ($B_1, B_2, \\dots, B_k$) ayrıldığında, herhangi bir $A$ olayının toplam marjinal olasılığı:\n\n$$P(A) = \\sum_{i=1}^k P(A \\mid B_i) P(B_i)$$\n\n$$P(A) = P(A \\mid B_1)P(B_1) + P(A \\mid B_2)P(B_2) + \\dots + P(A \\mid B_k)P(B_k)$$",
+        "en": "When sample space $S$ is partitioned into disjoint exhaustive subsets $B_1, \\dots, B_k$:\n\n$$P(A) = \\sum_{i=1}^k P(A \\mid B_i) P(B_i)$$\n\n$$P(A) = P(A \\mid B_1)P(B_1) + \\dots + P(A \\mid B_k)P(B_k)$$"
       },
       "companyExample": {
-        "tr": "CyberPass sunucu isteklerinin %60'ı Sunucu A'dan, %40'ı Sunucu B'den geçer. Sunucu A'daki hata oranı %1, Sunucu B'deki hata oranı %3'tür. Toplam sistem hata oranı P(Hata) = (0.01 * 0.60) + (0.03 * 0.40) = 0.006 + 0.012 = 0.018 (%1.8).",
-        "en": "Server A handles 60% with 1% error; Server B handles 40% with 3% error. Total error = (0.01*0.60) + (0.03*0.40) = 1.8%."
+        "tr": "Ürünlerin %60'ı Fabrika 1'den ($P(B_1)=0.60$, hata %2), %40'ı Fabrika 2'den ($P(B_2)=0.40$, hata %5) üretilmektedir. Rastgele bir ürünün kusurlu olma toplam olasılığı: $P(\\text{Kusur}) = (0.02)(0.60) + (0.05)(0.40) = 0.012 + 0.020 = 0.032$ (%3.2).",
+        "en": "Factory 1 produces 60% with 2% defects; Factory 2 produces 40% with 5% defects. Total defect rate $P(D) = 0.02(0.60) + 0.05(0.40) = 0.032$."
       },
-      "interactiveType": "probability_rules",
       "vocabTerms": [
         {
           "term_en": "law of total probability",
-          "explanation_tr": "Bir olayın olasılığını ayrık alt durumların ağırlıklı toplamı olarak hesaplama kuralı.",
-          "explanation_en": "Rule calculating total probability by summing conditional probabilities over partitions.",
-          "exampleSentence_en": "The law of total probability simplifies complex multi-source risks."
+          "explanation_tr": "Bir olayın olasılığını tüm olası senaryoların koşullu olasılıklarının ağırlıklı toplamı olarak hesaplayan kural.",
+          "explanation_en": "A theorem that expresses the total probability of an outcome which can be realized via several distinct events.",
+          "exampleSentence_en": "The law of total probability forms the denominator of Bayes theorem."
         }
       ],
       "questions": [
@@ -84,41 +90,48 @@
           "id": "m14-l2-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "İki grubun ağırlıkları $\\%70$ ($0.70$) ve $\\%30$ ($0.30$), başarı oranları ise $\\%80$ ($0.80$) ve $\\%50$ ($0.50$) ise toplam başarı oranı yüzde kaçtır?",
-            "en": "Groups weighted 70% and 30% have success rates 80% and 50%. What is total success rate (%)?"
+            "tr": "$P(B_1) = 0.70, P(A|B_1) = 0.10$ ve $P(B_2) = 0.30, P(A|B_2) = 0.20$ ise $P(A)$ kaçtır?",
+            "en": "If $P(B_1) = 0.70, P(A|B_1) = 0.10$ and $P(B_2) = 0.30, P(A|B_2) = 0.20$, what is $P(A)$?"
           },
-          "correctAnswer": 71,
+          "correctAnswer": 0.13,
           "explanation": {
-            "tr": "$$P(A) = (0.70)(0.80) + (0.30)(0.50) = 0.56 + 0.15 = 0.71 \\quad (\\%71)$$",
-            "en": "(0.80 * 0.70) + (0.50 * 0.30) = 0.56 + 0.15 = 0.71 (71%)."
+            "tr": "$$P(A) = (0.10 \\times 0.70) + (0.20 \\times 0.30) = 0.07 + 0.06 = 0.13$$",
+            "en": "$$P(A) = 0.07 + 0.06 = 0.13$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=TOPLA.ÇARPIM(Koşullu_Olasılıklar; Prior_Olasılıklar)",
+        "pythonCode": "p_total = sum(p_cond * p_prior for p_cond, p_prior in zip(conds, priors))",
+        "powerBiNote": {
+          "tr": "Ağaç haritası (Tree map) ile ağırlıklı toplam gösterilir.",
+          "en": "Decompose total probability using Tree maps."
+        }
+      }
     },
     {
       "id": "m14-l3",
       "moduleId": "module-14",
       "order": 3,
-      "difficulty": "ileri",
+      "difficulty": "orta-ustu",
       "title": {
-        "tr": "Bayes Teoremi & Prior / Posterior Analizi",
-        "en": "Bayes Theorem & Prior/Posterior Analysis"
+        "tr": "Bayes Teoremi (Prior / Posterior Analizi)",
+        "en": "Bayes Theorem (Prior / Posterior Analysis)"
       },
       "conceptCard": {
-        "tr": "Bayes Teoremi, önsel olasılığı (prior) kanıt ile güncelleyerek sonsal olasılığı (posterior) verir:\n\n$$P(A \\mid B) = \\frac{P(B \\mid A) \\cdot P(A)}{P(B)} = \\frac{P(B \\mid A) \\cdot P(A)}{\\sum P(B \\mid A_i) P(A_i)}$$",
-        "en": "Bayes Theorem updates hypothesis probability upon evidence: P(A|B) = [P(B|A) * P(A)] / P(B), turning Prior into Posterior."
+        "tr": "Yeni bir kanıt ($A$) gözlemlendiğinde önsel inançları ($P(B_j)$) güncelleyerek sonsal olasılığı ($P(B_j \\mid A)$) hesaplama yöntemi:\n\n$$P(B_j \\mid A) = \\frac{P(A \\mid B_j) P(B_j)}{P(A)} = \\frac{P(A \\mid B_j) P(B_j)}{\\sum_{i=1}^k P(A \\mid B_i) P(B_i)}$$\n\n- **Prior (Önsel):** $P(B_j)$ (Kanıt öncesi olasılık)\n- **Likelihood (Olabilirlik):** $P(A \\mid B_j)$\n- **Posterior (Sonsal):** $P(B_j \\mid A)$ (Kanıt sonrası güncellenmiş olasılık)",
+        "en": "Updating prior beliefs given new evidence ($A$):\n\n$$P(B_j \\mid A) = \\frac{P(A \\mid B_j) P(B_j)}{\\sum P(A \\mid B_i) P(B_i)}$$\n\n- **Prior:** $P(B_j)$ (Pre-test baseline probability)\n- **Likelihood:** $P(A \\mid B_j)$\n- **Posterior:** $P(B_j \\mid A)$ (Updated probability given evidence)"
       },
       "companyExample": {
-        "tr": "Sistemde siber saldırı olasılığı P(Saldırı) = 0.01'dir. Alarm sistemi saldırı varken %95 doğrulukla (Sensitivite), saldırı yokken %5 yanlış alarm (False Positive) veriyor. Alarm çaldığında gerçekten saldırı olma olasılığı P(Saldırı|Alarm) ≈ %16.1'dir.",
-        "en": "Prior attack P(Attack) = 0.01. Sensitivity = 0.95, False positive = 0.05. Posterior P(Attack|Alarm) ≈ 16.1%."
+        "tr": "Kusurlu çıkan bir parçanın ($P(D)=0.032$) Fabrika 2'den gelmiş olma sonsal olasılığı: $P(B_2|D) = \\frac{0.05 \\times 0.40}{0.032} = \\frac{0.020}{0.032} = 0.625$ (%62.5).",
+        "en": "Defective item originated from Factory 2: $P(B_2|D) = \\frac{0.05(0.40)}{0.032} = 0.625$ (62.5% posterior probability)."
       },
-      "interactiveType": "bayes_rule",
       "vocabTerms": [
         {
-          "term_en": "prior probability",
-          "explanation_tr": "Yeni bir veri/kanıt gözlemlenmeden önceki başlangıç inanç olasılığı.",
-          "explanation_en": "Initial probability belief before observing new evidence.",
-          "exampleSentence_en": "Prior probability is updated to posterior via Bayes rule."
+          "term_en": "posterior probability",
+          "explanation_tr": "Yeni bir kanıt veya veri gözlemlendikten sonra güncellenen olasılık ($P(B|A)$).",
+          "explanation_en": "The revised probability of an event occurring after taking into consideration new information.",
+          "exampleSentence_en": "Bayes theorem updates prior beliefs into posterior probabilities."
         }
       ],
       "questions": [
@@ -126,16 +139,24 @@
           "id": "m14-l3-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$P(A) = 0.10$, $P(B \\mid A) = 0.80$ ve $P(B) = 0.20$ ise $P(A \\mid B)$ kaçtır?",
-            "en": "If P(A) = 0.10, P(B|A) = 0.80, and P(B) = 0.20, what is P(A|B)?"
+            "tr": "Prior $P(B) = 0.20$, Likelihood $P(A|B) = 0.80$ ve marjinal $P(A) = 0.40$ ise Posterior $P(B|A)$ kaçtır?",
+            "en": "If Prior $P(B)=0.20$, Likelihood $P(A|B)=0.80$, and marginal $P(A)=0.40$, what is Posterior $P(B|A)$?"
           },
           "correctAnswer": 0.4,
           "explanation": {
-            "tr": "$$P(A \\mid B) = \\frac{0.80 \\times 0.10}{0.20} = \\frac{0.08}{0.20} = 0.40$$",
-            "en": "P(A|B) = (0.80 * 0.10) / 0.20 = 0.08 / 0.20 = 0.40."
+            "tr": "$$P(B \\mid A) = \\frac{0.80 \\times 0.20}{0.40} = \\frac{0.16}{0.40} = 0.40$$",
+            "en": "$$P(B \\mid A) = 0.16 / 0.40 = 0.40$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(Likelihood * Prior) / Toplam_Olasılık",
+        "pythonCode": "posterior = (likelihood * prior) / p_evidence",
+        "powerBiNote": {
+          "tr": "Bayes risk güncelleme panolarında kullanılır.",
+          "en": "Applied in Bayesian risk scoring dashboards."
+        }
+      }
     },
     {
       "id": "m14-l4",
@@ -143,24 +164,23 @@
       "order": 4,
       "difficulty": "zor",
       "title": {
-        "tr": "Yanlış Pozitifler & Taban Oran Yanılsaması",
-        "en": "False Positives & Base Rate Fallacy"
+        "tr": "Duyarlılık, Özgüllük ve Taban Oran Yanılsaması",
+        "en": "Sensitivity, Specificity & Base Rate Fallacy"
       },
       "conceptCard": {
-        "tr": "Taban Oran Yanılsaması (Base Rate Fallacy): Önsel yaygınlığı çok düşük olan ($P(D) \\ll 1$) nadir durumlarda, testin hassasiyeti yüksek olsa dahi pozitif test sonucunun gerçek pozitif olma olasılığı (PPV) düşük çıkabilir:\n\n$$\\text{PPV} = P(D \\mid +) = \\frac{P(+ \\mid D)P(D)}{P(+ \\mid D)P(D) + P(+ \\mid D^c)P(D^c)}$$",
-        "en": "In rare events (1% prior), even with 95% sensitivity, a 5% false positive rate causes posterior probability to stay surprisingly low (Base Rate Fallacy)."
+        "tr": "Tıbbi teşhis ve güvenlik taramalarındaki yanılsama (`MedTech Case`):\n\n1. **Duyarlılık (Sensitivity / Recall):** Hasta olanı tespit etme gücü: $P(+\\mid \\text{Hasta})$\n2. **Özgüllük (Specificity):** Sağlıklı olanı negatif bulma gücü: $P(-\\mid \\text{Sağlıklı})$\n3. **Taban Oran Yanılsaması (Base Rate Fallacy):**\nHastalık toplumda çok nadir ise ($P(\\text{Hasta}) = 0.001$), test %99 doğru olsa bile test sonucu pozitif çıkan birinin **gerçekten hasta olma olasılığı (Posterior)** şaşırtıcı şekilde çok düşük çıkabilir (~%9). Pozitiflerin çoğu yalancı pozitiflerdir.",
+        "en": "Diagnostic metrics and the false positive paradox (`MedTech Case`):\n\n1. **Sensitivity:** True positive rate $P(+ \\mid \\text{Disease})$\n2. **Specificity:** True negative rate $P(- \\mid \\text{Healthy})$\n3. **Base Rate Fallacy:** When a condition is rare ($P(\\text{Disease})=0.001$), even a 99% accurate test yields a low posterior $P(\\text{Disease} \\mid +) \\approx 9\\%$ due to false positives dominating rare true positives."
       },
       "companyExample": {
-        "tr": "CyberPass siber güvenlik taramasında sistem %99 duyarlılığa sahip olsa da günlük 1,000 zararsız pakette %1 yanlış pozitif üretilmesi durumunda gerçek saldırı oranı düşük kalır.",
-        "en": "CyberPass intrusion detection with 99% sensitivity produces false alarms on benign packets, requiring Bayesian calibration."
+        "tr": "SOC siber güvenlik alarmı %99 duyarlılıkla çalışır. Ancak siber saldırılar nadir ($0.0001$) olduğu için gelen 100 alarmın 95'i zararsız yalancı alarmdır (Base rate fallacy).",
+        "en": "SOC cyber security alerts: 99% accuracy on a 0.0001 threat prevalence results in 95% false alarms due to base rate fallacy."
       },
-      "interactiveType": "bayes_rule",
       "vocabTerms": [
         {
           "term_en": "base rate fallacy",
-          "explanation_tr": "Nadir olayların önsel sıklığını dikkate almayıp sadece test hassasiyetine odaklanma hatası.",
-          "explanation_en": "Error of ignoring prior base rates when interpreting diagnostic tests.",
-          "exampleSentence_en": "Base rate fallacy causes overestimation of rare disease test accuracy."
+          "explanation_tr": "Nadir olaylarda taban yaygınlık oranını göz ardı edip teste aşırı güvenme yanılgısı.",
+          "explanation_en": "Prematurely judging conditional probabilities without considering the prior base rate prevalence.",
+          "exampleSentence_en": "Base rate fallacy explains why mass screening tests produce high false positive proportions."
         }
       ],
       "questions": [
@@ -168,26 +188,42 @@
           "id": "m14-l4-q1",
           "type": "multiple_choice",
           "prompt": {
-            "tr": "Nadir bir hastalıkta (%1 yaygınlık) test pozitif çıktığında hastalanma olasılığının düşük kalmasının sebebi nedir?",
-            "en": "Why is true disease probability low despite a positive test in rare events?"
+            "tr": "Toplumda çok nadir görülen bir hastalık için test sonucu POZİTİF çıkan birinin gerçekte hasta olma olasılığının düşük çıkmasının temel sebebi nedir?",
+            "en": "Why is the posterior probability of disease low after a positive test when disease is extremely rare?"
           },
           "options": [
             {
-              "tr": "Taban Oran Yanılsaması (Base Rate Fallacy)",
-              "en": "Base Rate Fallacy"
+              "tr": "Taban oranının çok düşük olması ve sağlıklı kişilerden gelen yanlış pozitiflerin sayısının gerçek hastaları aşması",
+              "en": "Low base rate causing false positives to outnumber true positives"
             },
             {
               "tr": "Testin bozuk olması",
-              "en": "Test malfunction"
+              "en": "Test is broken"
+            },
+            {
+              "tr": "Duyarlılığın sıfır olması",
+              "en": "Sensitivity is zero"
+            },
+            {
+              "tr": "Bayes teoreminin nadir olaylarda çalışmaması",
+              "en": "Bayes theorem failing on rare events"
             }
           ],
-          "correctAnswer": "Taban Oran Yanılsaması (Base Rate Fallacy)",
+          "correctAnswer": "Taban oranının çok düşük olması ve sağlıklı kişilerden gelen yanlış pozitiflerin sayısının gerçek hastaları aşması",
           "explanation": {
-            "tr": "Nadir olaylarda yanlış pozitiflerin sayısı gerçek pozitif sayısını aşabilir.",
-            "en": "In rare events false positives outnumber true positives."
+            "tr": "Sağlıklı popülasyon devasa olduğu için %1'lik küçük hata payı bile gerçek hasta sayısından çok daha fazla yalancı pozitif üretir.",
+            "en": "Huge healthy base generates more total false positives than the tiny true positive cases."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(Sensitivity * Prevalence) / Total_Positive",
+        "pythonCode": "p_disease_given_pos = (sens * prev) / (sens * prev + (1 - spec) * (1 - prev))",
+        "powerBiNote": {
+          "tr": "Karmaşıklık matrisi (Confusion Matrix) görseli kullanılır.",
+          "en": "Render Confusion Matrix visuals."
+        }
+      }
     }
   ],
   "caseExams": [

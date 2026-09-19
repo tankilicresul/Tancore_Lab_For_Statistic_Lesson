@@ -2,12 +2,12 @@
   "id": "module-3",
   "order": 3,
   "title": {
-    "tr": "Olasılık Dağılımları",
-    "en": "Probability Distributions"
+    "tr": "Kesikli Olasılık Dağılımları",
+    "en": "Discrete Probability Distributions"
   },
   "description": {
-    "tr": "Normal, Binom, Poisson ve Üstel dağılımlar. Müşteri hizmetleri çağrı merkezi kapasite modelleme vakaları.",
-    "en": "Normal, Binomial, Poisson, and Exponential distributions. Customer call center capacity modeling cases."
+    "tr": "PMF, CDF, beklenen değer, varyans, Binom, Geometrik ve Poisson dağılımları. Çip üretim kalite kontrol vakası.",
+    "en": "PMF, CDF, expected value, variance, Binomial, Geometric, and Poisson models. Chip manufacturing QC case."
   },
   "iconName": "Activity",
   "lessons": [
@@ -17,30 +17,24 @@
       "order": 1,
       "difficulty": "basit",
       "title": {
-        "tr": "Binom Dağılımı (Binomial Distribution)",
-        "en": "Binomial Distribution"
+        "tr": "Kesikli Rastgele Değişkenler, PMF ve CDF",
+        "en": "Discrete Random Variables, PMF & CDF"
       },
       "conceptCard": {
-        "tr": "Rastgele değişken $X$, bir deneyin sayısal sonuçlarını temsil eder. Kesikli değişkenlerde Olasılık Kütle Fonksiyonu (PMF) $P(X=x) = p(x)$ ve Kümülatif Dağılım Fonksiyonu (CDF) $F(x) = P(X \\le x)$ kullanılır. Beklenen Değer ve Varyans:\n\n$$\\mathbb{E}[X] = \\sum_{i} x_i \\cdot P(X=x_i), \\qquad \\text{Var}(X) = \\mathbb{E}[(X - \\mu)^2] = \\mathbb{E}[X^2] - (\\mathbb{E}[X])^2$$",
-        "en": "A random variable $X$ assigns numerical outcomes to events. For discrete variables, the PMF is $P(X=x)$ and CDF is $F(x) = P(X \\le x)$. Expected value and variance are:\n\n$$\\mathbb{E}[X] = \\sum_{i} x_i P(X=x_i), \\qquad \\text{Var}(X) = \\mathbb{E}[X^2] - (\\mathbb{E}[X])^2$$"
+        "tr": "Kesikli bir rastgele değişken $X$, sayılabilir sayıda değer alabilir. Olasılık Kütle Fonksiyonu (PMF) $p(x) = P(X = x)$ her değerin olasılığını verir ($p(x) \\ge 0$ ve $\\sum p(x) = 1$). Kümülatif Dağılım Fonksiyonu (CDF) ise $F(x) = P(X \\le x) = \\sum_{t \\le x} p(t)$ şeklinde tanımlanır.",
+        "en": "A discrete random variable $X$ takes countable values. PMF $p(x) = P(X=x)$ gives point probabilities ($\\sum p(x) = 1$). Cumulative distribution function is $F(x) = P(X \\le x)$."
       },
       "companyExample": {
-        "tr": "CallCenterDirect satış ekibinde 10 temsilci müşterileri arıyor. Her bir aramanın satışla sonuçlanma şansı %20'dir (p = 0.20). Yapılan her arama bağımsız bir deneme olduğundan, bu 10 aramadan tam olarak 3 tanesinin satışla bitme olasılığını bulmak için Binom formülünü kullanırız ve sonucun yaklaşık %20.1 olduğunu hesaplarız.",
-        "en": "At CallCenterDirect, 10 sales reps place customer calls. Each call has a 20% success rate (p = 0.20). Since each outbound call is an independent trial, we use the Binomial formula to calculate the probability of getting exactly 3 sales out of 10 calls, resulting in approximately 20.1%."
+        "tr": "Fintech ödeme terminalinde başarısız işlem deneme sayısı $X \\in \\{0, 1, 2, 3\\}$ bir kesikli değişkendir. $P(X=0)=0.80, P(X=1)=0.15, P(X=2)=0.04, P(X=3)=0.01$ PMF dağılımıdır. En fazla 1 hata alma olasılığı CDF'ten $F(1) = P(X \\le 1) = 0.80 + 0.15 = 0.95$ olur.",
+        "en": "On a payment terminal, failed attempts $X \\in \\{0,1,2,3\\}$ is a discrete RV. PMF is $p(0)=0.80, p(1)=0.15, p(2)=0.04, p(3)=0.01$. The CDF for at most 1 failure is $F(1) = 0.95$."
       },
-      "interactiveType": "binomial_dist",
+      "interactiveType": "pmf_visualizer",
       "vocabTerms": [
         {
-          "term_en": "trial",
-          "explanation_tr": "Tek bir deneme veya deney adımı.",
-          "explanation_en": "A single attempt or experimental observation.",
-          "exampleSentence_en": "Each customer call represents one trial."
-        },
-        {
-          "term_en": "success probability",
-          "explanation_tr": "Her denemedeki başarı şansı (p).",
-          "explanation_en": "The probability of success in each trial (p).",
-          "exampleSentence_en": "The success probability p is 0.20."
+          "term_en": "probability mass function (PMF)",
+          "explanation_tr": "Kesikli rastgele değişkenin her tekil noktadaki olasılığını gösteren fonksiyon.",
+          "explanation_en": "Function giving the probability that a discrete RV equals a specific value.",
+          "exampleSentence_en": "The sum of all PMF values equals 1."
         }
       ],
       "questions": [
@@ -48,20 +42,16 @@
           "id": "m3-l1-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$X$ kesikli rastgele değişkeni için tüm olası durumların olasılıkları toplamı $\\sum_{i} P(X = x_i)$ kaça eşittir?",
-            "en": "For a discrete random variable $X$, what is the sum of probabilities for all outcomes $\\sum_{i} P(X = x_i)$?"
+            "tr": "Bir PMF için $P(X=1)=0.3$, $P(X=2)=0.5$ ve $P(X=3)=k$ ise $k$ değeri kaçtır?",
+            "en": "If a PMF has $P(X=1)=0.3$, $P(X=2)=0.5$, and $P(X=3)=k$, what is $k$?"
           },
-          "correctAnswer": 1,
+          "correctAnswer": 0.2,
           "explanation": {
-            "tr": "Olasılık aksiyomlarına göre tüm olası durumların toplam olasılığı her zaman $1$ (yani %100)'e eşittir: $$\\sum P(X = x_i) = 1$$",
-            "en": "By probability axioms, total probability across sample space is always $1$: $$\\sum P(X = x_i) = 1$$"
+            "tr": "Tüm PMF değerleri toplamı 1 olmalıdır: $1 - (0.3 + 0.5) = 0.2$.",
+            "en": "Total PMF sum must equal 1: $1 - (0.3 + 0.5) = 0.2$."
           }
         }
-      ],
-      "realWorldBox": {
-        "excelFormula": "=BİNOM.DAĞ(3; 10; 0.2; YANLIŞ)  (EN: =BINOM.DIST(3, 10, 0.2, FALSE))",
-        "pythonCode": "from scipy.stats import binom\nprob = binom.pmf(3, 10, 0.2)\nprint(prob)"
-      }
+      ]
     },
     {
       "id": "m3-l2",
@@ -69,24 +59,24 @@
       "order": 2,
       "difficulty": "orta",
       "title": {
-        "tr": "Poisson Dağılımı (Poisson Distribution)",
-        "en": "Poisson Distribution"
+        "tr": "Beklenen Değer ($E[X]$) ve Varyans ($Var(X)$)",
+        "en": "Expected Value ($E[X]$) & Variance ($Var(X)$)"
       },
       "conceptCard": {
-        "tr": "Binom Dağılımı $X \\sim \\text{Bin}(n, p)$, bağımsız $n$ adet Bernoulli denemesinde elde edilen toplam başarı sayısını modeller:\n\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\qquad k = 0, 1, \\dots, n$$\n\nBeklenen değer $\\mathbb{E}[X] = n p$, varyans $\\text{Var}(X) = n p (1-p)$ ve standart sapma $\\sigma = \\sqrt{n p (1-p)}$ olarak hesaplanır.",
-        "en": "The Binomial distribution $X \\sim \\text{Bin}(n, p)$ models the number of successes in $n$ independent Bernoulli trials:\n\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\qquad k = 0, 1, \\dots, n$$\n\nExpected value is $\\mathbb{E}[X] = n p$, variance is $\\text{Var}(X) = n p (1-p)$."
+        "tr": "Kesikli bir değişken $X$ için Beklenen Değer (Ağırlıklı Ortalama):\n$$\\mathbb{E}[X] = \\mu = \\sum x \\cdot p(x)$$\nBeklenen Değerin Doğrusallığı: $\\mathbb{E}[aX + b] = a\\mathbb{E}[X] + b$.\n\nVaryans (Ortalama sapmanın karesi):\n$$\\text{Var}(X) = \\sigma^2 = \\mathbb{E}[(X - \\mu)^2] = \\mathbb{E}[X^2] - (\\mathbb{E}[X])^2$$\nÖzellik: $\\text{Var}(aX + b) = a^2 \\text{Var}(X)$.",
+        "en": "Expected Value: $\\mathbb{E}[X] = \\sum x p(x)$. Linearity: $\\mathbb{E}[aX+b] = a\\mathbb{E}[X]+b$. Variance: $\\text{Var}(X) = \\mathbb{E}[X^2] - (\\mathbb{E}[X])^2$, with $\\text{Var}(aX+b) = a^2\\text{Var}(X)$."
       },
       "companyExample": {
-        "tr": "Çağrı merkezinde $n = 5$ müşteri aramasının her birinde satış gerçekleşme olasılığı $p = 0.20$'dir. Tam $k = 2$ satış gerçekleşme olasılığı:\n\n$$P(X = 2) = \\binom{5}{2} (0.20)^2 (0.80)^3 = 10 \\times 0.04 \\times 0.512 = 0.2048 \\quad (\\%20.48)$$",
-        "en": "CallCenterDirect receives an average of 5 calls per hour (λ = 5). Because incoming calls arrive independently over time, we apply the Poisson distribution formula to find the probability of receiving exactly 8 calls in the next hour, yielding 6.5%."
+        "tr": "Bir sunucu kiralama sözleşmesinde aylık kesinti süresi $X$ (saat) ve olasılıkları: $P(X=0)=0.7, P(X=2)=0.2, P(X=5)=0.1$. Beklenen kesinti $\\mathbb{E}[X] = 0(0.7) + 2(0.2) + 5(0.1) = 0.9$ saat. Ceza maliyeti $Y = 100X + 50$ ise beklenen maliyet $\\mathbb{E}[Y] = 100(0.9) + 50 = 140$ TL'dir.",
+        "en": "Server downtime $X$ (hours) has $p(0)=0.7, p(2)=0.2, p(5)=0.1$. Expected downtime is $\\mathbb{E}[X] = 0.9$ hr. Penalty cost $Y = 100X + 50$ gives $\\mathbb{E}[Y] = $140."
       },
-      "interactiveType": "poisson_dist",
+      "interactiveType": "expected_value_calc",
       "vocabTerms": [
         {
-          "term_en": "rate parameter (lambda)",
-          "explanation_tr": "Birim zamandaki ortalama olay sayısı (λ).",
-          "explanation_en": "Average number of events per unit interval (λ).",
-          "exampleSentence_en": "Lambda represents the arrival rate per hour."
+          "term_en": "expected value",
+          "explanation_tr": "Bir rastgele değişkenin uzun vadedeki ağırlıklı ortalaması ($\\\\mu$).",
+          "explanation_en": "The long-run weighted average of a random variable.",
+          "exampleSentence_en": "Linearity of expectation holds even for dependent variables."
         }
       ],
       "questions": [
@@ -94,20 +84,16 @@
           "id": "m3-l2-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$n = 4$ bağımsız denemede her bir denemenin başarı olasılığı $p = 0.50$ ise, tam $k = 0$ başarı olasılığı $P(X=0)$ kaçtır?",
-            "en": "In $n = 4$ trials with success probability $p = 0.50$, what is the probability of $k = 0$ successes $P(X=0)$?"
+            "tr": "$\\text{Var}(X) = 4$ ise $\\text{Var}(3X - 7)$ kaçtır?",
+            "en": "If $\\text{Var}(X) = 4$, what is $\\text{Var}(3X - 7)$?"
           },
-          "correctAnswer": 0.0625,
+          "correctAnswer": 36,
           "explanation": {
-            "tr": "$$P(X = 0) = \\binom{4}{0} (0.50)^0 (0.50)^4 = 1 \\times 1 \\times 0.0625 = 0.0625$$",
-            "en": "$$P(X = 0) = \\binom{4}{0} (0.50)^0 (0.50)^4 = 1 \\times 1 \\times 0.0625 = 0.0625$$"
+            "tr": "$$\\text{Var}(aX + b) = a^2 \\text{Var}(X) = 3^2 \\times 4 = 9 \\times 4 = 36$$",
+            "en": "$$\\text{Var}(3X - 7) = 3^2 \\times 4 = 36$$"
           }
         }
-      ],
-      "realWorldBox": {
-        "excelFormula": "=POISSON.DAĞ(8; 5; YANLIŞ)  (EN: =POISSON.DIST(8, 5, FALSE))",
-        "pythonCode": "from scipy.stats import poisson\nprob = poisson.pmf(8, 5)\nprint(prob)"
-      }
+      ]
     },
     {
       "id": "m3-l3",
@@ -115,30 +101,24 @@
       "order": 3,
       "difficulty": "orta-ustu",
       "title": {
-        "tr": "Normal Dağılım ve Z-Skoru",
-        "en": "Normal Distribution and Z-Score"
+        "tr": "Binom Dağılımı ve Geometrik Dağılım",
+        "en": "Binomial & Geometric Distributions"
       },
       "conceptCard": {
-        "tr": "Poisson Dağılımı $X \\sim \\text{Poisson}(\\lambda)$, belirli bir zaman veya alan diliminde nadir olayların meydana gelme sayısını modeller:\n\n$$P(X = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}, \\qquad k = 0, 1, 2, \\dots$$\n\nEn önemli teorik özelliği: $\\mathbb{E}[X] = \\text{Var}(X) = \\lambda$ olmasıdır.",
-        "en": "The Poisson distribution $X \\sim \\text{Poisson}(\\lambda)$ models the occurrence of rare events in a fixed time/space interval:\n\n$$P(X = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}, \\qquad k = 0, 1, 2, \\dots$$\n\nKey property: $\\mathbb{E}[X] = \\text{Var}(X) = \\lambda$."
+        "tr": "1. **Binom Dağılımı** ($X \\sim \\text{Bin}(n, p)$): $n$ bağımsız Bernoulli denemesinde $k$ başarı elde etme olasılığı:\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\qquad \\mathbb{E}[X] = np, \\quad \\text{Var}(X) = np(1-p)$$\n\n2. **Geometrik Dağılım** ($Y \\sim \\text{Geom}(p)$): İlk başarıya kadar gereken deneme sayısı:\n$$P(Y = k) = (1-p)^{k-1} p, \\qquad \\mathbb{E}[Y] = \\frac{1}{p}, \\quad \\text{Var}(Y) = \\frac{1-p}{p^2}$$",
+        "en": "Binomial: $P(X=k) = \\binom{n}{k}p^k(1-p)^{n-k}$, $\\mathbb{E}[X]=np, \\text{Var}(X)=np(1-p)$. Geometric: First success at trial $k$, $P(Y=k)=(1-p)^{k-1}p, \\mathbb{E}[Y]=1/p$."
       },
       "companyExample": {
-        "tr": "CallCenterDirect'te temsilcilerin bir müşteri çağrısını çözme süresi ortalama 300 saniye (5 dakika) ve standart sapması 60 saniyedir. Tam 420 saniye (7 dakika) süren bir çağrının ortalamadan ne kadar saptığını bulmak için Z-skorunu hesaplarız: Z = (420 - 300) / 60 = +2.0. Yani bu çağrı normal süreden 2 standart sapma daha uzun sürmüştür.",
-        "en": "At CallCenterDirect, average call duration is 300 seconds (5 minutes) with a standard deviation of 60 seconds. To measure how far a 420-second (7 min) call deviates from the norm, we compute its Z-score: Z = (420 - 300) / 60 = +2.0, showing it lasted 2 standard deviations longer than normal."
+        "tr": "Fabrikada üretilen her mikroçipin hatalı olma olasılığı $p = 0.05$'tir. Rastgele seçilen $n = 20$ çipten tam 2 tanesinin hatalı olma olasılığı Binom ile hesaplanır: $P(X=2) = \\binom{20}{2} (0.05)^2 (0.95)^{18} \\approx 0.1887$ (%18.9). İlk hatalı çipi 4. kontrolde bulma olasılığı ise Geometrik ile: $(0.95)^3 (0.05) \\approx 0.0429$ olur.",
+        "en": "Defect rate is $p=0.05$. In $n=20$ chips, probability of exactly 2 defects is Binomial: $P(X=2) = \\binom{20}{2}(0.05)^2(0.95)^{18} \\approx 18.9\\%$. Finding first defect on 4th test is Geometric: $(0.95)^3(0.05) \\approx 4.29\\%$."
       },
-      "interactiveType": "normal_dist",
+      "interactiveType": "distribution_explorer",
       "vocabTerms": [
         {
-          "term_en": "bell curve",
-          "explanation_tr": "Normal dağılımın simetrik çan biçimli grafiği.",
-          "explanation_en": "The symmetric bell-shaped graph of a normal distribution.",
-          "exampleSentence_en": "Test scores often follow a bell curve."
-        },
-        {
-          "term_en": "z-score",
-          "explanation_tr": "Standartlaştırılmış sapma değeri.",
-          "explanation_en": "Standardized measure of deviation from mean.",
-          "exampleSentence_en": "A Z-score of +3 indicates an extreme value."
+          "term_en": "binomial distribution",
+          "explanation_tr": "Sabit başarı olasılıklı bağımsız tekrarlı denemelerde başarı sayısı dağılımı.",
+          "explanation_en": "Distribution of number of successes in independent trials.",
+          "exampleSentence_en": "Quality control often uses the binomial distribution."
         }
       ],
       "questions": [
@@ -146,45 +126,41 @@
           "id": "m3-l3-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "Ortalaması $\\lambda = 3$ olan bir Poisson sürecinde $k = 0$ olay gerçekleşme olasılığı $P(X=0)$ kaçtır ($e^{-3} \\approx 0.05$)?",
-            "en": "In a Poisson process with rate $\\lambda = 3$, what is $P(X=0)$ ($e^{-3} \\approx 0.05$)?"
+            "tr": "$n = 100$ ve $p = 0.20$ olan bir Binom dağılımının varyansı ($\\text{Var}(X)$) kaçtır?",
+            "en": "What is the variance ($\\text{Var}(X)$) of a Binomial distribution with $n=100$ and $p=0.20$?"
           },
-          "correctAnswer": 0.05,
+          "correctAnswer": 16,
           "explanation": {
-            "tr": "$$P(X = 0) = \\frac{3^0 e^{-3}}{0!} = \\frac{1 \\cdot e^{-3}}{1} = e^{-3} \\approx 0.05$$",
-            "en": "$$P(X = 0) = \\frac{3^0 e^{-3}}{0!} = e^{-3} \\approx 0.05$$"
+            "tr": "$$\\text{Var}(X) = np(1-p) = 100 \\times 0.20 \\times 0.80 = 16$$",
+            "en": "$$\\text{Var}(X) = 100 \\times 0.20 \\times 0.80 = 16$$"
           }
         }
-      ],
-      "realWorldBox": {
-        "excelFormula": "=NORM.DAĞ(420; 300; 60; DOĞRU)  (EN: =NORM.DIST(420, 300, 60, TRUE))",
-        "pythonCode": "from scipy.stats import norm\nz = (420 - 300) / 60\npercentile = norm.cdf(z)\nprint(f'Z: {z}, Percentile: {percentile:.4f}')"
-      }
+      ]
     },
     {
       "id": "m3-l4",
       "moduleId": "module-3",
       "order": 4,
-      "difficulty": "zor",
+      "difficulty": "orta-ustu",
       "title": {
-        "tr": "Sürekli Dağılımlar & Standart Normal Eğri",
-        "en": "Continuous Distributions & Standard Normal Curve"
+        "tr": "Poisson Dağılımı ve Poisson Süreci",
+        "en": "Poisson Distribution & Poisson Process"
       },
       "conceptCard": {
-        "tr": "Normal Dağılım $X \\sim \\mathcal{N}(\\mu, \\sigma^2)$, simetrik ve çan eğrisi formunda sürekli bir olasılık dağılımıdır. Olasılık Yoğunluk Fonksiyonu (PDF):\n\n$$f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}, \\qquad -\\infty < x < \\infty$$\n\nHerhangi bir normal değişken standart normal $Z \\sim \\mathcal{N}(0, 1)$ değişkenine dönüştürülür: $$Z = \\frac{X - \\mu}{\\sigma}$$",
-        "en": "The Normal distribution $X \\sim \\mathcal{N}(\\mu, \\sigma^2)$ is a continuous symmetric bell-shaped distribution. Its PDF is:\n\n$$f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}, \\qquad -\\infty < x < \\infty$$\n\nStandardized via $Z = \\frac{X - \\mu}{\\sigma}$."
+        "tr": "Belirli bir zaman veya alan aralığında nadir olayların gerçekleşme sayısı $X \\sim \\text{Poisson}(\\lambda)$ dağılımına uyar:\n\n$$P(X = k) = \\frac{e^{-\\lambda} \\lambda^k}{k!}, \\qquad k = 0, 1, 2, \\dots$$\n\nPoisson Dağılımının en ayırt edici özelliği, ortalaması ile varyansının eşit olmasıdır:\n$$\\mathbb{E}[X] = \\lambda, \\qquad \\text{Var}(X) = \\lambda$$\nBinom Yaklaşımı: $n \\ge 100$ ve $p \\le 0.05$ ise $\\text{Bin}(n, p) \\approx \\text{Poisson}(\\lambda = np)$.",
+        "en": "Poisson distribution for counts in fixed interval: $P(X=k) = \\frac{e^{-\\lambda}\\lambda^k}{k!}$ where $\\mathbb{E}[X] = \\text{Var}(X) = \\lambda$. Binomial approximates Poisson when $n$ is large and $p$ is small."
       },
       "companyExample": {
-        "tr": "CallCenterDirect yönetimi, çağrı sürelerinin 180 saniye (3 dk) ile 300 saniye (5 dk) arasında olma olasılığını öğrenmek istiyor. Çağrı süreleri sürekli bir değişken olduğu için, çan eğrisinin Z = -2.0 ile Z = 0.0 noktaları arasında kalan alanını (entegralini) hesaplarız ve müşteri görüşmelerinin %47.7'sinin bu süre aralığında tamamlandığını tespit ederiz.",
-        "en": "CallCenterDirect management wants to know the likelihood of a call lasting between 180 seconds (3 min) and 300 seconds (5 min). Because handling time is continuous, we compute the area under the bell curve between Z = -2.0 and Z = 0.0, discovering that 47.7% of calls fall within this timeframe."
+        "tr": "MarkIE çağrı merkezine saatte ortalama $\\lambda = 4$ çağrı gelmektedir. Gelecek saatte tam 3 çağrı alma olasılığı $P(X=3) = \\frac{e^{-4} 4^3}{3!} = \\frac{0.0183 \\times 64}{6} \\approx 0.1954$ (%19.5) olur.",
+        "en": "MarkIE call center receives an average of $\\lambda = 4$ calls/hour. Probability of exactly 3 calls in the next hour is $P(X=3) = \\frac{e^{-4}4^3}{3!} \\approx 19.54\\%$."
       },
-      "interactiveType": "normal_dist",
+      "interactiveType": "distribution_explorer",
       "vocabTerms": [
         {
-          "term_en": "probability density function",
-          "explanation_tr": "Sürekli değişkenlerde olasılık yoğunluğunu gösteren fonksiyon (PDF).",
-          "explanation_en": "A function that describes the relative likelihood of a continuous random variable (PDF).",
-          "exampleSentence_en": "The height of the PDF curve shows relative probability density."
+          "term_en": "Poisson distribution",
+          "explanation_tr": "Sabit bir zaman veya uzay aralığında gerçekleşen bağımsız nadir olayların dağılımı.",
+          "explanation_en": "Probability distribution of independent events occurring in fixed time intervals.",
+          "exampleSentence_en": "Web traffic spikes follow a Poisson process."
         }
       ],
       "questions": [
@@ -192,13 +168,55 @@
           "id": "m3-l4-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "Ortalaması $\\mu = 100$ ve standart sapması $\\sigma = 15$ olan bir dağılımda $X = 130$ değerinin Z-skoru kaçtır?",
-            "en": "In a distribution with $\\mu = 100$ and $\\sigma = 15$, what is the Z-score for $X = 130$?"
+            "tr": "Ortalaması $\\lambda = 9$ olan bir Poisson dağılımının standart sapması ($\\\\sigma = \\\\sqrt{\\\\text{Var}(X)}$) kaçtır?",
+            "en": "If a Poisson distribution has mean $\\lambda = 9$, what is its standard deviation?"
+          },
+          "correctAnswer": 3,
+          "explanation": {
+            "tr": "Poisson'da $\\text{Var}(X) = \\lambda = 9$. Standart sapma $\\sigma = \\sqrt{9} = 3$.",
+            "en": "In Poisson, $\\text{Var}(X) = \\lambda = 9$. Standard deviation is $\\sigma = \\sqrt{9} = 3$."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m3-l5",
+      "moduleId": "module-3",
+      "order": 5,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Sürekli Rastgele Değişkenler, PDF ve Normal Dağılım",
+        "en": "Continuous Random Variables, PDF & Normal Distribution"
+      },
+      "conceptCard": {
+        "tr": "Sürekli bir rastgele değişken için tek bir noktanın olasılığı sıfırdır ($P(X = c) = 0$). Olasılıklar, Olasılık Yoğunluk Fonksiyonu (PDF) $f(x)$ altındaki alanla hesaplanır:\n$$P(a \\le X \\le b) = \\int_a^b f(x) dx, \\qquad \\int_{-\\infty}^\\infty f(x) dx = 1$$\n\n**Normal Dağılım** ($X \\sim \\mathcal{N}(\\mu, \\sigma^2)$):\n$$f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}$$\nStandartlaştırma ($Z$-Skoru): $Z = \\frac{X - \\mu}{\\sigma} \\sim \\mathcal{N}(0, 1)$.",
+        "en": "Continuous RVs use PDF $f(x)$ where $P(a \\le X \\le b) = \\int_a^b f(x)dx$. Normal distribution standardizes via $Z = \\frac{X-\\mu}{\\sigma} \\sim \\mathcal{N}(0,1)$."
+      },
+      "companyExample": {
+        "tr": "Bir çelik milin çapı ortalama $\\mu = 50$ mm ve $\\sigma = 0.5$ mm ile normal dağılmaktadır. 51 mm'den kalın millerin oranı: $Z = \\frac{51 - 50}{0.5} = 2.0$. Standart normal tablosundan $P(Z > 2.0) = 1 - 0.9772 = 0.0228$ (%2.28) bulunur.",
+        "en": "Steel shaft diameter is $\\mathcal{N}(50, 0.5^2)$ mm. The fraction exceeding 51 mm is $Z = (51-50)/0.5 = 2.0$, yielding $P(Z > 2.0) = 1 - 0.9772 = 0.0228$ (2.28%)."
+      },
+      "interactiveType": "distribution_explorer",
+      "vocabTerms": [
+        {
+          "term_en": "probability density function (PDF)",
+          "explanation_tr": "Sürekli rastgele değişkenin olasılık yoğunluğunu gösteren eğri.",
+          "explanation_en": "Function describing the relative likelihood of a continuous random variable.",
+          "exampleSentence_en": "Area under the PDF curve equals total probability."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m3-l5-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Ortalaması $\\mu = 100$ ve varyansı $\\sigma^2 = 25$ olan normal dağılımda $X = 110$ değerinin Z-skoru ($Z$) kaçtır?",
+            "en": "In a normal distribution with $\\mu = 100$ and $\\sigma^2 = 25$, what is the Z-score for $X = 110$?"
           },
           "correctAnswer": 2,
           "explanation": {
-            "tr": "$$Z = \\frac{X - \\mu}{\\sigma} = \\frac{130 - 100}{15} = \\frac{30}{15} = 2.0$$",
-            "en": "$$Z = \\frac{X - \\mu}{\\sigma} = \\frac{130 - 100}{15} = 2.0$$"
+            "tr": "$\\sigma = \\sqrt{25} = 5$. $$Z = \\frac{X - \\mu}{\\sigma} = \\frac{110 - 100}{5} = 2.0$$",
+            "en": "$\\sigma = 5$. $$Z = \\frac{110 - 100}{5} = 2.0$$"
           }
         }
       ]

@@ -2,12 +2,12 @@
   "id": "module-5",
   "order": 5,
   "title": {
-    "tr": "Güven Aralıkları",
-    "en": "Confidence Intervals"
+    "tr": "Nokta Tahmini & Güven Aralıkları",
+    "en": "Point Estimation & Confidence Intervals"
   },
   "description": {
-    "tr": "Nokta tahmini, güven düzeyi (%95, %99) ve t-dağılımı. İlaç etki süresi ve klinik deney güven aralığı vakası.",
-    "en": "Point estimation, confidence level (95%, 99%), and t-distribution. Drug efficacy trial confidence interval case."
+    "tr": "Sapmasızlık, En Çok Olabilirlik (MLE), Z/t güven aralıkları, Agresti-Coull, Ki-kare varyans ve PI/TI aralıkları.",
+    "en": "Unbiasedness, MLE, Z/t confidence intervals, Agresti-Coull, Chi-square variance, and PI/TI intervals."
   },
   "iconName": "Shield",
   "lessons": [
@@ -15,68 +15,92 @@
       "id": "m5-l1",
       "moduleId": "module-5",
       "order": 1,
-      "difficulty": "basit",
+      "difficulty": "orta",
       "title": {
-        "tr": "Nokta Tahmini & Hata Payı",
-        "en": "Point Estimate & Margin of Error"
+        "tr": "Nokta Tahmini ve Sapmasızlık (Unbiasedness)",
+        "en": "Point Estimation and Unbiasedness"
       },
       "conceptCard": {
-        "tr": "Güven Aralığı (CI), bilinmeyen anakütle parametresini ($\\mu$ veya $p$) belirli bir $(1-\\alpha)$ güven düzeyinde içeren aralıktır:\n\n$$\\text{Güven Aralığı} = \\text{Nokta Tahmini} \\pm \\text{Hata Payı (Margin of Error)}$$\n\n$$\\bar{X} \\pm Z_{\\alpha/2} \\cdot \\frac{\\sigma}{\\sqrt{n}}$$\n\n$\\%95$ güven düzeyi için kritik $Z$-değeri $Z_{0.025} = 1.96$'dır.",
-        "en": "A point estimate predicts a parameter with a single value, while a confidence interval provides a lower and upper range around that estimate."
+        "tr": "Bilinmeyen bir anakütle parametresi $\\theta$ için örneklemden tek bir sayısal tahmin üreten fonksiyona **Nokta Tahmin Edici (Point Estimator $\\hat{\\Theta}$)** denir (`INDR 252 CEx4`).\n\n1. **Sapmasızlık (Unbiasedness):**\n$$E[\\hat{\\Theta}] = \\theta$$\nTahmin edicinin beklenen değeri tam olarak gerçek parametreye eşit olmalıdır. Örneklem ortalaması $E[\\bar{X}] = \\mu$ ve örneklem varyansı $E[s^2] = \\sigma^2$ sapmasızdır.\n2. **Sapma (Bias):** $\\text{Bias}(\\hat{\\Theta}) = E[\\hat{\\Theta}] - \\theta$",
+        "en": "A single numerical value used to estimate an unknown population parameter $\\theta$ (`INDR 252 CEx4`):\n\n1. **Unbiasedness:**\n$$E[\\hat{\\Theta}] = \\theta$$\nThe expected value of the estimator equals the true parameter. $\\bar{X}$ and $s^2$ (with $n-1$) are unbiased estimators.\n2. **Bias:** $\\text{Bias}(\\hat{\\Theta}) = E[\\hat{\\Theta}] - \\theta$"
       },
       "companyExample": {
-        "tr": "BioLab biyoteknoloji şirketi geliştirdiği ağrı kesicinin etki süresini araştırıyor. 100 hasta üzerinde yapılan deneyde ortalama etki süresi 300 dakika (Nokta Tahmini) ve Standart Hata 10 dakika olarak ölçülür. %95 güven düzeyi için hata payını 1.96 × 10 = 19.6 dakika olarak buluruz ve ilacın etki süresini [280.4 - 319.6] dakika Güven Aralığı ile raporlarız.",
-        "en": "BioLab biotech tests a new painkiller's efficacy. In a 100-patient trial, mean duration is 300 minutes (Point Estimate) with SE = 10 minutes. At 95% confidence, margin of error is 1.96 × 10 = 19.6 minutes, resulting in a Confidence Interval of [280.4, 319.6] minutes."
+        "tr": "VoltPower batarya fabrikasında 100 bataryanın ortalama ömrü $\\bar{x} = 48.5$ saat bulunmuştur. $48.5$ saat, tüm üretimin gerçek $\\mu$ değeri için sapmasız bir nokta tahminidir.",
+        "en": "Battery batch sample mean $\\bar{x} = 48.5$ hours serves as an unbiased point estimate of true population mean $\\mu$."
       },
-      "interactiveType": "confidence_interval",
       "vocabTerms": [
         {
-          "term_en": "point estimate",
-          "explanation_tr": "Ana kütle parametresi için en iyi tek değer tahmini.",
-          "explanation_en": "Best single-value estimate for a population parameter.",
-          "exampleSentence_en": "Sample mean is the point estimate of population mean."
+          "term_en": "unbiased estimator",
+          "explanation_tr": "Beklenen değeri tahmin etmeye çalıştığı gerçek parametreye eşit olan istatistik.",
+          "explanation_en": "An estimator whose expected value equals the true parameter being estimated.",
+          "exampleSentence_en": "Sample mean is an unbiased estimator of population mean."
         }
       ],
       "questions": [
         {
           "id": "m5-l1-q1",
-          "type": "numeric",
+          "type": "multiple_choice",
           "prompt": {
-            "tr": "$\\%95$ güven düzeyi için iki kuyruklu standart normal kritik $Z$-değeri ($Z_{0.025}$) kaçtır?",
-            "en": "For a 95% confidence level, what is the two-tailed standard normal critical $Z$-value ($Z_{0.025}$)?"
+            "tr": "Bir $\\hat{\\theta}$ tahmin edicisinin sapmasız (unbiased) olabilmesi için hangi koşul sağlanmalıdır?",
+            "en": "What condition must hold for an estimator $\\hat{\\theta}$ to be unbiased?"
           },
-          "correctAnswer": 1.96,
+          "options": [
+            {
+              "tr": "E[θ̂] = θ",
+              "en": "E[θ̂] = θ"
+            },
+            {
+              "tr": "Var(θ̂) = 0",
+              "en": "Var(θ̂) = 0"
+            },
+            {
+              "tr": "θ̂ = 0",
+              "en": "θ̂ = 0"
+            },
+            {
+              "tr": "n > 100",
+              "en": "n > 100"
+            }
+          ],
+          "correctAnswer": "E[θ̂] = θ",
           "explanation": {
-            "tr": "$$\\%95 \\text{ güven düzeyinde } 1 - \\alpha = 0.95 \\implies \\alpha/2 = 0.025 \\implies Z_{0.025} = 1.96$$",
-            "en": "$$1 - \\alpha = 0.95 \\implies \\alpha/2 = 0.025 \\implies Z_{0.025} = 1.96$$"
+            "tr": "Sapmasızlık kuralı gereği tahmin edicinin beklenen değeri hedef parametreye eşit olmalıdır.",
+            "en": "By definition of unbiasedness, expected value must equal target parameter."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=ORTALAMA(A1:A100)",
+        "pythonCode": "theta_hat = np.mean(sample_data)",
+        "powerBiNote": {
+          "tr": "Nokta tahminleri tekil KPI kartlarında gösterilir.",
+          "en": "Point estimates are displayed on KPI cards."
+        }
+      }
     },
     {
       "id": "m5-l2",
       "moduleId": "module-5",
       "order": 2,
-      "difficulty": "orta",
+      "difficulty": "zor",
       "title": {
-        "tr": "%95 ve %99 Güven Aralıkları",
-        "en": "95% & 99% Confidence Intervals"
+        "tr": "En Çok Olabilirlik Tahmini (MLE)",
+        "en": "Maximum Likelihood Estimation (MLE)"
       },
       "conceptCard": {
-        "tr": "Anakütle standart sapması $\\sigma$ bilinmediğinde ve örneklemden $s$ hesaplandığında Student's $t$ dağılımı kullanılır ($df = n-1$ serbestlik derecesi):\n\n$$\\bar{X} \\pm t_{\\alpha/2, \\, n-1} \\cdot \\frac{s}{\\sqrt{n}}$$\n\nÖrneklem büyüklüğü $n \\to \\infty$ arttıkça $t$ dağılımı Standart Normal $Z$ dağılımına yakınsar.",
-        "en": "The confidence level indicates how likely the interval contains the true value. Higher confidence levels require a wider interval."
+        "tr": "Verilen gözlem verilerini en olası kılan parametre değerini bulma yöntemi (`INDR 252 CEx5`):\n\n1. **Olabilirlik Fonksiyonu (Likelihood):** $L(\\theta) = \\prod_{i=1}^n f(x_i; \\theta)$\n2. **Log-Olabilirlik:** $\\ln L(\\theta) = \\sum_{i=1}^n \\ln f(x_i; \\theta)$\n3. **Türev Alıp Sıfıra Eşitleme:** $\\frac{d \\ln L(\\theta)}{d\\theta} = 0$\n\n**Örnek (Üstel Dağılım):** $f(x) = \\lambda e^{-\\lambda x} \\implies \\hat{\\lambda}_{MLE} = \\frac{n}{\\sum x_i} = \\frac{1}{\\bar{x}}$",
+        "en": "Finding parameter values that maximize the likelihood of observing the given sample (`INDR 252 CEx5`):\n\n1. **Likelihood Function:** $L(\\theta) = \\prod_{i=1}^n f(x_i; \\theta)$\n2. **Log-Likelihood:** $\\ln L(\\theta) = \\sum_{i=1}^n \\ln f(x_i; \\theta)$\n3. **First Derivative:** $\\frac{d \\ln L(\\theta)}{d\\theta} = 0$\n\n**Exponential Distribution MLE:** $\\hat{\\lambda}_{MLE} = \\frac{n}{\\sum x_i} = \\frac{1}{\\bar{x}}$"
       },
       "companyExample": {
-        "tr": "BioLab yönetim kurulu ilacın etki süresi hakkında iki farklı rapor istiyor. %95 güven düzeyinde hata payı 1.96 × 10 = 19.6 dk olup aralık [280.4, 319.6] dakikadır. %99 güven düzeyine çıkıldığında ise kritik değer z* = 2.58'e yükselir ve aralık [274.2, 325.8] dakikaya genişler. Bu da daha yüksek kesinlik için aralığın genişlemesi gerektiğini gösterir.",
-        "en": "BioLab requires two confidence levels. At 95% confidence, the margin of error is 1.96 × 10 = 19.6 min, yielding [280.4, 319.6] min. Increasing to 99% confidence raises the critical value to z* = 2.58, widening the interval to [274.2, 325.8] min to capture higher certainty."
+        "tr": "5 sunucunun arızalanma süreleri $x = [2, 4, 6, 8, 10]$ saat ölçülmüştür. $\\bar{x} = 6$. MLE formülünden $\\hat{\\lambda}_{MLE} = 1/6 = 0.167$ arıza/saat bulunur.",
+        "en": "5 server failures observed at $x = [2, 4, 6, 8, 10]$ hours (mean $\\bar{x}=6$). $\\hat{\\lambda}_{MLE} = 1/6 = 0.167$ failures per hour."
       },
-      "interactiveType": "confidence_interval",
       "vocabTerms": [
         {
-          "term_en": "confidence level",
-          "explanation_tr": "Aralığın gerçek parametreyi içerme olasılığı.",
-          "explanation_en": "The probability that the interval contains the true parameter.",
-          "exampleSentence_en": "We use a 95% confidence level."
+          "term_en": "maximum likelihood estimation",
+          "explanation_tr": "Gözlenen verinin ortaya çıkma olasılığını maksimize eden parametreyi bulma yöntemi (MLE).",
+          "explanation_en": "A method of estimating parameters of a probability distribution by maximizing a likelihood function.",
+          "exampleSentence_en": "MLE estimators are asymptotically efficient and normally distributed."
         }
       ],
       "questions": [
@@ -84,41 +108,48 @@
           "id": "m5-l2-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$n = 16$ gözlemden oluşan bir örneklem için Student's t dağılımının serbestlik derecesi ($df = n - 1$) kaçtır?",
-            "en": "For a sample of $n = 16$ observations, what is the degrees of freedom ($df = n - 1$) of Student's t-distribution?"
+            "tr": "Üstel dağılıma sahip bir örneklemde $n=4$ gözlem toplamı $\\sum x_i = 20$ ise $\\hat{\\lambda}_{MLE}$ kaçtır?",
+            "en": "For an exponential sample with $n=4$ and sum $\\sum x_i = 20$, what is $\\hat{\\lambda}_{MLE}$?"
           },
-          "correctAnswer": 15,
+          "correctAnswer": 0.2,
           "explanation": {
-            "tr": "$$df = n - 1 = 16 - 1 = 15$$",
-            "en": "$$df = n - 1 = 16 - 1 = 15$$"
+            "tr": "$$\\hat{\\lambda}_{MLE} = \\frac{n}{\\sum x_i} = \\frac{4}{20} = 0.2$$",
+            "en": "$$\\hat{\\lambda}_{MLE} = \\frac{n}{\\sum x_i} = \\frac{4}{20} = 0.2$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=BAĞ_DEĞ_SAY(A1:A10) / TOPLA(A1:A10)",
+        "pythonCode": "from scipy.stats import expon\nloc, scale = expon.fit(data, floc=0)\nlambda_mle = 1.0 / scale",
+        "powerBiNote": {
+          "tr": "Güvenilirlik mühendisliği dağılım modellerinde MLE kullanılır.",
+          "en": "MLE fits parameters in reliability engineering."
+        }
+      }
     },
     {
       "id": "m5-l3",
       "moduleId": "module-5",
       "order": 3,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "t-Dağılımı ile Güven Aralığı",
-        "en": "Student's t-Distribution CIs"
+        "tr": "Ortalama İçin Güven Aralığı ($sigma$ Bilinen / $Z$)",
+        "en": "Confidence Interval for Mean ($sigma$ Known / $Z$)"
       },
       "conceptCard": {
-        "tr": "Anakütle oranı ($p$) için $(1-\\alpha)$ Güven Aralığı:\n\n$$\\hat{p} \\pm Z_{\\alpha/2} \\cdot \\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$$\n\nBurada $\\hat{p} = \\frac{x}{n}$ örneklem oranı, $\\text{SE}(\\hat{p}) = \\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$ ise standart hatadır.",
-        "en": "When the population standard deviation is unknown and sample sizes are small, Student's t-distribution is used instead of the standard normal distribution."
+        "tr": "Anakütle standart sapması $\\sigma$ bilindiğinde veya $n \\ge 30$ iken %$100(1-\\alpha)$ Güven Aralığı:\n\n$$\\bar{x} \\pm z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}$$\n\n1. **%95 Güven Düzeyi:** $z_{0.025} = 1.96$\n2. **%99 Güven Düzeyi:** $z_{0.005} = 2.576$\n3. **Hata Payı:** $E = z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}$",
+        "en": "Confidence interval for population mean $\\mu$ when $\\sigma$ is known (`INDR 252 Lecture 7`):\n\n$$\\bar{x} \\pm z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}$$\n\n1. **95% Confidence:** $z_{0.025} = 1.96$\n2. **99% Confidence:** $z_{0.005} = 2.576$\n3. **Margin of Error:** $E = z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}$"
       },
       "companyExample": {
-        "tr": "BioLab henüz n = 15 hastadan oluşan küçük bir ön klinik deney yürütmektedir ve ana kütle standart sapması σ bilinmemektedir. Örneklem boyutu küçük (n < 30) olduğu için Z-tablosu yerine Student's t-dağılımı ve serbestlik derecesi df = 15 - 1 = 14 kullanılır; böylece küçük örneklem belirsizliği hesaba katılır.",
-        "en": "BioLab conducts a small pilot trial with n = 15 patients where population std dev σ is unknown. Because n < 30, they switch from Z to Student's t-distribution with degrees of freedom df = 15 - 1 = 14, compensating for small-sample uncertainty."
+        "tr": "$\\sigma = 10$ TL bilinen bir süreçte $n=100$ müşteri için $\\bar{x} = 150$ TL ölçülmüştür. %95 Güven Aralığı: $150 \\pm 1.96 (10/10) = 150 \\pm 1.96 = [148.04, 151.96]$ TL.",
+        "en": "$\\sigma=10, n=100, \\bar{x}=150$. 95% CI: $150 \\pm 1.96(10/10) = [148.04, 151.96]$."
       },
-      "interactiveType": "confidence_interval",
       "vocabTerms": [
         {
-          "term_en": "degrees of freedom",
-          "explanation_tr": "İstatistikte serbestçe değişebilen gözlem sayısı (df = n - 1).",
-          "explanation_en": "Number of independent values that can vary (df = n - 1).",
-          "exampleSentence_en": "Sample of size 15 has 14 degrees of freedom."
+          "term_en": "confidence interval",
+          "explanation_tr": "Bilinmeyen anakütle parametresini belirli bir olasılıkla (%95, %99) kapsayan aralık.",
+          "explanation_en": "An estimated range of values likely to include an unknown population parameter.",
+          "exampleSentence_en": "We are 95% confident that the true population mean lies in this interval."
         }
       ],
       "questions": [
@@ -126,41 +157,48 @@
           "id": "m5-l3-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "n = 16 kişilik bir örneklem için t-dağılımı serbestlik derecesi (df) kaçtır?",
-            "en": "What are the degrees of freedom (df) for n = 16?"
+            "tr": "$\\bar{x} = 100$, $\\sigma = 20$, $n = 64$ ve $z_{\\alpha/2} = 2$ ise Güven Aralığının Üst Sınırı kaçtır?",
+            "en": "If $\\bar{x} = 100$, $\\sigma = 20$, $n = 64$, and $z_{\\alpha/2} = 2$, what is the Upper Bound?"
           },
-          "correctAnswer": 15,
+          "correctAnswer": 105,
           "explanation": {
-            "tr": "df = n - 1 = 16 - 1 = 15",
-            "en": "df = n - 1 = 16 - 1 = 15"
+            "tr": "$$E = 2 \\times \\frac{20}{\\sqrt{64}} = 2 \\times \\frac{20}{8} = 5 \\implies \\text{Üst Sınır} = 100 + 5 = 105$$",
+            "en": "$$E = 2 \\times \\frac{20}{\\sqrt{64}} = 5 \\implies 100 + 5 = 105$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=GÜVENİRLİK.NORM(0.05; sigma; n)",
+        "pythonCode": "import scipy.stats as stats\nstats.norm.interval(0.95, loc=x_bar, scale=sigma/np.sqrt(n))",
+        "powerBiNote": {
+          "tr": "Hata çubukları (Error Bars) ile grafiğe eklenir.",
+          "en": "Added as Error Bars on charts."
+        }
+      }
     },
     {
       "id": "m5-l4",
       "moduleId": "module-5",
       "order": 4,
-      "difficulty": "zor",
+      "difficulty": "orta",
       "title": {
-        "tr": "Oranlar için Güven Aralığı",
-        "en": "CIs for Proportions"
+        "tr": "t-Dağılımı ile Güven Aralığı ($sigma$ Bilinmeyen)",
+        "en": "Confidence Interval with t-Distribution ($sigma$ Unknown)"
       },
       "conceptCard": {
-        "tr": "Kategorik verilerde belirli bir özelliğe sahip olanların oranını tahmin etmek için oran güven aralıkları kullanılır.",
-        "en": "Confidence intervals for proportions are used to estimate the percentage of a population that possesses a specific characteristic."
+        "tr": "Anakütle varyansı bilinmediğinde ve popülasyon yaklaşık normal olduğunda Student's $t$-dağılımı kullanılır (`INDR 252 Lecture 8`):\n\n$$\\bar{x} \\pm t_{\\alpha/2, n-1} \\frac{s}{\\sqrt{n}}$$\n\n- $df = n - 1$ (Serbestlik Derecesi)\n- Örneklem boyutu $n$ büyüdükçe $t$-dağılımı $Z$-dağılımına yakınsar.",
+        "en": "When $\\sigma$ is unknown and population is roughly normal (`INDR 252 Lecture 8`):\n\n$$\\bar{x} \\pm t_{\\alpha/2, n-1} \\frac{s}{\\sqrt{n}}$$\n\n- $df = n - 1$ (Degrees of Freedom)\n- As $n \\to \\infty$, $t$-distribution converges to $Z$."
       },
       "companyExample": {
-        "tr": "BioLab yeni ilacın hastaların %80'inde (p̂ = 0.80) ağrıyı tamamen kestiğini tespit etmiştir. n = 100 hasta için Standart Hatayı SE = √(0.80 × 0.20 / 100) = 0.04 (%4) buluruz. %95 güven düzeyinde hata payı 1.96 × %4 = %7.84 olur ve ilacın başarı oranı [%72.16, %87.84] aralığında güvenle doğrulanır.",
-        "en": "BioLab finds the drug successfully relieves symptoms in 80% of patients (p̂ = 0.80). For n = 100 patients, SE = √(0.80 × 0.20 / 100) = 0.04 (4%). At 95% confidence, margin of error is 1.96 × 4% = 7.84%, confirming the success rate within [72.16%, 87.84%]."
+        "tr": "BioLab $n=16$ hasta üzerinde ilaç denemiştir. $\\bar{x} = 24$ saat, $s = 4$ saat. $df = 15$ için $t_{0.025, 15} = 2.131$. %95 CI: $24 \\pm 2.131 (4 / 4) = 24 \\pm 2.131 = [21.87, 26.13]$ saat.",
+        "en": "BioLab trial ($n=16$): $\\bar{x}=24$h, $s=4$h. $t_{0.025, 15}=2.131$. 95% CI: $24 \\pm 2.131 = [21.87, 26.13]$h."
       },
-      "interactiveType": "confidence_interval",
       "vocabTerms": [
         {
-          "term_en": "proportion",
-          "explanation_tr": "Belirli bir özelliğe sahip olanların toplam içindeki oranı.",
-          "explanation_en": "The ratio of items with a specific characteristic to total items.",
-          "exampleSentence_en": "Sample proportion p̂ is 0.80."
+          "term_en": "Student t distribution",
+          "explanation_tr": "Küçük örneklemlerde ve bilinmeyen varyansta kalın kuyruklu çan eğrisi dağılımı.",
+          "explanation_en": "A symmetric probability distribution used when estimating the mean with unknown variance.",
+          "exampleSentence_en": "The t-distribution accounts for extra uncertainty from using sample standard deviation s."
         }
       ],
       "questions": [
@@ -168,16 +206,207 @@
           "id": "m5-l4-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "p̂ = 0.50 ve n = 100 ise p̂(1-p̂) kaçtır?",
-            "en": "If p̂ = 0.50 and n = 100, what is p̂(1-p̂)?"
+            "tr": "$n = 10$ kişilik bir örneklem için $t$-dağılımı serbestlik derecesi ($df$) kaçtır?",
+            "en": "For sample size $n = 10$, what is the degrees of freedom ($df$) for t-distribution?"
           },
-          "correctAnswer": 0.25,
+          "correctAnswer": 9,
           "explanation": {
-            "tr": "0.50 * 0.50 = 0.25",
-            "en": "0.50 * 0.50 = 0.25"
+            "tr": "$$df = n - 1 = 10 - 1 = 9$$",
+            "en": "$$df = n - 1 = 10 - 1 = 9$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=GÜVENİRLİK.T(0.05; s; n)",
+        "pythonCode": "import scipy.stats as stats\nstats.t.interval(0.95, df=n-1, loc=x_bar, scale=s/np.sqrt(n))",
+        "powerBiNote": {
+          "tr": "Küçük örneklem metriklerinde t-dağılımı esas alınır.",
+          "en": "Used for small sample metric interval bounds."
+        }
+      }
+    },
+    {
+      "id": "m5-l5",
+      "moduleId": "module-5",
+      "order": 5,
+      "difficulty": "orta-ustu",
+      "title": {
+        "tr": "Oranlar İçin Güven Aralığı ve Agresti-Coull",
+        "en": "Confidence Interval for Proportions and Agresti-Coull"
+      },
+      "conceptCard": {
+        "tr": "1. **Klasik Wald Oran Güven Aralığı:**\n$$\\hat{p} \\pm z_{\\alpha/2} \\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$$\n2. **Agresti-Coull Düzeltmesi (`INDR 252 Lecture 9`):**\nKüçük $n$ veya uç $p$ değerlerinde klasik formül hatalı sonuç verir. 2 başarı ve 2 başarısızlık eklenerek düzeltilir:\n$$\\tilde{n} = n + 4, \\quad \\tilde{p} = \\frac{x + 2}{n + 4}$$\n$$\\tilde{p} \\pm z_{\\alpha/2} \\sqrt{\\frac{\\tilde{p}(1-\\tilde{p})}{\\tilde{n}}}$$",
+        "en": "1. **Wald Proportion CI:**\n$$\\hat{p} \\pm z_{\\alpha/2} \\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$$\n2. **Agresti-Coull \"Plus Four\" Interval (`INDR 252 Lecture 9`):**\nAdds 2 successes and 2 failures for robust coverage in small samples:\n$$\\tilde{n} = n + 4, \\quad \\tilde{p} = \\frac{x + 2}{n + 4}$$\n$$\\tilde{p} \\pm z_{\\alpha/2} \\sqrt{\\frac{\\tilde{p}(1-\\tilde{p})}{\\tilde{n}}}$$"
+      },
+      "companyExample": {
+        "tr": "DataPulse 20 müşteriden 1'inin ürünü iade ettiğini görmüştür ($x=1, n=20$). Agresti-Coull ile $\\tilde{n} = 24, \\tilde{p} = 3/24 = 0.125$ alınarak güvenilir aralık hesaplanır.",
+        "en": "DataPulse sample: 1 return out of 20 ($x=1, n=20$). Agresti-Coull uses $\\tilde{n}=24, \\tilde{p}=3/24=0.125$ for reliable bounds."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Agresti-Coull interval",
+          "explanation_tr": "Küçük örneklemlerde oran güven aralığını düzeltmek için 4 gözlem ekleyen yöntem.",
+          "explanation_en": "An adjusted confidence interval for binomial proportions providing superior coverage.",
+          "exampleSentence_en": "Agresti-Coull interval avoids zero-width errors when p is near 0 or 1."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m5-l5-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$n=20$ denemede $x=2$ başarı elde edilirse Agresti-Coull düzeltilmiş oranı $\\tilde{p}$ kaçtır?",
+            "en": "If $x=2$ successes in $n=20$ trials, what is Agresti-Coull $\\tilde{p}$?"
+          },
+          "correctAnswer": 0.167,
+          "explanation": {
+            "tr": "$$\\tilde{p} = \\frac{2 + 2}{20 + 4} = \\frac{4}{24} \\approx 0.167$$",
+            "en": "$$\\tilde{p} = \\frac{2 + 2}{20 + 4} = \\frac{4}{24} \\approx 0.167$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(x+2)/(n+4)",
+        "pythonCode": "from statsmodels.stats.proportion import proportion_confint\nproportion_confint(count=2, nobs=20, method=\"agresti_coull\")",
+        "powerBiNote": {
+          "tr": "Müşteri memnuniyet anket oranlarında kullanılır.",
+          "en": "Applied in customer satisfaction proportion analytics."
+        }
+      }
+    },
+    {
+      "id": "m5-l6",
+      "moduleId": "module-5",
+      "order": 6,
+      "difficulty": "zor",
+      "title": {
+        "tr": "Tek Popülasyon Varyansı İçin Güven Aralığı ($chi^2$)",
+        "en": "Confidence Interval for Population Variance ($chi^2$)"
+      },
+      "conceptCard": {
+        "tr": "Normal dağılan bir popülasyonun varyansı $\\sigma^2$ için %$100(1-\\alpha)$ Güven Aralığı (`INDR 252 FormulaSheet`):\n\n$$\\left[ \\frac{(n-1)s^2}{\\chi^2_{\\alpha/2, n-1}}, \\quad \\frac{(n-1)s^2}{\\chi^2_{1-\\alpha/2, n-1}} \\right]$$\n\n- Ki-kare ($\\chi^2$) dağılımı simetrik değildir ($[0, \\infty)$ aralığında sağa çarpıktır).\n- Standart sapma için bu sınırların karekökü alınır.",
+        "en": "Confidence interval for population variance $\\sigma^2$ (`INDR 252 FormulaSheet`):\n\n$$\\left[ \\frac{(n-1)s^2}{\\chi^2_{\\alpha/2, n-1}}, \\quad \\frac{(n-1)s^2}{\\chi^2_{1-\\alpha/2, n-1}} \\right]$$\n\n- Chi-square distribution is asymmetric and strictly positive.\n- Take square roots for standard deviation limits."
+      },
+      "companyExample": {
+        "tr": "Fabrikada parça kalınlıklarının varyansı $s^2 = 0.04 \\text{ mm}^2$ ($n=21$). $\\chi^2$ tablosu kullanılarak gerçek popülasyon varyansının sınırları güvenle belirlenir.",
+        "en": "Part thickness variance $s^2 = 0.04\\text{ mm}^2$ with $n=21$. $\\chi^2$ critical values yield exact bounds for process variance $\\sigma^2$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "chi-square distribution",
+          "explanation_tr": "Standart normal değişkenlerin karelerinin toplamı olan asimetrik dağılım.",
+          "explanation_en": "A continuous probability distribution of the sum of squared independent standard normal variables.",
+          "exampleSentence_en": "Chi-square distribution is used to construct confidence intervals for variance."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m5-l6-q1",
+          "type": "multiple_choice",
+          "prompt": {
+            "tr": "Popülasyon varyansı $\\sigma^2$ için güven aralığı hesaplanırken hangi dağılım kullanılır?",
+            "en": "Which distribution is used to construct confidence intervals for population variance $\\sigma^2$?"
+          },
+          "options": [
+            {
+              "tr": "Ki-Kare (Chi-Square) Dağılımı",
+              "en": "Chi-Square Distribution"
+            },
+            {
+              "tr": "Standart Normal (Z) Dağılımı",
+              "en": "Standard Normal (Z) Distribution"
+            },
+            {
+              "tr": "Binom Dağılımı",
+              "en": "Binomial Distribution"
+            },
+            {
+              "tr": "Üstel Dağılım",
+              "en": "Exponential Distribution"
+            }
+          ],
+          "correctAnswer": "Ki-Kare (Chi-Square) Dağılımı",
+          "explanation": {
+            "tr": "$(n-1)s^2 / \\sigma^2$ oranı serbestlik derecesi $n-1$ olan Ki-Kare dağılımına uyar.",
+            "en": "$(n-1)s^2 / \\sigma^2$ follows a Chi-square distribution with $df = n-1$."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(n-1)*s^2 / KİKARE.TERS.SAĞ(0.025; n-1)",
+        "pythonCode": "from scipy.stats import chi2\nlower = (n-1)*s2 / chi2.ppf(1-alpha/2, df=n-1)",
+        "powerBiNote": {
+          "tr": "Üretim kalite kontrol sapma analizinde kullanılır.",
+          "en": "Applied in manufacturing quality variance limits."
+        }
+      }
+    },
+    {
+      "id": "m5-l7",
+      "moduleId": "module-5",
+      "order": 7,
+      "difficulty": "zor",
+      "title": {
+        "tr": "Tahmin Aralığı (PI) vs. Tolerans Aralığı (TI)",
+        "en": "Prediction Interval (PI) vs. Tolerance Interval (TI)"
+      },
+      "conceptCard": {
+        "tr": "Üç kritik aralığın farkı (`INDR 252 Lecture 10`, `CEx10`):\n\n1. **Güven Aralığı (CI):** Ortalama $\\mu$'yü kapsar: $\\bar{x} \\pm t s \\sqrt{\\frac{1}{n}}$\n2. **Tahmin Aralığı (Prediction Interval - PI):** Gelecekteki **tek bir $X_0$ gözlemini** kapsar (daha geniştir):\n$$\\bar{x} \\pm t_{\\alpha/2, n-1} s \\sqrt{1 + \\frac{1}{n}}$$\n3. **Tolerans Aralığı (Tolerance Interval - TI):** Popülasyonun en az $%k$'sını $%100(1-\\alpha)$ güvenle kapsayan aralıktır: $\\bar{x} \\pm k_2 s$.",
+        "en": "Comparison of three statistical intervals (`INDR 252 Lecture 10`, `CEx10`):\n\n1. **Confidence Interval (CI):** Captures mean $\\mu$: $\\bar{x} \\pm t s \\sqrt{1/n}$\n2. **Prediction Interval (PI):** Captures a single future observation $X_0$ (wider):\n$$\\bar{x} \\pm t_{\\alpha/2, n-1} s \\sqrt{1 + 1/n}$$\n3. **Tolerance Interval (TI):** Captures at least $k\\%$ of the entire population with $100(1-\\alpha)\\%$ confidence: $\\bar{x} \\pm k_2 s$."
+      },
+      "companyExample": {
+        "tr": "VoltPower batarya üretiminde: Ortalama ömür için CI: $[48, 52]$ saat; müşteriye satılacak tek bir bataryanın ömrü için PI: $[40, 60]$ saat; tüm üretimin %90'ı için TI: $[38, 62]$ saattir (`CEx10`).",
+        "en": "VoltPower battery: CI for mean: $[48, 52]$h; PI for next single customer unit: $[40, 60]$h; TI for $90\\%$ of population: $[38, 62]$h (`CEx10`)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "prediction interval",
+          "explanation_tr": "Gelecekteki tekil bir gözlemin düşeceği beklenen aralık (PI).",
+          "explanation_en": "An estimate of an interval in which a future observation will fall.",
+          "exampleSentence_en": "Prediction interval is always wider than the confidence interval for the mean."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m5-l7-q1",
+          "type": "multiple_choice",
+          "prompt": {
+            "tr": "Aynı veri setinde %95 Güven Aralığı (CI) ile %95 Tahmin Aralığı (PI) genişliği kıyaslandığında hangisi DOĞRUDUR?",
+            "en": "Comparing the widths of 95% CI vs 95% PI for the same dataset, which is TRUE?"
+          },
+          "options": [
+            {
+              "tr": "Tahmin Aralığı (PI) her zaman Güven Aralığından (CI) daha geniştir",
+              "en": "Prediction Interval (PI) is always wider than Confidence Interval (CI)"
+            },
+            {
+              "tr": "Güven Aralığı (CI) her zaman daha geniştir",
+              "en": "Confidence Interval (CI) is always wider"
+            },
+            {
+              "tr": "İki aralık tamamen eşittir",
+              "en": "Both intervals are identical"
+            },
+            {
+              "tr": "PI yalnızca n > 100 iken hesaplanabilir",
+              "en": "PI can only be computed when n > 100"
+            }
+          ],
+          "correctAnswer": "Tahmin Aralığı (PI) her zaman Güven Aralığından (CI) daha geniştir",
+          "explanation": {
+            "tr": "PI tek bir yeni gözlemin bireysel değişkenliğini de ($s^2$) içerdiği için formülde $\\sqrt{1 + 1/n}$ çarpanı vardır ve her zaman daha geniştir.",
+            "en": "PI includes individual variance with $\\sqrt{1 + 1/n}$, making it strictly wider than CI."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=t * s * KAREKÖK(1 + 1/n)",
+        "pythonCode": "pi_lower = x_bar - t_crit * s * np.sqrt(1 + 1/n)",
+        "powerBiNote": {
+          "tr": "Garanti süreleri ve SLA taahhütlerinde PI ve TI kullanılır.",
+          "en": "Used for SLA guarantees and warranty policy definition."
+        }
+      }
     }
   ],
   "caseExams": [

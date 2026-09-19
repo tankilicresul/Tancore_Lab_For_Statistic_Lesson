@@ -2,12 +2,12 @@
   "id": "module-10",
   "order": 10,
   "title": {
-    "tr": "Zaman Serisi Temelleri",
-    "en": "Time Series Fundamentals"
+    "tr": "Zaman Serisi Analitiği & İleri Testler",
+    "en": "Time Series Analytics & Advanced Tests"
   },
   "description": {
-    "tr": "Zaman serisi bileşenleri (trend, mevsimsellik), hareketli ortalama (MA), üstel düzleştirme ve sezonsal tahminler. Perakende satış tahmini vakası.",
-    "en": "Time series components (trend, seasonality), moving averages (MA), exponential smoothing, and seasonal forecasting. Retail sales forecast case."
+    "tr": "Trend, mevsimsellik, hareketli ortalamalar (SMA/WMA), üstel düzleştirme ve parametrik olmayan testler [Bonus].",
+    "en": "Trend, seasonality, moving averages (SMA/WMA), exponential smoothing, and non-parametric tests [Bonus]."
   },
   "iconName": "Clock",
   "lessons": [
@@ -17,24 +17,23 @@
       "order": 1,
       "difficulty": "basit",
       "title": {
-        "tr": "Zaman Serisi Bileşenleri",
-        "en": "Time Series Components"
+        "tr": "Zaman Serisi Bileşenleri (Trend, Mevsimsellik) [Bonus]",
+        "en": "Time Series Components (Trend, Seasonality) [Bonus]"
       },
       "conceptCard": {
-        "tr": "Zaman serisi veri kümesi 4 ana bileşenden oluşur: Trend (uzun vadeli yön), Mevsimsellik (periyodik dalgalanma), Döngü (konjonktür) ve Rastgele Gürültü (Noise).",
-        "en": "A time series consists of 4 main components: Trend (long-term direction), Seasonality (periodic repeats), Cyclicality, and Random Noise."
+        "tr": "Zaman içinde düzenli aralıklarla toplanan veri setlerindeki 4 temel bileşen:\n\n1. **Trend ($T$):** Uzun vadeli artış veya azalış eğilimi.\n2. **Mevsimsellik (Seasonality - $S$):** Yıl, hafta veya gün içinde tekrarlanan periyodik dalgalanma (Örn: Yaz aylarında dondurma satışı).\n3. **Döngüsellik (Cyclic - $C$):** Ekonomik konjonktüre bağlı çok yıllık dalgalanmalar.\n4. **Rassallık / Gürültü (Irregular/Noise - $I$):** Öngörülemeyen rastgele sapmalar.\n\n- **Toplamsal Model:** $Y_t = T_t + S_t + I_t$\n- **Çarpımsal Model:** $Y_t = T_t \\times S_t \\times I_t$",
+        "en": "The 4 fundamental components of time series data:\n\n1. **Trend ($T$):** Long-term upward or downward movement.\n2. **Seasonality ($S$):** Repeating cyclical fluctuations over fixed periods (e.g. quarterly peaks).\n3. **Cyclical ($C$):** Multi-year macroeconomic cycles.\n4. **Irregular/Noise ($I$):** Random unpredictable noise.\n\n- **Additive:** $Y_t = T_t + S_t + I_t$\n- **Multiplicative:** $Y_t = T_t \\times S_t \\times I_t$"
       },
       "companyExample": {
-        "tr": "RetailCo her yıl Aralık ayında dondurma satışlarının düştüğünü, mont satışlarının tavan yaptığını (Mevsimsellik) görür.",
-        "en": "RetailCo observes December sales spikes for winter coats and dips for ice cream (Seasonality)."
+        "tr": "RetailCo e-ticaret satışlarında: Her yıl %15 büyüme Trend ($T$), Kasım indirimleri Mevsimsellik ($S$), sunucu kesintisi kaynaklı anlık düşüş Rassallık ($I$) bileşenidir.",
+        "en": "RetailCo: Annual 15% revenue growth is Trend ($T$), Black Friday spike is Seasonality ($S$), server crash dip is Noise ($I$)."
       },
-      "interactiveType": "correlation_regression",
       "vocabTerms": [
         {
           "term_en": "seasonality",
-          "explanation_tr": "Belirli dönemlerde tekrarlayan periyodik hareket.",
-          "explanation_en": "Periodic repeating patterns at specific intervals.",
-          "exampleSentence_en": "Holiday sales exhibit strong seasonality."
+          "explanation_tr": "Belirli sabit zaman aralıklarında tekrarlanan periyodik dalgalanma paterni.",
+          "explanation_en": "A characteristic of a time series in which data experiences regular and predictable changes.",
+          "exampleSentence_en": "Retail sales exhibit strong Q4 holiday seasonality."
         }
       ],
       "questions": [
@@ -42,8 +41,8 @@
           "id": "m10-l1-q1",
           "type": "multiple_choice",
           "prompt": {
-            "tr": "Her yaz aylarında tekrarlayan satış artışı hangi bileşendir?",
-            "en": "Repeated sales spikes every summer represent which component?"
+            "tr": "Her yılın Aralık ayında perakende satışlarının düzenli olarak zirve yapması hangi zaman serisi bileşenine örnektir?",
+            "en": "Retail sales peaking every December is an example of which component?"
           },
           "options": [
             {
@@ -51,17 +50,33 @@
               "en": "Seasonality"
             },
             {
-              "tr": "Rastgele Gürültü (Random Noise)",
+              "tr": "Trend",
+              "en": "Trend"
+            },
+            {
+              "tr": "Rassal Gürültü",
               "en": "Random Noise"
+            },
+            {
+              "tr": "Durağanlık",
+              "en": "Stationarity"
             }
           ],
           "correctAnswer": "Mevsimsellik (Seasonality)",
           "explanation": {
-            "tr": "Yıllık periyodik tekrarlar mevsimselliktir.",
-            "en": "Annual repeating patterns constitute seasonality."
+            "tr": "Yılın aynı döneminde düzenli tekrarlanan dalgalanmalar mevsimsellik (Seasonality) bileşenidir.",
+            "en": "Predictable calendar-based repetitions represent seasonality."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Zaman Çizelgesi Grafiği ve Trend Ekle",
+        "pythonCode": "from statsmodels.tsa.seasonal import seasonal_decompose\nres = seasonal_decompose(df[\"sales\"], model=\"additive\")",
+        "powerBiNote": {
+          "tr": "Power BI Analytics bölmesinden Forecast (Tahmin) açılır.",
+          "en": "Enable built-in Power BI time-series forecast tool."
+        }
+      }
     },
     {
       "id": "m10-l2",
@@ -69,24 +84,23 @@
       "order": 2,
       "difficulty": "orta",
       "title": {
-        "tr": "Hareketli Ortalama (Moving Average)",
-        "en": "Moving Averages"
+        "tr": "Hareketli Ortalama ($SMA / WMA$) [Bonus]",
+        "en": "Moving Averages ($SMA / WMA$) [Bonus]"
       },
       "conceptCard": {
-        "tr": "Zaman Serisi, kronolojik sıra ile toplanmış gözlemler kümesidir. $k$-Dönemlik Basit Hareketli Ortalama (SMA):\n\n$$\\text{SMA}_t = \\frac{1}{k} \\sum_{i=0}^{k-1} Y_{t-i} = \\frac{Y_t + Y_{t-1} + \\dots + Y_{t-k+1}}{k}$$",
-        "en": "Moving Average (MA) smooths short-term noise by averaging the most recent k periods."
+        "tr": "Kısa vadeli rassal dalgalanmaları ve gürültüyü filtreleyerek ana eğilimi çıkarma yöntemi:\n\n1. **Basit Hareketli Ortalama ($k$-dönemlik SMA):**\n$$SMA_t = \\frac{y_t + y_{t-1} + \\dots + y_{t-k+1}}{k}$$\n2. **Ağırlıklı Hareketli Ortalama (WMA):**\nEn son güncel dönemlere daha yüksek ağırlık verilir:\n$$WMA_t = \\sum_{i=1}^k w_i y_{t-i+1}, \\quad \\sum w_i = 1$$",
+        "en": "Smoothing short-term noise to expose underlying baseline trend:\n\n1. **Simple Moving Average ($k$-period SMA):**\n$$SMA_t = \\frac{1}{k}\\sum_{i=0}^{k-1} y_{t-i}$$\n2. **Weighted Moving Average (WMA):**\nAssigns higher weights to more recent time periods:\n$$WMA_t = \\sum w_i y_{t-i+1}, \\quad \\sum w_i = 1$$"
       },
       "companyExample": {
-        "tr": "RetailCo 3 aylık basit hareketli ortalama ile gelecek ayın satış tahminini hesaplar.",
-        "en": "RetailCo uses a 3-month simple moving average to forecast next month's sales."
+        "tr": "RetailCo son 3 aylık satışları: Ocak: 100, Şubat: 120, Mart: 140. 3 aylık SMA tahmini = $(100 + 120 + 140) / 3 = 120$ adet.",
+        "en": "Monthly sales: Jan: 100, Feb: 120, Mar: 140. 3-month SMA forecast = $(100+120+140)/3 = 120$."
       },
-      "interactiveType": "correlation_regression",
       "vocabTerms": [
         {
           "term_en": "moving average",
-          "explanation_tr": "Gürültüyü azaltmak için ardışık dönem ortalaması alma.",
-          "explanation_en": "Successive average calculation to smooth series data.",
-          "exampleSentence_en": "A 3-month moving average smoothes out monthly spikes."
+          "explanation_tr": "Zaman serisinde ardışık alt aralıkların ortalamasını alarak gürültüyü filtreleyen yöntem.",
+          "explanation_en": "A calculation used to analyze data points by creating a series of averages of different subsets.",
+          "exampleSentence_en": "A 50-day moving average smooths out daily price fluctuations."
         }
       ],
       "questions": [
@@ -94,93 +108,97 @@
           "id": "m10-l2-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "Son 3 ayın satış değerleri $10, 20, 30$ Bin TL ise 3 aylık Hareketli Ortalama tahmini kaçtır?",
-            "en": "If last 3 months sales are 10, 20, 30 ($k), what is the 3-month MA forecast?"
+            "tr": "Son 4 dönemin değerleri $10, 20, 30, 40$ ise 4 dönemlik Basit Hareketli Ortalama ($SMA$) kaçtır?",
+            "en": "If last 4 observations are $10, 20, 30, 40$, what is the 4-period SMA?"
           },
-          "correctAnswer": 20,
+          "correctAnswer": 25,
           "explanation": {
-            "tr": "$$\\text{SMA} = \\frac{10 + 20 + 30}{3} = \\frac{60}{3} = 20$$",
-            "en": "(10 + 20 + 30) / 3 = 20"
+            "tr": "$$SMA = \\frac{10 + 20 + 30 + 40}{4} = \\frac{100}{4} = 25$$",
+            "en": "$$SMA = \\frac{100}{4} = 25$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=ORTALAMA(A1:A3)",
+        "pythonCode": "df[\"sma_3\"] = df[\"sales\"].rolling(window=3).mean()",
+        "powerBiNote": {
+          "tr": "Quick Measure: Rolling average oluşturulabilir.",
+          "en": "Create quick measure: Rolling average."
+        }
+      }
     },
     {
       "id": "m10-l3",
       "moduleId": "module-10",
       "order": 3,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "Üstel Düzleştirme (Exponential Smoothing)",
-        "en": "Exponential Smoothing"
+        "tr": "Basit Üstel Düzleştirme (Exponential Smoothing) [Bonus]",
+        "en": "Single Exponential Smoothing [Bonus]"
       },
       "conceptCard": {
-        "tr": "Basit Üstel Düzleştirme (Single Exponential Smoothing), geçmiş gözlemlere üssel olarak azalan ağırlıklar verir:\n\n$$\\hat{Y}_{t+1} = \\alpha Y_t + (1 - \\alpha) \\hat{Y}_t, \\qquad 0 \\le \\alpha \\le 1$$\n\nDüzleştirme parametresi $\\alpha$ büyüdükçe model en son gözleme daha yüksek ağırlık verir.",
-        "en": "Single Exponential Smoothing (SES) assigns higher weights to more recent observations using parameter alpha (α)."
+        "tr": "Geçmiş tüm gözlemleri üstel olarak azalan ağırlıklarla hesaba katan tahmin yöntemi:\n\n$$\\hat{y}_{t+1} = \\alpha y_t + (1 - \\alpha) \\hat{y}_t$$\n\n- $\\alpha$: Düzleştirme Sabiti ($0 < \\alpha < 1$)\n- **$\\alpha \\to 1$:** En son gözleme çok yüksek tepki verir (Dinamik).\n- **$\\alpha \\to 0$:** Geçmiş tahmin ortalamasına bağlı kalır (Aşırı yumuşak).",
+        "en": "Forecasting using exponentially decreasing weights for past observations:\n\n$$\\hat{y}_{t+1} = \\alpha y_t + (1 - \\alpha) \\hat{y}_t$$\n\n- $\\alpha$: Smoothing parameter ($0 < \\alpha < 1$).\n- **Large $\\alpha$ ($\to 1$):** Highly responsive to recent changes.\n- **Small $\\alpha$ ($\to 0$):** Smooths out noise heavily."
       },
       "companyExample": {
-        "tr": "RetailCo en son ayın satışlarına %60 (α = 0.6) ağırlık vererek yeni trendi hızlı yakalar.",
-        "en": "RetailCo applies α = 0.6 to capture recent trend shifts quickly."
+        "tr": "Bu dönemin tahmini $\\hat{y}_t = 100$, gerçekleşen satış $y_t = 120$ ve $\\alpha = 0.30$ ise gelecek dönem tahmini: $\\hat{y}_{t+1} = 0.30(120) + 0.70(100) = 36 + 70 = 106$ adet.",
+        "en": "Forecast $\\hat{y}_t = 100$, actual $y_t = 120$, $\\alpha = 0.30$. Next forecast: $\\hat{y}_{t+1} = 0.30(120) + 0.70(100) = 106$."
       },
-      "interactiveType": "correlation_regression",
       "vocabTerms": [
         {
           "term_en": "exponential smoothing",
-          "explanation_tr": "Son gözlemlere daha yüksek ağırlık veren tahmin yöntemi.",
-          "explanation_en": "Forecasting method weighting recent data more heavily.",
-          "exampleSentence_en": "Exponential smoothing adapts quickly to trend changes."
+          "explanation_tr": "Geçmiş verilere üstel azalan ağırlıklar vererek kısa vadeli tahmin üreten yöntem.",
+          "explanation_en": "A rule of thumb technique for smoothing time series data using the exponential window function.",
+          "exampleSentence_en": "Exponential smoothing adapts quickly to demand level shifts."
         }
       ],
       "questions": [
         {
           "id": "m10-l3-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "Üstel düzleştirmede $\\alpha = 1.0$ seçilirse bir sonraki dönem tahmini $\\hat{Y}_{t+1}$ neye eşit olur?",
-            "en": "In exponential smoothing, if $\\alpha = 1.0$, what does next period forecast $\\hat{Y}_{t+1}$ equal?"
+            "tr": "Gerçekleşen $y_t = 80$, önceki tahmin $\\hat{y}_t = 60$ ve $\\alpha = 0.50$ ise yeni tahmin $\\hat{y}_{t+1}$ kaçtır?",
+            "en": "If actual $y_t = 80$, prior forecast $\\hat{y}_t = 60$, and $\\alpha = 0.50$, what is next forecast $\\hat{y}_{t+1}$?"
           },
-          "options": [
-            {
-              "tr": "En son gerçekleşen gözlem değerine ($Y_t$ / Naive Tahmin)",
-              "en": "The most recent actual observation ($Y_t$ / Naive)"
-            },
-            {
-              "tr": "Tüm geçmiş verilerin aritmetik ortalamasına",
-              "en": "The simple average of all past data"
-            }
-          ],
-          "correctAnswer": "En son gerçekleşen gözlem değerine ($Y_t$ / Naive Tahmin)",
+          "correctAnswer": 70,
           "explanation": {
-            "tr": "$$\\hat{Y}_{t+1} = 1.0(Y_t) + 0(\\hat{Y}_t) = Y_t \\quad (\\text{En son gerçekleşen gözleme tam ağırlık verilir})$$",
-            "en": "$$\\hat{Y}_{t+1} = 1.0(Y_t) + 0(\\hat{Y}_t) = Y_t$$"
+            "tr": "$$\\hat{y}_{t+1} = 0.50(80) + 0.50(60) = 40 + 30 = 70$$",
+            "en": "$$\\hat{y}_{t+1} = 40 + 30 = 70$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=alpha*Gerçekleşen + (1-alpha)*Önceki_Tahmin",
+        "pythonCode": "from statsmodels.tsa.holtwinters import SimpleExpSmoothing\nmodel = SimpleExpSmoothing(data).fit(smoothing_level=0.3)",
+        "powerBiNote": {
+          "tr": "Talep tahminleme panolarında kullanılır.",
+          "en": "Applied on demand planning dashboards."
+        }
+      }
     },
     {
       "id": "m10-l4",
       "moduleId": "module-10",
       "order": 4,
-      "difficulty": "zor",
+      "difficulty": "orta-ustu",
       "title": {
-        "tr": "Durağanlık & Sezonsal Tahminler",
-        "en": "Stationarity & Seasonal Forecasting"
+        "tr": "Ki-Kare Hücre Birleştirme ($E_{ij} < 5$ Kuralı)",
+        "en": "Chi-Square Cell Merging ($E_{ij} < 5$ Rule)"
       },
       "conceptCard": {
-        "tr": "Durağan (Stationary) zaman serisinde ortalama ve varyans zamanla değişmez. Tahmin modelleri (ARIMA gibi) serinin durağan olmasını gerektirir.",
-        "en": "A stationary time series has constant mean and variance over time. Advanced models (like ARIMA) require stationarity."
+        "tr": "Ki-Kare ($chi^2$) bağımsızlık ve uyum iyiliği testinin geçerli olabilmesi için temel kural (`INDR 252 Case Rules`, `Lecture 16`):\n\n**Hücre Birleştirme Kuralı:**\nTablodaki beklenen frekans değerlerinin ($E_{ij}$) hiçbirisi 5'ten küçük olmamalıdır ($E_{ij} \\ge 5$).\n\n- Eğer $E_{ij} < 5$ olan hücreler varsa, testin $p$-değeri güvenilmez olur.\n- **Çözüm:** Benzer özellik taşıyan bitişik kategoriler veya düşük frekanslı sınıflar birleştirilerek tek bir kategori yapılır ve serbestlik derecesi yeniden hesaplanır.",
+        "en": "Essential validity requirement for Chi-square tests (`INDR 252 Case Rules`, `Lecture 16`):\n\n**Expected Cell Frequency Rule ($E_{ij} \\ge 5$):**\nAll expected cell counts must be at least 5 ($E_{ij} \\ge 5$).\n\n- If $E_{ij} < 5$, the chi-square approximation breaks down.\n- **Solution:** Merge sparse neighboring categories to satisfy $E_{ij} \\ge 5$, then recalculate degrees of freedom."
       },
       "companyExample": {
-        "tr": "RetailCo fark alma (differencing) yöntemi ile serideki trendi yok edip durağan hale getirir.",
-        "en": "RetailCo applies differencing to remove trend and achieve stationarity."
+        "tr": "RetailCo müşteri cihaz tercihinde \"Akıllı Saat\" kategorisi için $E_{ij} = 2.4 < 5$ çıkmıştır. Akıllı saat kategorisi \"Tablet\" ile birleştirilerek $E_{ij} = 8.6 \\ge 5$ sağlanmış ve test geçerli kılınmıştır (`DataPulse Case`).",
+        "en": "Smartwatch category has $E_{ij} = 2.4 < 5$. Merging Smartwatch with Tablet gives $E_{ij} = 8.6 \\ge 5$, restoring test validity."
       },
-      "interactiveType": "correlation_regression",
       "vocabTerms": [
         {
-          "term_en": "stationarity",
-          "explanation_tr": "İstatistiksel özelliklerinin zaman içinde değişmeme durumu.",
-          "explanation_en": "Property where statistical characteristics remain constant over time.",
-          "exampleSentence_en": "Stationarity is required for ARIMA modeling."
+          "term_en": "cell merging",
+          "explanation_tr": "Ki-Kare testinde beklenen frekansı 5'ten küçük olan kategorileri birleştirme işlemi.",
+          "explanation_en": "Combining sparse categories in contingency tables to satisfy minimum expected count assumptions.",
+          "exampleSentence_en": "Cell merging ensures chi-square test validity when counts are small."
         }
       ],
       "questions": [
@@ -188,26 +206,109 @@
           "id": "m10-l4-q1",
           "type": "multiple_choice",
           "prompt": {
-            "tr": "Durağan zaman serisinin temel özelliği nedir?",
-            "en": "What is the key feature of a stationary time series?"
+            "tr": "Ki-Kare testinde bir hücrenin beklenen değeri $E_{ij} = 3$ çıkarsa ne yapılmalıdır?",
+            "en": "If an expected cell count is $E_{ij} = 3$ in a chi-square test, what should be done?"
           },
           "options": [
             {
-              "tr": "Ortalama ve varyansın zaman içinde sabit kalması",
-              "en": "Constant mean and variance over time"
+              "tr": "Düşük frekanslı kategori benzer bir kategoriyle birleştirilmelidir (Eij ≥ 5 kuralı)",
+              "en": "Merge low-frequency category with a similar category (Eij ≥ 5 rule)"
             },
             {
-              "tr": "Sürekli sonsuza doğru yükselmesi",
-              "en": "Constantly rising to infinity"
+              "tr": "O hücreyi tablodan tamamen silip testi yok saymak",
+              "en": "Delete that cell from the table"
+            },
+            {
+              "tr": "Testi Z-testine dönüştürmek",
+              "en": "Convert the test to Z-test"
+            },
+            {
+              "tr": "Hiçbir işlem yapmadan p-değerini kabul etmek",
+              "en": "Accept p-value without modification"
             }
           ],
-          "correctAnswer": "Ortalama ve varyansın zaman içinde sabit kalması",
+          "correctAnswer": "Düşük frekanslı kategori benzer bir kategoriyle birleştirilmelidir (Eij ≥ 5 kuralı)",
           "explanation": {
-            "tr": "Durağanlık zamana bağlı yapısal değişim olmamasıdır.",
-            "en": "Stationarity implies time-invariant statistical properties."
+            "tr": "INDR 252 kuralı gereği $E_{ij} < 5$ olan kategoriler birleştirilerek testin geçerliliği sağlanır.",
+            "en": "By standard statistical guidelines, categories with $E_{ij} < 5$ are collapsed."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=EĞER(E_ij < 5; \"Kategori Birleştir\"; \"Geçerli\")",
+        "pythonCode": "# Combine categories in pandas before running chi2\ndf[\"merged_cat\"] = df[\"device\"].replace({\"Smartwatch\": \"Tablet/Watch\"})",
+        "powerBiNote": {
+          "tr": "Gruplama (Group) özelliği ile kategoriler birleştirilir.",
+          "en": "Use Grouping feature to collapse sparse categories."
+        }
+      }
+    },
+    {
+      "id": "m10-l5",
+      "moduleId": "module-10",
+      "order": 5,
+      "difficulty": "orta-ustu",
+      "title": {
+        "tr": "Parametrik Olmayan Testler (Mann-Whitney U & Wilcoxon) [Bonus]",
+        "en": "Non-Parametric Tests (Mann-Whitney U & Wilcoxon) [Bonus]"
+      },
+      "conceptCard": {
+        "tr": "Veriler normal dağılmadığında veya sıra/puanlama (ordinal) verisi olduğunda parametrik olmayan testler kullanılır:\n\n1. **Mann-Whitney U Testi (İki Bağımsız Grup):**\nBağımsız iki örneklem $t$-testinin non-parametrik karşılığıdır. Değerler yerine sıraları (ranks) kıyaslar.\n\n2. **Wilcoxon İşaretli Sıralar Testi (Eşleştirilmiş Grup):**\nPaired $t$-testinin non-parametrik karşılığıdır. Öncesi/sonrası farkların işaretli medyanını test eder.",
+        "en": "Non-parametric alternatives when normality fails or data is ordinal:\n\n1. **Mann-Whitney U Test (Independent Groups):**\nNon-parametric alternative to independent two-sample t-test using rank sums.\n\n2. **Wilcoxon Signed-Rank Test (Paired Groups):**\nNon-parametric alternative to paired t-test evaluating median differences."
+      },
+      "companyExample": {
+        "tr": "Müşteri memnuniyet puanları (1-5 yıldız) aşırı çarpıktır ve normal değildir. İki şube kıyaslamasında $t$-testi yerine Mann-Whitney U testi uygulanarak sıralar üzerinden adil kıyaslama yapılır.",
+        "en": "1-5 star customer ratings are non-normal. Mann-Whitney U test evaluates median difference across branch ranks."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Mann-Whitney U test",
+          "explanation_tr": "Normallik varsayımı gerektirmeyen bağımsız iki grup sıra toplamı testi.",
+          "explanation_en": "A non-parametric test of the null hypothesis that two independent samples come from the same distribution.",
+          "exampleSentence_en": "Mann-Whitney U test is ideal for ordinal survey scales."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m10-l5-q1",
+          "type": "multiple_choice",
+          "prompt": {
+            "tr": "Normallik varsayımı sağlanamayan eşleştirilmiş (paired) öncesi/sonrası ölçümlerde hangi test kullanılmalıdır?",
+            "en": "Which test should be used for paired before/after measurements when normality fails?"
+          },
+          "options": [
+            {
+              "tr": "Wilcoxon İşaretli Sıralar Testi",
+              "en": "Wilcoxon Signed-Rank Test"
+            },
+            {
+              "tr": "Mann-Whitney U Testi",
+              "en": "Mann-Whitney U Test"
+            },
+            {
+              "tr": "Standart ANOVA",
+              "en": "Standard ANOVA"
+            },
+            {
+              "tr": "Tek Örneklem Z-Testi",
+              "en": "One-Sample Z-Test"
+            }
+          ],
+          "correctAnswer": "Wilcoxon İşaretli Sıralar Testi",
+          "explanation": {
+            "tr": "Paired verilerin normallik gerektirmeyen non-parametrik alternatifi Wilcoxon testidir.",
+            "en": "Wilcoxon signed-rank test is the non-parametric counterpart to paired t-test."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Non-Parametric Rank Test",
+        "pythonCode": "from scipy.stats import mannwhitneyu, wilcoxon\nstat, p = mannwhitneyu(group1, group2)",
+        "powerBiNote": {
+          "tr": "Medyan ve IQR bazlı görselleştirmelerle desteklenir.",
+          "en": "Supported by Median and IQR visual reporting."
+        }
+      }
     }
   ],
   "caseExams": [

@@ -3,11 +3,11 @@
   "order": 15,
   "title": {
     "tr": "Poisson Süreci & Nadir Olaylar",
-    "en": "Poisson Process & Rare Events"
+    "en": "Poisson Processes & Rare Events"
   },
   "description": {
-    "tr": "Zaman içinde sabit λ oranıyla gerçekleşen varışlar, Poisson olasılık formülü P(X=k) ve olaylar arası bekleme süresi ilişkisi.",
-    "en": "Arrivals with fixed rate λ over time, Poisson probability formula P(X=k), and inter-arrival time relationship."
+    "tr": "Homojen Poisson süreçleri, varışlar arası üstel dağılım, hafızasızlık ve süreç birleştirme/bölme.",
+    "en": "Homogeneous Poisson processes, interarrival exponential distribution, memorylessness, and superposition/thinning."
   },
   "iconName": "Clock",
   "lessons": [
@@ -17,24 +17,23 @@
       "order": 1,
       "difficulty": "orta",
       "title": {
-        "tr": "Poisson Dağılımı & Oran Parametresi λ",
-        "en": "Poisson Distribution & Rate Parameter λ"
+        "tr": "Poisson Dağılımı ve Oran Parametresi $lambda$",
+        "en": "Poisson Distribution & Rate Parameter $lambda$"
       },
       "conceptCard": {
-        "tr": "Poisson Dağılımı $X \\sim \\text{Poisson}(\\lambda)$, belirli bir zaman veya alan diliminde meydana gelen bağımsız nadir olayları modeller:\n\n$$P(X = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}, \\qquad k = 0, 1, 2, \\dots$$\n\nEn önemli teorik özelliği: $\\mathbb{E}[X] = \\text{Var}(X) = \\lambda$ olmasıdır.",
-        "en": "Poisson models count of independent rare events in fixed intervals: P(X=k) = (λ^k * e^-λ) / k!. Mean and variance both equal λ."
+        "tr": "Belirli bir zaman veya alan aralığında gerçekleşen bağımsız olay sayısı dağılımı (`ENGR 200`):\n\n$$P(X = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}, \\quad k = 0, 1, 2, \\dots$$\n\n- $\\lambda$: Birim aralıktaki ortalama varış/olay sayısı.\n- **Kritik Eşitlik:** $$E[X] = Var(X) = \\lambda$$\nOrtalama ile varyans birbirine eşittir.",
+        "en": "Probability of observing $k$ events in a fixed interval of time or space (`ENGR 200`):\n\n$$P(X = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}, \\quad k = 0, 1, 2, \\dots$$\n\n- $\\lambda$: Average arrival rate.\n- **Crucial Identity:** $$E[X] = Var(X) = \\lambda$$"
       },
       "companyExample": {
-        "tr": "CyberPass web sitesine saatte ortalama λ = 4 hata bildirimi gelmektedir. Bir sonraki saat hiç hata gelmeme olasılığı P(X=0) = e^(-4) ≈ 0.0183 (%1.83)'tür.",
-        "en": "CyberPass receives mean λ = 4 bug reports per hour. Probability of 0 bugs in next hour = e^-4 ≈ 1.83%."
+        "tr": "Bir çağrı merkezine saatte ortalama $\\lambda = 4$ çağrı gelmektedir. Önümüzdeki 1 saatte tam 2 çağrı gelme olasılığı: $P(X = 2) = \\frac{4^2 e^{-4}}{2!} = \\frac{16 \\times 0.0183}{2} = 0.1465$ (%14.65).",
+        "en": "Call center arrival $\\lambda = 4$ calls/hour. Probability of exactly 2 calls: $P(X=2) = \\frac{4^2 e^{-4}}{2!} = 0.1465$."
       },
-      "interactiveType": "poisson_dist",
       "vocabTerms": [
         {
-          "term_en": "poisson process",
-          "explanation_tr": "Olayların birbirinden bağımsız ve sabit bir Oran (λ) ile zaman içinde gerçekleştiği stokastik süreç.",
-          "explanation_en": "Stochastic process where events occur independently at a constant average rate λ.",
-          "exampleSentence_en": "Server requests often follow a Poisson process."
+          "term_en": "Poisson distribution",
+          "explanation_tr": "Sabit ortalama oranla gerçekleşen bağımsız olayların sayısını modelleyen kesikli dağılım.",
+          "explanation_en": "A discrete probability distribution expressing the probability of a given number of events occurring in a fixed interval.",
+          "exampleSentence_en": "Poisson distribution models website visits per minute."
         }
       ],
       "questions": [
@@ -42,83 +41,115 @@
           "id": "m15-l1-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "Ortalaması $\\lambda = 5$ olan bir Poisson dağılımının varyansı $\\text{Var}(X)$ kaçtır?",
-            "en": "What is the variance of a Poisson distribution with mean λ = 5?"
+            "tr": "Beklenen değeri $E[X] = 9$ olan bir Poisson dağılımında Standart Sapma ($sigma$) kaçtır?",
+            "en": "For a Poisson distribution with $E[X] = 9$, what is standard deviation $sigma$?"
           },
-          "correctAnswer": 5,
+          "correctAnswer": 3,
           "explanation": {
-            "tr": "$$\\text{Var}(X) = \\lambda = 5$$",
-            "en": "In Poisson distribution, Variance = λ = 5."
+            "tr": "$$Var(X) = \\lambda = 9 \\implies \\sigma = \\sqrt{9} = 3$$",
+            "en": "$$Var(X) = 9 \\implies \\sigma = \\sqrt{9} = 3$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=POISSON.DAĞ(k; lambda; YANLIŞ)",
+        "pythonCode": "from scipy.stats import poisson\npoisson.pmf(k=2, mu=4)",
+        "powerBiNote": {
+          "tr": "Kapasite kuyruk modeli simülasyonlarında kullanılır.",
+          "en": "Applied in queuing theory capacity planning."
+        }
+      }
     },
     {
       "id": "m15-l2",
       "moduleId": "module-15",
       "order": 2,
-      "difficulty": "orta",
+      "difficulty": "orta-ustu",
       "title": {
-        "tr": "Bekleme Süreleri & Üstel Dağılım İlişkisi",
-        "en": "Inter-Arrival Times & Exponential Relation"
+        "tr": "Üstel Dağılım & Hafızasızlık Özelliği",
+        "en": "Exponential Distribution & Memoryless Property"
       },
       "conceptCard": {
-        "tr": "Poisson sürecinde ardışık iki olay arasındaki bekleme süresi $T$, $\\lambda$ parametreli Üstel Dağılıma ($T \\sim \\text{Exp}(\\lambda)$) uyar:\n\n$$f(t) = \\lambda e^{-\\lambda t}, \\qquad \\mathbb{E}[T] = \\frac{1}{\\lambda}$$\n\nÜstel dağılımın en belirgin özelliği Hafızasızlık (Memorylessness) özelliğidir: $P(T > s + t \\mid T > s) = P(T > t)$.",
-        "en": "In a Poisson process, time T between events follows an Exponential distribution with mean E[T] = 1/λ and memorylessness."
+        "tr": "Poisson sürecinde ardışık olaylar arası bekleme süresi ($T$) **Üstel Dağılıma** uyar (`ENGR 200`):\n\n1. **Yoğunluk ($PDF$):** $f(t) = \\lambda e^{-\\lambda t}, \\quad t \\ge 0$\n2. **Kümülatif ($CDF$):** $F(t) = P(T \\le t) = 1 - e^{-\\lambda t}$\n3. **Beklenen Değer & Varyans:** $E[T] = \\frac{1}{\\lambda}, \\quad Var(T) = \\frac{1}{\\lambda^2}$\n4. **Hafızasızlık (Memoryless Property):**\n$$P(T > s + t \\mid T > s) = P(T > t)$$\nGeçmişte geçen süre gelecekteki bekleme süresini etkilemez.",
+        "en": "Inter-arrival times ($T$) in a Poisson process follow the **Exponential Distribution** (`ENGR 200`):\n\n1. **PDF:** $f(t) = \\lambda e^{-\\lambda t}, \\quad t \\ge 0$\n2. **CDF:** $F(t) = P(T \\le t) = 1 - e^{-\\lambda t}$\n3. **Moments:** $E[T] = 1/\\lambda, \\quad Var(T) = 1/\\lambda^2$\n4. **Memoryless Property:**\n$$P(T > s + t \\mid T > s) = P(T > t)$$"
       },
       "companyExample": {
-        "tr": "CyberPass güvenlik sistemine her saat ortalama 6 sızma girişimi olmaktadır (λ = 6/saat). İki sızma arasındaki ortalama bekleme süresi 1/6 saat = 10 dakikadır.",
-        "en": "CyberPass experiences 6 intrusion attempts/hr (λ = 6). Average time between attempts = 1/6 hr = 10 minutes."
+        "tr": "Saatlik geliş oranı $\\lambda = 6$ ise ortalama çağrı bekleme süresi $E[T] = 1/6 \\text{ saat} = 10 \\text{ dakika}$'dır. 5 dakika beklemiş olmanız, bundan sonra 10 dakika daha bekleme olasılığınızı değiştirmez (hafızasızlık).",
+        "en": "Arrival rate $\\lambda = 6$/h implies mean wait $E[T] = 10$ mins. Having waited 5 mins does not alter remaining wait distribution."
       },
-      "interactiveType": "poisson_dist",
       "vocabTerms": [
         {
-          "term_en": "memorylessness",
-          "explanation_tr": "Geçmişte geçen sürenin gelecekteki bekleme olasılığını etkilememesi özelliği.",
-          "explanation_en": "Property where elapsed time does not affect remaining waiting time probability.",
-          "exampleSentence_en": "Exponential distributions possess memorylessness."
+          "term_en": "memoryless property",
+          "explanation_tr": "Geçmişte geçen sürenin gelecekteki bekleme süresi olasılığını etkilememesi özelliği.",
+          "explanation_en": "The property where future probabilities do not depend on elapsed past time.",
+          "exampleSentence_en": "The exponential distribution is the only continuous distribution with the memoryless property."
         }
       ],
       "questions": [
         {
           "id": "m15-l2-q1",
-          "type": "numeric",
+          "type": "multiple_choice",
           "prompt": {
-            "tr": "Dakikada ortalama $\\lambda = 2$ çağrı gelen bir çağrı merkezinde ortalama bekleme süresi $\\mathbb{E}[T] = \\frac{1}{\\lambda}$ kaç saniyedir?",
-            "en": "With λ = 2 calls per minute, what is the mean waiting time in seconds?"
+            "tr": "Sürekli dağılımlar arasında hafızasızlık (memoryless) özelliğine sahip TEK dağılım hangisidir?",
+            "en": "Which is the ONLY continuous distribution possessing the memoryless property?"
           },
-          "correctAnswer": 30,
+          "options": [
+            {
+              "tr": "Üstel (Exponential) Dağılım",
+              "en": "Exponential Distribution"
+            },
+            {
+              "tr": "Normal Dağılım",
+              "en": "Normal Distribution"
+            },
+            {
+              "tr": "Düzgün (Uniform) Dağılım",
+              "en": "Uniform Distribution"
+            },
+            {
+              "tr": "T-Dağılımı",
+              "en": "T-Distribution"
+            }
+          ],
+          "correctAnswer": "Üstel (Exponential) Dağılım",
           "explanation": {
-            "tr": "$$\\mathbb{E}[T] = \\frac{1}{2} \\text{ dk} = 30 \\text{ saniye}$$",
-            "en": "E[T] = 1 / 2 min = 0.5 min = 30 seconds."
+            "tr": "Sürekli dünyada yalnızca Üstel Dağılım; kesikli dünyada ise Geometrik Dağılım hafızasızdır.",
+            "en": "Exponential is uniquely memoryless among continuous probability distributions."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=ÜSTEL.DAĞ(x; lambda; DOĞRU)",
+        "pythonCode": "from scipy.stats import expon\nexpon.cdf(t, scale=1/lambda_rate)",
+        "powerBiNote": {
+          "tr": "Ortalama Arıza Aralığı (MTBF) hesaplarında kullanılır.",
+          "en": "Used for Mean Time Between Failures (MTBF) KPIs."
+        }
+      }
     },
     {
       "id": "m15-l3",
       "moduleId": "module-15",
       "order": 3,
-      "difficulty": "ileri",
+      "difficulty": "orta-ustu",
       "title": {
         "tr": "Nadir Olaylar & Binom-Poisson Yaklaşımı",
-        "en": "Rare Events & Binomial-Poisson Approximation"
+        "en": "Rare Events & Poisson Approximation to Binomial"
       },
       "conceptCard": {
-        "tr": "Binom-Poisson Yaklaşımı: $n \\ge 20$ büyük ve $p \\le 0.05$ küçük olduğunda $\\text{Bin}(n, p)$ dağılımı $\\lambda = n p$ olan $\\text{Poisson}(\\lambda)$ dağılımı ile modellenir:\n\n$$\\lim_{n \\to \\infty, np=\\lambda} \\binom{n}{k} p^k (1-p)^{n-k} = \\frac{\\lambda^k e^{-\\lambda}}{k!}$$",
-        "en": "For large n (n ≥ 20) and small p (p ≤ 0.05), Binomial(n, p) is approximated by Poisson(λ = n * p)."
+        "tr": "Deneme sayısı çok büyük ($n \\to \\infty$) ve başarı olasılığı çok küçük ($p \\to 0$) olduğunda Binom dağılımı $\\lambda = np$ parametreli Poisson dağılımına yakınsar (`Law of Rare Events`):\n\n$$Binomial(n, p) \\approx Poisson(\\lambda = np)$$\n\n- **Kural:** $n \\ge 100$ ve $p \\le 0.05$ ve $np < 10$ olduğunda Poisson yaklaşımı mükemmel doğruluk sağlar.",
+        "en": "When $n$ is very large ($n \\to \\infty$) and $p$ is very small ($p \\to 0$), the Binomial distribution converges to Poisson with $\\lambda = np$ (`Law of Rare Events`):\n\n$$Binomial(n, p) \\approx Poisson(\\lambda = np)$$\n\n- **Guideline:** Valid when $n \\ge 100, p \\le 0.05$, and $np < 10$."
       },
       "companyExample": {
-        "tr": "CyberPass 10,000 üretilen güvenlik çipini test ediyor. Hatalı çip oranı p = 0.0003'tür. λ = 10000 * 0.0003 = 3 ortalamalı Poisson dağılımı ile tam hesaplama pratikleşir.",
-        "en": "Testing 10,000 chips with defect rate p = 0.0003 yields λ = 10000 * 0.0003 = 3 for Poisson approximation."
+        "tr": "Bir fabrikada üretilen $n=2000$ entegre devrede arıza olasılığı $p = 0.001$'dir. $\\lambda = 2000 \\times 0.001 = 2$. Karmaşık Binom yerine $\\lambda = 2$ Poisson formülüyle arıza sayısı modellenir.",
+        "en": "Batch of $n=2000$ chips with defect rate $p=0.001$. Approximated via Poisson with $\\lambda = np = 2$."
       },
-      "interactiveType": "poisson_dist",
       "vocabTerms": [
         {
-          "term_en": "poisson approximation",
-          "explanation_tr": "Büyük n ve küçük p durumunda Binom hesabı yerine Poisson kullanımı.",
-          "explanation_en": "Using Poisson distribution in place of Binomial when n is large and p is small.",
-          "exampleSentence_en": "Poisson approximation simplifies binomial computations for rare events."
+          "term_en": "law of rare events",
+          "explanation_tr": "Büyük deneme ve küçük olasılıklarda Binom'un Poisson'a yakınsaması ilkesi.",
+          "explanation_en": "A theorem stating that rare independent events over many trials follow a Poisson distribution.",
+          "exampleSentence_en": "The law of rare events models server crash occurrences."
         }
       ],
       "questions": [
@@ -126,41 +157,48 @@
           "id": "m15-l3-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$n = 1000$ ve $p = 0.004$ için Poisson yaklaşım parametresi $\\lambda = n p$ kaçtır?",
-            "en": "What is the Poisson parameter λ for n = 1000 and p = 0.004?"
+            "tr": "$n = 500$ ve $p = 0.004$ olan bir süreçte Poisson yaklaşım parametresi $\\lambda$ kaçtır?",
+            "en": "For $n = 500$ and $p = 0.004$, what is the Poisson approximation parameter $\\lambda$?"
           },
-          "correctAnswer": 4,
+          "correctAnswer": 2,
           "explanation": {
-            "tr": "$$\\lambda = 1000 \\times 0.004 = 4$$",
-            "en": "λ = n * p = 1000 * 0.004 = 4."
+            "tr": "$$\\lambda = np = 500 \\times 0.004 = 2$$",
+            "en": "$$\\lambda = 500 \\times 0.004 = 2$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=POISSON.DAĞ(k; n*p; YANLIŞ)",
+        "pythonCode": "lambda_approx = n * p\npoisson.pmf(k, mu=lambda_approx)",
+        "powerBiNote": {
+          "tr": "Sigortacılık ve kaza frekansı modellerinde kullanılır.",
+          "en": "Applied in insurance risk modeling."
+        }
+      }
     },
     {
       "id": "m15-l4",
       "moduleId": "module-15",
       "order": 4,
-      "difficulty": "zor",
+      "difficulty": "orta-ustu",
       "title": {
-        "tr": "Poisson Süreçlerinde Toplanabilirlik",
-        "en": "Summation of Poisson Processes"
+        "tr": "Poisson Süreçlerinde Toplanabilirlik & Bölünme",
+        "en": "Superposition & Splitting of Poisson Processes"
       },
       "conceptCard": {
-        "tr": "Poisson Süreçlerinde Toplanabilirlik: İki bağımsız Poisson süreci (oranları $\\lambda_1$ ve $\\lambda_2$) birleştiğinde toplam olay süreci de $\\lambda = \\lambda_1 + \\lambda_2$ olan bir Poisson sürecidir:\n\n$$N(t) = N_1(t) + N_2(t) \\sim \\text{Poisson}((\\lambda_1 + \\lambda_2)t)$$",
-        "en": "When two or more independent Poisson processes (rates λ1, λ2) are combined, the total flow is a Poisson process with rate λ = λ1 + λ2."
+        "tr": "1. **Toplanabilirlik (Superposition):** Bağımsız iki Poisson süreci ($\\lambda_1$ ve $\\lambda_2$) birleştirildiğinde toplam süreç de bir Poisson sürecidir ve oranı:\n$$\\lambda_{toplam} = \\lambda_1 + \\lambda_2$$\n\n2. **Bölünme (Thinning / Splitting):** Oranı $\\lambda$ olan bir Poisson sürecinde her olay bağımsız olarak $p$ olasılıkla Tip 1, $1-p$ olasılıkla Tip 2 ise, oluşan alt süreçler bağımsız Poisson süreçleridir:\n$$\\lambda_1 = \\lambda p, \\quad \\lambda_2 = \\lambda (1-p)$$",
+        "en": "1. **Superposition:** Combining two independent Poisson processes with rates $\\lambda_1, \\lambda_2$ yields a Poisson process with rate:\n$$\\lambda_{total} = \\lambda_1 + \\lambda_2$$\n\n2. **Thinning (Splitting):** Splitting a Poisson process of rate $\\lambda$ where each arrival is classified Type 1 with probability $p$ yields independent Poisson streams with rates $\\lambda_1 = \\lambda p$ and $\\lambda_2 = \\lambda(1-p)$."
       },
       "companyExample": {
-        "tr": "CyberPass ana sunucusuna Sunucu A'dan ortalama λ1 = 3 istek/sn, Sunucu B'den λ2 = 4 istek/sn geliyorsa toplam istek oranı λ = 3 + 4 = 7 istek/sn olur.",
-        "en": "If CyberPass receives λ1 = 3 req/sec from Server A and λ2 = 4 req/sec from Server B, total rate is λ = 7 req/sec."
+        "tr": "Bir web sitesine Masaüstünden saatte $\\lambda_1 = 30$, Mobilden $\\lambda_2 = 70$ istek gelmektedir. Toplam sunucu yükü $\\lambda_{toplam} = 30 + 70 = 100$ istek/saat olan birleşik Poisson sürecidir.",
+        "en": "Desktop traffic $\\lambda_1 = 30$/h, Mobile $\\lambda_2 = 70$/h. Merged server workload is a Poisson process of rate $100$/h."
       },
-      "interactiveType": "poisson_dist",
       "vocabTerms": [
         {
-          "term_en": "poisson superposition",
-          "explanation_tr": "Bağımsız Poisson süreçlerinin toplanarak bileşik akış oluşturması.",
-          "explanation_en": "Combining independent Poisson processes into a unified total flow.",
-          "exampleSentence_en": "Poisson superposition property models aggregate network traffic."
+          "term_en": "superposition",
+          "explanation_tr": "Bağımsız Poisson süreçlerinin toplamının yine bir Poisson süreci olması.",
+          "explanation_en": "The property where the sum of independent Poisson processes is also a Poisson process.",
+          "exampleSentence_en": "Superposition simplifies multi-channel server traffic modeling."
         }
       ],
       "questions": [
@@ -168,16 +206,24 @@
           "id": "m15-l4-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$\\lambda_1 = 3/\\text{sn}$ ve $\\lambda_2 = 4/\\text{sn}$ olan iki bağımsız Poisson sürecinin birleşik varış oranı $\\lambda$ kaçtır?",
-            "en": "What is total rate λ for two independent processes with λ1 = 3/sec and λ2 = 4/sec?"
+            "tr": "İki bağımsız girişten saatte $\\lambda_1 = 12$ ve $\\lambda_2 = 8$ çağrı geliyorsa toplam geliş oranı $\\lambda_{toplam}$ kaçtır?",
+            "en": "If two independent channels arrive at $\\lambda_1 = 12$ and $\\lambda_2 = 8$, what is $\\lambda_{total}$?"
           },
-          "correctAnswer": 7,
+          "correctAnswer": 20,
           "explanation": {
-            "tr": "$$\\lambda = 3 + 4 = 7$$",
-            "en": "λ = 3 + 4 = 7."
+            "tr": "$$\\lambda_{toplam} = 12 + 8 = 20$$",
+            "en": "$$\\lambda_{total} = 12 + 8 = 20$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=POISSON.DAĞ(k; lambda1 + lambda2; YANLIŞ)",
+        "pythonCode": "lambda_combined = lambda_1 + lambda_2",
+        "powerBiNote": {
+          "tr": "Trafik toplama ve yük dengeleme panellerinde kullanılır.",
+          "en": "Applied in network load balancing analytics."
+        }
+      }
     }
   ],
   "caseExams": [

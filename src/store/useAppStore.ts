@@ -18,11 +18,11 @@ export function isValidStudentEmail(email: string): boolean {
 }
 
 export const PROBABILITY_TRACK_MODULE_IDS = [
-  'module-2', 'module-13', 'module-14', 'module-3', 'module-15', 'module-16', 'module-4', 'module-12'
+  'module-13', 'module-2', 'module-14', 'module-3', 'module-16', 'module-15', 'module-4', 'module-12'
 ];
 
 export const STATISTICS_TRACK_MODULE_IDS = [
-  'module-1', 'module-5', 'module-6', 'module-7', 'module-8', 'module-9', 'module-10', 'module-11'
+  'module-1', 'module-4', 'module-5', 'module-6', 'module-7', 'module-8', 'module-9', 'module-10', 'module-11'
 ];
 
 export const ALL_SYSTEM_MODULE_IDS = [

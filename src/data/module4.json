@@ -2,12 +2,12 @@
   "id": "module-4",
   "order": 4,
   "title": {
-    "tr": "Örnekleme & CLT",
-    "en": "Sampling & Central Limit Theorem"
+    "tr": "Ortak Dağılımlar, Hata Yayılımı & CLT",
+    "en": "Joint Distributions, Error Propagation & CLT"
   },
   "description": {
-    "tr": "Örnekleme yöntemleri, örnekleme hatası ve Merkezi Limit Teoremi (CLT). Müşteri memnuniyet anketi örneklem büyüklüğü vakası.",
-    "en": "Sampling methods, sampling error, and Central Limit Theorem (CLT). Customer satisfaction survey sample size case."
+    "tr": "Kovaryans, değişken kombinasyonları, Taylor hata yayılımı ve Merkezi Limit Teoremi. Anket güvenilirlik analizi.",
+    "en": "Covariance, linear combinations, Taylor error propagation, and Central Limit Theorem. Survey reliability case."
   },
   "iconName": "Users",
   "lessons": [
@@ -15,26 +15,26 @@
       "id": "m4-l1",
       "moduleId": "module-4",
       "order": 1,
-      "difficulty": "basit",
+      "difficulty": "orta",
       "title": {
-        "tr": "Rastgele Örnekleme & Ana Kütle",
-        "en": "Random Sampling & Population"
+        "tr": "Birleşik (Joint) Dağılımlar, Kovaryans ve Korelasyon",
+        "en": "Joint Distributions, Covariance & Correlation"
       },
       "conceptCard": {
-        "tr": "Anakütleden çekilen $n$ birimlik rastgele örneklemlerin ortalaması ($\\bar{X}$) bir rastgele değişkendir ve bir Örnekleme Dağılımı oluşturur. Örneklem ortalamasının beklenen değeri anakütle ortalamasına eşittir:\n\n$$\\mathbb{E}[\\bar{X}] = \\mu_{\\bar{X}} = \\mu, \\qquad \\sigma_{\\bar{X}} = \\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$$\n\nBurada $\\text{SE}$ (Standard Error - Standart Hata), örneklem ortalamasının anakütle ortalaması etrafındaki değişkenliğini ifade eder.",
-        "en": "Population is the entire group of interest. Sample is a smaller representative subset selected from the population."
+        "tr": "İki rastgele değişken $X$ ve $Y$ arasındaki ortak davranış Birleşik Olasılık Kütle Fonksiyonu $p(x, y) = P(X=x, Y=y)$ ile modellenir.\n\nKovaryans (Değişkenlerin birlikte yönelimi):\n$$\\text{Cov}(X, Y) = \\sigma_{XY} = \\mathbb{E}[(X - \\mu_X)(Y - \\mu_Y)] = \\mathbb{E}[XY] - \\mathbb{E}[X]\\mathbb{E}[Y]$$\n\nPearson Korelasyon Katsayısı (Boyutsuz ilişki gücü, $-1 \\le \\rho \\le 1$):\n$$\\rho_{XY} = \\frac{\\text{Cov}(X, Y)}{\\sigma_X \\sigma_Y}$$\n$X$ ve $Y$ bağımsız ise $\\text{Cov}(X,Y) = 0$ ve $\\rho = 0$ olur.",
+        "en": "Joint PMF is $p(x,y)=P(X=x,Y=y)$. Covariance is $\\text{Cov}(X,Y)=\\mathbb{E}[XY]-\\mathbb{E}[X]\\mathbb{E}[Y]$. Correlation is $\\rho = \\frac{\\text{Cov}(X,Y)}{\\sigma_X \\sigma_Y} \\in [-1, 1]$."
       },
       "companyExample": {
-        "tr": "SurveyPulse pazar araştırma şirketi 1,000,000 aktif kullanıcısından memnuniyet puanı toplamak istiyor. Herkesi tek tek aramak imkansız olduğu için tüm platformu (Ana Kütle) temsil edecek 1,000 kişilik tarafsız bir Rastgele Örneklem grubu seçer. Bu sayede düşük maliyetle tüm kütlenin memnuniyeti doğru bir şekilde tahmin edilir.",
-        "en": "SurveyPulse market research firm wants to collect satisfaction scores from 1,000,000 active users. Because surveying everyone is impossible, they draw an unbiased Random Sample of 1,000 users to represent the entire platform (Population), estimating overall satisfaction accurately at low cost."
+        "tr": "SurveyPulse sunucularında CPU kullanımı ($X$) ile bellek kullanımı ($Y$) arasındaki kovaryans $\\text{Cov}(X,Y) = 24$, standart sapmalar $\\sigma_X = 5, \\sigma_Y = 6$ ise aralarındaki korelasyon $\\rho = 24 / (5 \\times 6) = 0.80$'dir. Bu, iki sistem kaynağı arasında güçlü bir pozitif doğrusal bağ olduğunu gösterir.",
+        "en": "CPU load ($X$) and RAM load ($Y$) have $\\text{Cov}(X,Y)=24$, $\\sigma_X=5, \\sigma_Y=6$. The correlation is $\\rho = 24/30 = 0.80$, showing a strong positive linear relationship."
       },
-      "interactiveType": "sample_size",
+      "interactiveType": "correlation_scatter",
       "vocabTerms": [
         {
-          "term_en": "random sampling",
-          "explanation_tr": "Her elemanın seçilme şansının eşit olduğu tarafsız seçim yöntemi.",
-          "explanation_en": "Unbiased selection method where every element has an equal chance.",
-          "exampleSentence_en": "Random sampling ensures survey validity."
+          "term_en": "covariance",
+          "explanation_tr": "İki rastgele değişkenin birlikte ne derece değiştiklerini gösteren istatistiksel ölçü.",
+          "explanation_en": "A measure of the joint variability of two random variables.",
+          "exampleSentence_en": "Positive covariance indicates variables increase together."
         }
       ],
       "questions": [
@@ -42,13 +42,13 @@
           "id": "m4-l1-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "Standart sapması $\\sigma = 20$ olan bir anakütleden $n = 100$ büyüklüğünde bir örneklem çekildiğinde Standart Hata ($\\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$) kaçtır?",
-            "en": "If population standard deviation $\\sigma = 20$ and sample size $n = 100$, what is the Standard Error ($\\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$)?"
+            "tr": "$\\mathbb{E}[XY] = 26$, $\\mathbb{E}[X] = 4$ ve $\\mathbb{E}[Y] = 5$ ise $\\text{Cov}(X, Y)$ kaçtır?",
+            "en": "If $\\mathbb{E}[XY] = 26$, $\\mathbb{E}[X] = 4$, and $\\mathbb{E}[Y] = 5$, what is $\\text{Cov}(X, Y)$?"
           },
-          "correctAnswer": 2,
+          "correctAnswer": 6,
           "explanation": {
-            "tr": "$$\\text{SE} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{20}{\\sqrt{100}} = \\frac{20}{10} = 2$$",
-            "en": "$$\\text{SE} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{20}{\\sqrt{100}} = \\frac{20}{10} = 2$$"
+            "tr": "$$\\text{Cov}(X, Y) = \\mathbb{E}[XY] - \\mathbb{E}[X]\\mathbb{E}[Y] = 26 - (4 \\times 5) = 26 - 20 = 6$$",
+            "en": "$$\\text{Cov}(X, Y) = 26 - (4 \\times 5) = 6$$"
           }
         }
       ]
@@ -57,26 +57,26 @@
       "id": "m4-l2",
       "moduleId": "module-4",
       "order": 2,
-      "difficulty": "orta",
+      "difficulty": "orta-ustu",
       "title": {
-        "tr": "Örneklem Dağılımı & Standart Hata",
-        "en": "Sampling Distribution & Standard Error"
+        "tr": "Rastgele Değişkenlerin Doğrusal Kombinasyonları",
+        "en": "Linear Combinations of Random Variables"
       },
       "conceptCard": {
-        "tr": "Merkezi Limit Teoremi (CLT), ana kütlenin dağılımı ne olursa olsun (çarpık, düzgün veya bimodal), örneklem hacmi $n \\ge 30$ olduğunda örneklem ortalamaları dağılımının yaklaşık olarak Normal Dağılıma yakınsayacağını garanti eder:\n\n$$\\bar{X} \\xrightarrow{d} \\mathcal{N}\\left(\\mu, \\frac{\\sigma^2}{n}\\right), \\qquad Z = \\frac{\\bar{X} - \\mu}{\\frac{\\sigma}{\\sqrt{n}}} \\sim \\mathcal{N}(0, 1)$$",
-        "en": "The standard deviation of sample means is called the Standard Error. As the sample size grows larger, the Standard Error decreases."
+        "tr": "$X_1, X_2, \\dots, X_n$ rastgele değişkenlerinin doğrusal kombinasyonu $Y = \\sum_{i=1}^n a_i X_i$ olsun:\n\n1. **Beklenen Değer (Her zaman geçerlidir):**\n$$\\mathbb{E}[Y] = \\sum_{i=1}^n a_i \\mathbb{E}[X_i]$$\n\n2. **Genel Varyans:**\n$$\\text{Var}(Y) = \\sum_{i=1}^n a_i^2 \\text{Var}(X_i) + 2 \\sum_{i < j} a_i a_j \\text{Cov}(X_i, X_j)$$\n\n3. **Bağımsız Değişkenler İçin Varyans:**\n$$\\text{Var}(Y) = \\sum_{i=1}^n a_i^2 \\text{Var}(X_i) \\implies \\text{Var}(X_1 - X_2) = \\text{Var}(X_1) + \\text{Var}(X_2)$$",
+        "en": "For linear combination $Y = \\sum a_i X_i$, expectation is $\\mathbb{E}[Y] = \\sum a_i \\mathbb{E}[X_i]$. For independent RVs, variance is $\\text{Var}(Y) = \\sum a_i^2 \\text{Var}(X_i)$."
       },
       "companyExample": {
-        "tr": "SurveyPulse harcama araştırmasında kütle standart sapması σ = 20 TL'dir. Şirket n = 100 kişilik bir örneklem aldığında Standart Hatayı SE = 20 / √100 = 2 TL olarak bulur. Örneklem büyüklüğünü 4 katına çıkarıp n = 400 yaptığında ise SE = 20 / √400 = 1 TL'ye düşer. Yani katılan kişi sayısı arttıkça tahminimizin yanılma payı azalır.",
-        "en": "In SurveyPulse's spending study, population std dev is σ = $20. When drawing a sample of n = 100, the Standard Error is SE = 20 / √100 = $2. Quadrupling sample size to n = 400 reduces SE = 20 / √400 = $1, demonstrating that larger sample sizes reduce estimation error."
+        "tr": "Bir montaj hattında iki bağımsız parçanın uzunlukları $X_1 \\sim \\mathcal{N}(50, 4)$ ve $X_2 \\sim \\mathcal{N}(30, 9)$'dur. Toplam uzunluk $Y = X_1 + X_2$ için beklenen değer $\\mathbb{E}[Y] = 50 + 30 = 80$, varyans $\\text{Var}(Y) = 4 + 9 = 13$, standart sapma $\\sigma_Y = \\sqrt{13} \\approx 3.61$ mm olur.",
+        "en": "Two independent assembled parts have lengths $X_1 \\sim \\mathcal{N}(50, 4)$ and $X_2 \\sim \\mathcal{N}(30, 9)$. Total length $Y = X_1 + X_2$ has $\\mathbb{E}[Y] = 80$ and $\\text{Var}(Y) = 4 + 9 = 13$."
       },
-      "interactiveType": "sample_size",
+      "interactiveType": "linear_comb_calc",
       "vocabTerms": [
         {
-          "term_en": "standard error",
-          "explanation_tr": "Örneklem ortalamalarının değişkenlik ölçüsü.",
-          "explanation_en": "A measure of variability among sample means.",
-          "exampleSentence_en": "Larger sample sizes reduce standard error."
+          "term_en": "linear combination",
+          "explanation_tr": "Rastgele değişkenlerin sabit katsayılarla çarpılıp toplanması işlemi.",
+          "explanation_en": "An expression constructed from a set of terms by multiplying each term by a constant and adding the results.",
+          "exampleSentence_en": "The sum of independent normal random variables is also normal."
         }
       ],
       "questions": [
@@ -84,13 +84,13 @@
           "id": "m4-l2-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "Merkezi Limit Teoremi'nin (CLT) geçerli olması için literatürde genel kabul gören minimum örneklem hacmi ($n$) kaçtır?",
-            "en": "If σ = 20 and n = 100, what is SE?"
+            "tr": "$X_1$ ve $X_2$ bağımsız iki değişken olup $\\text{Var}(X_1) = 9$ ve $\\text{Var}(X_2) = 16$ ise $\\text{Var}(X_1 - X_2)$ kaçtır?",
+            "en": "If $X_1$ and $X_2$ are independent with $\\text{Var}(X_1) = 9$ and $\\text{Var}(X_2) = 16$, what is $\\text{Var}(X_1 - X_2)$?"
           },
-          "correctAnswer": 30,
+          "correctAnswer": 25,
           "explanation": {
-            "tr": "İstatistikte örneklem ortalamasının normale yaklaşması için genellikle $n \\ge 30$ eşiği yeterli kabul edilir.",
-            "en": "20 / √100 = 2"
+            "tr": "Varyanslar her zaman toplanır: $\\text{Var}(X_1 - X_2) = (1)^2 \\text{Var}(X_1) + (-1)^2 \\text{Var}(X_2) = 9 + 16 = 25$.",
+            "en": "Variances always add up: $\\text{Var}(X_1 - X_2) = 1^2 \\times 9 + (-1)^2 \\times 16 = 25$."
           }
         }
       ]
@@ -99,26 +99,26 @@
       "id": "m4-l3",
       "moduleId": "module-4",
       "order": 3,
-      "difficulty": "orta-ustu",
+      "difficulty": "ileri",
       "title": {
-        "tr": "Merkezi Limit Teoremi (CLT)",
-        "en": "Central Limit Theorem (CLT)"
+        "tr": "Hata Yayılımı (Propagation of Error / Taylor Yaklaşımı)",
+        "en": "Propagation of Error (Taylor Series Approximation)"
       },
       "conceptCard": {
-        "tr": "Büyük Sayılar Yasası (LLN), örneklem büyüklüğü $n \\to \\infty$ arttıkça, örneklem ortalamasının $\\bar{X}_n$ anakütle ortalaması $\\mu$'ye olasılıkta yakınsayacağını ifade eder:\n\n$$P\\left(\\lim_{n \\to \\infty} |\\bar{X}_n - \\mu| < \\epsilon\\right) = 1$$",
-        "en": "The Central Limit Theorem states that regardless of the population distribution shape, sample means will approach a Normal distribution for sufficient sample sizes."
+        "tr": "Doğrusal olmayan bir fonksiyon $Y = f(X_1, X_2, \\dots, X_k)$ verildiğinde ve $X_i$ değişkenleri küçük varyanslarla bağımsız olduğunda, 1. derece Taylor serisi açılımı ile $Y$'nin yaklaşık varyansı (Hata Yayılımı / Error Propagation):\n\n$$\\sigma_Y^2 = \\text{Var}(Y) \\approx \\sum_{i=1}^k \\left( \\frac{\\partial f}{\\partial X_i} \\right)^2 \\sigma_{X_i}^2$$\n\nDeğişkenler bağımlı ise kovaryans terimleri eklenir:\n$$\\text{Var}(Y) \\approx \\sum_{i=1}^k \\left( \\frac{\\partial f}{\\partial X_i} \\right)^2 \\sigma_{X_i}^2 + 2 \\sum_{i < j} \\left( \\frac{\\partial f}{\\partial X_i} \\right) \\left( \\frac{\\partial f}{\\partial X_j} \\right) \\text{Cov}(X_i, X_j)$$",
+        "en": "For non-linear function $Y = f(X_1,\\dots,X_k)$, first-order Taylor expansion yields $\\sigma_Y^2 \\approx \\sum (\\frac{\\partial f}{\\partial X_i})^2 \\sigma_{X_i}^2$."
       },
       "companyExample": {
-        "tr": "SurveyPulse e-ticaret sitesinde sipariş tutarları sağa yatıktır (çoğu sipariş küçük, birkaç sipariş aşırı büyük). Ancak şirket bu siteden her seferinde n = 50 kişilik rastgele örneklemler çekip bunların ortalamasını aldığında, elde edilen bu ortalamaların dağılımı mükemmel bir Çan Eğrisi (Normal Dağılım) oluşturur. İşte bu Merkezi Limit Teoremi'nin gücüdür.",
-        "en": "On SurveyPulse's e-commerce platform, order values are heavily right-skewed (mostly small orders, a few massive ones). However, when repeatedly taking random samples of n = 50 and calculating their averages, the distribution of those sample means forms a perfect bell curve, proving the Central Limit Theorem."
+        "tr": "Elektrik devresinde güç $P = I^2 R$ formülüyle hesaplanmaktadır. Akım $I = 10$ A ($\\sigma_I = 0.2$), Direnç $R = 50\\,\\Omega$ ($\\sigma_R = 1$) bağımsızdır. $\\frac{\\partial P}{\\partial I} = 2IR = 2(10)(50) = 1000$, $\\frac{\\partial P}{\\partial R} = I^2 = 100$. Gücün varyansı $\\sigma_P^2 \\approx (1000)^2 (0.2)^2 + (100)^2 (1)^2 = 40000 + 10000 = 50000$ $\\text{W}^2$ (Standart sapma $\\sigma_P \\approx 223.6$ W) bulunur.",
+        "en": "Electrical power is $P = I^2 R$. With $I=10\\,(\\sigma_I=0.2)$ and $R=50\\,(\\sigma_R=1)$, partial derivatives give $\\sigma_P^2 \\approx (1000)^2(0.2)^2 + (100)^2(1)^2 = 50000$, so $\\sigma_P \\approx 223.6$ W."
       },
-      "interactiveType": "sample_size",
+      "interactiveType": "taylor_error_calc",
       "vocabTerms": [
         {
-          "term_en": "Central Limit Theorem",
-          "explanation_tr": "Örneklem ortalamalarının normalliğe yakınsama kuralı.",
-          "explanation_en": "The rule that sample means converge to normality.",
-          "exampleSentence_en": "CLT allows Z-tests even on non-normal populations."
+          "term_en": "propagation of error",
+          "explanation_tr": "Girdi değişkenlerindeki ölçüm belirsizliklerinin doğrusal olmayan bir fonksiyondan geçerek çıktıya nasıl yansıdığını hesaplayan yöntem.",
+          "explanation_en": "Method for determining the uncertainty of a non-linear function based on input uncertainties.",
+          "exampleSentence_en": "Error propagation uses partial derivatives from Taylor series."
         }
       ],
       "questions": [
@@ -126,8 +126,106 @@
           "id": "m4-l3-q1",
           "type": "multiple_choice",
           "prompt": {
-            "tr": "CLT kuralına göre n kaçtan büyük olduğunda normallik varsayımı güçlenir?",
-            "en": "According to CLT, for what n does normality assumption hold?"
+            "tr": "Hata Yayılımı (Propagation of Error) formülü doğrusal olmayan fonksiyonları yaklaşık olarak hesaplamak için hangi matematiksel aracı kullanır?",
+            "en": "Which mathematical tool is used by the Propagation of Error formula to approximate non-linear functions?"
+          },
+          "options": [
+            {
+              "tr": "1. Derece Taylor Serisi Açılımı (Kısmi Türevler)",
+              "en": "First-Order Taylor Series Expansion (Partial Derivatives)"
+            },
+            {
+              "tr": "Fourier Dönüşümü",
+              "en": "Fourier Transform"
+            },
+            {
+              "tr": "L'Hopital Kuralı",
+              "en": "L'Hopital's Rule"
+            }
+          ],
+          "correctAnswer": "1. Derece Taylor Serisi Açılımı (Kısmi Türevler)",
+          "explanation": {
+            "tr": "Hata yayılımı, fonksiyonun beklenen değer etrafında 1. derece Taylor serisine açılmasıyla (kısmi türevlerle) türetilir.",
+            "en": "Error propagation is derived using first-order Taylor expansion around the mean."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m4-l4",
+      "moduleId": "module-4",
+      "order": 4,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Örneklem Dağılımı ve Standart Hata",
+        "en": "Sampling Distribution & Standard Error"
+      },
+      "conceptCard": {
+        "tr": "Anakütleden ($N$) çekilen $n$ birimlik rastgele örneklemlerin ortalaması ($\\bar{X}$) bir rastgele değişkendir ve Örneklem Dağılımını oluşturur:\n\n$$\\mathbb{E}[\\bar{X}] = \\mu, \\qquad \\sigma_{\\bar{X}} = \\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$$\n\nİki Bağımsız Örneklem Ortalamasının Farkı Dağılımı ($\\bar{X}_1 - \\bar{X}_2$):\n$$\\mathbb{E}[\\bar{X}_1 - \\bar{X}_2] = \\mu_1 - \\mu_2, \\qquad \\sigma_{\\bar{X}_1 - \\bar{X}_2} = \\sqrt{\\frac{\\sigma_1^2}{n_1} + \\frac{\\sigma_2^2}{n_2}}$$",
+        "en": "The sample mean $\\bar{X}$ has expectation $\\mu$ and standard error $\\text{SE} = \\sigma / \\sqrt{n}$. The difference of two independent sample means has $\\text{SE} = \\sqrt{\\sigma_1^2/n_1 + \\sigma_2^2/n_2}$."
+      },
+      "companyExample": {
+        "tr": "SurveyPulse harcama araştırmasında kütle standart sapması $\\sigma = 20$ TL'dir. $n = 100$ kişilik örneklemde $\\text{SE} = 20 / \\sqrt{100} = 2$ TL'dir. Örneklem hacmi 4 katına çıkarılıp $n = 400$ yapıldığında $\\text{SE} = 20 / \\sqrt{400} = 1$ TL'ye düşer.",
+        "en": "In SurveyPulse's study, $\\sigma = $20. For $n=100$, $\\text{SE} = 20/10 = $2. Quadrupling to $n=400$ cuts the standard error in half to $\\text{SE} = $1."
+      },
+      "interactiveType": "sample_size",
+      "vocabTerms": [
+        {
+          "term_en": "standard error (SE)",
+          "explanation_tr": "Bir örneklem istatistiğinin (örneğin ortalamanın) örnekleme dağılımının standart sapması.",
+          "explanation_en": "The standard deviation of a sampling distribution.",
+          "exampleSentence_en": "Standard error decreases inversely with the square root of sample size."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m4-l4-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Standart sapması $\\sigma = 30$ olan bir kütleden $n = 100$ kişilik örneklem çekilirse Standart Hata ($\\text{SE}$) kaç olur?",
+            "en": "If population std dev $\\sigma = 30$ and sample size $n = 100$, what is the Standard Error ($\\text{SE}$)?"
+          },
+          "correctAnswer": 3,
+          "explanation": {
+            "tr": "$$\\text{SE} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{30}{\\sqrt{100}} = \\frac{30}{10} = 3$$",
+            "en": "$$\\text{SE} = \\frac{30}{10} = 3$$"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m4-l5",
+      "moduleId": "module-4",
+      "order": 5,
+      "difficulty": "orta-ustu",
+      "title": {
+        "tr": "Merkezi Limit Teoremi (CLT) & Örneklem Büyüklüğü",
+        "en": "Central Limit Theorem (CLT) & Sample Size"
+      },
+      "conceptCard": {
+        "tr": "Merkezi Limit Teoremi (CLT), ana kütlenin dağılımı ne olursa olsun (çarpık, üniform, bimodal), yeterince büyük bir örneklem hacmi ($n \\ge 30$) seçildiğinde örneklem ortalamaları dağılımının yaklaşık olarak Normal Dağılıma yakınsayacağını belirtir:\n\n$$\\bar{X} \\xrightarrow{d} \\mathcal{N}\\left(\\mu, \\frac{\\sigma^2}{n}\\right), \\qquad Z = \\frac{\\bar{X} - \\mu}{\\frac{\\sigma}{\\sqrt{n}}} \\sim \\mathcal{N}(0, 1)$$\n\nBüyük Sayılar Yasası (LLN) ise $n \\to \\infty$ iken $\\bar{X} \\to \\mu$ olasılıkta yakınsamasını ifade eder.",
+        "en": "Central Limit Theorem guarantees that sample means converge to a normal distribution $\\mathcal{N}(\\mu, \\sigma^2/n)$ as $n \\ge 30$, regardless of the underlying population shape."
+      },
+      "companyExample": {
+        "tr": "SurveyPulse platformunda kullanıcı kalış süreleri aşırı sağa çarpıktır (çoğu kişi 1 dk kalırken bazıları saatlerce kalır). Ancak rastgele $n = 50$ kişilik gruplar alınıp ortalamaları hesaplandığında, bu ortalamaların dağılımı CLT sayesinde kusursuz bir simetrik çan eğrisi oluşturur.",
+        "en": "User session durations are highly right-skewed. However, repeatedly averaging random samples of $n = 50$ yields a perfectly symmetric bell curve due to CLT."
+      },
+      "interactiveType": "sample_size",
+      "vocabTerms": [
+        {
+          "term_en": "Central Limit Theorem (CLT)",
+          "explanation_tr": "Örneklem büyüklüğü arttıkça örneklem ortalamasının normale yakınsayacağını kanıtlayan teorem.",
+          "explanation_en": "Theorem stating that sample means approach normality as sample size increases.",
+          "exampleSentence_en": "CLT is the cornerstone of classical statistical inference."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m4-l5-q1",
+          "type": "multiple_choice",
+          "prompt": {
+            "tr": "Ana kütle sağa çarpık olduğunda örneklem ortalamasının yaklaşık normal dağılması için genel kural olarak minimum $n$ kaç olmalıdır?",
+            "en": "What is the general rule of thumb for minimum $n$ for sample means to be approximately normal?"
           },
           "options": [
             {
@@ -137,54 +235,16 @@
             {
               "tr": "n >= 5",
               "en": "n >= 5"
+            },
+            {
+              "tr": "n >= 1000",
+              "en": "n >= 1000"
             }
           ],
           "correctAnswer": "n >= 30",
           "explanation": {
-            "tr": "İstatistikte genelde n >= 30 eşik kabul edilir.",
-            "en": "In statistics n >= 30 is the general threshold."
-          }
-        }
-      ]
-    },
-    {
-      "id": "m4-l4",
-      "moduleId": "module-4",
-      "order": 4,
-      "difficulty": "zor",
-      "title": {
-        "tr": "Yeterli Örneklem Büyüklüğü (n ≥ 30 Rule)",
-        "en": "Sample Size Determination"
-      },
-      "conceptCard": {
-        "tr": "Örneklem hacmi $n$ arttıkça standart hata $\\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$ küçülür. Standart hatayı yarıya düşürmek için örneklem hacmi $4$ katına çıkarılmalıdır:\n\n$$\\text{SE}_{\\text{yeni}} = \\frac{\\sigma}{\\sqrt{4n}} = \\frac{1}{2} \\frac{\\sigma}{\\sqrt{n}} = \\frac{1}{2} \\text{SE}$$",
-        "en": "Sample size determination calculates the minimum number of observations required to achieve a desired confidence level and margin of error."
-      },
-      "companyExample": {
-        "tr": "SurveyPulse yönetimi ortalama sepet tutarını %95 güven düzeyinde (Z = 1.96) ve en fazla ±2 TL hata payı (E = 2) ile tahmin etmek istiyor. Kütle standart sapması σ = 10 TL ise gerekli minimum örneklem sayısı n = (1.96 × 10 / 2)² = 96.04 yani en az 97 kullanıcı olarak hesaplanır.",
-        "en": "SurveyPulse management wants to estimate average basket size with 95% confidence (Z = 1.96) and a margin of error of ±$2 (E = 2). With population std dev σ = $10, the required minimum sample size is n = (1.96 × 10 / 2)² = 96.04, meaning at least 97 users must be sampled."
-      },
-      "interactiveType": "sample_size",
-      "vocabTerms": [
-        {
-          "term_en": "margin of error",
-          "explanation_tr": "Tahminin etrafındaki kabul edilebilir sapma miktarı.",
-          "explanation_en": "Acceptable bounds of error around an estimate.",
-          "exampleSentence_en": "The poll has a ±3% margin of error."
-        }
-      ],
-      "questions": [
-        {
-          "id": "m4-l4-q1",
-          "type": "numeric",
-          "prompt": {
-            "tr": "Örneklem büyüklüğü 4 katına çıkarsa Standart Hata kaç katına düşer?",
-            "en": "If sample size quadruples, by what factor does SE drop?"
-          },
-          "correctAnswer": 2,
-          "explanation": {
-            "tr": "√4 = 2 olduğu için SE yarıya düşer.",
-            "en": "√4 = 2, so SE decreases by half."
+            "tr": "İstatistik literatüründe Merkezi Limit Teoremi'nin güvenle uygulanabilmesi için genel eşik kuralı $n \\ge 30$'dur.",
+            "en": "In statistics, $n \\ge 30$ is the standard rule of thumb for applying the Central Limit Theorem."
           }
         }
       ]

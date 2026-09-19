@@ -3,11 +3,11 @@
   "order": 13,
   "title": {
     "tr": "Kombinatorik & Sayma Yöntemleri",
-    "en": "Combinatorics & Counting Methods"
+    "en": "Combinatorics & Counting Principles"
   },
   "description": {
-    "tr": "Çarpım kuralı, permütasyon P(n,k), kombinasyon C(n,k), faktöriyel ve binom katsayıları.",
-    "en": "Multiplication rule, permutations P(n,k), combinations C(n,k), factorials, and binomial coefficients."
+    "tr": "Temel sayma ilkesi, faktöriyel, permütasyon, kombinasyon ve Binom katsayıları.",
+    "en": "Fundamental counting principle, factorials, permutations, combinations, and Binomial theorem."
   },
   "iconName": "Calculator",
   "lessons": [
@@ -17,24 +17,23 @@
       "order": 1,
       "difficulty": "basit",
       "title": {
-        "tr": "Temel Sayma İlkesi & Faktöriyel",
-        "en": "Basic Counting Principle & Factorial"
+        "tr": "Temel Sayma İlkesi & Faktöriyel ($n!$)",
+        "en": "Fundamental Counting Principle & Factorial ($n!$)"
       },
       "conceptCard": {
-        "tr": "Çarpma Kuralı (Temel Sayma İlkesi): $k$ aşamalı bir süreçte $i$. aşama $n_i$ farklı şekilde gerçekleşebiliyorsa toplam olası durum sayısı:\n\n$$N = n_1 \\times n_2 \\times \\dots \\times n_k$$\n\nFaktöriyel Fonksiyonu: $n$ elemanın yan yana dizilim sayısı $n! = n \\times (n-1) \\times \\dots \\times 2 \\times 1$'dir ($0! = 1$).",
-        "en": "The counting principle states that for a process of k stages, total outcomes equals the product of choices at each stage. Ordering n elements equals n! factorial."
+        "tr": "1. **Çarpma Kuralı:** Birinci işlem $n_1$, ikinci işlem $n_2$, $\\dots$, $k$. işlem $n_k$ yolla yapılabiliyorsa tüm dizi $n_1 \\times n_2 \\times \\dots \\times n_k$ yolla yapılabilir.\n2. **Toplama Kuralı:** Ayrık $k$ farklı seçenekten biri $n_1 + n_2 + \\dots + n_k$ yolla seçilir.\n3. **Faktöriyel:** $n$ farklı nesnenin yan yana diziliş sayısı:\n$$n! = n \\times (n-1) \\times \\dots \\times 2 \\times 1, \\quad 0! = 1$$",
+        "en": "1. **Product Rule:** Sequence of $k$ tasks with $n_1, \\dots, n_k$ ways has $n_1 \\times \\dots \\times n_k$ total paths.\n2. **Sum Rule:** Disjoint choices add up: $n_1 + \\dots + n_k$.\n3. **Factorial:** Total linear arrangements of $n$ distinct items:\n$$n! = n \\times (n-1) \\dots 1, \\quad 0! = 1$$"
       },
       "companyExample": {
-        "tr": "CyberPass şifre jeneratörü 4 haneli PIN kodu oluştururken her haneye 0-9 arası 10 rakam seçebilir. Toplam olası PIN kodu sayısı = 10 * 10 * 10 * 10 = 10,000 adettir.",
-        "en": "CyberPass PIN generator picks 4 digits from 0-9. Total possible PINs = 10 * 10 * 10 * 10 = 10,000."
+        "tr": "CyberPass şifre politikasında 8 haneli bir şifrede her hane 26 harf veya 10 rakam (36 seçenek) alabiliyorsa toplam şifre uzayı $36^8 = 2.82 \\times 10^{12}$ kombinasyondur.",
+        "en": "CyberPass 8-character password with 36 alphanumeric choices creates $36^8 = 2.82 \\times 10^{12}$ combinations."
       },
-      "interactiveType": "combinatorics_calc",
       "vocabTerms": [
         {
-          "term_en": "counting principle",
-          "explanation_tr": "Aşamalı seçimlerde toplam seçenek sayısını bulma kuralı.",
-          "explanation_en": "Rule to find total outcomes in multi-stage choices.",
-          "exampleSentence_en": "The multiplication counting principle determines password complexity."
+          "term_en": "factorial",
+          "explanation_tr": "1'den n'e kadar olan tüm pozitif tam sayıların çarpımı ($n!$).",
+          "explanation_en": "The product of all positive integers less than or equal to n.",
+          "exampleSentence_en": "There are 5! = 120 ways to arrange 5 books on a shelf."
         }
       ],
       "questions": [
@@ -42,16 +41,24 @@
           "id": "m13-l1-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$5$ kişinin yan yana düz bir sıraya dizilme olası farklı şekil sayısı ($5!$) kaçtır?",
-            "en": "How many ways can 5 people line up in a row (5!)?"
+            "tr": "5 farklı ürün vitrinde yan yana kaç farklı şekilde sıralanabilir ($5!$)?",
+            "en": "How many ways can 5 distinct products be arranged in a display ($5!$)?"
           },
           "correctAnswer": 120,
           "explanation": {
             "tr": "$$5! = 5 \\times 4 \\times 3 \\times 2 \\times 1 = 120$$",
-            "en": "5! = 5 * 4 * 3 * 2 * 1 = 120."
+            "en": "$$5! = 120$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=ÇARPINIM(5)",
+        "pythonCode": "import math\nmath.factorial(5)",
+        "powerBiNote": {
+          "tr": "Permütasyon uzay büyüklükleri logaritmik ölçekte gösterilir.",
+          "en": "Logarithmic scale displays combinatorial spaces."
+        }
+      }
     },
     {
       "id": "m13-l2",
@@ -60,23 +67,22 @@
       "difficulty": "orta",
       "title": {
         "tr": "Permütasyon (Sıralı Seçim)",
-        "en": "Permutations (Ordered Selection)"
+        "en": "Permutation (Ordered Selection)"
       },
       "conceptCard": {
-        "tr": "Permütasyon $P(n, k)$, $n$ farklı eleman arasından $k$ elemanın sırası gözetilerek yapılan diziliş sayısıdır:\n\n$$P(n, k) = \\frac{n!}{(n-k)!} = n(n-1)\\dots(n-k+1)$$\n\nTekrarlı Permütasyon: $n$ elemandan $n_1, n_2, \\dots, n_k$ tanesi özdeş ise dizilim sayısı $\\frac{n!}{n_1! n_2! \\dots n_k!}$'dir.",
-        "en": "Permutation is selecting r objects from n where ORDER MATTERS. Formula: P(n, r) = n! / (n - r)!."
+        "tr": "1. **Permütasyon ($P(n,k)$):** $n$ farklı nesne arasından sıranın ÖNEMLİ olduğu $k$ elemanlı sıralı seçim:\n$$P(n,k) = \\frac{n!}{(n-k)!} = n(n-1)\\dots(n-k+1)$$\n2. **Tekrarlı Permütasyon:** Toplam $n$ nesneden $n_1$ tanesi özdeş A, $n_2$ tanesi özdeş B ise:\n$$\\frac{n!}{n_1! n_2! \\dots n_r!}$$",
+        "en": "1. **Permutation ($P(n,k)$):** Ordered arrangement of $k$ elements selected from $n$ distinct elements:\n$$P(n,k) = \\frac{n!}{(n-k)!}$$\n2. **Permutation with Repetition:**\n$$\\frac{n!}{n_1! n_2! \\dots n_r!}$$"
       },
       "companyExample": {
-        "tr": "CyberPass yarıştığı 8 aday arasından 1., 2. ve 3. dereceye girecek şifreleme algoritmalarını seçecektir. P(8, 3) = 8 * 7 * 6 = 336 farklı sıralama seçeneği vardır.",
-        "en": "CyberPass awards 1st, 2nd, 3rd places out of 8 algorithms. P(8,3) = 8 * 7 * 6 = 336."
+        "tr": "10 aday arasından 1 Başkan, 1 Başkan Yardımcısı ve 1 Sayman seçimi sıralı olduğu için $P(10,3) = 10 \\times 9 \\times 8 = 720$ farklı yolla yapılabilir.",
+        "en": "Electing President, VP, Treasurer from 10 candidates is an ordered permutation $P(10,3) = 720$."
       },
-      "interactiveType": "combinatorics_calc",
       "vocabTerms": [
         {
           "term_en": "permutation",
-          "explanation_tr": "Sıranın önemli olduğu seçim dizilimi.",
-          "explanation_en": "An ordered arrangement of objects.",
-          "exampleSentence_en": "Permutations account for positional order."
+          "explanation_tr": "Elemanların sıralamasının önemli olduğu seçim veya diziliş ($P(n,k)$).",
+          "explanation_en": "An arrangement of objects in a specific order.",
+          "exampleSentence_en": "PIN codes are permutations where digit order matters."
         }
       ],
       "questions": [
@@ -84,16 +90,24 @@
           "id": "m13-l2-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$P(6, 2) = \\frac{6!}{(6-2)!}$ permütasyon değeri kaçtır?",
-            "en": "What is P(6, 2)?"
+            "tr": "6 koşucu arasından ilk 3 derece (1., 2. ve 3.) kaç farklı şekilde oluşabilir ($P(6,3)$)?",
+            "en": "How many ways can 1st, 2nd, and 3rd place be awarded among 6 runners ($P(6,3)$)?"
           },
-          "correctAnswer": 30,
+          "correctAnswer": 120,
           "explanation": {
-            "tr": "$$P(6, 2) = \\frac{6!}{4!} = 6 \\times 5 = 30$$",
-            "en": "6 * 5 = 30."
+            "tr": "$$P(6,3) = \\frac{6!}{(6-3)!} = 6 \\times 5 \\times 4 = 120$$",
+            "en": "$$P(6,3) = 6 \\times 5 \\times 4 = 120$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=PERMÜTASYON(6; 3)",
+        "pythonCode": "import math\nmath.perm(6, 3)",
+        "powerBiNote": {
+          "tr": "Sıralı seçim olasılık hesaplarında kullanılır.",
+          "en": "Applied in ranking sequence probability."
+        }
+      }
     },
     {
       "id": "m13-l3",
@@ -102,23 +116,22 @@
       "difficulty": "orta",
       "title": {
         "tr": "Kombinasyon (Sırasız Grup Seçimi)",
-        "en": "Combinations (Unordered Selection)"
+        "en": "Combination (Unordered Group Selection)"
       },
       "conceptCard": {
-        "tr": "Kombinasyon $\\binom{n}{k}$, $n$ elemanlı bir kümeden seçilecek $k$ elemanlı sırasız alt kümelerin sayısıdır:\n\n$$\\binom{n}{k} = C(n, k) = \\frac{n!}{k!(n-k)!}$$\n\nSimetri Özelliği: $\\binom{n}{k} = \\binom{n}{n-k}$ ve Toplam Özelliği: $\\sum_{k=0}^{n} \\binom{n}{k} = 2^n$.",
-        "en": "Combination is selecting r objects from n where ORDER DOES NOT MATTER. Formula: C(n, r) = n! / [r! (n - r)!]."
+        "tr": "$n$ eleman arasından sıranın ÖNEMSİZ olduğu $k$ elemanlı bir alt küme / grup seçimi:\n\n$$C(n,k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}$$\n\n**Temel Özellikler:**\n- $\\binom{n}{k} = \\binom{n}{n-k}$ (Simetri)\n- $\\binom{n}{0} = \\binom{n}{n} = 1$",
+        "en": "Unordered selection of $k$ items from a collection of $n$ distinct items:\n\n$$C(n,k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}$$\n\n**Key Properties:**\n- $\\binom{n}{k} = \\binom{n}{n-k}$ (Symmetry)\n- $\\binom{n}{0} = \\binom{n}{n} = 1$"
       },
       "companyExample": {
-        "tr": "CyberPass 10 kişilik yazılım ekibinden 3 kişilik bir siber güvenlik komitesi seçecektir. Sıra önemsiz olduğu için C(10, 3) = (10 * 9 * 8) / (3 * 2 * 1) = 120 komite kurulabilir.",
-        "en": "CyberPass selects 3 reps out of 10 for a committee. C(10, 3) = 120 possible teams."
+        "tr": "DataTeam 10 veri analisti arasından sırasız 4 kişilik bir proje ekibi kuracaktır (`CEx`). Seçenek sayısı $\\binom{10}{4} = \\frac{10 \\times 9 \\times 8 \\times 7}{4 \\times 3 \\times 2 \\times 1} = 210$ farklı ekiptir.",
+        "en": "Forming a 4-person team from 10 analysts: $\\binom{10}{4} = 210$ distinct unordered teams."
       },
-      "interactiveType": "combinatorics_calc",
       "vocabTerms": [
         {
           "term_en": "combination",
-          "explanation_tr": "Sıranın önemsiz olduğu alt küme seçimi.",
-          "explanation_en": "A selection of items where order is ignored.",
-          "exampleSentence_en": "Combinations count committee formations."
+          "explanation_tr": "Sıralamanın önemsiz olduğu alt küme seçimi ($C(n,k)$).",
+          "explanation_en": "A selection of items from a set that has distinct members, where order does not matter.",
+          "exampleSentence_en": "Lottery draws are combinations because ticket numbers can be matched in any order."
         }
       ],
       "questions": [
@@ -126,41 +139,48 @@
           "id": "m13-l3-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$\\binom{5}{2} = C(5, 2)$ kombinasyon değeri kaçtır?",
-            "en": "What is C(5, 2)?"
+            "tr": "8 kişilik bir gruptan 2 temsilci kaç farklı şekilde seçilebilir ($\\binom{8}{2}$)?",
+            "en": "How many ways can 2 delegates be selected from 8 people ($\\binom{8}{2}$)?"
           },
-          "correctAnswer": 10,
+          "correctAnswer": 28,
           "explanation": {
-            "tr": "$$\\binom{5}{2} = \\frac{5 \\times 4}{2 \\times 1} = 10$$",
-            "en": "(5 * 4) / 2 = 10."
+            "tr": "$$\\binom{8}{2} = \\frac{8 \\times 7}{2 \\times 1} = 28$$",
+            "en": "$$\\binom{8}{2} = \\frac{8 \\times 7}{2} = 28$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=KOMBİNASYON(8; 2)",
+        "pythonCode": "import math\nmath.comb(8, 2)",
+        "powerBiNote": {
+          "tr": "A/B test çoklu varyasyon çiftleri kombinasyonla listelenir.",
+          "en": "A/B multi-arm test pairs are calculated via combinations."
+        }
+      }
     },
     {
       "id": "m13-l4",
       "moduleId": "module-13",
       "order": 4,
-      "difficulty": "zor",
+      "difficulty": "orta-ustu",
       "title": {
-        "tr": "Binom Katsayıları & Pascal Üçgeni",
-        "en": "Binomial Coefficients & Pascal's Triangle"
+        "tr": "Binom Teoremi & Pascal Özdeşlikleri",
+        "en": "Binomial Theorem & Pascal Identities"
       },
       "conceptCard": {
-        "tr": "Binom Teoremi ve Pascal Özelliği:\n\n$$(x+y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^{n-k} y^k$$\n\nPascal Özdeşliği: $$\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$$",
-        "en": "Binomial expansion (a + b)^n coefficients are given by combinations C(n, k). Each number in Pascal's triangle is the sum of the two above it."
+        "tr": "1. **Binom Teoremi:**\n$$(x + y)^n = \\sum_{k=0}^n \\binom{n}{k} x^{n-k} y^k$$\n\n2. **Pascal Özdeşliği:**\n$$\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$$\nPascal üçgeninde her sayı üstündeki iki sayının toplamıdır.\n\n3. **Toplam Özdeşliği:** $\\sum_{k=0}^n \\binom{n}{k} = 2^n$ ($n$ elemanlı kümenin tüm alt kümeleri).",
+        "en": "1. **Binomial Theorem:**\n$$(x + y)^n = \\sum_{k=0}^n \\binom{n}{k} x^{n-k} y^k$$\n\n2. **Pascal's Identity:**\n$$\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$$\n\n3. **Sum of Binomial Coefficients:** $\\sum_{k=0}^n \\binom{n}{k} = 2^n$"
       },
       "companyExample": {
-        "tr": "CyberPass şifrelemede k-out-of-n anahtar paylaşımı protokolünde C(n, k) katsayıları kullanılarak sistem güvenliği modellenir.",
-        "en": "CyberPass key-sharing protocols use C(n, k) binomial coefficients to model security threshold bounds."
+        "tr": "Bir yatırım portföyünde 5 bağımsız hissenin her biri yükselebilir veya düşebilir ($2^5 = 32$ olası senaryo). Tam 3 hissenin yükselme katsayısı $\\binom{5}{3} = 10$'dur.",
+        "en": "5 stocks each either rise or fall ($2^5=32$ total market paths). Exactly 3 rising stocks corresponds to $\\binom{5}{3} = 10$ paths."
       },
-      "interactiveType": "combinatorics_calc",
       "vocabTerms": [
         {
-          "term_en": "binomial coefficient",
-          "explanation_tr": "Binom açılımındaki C(n, k) katsayı sayısı.",
-          "explanation_en": "The combination value C(n, k) representing terms in binomial expansion.",
-          "exampleSentence_en": "Binomial coefficients populate Pascal's triangle."
+          "term_en": "binomial theorem",
+          "explanation_tr": "İki terimli bir ifadenin kuvvet açılımını veren kombinatorik teorem.",
+          "explanation_en": "A theorem providing the algebraic expansion of powers of a binomial.",
+          "exampleSentence_en": "Binomial distribution probabilities are terms from the binomial theorem expansion."
         }
       ],
       "questions": [
@@ -168,16 +188,24 @@
           "id": "m13-l4-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$\\binom{4}{2} + \\binom{4}{1}$ toplamı Pascal özdeşliğine göre kaça eşittir?",
-            "en": "What is C(4, 2) + C(4, 1)?"
+            "tr": "$(x + y)^4$ açılımında $x^2 y^2$ teriminin katsayısı ($\\binom{4}{2}$) kaçtır?",
+            "en": "In $(x + y)^4$, what is the coefficient of $x^2 y^2$ ($\\binom{4}{2}$)?"
           },
-          "correctAnswer": 10,
+          "correctAnswer": 6,
           "explanation": {
-            "tr": "$$\\binom{4}{2} + \\binom{4}{1} = 6 + 4 = 10 \\quad \\left(=\\binom{5}{2}\\right)$$",
-            "en": "6 + 4 = 10."
+            "tr": "$$\\binom{4}{2} = \\frac{4 \\times 3}{2 \\times 1} = 6$$",
+            "en": "$$\\binom{4}{2} = 6$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=KOMBİNASYON(4; 2)",
+        "pythonCode": "import numpy as np\n[math.comb(4, k) for k in range(5)]",
+        "powerBiNote": {
+          "tr": "Olasılık ağaçlarında katsayı ağırlıkları kullanılır.",
+          "en": "Used for probability tree branch weights."
+        }
+      }
     }
   ],
   "caseExams": [

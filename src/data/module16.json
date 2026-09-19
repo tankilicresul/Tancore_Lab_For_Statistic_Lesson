@@ -6,8 +6,8 @@
     "en": "Continuous Probability Distributions"
   },
   "description": {
-    "tr": "Olasılık yoğunluk fonksiyonu (PDF), kümülatif dağılım fonksiyonu (CDF), Düzgün Dağılım, Normal Dağılım N(μ, σ²) ve Z-skoru dönüşümleri.",
-    "en": "Probability density function (PDF), cumulative distribution function (CDF), Uniform, Normal N(μ, σ²), and Z-score transforms."
+    "tr": "PDF, CDF eğrileri, Sürekli Düzgün (Uniform), Normal Dağılım ve Z-tablosu dönüşümleri.",
+    "en": "PDF, CDF curves, Continuous Uniform, Normal Distribution, and Z-table lookups."
   },
   "iconName": "TrendingUp",
   "lessons": [
@@ -17,66 +17,90 @@
       "order": 1,
       "difficulty": "basit",
       "title": {
-        "tr": "Olasılık Yoğunluk Fonksiyonu (PDF) & Düzgün Dağılım",
-        "en": "PDF & Uniform Distribution"
+        "tr": "Sürekli Rastgele Değişken, PDF ve CDF",
+        "en": "Continuous Random Variable, PDF and CDF"
       },
       "conceptCard": {
-        "tr": "Sürekli rastgele değişkenlerde tek bir noktanın olasılığı $P(X = x) = 0$'dır; olasılık belirli bir aralıktaki yoğunluk fonksiyonunun integrali ile hesaplanır:\n\n$$P(a \\le X \\le b) = \\int_{a}^{b} f(x)\\,dx, \\qquad \\int_{-\\infty}^{\\infty} f(x)\\,dx = 1$$\n\nSürekli Düzgün Dağılım $X \\sim \\mathcal{U}(a, b)$ için Yoğunluk Fonksiyonu (PDF):\n\n$$f(x) = \\begin{cases} \\frac{1}{b - a}, & a \\le x \\le b \\\\[4pt] 0, & \\text{diğer} \\end{cases}$$\n\nBeklenen değer $\\mathbb{E}[X] = \\frac{a + b}{2}$ ve varyans $\\text{Var}(X) = \\frac{(b - a)^2}{12}$'dir.",
-        "en": "For continuous random variables, point probability is $P(X=x) = 0$; probability is an integral:\n\n$$P(a \\le X \\le b) = \\int_{a}^{b} f(x)\\,dx$$\n\nContinuous Uniform $\\mathcal{U}(a, b)$ has $f(x) = \\frac{1}{b - a}, \\mathbb{E}[X] = \\frac{a+b}{2}, \\text{Var}(X) = \\frac{(b-a)^2}{12}$."
+        "tr": "1. **Sürekli Değişken & Noktasal Olasılık:** Sürekli bir değişkende tek bir noktanın olasılığı **sıfırdır** ($P(X = c) = 0$). Olasılıklar daima bir aralık üzerindeki integral / alan ile hesaplanır.\n\n2. **Olasılık Yoğunluk Fonksiyonu ($PDF - f(x)$):**\n- $f(x) \\ge 0$\n- Toplam Alan: $\\int_{-\\infty}^{\\infty} f(x)dx = 1$\n- Aralık Olasılığı: $P(a \\le X \\le b) = \\int_a^b f(x)dx$\n\n3. **Kümülatif Dağılım ($CDF - F(x)$):** $F(x) = P(X \\le x) = \\int_{-\\infty}^x f(t)dt$",
+        "en": "1. **Continuous Variable:** Exact point probability is **zero** ($P(X = c) = 0$). Probabilities are measured over intervals as area under the curve.\n\n2. **Probability Density Function ($PDF - f(x)$):**\n- $f(x) \\ge 0, \\quad \\int_{-\\infty}^{\\infty} f(x)dx = 1$\n- Interval Probability: $P(a \\le X \\le b) = \\int_a^b f(x)dx$\n\n3. **Cumulative Distribution ($CDF - F(x)$):** $F(x) = \\int_{-\\infty}^x f(t)dt$"
       },
       "companyExample": {
-        "tr": "CyberPass veri indirme süresi [10 sn, 50 sn] aralığında Düzgün dağılmaktadır. Sürenin 20 sn ile 30 sn arasında olma olasılığı (30 - 20) / (50 - 10) = 10 / 40 = 0.25 (%25)'tir.",
-        "en": "Download time is Uniform [10s, 50s]. Probability between 20s and 30s = (30 - 20) / (50 - 10) = 0.25 (25%)."
+        "tr": "Bir siparişin teslimat süresi $X \\in [10, 30]$ dakika arasında tanımlıdır. Tam 20.0000000 dakikada teslimat olasılığı 0'dır; ancak 19 ile 21 dakika arasında teslimat olasılığı $PDF$ integraliyle hesaplanır.",
+        "en": "Delivery duration $X \\in [10, 30]$ mins. $P(X = 20.0000) = 0$; probability of delivering between 19 and 21 mins is the integral area."
       },
-      "interactiveType": "normal_dist",
       "vocabTerms": [
         {
           "term_en": "probability density function",
-          "explanation_tr": "Sürekli rastlantı değişkeninin belirli bir aralıkta alma olasılığının alanla temsil edildiği fonksiyon (PDF).",
-          "explanation_en": "Function representing relative likelihood of a continuous random variable (PDF).",
-          "exampleSentence_en": "Integrating the PDF yields cumulative probability."
+          "explanation_tr": "Sürekli bir değişkenin eğri altındaki alanı ile olasılık üreten fonksiyon ($PDF$).",
+          "explanation_en": "A function whose integral over an interval gives the probability that a continuous random variable falls within that interval.",
+          "exampleSentence_en": "Total area under the PDF curve equals 1."
         }
       ],
       "questions": [
         {
           "id": "m16-l1-q1",
-          "type": "numeric",
+          "type": "multiple_choice",
           "prompt": {
-            "tr": "$\\mathcal{U}(0, 20)$ sürekli düzgün dağılımında $P(5 \\le X \\le 15)$ olasılığı $\\int_{5}^{15} \\frac{1}{20}\\,dx$ kaçtır?",
-            "en": "In uniform distribution $\\mathcal{U}(0, 20)$, what is $P(5 \\le X \\le 15)$?"
+            "tr": "Sürekli bir $X$ rastgele değişkeni için tek bir $c$ noktasındaki olasılık $P(X = c)$ değeri kaçtır?",
+            "en": "For a continuous random variable $X$, what is the exact point probability $P(X = c)$?"
           },
-          "correctAnswer": 0.5,
+          "options": [
+            {
+              "tr": "Tam olarak 0",
+              "en": "Exactly 0"
+            },
+            {
+              "tr": "1",
+              "en": "1"
+            },
+            {
+              "tr": "f(c) yoğunluk değerine eşittir",
+              "en": "Equals f(c)"
+            },
+            {
+              "tr": "Sonsuzdur",
+              "en": "Infinity"
+            }
+          ],
+          "correctAnswer": "Tam olarak 0",
           "explanation": {
-            "tr": "$$P(5 \\le X \\le 15) = \\int_{5}^{15} \\frac{1}{20}\\,dx = \\frac{15 - 5}{20 - 0} = \\frac{10}{20} = 0.50$$",
-            "en": "$$P(5 \\le X \\le 15) = \\frac{15 - 5}{20} = 0.50$$"
+            "tr": "Sürekli dağılımlarda tek bir noktanın genişliği sıfır olduğu için noktasal olasılık her zaman 0'dır.",
+            "en": "Point probabilities are zero because width of a single point in continuous space is zero."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=NORM.DAĞ(b; mu; sigma; DOĞRU) - NORM.DAĞ(a; mu; sigma; DOĞRU)",
+        "pythonCode": "from scipy.integrate import quad\nprob, _ = quad(pdf_function, a, b)",
+        "powerBiNote": {
+          "tr": "Yoğunluk eğrisi (Density Area Chart) ile gösterilir.",
+          "en": "Rendered via Area Density Charts."
+        }
+      }
     },
     {
       "id": "m16-l2",
       "moduleId": "module-16",
       "order": 2,
-      "difficulty": "orta",
+      "difficulty": "basit",
       "title": {
-        "tr": "Normal Dağılım & 68-95-99.7 Kuralı",
-        "en": "Normal Distribution & Empirical Rule"
+        "tr": "Sürekli Düzgün Dağılım (Uniform)",
+        "en": "Continuous Uniform Distribution"
       },
       "conceptCard": {
-        "tr": "Normal Dağılım $X \\sim \\mathcal{N}(\\mu, \\sigma^2)$, ortalama $\\mu$ etrafında simetrik çan eğrisi formunda sürekli bir olasılık dağılımıdır:\n\n$$f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}$$\n\nEmpirik Kural (68-95-99.7):\n\n$$\\begin{aligned} P(\\mu - \\sigma \\le X \\le \\mu + \\sigma) &\\approx \\%68.27 \\\\[4pt] P(\\mu - 2\\sigma \\le X \\le \\mu + 2\\sigma) &\\approx \\%95.45 \\\\[4pt] P(\\mu - 3\\sigma \\le X \\le \\mu + 3\\sigma) &\\approx \\%99.73 \\end{aligned}$$",
-        "en": "Normal distribution N(μ, σ²) is symmetric around mean μ. Empirical rule: 68% within μ ± 1σ, 95% within μ ± 2σ, 99.7% within μ ± 3σ."
+        "tr": "$[a, b]$ aralığında her alt aralığın eşit olasılığa sahip olduğu dikdörtgen dağılım:\n\n1. **$PDF$:** $f(x) = \\frac{1}{b - a}, \\quad a \\le x \\le b$\n2. **$CDF$:** $F(x) = \\frac{x - a}{b - a}$\n3. **Beklenen Değer & Varyans:**\n$$E[X] = \\frac{a + b}{2}, \\quad Var(X) = \\frac{(b - a)^2}{12}$$",
+        "en": "Constant probability density over interval $[a, b]$:\n\n1. **$PDF$:** $f(x) = \\frac{1}{b - a}, \\quad a \\le x \\le b$\n2. **$CDF$:** $F(x) = \\frac{x - a}{b - a}$\n3. **Moments:** $E[X] = \\frac{a + b}{2}, \\quad Var(X) = \\frac{(b - a)^2}{12}$"
       },
       "companyExample": {
-        "tr": "CyberPass kullanıcı oturum süreleri μ = 60 dk, σ = 10 dk ile Normal dağılmaktadır. Oturum sürelerinin %95'i 40 dk (60-2*10) ile 80 dk (60+2*10) arasında değişir.",
-        "en": "User session duration N(μ=60, σ=10). 95% of session durations lie between 40 min and 80 min."
+        "tr": "Metro treni her 10 dakikada bir gelmektedir ($X \\sim Uniform(0, 10)$). Yolcunun ortalama bekleme süresi $E[X] = (0 + 10)/2 = 5$ dakika; 3 dakikadan az bekleme olasılığı $P(X \\le 3) = (3 - 0)/10 = 0.30$'dur.",
+        "en": "Train arrives uniformly every 10 mins ($X \\sim U(0, 10)$). Mean wait $E[X] = 5$ mins; $P(X \\le 3) = 0.30$."
       },
-      "interactiveType": "normal_dist",
       "vocabTerms": [
         {
-          "term_en": "empirical rule",
-          "explanation_tr": "Normal dağılımda verilerin 1, 2 ve 3 standart sapma aralıklarındaki yüzdelerini (%68-%95-%99.7) ifade eden kural.",
-          "explanation_en": "Rule stating 68%, 95%, 99.7% of data fall within 1, 2, 3 standard deviations in Normal distribution.",
-          "exampleSentence_en": "The empirical rule provides quick estimates for normally distributed data."
+          "term_en": "uniform distribution",
+          "explanation_tr": "Belirli bir aralıktaki tüm eşit uzunluktaki aralıkların eşit olasılığa sahip olduğu dağılım.",
+          "explanation_en": "A symmetric probability distribution where all intervals of the same length on the distribution's support have equal probability.",
+          "exampleSentence_en": "Random number generators sample from standard Uniform(0,1)."
         }
       ],
       "questions": [
@@ -84,41 +108,48 @@
           "id": "m16-l2-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$\\mathcal{N}(100, 15^2)$ dağılımında verilerin yaklaşık $\\%68$'inin bulunduğu $\\mu \\pm \\sigma$ aralığının alt sınırı ($\\mu - \\sigma$) kaçtır?",
-            "en": "In N(100, 15^2), ~68% of data lies between what lower bound (μ - σ)?"
+            "tr": "$X \\sim Uniform(0, 20)$ dağılımında varyans $Var(X)$ kaçtır?",
+            "en": "For $X \\sim Uniform(0, 20)$, what is the variance $Var(X)$?"
           },
-          "correctAnswer": 85,
+          "correctAnswer": 33.33,
           "explanation": {
-            "tr": "$$\\text{Alt Sınır} = \\mu - \\sigma = 100 - 15 = 85$$",
-            "en": "μ - 1σ = 100 - 15 = 85."
+            "tr": "$$Var(X) = \\frac{(20 - 0)^2}{12} = \\frac{400}{12} \\approx 33.33$$",
+            "en": "$$Var(X) = 400 / 12 = 33.33$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(x - a)/(b - a)",
+        "pythonCode": "from scipy.stats import uniform\nuniform.cdf(x=3, loc=0, scale=10)",
+        "powerBiNote": {
+          "tr": "Monte Carlo rassal sayı simülasyonlarında kullanılır.",
+          "en": "Used in Monte Carlo baseline random draws."
+        }
+      }
     },
     {
       "id": "m16-l3",
       "moduleId": "module-16",
       "order": 3,
-      "difficulty": "ileri",
+      "difficulty": "orta",
       "title": {
-        "tr": "Standart Normal Dağılım & Z-Skoru",
-        "en": "Standard Normal Distribution & Z-Score"
+        "tr": "Normal Dağılım ($N(mu, sigma^2)$) & Ampirik Kural",
+        "en": "Normal Distribution ($N(mu, sigma^2)$) & Empirical Rule"
       },
       "conceptCard": {
-        "tr": "Standart Normal Dağılım $Z \\sim \\mathcal{N}(0, 1)$:\n\n$$Z = \\frac{X - \\mu}{\\sigma}$$\n\nZ-skoru, bir gözlemin ortalamadan kaç standart sapma ($\\sigma$) uzakta olduğunu standartlaştırır.",
-        "en": "Transform X ~ N(μ, σ²) via Z = (X - μ) / σ to N(0, 1). Z-score counts how many standard deviations a value is from mean."
+        "tr": "Doğadaki ve mühendislikteki süreçlerin çoğunu modelleyen simetrik çan eğrisi:\n\n$$f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}$$\n\n**Ampirik Kural (68 - 95 - 99.7 Kuralı):**\n1. $[mu - sigma, mu + sigma]$: Verilerin yaklaşık **%68.27**'si\n2. $[mu - 2sigma, mu + 2sigma]$: Verilerin yaklaşık **%95.45**'i\n3. $[mu - 3sigma, mu + 3sigma]$: Verilerin yaklaşık **%99.73**'ü",
+        "en": "The symmetric Gaussian bell curve modeling natural and industrial phenomena:\n\n$$f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}$$\n\n**Empirical Rule (68 - 95 - 99.7 Rule):**\n1. $\\mu \\pm 1\\sigma$: $\\approx \\mathbf{68.3\\%}$\n2. $\\mu \\pm 2\\sigma$: $\\approx \\mathbf{95.4\\%}$\n3. $\\mu \\pm 3\\sigma$: $\\approx \\mathbf{99.7\\%}$"
       },
       "companyExample": {
-        "tr": "CyberPass şüpheli işlem kontrolünde, kullanıcının işlem miktarı X = 350 TL'dir. Normal kullanım μ = 200 TL, σ = 50 TL ise Z = (350 - 200)/50 = +3.0 çıkar. Z > 3 olduğundan şüpheli işlem alarmı verilir.",
-        "en": "User transaction X = 350 (μ=200, σ=50). Z = (350 - 200)/50 = +3.0. High Z-score triggers fraud alert."
+        "tr": "Drone teslimat süreleri $\\mu = 25$ dk ve $\\sigma = 3$ dk ile normal dağılmaktadır. Teslimatların %95'i $\\mu \\pm 2\\sigma = [25 - 6, 25 + 6] = [19, 31]$ dakika arasında gerçekleşir.",
+        "en": "Drone delivery $\\mu = 25$ mins, $\\sigma = 3$ mins. 95% of all deliveries occur within $[19, 31]$ minutes."
       },
-      "interactiveType": "normal_dist",
       "vocabTerms": [
         {
-          "term_en": "z-score",
-          "explanation_tr": "Bir ölçümün ortalamadan standart sapma cinsinden ne kadar uzakta olduğunu gösteren boyutsuz değer.",
-          "explanation_en": "Dimensionless score measuring standard deviations a data point lies from the mean.",
-          "exampleSentence_en": "Z-scores identify statistical outliers in anomaly detection."
+          "term_en": "empirical rule",
+          "explanation_tr": "Normal dağılımda verilerin 1, 2 ve 3 standart sapma aralıklarındaki yüzdelerini veren 68-95-99.7 kuralı.",
+          "explanation_en": "The 68-95-99.7 rule stating percentage of values within 1, 2, 3 standard deviations of the mean.",
+          "exampleSentence_en": "By the empirical rule, 99.7% of points lie within 3 standard deviations."
         }
       ],
       "questions": [
@@ -126,41 +157,48 @@
           "id": "m16-l3-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$\\mu = 50$, $\\sigma = 10$ olan bir dağılımda $X = 75$ için Z-skoru ($Z = \\frac{X - \\mu}{\\sigma}$) kaçtır?",
-            "en": "In a distribution with μ = 50, σ = 10, what is Z-score for X = 75?"
+            "tr": "Ortalaması $\\mu = 100$ ve $\\sigma = 15$ olan normal dağılımda verilerin %95'i hangi aralıktadır ($[\\mu-2\\sigma, \\mu+2\\sigma]$ üst sınırı kaçtır)?",
+            "en": "For $\\mu = 100, \\sigma = 15$, what is the upper bound of the 95% interval ($[\\mu-2\\sigma, \\mu+2\\sigma]$)?"
           },
-          "correctAnswer": 2.5,
+          "correctAnswer": 130,
           "explanation": {
-            "tr": "$$Z = \\frac{75 - 50}{10} = \\frac{25}{10} = 2.5$$",
-            "en": "Z = (75 - 50) / 10 = 25 / 10 = 2.5."
+            "tr": "$$\\text{Üst Sınır} = \\mu + 2\\sigma = 100 + 2(15) = 130$$",
+            "en": "$$\\text{Upper Bound} = 100 + 2(15) = 130$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=NORM.DAĞ(x; mu; sigma; DOĞRU)",
+        "pythonCode": "from scipy.stats import norm\nnorm.cdf(x, loc=mu, scale=sigma)",
+        "powerBiNote": {
+          "tr": "Six Sigma kalite bantlarında $\\pm 3\\sigma$ limitleri çizilir.",
+          "en": "Render $\\pm 3\\sigma$ Six Sigma control limit bands."
+        }
+      }
     },
     {
       "id": "m16-l4",
       "moduleId": "module-16",
       "order": 4,
-      "difficulty": "zor",
+      "difficulty": "orta",
       "title": {
-        "tr": "Kümülatif Dağılım (CDF) & Alan Hesabı",
-        "en": "Cumulative Distribution (CDF) & Area Calculation"
+        "tr": "Standart Normal Dağılım ($Z$) & Z-Tablosu",
+        "en": "Standard Normal Distribution ($Z$) & Z-Table"
       },
       "conceptCard": {
-        "tr": "Kümülatif Dağılım Fonksiyonu (CDF), $X$'in belirli bir $x$ değerine kadar biriken toplam olasılığıdır:\n\n$$F(x) = P(X \\le x) = \\int_{-\\infty}^{x} f(t)\\,dt, \\qquad f(x) = \\frac{d}{dx}F(x)$$\n\nİki nokta arasındaki alan: $$P(a \\le X \\le b) = F(b) - F(a)$$",
-        "en": "Cumulative Distribution Function F(x) = P(X ≤ x) gives cumulative probability. Interval probability P(a ≤ X ≤ b) = F(b) - F(a)."
+        "tr": "Herhangi bir $N(\\mu, \\sigma^2)$ dağılımı $Z$-skoru dönüşümü ile Standart Normal $N(0, 1)$ dağılımına dönüştürülür:\n\n$$Z = \\frac{X - \\mu}{\\sigma}$$\n\n1. **$Z$-Tablosu:** $\\Phi(z) = P(Z \\le z)$ kümülatif alanını verir.\n2. **Simetri Kuralı:** $\\Phi(-z) = 1 - \\Phi(z)$\n3. **Ters Dönüşüm (Kuantil):** $X = \\mu + Z \\cdot \\sigma$",
+        "en": "Transforming any $N(\\mu, \\sigma^2)$ into standard normal $Z \\sim N(0, 1)$:\n\n$$Z = \\frac{X - \\mu}{\\sigma}$$\n\n1. **$Z$-Table:** Gives cumulative area $\\Phi(z) = P(Z \\le z)$.\n2. **Symmetry:** $\\Phi(-z) = 1 - \\Phi(z)$.\n3. **Inverse Transformation:** $X = \\mu + Z \\cdot \\sigma$"
       },
       "companyExample": {
-        "tr": "CyberPass indirme hızında F(50) = 0.85 (%85) ve F(20) = 0.15 (%15) ise indirme süresinin 20 ile 50 sn arasında kalma olasılığı 0.85 - 0.15 = 0.70 (%70)'tir.",
-        "en": "If F(50) = 0.85 and F(20) = 0.15, download duration between 20s and 50s has probability 0.85 - 0.15 = 0.70 (70%)."
+        "tr": "Fabrika parça toleransında $\\mu = 50 \\text{ mm}, \\sigma = 2 \\text{ mm}$. $X = 54 \\text{ mm}$ parçasının $Z$-skoru $Z = (54 - 50)/2 = +2.0$'dır. Parça ortalamanın 2 standart sapma üzerindedir.",
+        "en": "Part dimension $\\mu = 50, \\sigma = 2$. For $X = 54$, $Z = (54-50)/2 = +2.0$, placing it 2 standard deviations above the mean."
       },
-      "interactiveType": "normal_dist",
       "vocabTerms": [
         {
-          "term_en": "cumulative distribution function",
-          "explanation_tr": "Rastlantı değişkeninin x veya daha küçük değerler alma olasılığını birikimli olarak veren fonksiyon (CDF).",
-          "explanation_en": "Function giving cumulative probability that variable X takes value less than or equal to x (CDF).",
-          "exampleSentence_en": "CDF values range monotonically from 0 to 1."
+          "term_en": "z-score",
+          "explanation_tr": "Bir gözlemin ortalamadan kaç standart sapma uzakta olduğunu gösteren standartlaştırılmış değer.",
+          "explanation_en": "A measure of how many standard deviations below or above the population mean a raw score is.",
+          "exampleSentence_en": "A z-score greater than 3 represents a rare extreme anomaly."
         }
       ],
       "questions": [
@@ -168,16 +206,24 @@
           "id": "m16-l4-q1",
           "type": "numeric",
           "prompt": {
-            "tr": "$F(50) = 0.85$ ve $F(20) = 0.15$ ise $P(20 \\le X \\le 50) = F(50) - F(20)$ kaçtır?",
-            "en": "If F(50) = 0.85 and F(20) = 0.15, what is P(20 ≤ X ≤ 50)?"
+            "tr": "$\\mu = 80, \\sigma = 10$ olan dağılımda $X = 65$ gözleminin $Z$-skoru kaçtır?",
+            "en": "If $\\mu = 80, \\sigma = 10$, what is the $Z$-score for $X = 65$?"
           },
-          "correctAnswer": 0.7,
+          "correctAnswer": -1.5,
           "explanation": {
-            "tr": "$$P(20 \\le X \\le 50) = 0.85 - 0.15 = 0.70$$",
-            "en": "0.85 - 0.15 = 0.70."
+            "tr": "$$Z = \\frac{65 - 80}{10} = \\frac{-15}{10} = -1.5$$",
+            "en": "$$Z = (65 - 80)/10 = -1.5$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=STANDARTLAŞTIRMA(x; mu; sigma)",
+        "pythonCode": "from scipy.stats import zscore\nz_values = zscore(data)",
+        "powerBiNote": {
+          "tr": "Z-skoru sütunu ile anomali filtrelemesi yapılır.",
+          "en": "Use Z-score column to filter out $|Z| > 3$ outliers."
+        }
+      }
     }
   ],
   "caseExams": [

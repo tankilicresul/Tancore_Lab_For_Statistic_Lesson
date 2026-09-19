@@ -2,12 +2,12 @@
   "id": "module-6",
   "order": 6,
   "title": {
-    "tr": "Hipotez Testi",
-    "en": "Hypothesis Testing"
+    "tr": "Tek Popülasyon Hipotez Testleri",
+    "en": "One-Sample Hypothesis Testing"
   },
   "description": {
-    "tr": "Sıfır hipotezi (H0), alternatif hipotez (H1), p-değeri ve z/t testleri. Web A/B testi buton dönüşüm oranı vakası.",
-    "en": "Null hypothesis (H0), alternative hypothesis (H1), p-value, and z/t tests. Web A/B testing conversion rate case."
+    "tr": "Sıfır ve alternatif hipotezler, Tip 1/2 hataları, test gücü, Z-testi, t-testi ve tek varyans Ki-kare testi.",
+    "en": "Null/alternative hypotheses, Type 1/2 errors, power, Z-test, t-test, and one-variance Chi-square test."
   },
   "iconName": "GitCompare",
   "lessons": [
@@ -17,24 +17,23 @@
       "order": 1,
       "difficulty": "basit",
       "title": {
-        "tr": "Sıfır (H0) ve Alternatif (H1) Hipotezler",
-        "en": "Null & Alternative Hypotheses"
+        "tr": "Sıfır ($H_0$) ve Alternatif ($H_1$) Hipotez Kurgusu",
+        "en": "Null ($H_0$) and Alternative ($H_1$) Hypotheses"
       },
       "conceptCard": {
-        "tr": "Hipotez testi, bir popülasyon parametresi hakkında kurulan iddiayı verilerle test eder:\n\n$$H_0: \\mu = \\mu_0 \\quad (\\text{Sıfır Hipotezi - Değişim Yok})$$\n$$H_1: \\mu \\ne \\mu_0 \\quad \\text{veya} \\quad H_1: \\mu > \\mu_0 \\quad (\\text{Alternatif Hipotez})$$\n\nTip I Hata ($\\alpha$): $H_0$ doğruyken reddetme olasılığı. Tip II Hata ($\\beta$): $H_0$ yanlışken reddedememe olasılığı. Testin Gücü: $1 - \\beta$.",
-        "en": "H0 (Null Hypothesis) represents the default status quo ('No effect'). H1 (Alternative) represents the claim we seek to prove ('Effect exists')."
+        "tr": "1. **Sıfır Hipotezi ($H_0$):** Değişimin, etkinin veya farkın olmadığını savunan varsayılan iddia ($=, \\le, \\ge$).\n2. **Alternatif Hipotez ($H_1$ veya $H_a$):** Kanıtlanmaya çalışılan yenilik veya araştırma iddiası ($\\neq, <, >$).\n3. **Test Yönü:**\n- Çift Yönlü: $H_0: \\mu = \\mu_0$ vs $H_1: \\mu \\neq \\mu_0$\n- Tek Yönlü (Sağ): $H_0: \\mu \\le \\mu_0$ vs $H_1: \\mu > \\mu_0$\n- Tek Yönlü (Sol): $H_0: \\mu \\ge \\mu_0$ vs $H_1: \\mu < \\mu_0$",
+        "en": "1. **Null Hypothesis ($H_0$):** Status quo baseline assumption of no effect ($=, \\le, \\ge$).\n2. **Alternative Hypothesis ($H_1$):** Claim seeking evidence to substantiate ($\\neq, <, >$).\n3. **Test Tails:**\n- Two-Tailed: $H_0: \\mu = \\mu_0$ vs $H_1: \\mu \\neq \\mu_0$\n- One-Tailed (Right): $H_0: \\mu \\le \\mu_0$ vs $H_1: \\mu > \\mu_0$\n- One-Tailed (Left): $H_0: \\mu \\ge \\mu_0$ vs $H_1: \\mu < \\mu_0$"
       },
       "companyExample": {
-        "tr": "WebOptima e-ticaret platformu satın alma butonunun rengini maviden turuncuya değiştirmek istiyor. Test öncesinde iki hipotez kurulur: Sıfır Hipotezi H0: 'Yeni turuncu buton ile eski mavi buton arasında dönüşüm oranı açısından hiçbir fark yoktur'. Alternatif Hipotez H1: 'Yeni turuncu buton dönüşüm oranını artırır'. Amaç veri toplayıp H0'ı çürütmektir.",
-        "en": "WebOptima wants to change its checkout button from blue to orange. Before testing, two hypotheses are set: Null H0: 'There is no difference in conversion rate between blue and orange buttons'. Alternative H1: 'The orange button increases conversion'. The goal is to collect data to challenge H0."
+        "tr": "WebOptima A/B testinde: $H_0: p_{yeni} = 0.05$ (Yeni buton dönüşümü değiştirmedi), $H_1: p_{yeni} > 0.05$ (Yeni buton dönüşümü artırdı - Sağ kuyruk testi).",
+        "en": "A/B test: $H_0: p = 0.05$ (no conversion change), $H_1: p > 0.05$ (new button increases conversions - right-tailed test)."
       },
-      "interactiveType": "hypothesis_z_t",
       "vocabTerms": [
         {
           "term_en": "null hypothesis",
-          "explanation_tr": "Değişim veya etki olmadığını savunan varsayılan hipotez (H0).",
-          "explanation_en": "Default claim assuming no effect or difference (H0).",
-          "exampleSentence_en": "We test whether to reject the null hypothesis."
+          "explanation_tr": "Aksi güçlü verilerle kanıtlanana kadar doğru kabul edilen başlangıç hipotezi ($H_0$).",
+          "explanation_en": "A default hypothesis that there is no significant difference or effect.",
+          "exampleSentence_en": "We fail to reject the null hypothesis due to lack of statistical evidence."
         }
       ],
       "questions": [
@@ -42,26 +41,42 @@
           "id": "m6-l1-q1",
           "type": "multiple_choice",
           "prompt": {
-            "tr": "Sıfır hipotezi ($H_0$) gerçekte doğru olduğu halde reddedilirse hangi tür hata yapılmış olur?",
-            "en": "If the null hypothesis ($H_0$) is true but rejected, what type of error is committed?"
+            "tr": "Bir şirket yeni yazılımın işlem süresini kısalttığını iddia ediyorsa (Eski süre 10 sn), alternatif hipotez $H_1$ nasıl kurulmalıdır?",
+            "en": "If a company claims new software reduces processing time (Old time 10s), how should $H_1$ be formulated?"
           },
           "options": [
             {
-              "tr": "Tip 1 Hata (Alfa / False Positive)",
-              "en": "Type 1 Error (Alpha / False Positive)"
+              "tr": "H1: μ < 10",
+              "en": "H1: μ < 10"
             },
             {
-              "tr": "Tip 2 Hata (Beta / False Negative)",
-              "en": "Type 2 Error (Beta / False Negative)"
+              "tr": "H1: μ = 10",
+              "en": "H1: μ = 10"
+            },
+            {
+              "tr": "H1: μ > 10",
+              "en": "H1: μ > 10"
+            },
+            {
+              "tr": "H0: μ < 10",
+              "en": "H0: μ < 10"
             }
           ],
-          "correctAnswer": "Tip 1 Hata (Alfa / False Positive)",
+          "correctAnswer": "H1: μ < 10",
           "explanation": {
-            "tr": "Gerçekte doğru olan $H_0$'ın reddedilmesi Tip 1 Hata (Alfa) olarak adlandırılır.",
-            "en": "Rejecting a true $H_0$ is a Type 1 Error (Alpha)."
+            "tr": "İddia sürenin kısalması (azalması) olduğu için $H_1: \\mu < 10$ sol kuyruk testi kurulmalıdır.",
+            "en": "Because the claim is a reduction in time, alternative hypothesis is $H_1: \\mu < 10$."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=EĞER(p_değeri < 0.05; \"H0 Red\"; \"H0 Reddedilemez\")",
+        "pythonCode": "# H0: mu == 10 vs H1: mu < 10\nt_stat, p_val = stats.ttest_1samp(data, popmean=10, alternative=\"less\")",
+        "powerBiNote": {
+          "tr": "A/B test sonuç kartlarında $H_0$ red durumu renkli rozetle gösterilir.",
+          "en": "A/B test status is visualized with red/green decision badges."
+        }
+      }
     },
     {
       "id": "m6-l2",
@@ -69,24 +84,23 @@
       "order": 2,
       "difficulty": "orta",
       "title": {
-        "tr": "Tip 1 (Alfa) ve Tip 2 (Beta) Hataları",
-        "en": "Type I & Type II Errors"
+        "tr": "Tip 1 ($alpha$), Tip 2 ($\beta$) Hataları ve Test Gücü",
+        "en": "Type 1 ($alpha$), Type 2 ($\beta$) Errors and Statistical Power"
       },
       "conceptCard": {
-        "tr": "Tek örneklem Z-testi istatistiği:\n\n$$Z_{\\text{hesap}} = \\frac{\\bar{X} - \\mu_0}{\\frac{\\sigma}{\\sqrt{n}}}$$\n\np-Değeri Kuralı: Eğer $p\\text{-değeri} \\le \\alpha$ ise $H_0$ reddedilir; aksi halde $H_0$ reddedilemez.",
-        "en": "Type I Error (α): Rejecting a true H0 (False Positive). Type II Error (β): Failing to reject a false H0 (False Negative)."
+        "tr": "Karar matrisindeki iki temel hata türü (`INDR 252 CEx11`):\n\n1. **Tip 1 Hata ($\\alpha$ / Yalancı Pozitif / Üretici Riski):** $H_0$ gerçekte doğruyken $H_0$'ı reddetmek ($P(\\text{H0 Red} | \\text{H0 Doğru}) = \\alpha$).\n2. **Tip 2 Hata ($\\beta$ / Yalancı Negatif / Tüketici Riski):** $H_0$ gerçekte yanlışken $H_0$'ı reddedememek.\n3. **Testin Gücü (Power = $1 - \\beta$):** $H_0$ yanlış olduğunda onu doğru şekilde reddedebilme olasılığı.",
+        "en": "The decision matrix error trade-offs (`INDR 252 CEx11`):\n\n1. **Type 1 Error ($\\alpha$ / False Positive / Producer Risk):** Rejecting $H_0$ when $H_0$ is true.\n2. **Type 2 Error ($\\beta$ / False Negative / Consumer Risk):** Failing to reject $H_0$ when $H_0$ is false.\n3. **Statistical Power ($1 - \\beta$):** Probability of correctly rejecting a false $H_0$."
       },
       "companyExample": {
-        "tr": "WebOptima A/B testinde iki farklı hata yapma riski vardır: Gerçekte turuncu buton hiçbir işe yaramadığı halde şans eseri gelen yüksek verilere bakıp 'İşe yaradı' deyip canlıya almak Tip 1 Hata (Yanlış Alarm)'dır. Gerçekte turuncu buton çok daha iyi olduğu halde veriyi yetersiz görüp eski butonda kalmak ise Tip 2 Hata (Kaçırılan Fırsat)'dır.",
-        "en": "In WebOptima's A/B test, two error risks exist: Deploying the orange button believing it boosted sales when it actually made no difference is a Type I Error (False Positive). Rejecting the orange button when it actually was superior is a Type II Error (False Negative)."
+        "tr": "SmokeTech sigara katranı analizinde (`CEx11`): Üretici katran standarda uygun olduğu halde ceza alırsa Tip 1 hata ($\\alpha$), standart dışı zararlı sigara onay alırsa Tip 2 hata ($\\beta$) oluşur.",
+        "en": "SmokeTech tar inspection (`CEx11`): Fining a conforming batch is Type 1 error ($\\alpha$), letting a non-conforming batch pass is Type 2 error ($\\beta$)."
       },
-      "interactiveType": "hypothesis_z_t",
       "vocabTerms": [
         {
-          "term_en": "Type I error",
-          "explanation_tr": "Yanlış alarm (False Positive) hatası.",
-          "explanation_en": "False positive error rate (α).",
-          "exampleSentence_en": "Alpha is set to 0.05 to control Type I error."
+          "term_en": "type 1 error",
+          "explanation_tr": "Gerçekte doğru olan sıfır hipotezini reddetme hatası (Alfa).",
+          "explanation_en": "The rejection of a true null hypothesis (false positive).",
+          "exampleSentence_en": "Significance level alpha represents the maximum allowed probability of Type 1 error."
         }
       ],
       "questions": [
@@ -94,51 +108,66 @@
           "id": "m6-l2-q1",
           "type": "multiple_choice",
           "prompt": {
-            "tr": "Bir hipotez testinde hesaplanan $p\\text{-değeri} = 0.015$ ve anlamlılık düzeyi $\\alpha = 0.05$ ise karar ne olmalıdır?",
-            "en": "If $p\\text{-value} = 0.015$ and significance level $\\alpha = 0.05$, what is the test decision?"
+            "tr": "Mahkemede masum bir sanığın suçlu bulunup hapse atılması hangi istatistiksel hata türüne örnektir ($H_0$: Masum)?",
+            "en": "Convicting an innocent person in court is an example of which statistical error ($H_0$: Innocent)?"
           },
           "options": [
             {
-              "tr": "H0 Reddedilir (Fark Anlamlı)",
-              "en": "Reject H0 (Statistically Significant)"
+              "tr": "Tip 1 Hata (Alfa)",
+              "en": "Type 1 Error (Alpha)"
             },
             {
-              "tr": "H0 Reddedilemez (Farksız)",
-              "en": "Cannot Reject H0"
+              "tr": "Tip 2 Hata (Beta)",
+              "en": "Type 2 Error (Beta)"
+            },
+            {
+              "tr": "Standart Hata",
+              "en": "Standard Error"
+            },
+            {
+              "tr": "Örnekleme Hatası",
+              "en": "Sampling Bias"
             }
           ],
-          "correctAnswer": "H0 Reddedilir (Fark Anlamlı)",
+          "correctAnswer": "Tip 1 Hata (Alfa)",
           "explanation": {
-            "tr": "$p = 0.015 \\le \\alpha = 0.05$ olduğundan $H_0$ reddedilir.",
-            "en": "Since $p = 0.015 \\le \\alpha = 0.05$, reject $H_0$."
+            "tr": "$H_0$ (Masumiyet) doğruyken reddedilip ceza verildiği için bu Tip 1 hatadır (Yalancı Pozitif).",
+            "en": "Rejecting true $H_0$ (innocence) is a classic Type 1 false positive error."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=NORM.TERS(1 - beta)",
+        "pythonCode": "from statsmodels.stats.power import TTestPower\npower = TTestPower().power(effect_size=0.5, nobs=30, alpha=0.05)",
+        "powerBiNote": {
+          "tr": "Güç analizi grafikleriyle minimum $n$ belirlenir.",
+          "en": "Power analysis curves determine minimum sample size."
+        }
+      }
     },
     {
       "id": "m6-l3",
       "moduleId": "module-6",
       "order": 3,
-      "difficulty": "orta-ustu",
+      "difficulty": "orta",
       "title": {
-        "tr": "p-değeri ve Karar Kriterleri",
-        "en": "p-value & Decision Rules"
+        "tr": "p-Değeri ve Karar Kriterleri",
+        "en": "p-Value and Decision Criteria"
       },
       "conceptCard": {
-        "tr": "p-değeri, H0 doğruyken mevcut örneklem sonucunu elde etme olasılığıdır. p-değeri < α (örn. 0.05) ise H0 reddedilir; sonuç istatistiksel olarak anlamlıdır.",
-        "en": "p-value is the probability of obtaining sample data if H0 were true. If p < α (e.g. 0.05), reject H0; result is statistically significant."
+        "tr": "1. **$p$-Değeri:** Sıfır hipotezi ($H_0$) doğru kabul edildiğinde, elde edilen örneklem sonucundan daha aşırı bir sonucun ortaya çıkma olasılığıdır (`INDR 252 Lecture 13`).\n\n2. **Evrensel Karar Kuralı:**\n- **$p \\le \\alpha$:** $H_0$ REDDEDİLİR. İstatistiksel olarak anlamlı kanıt vardır.\n- **$p > \\alpha$:** $H_0$ REDDEDİLEMEZ. Yeterli kanıt yoktur.\n\n> **Önemli İlke:** \"H0 kabul edildi\" denmez; \"H0 reddedilemedi\" denir!",
+        "en": "1. **$p$-Value:** The probability of obtaining test results at least as extreme as observed, assuming $H_0$ is true (`INDR 252 Lecture 13`).\n\n2. **Decision Rule:**\n- **$p \\le \\alpha$:** REJECT $H_0$. Statistically significant evidence.\n- **$p > \\alpha$:** FAIL TO REJECT $H_0$. Insufficient evidence.\n\n> **Core Rule:** Never say \"Accept $H_0$\"; state \"Fail to reject $H_0$\"!"
       },
       "companyExample": {
-        "tr": "WebOptima A/B testini çalıştırır ve p-değerini 0.02 (%2) olarak hesaplar. Anlamlılık seviyesi alpha = 0.05 (%5) kabul edilmiştir. p-değeri (0.02) < alpha (0.05) olduğu için 'Bu %2'lik başarı şans eseri olamaz' denir, H0 hipotezi reddedilir ve turuncu butonun satışı artırdığı istatistiksel olarak kanıtlanmış olur.",
-        "en": "WebOptima runs the A/B test and calculates a p-value of 0.02 (2%). With alpha set at 0.05 (5%), since 0.02 < 0.05, we reject the Null hypothesis H0 and conclude that the orange button statistically significantly increases conversion."
+        "tr": "Bir A/B testinde hesaplanan $p = 0.012$'dir. $\\alpha = 0.05$ için $p < 0.05$ olduğundan $H_0$ reddedilir; yeni tasarımın ciroyu artırdığı %95 güvenle kanıtlanmıştır.",
+        "en": "A/B test yields $p = 0.012$. At $\\alpha = 0.05$, $p < \\alpha$, rejecting $H_0$ and proving the new design increases revenue."
       },
-      "interactiveType": "hypothesis_z_t",
       "vocabTerms": [
         {
           "term_en": "p-value",
-          "explanation_tr": "H0 altında verinin ortaya çıkma olasılığı.",
-          "explanation_en": "Probability of observing data under H0.",
-          "exampleSentence_en": "If p-value is low, H0 must go."
+          "explanation_tr": "Sıfır hipotezinin aleyhine olan kanıt gücünü gösteren olasılık değeri.",
+          "explanation_en": "Probability of obtaining results at least as extreme as the observed data, assuming H0 is true.",
+          "exampleSentence_en": "A small p-value indicates strong evidence against the null hypothesis."
         }
       ],
       "questions": [
@@ -146,78 +175,189 @@
           "id": "m6-l3-q1",
           "type": "multiple_choice",
           "prompt": {
-            "tr": "p-değeri = 0.01 ve α = 0.05 ise karar ne olur?",
-            "en": "If p-value = 0.01 and α = 0.05, what decision is made?"
+            "tr": "$\\alpha = 0.05$ düzeyinde yapılan bir testte $p = 0.08$ bulunmuştur. İstatistiksel karar ne olmalıdır?",
+            "en": "In a test at $\\alpha = 0.05$, $p = 0.08$ is obtained. What is the statistical decision?"
           },
           "options": [
             {
-              "tr": "H0 Reddedilir (Reject H0)",
-              "en": "Reject H0"
+              "tr": "H0 reddedilemez (Yetersiz kanıt)",
+              "en": "Fail to reject H0 (Insufficient evidence)"
             },
             {
-              "tr": "H0 Reddedilemez (Cannot Reject H0)",
-              "en": "Cannot Reject H0"
+              "tr": "H0 kesinlikle reddedilir",
+              "en": "Reject H0 conclusively"
+            },
+            {
+              "tr": "H1 kesinlikle doğrudur",
+              "en": "H1 is proven true"
+            },
+            {
+              "tr": "Test geçersizdir",
+              "en": "The test is invalid"
             }
           ],
-          "correctAnswer": "H0 Reddedilir (Reject H0)",
+          "correctAnswer": "H0 reddedilemez (Yetersiz kanıt)",
           "explanation": {
-            "tr": "0.01 < 0.05 olduğu için H0 reddedilir.",
-            "en": "Since 0.01 < 0.05, H0 is rejected."
+            "tr": "$p = 0.08 > 0.05$ olduğu için $H_0$ hipotezini reddedecek yeterli kanıt yoktur.",
+            "en": "Because $p = 0.08 > 0.05$, we fail to reject the null hypothesis."
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=EĞER(p <= 0.05; \"Anlamlı Fark Var\"; \"Fark Yok\")",
+        "pythonCode": "if p_val <= 0.05:\n    print(\"Reject H0: Statistically significant\")",
+        "powerBiNote": {
+          "tr": "Koşullu biçimlendirme ile p < 0.05 satırları yeşil vurgulanır.",
+          "en": "Conditional formatting highlights p < 0.05."
+        }
+      }
     },
     {
       "id": "m6-l4",
       "moduleId": "module-6",
       "order": 4,
-      "difficulty": "zor",
+      "difficulty": "orta",
       "title": {
-        "tr": "Tek ve Çift Yönlü Testler",
-        "en": "One-Tailed vs Two-Tailed Tests"
+        "tr": "Tek Örneklem Z-Testi ve t-Testi",
+        "en": "One-Sample Z-Test and t-Test"
       },
       "conceptCard": {
-        "tr": "Tek yönlü test sadece bir yöndeki değişimi arar (A > B). Çift yönlü test ise herhangi bir farkı arar (A ≠ B).",
-        "en": "One-tailed test looks for direction (A > B). Two-tailed test looks for any difference (A ≠ B)."
+        "tr": "Tek bir grubun ortalamasının hedef $\\mu_0$ değerine eşitliğini test etme (`INDR 252 Lecture 12-13`, `CEx12`):\n\n1. **$\\sigma$ Bilindiğinde ($Z$-Testi):**\n$$z = \\frac{\\bar{x} - \\mu_0}{\\sigma / \\sqrt{n}}$$\n2. **$\\sigma$ Bilinmediğinde ($t$-Testi):**\n$$t = \\frac{\\bar{x} - \\mu_0}{s / \\sqrt{n}}, \\quad df = n - 1$$",
+        "en": "Testing if a single population mean equals a benchmark $\\mu_0$ (`INDR 252 Lecture 12-13`, `CEx12`):\n\n1. **$\\sigma$ Known ($Z$-Test):**\n$$z = \\frac{\\bar{x} - \\mu_0}{\\sigma / \\sqrt{n}}$$\n2. **$\\sigma$ Unknown ($t$-Test):**\n$$t = \\frac{\\bar{x} - \\mu_0}{s / \\sqrt{n}}, \\quad df = n - 1$$"
       },
       "companyExample": {
-        "tr": "WebOptima pazarlama ekibi 'Yeni turuncu butonun dönüşümü KESİNLİKLE artıracağını' iddia ediyorsa tek yönlü (one-tailed) test uygular. Eğer ekip 'Renk değişiminin satışı olumlu veya olumsuz etkileyip etkilemeyeceğini' bilmeden sadece HERHANGİ BİR FARK arıyorsa çift yönlü (two-tailed) test kullanır.",
-        "en": "If WebOptima's team specifically claims 'The orange button INCREASES conversion', they use a one-tailed test. If they want to test whether the color change creates ANY DIFFERENCE (higher or lower), they apply a two-tailed test."
+        "tr": "Silikon gofret (wafer) üretiminde hedef kalınlık $\\mu_0 = 50$ mikrondur (`CEx12`). $n=16$ gofret için $\\bar{x} = 52$, $s = 4$ çıkmıştır. $t = (52-50)/(4/4) = 2.0$. $p$-değeri ile makinenin ayarının bozulup bozulmadığı sınanır.",
+        "en": "Silicon wafer target thickness $\\mu_0 = 50\\mu m$ (`CEx12`). Sample $n=16$: $\\bar{x}=52, s=4$. $t = (52-50)/(4/4) = 2.0$."
       },
-      "interactiveType": "hypothesis_z_t",
       "vocabTerms": [
         {
-          "term_en": "two-tailed test",
-          "explanation_tr": "Her iki yöndeki sapmayı da inceleyen test.",
-          "explanation_en": "Test examining deviations in both directions.",
-          "exampleSentence_en": "Two-tailed test splits alpha into two tails."
+          "term_en": "test statistic",
+          "explanation_tr": "Örneklemden hesaplanan ve sıfır hipotezini test etmek için referans dağılımla kıyaslanan değer.",
+          "explanation_en": "A standardized value calculated from sample data during a hypothesis test.",
+          "exampleSentence_en": "The calculated t-statistic is compared against the critical t-value."
         }
       ],
       "questions": [
         {
           "id": "m6-l4-q1",
-          "type": "multiple_choice",
+          "type": "numeric",
           "prompt": {
-            "tr": "'Yeni tasarım eskisinden FARKLIDIR' hipotezi hangi testtir?",
-            "en": "'New design is DIFFERENT from old' is which test?"
+            "tr": "$\\mu_0 = 100$, $\\bar{x} = 106$, $s = 12$ ve $n = 16$ olan testte $t$-istatistiği kaçtır?",
+            "en": "If $\\mu_0 = 100$, $\\bar{x} = 106$, $s = 12$, and $n = 16$, what is the $t$-statistic?"
           },
-          "options": [
-            {
-              "tr": "Çift Yönlü Test (Two-Tailed)",
-              "en": "Two-Tailed Test"
-            },
-            {
-              "tr": "Tek Yönlü Test (One-Tailed)",
-              "en": "One-Tailed Test"
-            }
-          ],
-          "correctAnswer": "Çift Yönlü Test (Two-Tailed)",
+          "correctAnswer": 2,
           "explanation": {
-            "tr": "Yön belirtmeden sadece fark arandığı için çift yönlüdür.",
-            "en": "Since no direction is specified, it is two-tailed."
+            "tr": "$$t = \\frac{106 - 100}{12 / \\sqrt{16}} = \\frac{6}{12 / 4} = \\frac{6}{3} = 2$$",
+            "en": "$$t = \\frac{106 - 100}{12 / 4} = \\frac{6}{3} = 2$$"
           }
         }
-      ]
+      ],
+      "realWorldBox": {
+        "excelFormula": "=T.TEST(A1:A16; B1:B16; 2; 1)",
+        "pythonCode": "from scipy import stats\nstats.ttest_1samp(data, popmean=100)",
+        "powerBiNote": {
+          "tr": "Üretim kalite tolerans kartlarında t-skoru izlenir.",
+          "en": "Track t-scores on quality assurance panels."
+        }
+      }
+    },
+    {
+      "id": "m6-l5",
+      "moduleId": "module-6",
+      "order": 5,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Tek Popülasyon Oran Testi ($Z$)",
+        "en": "One-Sample Proportion Test ($Z$)"
+      },
+      "conceptCard": {
+        "tr": "Bir anakütle oranının $p_0$ değerine eşitliğini test etmek için kullanılır (`INDR 252 Lecture 13`):\n\n$$z = \\frac{\\hat{p} - p_0}{\\sqrt{\\frac{p_0(1-p_0)}{n}}}$$\n\n- Şart: $n p_0 \\ge 5$ ve $n(1-p_0) \\ge 5$ olmalıdır.\n- Standart normal dağılım ($Z$) tablosu kullanılır.",
+        "en": "Testing whether a population proportion equals $p_0$ (`INDR 252 Lecture 13`):\n\n$$z = \\frac{\\hat{p} - p_0}{\\sqrt{\\frac{p_0(1-p_0)}{n}}}$$\n\n- Condition: $n p_0 \\ge 5$ and $n(1-p_0) \\ge 5$.\n- Standard normal ($Z$) distribution applies."
+      },
+      "companyExample": {
+        "tr": "MarkIE çağrı merkezinin hedef yanıt oranı %55'tir ($p_0=0.55$). $n=400$ aramada 240 yanıt alınmıştır ($\\hat{p}=0.60$). $Z$-testi ile hedefin anlamlı olarak aşılıp aşılmadığı doğrulanır (`MarkIE Case`).",
+        "en": "MarkIE Call Center benchmark answer rate is 55% ($p_0=0.55$). Out of $n=400$ calls, 240 answered ($\\hat{p}=0.60$). $Z$-test confirms if target is statistically exceeded (`MarkIE Case`)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "proportion test",
+          "explanation_tr": "Kategorik başarı oranının hedef orana uygunluğunu sınayan test.",
+          "explanation_en": "A test determining if an observed proportion differs from a hypothesized value.",
+          "exampleSentence_en": "We run a one-sample proportion test to evaluate conversion rates."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m6-l5-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$p_0 = 0.50$, $\\hat{p} = 0.60$ ve $n = 100$ ise $z$-istatistiği kaçtır?",
+            "en": "If $p_0 = 0.50$, $\\hat{p} = 0.60$, and $n = 100$, what is the $z$-statistic?"
+          },
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "$$SE = \\sqrt{\\frac{0.50 \\times 0.50}{100}} = \\sqrt{0.0025} = 0.05$$\n$$z = \\frac{0.60 - 0.50}{0.05} = 2$$",
+            "en": "$$SE = \\sqrt{0.5(0.5)/100} = 0.05 \\implies z = 0.10 / 0.05 = 2$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(p_hat - p0) / KAREKÖK(p0*(1-p0)/n)",
+        "pythonCode": "from statsmodels.stats.proportion import proportions_ztest\nproportions_ztest(count=240, nobs=400, value=0.55)",
+        "powerBiNote": {
+          "tr": "Dönüşüm hedefi KPI göstergelerinde $Z$-skoru kullanılır.",
+          "en": "Used for target achievement conversion KPIs."
+        }
+      }
+    },
+    {
+      "id": "m6-l6",
+      "moduleId": "module-6",
+      "order": 6,
+      "difficulty": "zor",
+      "title": {
+        "tr": "Tek Popülasyon Varyans Testi ($chi^2$)",
+        "en": "One-Sample Population Variance Test ($chi^2$)"
+      },
+      "conceptCard": {
+        "tr": "Normal dağılan bir popülasyonda varyansın $\\sigma_0^2$ hedef değerine eşitliğini test etme (`INDR 252 FormulaSheet`):\n\n$$\\chi^2 = \\frac{(n-1)s^2}{\\sigma_0^2}, \\quad df = n - 1$$\n\n- $H_0: \\sigma^2 = \\sigma_0^2$\n- Kalite kontrolde varyasyonun izin verilen toleransı aşıp aşmadığını test etmekte kullanılır.",
+        "en": "Testing population variance against standard specification $\\sigma_0^2$ (`INDR 252 FormulaSheet`):\n\n$$\\chi^2 = \\frac{(n-1)s^2}{\\sigma_0^2}, \\quad df = n - 1$$\n\n- $H_0: \\sigma^2 = \\sigma_0^2$\n- Essential in precision manufacturing quality control."
+      },
+      "companyExample": {
+        "tr": "Hassas şırınga üretiminde varyans toleransı $\\sigma_0^2 = 0.01 \\text{ mm}^2$'dir. $n=25$ numunede $s^2 = 0.018$ bulunmuştur. $\\chi^2 = 24(0.018)/0.01 = 43.2$. $p < 0.05$ ile varyansın limiti aştığı tespit edilir.",
+        "en": "Syringe manufacturing variance target $\\sigma_0^2 = 0.01$. Sample $n=25, s^2 = 0.018$. $\\chi^2 = 43.2$, proving variance exceeds tolerance."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "chi-square variance test",
+          "explanation_tr": "Popülasyon varyansının belirli bir değere eşitliğini sınayan tek örneklem testi.",
+          "explanation_en": "Hypothesis test evaluating if sample variance conforms to target variance.",
+          "exampleSentence_en": "The chi-square test confirms whether process variability is in control."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m6-l6-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$n = 11$, $s^2 = 4$ ve $\\sigma_0^2 = 2$ ise test istatistiği $\\chi^2$ kaçtır?",
+            "en": "If $n = 11$, $s^2 = 4$, and $\\sigma_0^2 = 2$, what is test statistic $\\chi^2$?"
+          },
+          "correctAnswer": 20,
+          "explanation": {
+            "tr": "$$\\chi^2 = \\frac{(11-1) \\times 4}{2} = \\frac{10 \\times 4}{2} = 20$$",
+            "en": "$$\\chi^2 = \\frac{(11-1) \\times 4}{2} = \\frac{40}{2} = 20$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(n-1)*s^2 / sigma0^2",
+        "pythonCode": "chi2_stat = (n - 1) * s2 / sigma0_2\np_val = 1 - stats.chi2.cdf(chi2_stat, df=n-1)",
+        "powerBiNote": {
+          "tr": "Six Sigma kontrol grafiklerinde varyans testi kullanılır.",
+          "en": "Applied in Six Sigma variance control limits."
+        }
+      }
     }
   ],
   "caseExams": [
