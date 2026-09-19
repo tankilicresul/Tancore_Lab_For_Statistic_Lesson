@@ -586,7 +586,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
         <button
           onClick={() => setIsEditing(true)}
-          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] hover:from-amber-500 hover:via-[#f06d00] hover:to-[#e04f00] border border-amber-300/60 shadow-[0_4px_0_0_#c2540a] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center text-center group cursor-pointer relative overflow-hidden"
+          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] hover:from-amber-500 hover:via-[#f06d00] hover:to-[#e04f00] border border-amber-300/60 shadow-md shadow-orange-500/20 active:scale-98 transition-all flex items-center justify-center text-center group cursor-pointer relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-16 h-16 bg-white/15 rounded-full blur-2xl -mr-4 -mt-4 pointer-events-none" />
           <span className="text-xs sm:text-sm font-black text-white drop-shadow-sm whitespace-nowrap truncate text-center relative z-10">
@@ -596,7 +596,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
         <button
           onClick={() => onNavigateLeaderboard?.()}
-          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] hover:from-amber-500 hover:via-[#f06d00] hover:to-[#e04f00] border border-amber-300/60 shadow-[0_4px_0_0_#c2540a] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center text-center group cursor-pointer relative overflow-hidden"
+          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-gradient-to-br from-amber-400 via-[#ff7a00] to-[#f25900] hover:from-amber-500 hover:via-[#f06d00] hover:to-[#e04f00] border border-amber-300/60 shadow-md shadow-orange-500/20 active:scale-98 transition-all flex items-center justify-center text-center group cursor-pointer relative overflow-hidden"
           title={language === 'tr' ? 'Genel Sıralamayı Gör' : 'View Leaderboard'}
         >
           <div className="absolute top-0 right-0 w-16 h-16 bg-white/15 rounded-full blur-2xl -mr-4 -mt-4 pointer-events-none" />

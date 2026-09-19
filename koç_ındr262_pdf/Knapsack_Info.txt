@@ -1,0 +1,2 @@
+volume capacity: 1262
+mass capacity: 1262
