@@ -6,6 +6,8 @@ import { uploadAvatarImage, deleteUserAvatar, fetchAllProfilesFromSupabase, save
 import { computeUnifiedLeaderboard } from '../utils/leaderboardHelper';
 import { AvatarCropModal } from '../components/AvatarCropModal';
 import { UserAvatar } from '../components/UserAvatar';
+import { soundService } from '../services/soundService';
+import { DEFAULT_AVATARS, isPresetDefaultAvatar, getDefaultAvatarForUser } from '../utils/avatarHelper';
 import {
   GraduationCap,
   Mail,
@@ -27,6 +29,7 @@ import {
   Eye,
   EyeOff,
   CheckCircle2,
+  Check,
 } from 'lucide-react';
 
 interface ProfilePageProps {
@@ -321,52 +324,98 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         {/* Editable Form vs Metadata Display */}
         {isEditing ? (
           <form onSubmit={handleSave} className="mt-5 pt-4 border-t border-white/10 space-y-4 relative z-10">
-            {/* Profil Fotoğrafı Düzenleme Bölümü */}
-            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3.5 p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 min-w-[64px] min-h-[64px] max-w-[64px] max-h-[64px] sm:max-w-[80px] sm:max-h-[80px] rounded-full bg-white/25 text-white font-black text-2xl flex items-center justify-center border-2 border-white/30 shadow-md shrink-0 overflow-hidden relative">
-                {isUploadingAvatar ? (
-                  <Loader2 className="w-6 h-6 animate-spin text-white" />
-                ) : (
-                  <UserAvatar
-                    avatarUrl={userProfile?.avatarUrl}
-                    avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
-                    fullName={userProfile?.fullName}
-                    size="xl"
-                    className="w-full h-full"
-                  />
-                )}
-              </div>
+            {/* Profil Fotoğrafı Düzenleme & 3D Karakter Seçimi Bölümü */}
+            <div className="p-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md space-y-3.5">
+              <div className="flex flex-col sm:flex-row items-center gap-3.5">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 min-w-[64px] min-h-[64px] max-w-[64px] max-h-[64px] sm:max-w-[80px] sm:max-h-[80px] rounded-full bg-white/25 text-white font-black text-2xl flex items-center justify-center border-2 border-white/50 shadow-md shrink-0 overflow-hidden relative">
+                  {isUploadingAvatar ? (
+                    <Loader2 className="w-6 h-6 animate-spin text-white" />
+                  ) : (
+                    <UserAvatar
+                      avatarUrl={formData.avatarUrl || userProfile?.avatarUrl}
+                      avatarEmoji={userProfile?.avatarEmoji || '👨‍🎓'}
+                      fullName={userProfile?.fullName}
+                      size="xl"
+                      className="w-full h-full"
+                    />
+                  )}
+                </div>
 
-              <div className="flex-1 min-w-0 space-y-2 text-center sm:text-left w-full">
-                <p className="text-xs sm:text-sm font-bold text-slate-200">
-                  {language === 'tr' ? 'Profil Fotoğrafı' : 'Profile Picture'}
-                </p>
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={isUploadingAvatar}
-                    className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black transition-all shadow-md shadow-[#ff7a00]/30 cursor-pointer disabled:opacity-50 active:scale-95"
-                  >
-                    <Camera className="w-4 h-4" />
-                    <span>{language === 'tr' ? 'Fotoğraf Seç / Çek' : 'Choose / Take Photo'}</span>
-                  </button>
-
-                  {userProfile?.avatarUrl && (
+                <div className="flex-1 min-w-0 space-y-2 text-center sm:text-left w-full">
+                  <p className="text-xs sm:text-sm font-black text-white">
+                    {language === 'tr' ? 'Profil Fotoğrafı & Avatar' : 'Profile Picture & Avatar'}
+                  </p>
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                     <button
                       type="button"
-                      onClick={async () => {
-                        if (userProfile?.schoolEmail) {
-                          await deleteUserAvatar(userProfile.schoolEmail);
-                        }
-                        updateUserProfile({ avatarUrl: undefined });
-                        setFormData((prev) => ({ ...prev, avatarUrl: undefined }));
-                      }}
-                      className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 text-xs font-bold transition-colors border border-white/15 cursor-pointer active:scale-95"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isUploadingAvatar}
+                      className="flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-white text-[#ff7a00] hover:bg-orange-50 text-xs font-black transition-all shadow-md cursor-pointer disabled:opacity-50 active:scale-95"
                     >
-                      {language === 'tr' ? 'Kaldır' : 'Remove'}
+                      <Camera className="w-4 h-4" />
+                      <span>{language === 'tr' ? 'Kendi Fotoğrafını Yükle' : 'Upload Your Photo'}</span>
                     </button>
-                  )}
+
+                    {userProfile?.avatarUrl && !isPresetDefaultAvatar(userProfile.avatarUrl) && (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (userProfile?.schoolEmail) {
+                            await deleteUserAvatar(userProfile.schoolEmail);
+                          }
+                          const defaultAv = getDefaultAvatarForUser(userProfile?.schoolEmail || userProfile?.fullName);
+                          updateUserProfile({ avatarUrl: defaultAv });
+                          setFormData((prev) => ({ ...prev, avatarUrl: defaultAv }));
+                        }}
+                        className="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-rose-500/30 text-white hover:text-rose-100 text-xs font-bold transition-colors border border-white/25 cursor-pointer active:scale-95"
+                      >
+                        {language === 'tr' ? 'Varsayılana Dön' : 'Reset to Default'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* 3D Karakter Avatar Paleti */}
+              <div className="pt-3 border-t border-white/15">
+                <p className="text-[11px] font-extrabold text-white/90 uppercase tracking-wider mb-2 text-center sm:text-left">
+                  {language === 'tr' ? '🎨 Veya Hazır 3D Karakterini Seç:' : '🎨 Or Pick a 3D Character Avatar:'}
+                </p>
+                <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+                  {DEFAULT_AVATARS.map((avatarPath, idx) => {
+                    const currentEffective = formData.avatarUrl || userProfile?.avatarUrl || getDefaultAvatarForUser(userProfile?.schoolEmail || userProfile?.fullName);
+                    const isSelected = currentEffective === avatarPath;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          soundService.playBtnPress();
+                          setFormData((prev) => ({ ...prev, avatarUrl: avatarPath }));
+                          updateUserProfile({ avatarUrl: avatarPath });
+                        }}
+                        className={`relative aspect-square rounded-2xl overflow-hidden border-2 transition-all cursor-pointer p-0.5 bg-white/20 hover:bg-white/40 ${
+                          isSelected
+                            ? 'border-white ring-2 ring-yellow-300 scale-105 shadow-lg shadow-black/20'
+                            : 'border-white/30 hover:border-white/70 hover:scale-105 opacity-85 hover:opacity-100'
+                        }`}
+                        title={`3D Avatar #${idx + 1}`}
+                      >
+                        <img
+                          src={avatarPath}
+                          alt={`Avatar ${idx + 1}`}
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                        {isSelected && (
+                          <div className="absolute inset-0 bg-amber-500/30 backdrop-blur-[0.5px] flex items-center justify-center rounded-xl">
+                            <div className="w-5 h-5 rounded-full bg-[#ff7a00] text-white flex items-center justify-center shadow-md">
+                              <Check className="w-3.5 h-3.5 stroke-[3.5]" />
+                            </div>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
