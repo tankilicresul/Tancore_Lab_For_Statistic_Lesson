@@ -416,60 +416,42 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-yellow-300/15 rounded-full pointer-events-none" />
 
         <div className="relative z-10">
-          {/* Speech bubble card with integrated Tanco mascot on the right */}
+          {/* Speech bubble card with integrated Tanco mascot */}
           <div className="relative bg-white text-slate-900 border border-amber-100 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-lg">
-            <div className="flex items-center sm:items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <h1 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight leading-snug">
-                  {language === 'tr'
-                    ? `Selam ${studentDisplayName}! Ben Tanco, senin yapay zeka asistanınım. Bana istediğin ismi verebilirsin :)`
-                    : `Hi ${studentDisplayName}! I'm Tanco, your AI assistant. You can give me any name you want :)`}
-                </h1>
-                {language === 'tr' ? (
-                  <div className="mt-2.5">
-                    <ul className="space-y-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                      <li className="flex items-center space-x-1.5">
-                        <span className="text-[#ff7a00] font-bold">•</span>
-                        <span>Benimle sohbet edebilir,</span>
-                      </li>
-                      <li className="flex items-center space-x-1.5">
-                        <span className="text-[#ff7a00] font-bold">•</span>
-                        <span>Konular hakkında soru sorabilir,</span>
-                      </li>
-                      <li className="flex items-center space-x-1.5">
-                        <span className="text-[#ff7a00] font-bold">•</span>
-                        <span>Fotoğraf ve ses gönderebilirsin.</span>
-                      </li>
-                    </ul>
-                    <p className="text-xs sm:text-sm text-[#ff7a00] font-black mt-2.5">
-                      Fotoğrafıma dokunup kaydırmayı dene !
-                    </p>
-                  </div>
-                ) : (
-                  <div className="mt-2.5">
-                    <ul className="space-y-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                      <li className="flex items-center space-x-1.5">
-                        <span className="text-[#ff7a00] font-bold">•</span>
-                        <span>Chat with me,</span>
-                      </li>
-                      <li className="flex items-center space-x-1.5">
-                        <span className="text-[#ff7a00] font-bold">•</span>
-                        <span>Ask questions about your courses,</span>
-                      </li>
-                      <li className="flex items-center space-x-1.5">
-                        <span className="text-[#ff7a00] font-bold">•</span>
-                        <span>Send photos and voice messages.</span>
-                      </li>
-                    </ul>
-                    <p className="text-xs sm:text-sm text-[#ff7a00] font-black mt-2.5">
-                      Try tapping and dragging my photo!
-                    </p>
-                  </div>
-                )}
-              </div>
+            {/* Top 2-line Header spanning full width */}
+            <h1 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight leading-snug">
+              {language === 'tr' ? (
+                <>
+                  <span className="block">Selam {studentDisplayName}! Ben Tanco, senin yapay zeka asistanınım.</span>
+                  <span className="block text-slate-700 font-bold mt-0.5">Bana istediğin ismi verebilirsin :)</span>
+                </>
+              ) : (
+                <>
+                  <span className="block">Hi {studentDisplayName}! I'm Tanco, your AI assistant.</span>
+                  <span className="block text-slate-700 font-bold mt-0.5">You can give me any name you want :)</span>
+                </>
+              )}
+            </h1>
 
-              {/* Tanco avatar located in the right-hand empty space */}
-              <div className="shrink-0 self-center sm:self-end pt-1 sm:pt-0">
+            {/* Middle row: Bullet points on left + Tanco avatar on right */}
+            <div className="mt-2.5 flex items-center justify-between gap-3">
+              <ul className="space-y-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed flex-1 min-w-0">
+                <li className="flex items-center space-x-1.5">
+                  <span className="text-[#ff7a00] font-bold">•</span>
+                  <span>{language === 'tr' ? 'Benimle sohbet edebilir,' : 'Chat with me,'}</span>
+                </li>
+                <li className="flex items-center space-x-1.5">
+                  <span className="text-[#ff7a00] font-bold">•</span>
+                  <span>{language === 'tr' ? 'Konular hakkında soru sorabilir,' : 'Ask questions about your courses,'}</span>
+                </li>
+                <li className="flex items-center space-x-1.5">
+                  <span className="text-[#ff7a00] font-bold">•</span>
+                  <span>{language === 'tr' ? 'Fotoğraf ve ses gönderebilirsin.' : 'Send photos and voice messages.'}</span>
+                </li>
+              </ul>
+
+              {/* Tanco Mascot Avatar located next to the bullet points */}
+              <div className="shrink-0 pl-1">
                 {!isTancoActive ? (
                   <div
                     ref={avatarRef}
@@ -492,6 +474,11 @@ export const HomePage: React.FC<HomePageProps> = ({
                 ) : null}
               </div>
             </div>
+
+            {/* Bottom Full-width Single-line Action Callout */}
+            <p className="text-xs sm:text-sm text-[#ff7a00] font-black mt-2.5 whitespace-nowrap">
+              {language === 'tr' ? 'Fotoğrafıma tıklayıp kaydırmayı dene !' : 'Try tapping and dragging my photo!'}
+            </p>
           </div>
         </div>
       </div>
