@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAppStore } from '../store/useAppStore';
+import { useAppStore, computeContiguousStreak } from '../store/useAppStore';
 import { ALL_MODULES } from '../data/modules';
 import { PublicProfile } from '../types/stats';
 import { uploadAvatarImage, deleteUserAvatar, fetchAllProfilesFromSupabase, saveUserProfileToSupabase, updateUserAccountCredentials } from '../lib/supabase';
@@ -48,12 +48,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     completedCaseExams,
     xp,
     streak,
+    activityDates,
     unlockedBadges,
     isAuthenticated,
     isVerified,
     logout,
     registeredUsers,
   } = useAppStore();
+
+  const displayStreak = Math.max(computeContiguousStreak(activityDates), streak || 1);
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(
@@ -565,7 +568,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-3 sm:p-4 text-center">
           <div className="flex items-center justify-center space-x-1 text-amber-600 mb-0.5">
             <Flame className="w-4 h-4 sm:w-5 sm:h-5 fill-amber-500 text-amber-500" />
-            <span className="text-base sm:text-lg font-black">{streak}</span>
+            <span className="text-base sm:text-lg font-black">{displayStreak}</span>
           </div>
           <span className="text-[10px] sm:text-xs font-extrabold text-slate-600 uppercase tracking-wider block text-center leading-tight">
             {language === 'tr' ? 'Günlük Seri' : 'Streak'}

@@ -156,6 +156,44 @@ const DEFAULT_PROFILE: UserProfile = {
 
 const DEFAULT_DEMO_ACCOUNTS: RegisteredAccount[] = [];
 
+/**
+ * Computes contiguous active streak count backwards from today (or reference date)
+ */
+export function computeContiguousStreak(activityDates?: string[], referenceDateStr?: string): number {
+  const dates = Array.isArray(activityDates) ? activityDates : [];
+  if (dates.length === 0) return 1;
+
+  const today = referenceDateStr || new Date().toISOString().split('T')[0];
+  const todayParts = today.split('-').map(Number);
+  const todayDate = new Date(todayParts[0], todayParts[1] - 1, todayParts[2]);
+
+  let streak = 0;
+  let checkDate = new Date(todayDate);
+  const checkStr = checkDate.toISOString().split('T')[0];
+
+  // If today is not in recorded dates, check if yesterday was recorded
+  if (!dates.includes(checkStr)) {
+    checkDate.setDate(checkDate.getDate() - 1);
+    const yesterdayStr = checkDate.toISOString().split('T')[0];
+    if (!dates.includes(yesterdayStr)) {
+      return 1;
+    }
+  }
+
+  // Walk backwards day by day to count unbroken active chain
+  while (true) {
+    const dStr = checkDate.toISOString().split('T')[0];
+    if (dates.includes(dStr)) {
+      streak++;
+      checkDate.setDate(checkDate.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+
+  return Math.max(1, streak);
+}
+
 const initialTanco = typeof window !== 'undefined' ? loadTancoSession() : { isTancoActive: false, isTancoMoved: false, tancoPosition: null };
 
 const INITIAL_STATE: UserState = {
@@ -784,29 +822,10 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const today = new Date().toISOString().split('T')[0];
         const state = get();
         const activeEmail = state.userProfile?.schoolEmail?.trim().toLowerCase();
-        const lastActive = state.lastActiveDate;
         const currentDates = Array.isArray(state.activityDates) ? state.activityDates : [];
         const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
 
-        let calculatedStreak = Math.max(1, state.streak || 1);
-
-        if (!lastActive) {
-          calculatedStreak = 1;
-        } else if (lastActive === today) {
-          calculatedStreak = Math.max(1, state.streak || 1);
-        } else {
-          const lastParts = lastActive.split('-').map(Number);
-          const todayParts = today.split('-').map(Number);
-          const lastDateUTC = Date.UTC(lastParts[0], lastParts[1] - 1, lastParts[2]);
-          const todayDateUTC = Date.UTC(todayParts[0], todayParts[1] - 1, todayParts[2]);
-          const diffDays = Math.round((todayDateUTC - lastDateUTC) / (1000 * 60 * 60 * 24));
-
-          if (diffDays === 1) {
-            calculatedStreak = (state.streak || 0) + 1;
-          } else if (diffDays > 1) {
-            calculatedStreak = 1;
-          }
-        }
+        const calculatedStreak = computeContiguousStreak(updatedDates, today);
 
         // Sync to accounts list for this email
         let updatedAccounts = state.userAccounts || [];
@@ -823,11 +842,22 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           }
         }
 
+        const nextState: UserState = {
+          ...state,
+          streak: calculatedStreak,
+          lastActiveDate: today,
+          activityDates: updatedDates,
+          userAccounts: updatedAccounts,
+        };
+
+        const updatedUsers = syncUserInList(nextState);
+
         set({
           streak: calculatedStreak,
           lastActiveDate: today,
           activityDates: updatedDates,
           userAccounts: updatedAccounts,
+          registeredUsers: updatedUsers,
         });
 
         if (state.userProfile?.schoolEmail) {
@@ -862,11 +892,14 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const today = new Date().toISOString().split('T')[0];
         const currentDates = Array.isArray(state.activityDates) ? state.activityDates : [];
         const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
+        const calculatedStreak = computeContiguousStreak(updatedDates, today);
 
         const nextState: UserState = {
           ...state,
           completedLessons: newCompleted,
           xp: newXp,
+          streak: calculatedStreak,
+          lastActiveDate: today,
           activityDates: updatedDates,
           unlockedBadges: newBadges,
           guestProgressTimestamp: guestTimestamp,
@@ -877,6 +910,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         set({
           completedLessons: newCompleted,
           xp: newXp,
+          streak: calculatedStreak,
+          lastActiveDate: today,
           activityDates: updatedDates,
           unlockedBadges: newBadges,
           guestProgressTimestamp: guestTimestamp,
@@ -886,7 +921,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         syncUserProgress({
           totalXp: newXp,
           level: Math.floor(newXp / 100) + 1,
-          streak: state.streak,
+          streak: calculatedStreak,
           completedLessons: newCompleted,
           completedCaseExams: state.completedCaseExams,
         });
@@ -896,7 +931,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           saveUserProfileToSupabase({
             ...state.userProfile,
             xp: newXp,
-            streak: state.streak,
+            streak: calculatedStreak,
             completedLessons: newCompleted.length + state.completedCaseExams.length,
           });
         }
@@ -936,11 +971,14 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const today = new Date().toISOString().split('T')[0];
         const currentDates = Array.isArray(state.activityDates) ? state.activityDates : [];
         const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
+        const calculatedStreak = computeContiguousStreak(updatedDates, today);
 
         const nextState: UserState = {
           ...state,
           completedCaseExams: newCompleted,
           xp: newXp,
+          streak: calculatedStreak,
+          lastActiveDate: today,
           activityDates: updatedDates,
           unlockedModules: updatedUnlocked,
           unlockedBadges: newBadges,
@@ -952,6 +990,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         set({
           completedCaseExams: newCompleted,
           xp: newXp,
+          streak: calculatedStreak,
+          lastActiveDate: today,
           activityDates: updatedDates,
           unlockedModules: updatedUnlocked,
           unlockedBadges: newBadges,
@@ -962,7 +1002,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         syncUserProgress({
           totalXp: newXp,
           level: Math.floor(newXp / 100) + 1,
-          streak: state.streak,
+          streak: calculatedStreak,
           completedLessons: state.completedLessons,
           completedCaseExams: newCompleted,
         });
@@ -972,7 +1012,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           saveUserProfileToSupabase({
             ...state.userProfile,
             xp: newXp,
-            streak: state.streak,
+            streak: calculatedStreak,
             completedLessons: state.completedLessons.length + newCompleted.length,
           });
         }

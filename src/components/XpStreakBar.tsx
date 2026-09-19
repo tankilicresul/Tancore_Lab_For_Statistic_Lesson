@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAppStore } from '../store/useAppStore';
+import { useAppStore, computeContiguousStreak } from '../store/useAppStore';
 import { Flame, Globe, Zap, Crown, Check } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { PublicProfileModal } from './PublicProfileModal';
@@ -20,6 +20,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
     language,
     setLanguage,
     streak,
+    activityDates,
     xp,
     isAuthenticated,
     isVerified,
@@ -41,7 +42,7 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
 
   const langRef = useRef<HTMLDivElement>(null);
   const isPlus = Boolean(userProfile?.isPremium);
-  const displayStreak = Math.max(1, streak || 1);
+  const displayStreak = Math.max(computeContiguousStreak(activityDates), streak || 1);
   const currentXp = xp ?? 0;
 
   // Detect XP increases and fire float-up animation

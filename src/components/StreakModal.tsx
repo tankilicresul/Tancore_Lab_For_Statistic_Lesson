@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAppStore } from '../store/useAppStore';
+import { useAppStore, computeContiguousStreak } from '../store/useAppStore';
 import { X, Check, Flame } from 'lucide-react';
 import { soundService } from '../services/soundService';
 
@@ -474,17 +474,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
     : [todayStr];
 
   // Active continuous streak count (unbroken chain of active days leading up to today)
-  let activeStreakCount = 1; // today is active
-  for (let offset = todayMondayOffset - 1; offset >= 0; offset--) {
-    const d = new Date(currentMonday);
-    d.setDate(currentMonday.getDate() + offset);
-    if (recordedDates.includes(formatDateStr(d))) {
-      activeStreakCount++;
-    } else {
-      break;
-    }
-  }
-  const displayStreak = Math.max(activeStreakCount, streak || 1);
+  const displayStreak = Math.max(computeContiguousStreak(activityDates), streak || 1);
 
   // Calculate Current Week Days (Monday -> Sunday) according to the exact streak rule:
   // - Buz: Never entered / missed days (hiç girilmemiş)
