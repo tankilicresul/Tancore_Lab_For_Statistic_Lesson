@@ -7,21 +7,51 @@ export function getLocalized(text: LocalizedText | undefined, lang: 'tr' | 'en')
 
 /**
  * Formats student full name for greeting:
- * - 1 word: that word
- * - 2 words: 1st word (e.g. "Resul Tankılıç" -> "Resul")
- * - 3 or 4+ words: 1st word's uppercase initial + "." + 2nd word (e.g. "Mehmet Ali Yılmaz" -> "M. Ali", "Ahmet Can Berk Demir" -> "A. Can")
+ * - If name is provided:
+ *   * 1-2 words: 1st word (e.g. "Resul Tankılıç" -> "Resul")
+ *   * 3+ words: 1st word's uppercase initial + "." + 2nd word (e.g. "Mehmet Ali Yılmaz" -> "M. Ali")
+ * - If name is missing / empty: extracts the handle before '@' from email (e.g. "resul@itu.edu.tr" -> "Resul")
+ * - Otherwise: returns fallback ("kanka" / "friend")
  */
-export function formatStudentGreetingName(fullName?: string, fallback: string = 'kanka'): string {
-  if (!fullName || !fullName.trim()) return fallback;
+export function formatStudentGreetingName(
+  fullName?: string | null,
+  emailOrFallback: string = 'kanka',
+  fallback: string = 'kanka'
+): string {
+  let email: string | undefined = undefined;
+  let defaultFallback = fallback;
 
-  const words = fullName.trim().split(/\s+/).filter(Boolean);
-  if (words.length === 0) return fallback;
-
-  if (words.length === 1 || words.length === 2) {
-    return words[0];
+  if (emailOrFallback && emailOrFallback.includes('@')) {
+    email = emailOrFallback;
+  } else if (emailOrFallback) {
+    defaultFallback = emailOrFallback;
   }
 
-  const firstLetter = words[0].charAt(0).toLocaleUpperCase('tr-TR');
-  const secondWord = words[1];
-  return `${firstLetter}. ${secondWord}`;
+  const trimmedName = fullName?.trim();
+  const isGeneric = Boolean(
+    trimmedName &&
+    (trimmedName.toLowerCase() === 'öğrenci' ||
+      trimmedName.toLowerCase() === 'student' ||
+      trimmedName.toLowerCase() === 'kullanıcı' ||
+      trimmedName.toLowerCase() === 'user')
+  );
+
+  if (trimmedName && !isGeneric) {
+    const words = trimmedName.split(/\s+/).filter(Boolean);
+    if (words.length === 1 || words.length === 2) {
+      return words[0];
+    }
+    const firstLetter = words[0].charAt(0).toLocaleUpperCase('tr-TR');
+    const secondWord = words[1];
+    return `${firstLetter}. ${secondWord}`;
+  }
+
+  if (email && email.includes('@')) {
+    const prefix = email.split('@')[0].trim();
+    if (prefix) {
+      return prefix.charAt(0).toLocaleUpperCase('tr-TR') + prefix.slice(1);
+    }
+  }
+
+  return defaultFallback;
 }

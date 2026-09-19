@@ -140,8 +140,8 @@ export const TancoChatModal: React.FC = () => {
   const [isListening, setIsListening] = useState(false);
   const [lastSentTime, setLastSentTime] = useState<number>(0);
 
-  const studentName = isAuthenticated && isVerified && userProfile?.fullName?.trim()
-    ? formatStudentGreetingName(userProfile.fullName, language === 'tr' ? 'kanka' : 'friend')
+  const studentName = ((isAuthenticated && isVerified) || userProfile?.schoolEmail)
+    ? formatStudentGreetingName(userProfile?.fullName, userProfile?.schoolEmail, language === 'tr' ? 'kanka' : 'friend')
     : (language === 'tr' ? 'kanka' : 'friend');
   const userIdentifier = isAuthenticated && userProfile?.schoolEmail
     ? userProfile.schoolEmail

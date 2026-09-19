@@ -396,15 +396,14 @@ export const HomePage: React.FC<HomePageProps> = ({
     window.addEventListener('pointercancel', onPointerUp);
   };
 
-  // Format student greeting name according to user rule:
-  // - If unauthenticated or guest: "kanka" (TR) or "friend" (EN)
-  // - If registered with name:
-  //   * 1-2 words -> first name (e.g. "Resul Tankılıç" -> "Resul")
-  //   * 3+ words -> First letter. Second name (e.g. "Mehmet Ali Yılmaz" -> "M. Ali")
-  const isUserRegistered = Boolean(isAuthenticated && isVerified && userProfile?.fullName?.trim());
+  // Format student greeting name:
+  // - If user has a name -> formatted name (e.g. "Resul" or "M. Ali")
+  // - If user has no name set yet -> email handle before '@' (e.g. "resul@itu.edu.tr" -> "Resul")
+  // - If guest / unauthenticated -> "kanka" (TR) or "friend" (EN)
   const fallbackGreeting = language === 'tr' ? 'kanka' : 'friend';
-  const studentDisplayName = isUserRegistered
-    ? formatStudentGreetingName(userProfile?.fullName, fallbackGreeting)
+  const hasUserAccount = Boolean((isAuthenticated && isVerified) || userProfile?.schoolEmail);
+  const studentDisplayName = hasUserAccount
+    ? formatStudentGreetingName(userProfile?.fullName, userProfile?.schoolEmail, fallbackGreeting)
     : fallbackGreeting;
 
   return (

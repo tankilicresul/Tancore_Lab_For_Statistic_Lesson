@@ -283,7 +283,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               <h2 className="text-xl xs:text-2xl sm:text-3xl font-black tracking-tight text-white leading-none truncate flex items-center gap-2">
                 <span className="truncate">
                   {isAuthenticated
-                    ? (userProfile?.fullName || (language === 'tr' ? 'Kullanıcı' : 'User'))
+                    ? (userProfile?.fullName || (userProfile?.schoolEmail ? userProfile.schoolEmail.split('@')[0] : (language === 'tr' ? 'Kullanıcı' : 'User')))
                     : (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}
                 </span>
                 {isVerified && (
