@@ -1,0 +1,372 @@
+{
+  "id": "module-23",
+  "order": 23,
+  "title": {
+    "tr": "Modül 23: Verimlilik & İş Etüdü & İş Örneklemesi",
+    "en": "Module 23: Productivity, Work Study & Work Sampling"
+  },
+  "description": {
+    "tr": "Tek ve çok faktörlü verimlilik, kronometreli zaman etüdü, performans derecelendirme, standart süre ve iş örneklemesi.",
+    "en": "Single and multi-factor productivity, stopwatch time study, rating factors, allowances, standard time, and statistical work sampling."
+  },
+  "iconName": "Timer",
+  "lessons": [
+    {
+      "id": "m23-l1",
+      "moduleId": "module-23",
+      "order": 1,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Verimlilik (Productivity) ve Tek Faktörlü Ölçüm",
+        "en": "Productivity Concept & Single-Factor Productivity"
+      },
+      "conceptCard": {
+        "tr": "**Verimlilik (Productivity):** Çıktıların bu çıktıları üretmek için kullanılan girdilere oranıdır:\n\n$$\\mathbf{\\text{Verimlilik} = \\frac{\\text{Çıktılar (Outputs)}}{\\text{Girdiler (Inputs)}}}$$\n\n**Tek Faktörlü Verimlilik (Single-Factor Productivity):** Çıktının tek bir girdi kaynağına (işgücü, makine saati veya malzeme) bölünmesidir:\n- **İşgücü Verimliliği:** $\\frac{\\text{Üretilen Adet}}{\\text{İşgücü Saati}}$\n- **Makine Verimliliği:** $\\frac{\\text{Üretilen Adet}}{\\text{Makine Saati}}$",
+        "en": "Productivity = Outputs / Inputs. Single-factor productivity measures output relative to a single resource: Labor Productivity = Units / Labor Hours."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** 4 işçi 8 saat çalışarak toplam 320 adet gömlek dikmiştir. Toplam işgücü saati $4 \\times 8 = 32$ saattir. İşgücü verimliliği nedir?\n\n**Çözüm:**\n$$\\text{İşgücü Verimliliği} = \\frac{320 \\text{ adet}}{32 \\text{ saat}} = 10 \\text{ adet/saat}$$",
+        "en": "**Worked Example:** 4 workers working 8 hrs (32 man-hours) produce 320 shirts. Labor productivity = $320 / 32 = 10$ shirts/hour."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "single-factor productivity",
+          "explanation_tr": "Çıktının tek bir girdi kaynağına (işçi-saati, makine-saati vb.) oranı.",
+          "explanation_en": "Ratio of total output to a single category of input resource.",
+          "exampleSentence_en": "Labor productivity increased to 10 units per worker-hour."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m23-l1-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "5 işçi günde 8 saat çalışarak (toplam 40 saat) 200 adet motor üretmektedir. İşgücü verimliliği (adet/işçi-saati) kaçtır?",
+            "en": "5 workers working 8 hrs produce 200 units. What is labor productivity (units/hr)?"
+          },
+          "correctAnswer": 5,
+          "explanation": {
+            "tr": "$$\\text{Verimlilik} = \\frac{200 \\text{ adet}}{5 \\times 8 \\text{ saat}} = \\frac{200}{40} = 5 \\text{ adet/saat}$$",
+            "en": "$$\\text{Productivity} = 200 / 40 = 5$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Çıktı_Adet / (İşçi_Sayısı * Saat)",
+        "pythonCode": "labor_prod = units / (workers * hours)",
+        "powerBiNote": {
+          "tr": "Vardiya bazlı işgücü verimlilik KPI'ı",
+          "en": "Worker shift productivity gauge"
+        }
+      }
+    },
+    {
+      "id": "m23-l2",
+      "moduleId": "module-23",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Çok Faktörlü Verimlilik (Multi-Factor Productivity)",
+        "en": "Multi-Factor Productivity (MFP)"
+      },
+      "conceptCard": {
+        "tr": "**Çok Faktörlü Verimlilik (MFP):** Çıktının, üretimde kullanılan birden fazla girdinin (işgücü, malzeme, enerji, sermaye) ortak parasal değerine bölünmesidir:\n\n$$\\mathbf{\\text{MFP} = \\frac{\\text{Toplam Çıktı Değeri}}{\\text{İşgücü} + \\text{Malzeme} + \\text{Enerji} + \\text{Sermaye/Genel Gider}}}$$\n\n- Tüm girdiler TL veya USD gibi ortak bir para birimine dönüştürülerek toplanır.",
+        "en": "Multi-Factor Productivity (MFP) measures output value against the combined cost of labor, materials, energy, and capital: $\\text{MFP} = \\frac{\\text{Output Value}}{\\text{Labor} + \\text{Material} + \\text{Overhead}}$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir mobilya atölyesi 50.000 TL değerinde masa üretmiştir. Girdiler: İşçilik 10.000 TL, Ahşap Malzeme 20.000 TL, Enerji 5.000 TL ve Genel Gider 5.000 TL'dir. Çok faktörlü verimlilik oranı nedir?\n\n**Çözüm:**\n$$\\text{Toplam Girdi} = 10k + 20k + 5k + 5k = 40.000 \\text{ TL}$$\n$$\\text{MFP} = \\frac{50.000}{40.000} = 1.25$$\nHer 1 TL'lik girdiye karşılık 1.25 TL çıktı elde edilmiştir.",
+        "en": "**Worked Example:** Output value = $50k. Costs: Labor $10k, Material $20k, Energy $5k, Overhead $5k (Total = $40k). $\\text{MFP} = 50k/40k = 1.25$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Multi-Factor Productivity (MFP)",
+          "explanation_tr": "Çıktı değerinin işgücü, malzeme ve enerji gibi çoklu girdi maliyetlerine oranı.",
+          "explanation_en": "Measure of economic productivity comparing output to a composite of multiple input costs.",
+          "exampleSentence_en": "The multi-factor productivity ratio of 1.25 indicated a 25% value-added margin."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m23-l2-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Toplam çıktı değeri 100.000 TL olan bir süreçte işçilik maliyeti 30.000 TL, malzeme 40.000 TL ve enerji 10.000 TL ise MFP oranı kaçtır (virgülden sonra 2 basamak: örn 1.25)?",
+            "en": "Output = $100k. Labor = $30k, Material = $40k, Energy = $10k. What is MFP?"
+          },
+          "correctAnswer": 1.25,
+          "explanation": {
+            "tr": "$$\\text{Girdi} = 30k + 40k + 10k = 80.000 \\text{ TL}$$\n$$\\text{MFP} = \\frac{100.000}{80.000} = 1.25$$",
+            "en": "$$\\text{MFP} = 100k / 80k = 1.25$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Çıktı_TL / TOPLA(Girdi_TL_Aralığı)",
+        "pythonCode": "mfp = output_value / sum(input_costs)",
+        "powerBiNote": {
+          "tr": "Fabrika toplam katma değer verimlilik endeksi",
+          "en": "Plant multi-factor productivity index"
+        }
+      }
+    },
+    {
+      "id": "m23-l3",
+      "moduleId": "module-23",
+      "order": 3,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Zaman Etüdü ve Normal Süre (Observed vs Normal Time)",
+        "en": "Time Study: Observed Time & Rating Factor"
+      },
+      "conceptCard": {
+        "tr": "**Kronometreli Zaman Etüdü:** Bir operasyonun ortalama süresini ölçmek ve adil bir standart belirlemek için uygulanır.\n\n1. **Gözlenen Süre (Observed Time - $OT$):** Kronometre ile yapılan $n$ adet ölçümün aritmetik ortalamasıdır:\n$$OT = \\frac{\\sum t_i}{n}$$\n\n2. **Performans Derecelendirme Faktörü (Performance Rating - $PR$):** Ortalama/normal çalışan temposu %100 ($1.0$) kabul edilir. Hızlı çalışan %120 ($1.20$), yavaş çalışan %80 ($0.80$) ile puanlanır.\n\n3. **Normal Süre (Normal Time - $NT$):** Normal tempodaki çalışanın operasyonu bitirme süresidir:\n$$\\mathbf{NT = OT \\times PR}$$",
+        "en": "Observed Time $OT = \\sum t / n$. Normal Time $NT = OT \\times PR$, where $PR$ is the performance rating factor (e.g. 1.15 for a worker 15% faster than standard pace)."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir operatörün montaj süresi ortalama $OT = 50$ saniye ölçülmüştür. Mühendis operatörün normalden %20 daha hızlı çalıştığını derecelendirmiştir ($PR = 1.20$). Normal Süre ($NT$) nedir?\n\n**Çözüm:**\n$$NT = OT \\times PR = 50 \\times 1.20 = 60 \\text{ saniye}$$",
+        "en": "**Worked Example:** $OT = 50$s, $PR = 1.20$. Normal Time $NT = 50 \\times 1.20 = 60$ seconds."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "observed time (OT)",
+          "explanation_tr": "Operatörün kronometreyle ölçülen ham sürelerinin ortalaması.",
+          "explanation_en": "The average time recorded during direct stopwatch observations.",
+          "exampleSentence_en": "Observed time across 20 cycles was 50 seconds."
+        },
+        {
+          "term_en": "normal time (NT)",
+          "explanation_tr": "Gözlenen sürenin performans derecesi ile çarpılmasıyla bulunan standart tempo süresi.",
+          "explanation_en": "The time required by a qualified operator working at standard pace: OT * PR.",
+          "exampleSentence_en": "Normal time adjusts for fast or slow worker pacing."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m23-l3-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Gözlenen ortalama süre $OT = 40$ saniye ve operatör performans puanı $PR = 1.10$ ise Normal Süre ($NT$) kaç saniyedir?",
+            "en": "Observed time OT = 40s, PR = 1.10. What is Normal Time NT (in seconds)?"
+          },
+          "correctAnswer": 44,
+          "explanation": {
+            "tr": "$$NT = OT \\times PR = 40 \\times 1.10 = 44 \\text{ saniye}$$",
+            "en": "$$NT = 40 \\times 1.10 = 44$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=OT * PR",
+        "pythonCode": "normal_time = observed_time * performance_rating",
+        "powerBiNote": {
+          "tr": "Operatör tempo ve normal süre matrisi",
+          "en": "Work study rating factor calculation"
+        }
+      }
+    },
+    {
+      "id": "m23-l4",
+      "moduleId": "module-23",
+      "order": 4,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Tolerans Payları ve Standart Süre (Standard Time)",
+        "en": "Allowances & Standard Time Formulation"
+      },
+      "conceptCard": {
+        "tr": "**Tolerans Payları (Allowances):** İnsanlar robot değildir; kişisel ihtiyaçlar (su, tuvalet), yorgunluk dinlenmesi ve önlenemeyen operasyonel gecikmeler için Normal Süreye eklenen paydır ($AF$ - Allowance Fraction).\n\n**Standart Süre Formülü (İş Zamanı Bazında):**\n$$\\mathbf{ST = NT \\times (1 + AF)}$$\n\n- $ST$: Standart Süre (Standard Time)\n- $NT$: Normal Süre\n- $AF$: Tolerans Payı Oranı (Örn: %15 $\\implies AF = 0.15$)\n\n*(Eğer tolerans toplam iş günü bazında tanımlanırsa: $ST = \\frac{NT}{1 - AF_{\\text{gün}}}$)*",
+        "en": "Standard Time includes personal, fatigue, and delay allowances: $ST = NT \\times (1 + AF)$ where $AF$ is the total allowance percentage added to normal time."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Normal süresi $NT = 60$ saniye olan bir işleme %15 tolerans payı ($AF = 0.15$) eklenecektir. Standart Süre ($ST$) kaç saniyedir?\n\n**Çözüm:**\n$$ST = NT \\times (1 + AF) = 60 \\times (1 + 0.15) = 60 \\times 1.15 = 69 \\text{ saniye}$$",
+        "en": "**Worked Example:** $NT = 60$s, $AF = 15\\%$. $ST = 60 \\times 1.15 = 69$ seconds."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "standard time (ST)",
+          "explanation_tr": "Normal süreye kişisel ve yorgunluk toleransları eklenmiş adil hedef iş süresi.",
+          "explanation_en": "The time required by a qualified operator at normal pace including allowances.",
+          "exampleSentence_en": "Piece-rate wages are calculated based on the official standard time."
+        },
+        {
+          "term_en": "allowances",
+          "explanation_tr": "Kişisel ihtiyaçlar, yorgunluk ve kaçınılmaz gecikmeler için tanınan ek dinlenme yüzdesi.",
+          "explanation_en": "Percentage adjustments added to normal time for personal needs, fatigue, and unavoidable delays.",
+          "exampleSentence_en": "Heavy lifting operations received a 15% fatigue allowance."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m23-l4-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Normal süresi $NT = 80$ saniye olan bir paketleme operasyonuna %10 tolerans ($AF = 0.10$) verilirse Standart Süre ($ST$) kaç saniyedir?",
+            "en": "Normal time NT = 80s, allowance AF = 10%. What is Standard Time ST (in seconds)?"
+          },
+          "correctAnswer": 88,
+          "explanation": {
+            "tr": "$$ST = 80 \\times (1 + 0.10) = 80 \\times 1.10 = 88 \\text{ saniye}$$",
+            "en": "$$ST = 80 \\times 1.10 = 88$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=NT * (1 + AF)",
+        "pythonCode": "standard_time = normal_time * (1 + allowance_fraction)",
+        "powerBiNote": {
+          "tr": "Standart iş süresi ve prim hesaplama modeli",
+          "en": "Standard time and wage incentive basis"
+        }
+      }
+    },
+    {
+      "id": "m23-l5",
+      "moduleId": "module-23",
+      "order": 5,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "İş Örneklemesi ve Örneklem Büyüklüğü (Work Sampling)",
+        "en": "Statistical Work Sampling & Sample Size"
+      },
+      "conceptCard": {
+        "tr": "**İş Örneklemesi (Work Sampling):** Sürekli kronometre tutmak yerine, rastgele zamanlarda yapılan anlık gözlemlerle makinelerin veya çalışanların belirli bir faaliyette (örn: çalışma vs boş bekleme) geçirdiği zaman yüzdesini ($hat{p}$) istatistiksel olarak tahmin etme tekniğidir.\n\n$$\\hat{p} = \\frac{\\text{Gözlenen Durum Sayısı}}{\\text{Toplam Gözlem Sayısı } (n)}$$\n\n**Gereken Örneklem Büyüklüğü Formülü:**\n$$\\mathbf{n = \\frac{z^2 \\cdot \\hat{p}(1 - \\hat{p})}{e^2}}$$\n\n- $z$: Güven düzeyine karşılık gelen $z$-değeri (%95 için $z = 1.96$ veya $z \\approx 2$)\n- $\\hat{p}$: Tahmini gerçekleşme oranı\n- $e$: İzin verilen mutlak hata payı (Absolute acceptable error)",
+        "en": "Work Sampling statistically estimates the proportion of time spent on activities via random instantaneous observations: sample size $n = \\frac{z^2 \\hat{p}(1-\\hat{p})}{e^2}$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir forklift filosunun boşta bekleme oranının $\\hat{p} = 0.20$ civarında olduğu tahmin edilmektedir. %95 güven düzeyinde ($z = 2$) ve en fazla $e = 0.04$ (%4) hata payı ile oranı tahmin etmek için kaç anlık gözlem ($n$) yapılmalıdır?\n\n**Çözüm:**\n$$n = \\frac{2^2 \\times 0.20 \\times (1 - 0.20)}{0.04^2} = \\frac{4 \\times 0.20 \\times 0.80}{0.0016} = \\frac{0.64}{0.0016} = 400 \\text{ gözlem}$$",
+        "en": "**Worked Example:** $\\hat{p} = 0.20, z = 2, e = 0.04$. Required observations: $n = (4 \\times 0.20 \\times 0.80) / 0.0016 = 400$ observations."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "work sampling",
+          "explanation_tr": "Rastgele zamanlı anlık gözlemlerle faaliyet oranlarını tahmin eden istatistiksel metot.",
+          "explanation_en": "Statistical technique analyzing the proportions of time spent on various activity categories.",
+          "exampleSentence_en": "Work sampling revealed machines spent 22% of time waiting for setup."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m23-l5-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$z = 2$, $\\hat{p} = 0.25$ ve $e = 0.05$ için gereken İş Örneklemesi gözlem sayısı $n = \\frac{z^2 \\hat{p}(1-\\hat{p})}{e^2}$ kaçtır?",
+            "en": "For z = 2, p = 0.25, e = 0.05, what is required sample size n?"
+          },
+          "correctAnswer": 300,
+          "explanation": {
+            "tr": "$$n = \\frac{4 \\times 0.25 \\times 0.75}{0.0025} = \\frac{0.75}{0.0025} = 300$$",
+            "en": "$$n = (4 \\times 0.25 \\times 0.75) / 0.0025 = 300$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(Z^2 * p * (1-p)) / (e^2)",
+        "pythonCode": "n_obs = (z**2 * p_hat * (1 - p_hat)) / (error_margin**2)",
+        "powerBiNote": {
+          "tr": "İş örneklemesi güven aralığı paneli",
+          "en": "Work sampling confidence interval dashboard"
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m23-c1",
+      "moduleId": "module-23",
+      "difficulty": "orta",
+      "title": {
+        "tr": "Vaka Sınavı: LC Waikiki Lojistik Merkezi Paketleme Standart Süre & Verimlilik",
+        "en": "Case Exam: LC Waikiki Fulfillment Packing Standard Time & Work Study"
+      },
+      "businessQuestion": {
+        "tr": "LC Waikiki e-ticaret dağıtım merkezinde sipariş paketleme istasyonunda zaman etüdü yapılmıştır. 50 döngü boyunca ölçülen ortalama gözlenen süre $OT = 45$ saniyedir. Zaman etüdü uzmanı operatörün hızını standarttan %10 hızlı olarak derecelendirmiştir ($PR = 1.10$). Şirket kişisel ihtiyaçlar, yorgunluk ve etiket bekleme gecikmeleri için toplam %15 tolerans payı ($AF = 0.15$) tanımlamıştır. 1) Paketin Normal Süresini ($NT$), 2) Paketin Standart Süresini ($ST$) hesaplayınız. 3) Günde 8 saat çalışan bir paketleme operatörünün günlük standart üretim kotası kaç paket olmalıdır?",
+        "en": "LC Waikiki fulfillment center conducted packing time studies: $OT = 45$ sec across 50 cycles, rating factor $PR = 1.10$, and allowance $AF = 15\\%$. Compute: 1) Normal time $NT$, 2) Standard time $ST$, and 3) Daily 8-hr standard package quota."
+      },
+      "dataset": {
+        "columns": [
+          "Metrik",
+          "Formül",
+          "Hesaplanan_Değer",
+          "Birim"
+        ],
+        "rows": [
+          [
+            "Gözlenen Süre (OT)",
+            "Ölçüm Ortalaması",
+            45,
+            "saniye"
+          ],
+          [
+            "Performans Derecesi (PR)",
+            "Derecelendirme",
+            1.1,
+            "çarpan"
+          ],
+          [
+            "Normal Süre (NT)",
+            "45 * 1.10",
+            49.5,
+            "saniye"
+          ],
+          [
+            "Tolerans Payı (AF)",
+            "Yorgunluk/Kişisel",
+            0.15,
+            "%15"
+          ],
+          [
+            "Standart Süre (ST)",
+            "49.5 * 1.15",
+            56.925,
+            "saniye"
+          ],
+          [
+            "Günlük Çalışma Süresi",
+            "8 saat",
+            28800,
+            "saniye"
+          ],
+          [
+            "Günlük Standart Kota",
+            "28800 / 56.925",
+            505.9,
+            "paket/gün"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Normal Süre: $NT = 45 \\times 1.10 = 49.5$ saniye.",
+          "en": "Step 1: Normal Time $NT = 45 \\times 1.10 = 49.5$ sec."
+        },
+        {
+          "tr": "2. Adım: Standart Süre: $ST = 49.5 \\times 1.15 = 56.925$ saniye.",
+          "en": "Step 2: Standard Time $ST = 49.5 \\times 1.15 = 56.925$ sec."
+        },
+        {
+          "tr": "3. Adım: Günlük Kota: $28.800 / 56.925 \\approx 506$ paket/gün.",
+          "en": "Step 3: Daily quota = 506 packs/day."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Zaman etüdü adımlarıyla gözlenen süreden standart süreye geçip günlük üretim kotasını belirleme.",
+        "en": "Translating stopwatch observations into allowances-adjusted standard times and production targets."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m23-c1-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Paketleme operasyonunun Normal Süresi ($NT = OT \\times PR$) kaç saniyedir?",
+            "en": "What is the Normal Time NT (in seconds)?"
+          },
+          "correctAnswer": 49.5,
+          "explanation": {
+            "tr": "$$NT = 45 \\times 1.10 = 49.5 \\text{ saniye}$$",
+            "en": "$$NT = 45 \\times 1.10 = 49.5$$"
+          }
+        }
+      ]
+    }
+  ]
+}

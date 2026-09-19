@@ -33,7 +33,7 @@ export interface CourseTrack {
   name: { tr: string; en: string };
   desc: { tr: string; en: string };
   status: 'active' | 'in_design';
-  track?: 'probability' | 'statistics';
+  track?: 'probability' | 'statistics' | 'indr100';
   icon: React.ComponentType<{ className?: string }>;
   iconBg: string;
   badge: { tr: string; en: string };
@@ -88,16 +88,17 @@ export const COURSES_DATA: CourseTrack[] = [
       en: 'Introduction to Industrial Engineering',
     },
     desc: {
-      tr: 'Endüstri mühendisliği kavramları, sistem analizi ve modelleme temelleri, üretim ve hizmet sistemleri, bilgisayar ve programlama uygulamaları.',
-      en: 'Introduction to industrial engineering concepts, systems analysis & modeling, production & service systems, programming applications.',
+      tr: 'Sistem kavramı, Newsvendor envanter, kuyruk modelleri, üretim süreç seçimi, kapasite planlama, tesis yerleşimi, hat dengeleme, zaman etüdü ve doğrusal programlama.',
+      en: 'Systems thinking, Newsvendor model, queueing systems, process selection, capacity planning, facility layout, line balancing, time study & linear programming.',
     },
-    status: 'in_design',
+    status: 'active',
+    track: 'indr100',
     icon: GraduationCap,
-    iconBg: 'bg-cyan-600 text-white shadow-md shadow-cyan-600/20',
-    badge: { tr: 'Yakında', en: 'Coming Soon' },
+    iconBg: 'bg-cyan-600 text-white shadow-md shadow-cyan-600/25',
+    badge: { tr: '8 Modül', en: '8 Modules' },
     badgeStyle: 'bg-cyan-100 text-cyan-800 border-cyan-200/80',
-    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-cyan-300',
-    glowColor: 'bg-cyan-500/10',
+    cardStyle: 'border-2 border-cyan-200 bg-white shadow-xs hover:shadow-md hover:border-cyan-500',
+    glowColor: 'bg-cyan-500/15',
   },
   {
     code: 'INDR 201',
@@ -300,7 +301,7 @@ export const COURSES_DATA: CourseTrack[] = [
 ];
 
 export interface HomePageProps {
-  onSelectTrack: (track: 'probability' | 'statistics') => void;
+  onSelectTrack: (track: 'probability' | 'statistics' | 'indr100') => void;
   onSelectInDesignCourse?: (course: CourseTrack) => void;
   onOpenProfile?: () => void;
 }

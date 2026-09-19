@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ALL_MODULES } from '../data/modules';
-import { useAppStore, PROBABILITY_TRACK_MODULE_IDS, STATISTICS_TRACK_MODULE_IDS } from '../store/useAppStore';
+import { useAppStore, PROBABILITY_TRACK_MODULE_IDS, STATISTICS_TRACK_MODULE_IDS, INDR100_TRACK_MODULE_IDS } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
 import { TanCoreMascotAvatar } from '../components/TanCoreMascotAvatar';
 import { MathFormulaText } from '../components/MathFormulaText';
@@ -144,7 +144,7 @@ export const getNodeAnimalIcon = (subStepIndex: number, colorClass: string) => {
 };
 
 interface CoursePageProps {
-  selectedTrack: 'probability' | 'statistics';
+  selectedTrack: 'probability' | 'statistics' | 'indr100';
   inDesignCourse?: CourseTrack | null;
   onSelectLesson: (lessonId: string) => void;
   onSelectCaseExam: (caseId: string) => void;
@@ -169,6 +169,7 @@ interface PathNodeItem {
 
 const PROBABILITY_MODULE_IDS = PROBABILITY_TRACK_MODULE_IDS;
 const STATISTICS_MODULE_IDS = STATISTICS_TRACK_MODULE_IDS;
+const INDR100_MODULE_IDS = INDR100_TRACK_MODULE_IDS;
 
 export const CoursePage: React.FC<CoursePageProps> = ({
   selectedTrack,
@@ -285,7 +286,12 @@ export const CoursePage: React.FC<CoursePageProps> = ({
   }
 
   // Filter modules based on track
-  const targetIds = selectedTrack === 'statistics' ? STATISTICS_MODULE_IDS : PROBABILITY_MODULE_IDS;
+  const targetIds =
+    selectedTrack === 'statistics'
+      ? STATISTICS_MODULE_IDS
+      : selectedTrack === 'indr100'
+      ? INDR100_MODULE_IDS
+      : PROBABILITY_MODULE_IDS;
 
   const activeModulesList = targetIds
     .map((id) => ALL_MODULES.find((m) => m.id === id))
@@ -389,7 +395,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
         </button>
 
         <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-[#ff7a00] font-mono text-xs font-black tracking-wider">
-          <span>{selectedTrack === 'statistics' ? 'INDR 252' : 'ENGR 200'}</span>
+          <span>{selectedTrack === 'statistics' ? 'INDR 252' : selectedTrack === 'indr100' ? 'INDR 100' : 'ENGR 200'}</span>
         </div>
       </div>
 

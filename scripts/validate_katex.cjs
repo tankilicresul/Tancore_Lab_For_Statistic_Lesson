@@ -30,8 +30,10 @@ function checkLatexInText(text, loc) {
   }
 }
 
-for(let i=1; i<=16; i++){
-  const mod = JSON.parse(fs.readFileSync('src/data/module'+i+'.json'));
+for(let i=1; i<=24; i++){
+  const filePath = 'src/data/module'+i+'.json';
+  if (!fs.existsSync(filePath)) continue;
+  const mod = JSON.parse(fs.readFileSync(filePath));
   mod.lessons.forEach(l => {
     checkLatexInText(l.conceptCard?.tr, `Mod${i} Lesson ${l.id} conceptCard.tr`);
     checkLatexInText(l.conceptCard?.en, `Mod${i} Lesson ${l.id} conceptCard.en`);
@@ -46,4 +48,5 @@ for(let i=1; i<=16; i++){
   });
 }
 
-console.log(`\n========================================\nTested ${formulaCount} LaTeX formulas across all 16 modules.\nTotal KaTeX syntax errors: ${errorCount}\n========================================`);
+console.log(`\n========================================\nTested ${formulaCount} LaTeX formulas across all 24 modules.\nTotal KaTeX syntax errors: ${errorCount}\n========================================`);
+

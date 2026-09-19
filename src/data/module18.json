@@ -1,0 +1,537 @@
+{
+  "id": "module-18",
+  "order": 18,
+  "title": {
+    "tr": "Modül 18: Tipik EM Problemleri Galerisi",
+    "en": "Module 18: Gallery of Industrial Engineering Problems"
+  },
+  "description": {
+    "tr": "Newsvendor (Gazeteci Çocuk) envanter modeli, kritik oran, kuyruk teorisi, Little yasası, iş çizelgeleme ve tesis konumlandırma.",
+    "en": "Newsvendor inventory model, critical ratio, queueing theory, Little's Law, single machine scheduling, and facility location models."
+  },
+  "iconName": "Compass",
+  "lessons": [
+    {
+      "id": "m18-l1",
+      "moduleId": "module-18",
+      "order": 1,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Gazeteci Çocuk (Newsvendor) Problemi ve Maliyet Yapısı",
+        "en": "Newsvendor Model & Cost Structure"
+      },
+      "conceptCard": {
+        "tr": "Newsvendor modeli, bozulabilir veya tek dönemlik ürünlerde (günlük ekmek, moda giyim, uçak bileti) belirsiz talep altında sipariş miktarını belirler.\n\n**Maliyet Bileşenleri:**\n- **Eksik Kalma Maliyeti ($C_u$ - Underage Cost):** Bir birim eksik almanın yarattığı kâr kaybı:\n$$C_u = P - C$$\n*(Burada $P$ satış fiyatı, $C$ alış/üretim maliyetidir)*\n\n- **Fazla Kalma Maliyeti ($C_o$ - Overage Cost):** Bir birim elde kalanın zararı:\n$$C_o = C - S$$\n*(Burada $S$ hurda/kalan ürün indirimli satış değeridir)*",
+        "en": "The single-period Newsvendor model trades off understocking cost $C_u = P - C$ against overstocking cost $C_o = C - S$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir fırın bir simidi 4 TL'ye üretip 10 TL'ye satmaktadır. Gün sonunda satılamayan simitler bayat olarak 1 TL'ye sokak hayvanları barınağına verilmektedir. $C_u$ ve $C_o$ değerleri nedir?\n\n**Çözüm:**\n$$C_u = P - C = 10 - 4 = 6 \\text{ TL}$$\n$$C_o = C - S = 4 - 1 = 3 \\text{ TL}$$",
+        "en": "**Worked Example:** Produce at $4, sell at $10, salvage at $1. $C_u = 10-4=6$, $C_o = 4-1=3$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "underage cost (Cu)",
+          "explanation_tr": "Talebi karşılayamamanın birim başına getirdiği kâr kaybı maliyeti.",
+          "explanation_en": "Marginal profit lost by underestimating demand by one unit.",
+          "exampleSentence_en": "Underage cost is the difference between price and purchase cost."
+        },
+        {
+          "term_en": "overage cost (Co)",
+          "explanation_tr": "Satılamayan birim ürünün elde kalması sonucu oluşan net zarar.",
+          "explanation_en": "Loss incurred by ordering one unit too many.",
+          "exampleSentence_en": "High overage cost encourages conservative inventory stocking."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m18-l1-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Alış maliyeti 50 TL, satış fiyatı 120 TL ve hurda değeri 10 TL olan bir t-shirt için eksik kalma maliyeti $C_u$ kaç TL'dir?",
+            "en": "Cost = $50, Price = $120, Salvage = $10. What is the underage cost $C_u$?"
+          },
+          "correctAnswer": 70,
+          "explanation": {
+            "tr": "$$C_u = P - C = 120 - 50 = 70 \\text{ TL}$$",
+            "en": "$$C_u = 120 - 50 = 70$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Fiyat - Maliyet",
+        "pythonCode": "Cu = price - cost\nCo = cost - salvage",
+        "powerBiNote": {
+          "tr": "Envanter marjinal kâr/zarar göstergesi",
+          "en": "Marginal underage/overage cost KPI"
+        }
+      }
+    },
+    {
+      "id": "m18-l2",
+      "moduleId": "module-18",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Newsvendor Kritik Oran ve Optimal Sipariş Miktarı",
+        "en": "Critical Ratio & Optimal Order Quantity"
+      },
+      "conceptCard": {
+        "tr": "Optimal sipariş miktarı $Q^*$, beklenen kârı maksimize eden **Kritik Oran (Critical Ratio - $CR$)** seviyesinde belirlenir:\n\n$$CR = \\frac{C_u}{C_u + C_o}$$\n\n**Karar Kuralı:** Talebin kümülatif dağılım fonksiyonu $F(Q)$ kritik orana eşit veya büyük olmalıdır:\n$$P(D \\le Q^*) \\ge \\frac{C_u}{C_u + C_o}$$\n- Eğer talep Normal Dağılıyorsa ($D \\sim N(\\mu, \\sigma^2)$):\n$$Q^* = \\mu + z \\cdot \\sigma \\quad \\text{burada } \\Phi(z) = CR$$",
+        "en": "The optimal stocking quantity satisfies $F(Q^*) \\ge CR = \\frac{C_u}{C_u + C_o}$. For normal demand, $Q^* = \\mu + z \\cdot \\sigma$ where $\\Phi(z) = CR$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** $C_u = 6$ TL, $C_o = 2$ TL olan bir üründe kritik oran nedir?\n\n**Çözüm:**\n$$CR = \\frac{C_u}{C_u + C_o} = \\frac{6}{6 + 2} = \\frac{6}{8} = 0.75 \\quad (\\%75)$$",
+        "en": "**Worked Example:** $CR = 6 / (6+2) = 0.75$ (75th percentile)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "critical ratio",
+          "explanation_tr": "Newsvendor modelinde optimal servis düzeyini belirleyen olasılık eşiği.",
+          "explanation_en": "The target service level balancing underage and overage risks.",
+          "exampleSentence_en": "The critical ratio dictates the target cumulative demand percentile."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m18-l2-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$C_u = 80$ TL ve $C_o = 20$ TL ise Kritik Oran ($CR$) yüzde kaçtır?",
+            "en": "If $C_u = 80$ and $C_o = 20$, what is the Critical Ratio in percent?"
+          },
+          "correctAnswer": 80,
+          "explanation": {
+            "tr": "$$CR = \\frac{80}{80 + 20} = \\frac{80}{100} = 0.80 \\implies \\%80$$",
+            "en": "$$CR = 80/100 = 80\\%$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Cu / (Cu + Co)",
+        "pythonCode": "import scipy.stats as stats\nCR = Cu / (Cu + Co)\nQ_opt = stats.norm.ppf(CR, loc=mu, scale=sigma)",
+        "powerBiNote": {
+          "tr": "Optimal sipariş miktarı parametresi",
+          "en": "Optimal order level calculation"
+        }
+      }
+    },
+    {
+      "id": "m18-l3",
+      "moduleId": "module-18",
+      "order": 3,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Kuyruk Sistemleri ve Little Yasası",
+        "en": "Queueing Systems & Little's Law"
+      },
+      "conceptCard": {
+        "tr": "Kuyruk sistemleri, sınırlı kapasiteye sahip servis istasyonlarına rastgele gelen taleplerin bekleme dinamiklerini inceler.\n\n**Little Yasası (Little's Law):** Kararlı durumdaki herhangi bir sistemde ortalama nesne sayısı ($L$), ortalama varış hızı ($\\lambda$) ile sistemde geçirilen ortalama sürenin ($W$) çarpımına eşittir:\n\n$$L = \\lambda \\cdot W$$\n$$L_q = \\lambda \\cdot W_q$$\n\n- $L$: Sistemdeki ortalama müşteri sayısı\n- $L_q$: Sırada bekleyen ortalama müşteri sayısı\n- $W$: Sistemde geçirilen toplam süre ($W = W_q + \\frac{1}{\\mu}$)\n- $W_q$: Sırada bekleme süresi",
+        "en": "Little's Law states that long-term average inventory $L$ equals average arrival rate $\\lambda$ multiplied by average time in system $W$: $L = \\lambda W$ and $L_q = \\lambda W_q$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir banka şubesine saatte ortalama 30 müşteri gelmektedir ($\\lambda = 30$ müşteri/saat). Bir müşterinin bankada geçirdiği ortalama süre 10 dakikadır ($W = \\frac{10}{60} = \\frac{1}{6}$ saat). Bankada anlık ortalama kaç müşteri bulunur ($L$)?\n\n**Çözüm:**\n$$L = \\lambda \\cdot W = 30 \\times \\frac{1}{6} = 5 \\text{ müşteri}$$",
+        "en": "**Worked Example:** $\\lambda = 30$/hr, $W = 10$ min ($1/6$ hr). $L = 30 \\times (1/6) = 5$ customers."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Little's Law",
+          "explanation_tr": "Kuyruktaki ortalama varlık sayısını geliş hızı ve bekleme süresiyle bağlayan temel eşitlik.",
+          "explanation_en": "Fundamental relationship: average items in system equals arrival rate times cycle time.",
+          "exampleSentence_en": "Little's law holds regardless of arrival and service distributions."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m18-l3-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Bir kahve dükkanına dakikada ortalama 2 müşteri gelmektedir ($\\lambda = 2$). Müşteriler sırada ortalama 3 dakika beklediğine göre sırada bekleyen ortalama müşteri sayısı ($L_q$) kaçtır?",
+            "en": "Arrival rate is 2 customers/min. Average wait in queue is 3 min. What is $L_q$?"
+          },
+          "correctAnswer": 6,
+          "explanation": {
+            "tr": "$$L_q = \\lambda \\cdot W_q = 2 \\times 3 = 6 \\text{ müşteri}$$",
+            "en": "$$L_q = 2 \\times 3 = 6$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Varış_Hızı * Bekleme_Süresi",
+        "pythonCode": "L = arrival_rate * wait_time",
+        "powerBiNote": {
+          "tr": "Süreç içi envanter (WIP) tahmini",
+          "en": "WIP queue size estimator"
+        }
+      }
+    },
+    {
+      "id": "m18-l4",
+      "moduleId": "module-18",
+      "order": 4,
+      "difficulty": "orta",
+      "title": {
+        "tr": "M/M/1 Kuyruk Modeli ve Sunucu Kullanım Oranı",
+        "en": "M/M/1 Queue Model & Server Utilization"
+      },
+      "conceptCard": {
+        "tr": "**$M/M/1$ Modeli:** Poisson varışlar ($\\lambda$), Üstel servis süreleri ($\\mu$) ve tek sunucudan oluşur.\n\n- **Sunucu Kullanım Oranı (Trafik Yoğunluğu $\\rho$):**\n$$\\rho = \\frac{\\lambda}{\\mu} \\quad (\\text{Kararlılık için } \\rho < 1 \\text{ olmalıdır})$$\n\n- **Sistemdeki Ortalama Müşteri Sayısı ($L$):**\n$$L = \\frac{\\rho}{1 - \\rho} = \\frac{\\lambda}{\\mu - \\lambda}$$\n\n- **Sistemde Geçen Ortalama Süre ($W$):**\n$$W = \\frac{1}{\\mu - \\lambda}$$",
+        "en": "For single-server M/M/1 queue with arrival rate $\\lambda$ and service rate $\\mu$: utilization $\\rho = \\lambda / \\mu$, average system size $L = \\rho / (1-\\rho)$, and time $W = 1 / (\\mu - \\lambda)$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir kargo teslim noktasına saatte $\\lambda = 12$ müşteri gelmekte ve görevli saatte $\\mu = 15$ müşteriye hizmet verebilmektedir. Sunucu kullanım oranı $\\rho$ ve sistemdeki ortalama müşteri sayısı $L$ nedir?\n\n**Çözüm:**\n$$\\rho = \\frac{12}{15} = 0.80 \\quad (\\%80)$$\n$$L = \\frac{12}{15 - 12} = \\frac{12}{3} = 4 \\text{ müşteri}$$",
+        "en": "**Worked Example:** $\\lambda = 12, \\mu = 15$. $\\rho = 12/15 = 0.80$. $L = 12/(15-12) = 4$ customers."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "server utilization (rho)",
+          "explanation_tr": "Sunucunun meşgul olma yüzdesi: lambda / mu.",
+          "explanation_en": "The proportion of time a server is actively serving customers.",
+          "exampleSentence_en": "When server utilization exceeds 85%, wait times spike exponentially."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m18-l4-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$\\lambda = 6$ ve $\\mu = 8$ olan bir M/M/1 kuyruğunda sistemdeki ortalama müşteri sayısı $L = \\frac{\\lambda}{\\mu - \\lambda}$ kaçtır?",
+            "en": "For M/M/1 with $\\lambda = 6$ and $\\mu = 8$, what is $L$?"
+          },
+          "correctAnswer": 3,
+          "explanation": {
+            "tr": "$$L = \\frac{6}{8 - 6} = \\frac{6}{2} = 3$$",
+            "en": "$$L = 6 / 2 = 3$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Lambda / (Mu - Lambda)",
+        "pythonCode": "rho = lam / mu\nL = lam / (mu - lam)\nW = 1.0 / (mu - lam)",
+        "powerBiNote": {
+          "tr": "Kuyruk yoğunluğu ve bekleme süresi",
+          "en": "Queue congestion analysis"
+        }
+      }
+    },
+    {
+      "id": "m18-l5",
+      "moduleId": "module-18",
+      "order": 5,
+      "difficulty": "basit",
+      "title": {
+        "tr": "İş Çizelgeleme: SPT ve FCFS Öncelik Kuralları",
+        "en": "Scheduling: SPT & FCFS Dispatching Rules"
+      },
+      "conceptCard": {
+        "tr": "Tek makinede $n$ adet işin sırasını belirlemek için yaygın öncelik kuralları:\n\n1. **FCFS (First-Come, First-Served):** İlk gelen işe ilk hizmet verilir (Adalet odaklı).\n2. **SPT (Shortest Processing Time):** En kısa işlem süresine sahip iş ilk sıraya alınır.\n\n**Teorem:** SPT kuralı, **ortalama akış süresini (Mean Flow Time)** ve **ortalama sistem içi bekleme süresini matematiksel olarak kesinlikle MİNİMİZE eder**.",
+        "en": "SPT (Shortest Processing Time) is proven to minimize mean flow time and average work-in-process on a single machine. FCFS serves jobs in arrival order."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** A (4 saat), B (2 saat), C (8 saat) işleri için SPT sıralaması nedir?\n\n**Çözüm:** İşlem süreleri küçükten büyüğe sıralanır: B (2 saat) $\\rightarrow$ A (4 saat) $\\rightarrow$ C (8 saat).\n- Akış Süreleri: B: 2, A: 2+4=6, C: 6+8=14\n- Ortalama Akış Süresi = $(2 + 6 + 14) / 3 = 22 / 3 \\approx 7.33$ saat.",
+        "en": "**Worked Example:** Jobs: A(4), B(2), C(8). SPT sequence: B -> A -> C. Mean flow time: $(2 + 6 + 14)/3 = 7.33$ hrs."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "SPT rule",
+          "explanation_tr": "En kısa süren işe öncelik vererek ortalama bekleme süresini en aza indiren kural.",
+          "explanation_en": "Scheduling rule that sequences jobs in increasing order of processing time.",
+          "exampleSentence_en": "SPT minimized mean work-in-process on the CNC machine."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m18-l5-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Tek bir makinede ortalama akış süresini (ve ortalama envanteri) MİNİMİZE eden optimal çizelgeleme kuralı hangisidir?",
+            "en": "Which dispatching rule minimizes mean flow time on a single machine?"
+          },
+          "options": [
+            {
+              "tr": "SPT (Shortest Processing Time)",
+              "en": "SPT (Shortest Processing Time)"
+            },
+            {
+              "tr": "FCFS (First Come First Served)",
+              "en": "FCFS (First Come First Served)"
+            },
+            {
+              "tr": "LPT (Longest Processing Time)",
+              "en": "LPT (Longest Processing Time)"
+            },
+            {
+              "tr": "Rastgele Seçim",
+              "en": "Random Dispatching"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "SPT (En Kısa İşlem Süresi) kuralı ortalama bekleme ve akış süresini matematiksel olarak kanıtlanmış şekilde minimize eder.",
+            "en": "SPT mathematically minimizes average flow time and waiting WIP."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=SIRALA(Veri; Süre_Sütunu; 1)",
+        "pythonCode": "jobs.sort(key=lambda j: j['proc_time'])",
+        "powerBiNote": {
+          "tr": "İşlem süresi önceliklendirme matrisi",
+          "en": "SPT scheduling priority engine"
+        }
+      }
+    },
+    {
+      "id": "m18-l6",
+      "moduleId": "module-18",
+      "order": 6,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Teslim Tarihi Odaklı Çizelgeleme: EDD ve Gecikme",
+        "en": "Due-Date Scheduling: EDD & Maximum Tardiness"
+      },
+      "conceptCard": {
+        "tr": "**EDD (Earliest Due Date) Kuralı:** İşler teslim tarihlerine ($d_i$) göre en erkenden en geçe doğru sıralanır.\n\n**Teorem (Jackson Kuralı):** EDD sıralaması, **Maksimum Gecikmeyi ($T_{\\max}$ - Maximum Tardiness)** MİNİMİZE eder.\n\n- Tamamlanma Zamanı: $C_i$\n- Gecikme (Lateness): $L_i = C_i - d_i$\n- Pozitif Gecikme (Tardiness): $T_i = \\max(0, C_i - d_i)$\n- Toplam Bitirme Süresi (Makespan): $C_{\\max} = \\sum p_i$",
+        "en": "EDD (Earliest Due Date) sequences jobs by increasing due dates and mathematically minimizes maximum tardiness $T_{\\max} = \\max(0, C_i - d_i)$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** İki iş vardır: İş 1 ($p_1 = 5$, $d_1 = 6$), İş 2 ($p_2 = 3$, $d_2 = 4$). EDD sırası nedir?\n\n**Çözüm:** $d_2 (4) < d_1 (6)$ olduğu için EDD sırası: İş 2 $\\rightarrow$ İş 1'dir.\n- İş 2 bitişi: $C_2 = 3 \\implies T_2 = \\max(0, 3 - 4) = 0$\n- İş 1 bitişi: $C_1 = 3 + 5 = 8 \\implies T_1 = \\max(0, 8 - 6) = 2$\n- Maksimum Gecikme: $T_{\\max} = 2$.",
+        "en": "**Worked Example:** Jobs: 1(p=5, d=6), 2(p=3, d=4). EDD sequence: 2 -> 1. $T_{\\max} = 2$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "EDD rule",
+          "explanation_tr": "Teslim tarihi en yakın olan işe öncelik vererek maksimum gecikmeyi en aza indiren kural.",
+          "explanation_en": "Scheduling heuristic sequencing jobs by earliest deadline to minimize max tardiness.",
+          "exampleSentence_en": "EDD guaranteed no customer order missed its SLA deadline excessively."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m18-l6-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Maksimum gecikmeyi ($T_{\\max}$) en aza indirmek isteyen bir fabrika mühendisi hangi kuralı uygulamalıdır?",
+            "en": "To minimize maximum tardiness, which scheduling rule should be applied?"
+          },
+          "options": [
+            {
+              "tr": "EDD (Earliest Due Date)",
+              "en": "EDD (Earliest Due Date)"
+            },
+            {
+              "tr": "SPT (Shortest Processing Time)",
+              "en": "SPT (Shortest Processing Time)"
+            },
+            {
+              "tr": "FCFS (First Come First Served)",
+              "en": "FCFS (First Come First Served)"
+            },
+            {
+              "tr": "LPT (Longest Processing Time)",
+              "en": "LPT (Longest Processing Time)"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "EDD kuralı maksimum gecikmeyi ($T_{\\max}$) minimize eden Jackson kuralıdır.",
+            "en": "EDD minimizes maximum tardiness."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=MAK(0; Bitiş - TeslimTarihi)",
+        "pythonCode": "tardiness = max(0, completion_time - due_date)",
+        "powerBiNote": {
+          "tr": "Sipariş teslim performansı (OTIF) raporu",
+          "en": "On-time in-full delivery analytics"
+        }
+      }
+    },
+    {
+      "id": "m18-l7",
+      "moduleId": "module-18",
+      "order": 7,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Tesis Konumlandırma: Manhattan ve Öklid Mesafeleri",
+        "en": "Facility Location: Manhattan vs Euclidean Distances"
+      },
+      "conceptCard": {
+        "tr": "İki nokta $(x_1, y_1)$ ve $(x_2, y_2)$ arasındaki mesafe modelleri:\n\n1. **Öklid (Euclidean - Kuş Uçuşu) Mesafesi ($L_2$):**\n$$d_{12} = \\sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$$\n\n2. **Manhattan (Rectilinear - Izgara/Şehir İçi) Mesafesi ($L_1$):**\n$$d_{12} = |x_1 - x_2| + |y_1 - y_2|$$\n*(Şehir içi sokak blokları veya fabrika koridorlarındaki dik açılı taşımalarda kullanılır)*",
+        "en": "Euclidean distance is straight-line $d = \\sqrt{\\Delta x^2 + \\Delta y^2}$. Manhattan (rectilinear) distance follows grid streets: $d = |\\Delta x| + |\\Delta y|$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** $(2, 3)$ noktasındaki depo ile $(8, 11)$ noktasındaki müşteri arasındaki Manhattan mesafesi nedir?\n\n**Çözüm:**\n$$d = |8 - 2| + |11 - 3| = 6 + 8 = 14 \\text{ birim}$$",
+        "en": "**Worked Example:** Distance between (2,3) and (8,11): $|8-2| + |11-3| = 6 + 8 = 14$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Manhattan distance",
+          "explanation_tr": "Eksenlere paralel dik doğrultuda kat edilen ızgara tipi mesafe ölçüsü.",
+          "explanation_en": "Distance between two points measured along right angles on a grid.",
+          "exampleSentence_en": "Forklifts in factory aisles follow rectilinear Manhattan distances."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m18-l7-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$(1, 4)$ ve $(7, 12)$ noktaları arasındaki Manhattan (Rectilinear) mesafesi kaçtır?",
+            "en": "What is the Manhattan distance between (1,4) and (7,12)?"
+          },
+          "correctAnswer": 14,
+          "explanation": {
+            "tr": "$$d = |7 - 1| + |12 - 4| = 6 + 8 = 14$$",
+            "en": "$$d = |7-1| + |12-4| = 14$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=MUTLAK(X2 - X1) + MUTLAK(Y2 - Y1)",
+        "pythonCode": "dist = abs(x2 - x1) + abs(y2 - y1)",
+        "powerBiNote": {
+          "tr": "Lojistik mesafe ve taşıma maliyeti",
+          "en": "Rectilinear route distance calculator"
+        }
+      }
+    },
+    {
+      "id": "m18-l8",
+      "moduleId": "module-18",
+      "order": 8,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Minisum Konumlandırma ve Medyan Yöntemi",
+        "en": "Minisum Location & Median Method"
+      },
+      "conceptCard": {
+        "tr": "**Minisum Problemi:** Mevcut $m$ noktaya taşınan toplam ağırlıklı Manhattan mesafesini minimize eden yeni tesis koordinatı $(x^*, y^*)$ aranır:\n\n$$\\min \\sum_{i=1}^{m} w_i (|x - a_i| + |y - b_i|)$$\n\n**Medyan Özelliği:** $x$ ve $y$ eksenleri birbirinden bağımsız olarak ayrışır. Optimal $x^*$ ve $y^*$, toplam ağırlığın en az yarısının ($W/2 = \\frac{1}{2} \\sum w_i$) aşıldığı medyan koordinatıdır.",
+        "en": "Under rectilinear metric, the 1-median minisum location problem decouples into independent 1D problems solved at the weighted median points: $\\sum_{a_i \\le x^*} w_i \\ge W/2$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** 3 mağazanın $x$ koordinatları ve günlük sevkiyat ağırlıkları: Mağaza 1 ($x=2, w=10$), Mağaza 2 ($x=5, w=25$), Mağaza 3 ($x=9, w=15$). Toplam ağırlık $W = 50$, $W/2 = 25$. Optimal $x^*$ nedir?\n\n**Çözüm:**\n- $x=2$ için kümülatif ağırlık = $10 < 25$\n- $x=5$ için kümülatif ağırlık = $10 + 25 = 35 \\ge 25$\nMedyan $x^* = 5$ noktasındadır.",
+        "en": "**Worked Example:** Stores at $x=[2,5,9]$ with weights $[10,25,15]$. Total $W=50, W/2=25$. Cumulative at $x=5$ is $35 \\ge 25$, so optimal $x^*=5$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "minisum location",
+          "explanation_tr": "Tüm noktalara olan toplam ağırlıklı taşıma maliyetini en aza indiren konumlandırma.",
+          "explanation_en": "Facility location objective that minimizes the total weighted distance sum.",
+          "exampleSentence_en": "The weighted median method found the optimal minisum central warehouse location."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m18-l8-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$x$ koordinatları 10 ($w=5$), 20 ($w=20$), 30 ($w=15$) olan noktalarda toplam ağırlık 40'tır ($W/2 = 20$). Optimal medyan $x^*$ koordinatı kaçtır?",
+            "en": "Given x=[10,20,30] with w=[5,20,15], total W=40. What is optimal x*?"
+          },
+          "correctAnswer": 20,
+          "explanation": {
+            "tr": "$x=10$: kümülatif 5 ($<20$). $x=20$: kümülatif $5+20=25 \\ge 20$. Dolayısıyla $x^* = 20$.",
+            "en": "$x^* = 20$ reaches the cumulative median weight."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=MEDYAN(Ağırlıklı_Dizi)",
+        "pythonCode": "def find_weighted_median(coords, weights):\n    # Cumulative weight threshold >= W/2\n    pass",
+        "powerBiNote": {
+          "tr": "Optimal lojistik depo merkezi belirleme",
+          "en": "Optimal hub location model"
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m18-c1",
+      "moduleId": "module-18",
+      "difficulty": "orta",
+      "title": {
+        "tr": "Vaka Sınavı: Trendyol Dağıtım Merkezi Sipariş & Kuyruk Optimizasyonu",
+        "en": "Case Exam: Trendyol Distribution Center Order & Queueing Optimization"
+      },
+      "businessQuestion": {
+        "tr": "Trendyol aktarma merkezinde gelen kamyonlar tek bir boşaltma rampasına yanaşmaktadır. Kamyon varış hızı saatte 8 kamyondur ($\\lambda = 8$). Boşaltma ekibi saatte ortalama 10 kamyon boşaltabilmektedir ($\\mu = 10$). Rampanın meşguliyet oranı $\\rho$, kuyruktaki ortalama kamyon sayısı ($L_q$) ve bir kamyonun sırada bekleme süresi ($W_q$) nedir? Ayrıca dağıtım merkezinde bir günde 200 adet özel koli için Newsvendor analizi yapılmaktadır ($C_u = 30$ TL, $C_o = 10$ TL).",
+        "en": "Trendyol hub has single unload dock with $\\lambda = 8$ trucks/hr and $\\mu = 10$ trucks/hr. Determine dock utilization $\\rho$, average queue size $L_q$, and average queue waiting time $W_q$."
+      },
+      "dataset": {
+        "columns": [
+          "Parametre",
+          "Sembol",
+          "Değer",
+          "Birim"
+        ],
+        "rows": [
+          [
+            "Varış Hızı",
+            "\\lambda",
+            8,
+            "kamyon/saat"
+          ],
+          [
+            "Hizmet Hızı",
+            "\\mu",
+            10,
+            "kamyon/saat"
+          ],
+          [
+            "Kullanım Oranı",
+            "\\rho",
+            0.8,
+            "oran"
+          ],
+          [
+            "Sistemde Bekleyen",
+            "L",
+            4,
+            "kamyon"
+          ],
+          [
+            "Sırada Bekleyen",
+            "L_q",
+            3.2,
+            "kamyon"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Kullanım oranını bul: $\\rho = \\frac{\\lambda}{\\mu} = \\frac{8}{10} = 0.80$.",
+          "en": "Step 1: Compute utilization $\\rho = 8/10 = 0.80$."
+        },
+        {
+          "tr": "2. Adım: Kuyruktaki ortalama sayıyı hesapla: $L_q = \\frac{\\lambda^2}{\\mu(\\mu - \\lambda)} = \\frac{64}{10(2)} = 3.2$ kamyon.",
+          "en": "Step 2: Calculate $L_q = 64 / 20 = 3.2$ trucks."
+        },
+        {
+          "tr": "3. Adım: Sırada bekleme süresini bul: $W_q = \\frac{L_q}{\\lambda} = \\frac{3.2}{8} = 0.4$ saat (24 dakika).",
+          "en": "Step 3: Calculate $W_q = 3.2 / 8 = 0.4$ hr (24 min)."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Kuyruk formülleri ile darboğaz rampa bekleme sürelerini hesaplayıp operasyonel kapasiteyi optimize etme.",
+        "en": "Applying M/M/1 queueing formulations to minimize vehicle dwell times and dock congestion."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m18-c1-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Bir kamyonun rampa sırasında beklediği ortalama süre ($W_q$) kaç DAKİKADIR?",
+            "en": "How many MINUTES does a truck wait in queue on average?"
+          },
+          "correctAnswer": 24,
+          "explanation": {
+            "tr": "$$W_q = \\frac{L_q}{\\lambda} = \\frac{3.2}{8} = 0.4 \\text{ saat} = 0.4 \\times 60 = 24 \\text{ dakika}$$",
+            "en": "$$W_q = 0.4 \\text{ hr} = 24 \\text{ minutes}$$"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -34,18 +34,20 @@ interface ChatMessage {
 
 const QUICK_PROMPTS = {
   tr: [
+    'Tesis yerleşimi (From-To Matrisi) ve Hat Dengeleme nasıl yapılır?',
+    'Newsvendor (Gazeteci Çocuk) modelinde kritik oran mantığı nedir?',
     'Bayes Teoremi formülünü ve mantığını açıklar mısın?',
     'Hipotez testlerinde p-değeri tam olarak ne anlama gelir?',
-    'Doğrusal Programlama ve Simplex yöntemi nasıl çalışır?',
-    'Markov Zincirleri ve geçiş olasılıkları nedir?',
-    'ENGR 200 veya INDR 252 için nasıl bir çalışma stratejisi önerirsin?',
+    'Doğrusal Programlama ve grafik çözüm yöntemi nasıl çalışır?',
+    'INDR 100, ENGR 200 veya INDR 252 için nasıl bir çalışma stratejisi önerirsin?',
   ],
   en: [
+    'How do facility layout From-To scoring and line balancing work?',
+    'What is the intuition behind the Newsvendor critical ratio?',
     'Can you explain Bayes Theorem formula and intuition?',
     'What does the p-value mean in hypothesis testing?',
-    'How does Linear Programming and the Simplex method work?',
-    'What are Markov Chains and transition probabilities?',
-    'What study strategy do you recommend for ENGR 200 or INDR 252?',
+    'How does Linear Programming and the graphical method work?',
+    'What study strategy do you recommend for INDR 100, ENGR 200, or INDR 252?',
   ],
 };
 
@@ -228,8 +230,8 @@ export const TancoChatModal: React.FC = () => {
               ? `Selam ${studentName}! 🎓 Şu anda **${currentStudyContext.caseTitle}** vaka sınavındasın. Vaka problemi, veri seti veya çözüm adımlarında takıldığın noktaları birlikte adım adım çözebiliriz!`
               : `Selam! 🎓 Şu anda **${currentStudyContext.caseTitle}** vaka sınavındasın. Vaka problemi, veri seti veya çözüm adımlarında takıldığın noktaları birlikte adım adım çözebiliriz!`)
           : (isAuthenticated && userProfile?.fullName?.trim()
-              ? `Selam ${studentName}! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nOlasılık (ENGR 200), İstatistik (INDR 252), Yöneylem Araştırması veya optimizasyonla ilgili aklına takılan her şeyi bana sorabilirsin. İstersen fotoğraf yükleyerek soru da sorabilirsin!`
-              : `Selam! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nOlasılık (ENGR 200), İstatistik (INDR 252), Yöneylem Araştırması veya optimizasyonla ilgili aklına takılan her şeyi bana sorabilirsin. İstersen fotoğraf yükleyerek soru da sorabilirsin!`)
+              ? `Selam ${studentName}! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nEndüstri Mühendisliğine Giriş (INDR 100), Olasılık (ENGR 200), İstatistik (INDR 252) veya optimizasyonla ilgili aklına takılan her şeyi bana sorabilirsin. İstersen fotoğraf yükleyerek soru da sorabilirsin!`
+              : `Selam! Ben Tanco, senin Endüstri Mühendisliği öğretim asistanınım 🎓\n\nEndüstri Mühendisliğine Giriş (INDR 100), Olasılık (ENGR 200), İstatistik (INDR 252) veya optimizasyonla ilgili aklına takılan her şeyi bana sorabilirsin. İstersen fotoğraf yükleyerek soru da sorabilirsin!`)
         : currentStudyContext?.type === 'lesson'
         ? (isAuthenticated && userProfile?.fullName?.trim()
             ? `Hi ${studentName}! 🎓 You are currently studying **${currentStudyContext.lessonTitle}**. Ask me anything about the concept, formulas, company case, or mini test questions on screen!`

@@ -334,9 +334,14 @@ export const App: React.FC = () => {
       topicModuleId = data?.module.id || '';
     }
 
-    // 1st module for Probability track is 'module-2'
+    // 1st module for Probability track is 'module-13'
     // 1st module for Statistics track is 'module-1'
-    const isFirstModule = topicModuleId === 'module-1' || topicModuleId === 'module-2';
+    // 1st module for INDR 100 track is 'module-17'
+    const isFirstModule =
+      topicModuleId === 'module-1' ||
+      topicModuleId === 'module-2' ||
+      topicModuleId === 'module-13' ||
+      topicModuleId === 'module-17';
 
     if (!isFirstModule) {
       setShowGuestGate(true);
@@ -442,7 +447,7 @@ export const App: React.FC = () => {
     activeModuleName = customActiveModuleName;
   }
 
-  const handleSelectTrack = (track: 'probability' | 'statistics') => {
+  const handleSelectTrack = (track: 'probability' | 'statistics' | 'indr100') => {
     setSelectedTrack(track);
     setSelectedInDesignCourse(null);
     setCustomActiveModuleName(null);

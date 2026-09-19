@@ -15,6 +15,14 @@ import module13 from './module13.json';
 import module14 from './module14.json';
 import module15 from './module15.json';
 import module16 from './module16.json';
+import module17 from './module17.json';
+import module18 from './module18.json';
+import module19 from './module19.json';
+import module20 from './module20.json';
+import module21 from './module21.json';
+import module22 from './module22.json';
+import module23 from './module23.json';
+import module24 from './module24.json';
 
 export const ALL_MODULES: Module[] = [
   module1 as Module,
@@ -33,6 +41,14 @@ export const ALL_MODULES: Module[] = [
   module14 as Module,
   module15 as Module,
   module16 as Module,
+  module17 as Module,
+  module18 as Module,
+  module19 as Module,
+  module20 as Module,
+  module21 as Module,
+  module22 as Module,
+  module23 as Module,
+  module24 as Module,
 ];
 
 export function getModuleById(id: string): Module | undefined {
@@ -63,6 +79,10 @@ export const STATISTICS_MODULE_ORDER = [
   'module-1', 'module-4', 'module-5', 'module-6', 'module-7', 'module-8', 'module-9', 'module-10', 'module-11'
 ];
 
+export const INDR100_MODULE_ORDER = [
+  'module-17', 'module-18', 'module-19', 'module-20', 'module-21', 'module-22', 'module-23', 'module-24'
+];
+
 export interface SequentialTopicNode {
   id: string;
   type: 'lesson' | 'case';
@@ -70,8 +90,11 @@ export interface SequentialTopicNode {
   module: Module;
 }
 
-export function getSequentialTopicsForTrack(track: 'probability' | 'statistics'): SequentialTopicNode[] {
-  const moduleOrder = track === 'probability' ? PROBABILITY_MODULE_ORDER : STATISTICS_MODULE_ORDER;
+export function getSequentialTopicsForTrack(track: 'probability' | 'statistics' | 'indr100'): SequentialTopicNode[] {
+  let moduleOrder = STATISTICS_MODULE_ORDER;
+  if (track === 'probability') moduleOrder = PROBABILITY_MODULE_ORDER;
+  if (track === 'indr100') moduleOrder = INDR100_MODULE_ORDER;
+
   const topics: SequentialTopicNode[] = [];
 
   for (const modId of moduleOrder) {
@@ -94,17 +117,24 @@ export function getAllSequentialTopics(): SequentialTopicNode[] {
   return [
     ...getSequentialTopicsForTrack('statistics'),
     ...getSequentialTopicsForTrack('probability'),
+    ...getSequentialTopicsForTrack('indr100'),
   ];
 }
 
-export function getNextTopicItem(currentId: string, track?: 'probability' | 'statistics'): SequentialTopicNode | undefined {
+export function getNextTopicItem(currentId: string, track?: 'probability' | 'statistics' | 'indr100'): SequentialTopicNode | undefined {
   let effectiveTrack = track;
   if (!effectiveTrack) {
     const lessonInfo = getLessonById(currentId);
     const caseInfo = !lessonInfo ? getCaseExamById(currentId) : undefined;
     const modId = lessonInfo?.module.id || caseInfo?.module.id;
     if (modId) {
-      effectiveTrack = PROBABILITY_MODULE_ORDER.includes(modId) ? 'probability' : 'statistics';
+      if (INDR100_MODULE_ORDER.includes(modId)) {
+        effectiveTrack = 'indr100';
+      } else if (PROBABILITY_MODULE_ORDER.includes(modId)) {
+        effectiveTrack = 'probability';
+      } else {
+        effectiveTrack = 'statistics';
+      }
     } else {
       effectiveTrack = 'statistics';
     }
@@ -117,3 +147,4 @@ export function getNextTopicItem(currentId: string, track?: 'probability' | 'sta
   }
   return undefined;
 }
+

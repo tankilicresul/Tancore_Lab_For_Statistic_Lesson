@@ -1,0 +1,467 @@
+{
+  "id": "module-20",
+  "order": 20,
+  "title": {
+    "tr": "Modül 20: Kapasite Planlama & Başa Baş Analizi",
+    "en": "Module 20: Capacity Planning & Break-Even Analysis"
+  },
+  "description": {
+    "tr": "Tasarım ve efektif kapasite, kullanım oranı, kapasite verimliliği, başa baş noktası ve Make-or-Buy analizleri.",
+    "en": "Design vs effective capacity, utilization, efficiency, break-even analysis, target profit planning, and Make-or-Buy decisions."
+  },
+  "iconName": "TrendingUp",
+  "lessons": [
+    {
+      "id": "m20-l1",
+      "moduleId": "module-20",
+      "order": 1,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Tasarım Kapasitesi vs Efektif Kapasite",
+        "en": "Design Capacity vs Effective Capacity"
+      },
+      "conceptCard": {
+        "tr": "**Kapasite Kavramları:**\n\n1. **Tasarım Kapasitesi (Design Capacity):** İdeal koşullar altında, hiçbir duruş, arıza, bakım veya gecikme olmadan ulaşılabilecek teorik maksimum üretim hızıdır.\n2. **Efektif Kapasite (Effective Capacity):** Bakım molaları, ürün geçişleri (setup), işçi dinlenme payları ve gerçekçi çalışma koşulları hesaba katıldığında hedeflenen sürdürülebilir kapasitedir.\n3. **Gerçek Çıktı (Actual Output):** Sistemin belirli bir dönemde fiilen ürettiği gerçek ürün miktarıdır.\n\n$$\\text{Tasarım Kapasitesi} \\ge \\text{Efektif Kapasite} \\ge \\text{Gerçek Çıktı}$$",
+        "en": "Design capacity is theoretical max output under ideal conditions. Effective capacity accounts for planned maintenance, setups, and mix. Actual output is the real production achieved."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir bisküvi paketleme hattının tasarım kapasitesi saatte 1.000 pakettir. Günlük bakım ve ürün değişimleri nedeniyle planlanan efektif kapasite saatte 800 pakettir. Hat bugün saatte ortalama 720 paket üretmiştir. Sıralamayı kontrol ediniz.\n\n**Çözüm:** $1000 \\text{ (Tasarım)} \\ge 800 \\text{ (Efektif)} \\ge 720 \\text{ (Gerçek)}$.",
+        "en": "**Worked Example:** Design = 1000/hr, Effective = 800/hr, Actual = 720/hr."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "design capacity",
+          "explanation_tr": "Sistemin ideal koşullardaki teorik maksimum çıktı kapasitesi.",
+          "explanation_en": "The maximum theoretical output rate designed under ideal conditions.",
+          "exampleSentence_en": "The design capacity of the furnace is 500 tons per day."
+        },
+        {
+          "term_en": "effective capacity",
+          "explanation_tr": "Bakım, setup ve molalar düşüldükten sonraki gerçekçi kapasite hedefi.",
+          "explanation_en": "Capacity a firm expects to achieve given its current operating constraints.",
+          "exampleSentence_en": "Effective capacity dropped due to frequent product changeovers."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m20-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Hiçbir arıza, mola veya gecikme olmadan sistemin ulaşabileceği TEORİK MAKSİMUM kapasiteye ne ad verilir?",
+            "en": "What is the theoretical maximum output of a system under ideal conditions called?"
+          },
+          "options": [
+            {
+              "tr": "Tasarım Kapasitesi (Design Capacity)",
+              "en": "Design Capacity"
+            },
+            {
+              "tr": "Efektif Kapasite",
+              "en": "Effective Capacity"
+            },
+            {
+              "tr": "Gerçek Çıktı",
+              "en": "Actual Output"
+            },
+            {
+              "tr": "Emniyet Stoku",
+              "en": "Safety Stock"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Tasarım kapasitesi ideal koşullardaki teorik maksimum çıktıdır.",
+            "en": "Design capacity represents theoretical maximum output."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Gerçek_Çıktı / Tasarım_Kapasitesi",
+        "pythonCode": "design_cap = 1000\neffective_cap = 800\nactual_out = 720",
+        "powerBiNote": {
+          "tr": "Kapasite hiyerarşisi şelale grafiği (Waterfall)",
+          "en": "Capacity loss waterfall visualization"
+        }
+      }
+    },
+    {
+      "id": "m20-l2",
+      "moduleId": "module-20",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Kapasite Kullanım Oranı ve Verimlilik",
+        "en": "Utilization & Efficiency Metrics"
+      },
+      "conceptCard": {
+        "tr": "**Temel Kapasite Performans Göstergeleri:**\n\n1. **Kullanım Oranı (Utilization):** Gerçek çıktının teorik tasarım kapasitesine oranıdır:\n$$\\text{Kullanım Oranı (Utilization)} = \\frac{\\text{Gerçek Çıktı}}{\\text{Tasarım Kapasitesi}} \\times 100$$\n\n2. **Kapasite Verimliliği (Efficiency):** Gerçek çıktının efektif kapasiteye oranıdır:\n$$\\text{Verimlilik (Efficiency)} = \\frac{\\text{Gerçek Çıktı}}{\\text{Efektif Kapasite}} \\times 100$$",
+        "en": "Utilization = (Actual Output / Design Capacity) * 100. Efficiency = (Actual Output / Effective Capacity) * 100."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Tasarım kapasitesi 50 kamyon/gün, efektif kapasitesi 40 kamyon/gün olan bir serviste günde 36 kamyon tamir edilmektedir. Kullanım oranı ve verimlilik nedir?\n\n**Çözüm:**\n$$\\text{Kullanım Oranı} = \\frac{36}{50} \\times 100 = 72\\%$$\n$$\\text{Verimlilik} = \\frac{36}{40} \\times 100 = 90\\%$$",
+        "en": "**Worked Example:** Design = 50, Effective = 40, Actual = 36. Utilization = 36/50 = 72%. Efficiency = 36/40 = 90%."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "utilization",
+          "explanation_tr": "Gerçek çıktının tasarım kapasitesine bölünmesiyle bulunan kullanım yüzdesi.",
+          "explanation_en": "Percentage of design capacity actually achieved.",
+          "exampleSentence_en": "Plant utilization averaged 72% over the quarter."
+        },
+        {
+          "term_en": "efficiency",
+          "explanation_tr": "Gerçek çıktının planlanan efektif kapasiteye oranı.",
+          "explanation_en": "Percentage of effective capacity actually achieved.",
+          "exampleSentence_en": "Operating efficiency reached 90% after eliminating line micro-stops."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m20-l2-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Tasarım kapasitesi 100 birim/saat, efektif kapasitesi 80 birim/saat olan bir fabrikada gerçek çıktı 60 birim/saat ise Kapasite Verimliliği (Efficiency) yüzde kaçtır?",
+            "en": "Design = 100, Effective = 80, Actual = 60. What is Efficiency (%)?"
+          },
+          "correctAnswer": 75,
+          "explanation": {
+            "tr": "$$\\text{Verimlilik} = \\frac{60}{80} \\times 100 = 0.75 \\times 100 = 75\\%$$",
+            "en": "$$\\text{Efficiency} = (60/80) * 100 = 75\\%$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Gerçek / Efektif",
+        "pythonCode": "utilization = (actual / design) * 100\nefficiency = (actual / effective) * 100",
+        "powerBiNote": {
+          "tr": "Tesis OEE ve Kapasite Kullanım göstergeleri",
+          "en": "Plant capacity KPI gauge"
+        }
+      }
+    },
+    {
+      "id": "m20-l3",
+      "moduleId": "module-20",
+      "order": 3,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Kapasite Stratejileri ve Ölçek Ekonomisi",
+        "en": "Capacity Strategies & Economies of Scale"
+      },
+      "conceptCard": {
+        "tr": "**Kapasite Genişletme Stratejileri:**\n1. **Öncü Strateji (Lead Strategy):** Talep gelmeden önce kapasiteyi önden artırır. Müşteri kaybını önler, atıl kapasite riski taşır.\n2. **İzleyici Strateji (Lag Strategy):** Talep kesinleştikten sonra kapasite artırır. Düşük risklidir ancak talep kaçırılabilir.\n3. **Eşzamanlı Strateji (Tracking Strategy):** Talebi küçük adımlarla takip eder.\n\n**Ölçek Ekonomisi (Economies of Scale):** Üretim hacmi arttıkça sabit maliyetler daha çok birime bölünür ve birim maliyet düşer.\n**Negatif Ölçek Ekonomisi (Diseconomies of Scale):** Tesis aşırı büyüdüğünde bürokrasi, iletişim kopuklukları ve lojistik darboğazlar nedeniyle birim maliyetin tekrar yükselmesidir.",
+        "en": "Capacity expansion strategies: Lead (ahead of demand), Lag (after demand spikes), Tracking. Economies of scale reduce unit costs until complexity triggers diseconomies of scale."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** 10.000 adet üretimde birim maliyet 50 TL iken, fabrika büyütülüp 100.000 adet üretildiğinde birim maliyet 30 TL'ye düşmüştür. Bu durum ne ile açıklanır?\n\n**Çözüm:** Sabit maliyetlerin yüksek hacme dağılması ve toplu alım indirimleri sayesinde **Ölçek Ekonomisi (Economies of Scale)** gerçekleşmiştir.",
+        "en": "**Worked Example:** Unit cost dropping from $50 to $30 as volume scales from 10k to 100k units is classic Economies of Scale."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "economies of scale",
+          "explanation_tr": "Üretim ölçeği büyüdükçe birim başına düşen ortalama maliyetin azalması.",
+          "explanation_en": "Cost advantages reaped by companies when production becomes efficient as scale increases.",
+          "exampleSentence_en": "Megafactories leverage economies of scale to lower battery cell prices."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m20-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Piyasadaki talep henüz gelmeden, pazar payı kapmak amacıyla kapasiteyi önden artıran strateji hangisidir?",
+            "en": "Which capacity strategy expands capacity in advance of expected demand growth?"
+          },
+          "options": [
+            {
+              "tr": "Öncü Strateji (Lead Strategy)",
+              "en": "Lead Strategy"
+            },
+            {
+              "tr": "İzleyici Strateji (Lag Strategy)",
+              "en": "Lag Strategy"
+            },
+            {
+              "tr": "Kapasite Daraltma",
+              "en": "Capacity Contraction"
+            },
+            {
+              "tr": "Pasif Bekleme",
+              "en": "Passive Waiting"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Öncü (Lead) strateji talepten önce kapasite inşa ederek talebi tam karşılamayı hedefler.",
+            "en": "Lead capacity strategy adds capacity proactively before demand occurs."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Toplam_Maliyet / Miktar",
+        "pythonCode": "unit_cost = (fixed_cost + (variable_cost * Q)) / Q",
+        "powerBiNote": {
+          "tr": "Birim maliyet ve üretim hacmi eğrisi",
+          "en": "Volume-cost scaling curve"
+        }
+      }
+    },
+    {
+      "id": "m20-l4",
+      "moduleId": "module-20",
+      "order": 4,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Başa Baş Noktası (Break-Even Analysis)",
+        "en": "Break-Even Point (BEP) Analysis"
+      },
+      "conceptCard": {
+        "tr": "Başa Baş Noktası ($Q_{\\text{BEP}}$), toplam gelirin toplam maliyete eşit olduğu, kârın sıfır olduğu üretim miktarıdır:\n\n$$\\text{Toplam Gelir} = \\text{Toplam Maliyet} \\implies P \\cdot Q = FC + (VC \\cdot Q)$$\n\n$$\\mathbf{Q_{\\text{BEP}} = \\frac{FC}{P - VC}}$$\n\n- $FC$: Sabit Maliyetler (Kira, amortisman, sabit maaşlar)\n- $VC$: Birim Değişken Maliyet (Hammadde, doğrudan işçilik)\n- $P$: Birim Satış Fiyatı\n- $(P - VC)$: **Birim Katkı Payı (Contribution Margin)**",
+        "en": "Break-even quantity $Q_{\\text{BEP}} = \\frac{FC}{P - VC}$, where $FC$ is fixed cost, $VC$ is unit variable cost, and $(P - VC)$ is unit contribution margin."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Sabit maliyeti $FC = 100.000$ TL, birim değişken maliyeti $VC = 40$ TL ve satış fiyatı $P = 90$ TL olan bir ürünün başa baş noktası nedir?\n\n**Çözüm:**\n$$\\text{Birim Katkı Payı} = P - VC = 90 - 40 = 50 \\text{ TL}$$\n$$Q_{\\text{BEP}} = \\frac{100.000}{50} = 2.000 \\text{ adet}$$",
+        "en": "**Worked Example:** $FC = 100k, VC = 40, P = 90$. $Q_{\\text{BEP}} = 100,000 / (90 - 40) = 2,000$ units."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Break-Even Point (BEP)",
+          "explanation_tr": "Toplam gelirin toplam maliyeti tam karşıladığı sıfır kâr noktası.",
+          "explanation_en": "Production volume where total revenue exactly equals total costs.",
+          "exampleSentence_en": "The plant reached its break-even point in the fifth month."
+        },
+        {
+          "term_en": "contribution margin",
+          "explanation_tr": "Satış fiyatından değişken maliyetin çıkarılmasıyla kalan birim kâr payı: P - VC.",
+          "explanation_en": "Marginal profit per unit contributing to covering fixed overhead: P - VC.",
+          "exampleSentence_en": "A higher contribution margin lowers the break-even volume."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m20-l4-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$FC = 60.000$ TL, $P = 150$ TL ve $VC = 100$ TL ise başa baş üretim miktarı $Q_{\\text{BEP}}$ kaçtır?",
+            "en": "If FC = 60,000, P = 150, and VC = 100, what is Q_BEP?"
+          },
+          "correctAnswer": 1200,
+          "explanation": {
+            "tr": "$$Q_{\\text{BEP}} = \\frac{60.000}{150 - 100} = \\frac{60.000}{50} = 1.200 \\text{ adet}$$",
+            "en": "$$Q_{\\text{BEP}} = 60,000 / 50 = 1,200$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=FC / (P - VC)",
+        "pythonCode": "def calc_bep(fc, price, vc):\n    return fc / (price - vc)",
+        "powerBiNote": {
+          "tr": "Başa baş ve kârlılık duyarlılık analizi",
+          "en": "Break-even sensitivity model"
+        }
+      }
+    },
+    {
+      "id": "m20-l5",
+      "moduleId": "module-20",
+      "order": 5,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Hedef Kâr ve Gelir Analizi",
+        "en": "Target Profit & Revenue Planning"
+      },
+      "conceptCard": {
+        "tr": "Belirli bir hedef kâr ($TP - \\text{Target Profit}$) elde etmek için üretilmesi gereken miktar:\n\n$$Q_{\\text{Hedef}} = \\frac{FC + TP}{P - VC}$$\n\n**Başa Baş Satış Geliri ($R_{\\text{BEP}}$):**\n$$R_{\\text{BEP}} = Q_{\\text{BEP}} \\times P = \\frac{FC}{1 - \\frac{VC}{P}} = \\frac{FC}{\\text{Katkı Oranı}}$$",
+        "en": "To achieve a target profit $TP$: $Q = \\frac{FC + TP}{P - VC}$. Break-even revenue $R_{\\text{BEP}} = \\frac{FC}{\\text{Contribution Margin Ratio}}$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** $FC = 50.000$ TL, $P = 200$ TL, $VC = 120$ TL. Şirket $30.000$ TL kâr etmek için kaç adet satmalıdır?\n\n**Çözüm:**\n$$Q = \\frac{50.000 + 30.000}{200 - 120} = \\frac{80.000}{80} = 1.000 \\text{ adet}$$",
+        "en": "**Worked Example:** $FC = 50k, P = 200, VC = 120, TP = 30k$. $Q = (50,000 + 30,000) / 80 = 1,000$ units."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "target profit",
+          "explanation_tr": "İşletmenin dönem sonunda elde etmeyi hedeflediği net kâr tutarı.",
+          "explanation_en": "The desired profit level planned for a fiscal period.",
+          "exampleSentence_en": "Target profit analysis determined sales quotas for the regional distributors."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m20-l5-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$FC = 40.000$ TL, $P = 100$ TL, $VC = 60$ TL olan bir işletme $20.000$ TL net kâr hedefliyorsa kaç adet ürün satmalıdır?",
+            "en": "FC = 40,000, P = 100, VC = 60, Target Profit = 20,000. Required Q?"
+          },
+          "correctAnswer": 1500,
+          "explanation": {
+            "tr": "$$Q = \\frac{40.000 + 20.000}{100 - 60} = \\frac{60.000}{40} = 1.500 \\text{ adet}$$",
+            "en": "$$Q = 60,000 / 40 = 1,500$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(FC + HedefKâr) / (P - VC)",
+        "pythonCode": "req_qty = (fc + target_profit) / (price - vc)",
+        "powerBiNote": {
+          "tr": "Hedef kâr ve bütçe simülatörü",
+          "en": "Target profit scenario manager"
+        }
+      }
+    },
+    {
+      "id": "m20-l6",
+      "moduleId": "module-20",
+      "order": 6,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Make or Buy (Üret ya da Satın Al) Analizi",
+        "en": "Make or Buy Decision Analysis"
+      },
+      "conceptCard": {
+        "tr": "Bir parçanın şirket içinde üretilmesi (Make) ile dışarıdan tedarik edilmesi (Buy) arasındaki maliyet karşılaştırması:\n\n- **Üretim Maliyeti:** $TC_{\\text{Make}} = FC_{\\text{Make}} + (VC_{\\text{Make}} \\cdot Q)$\n- **Satın Alma Maliyeti:** $TC_{\\text{Buy}} = P_{\\text{Buy}} \\cdot Q$\n\n**Eşik Miktar ($Q^*$):** İki seçeneğin maliyetlerinin eşitlendiği hacimdir:\n$$FC_{\\text{Make}} + (VC_{\\text{Make}} \\cdot Q^*) = P_{\\text{Buy}} \\cdot Q^* \\implies \\mathbf{Q^* = \\frac{FC_{\\text{Make}}}{P_{\\text{Buy}} - VC_{\\text{Make}}}}$$\n\n- Eğer beklenen talep $Q > Q^*$ ise: **ÜRET (Make)** (Sabit maliyeti amorti eder).\n- Eğer beklenen talep $Q < Q^*$ ise: **SATIN AL (Buy)**.",
+        "en": "Make-or-Buy indifference quantity: $Q^* = \\frac{FC_{\\text{Make}}}{P_{\\text{Buy}} - VC_{\\text{Make}}}$. Produce in-house if expected volume $Q > Q^*$; outsource if $Q < Q^*$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir parçayı dışarıdan 25 TL'ye satın almak mümkündür ($P_{\\text{Buy}} = 25$). İçeride üretmek için 60.000 TL kalıp yatırımı ($FC = 60.000$) ve birim başı 10 TL değişken maliyet ($VC = 10$) gerekmektedir. Eşik miktar nedir?\n\n**Çözüm:**\n$$Q^* = \\frac{60.000}{25 - 10} = \\frac{60.000}{15} = 4.000 \\text{ adet}$$\nYıllık talep 4.000'den fazlaysa üretmek daha kârlıdır.",
+        "en": "**Worked Example:** $P_{\\text{Buy}} = 25, FC = 60k, VC = 10$. Indifference volume $Q^* = 60,000 / (25 - 10) = 4,000$ units."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Make-or-Buy analysis",
+          "explanation_tr": "Bir girdinin içeride üretilmesi ile dışarıdan satın alınması arasındaki maliyet eşiği kararı.",
+          "explanation_en": "Strategic decision whether to manufacture in-house or outsource from external suppliers.",
+          "exampleSentence_en": "Make-or-buy analysis proved in-house injection molding was cheaper above 4,000 units."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m20-l6-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Satın alma fiyatı $P_{\\text{Buy}} = 50$ TL, şirket içi üretim sabit maliyeti $FC = 120.000$ TL ve değişken maliyeti $VC = 20$ TL ise eşik miktar $Q^*$ kaçtır?",
+            "en": "P_buy = 50, FC = 120,000, VC = 20. What is threshold Q*?"
+          },
+          "correctAnswer": 4000,
+          "explanation": {
+            "tr": "$$Q^* = \\frac{120.000}{50 - 20} = \\frac{120.000}{30} = 4.000 \\text{ adet}$$",
+            "en": "$$Q^* = 120,000 / 30 = 4,000$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=FC_Make / (P_Buy - VC_Make)",
+        "pythonCode": "def make_or_buy_cutoff(fc, p_buy, vc):\n    return fc / (p_buy - vc)",
+        "powerBiNote": {
+          "tr": "Outsourcing vs In-house maliyet kırılımı",
+          "en": "Make vs buy cost threshold chart"
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m20-c1",
+      "moduleId": "module-20",
+      "difficulty": "orta",
+      "title": {
+        "tr": "Vaka Sınavı: Ford Otosan Yeni Batarya Hattı Kapasite & Başa Baş Analizi",
+        "en": "Case Exam: Ford Otosan Battery Line Capacity & Break-Even Evaluation"
+      },
+      "businessQuestion": {
+        "tr": "Ford Otosan Kocaeli fabrikasında yeni elektrikli ticari araçlar için batarya paketi montaj hattı planlanmaktadır. Hattın tasarım kapasitesi saatte 20 batarya paketidir. Haftada 6 gün, günde 2 vardiya (toplam 16 saat/gün) çalışılacaktır. Bakım ve hücre testleri nedeniyle efektif kapasite saatte 16 paket olarak hedeflenmiştir. Ayda (4 hafta = 24 iş günü) fiilen 5.760 adet batarya üretilmiştir. 1) Hattın Kapasite Kullanım Oranını ve Verimliliğini hesaplayınız. 2) Bataryanın birim satış fiyatı 8.000 $, birim değişken maliyeti 5.000 $ ve aylık sabit genel giderler 6.000.000 $ olduğuna göre aylık başa baş noktasını ($Q_{\\text{BEP}}$) bulunuz.",
+        "en": "Ford Otosan plans battery line with design capacity 20 packs/hr and effective capacity 16 packs/hr. Operating 24 days/mo (16 hrs/day = 384 hrs/mo), actual monthly output is 5,760 packs. Calculate Utilization, Efficiency, and monthly Break-Even Point (P=$8k, VC=$5k, FC=$6M)."
+      },
+      "dataset": {
+        "columns": [
+          "Metrik",
+          "Formül",
+          "Hesaplanan_Değer",
+          "Birim"
+        ],
+        "rows": [
+          [
+            "Aylık Tasarım Kapasitesi",
+            "384 saat * 20",
+            7680,
+            "adet/ay"
+          ],
+          [
+            "Aylık Efektif Kapasite",
+            "384 saat * 16",
+            6144,
+            "adet/ay"
+          ],
+          [
+            "Gerçek Çıktı",
+            "Fiili Üretim",
+            5760,
+            "adet/ay"
+          ],
+          [
+            "Kullanım Oranı (Utilization)",
+            "5760 / 7680",
+            0.75,
+            "%75"
+          ],
+          [
+            "Kapasite Verimliliği (Efficiency)",
+            "5760 / 6144",
+            0.9375,
+            "%93.75"
+          ],
+          [
+            "Birim Katkı Payı",
+            "8000 - 5000",
+            3000,
+            "$/adet"
+          ],
+          [
+            "Başa Baş Noktası (BEP)",
+            "6.000.000 / 3000",
+            2000,
+            "adet/ay"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Toplam çalışma saatini bul: $24 \\times 16 = 384$ saat.",
+          "en": "Step 1: Calculate monthly hours: $24 \\times 16 = 384$ hrs."
+        },
+        {
+          "tr": "2. Adım: Tasarım ($384 \\times 20 = 7.680$) ve Efektif ($384 \\times 16 = 6.144$) kapasiteleri hesapla.",
+          "en": "Step 2: Compute Design (7,680) and Effective (6,144) capacities."
+        },
+        {
+          "tr": "3. Adım: Kullanım oranı = $5.760 / 7.680 = %75$.",
+          "en": "Step 3: Utilization = 5,760 / 7,680 = 75%."
+        },
+        {
+          "tr": "4. Adım: Başa baş noktası = $\\frac{6.000.000}{8.000 - 5.000} = 2.000$ adet.",
+          "en": "Step 4: Break-even Q = $6M / $3,000 = 2,000 units."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Kapasite metriklerini zaman bazında hesaplayıp başa baş formülüyle üretim kârlılık eşiğini belirleme.",
+        "en": "Evaluating operational capacity ratios and break-even profitability thresholds."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m20-c1-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Ford Otosan batarya hattının aylık başa baş üretim miktarı ($Q_{\\text{BEP}}$) kaç adettir?",
+            "en": "What is the monthly break-even battery pack quantity (Q_BEP)?"
+          },
+          "correctAnswer": 2000,
+          "explanation": {
+            "tr": "$$Q_{\\text{BEP}} = \\frac{6.000.000}{8.000 - 5.000} = \\frac{6.000.000}{3.000} = 2.000 \\text{ adet}$$",
+            "en": "$$Q_{\\text{BEP}} = 6,000,000 / 3,000 = 2,000$$"
+          }
+        }
+      ]
+    }
+  ]
+}

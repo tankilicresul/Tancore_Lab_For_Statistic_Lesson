@@ -1,0 +1,210 @@
+const fs = require('fs');
+const path = require('path');
+const dataDir = path.join(__dirname, '../src/data');
+
+function saveModule(modData) {
+  const file = path.join(dataDir, `${modData.id.replace('-', '')}.json`);
+  fs.writeFileSync(file, JSON.stringify(modData, null, 2), 'utf8');
+  console.log(`✓ Saved ${modData.id} (${modData.title.tr}) with ${modData.lessons.length} lessons & ${modData.caseExams.length} cases.`);
+}
+
+// =========================================================================
+// MODULE 17: Endüstri Mühendisliğine Giriş & Sistem Kavramı
+// =========================================================================
+const module17 = {
+  id: "module-17",
+  order: 17,
+  title: {
+    tr: "Modül 17: Endüstri Mühendisliğine Giriş & Sistem Kavramı",
+    en: "Module 17: Introduction to Industrial Engineering & Systems Concept"
+  },
+  description: {
+    tr: "Endüstri mühendisliğinin tanımı, tarihsel gelişimi, sistem düşüncesi, girdi-dönüşüm-çıktı modelleri ve mühendislik etiği.",
+    en: "Definition of IE, historical evolution, systems thinking, input-transformation-output models, and engineering ethics."
+  },
+  iconName: "GraduationCap",
+  lessons: [
+    {
+      id: "m17-l1", moduleId: "module-17", order: 1, difficulty: "basit",
+      title: { tr: "Endüstri Mühendisliğinin Tanımı ve Amacı", en: "Definition and Scope of Industrial Engineering" },
+      conceptCard: {
+        tr: "**Endüstri Mühendisliği (IIE Tanımı):** İnsan, malzeme, bilgi, ekipman ve enerjiden oluşan entegre sistemlerin tasarımı, iyileştirilmesi ve kurulumu ile ilgilenen mühendislik disiplinidir.\n\n**Temel Amaç:**\n1. İsrafı (muda) en aza indirmek\n2. Verimliliği ve üretkenliği maksimize etmek\n3. Maliyetleri düşürürken kalite ve güvenliği artırmak\n4. Sistem bileşenlerini matematiksel ve istatistiksel modellerle optimize etmek",
+        en: "Industrial Engineering is concerned with the design, improvement, and installation of integrated systems of people, materials, information, equipment, and energy. It draws upon specialized mathematical and physical science knowledge to specify, predict, and evaluate system results."
+      },
+      companyExample: {
+        tr: "**Örnek Soru:** Bir e-ticaret lojistik deposunda sipariş toplama süresi ortalama 18 dakikadır. Bir Endüstri Mühendisi rota optimizasyonu ve raf düzenlemesi ile bu süreyi 12 dakikaya indirmiştir. Süreçteki zaman iyileşme yüzdesi nedir?\n\n**Çözüm:**\n$$\\text{İyileşme Oranı} = \\frac{18 - 12}{18} \\times 100 = \\frac{6}{18} \\times 100 \\approx 33.33\\%$$",
+        en: "**Worked Example:** An industrial engineer reduces order picking time from 18 min to 12 min via route optimization. Improvement percentage: $(18-12)/18 \\times 100 = 33.33\\%$."
+      },
+      vocabTerms: [
+        { term_en: "Industrial Engineering (IE)", explanation_tr: "İnsan, makine, malzeme ve bilgiden oluşan entegre sistemleri optimize eden mühendislik dalı.", explanation_en: "Engineering branch focused on optimizing complex processes, systems, or organizations.", exampleSentence_en: "Industrial engineering tools eliminated operational bottlenecks." },
+        { term_en: "optimization", explanation_tr: "Belirli kısıtlar altında en iyi veya en verimli sonucu elde etme süreci.", explanation_en: "Finding the best possible solution among all feasible alternatives.", exampleSentence_en: "Mathematical optimization minimized warehouse operational costs." }
+      ],
+      questions: [{
+        id: "m17-l1-q1", type: "multiple-choice",
+        prompt: { tr: "Aşağıdakilerden hangisi Endüstri Mühendisliğinin temel odak noktalarından biri DEĞİLDİR?", en: "Which of the following is NOT a core focus of Industrial Engineering?" },
+        options: [
+          { tr: "Entegre sistemlerdeki israfı yok edip verimliliği artırmak", en: "Eliminating waste and maximizing efficiency in integrated systems" },
+          { tr: "Üretim ve hizmet süreçlerini matematiksel modellerle optimize etmek", en: "Optimizing production and service systems with mathematical models" },
+          { tr: "Yalnızca tek bir makinenin iç dişli mekaniğini tasarlamak", en: "Solely designing the internal gear mechanics of a single machine" },
+          { tr: "İnsan, makine ve malzeme akışını ergonomik ve verimli şekilde tasarlamak", en: "Ergonomically designing flow of people, machines, and materials" }
+        ],
+        correctAnswer: 2,
+        explanation: { tr: "Endüstri mühendisliği tekil mekanik parçalardan ziyade insan, makine, bilgi ve malzeme içeren entegre sistemlerin optimizasyonuna odaklanır.", en: "IE focuses on integrated socio-technical systems rather than isolated mechanical components." }
+      }],
+      realWorldBox: { excelFormula: "=(Önceki_Süre - Sonraki_Süre)/Önceki_Süre", pythonCode: "def calc_improvement(old_val, new_val):\n    return ((old_val - new_val) / old_val) * 100", powerBiNote: { tr: "Süreç iyileştirme KPI göstergeleri", en: "Process cycle time improvement KPI" } }
+    },
+    {
+      id: "m17-l2", moduleId: "module-17", order: 2, difficulty: "basit",
+      title: { tr: "Endüstri Mühendisliğinin Tarihçesi ve Öncüleri", en: "History & Pioneers of Industrial Engineering" },
+      conceptCard: {
+        tr: "**Tarihsel Dönüm Noktaları ve Öncüler:**\n\n1. **Frederick Winslow Taylor (Bilimsel Yönetim):** Zaman etüdü (Time Study), standart çalışma yöntemleri ve iş analizi.\n2. **Frank & Lillian Gilbreth (Hareket Etüdü):** Mikro hareket analizi (Therblig), ergonomi ve insan faktörleri.\n3. **Henry Ford (Hareketli Montaj Hattı):** Seri üretim, standart parça değişimi ve akan hat yerleşimi.\n4. **W. Edwards Deming & Taiichi Ohno:** Toplam Kalite Yönetimi (TQM) ve Toyota Üretim Sistemi (Yalın Üretim / Lean).",
+        en: "Key pioneers: F.W. Taylor (Scientific Management & Time Study), Frank & Lillian Gilbreth (Motion Study & Ergonomics), Henry Ford (Moving Assembly Line & Mass Production), Taiichi Ohno (Toyota Production System / Lean)."
+      },
+      companyExample: {
+        tr: "**Örnek Soru:** Henry Ford, 1913 yılında T-Model otomobil üretiminde hareketli montaj hattını devreye alarak şasi montaj süresini 12 saatten 1.5 saate (90 dakika) indirmiştir. Üretim hızlanma katsayısı kaçtır?\n\n**Çözüm:**\n$$\\text{Hızlanma Katsayısı} = \\frac{12 \\text{ saat}}{1.5 \\text{ saat}} = 8$$\nÜretim tam 8 kat hızlanmıştır.",
+        en: "**Worked Example:** Assembly time dropped from 12 hrs to 1.5 hrs. Speed multiplier: $12 / 1.5 = 8\\times$."
+      },
+      vocabTerms: [
+        { term_en: "scientific management", explanation_tr: "İş süreçlerini bilimsel yöntemler ve ölçümlerle analiz eden Taylor yaklaşımı.", explanation_en: "Management theory analyzing workflows to improve economic efficiency.", exampleSentence_en: "Scientific management laid the foundation for modern work measurement." },
+        { term_en: "motion study", explanation_tr: "Gereksiz hareketleri eleyerek işi en ergonomik ve hızlı yapma analizi.", explanation_en: "Analysis of bodily motions in performing an operation to improve efficiency.", exampleSentence_en: "Gilbreth used motion study to reduce bricklaying movements by 60%." }
+      ],
+      questions: [{
+        id: "m17-l2-q1", type: "multiple-choice",
+        prompt: { tr: "Kronometreli zaman etüdü ve 'Bilimsel Yönetim' kavramının öncüsü kimdir?", en: "Who is recognized as the father of Scientific Management and time study?" },
+        options: [
+          { tr: "Frederick Winslow Taylor", en: "Frederick Winslow Taylor" },
+          { tr: "Henry Ford", en: "Henry Ford" },
+          { tr: "Frank Gilbreth", en: "Frank Gilbreth" },
+          { tr: "Taiichi Ohno", en: "Taiichi Ohno" }
+        ],
+        correctAnswer: 0,
+        explanation: { tr: "Frederick W. Taylor, zaman etüdünün ve Bilimsel Yönetim İlkeleri'nin (1911) kurucusudur.", en: "F.W. Taylor pioneered scientific management and systematic time studies." }
+      }],
+      realWorldBox: { excelFormula: "=Önceki_Zaman / Yeni_Zaman", pythonCode: "speedup = 12.0 / 1.5 # 8x speedup", powerBiNote: { tr: "Tarihsel verimlilik çarpanı analitiği", en: "Productivity multiplier calculation" } }
+    },
+    {
+      id: "m17-l3", moduleId: "module-17", order: 3, difficulty: "basit",
+      title: { tr: "Sistem Yaklaşımı ve 5M Bileşenleri", en: "Systems Concept & 5M Inputs" },
+      conceptCard: {
+        tr: "**Sistem Modeli:** Bir amacı gerçekleştirmek için birlikte çalışan etkileşimli parçalar bütünüdür.\n\n$$\\text{Girdiler (Inputs)} \\longrightarrow \\text{Dönüşüm Süreci (Transformation)} \\longrightarrow \\text{Çıktılar (Outputs)}$$\n\n**Temel Girdiler (5M):**\n1. **Men (İnsan Gücü):** Operatörler, mühendisler, yöneticiler\n2. **Material (Malzeme):** Hammadde, yarı mamul, ambalaj\n3. **Machine (Makine & Ekipman):** Takım tezgahları, robotlar, yazılımlar\n4. **Money (Sermaye):** Finansal kaynaklar, bütçe\n5. **Method (Yöntem & Bilgi):** İş talimatları, algoritmalar, know-how",
+        en: "A system transforms inputs into outputs. The 5M inputs are: Men (labor), Material (raw materials), Machine (equipment), Money (capital), and Method (processes & algorithms)."
+      },
+      companyExample: {
+        tr: "**Örnek Soru:** Bir içecek fabrikasında 1 ton hammadde ($5.000$ TL), $2.000$ TL enerji ve $3.000$ TL işçilik kullanılarak $15.000$ TL değerinde şişelenmiş içecek üretilmiştir. Eklenen net ekonomik değer (Value Added) nedir?\n\n**Çözüm:**\n$$\\text{Toplam Girdi} = 5000 + 2000 + 3000 = 10.000 \\text{ TL}$$\n$$\\text{Katma Değer} = \\text{Çıktı} - \\text{Girdi} = 15.000 - 10.000 = 5.000 \\text{ TL}$$",
+        en: "**Worked Example:** Value added = Output ($15k) - Total Inputs ($10k) = $5k."
+      },
+      vocabTerms: [
+        { term_en: "systems thinking", explanation_tr: "Olayları tekil değil, parçaların birbirleriyle olan etkileşimleri bütünü olarak ele alma yaklaşımı.", explanation_en: "Holistic approach viewing component parts in the context of relationships with each other.", exampleSentence_en: "Systems thinking prevented sub-optimization in the supply chain." }
+      ],
+      questions: [{
+        id: "m17-l3-q1", type: "multiple-choice",
+        prompt: { tr: "Aşağıdakilerden hangisi üretim sistemlerinin temel '5M' girdi kaynaklarından biri DEĞİLDİR?", en: "Which of the following is NOT one of the classic 5M inputs?" },
+        options: [
+          { tr: "Men (İşgücü)", en: "Men (Labor)" },
+          { tr: "Material (Malzeme)", en: "Material" },
+          { tr: "Machine (Makine)", en: "Machine" },
+          { tr: "Meteorology (Meteoroloji)", en: "Meteorology" }
+        ],
+        correctAnswer: 3,
+        explanation: { tr: "5M girdileri: Men (İşgücü), Material (Malzeme), Machine (Makine), Money (Sermaye), Method (Yöntem)'dir.", en: "The 5Ms stand for Men, Material, Machine, Money, and Method." }
+      }],
+      realWorldBox: { excelFormula: "=Çıktı_Değeri - TOPLA(Girdiler)", pythonCode: "value_added = output_val - sum(inputs)", powerBiNote: { tr: "Ekonomik katma değer (EVA) dashboardu", en: "Economic value added tracking" } }
+    },
+    {
+      id: "m17-l4", moduleId: "module-17", order: 4, difficulty: "orta",
+      title: { tr: "Açık ve Kapalı Sistemler, Geri Bildirim", en: "Open vs Closed Systems & Feedback Loops" },
+      conceptCard: {
+        tr: "**1. Açık Sistemler (Open Systems):** Çevresiyle sürekli madde, enerji ve bilgi alışverişinde bulunan sistemlerdir (Örn: Şirketler, tedarik zincirleri, hastaneler).\n**2. Kapalı Sistemler (Closed Systems):** Çevresinden tamamen yalıtılmış kuramsal sistemlerdir.\n\n**Geri Bildirim Döngüsü (Feedback Loop):** Çıktıların ölçülüp hedeflerle karşılaştırılarak girdilere ve dönüşüm sürecine düzeltici eylem olarak geri iletilmesidir:\n- **Negatif Geri Bildirim (Dengeleyici):** Sapmaları azaltır (Örn: Kalite kontrol tolerans düzeltmesi).\n- **Pozitif Geri Bildirim (Pekiştirici):** Değişimi hızlandırır (Örn: Viral büyüme döngüsü).",
+        en: "Open systems interact dynamically with their environment. Feedback loops compare actual output with desired standards to apply corrective adjustments."
+      },
+      companyExample: {
+        tr: "**Örnek Soru:** Bir boya robotunda hedef kaplama kalınlığı $100\\,\\mu\\text{m}$'dir. Sensörler ortalama kalınlığın $108\\,\\mu\\text{m}$ olduğunu tespit etmiştir. Negatif geri bildirim mekanizması püskürtme vanasını yüzde kaç kısmalıdır?\n\n**Çözüm:**\n$$\\text{Sapma} = \\frac{108 - 100}{108} \\times 100 \\approx 7.41\\%$$\nVana akışı $\\%7.41$ oranında kısılarak hedef $100\\,\\mu\\text{m}$ değerine geri çekilir.",
+        en: "**Worked Example:** Thickness is 108 um vs 100 um target. Feedback reduces valve flow by $(108-100)/108 = 7.41\\%$."
+      },
+      vocabTerms: [
+        { term_en: "feedback loop", explanation_tr: "Sistem çıktısının ölçülüp süreci denetlemek üzere geriye aktarıldığı kontrol kanalı.", explanation_en: "System structure where output influences future system behavior.", exampleSentence_en: "The closed-loop feedback maintains quality control in real time." }
+      ],
+      questions: [{
+        id: "m17-l4-q1", type: "multiple-choice",
+        prompt: { tr: "Dış pazar talepleri, hammadde tedarikçileri ve regülasyonlarla sürekli etkileşim halinde olan bir fabrika ne tür bir sistemdir?", en: "A factory interacting with suppliers, customer demand, and regulations is what type of system?" },
+        options: [
+          { tr: "Açık Sistem (Open System)", en: "Open System" },
+          { tr: "Kapalı Sistem (Closed System)", en: "Closed System" },
+          { tr: "İzole Termodinamik Sistem", en: "Isolated Thermodynamic System" },
+          { tr: "Statik Sistem", en: "Static System" }
+        ],
+        correctAnswer: 0,
+        explanation: { tr: "Çevresiyle bilgi, malzeme ve para alışverişi yapan tüm işletmeler açık sistemdir.", en: "All business enterprises interacting with dynamic markets are open systems." }
+      }],
+      realWorldBox: { excelFormula: "=(Ölçülen - Hedef)/Ölçülen", pythonCode: "deviation = (actual - target) / actual", powerBiNote: { tr: "Otomatik süreç kontrol (SPC) paneli", en: "Closed-loop SPC deviation tracking" } }
+    },
+    {
+      id: "m17-l5", moduleId: "module-17", order: 5, difficulty: "orta",
+      title: { tr: "Mühendislik Etiği ve Mesleki Standartlar", en: "Engineering Ethics & Professional Standards" },
+      conceptCard: {
+        tr: "**Mühendislik Etiği Temel İlkeleri (IIE / NSPE):**\n\n1. **Kamu Güvenliği ve Sağlığı:** Mühendislerin en öncelikli görevi toplumun güvenliğini, sağlığını ve refahını korumaktır.\n2. **Yetkinlik Sınırları:** Yalnızca kendi uzmanlık ve ehliyet alanlarında hizmet sunmak.\n3. **Objektiflik ve Dürüstlük:** Rapor ve analizlerde tarafsız, şeffaf ve manipülasyondan uzak olmak.\n4. **Çıkar Çatışmalarından Kaçınma:** Tarafsızlığı zedeleyecek ilişkileri ve hediyeleri reddetmek.\n5. **Sürdürülebilirlik:** Çevresel etkileri ve gelecek nesillerin kaynaklarını gözetmek.",
+        en: "Engineering Ethics fundamental canons: Hold paramount the safety, health, and welfare of the public; perform services only in areas of competence; issue public statements only in an objective and truthful manner; avoid conflicts of interest."
+      },
+      companyExample: {
+        tr: "**Örnek Soru:** Bir fabrikanın güvenlik sisteminde yapılan risk analizinde kritik bir arıza olasılığı $P(\\text{Hata}) = 0.05$ olarak bulunmuştur. Yönetim maliyeti kısmak için rapordan bu bilginin çıkarılmasını talep etmiştir. Mühendisin etik sorumluluğu nedir?\n\n**Çözüm:** Kamu güvenliğini ve çalışan sağlığını önceleme ilkesi gereği, risk analizi gizlenemez; şeffaf şekilde raporlanmalı ve gerekli güvenlik önlemleri uygulanmalıdır.",
+        en: "**Worked Example:** Concealing safety hazard risks violates the paramount canon of protecting human life and welfare."
+      },
+      vocabTerms: [
+        { term_en: "engineering ethics", explanation_tr: "Mühendislik mesleğinin icrasında uyulması gereken ahlaki kurallar ve sorumluluklar bütünü.", explanation_en: "The rules and standards governing the conduct of engineers in their professional practice.", exampleSentence_en: "Engineering ethics mandates transparent risk assessment." }
+      ],
+      questions: [{
+        id: "m17-l5-q1", type: "multiple-choice",
+        prompt: { tr: "Mühendislik etik kodlarına göre bir mühendisin EN BİRİNCİL ve en üstün görevi nedir?", en: "According to engineering codes of ethics, what is the engineer's primary duty?" },
+        options: [
+          { tr: "Toplumun can güvenliğini, sağlığını ve refahını korumak", en: "Hold paramount public safety, health, and welfare" },
+          { tr: "Şirketin kârını her koşulda maksimize etmek", en: "Maximize company profit at all costs" },
+          { tr: "Üretim hattını güvenlik kontrolleri olmadan hızlandırmak", en: "Speed up line without safety checks" },
+          { tr: "Yöneticinin her talimatını sorgusuz uygulamak", en: "Follow manager directives without questioning" }
+        ],
+        correctAnswer: 0,
+        explanation: { tr: "Tüm mühendislik etiği kurallarında en üstün ve tartışılamaz ilke kamu güvenliği ve insan sağlığıdır.", en: "Protecting public safety, health, and welfare is the foundational paramount canon." }
+      }],
+      realWorldBox: { excelFormula: "=\"Etik Uyum: \" & EĞER(Risk<0.01; \"Geçti\"; \"Risk Düzeltmesi Gerekli\")", pythonCode: "is_ethical_pass = safety_score >= 0.99", powerBiNote: { tr: "İş sağlığı ve güvenliği (İSG) uyum takip kartı", en: "EHS compliance metrics" } }
+    }
+  ],
+  caseExams: [
+    {
+      id: "m17-c1",
+      moduleId: "module-17",
+      difficulty: "orta",
+      title: { tr: "Vaka Sınavı: Borusan Lojistik Sistem Dönüşüm Analizi", en: "Case Exam: Borusan Logistics Systems Transformation Analysis" },
+      businessQuestion: {
+        tr: "Borusan Lojistik deposunda aylık 50.000 koli elleçlenmektedir. Mevcut 5M girdi maliyetleri: İşgücü (Men): 150.000 TL, Ekipman/Forklift (Machine): 80.000 TL, Malzeme/Palet (Material): 30.000 TL, Enerji/Bina: 40.000 TL'dir. Toplam faturalanan hizmet geliri (Output): 450.000 TL'dir. Yeni bir rota ve barkodlama yöntemi (Method) ile işgücü süresi %20 kısalacak, enerji tüketimi %10 azalacaktır. Yeni ekonomik katma değer ve verimlilik artışı ne olur?",
+        en: "Borusan Logistics processes 50,000 packages/mo. Current costs: Labor $150k, Equipment $80k, Material $30k, Overhead $40k. Total revenue $450k. Method improvement reduces labor by 20% and energy by 10%. Calculate the new value added and cost savings."
+      },
+      dataset: {
+        columns: ["Girdi_Kalemi", "Eski_Maliyet_TL", "Tasarruf_Oranı", "Yeni_Maliyet_TL"],
+        rows: [
+          ["İşgücü (Men)", 150000, 0.20, 120000],
+          ["Ekipman (Machine)", 80000, 0.00, 80000],
+          ["Malzeme (Material)", 30000, 0.00, 30000],
+          ["Enerji/Genel Gider", 40000, 0.10, 36000],
+          ["TOPLAM GİRDİ", 300000, 0.1133, 266000]
+        ]
+      },
+      guidedSteps: [
+        { tr: "1. Adım: Eski toplam girdi maliyetini topla ($150k + 80k + 30k + 40k = 300.000$ TL).", en: "Step 1: Sum baseline total inputs ($300k)." },
+        { tr: "2. Adım: Yöntem iyileştirmesi sonrası yeni girdi maliyetini hesapla ($120k + 80k + 30k + 36k = 266.000$ TL).", en: "Step 2: Calculate new total inputs ($266k)." },
+        { tr: "3. Adım: Net aylık kâr/katma değer artışını ($34.000$ TL) bul.", en: "Step 3: Calculate the net monthly profit increase ($34,000 TL)." }
+      ],
+      expectedApproach: {
+        tr: "Sistem yaklaşımı ile girdilerdeki tasarrufun toplam sistem çıktısına ve kârlılığına olan kaldıraç etkisini analiz etme.",
+        en: "Applying systems thinking to quantify cost reduction leverage on net economic value added."
+      },
+      solutionQuestions: [{
+        id: "m17-c1-q1", type: "numeric",
+        prompt: { tr: "İyileştirme sonrası şirketin aylık toplam girdi maliyetindeki tasarruf miktarı kaç TL'dir?", en: "What is the monthly total input cost savings in TL?" },
+        correctAnswer: 34000,
+        explanation: { tr: "$$\\text{Eski Girdi} = 300.000 \\text{ TL}$$\n$$\\text{Yeni Girdi} = 266.000 \\text{ TL}$$\n$$\\text{Tasarruf} = 300.000 - 266.000 = 34.000 \\text{ TL}$$", en: "Savings = $300,000 - $266,000 = 34,000 TL." }
+      }]
+    }
+  ]
+};
+
+saveModule(module17);
+console.log('Indr100 module 17 created.');

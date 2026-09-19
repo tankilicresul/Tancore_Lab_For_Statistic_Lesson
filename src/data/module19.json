@@ -1,0 +1,499 @@
+{
+  "id": "module-19",
+  "order": 19,
+  "title": {
+    "tr": "Modül 19: Üretim Sistemleri & Süreç Seçimi",
+    "en": "Module 19: Production Systems & Process Selection"
+  },
+  "description": {
+    "tr": "Job Shop, Batch, Repetitive ve Continuous süreç yapıları, Hayes-Wheelwright ürün-süreç matrisi ve süreç teknolojileri.",
+    "en": "Job shop, batch, repetitive, and continuous process types, Hayes-Wheelwright product-process matrix, and advanced process technologies."
+  },
+  "iconName": "Boxes",
+  "lessons": [
+    {
+      "id": "m19-l1",
+      "moduleId": "module-19",
+      "order": 1,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Üretim Sistemleri: MTO, MTS ve ATO Stratejileri",
+        "en": "Production Strategies: MTO, MTS & ATO"
+      },
+      "conceptCard": {
+        "tr": "Müşteri siparişinin üretim akışına dahil olduğu noktaya göre 3 ana strateji:\n\n1. **Make-to-Order (MTO - Siparişe Göre Üretim):** Üretim yalnızca kesin müşteri siparişi gelince başlar (Özel yat, özel makine tasarımı). Sıfır bitmiş ürün stoku, uzun teslim süresi.\n2. **Make-to-Stock (MTS - Stoğa Göre Üretim):** Talep tahminlerine göre önceden üretilip depolanır (Diş macunu, standart konserve). Anında teslim, envanter riski.\n3. **Assemble-to-Order (ATO - Siparişe Göre Montaj):** Standart modüller önceden üretilir, sipariş gelince kişiselleştirilerek birleştirilir (Dell bilgisayarlar).",
+        "en": "MTO (Make-to-Order) produces after customer order. MTS (Make-to-Stock) produces to forecast. ATO (Assemble-to-Order) holds subassemblies and customizes upon order."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Dell, temel bilgisayar parçalarını (RAM, işlemci, kasa) standart modüller halinde stokta tutup, web sitesinden gelen müşteri konfigürasyonuna göre 2 saatte birleştirmektedir. Bu hangi stratejidir?\n\n**Çözüm:** Standart bileşenler hazır tutulup son montaj siparişle yapıldığı için bu tipik bir **ATO (Assemble-to-Order)** stratejisidir.",
+        "en": "**Worked Example:** Dell configuring PCs from pre-stocked modules upon customer web orders exemplifies Assemble-to-Order (ATO)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Make-to-Order (MTO)",
+          "explanation_tr": "Müşteri siparişi gelmeden üretime başlanmayan, tamamen siparişe özel üretim.",
+          "explanation_en": "Manufacturing process where production starts only after customer order is confirmed.",
+          "exampleSentence_en": "Custom yacht manufacturing relies strictly on Make-to-Order operations."
+        },
+        {
+          "term_en": "Make-to-Stock (MTS)",
+          "explanation_tr": "Gelecek talep tahminlerine göre standart ürünlerin üretilip depoda tutulması.",
+          "explanation_en": "Strategy where goods are produced based on sales forecasts before demand occurs.",
+          "exampleSentence_en": "FMCG consumer goods companies use Make-to-Stock replenishment."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m19-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Sıfır bitmiş ürün stoku tutan ve üretim sürecini yalnızca kesinleşmiş müşteri siparişiyle başlatan strateji hangisidir?",
+            "en": "Which production strategy holds zero finished goods inventory and begins only upon customer order?"
+          },
+          "options": [
+            {
+              "tr": "Make-to-Order (MTO)",
+              "en": "Make-to-Order (MTO)"
+            },
+            {
+              "tr": "Make-to-Stock (MTS)",
+              "en": "Make-to-Stock (MTS)"
+            },
+            {
+              "tr": "Continuous Flow",
+              "en": "Continuous Flow"
+            },
+            {
+              "tr": "Mass Production",
+              "en": "Mass Production"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "MTO (Siparişe Göre Üretim) stratejisinde üretim tetikleyicisi müşteri siparişidir.",
+            "en": "MTO initiates production exclusively in response to confirmed customer orders."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=EĞER(Stok_Var; \"MTS\"; \"MTO/ATO\")",
+        "pythonCode": "order_strategy = 'ATO' if modular_stock else 'MTO'",
+        "powerBiNote": {
+          "tr": "Sipariş karşılama ve teslim süresi (Lead Time) KPI",
+          "en": "Order fulfillment lead-time metrics"
+        }
+      }
+    },
+    {
+      "id": "m19-l2",
+      "moduleId": "module-19",
+      "order": 2,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Atölye Tipi Üretim (Job Shop)",
+        "en": "Job Shop Production Systems"
+      },
+      "conceptCard": {
+        "tr": "**Atölye Tipi (Job Shop) Özellikleri:**\n- **Ürün Çeşitliliği:** Çok yüksek (Her sipariş farklı spesifikasyona sahip olabilir).\n- **Üretim Hacmi:** Çok düşük (Genellikle 1 veya birkaç adet).\n- **Ekipman:** Genel amaçlı makineler (Torna, freze, kaynak).\n- **İşgücü:** Yüksek kalifiyeli, çok yönlü ustalar ve teknisyenler.\n- **Avantajı:** Yüksek esneklik ve müşteri isteğine tam uyum.\n- **Dezavantajı:** Yüksek birim maliyet, uzun hazırlık (setup) süreleri, karmaşık çizelgeleme.",
+        "en": "Job shop produces high-variety, low-volume customized goods using general-purpose equipment and highly skilled labor."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Özel prototip kalıp üreten bir makine atölyesi ayda 5 farklı müşteriye özel kalıp tasarlayıp üretmektedir. Bu sistem hangi süreç tipine girer?\n\n**Çözüm:** Yüksek çeşitlilik, düşük hacim ve genel amaçlı takım tezgahları kullanıldığı için **Job Shop (Atölye Tipi)** süreçtir.",
+        "en": "**Worked Example:** A custom mold manufacturing workshop with highly varied, low-volume batches is a classic Job Shop."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Job Shop",
+          "explanation_tr": "Düşük hacimli, yüksek çeşitlilikli, siparişe özel parçaların üretildiği atölye süreci.",
+          "explanation_en": "Manufacturing unit handling low-volume, high-variety custom jobs.",
+          "exampleSentence_en": "Job shop routing varies greatly from one customized part to another."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m19-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Aşağıdakilerden hangisi Atölye Tipi (Job Shop) üretimin temel özelliğidir?",
+            "en": "Which of the following is a core characteristic of Job Shop production?"
+          },
+          "options": [
+            {
+              "tr": "Çok yüksek ürün çeşitliliği ve düşük üretim hacmi",
+              "en": "Very high product variety and low production volume"
+            },
+            {
+              "tr": "Tamamen standart tek tip ürün ve milyonlarca adet çıktı",
+              "en": "Single standardized product and millions of units"
+            },
+            {
+              "tr": "Özel amaçlı pahalı transfer hatları",
+              "en": "Special-purpose expensive transfer lines"
+            },
+            {
+              "tr": "Sıfır esneklik",
+              "en": "Zero flexibility"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Job Shop sistemleri yüksek çeşitlilik ve düşük hacimli özel siparişler için tasarlanmıştır.",
+            "en": "Job shops excel at handling high variety with low volumes."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=EĞER(VE(Çeşitlilik=\"Yüksek\"; Hacim=\"Düşük\"); \"Job Shop\"; \"Diğer\")",
+        "pythonCode": "process_type = 'Job Shop' if variety > 0.8 and volume < 0.2 else 'Other'",
+        "powerBiNote": {
+          "tr": "Ürün çeşitlilik-hacim sınıflandırması",
+          "en": "Product variety vs volume categorization"
+        }
+      }
+    },
+    {
+      "id": "m19-l3",
+      "moduleId": "module-19",
+      "order": 3,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Parti Tipi Üretim (Batch Production)",
+        "en": "Batch Production Systems"
+      },
+      "conceptCard": {
+        "tr": "**Parti Tipi (Batch) Özellikleri:**\n- **Ürün Çeşitliliği:** Orta (Belirli bir ürün gamı içinden standart modeller).\n- **Üretim Hacmi:** Orta (Belirli partiler / lotlar halinde üretilir).\n- **Süreç:** Bir parti ürün (örn: 500 adet antibiyotik şurubu veya 200 adet fırın) üretildikten sonra makineler ayarlanarak (setup) bir sonraki partiye geçilir.\n- **Örnekler:** İlaç sanayi, fırıncılık, mobilya imalatı, konfeksiyon.",
+        "en": "Batch production manufactures moderate variety in repeating lot sizes with periodic changeovers (setups)."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir unlu mamuller fabrikası sabahları 1.000 adet kruvasan, ardından fırınları temizleyip ayar yaparak 2.000 adet simit üretmektedir. Bu üretim tipi nedir?\n\n**Çözüm:** Belirli partiler halinde partiler arası hazırlık (setup) yapılarak çalışıldığı için **Parti Tipi (Batch)** üretimdir.",
+        "en": "**Worked Example:** Producing 1,000 croissants followed by changeover to bake 2,000 bagels is Batch production."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "batch production",
+          "explanation_tr": "Benzer ürünlerin gruplar (partiler/lotlar) halinde sıralı olarak üretilmesi.",
+          "explanation_en": "Method where identical items are manufactured in discrete groups.",
+          "exampleSentence_en": "Pharmaceutical tablets are produced in strictly tracked batch lots."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m19-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "İlaç ve hazır giyim gibi sektörlerde benzer ürünlerin belirli partiler (lotlar) halinde parti geçişlerinde setup yapılarak üretilmesi hangi süreç tipidir?",
+            "en": "Which process type produces goods in discrete lot sizes with setup changeovers between batches?"
+          },
+          "options": [
+            {
+              "tr": "Parti Tipi Üretim (Batch)",
+              "en": "Batch Production"
+            },
+            {
+              "tr": "Sürekli Akış (Continuous)",
+              "en": "Continuous Flow"
+            },
+            {
+              "tr": "Proje Tipi (Project)",
+              "en": "Project"
+            },
+            {
+              "tr": "Sabit Konum (Fixed-Position)",
+              "en": "Fixed Position"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Parti tipi (Batch) üretim, orta hacimli partilerin setup geçişleriyle üretildiği yapıdır.",
+            "en": "Batch manufacturing operates in repeated lots with setup changeovers."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=Parti_Büyüklüğü * Birim_Süre + Setup_Süresi",
+        "pythonCode": "batch_cycle_time = (batch_size * unit_time) + setup_time",
+        "powerBiNote": {
+          "tr": "Parti büyüklüğü ve setup optimizasyonu",
+          "en": "Batch size and setup time analysis"
+        }
+      }
+    },
+    {
+      "id": "m19-l4",
+      "moduleId": "module-19",
+      "order": 4,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Seri Üretim ve Sürekli Akış (Repetitive vs Continuous)",
+        "en": "Repetitive (Assembly Line) vs Continuous Flow"
+      },
+      "conceptCard": {
+        "tr": "**1. Seri / Tekrarlı Üretim (Repetitive / Line Flow):**\n- Yüksek hacim, standart ürünler.\n- Parçalı çıktılar (Ayrık birimler: Otomobil, buzdolabı, televizyon).\n- Sabit hat yerleşimi, konveyör hatları ve özel amaçlı makineler.\n\n**2. Sürekli Akış Tipi Üretim (Continuous Flow):**\n- Çok yüksek hacim, son derece standart tek tip çıktı.\n- Sürekli/kesintisiz sıvı, gaz veya kimyasal akış (Petrol rafinerisi, şeker, çimento, elektrik üretimi).\n- 7/24 kesintisiz operasyon, durdurma maliyeti son derece yüksek, tam otomasyon.",
+        "en": "Repetitive lines produce high volumes of discrete standardized units (cars, electronics). Continuous flow processes non-discrete commodities (refineries, chemicals) in uninterrupted 24/7 streams."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Tüpraş petrol rafinerisinde ham petrolün damıtılarak 7/24 kesintisiz benzin ve dizele dönüştürülmesi hangi üretim tipine örnektir?\n\n**Çözüm:** Kesintisiz, bölünemeyen sıvı akışı ve 7/24 tam otomasyon olduğu için **Sürekli Akış (Continuous Flow)** sürecidir.",
+        "en": "**Worked Example:** 24/7 crude oil refining into gasoline represents a Continuous Flow process."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "continuous flow",
+          "explanation_tr": "Kesintisiz 7/24 devam eden, ayrık olmayan ürünlerin üretildiği yüksek otomasyonlu süreç.",
+          "explanation_en": "Highly automated production of non-discrete materials in uninterrupted flow.",
+          "exampleSentence_en": "Petrochemical plants operate on a continuous flow basis."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m19-l4-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Aşağıdakilerden hangisi Sürekli Akış (Continuous Flow) üretimine örnektir?",
+            "en": "Which of the following is an example of Continuous Flow production?"
+          },
+          "options": [
+            {
+              "tr": "Petrol rafinerisi ve çimento üretimi",
+              "en": "Oil refinery and cement production"
+            },
+            {
+              "tr": "Müşteriye özel yat inşası",
+              "en": "Custom luxury yacht building"
+            },
+            {
+              "tr": "Butik terzi atölyesi",
+              "en": "Boutique tailor shop"
+            },
+            {
+              "tr": "Özel prototip kalıp imalatı",
+              "en": "Custom prototype molding"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Petrol rafinerileri, kâğıt, cam ve çimento fabrikaları tipik sürekli akış süreçleridir.",
+            "en": "Oil refineries and cement plants are classic continuous flow operations."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=EĞER(Akış=\"7/24 Kesintisiz\"; \"Continuous\"; \"Discrete Line\")",
+        "pythonCode": "process = 'Continuous' if is_24_7_fluid else 'Repetitive'",
+        "powerBiNote": {
+          "tr": "Hat verimliliği ve duruş süresi (Downtime) analitiği",
+          "en": "Continuous uptime monitoring"
+        }
+      }
+    },
+    {
+      "id": "m19-l5",
+      "moduleId": "module-19",
+      "order": 5,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Hayes & Wheelwright Ürün-Süreç Matrisi",
+        "en": "Hayes & Wheelwright Product-Process Matrix"
+      },
+      "conceptCard": {
+        "tr": "Hayes & Wheelwright Ürün-Süreç Matrisi, ürünün yaşam evresi (Hacim & Çeşitlilik) ile üretim süreci tasarımı arasındaki stratejik uyumu gösterir:\n\n$$\\begin{matrix}\n& \\textbf{Düşük Hacim} & \\textbf{Orta Hacim} & \\textbf{Yüksek Hacim} & \\textbf{Çok Yüksek Hacim} \\\\\n\\textbf{Job Shop} & \\color{green}{\\textbf{Diyagonal Uyum}} & & & \\\\\n\\textbf{Batch} & & \\color{green}{\\textbf{Diyagonal Uyum}} & & \\\\\n\\textbf{Line Flow} & & & \\color{green}{\\textbf{Diyagonal Uyum}} & \\\\\n\\textbf{Continuous} & & & & \\color{green}{\\textbf{Diyagonal Uyum}}\n\\end{matrix}$$\n\n- **Diyagonalin Dışı (Mismatches):**\n  - *Diyagonalin Sol Altı:* Yüksek hacimli ürünü Job Shop'ta üretmeye çalışmak $\\implies$ Yüksek maliyet, kapasite yetersizliği.\n  - *Diyagonalin Sağ Üstü:* Düşük hacimli özel ürünü otomatik montaj hattında üretmeye çalışmak $\\implies$ Esneklik kaybı, yüksek batık maliyet.",
+        "en": "The Product-Process Matrix aligns product structure (variety vs volume) with process choice along the diagonal to ensure strategic competitive advantage."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Müşteriye özel tekil prototip üreten bir firma, 50 milyon dolarlık otomatik seri montaj hattı kurarsa ne tür bir stratejik hata yapmış olur?\n\n**Çözüm:** Düşük hacimli ve değişken ürün için esnekliği sıfır olan yüksek sabit maliyetli hat kurarak matrisin sağ üst bölgesine sapmış, aşırı maliyet ve esneklik kaybı yaşamıştır.",
+        "en": "**Worked Example:** Installing an automated line for low-volume custom prototypes creates an off-diagonal mismatch of lost flexibility."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Product-Process Matrix",
+          "explanation_tr": "Ürün hacim-çeşitlilik yapısı ile fabrika süreç tipini eşleştiren stratejik matris.",
+          "explanation_en": "Framework analyzing the fit between product lifecycle volume and process architecture.",
+          "exampleSentence_en": "Staying on the diagonal of the product-process matrix maximizes operational efficiency."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m19-l5-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Hayes & Wheelwright matrisine göre, yüksek hacimli ve standart bir ürün için en uygun süreç seçimi hangisidir?",
+            "en": "According to Hayes & Wheelwright, which process best fits high volume, standardized products?"
+          },
+          "options": [
+            {
+              "tr": "Seri Montaj Hattı / Tekrarlı Üretim (Line Flow)",
+              "en": "Assembly Line / Repetitive Flow"
+            },
+            {
+              "tr": "Atölye Tipi (Job Shop)",
+              "en": "Job Shop"
+            },
+            {
+              "tr": "Proje Tipi Üretim",
+              "en": "Project Manufacturing"
+            },
+            {
+              "tr": "Siparişe Özel Butik İmalat",
+              "en": "Custom Boutique Fabrication"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Yüksek hacim ve standart ürünler montaj hattı (Line Flow) veya Sürekli Akış (Continuous) ile eşleşir.",
+            "en": "High-volume standardized goods align on the diagonal with line flow."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=EĞER(Hacim=\"Yüksek\"; \"Line Flow\"; \"Job Shop/Batch\")",
+        "pythonCode": "matrix_fit = 'Diagonal Match' if (vol > 0.7 and variety < 0.3) else 'Mismatch'",
+        "powerBiNote": {
+          "tr": "Ürün-Süreç stratejik konumlandırma haritası",
+          "en": "Strategic process alignment visual"
+        }
+      }
+    },
+    {
+      "id": "m19-l6",
+      "moduleId": "module-19",
+      "order": 6,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Süreç Teknolojileri: CNC, FMS ve Endüstri 4.0",
+        "en": "Process Technologies: CNC, FMS & Industry 4.0"
+      },
+      "conceptCard": {
+        "tr": "**Gelişmiş Süreç Teknolojileri:**\n\n1. **CNC (Computer Numerical Control):** Bilgisayar programlarıyla metal/ahşap işleyen hassas tezgahlar.\n2. **Robotik Sistemler:** Kaynak, boyama, paletleme ve montaj işlemlerinde yüksek tekrarlanabilirlik sağlayan kollar.\n3. **AGV (Automated Guided Vehicles) & AMR:** Fabrika içinde otonom malzeme taşıyan araçlar.\n4. **FMS (Flexible Manufacturing Systems - Esnek Üretim Sistemleri):** Birbirine bağlı CNC tezgahları, otomatik depolama (AS/RS) ve robotların merkezi bilgisayarla yönetildiği sistem.\n5. **CAD / CAM / CIM:** Bilgisayar destekli tasarım, imalat ve entegre üretim.",
+        "en": "Advanced manufacturing technologies include CNC machines, industrial robots, AGVs/AMRs, Flexible Manufacturing Systems (FMS), and Computer Integrated Manufacturing (CIM)."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir FMS hücresi, parça değişimlerinde setup süresini 45 dakikadan 3 dakikaya indirmeyi başarmıştır. Setup süresindeki azalma yüzdesi nedir?\n\n**Çözüm:**\n$$\\text{Azalma} = \\frac{45 - 3}{45} \\times 100 = \\frac{42}{45} \\times 100 \\approx 93.33\\%$$",
+        "en": "**Worked Example:** Setup time reduced from 45 min to 3 min in FMS yields $(45-3)/45 \\times 100 = 93.33\\%$ setup reduction."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Flexible Manufacturing System (FMS)",
+          "explanation_tr": "Merkezi bilgisayarla yönetilen, farklı parça tiplerine hızla uyum sağlayan esnek otomasyon hücresi.",
+          "explanation_en": "Automated production system that can readily adapt to product changes.",
+          "exampleSentence_en": "The FMS cell reduced batch changeover downtime significantly."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m19-l6-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bilgisayar kontrollü tezgahlar, robotik taşıyıcılar ve otomatik takım değiştiricilerin entegre olduğu esnek üretim sistemine ne ad verilir?",
+            "en": "What is an integrated system of CNC machines, robots, and automated handling called?"
+          },
+          "options": [
+            {
+              "tr": "FMS (Flexible Manufacturing System)",
+              "en": "FMS (Flexible Manufacturing System)"
+            },
+            {
+              "tr": "Geleneksel Manuel Torna",
+              "en": "Traditional Manual Lathe"
+            },
+            {
+              "tr": "Statik Depolama",
+              "en": "Static Warehousing"
+            },
+            {
+              "tr": "Klasik Konveyör",
+              "en": "Classic Gravity Conveyor"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "FMS (Esnek Üretim Sistemleri), yüksek otomasyonu esneklikle birleştiren modern üretim hücresidir.",
+            "en": "FMS integrates CNCs and material handling into a flexible automated unit."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(Eski_Setup - Yeni_Setup) / Eski_Setup",
+        "pythonCode": "setup_reduction = (old_setup - new_setup) / old_setup",
+        "powerBiNote": {
+          "tr": "Otomasyon ROI ve OEE takip göstergeleri",
+          "en": "Automation OEE and setup metrics"
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m19-c1",
+      "moduleId": "module-19",
+      "difficulty": "orta",
+      "title": {
+        "tr": "Vaka Sınavı: Arçelik Akıllı Fabrika Süreç Seçimi & Üretim Matrisi",
+        "en": "Case Exam: Arçelik Smart Factory Process Selection & Matrix Alignment"
+      },
+      "businessQuestion": {
+        "tr": "Arçelik Çerkezköy fabrikasında 3 farklı ürün grubu üretilmektedir: 1) Standart Çamaşır Makinesi (Yıllık 800.000 adet), 2) Özel Tasarım Ankastre Fırın (Yıllık 5.000 adet, 12 farklı renk ve panel seçeneği), 3) Ar-Ge Prototip Akıllı Ev Aletleri (Yıllık 100 adet özel parça). Her ürün grubu için en uygun üretim süreç tipini (Line Flow, Batch, Job Shop) Hayes-Wheelwright matrisine göre eşleştiriniz ve yıllık 800.000 adetlik çamaşır makinesi hattında günlük 2 vardiya (16 saat) çalışıldığında saatlik gereken üretim hızını hesaplayınız (Yıl = 250 iş günü).",
+        "en": "Arçelik produces 3 product families: 1) Standard Washers (800k units/yr), 2) Built-in Ovens (5k units/yr, 12 variants), 3) R&D Prototypes (100 custom units/yr). Match each product to its optimal process type and calculate required hourly output for washers across 250 days (16 hrs/day)."
+      },
+      "dataset": {
+        "columns": [
+          "Ürün_Grubu",
+          "Yıllık_Hacim",
+          "Çeşitlilik",
+          "Önerilen_Süreç"
+        ],
+        "rows": [
+          [
+            "Standart Çamaşır Makinesi",
+            800000,
+            "Düşük (Standart)",
+            "Line Flow (Montaj Hattı)"
+          ],
+          [
+            "Özel Ankastre Fırın",
+            5000,
+            "Orta (12 Renk/Tip)",
+            "Batch (Parti Tipi)"
+          ],
+          [
+            "Ar-Ge Prototip",
+            100,
+            "Çok Yüksek (Özel)",
+            "Job Shop (Atölye Tipi)"
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Toplam çalışma saatini bul: $250 \\text{ gün} \\times 16 \\text{ saat/gün} = 4.000 \\text{ saat/yıl}$.",
+          "en": "Step 1: Calculate annual working hours: $250 \\times 16 = 4,000$ hrs."
+        },
+        {
+          "tr": "2. Adım: Saatlik üretim hızını bul: $\\text{Hız} = \\frac{800.000}{4.000} = 200 \\text{ adet/saat}$.",
+          "en": "Step 2: Calculate hourly rate: $800,000 / 4,000 = 200$ units/hr."
+        },
+        {
+          "tr": "3. Adım: Süreç eşleştirmesini kontrol et (800k $\\rightarrow$ Line Flow, 5k $\\rightarrow$ Batch, 100 $\\rightarrow$ Job Shop).",
+          "en": "Step 3: Confirm process alignment matches."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Hacim ve çeşitlilik kriterlerine göre doğru üretim süreç tipini belirleme ve hat üretim kapasite gereksinimini hesaplama.",
+        "en": "Matching product volume and variety to process architecture and computing required line pace."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m19-c1-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Çamaşır makinesi montaj hattının saatte üretmesi gereken parça sayısı (adet/saat) kaçtır?",
+            "en": "What is the required hourly production rate for the washing machine line?"
+          },
+          "correctAnswer": 200,
+          "explanation": {
+            "tr": "$$\\text{Saatlik Hız} = \\frac{800.000 \\text{ adet}}{250 \\times 16 \\text{ saat}} = \\frac{800.000}{4.000} = 200 \\text{ adet/saat}$$",
+            "en": "$$\\text{Hourly Rate} = 800,000 / 4,000 = 200 \\text{ units/hr}$$"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -79,6 +79,30 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
         case 'module-16':
           activeType = 'normal_curve';
           break;
+        case 'module-17':
+          activeType = 'systems_5m';
+          break;
+        case 'module-18':
+          activeType = 'newsvendor_queue';
+          break;
+        case 'module-19':
+          activeType = 'process_matrix';
+          break;
+        case 'module-20':
+          activeType = 'breakeven_chart';
+          break;
+        case 'module-21':
+          activeType = 'layout_flow';
+          break;
+        case 'module-22':
+          activeType = 'line_balancing';
+          break;
+        case 'module-23':
+          activeType = 'work_study';
+          break;
+        case 'module-24':
+          activeType = 'linear_programming';
+          break;
         default:
           activeType = 'probability_venn';
       }
@@ -936,7 +960,297 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type, moduleId, 
     );
   }
 
-  // 16. Fallback Default Diagram
+  // 17. 5M Systems Thinking Diagram (Module 17)
+  if (activeType === 'systems_5m') {
+    return (
+      <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
+              {language === 'tr' ? 'SİSTEM YAKLAŞIMI & DÖNÜŞÜM' : 'SYSTEMS THINKING & TRANSFORMATION'}
+            </span>
+            <h4 className="text-base font-extrabold text-white tracking-tight">
+              {language === 'tr' ? '5M Girdileri, Dönüşüm Süreci ve Çıktılar' : '5M Inputs, Transformation Process & Outputs'}
+            </h4>
+          </div>
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
+            <KatexFormula formula="\text{Girdi (5M)} \rightarrow \text{Dönüşüm} \rightarrow \text{Çıktı}" displayMode={false} />
+          </span>
+        </div>
+        <div className="w-full my-3 flex justify-center">
+          <svg viewBox="0 0 600 130" className="w-full max-w-lg h-auto overflow-visible">
+            <rect x="20" y="30" width="140" height="70" rx="12" fill="#ff7a00" fillOpacity="0.2" stroke="#ff7a00" strokeWidth="2" />
+            <text x="90" y="58" fill="#ff7a00" fontSize="12" fontWeight="bold" textAnchor="middle">Girdiler (5M)</text>
+            <text x="90" y="76" fill="#cbd5e1" fontSize="9" textAnchor="middle">Men, Mat, Mac, Mon, Met</text>
+            <line x1="160" y1="65" x2="220" y2="65" stroke="#ff7a00" strokeWidth="2" />
+            <polygon points="220,65 212,60 212,70" fill="#ff7a00" />
+            <rect x="225" y="30" width="150" height="70" rx="12" fill="#38bdf8" fillOpacity="0.2" stroke="#38bdf8" strokeWidth="2" />
+            <text x="300" y="58" fill="#38bdf8" fontSize="12" fontWeight="bold" textAnchor="middle">Dönüşüm Süreci</text>
+            <text x="300" y="76" fill="#cbd5e1" fontSize="9" textAnchor="middle">Montaj / Hizmet / Katma Değer</text>
+            <line x1="375" y1="65" x2="435" y2="65" stroke="#38bdf8" strokeWidth="2" />
+            <polygon points="435,65 427,60 427,70" fill="#38bdf8" />
+            <rect x="440" y="30" width="140" height="70" rx="12" fill="#22c55e" fillOpacity="0.2" stroke="#22c55e" strokeWidth="2" />
+            <text x="510" y="58" fill="#22c55e" fontSize="12" fontWeight="bold" textAnchor="middle">Çıktılar</text>
+            <text x="510" y="76" fill="#cbd5e1" fontSize="9" textAnchor="middle">Ürün, Hizmet, Kâr & Atık</text>
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  // 18. Newsvendor & Queueing Diagram (Module 18)
+  if (activeType === 'newsvendor_queue') {
+    return (
+      <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
+              {language === 'tr' ? 'NEWSVENDOR & KUYRUK DİNAMİĞİ' : 'NEWSVENDOR & QUEUEING DYNAMICS'}
+            </span>
+            <h4 className="text-base font-extrabold text-white tracking-tight">
+              {language === 'tr' ? 'Kritik Oran & Little Yasası (L = λW)' : "Critical Ratio & Little's Law (L = λW)"}
+            </h4>
+          </div>
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
+            <KatexFormula formula="CR = \frac{C_u}{C_u + C_o} \quad L = \lambda W" displayMode={false} />
+          </span>
+        </div>
+        <div className="w-full my-3 flex justify-center">
+          <svg viewBox="0 0 600 120" className="w-full max-w-lg h-auto overflow-visible">
+            <circle cx="80" cy="60" r="16" fill="#38bdf8" fillOpacity="0.6" />
+            <circle cx="130" cy="60" r="16" fill="#38bdf8" fillOpacity="0.6" />
+            <circle cx="180" cy="60" r="16" fill="#38bdf8" fillOpacity="0.6" />
+            <text x="130" y="100" fill="#94a3b8" fontSize="10" fontWeight="bold" textAnchor="middle">Varışlar (λ) & Kuyruk (Lq)</text>
+            <line x1="210" y1="60" x2="270" y2="60" stroke="#ff7a00" strokeWidth="2" />
+            <polygon points="270,60 262,55 262,65" fill="#ff7a00" />
+            <circle cx="330" cy="60" r="32" fill="#ff7a00" fillOpacity="0.25" stroke="#ff7a00" strokeWidth="2.5" />
+            <text x="330" y="65" fill="#ff7a00" fontSize="12" fontWeight="bold" textAnchor="middle">Sunucu (μ)</text>
+            <line x1="375" y1="60" x2="435" y2="60" stroke="#22c55e" strokeWidth="2" />
+            <polygon points="435,60 427,55 427,65" fill="#22c55e" />
+            <rect x="445" y="35" width="130" height="50" rx="10" fill="#22c55e" fillOpacity="0.2" stroke="#22c55e" strokeWidth="2" />
+            <text x="510" y="65" fill="#22c55e" fontSize="11" fontWeight="bold" textAnchor="middle">Hizmet Tamamlandı</text>
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  // 19. Hayes-Wheelwright Product-Process Matrix (Module 19)
+  if (activeType === 'process_matrix') {
+    return (
+      <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
+              {language === 'tr' ? 'HAYES & WHEELWRIGHT MATRİSİ' : 'PRODUCT-PROCESS MATRIX'}
+            </span>
+            <h4 className="text-base font-extrabold text-white tracking-tight">
+              {language === 'tr' ? 'Hacim-Çeşitlilik & Süreç Tipi Uyumu' : 'Volume-Variety & Process Alignment'}
+            </h4>
+          </div>
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
+            <KatexFormula formula="\text{Job Shop} \rightarrow \text{Batch} \rightarrow \text{Line} \rightarrow \text{Continuous}" displayMode={false} />
+          </span>
+        </div>
+        <div className="w-full my-3 flex justify-center">
+          <svg viewBox="0 0 600 130" className="w-full max-w-lg h-auto overflow-visible">
+            <rect x="30" y="20" width="115" height="45" rx="8" fill="#ff7a00" fillOpacity="0.25" stroke="#ff7a00" strokeWidth="1.5" />
+            <text x="87" y="46" fill="#ff7a00" fontSize="10" fontWeight="bold" textAnchor="middle">Job Shop (Özel)</text>
+            <rect x="165" y="45" width="115" height="45" rx="8" fill="#38bdf8" fillOpacity="0.25" stroke="#38bdf8" strokeWidth="1.5" />
+            <text x="222" y="71" fill="#38bdf8" fontSize="10" fontWeight="bold" textAnchor="middle">Batch (Parti)</text>
+            <rect x="300" y="70" width="115" height="45" rx="8" fill="#a855f7" fillOpacity="0.25" stroke="#a855f7" strokeWidth="1.5" />
+            <text x="357" y="96" fill="#a855f7" fontSize="10" fontWeight="bold" textAnchor="middle">Line Flow (Seri)</text>
+            <rect x="435" y="75" width="135" height="45" rx="8" fill="#22c55e" fillOpacity="0.25" stroke="#22c55e" strokeWidth="1.5" />
+            <text x="502" y="101" fill="#22c55e" fontSize="10" fontWeight="bold" textAnchor="middle">Continuous (Sürekli)</text>
+            <line x1="87" y1="42" x2="502" y2="97" stroke="#fbbf24" strokeWidth="2" strokeDasharray="4 4" />
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  // 20. Break-Even Analysis Chart (Module 20)
+  if (activeType === 'breakeven_chart') {
+    return (
+      <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
+              {language === 'tr' ? 'BAŞA BAŞ & KÂRLILIK ANALİZİ' : 'BREAK-EVEN POINT & REVENUE CHART'}
+            </span>
+            <h4 className="text-base font-extrabold text-white tracking-tight">
+              {language === 'tr' ? 'Sabit Maliyet, Gelir ve Başa Baş Noktası (Q_BEP)' : 'Fixed Cost, Revenue & Break-Even Point (Q_BEP)'}
+            </h4>
+          </div>
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
+            <KatexFormula formula="Q_{\text{BEP}} = \frac{FC}{P - VC}" displayMode={false} />
+          </span>
+        </div>
+        <div className="w-full my-3 flex justify-center">
+          <svg viewBox="0 0 600 130" className="w-full max-w-lg h-auto overflow-visible">
+            <line x1="50" y1="110" x2="550" y2="110" stroke="#64748b" strokeWidth="2" />
+            <line x1="50" y1="110" x2="50" y2="15" stroke="#64748b" strokeWidth="2" />
+            <line x1="50" y1="75" x2="530" y2="75" stroke="#94a3b8" strokeWidth="1.5" strokeDasharray="4 4" />
+            <text x="90" y="70" fill="#94a3b8" fontSize="10">Sabit Maliyet (FC)</text>
+            <line x1="50" y1="75" x2="530" y2="25" stroke="#ef4444" strokeWidth="2.5" />
+            <line x1="50" y1="110" x2="530" y2="15" stroke="#22c55e" strokeWidth="2.5" />
+            <circle cx="280" cy="51" r="5" fill="#ff7a00" stroke="#ffffff" strokeWidth="2" />
+            <text x="280" y="40" fill="#ff7a00" fontSize="11" fontWeight="bold" textAnchor="middle">BEP (Başa Baş)</text>
+            <text x="500" y="20" fill="#22c55e" fontSize="10" fontWeight="bold">Gelir (P*Q)</text>
+            <text x="500" y="42" fill="#ef4444" fontSize="10" fontWeight="bold">Toplam Maliyet (TC)</text>
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  // 21. Facility Layout & From-To Flow (Module 21)
+  if (activeType === 'layout_flow') {
+    return (
+      <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
+              {language === 'tr' ? 'TESİS YERLEŞİMİ & YÜK-MESAFE' : 'FACILITY LAYOUT & LOAD-DISTANCE'}
+            </span>
+            <h4 className="text-base font-extrabold text-white tracking-tight">
+              {language === 'tr' ? 'Bölümler Arası Akış & Yük-Mesafe Skoru (LD)' : 'Inter-Departmental Flow & Load-Distance (LD)'}
+            </h4>
+          </div>
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
+            <KatexFormula formula="LD = \sum l_{ij} d_{ij}" displayMode={false} />
+          </span>
+        </div>
+        <div className="w-full my-3 flex justify-center">
+          <svg viewBox="0 0 600 120" className="w-full max-w-lg h-auto overflow-visible">
+            <rect x="40" y="25" width="100" height="70" rx="10" fill="#38bdf8" fillOpacity="0.2" stroke="#38bdf8" strokeWidth="2" />
+            <text x="90" y="65" fill="#38bdf8" fontSize="12" fontWeight="bold" textAnchor="middle">Bölüm A</text>
+            <rect x="250" y="25" width="100" height="70" rx="10" fill="#ff7a00" fillOpacity="0.2" stroke="#ff7a00" strokeWidth="2" />
+            <text x="300" y="65" fill="#ff7a00" fontSize="12" fontWeight="bold" textAnchor="middle">Bölüm B</text>
+            <rect x="460" y="25" width="100" height="70" rx="10" fill="#22c55e" fillOpacity="0.2" stroke="#22c55e" strokeWidth="2" />
+            <text x="510" y="65" fill="#22c55e" fontSize="12" fontWeight="bold" textAnchor="middle">Bölüm C</text>
+            <line x1="140" y1="50" x2="250" y2="50" stroke="#ff7a00" strokeWidth="3" />
+            <polygon points="250,50 242,45 242,55" fill="#ff7a00" />
+            <text x="195" y="42" fill="#ff7a00" fontSize="10" fontWeight="bold" textAnchor="middle">Yük: 80 palet</text>
+            <line x1="350" y1="50" x2="460" y2="50" stroke="#22c55e" strokeWidth="3" />
+            <polygon points="460,50 452,45 452,55" fill="#22c55e" />
+            <text x="405" y="42" fill="#22c55e" fontSize="10" fontWeight="bold" textAnchor="middle">Yük: 70 palet</text>
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  // 22. Line Balancing & Assembly Precedence (Module 22)
+  if (activeType === 'line_balancing') {
+    return (
+      <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
+              {language === 'tr' ? 'MONTAJ HATTI DENGELEME' : 'ASSEMBLY LINE BALANCING'}
+            </span>
+            <h4 className="text-base font-extrabold text-white tracking-tight">
+              {language === 'tr' ? 'Çevrim Süresi (C) & İstasyon İş Yükü Dağılımı' : 'Cycle Time (C) & Workstation Workload Balancing'}
+            </h4>
+          </div>
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
+            <KatexFormula formula="\text{Verimlilik } \eta = \frac{\sum t_i}{N \cdot C}" displayMode={false} />
+          </span>
+        </div>
+        <div className="w-full my-3 flex justify-center">
+          <svg viewBox="0 0 600 120" className="w-full max-w-lg h-auto overflow-visible">
+            <rect x="40" y="30" width="140" height="60" rx="10" fill="#ff7a00" fillOpacity="0.2" stroke="#ff7a00" strokeWidth="2" />
+            <text x="110" y="55" fill="#ff7a00" fontSize="11" fontWeight="bold" textAnchor="middle">İstasyon 1</text>
+            <text x="110" y="72" fill="#cbd5e1" fontSize="9" textAnchor="middle">Görev A, B (t = 55s ≤ C)</text>
+            <line x1="180" y1="60" x2="230" y2="60" stroke="#94a3b8" strokeWidth="2" />
+            <polygon points="230,60 222,55 222,65" fill="#94a3b8" />
+            <rect x="230" y="30" width="140" height="60" rx="10" fill="#38bdf8" fillOpacity="0.2" stroke="#38bdf8" strokeWidth="2" />
+            <text x="300" y="55" fill="#38bdf8" fontSize="11" fontWeight="bold" textAnchor="middle">İstasyon 2</text>
+            <text x="300" y="72" fill="#cbd5e1" fontSize="9" textAnchor="middle">Görev C, D (t = 58s ≤ C)</text>
+            <line x1="370" y1="60" x2="420" y2="60" stroke="#94a3b8" strokeWidth="2" />
+            <polygon points="420,60 412,55 412,65" fill="#94a3b8" />
+            <rect x="420" y="30" width="140" height="60" rx="10" fill="#22c55e" fillOpacity="0.2" stroke="#22c55e" strokeWidth="2" />
+            <text x="490" y="55" fill="#22c55e" fontSize="11" fontWeight="bold" textAnchor="middle">İstasyon 3</text>
+            <text x="490" y="72" fill="#cbd5e1" fontSize="9" textAnchor="middle">Görev E, F (t = 50s ≤ C)</text>
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  // 23. Work Study & Standard Time (Module 23)
+  if (activeType === 'work_study') {
+    return (
+      <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
+              {language === 'tr' ? 'ZAMAN ETÜDÜ & İŞ ÖLÇÜMÜ' : 'TIME STUDY & WORK MEASUREMENT'}
+            </span>
+            <h4 className="text-base font-extrabold text-white tracking-tight">
+              {language === 'tr' ? 'Gözlenen Süre -> Normal Süre -> Standart Süre' : 'Observed Time -> Normal Time -> Standard Time'}
+            </h4>
+          </div>
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
+            <KatexFormula formula="ST = (OT \times PR) \times (1 + AF)" displayMode={false} />
+          </span>
+        </div>
+        <div className="w-full my-3 flex justify-center">
+          <svg viewBox="0 0 600 120" className="w-full max-w-lg h-auto overflow-visible">
+            <rect x="30" y="35" width="140" height="50" rx="10" fill="#ff7a00" fillOpacity="0.2" stroke="#ff7a00" strokeWidth="2" />
+            <text x="100" y="60" fill="#ff7a00" fontSize="11" fontWeight="bold" textAnchor="middle">Gözlenen Süre (OT)</text>
+            <line x1="170" y1="60" x2="225" y2="60" stroke="#ff7a00" strokeWidth="2" />
+            <polygon points="225,60 217,55 217,65" fill="#ff7a00" />
+            <rect x="230" y="35" width="140" height="50" rx="10" fill="#38bdf8" fillOpacity="0.2" stroke="#38bdf8" strokeWidth="2" />
+            <text x="300" y="60" fill="#38bdf8" fontSize="11" fontWeight="bold" textAnchor="middle">Normal Süre (NT = OT*PR)</text>
+            <line x1="370" y1="60" x2="425" y2="60" stroke="#38bdf8" strokeWidth="2" />
+            <polygon points="425,60 417,55 417,65" fill="#38bdf8" />
+            <rect x="430" y="35" width="140" height="50" rx="10" fill="#22c55e" fillOpacity="0.2" stroke="#22c55e" strokeWidth="2" />
+            <text x="500" y="60" fill="#22c55e" fontSize="11" fontWeight="bold" textAnchor="middle">Standart Süre (ST)</text>
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  // 24. Linear Programming Polytope (Module 24)
+  if (activeType === 'linear_programming') {
+    return (
+      <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff7a00] font-mono">
+              {language === 'tr' ? 'DOĞRUSAL PROGRAMLAMA & OPTİMİZASYON' : 'LINEAR PROGRAMMING & OPTIMIZATION'}
+            </span>
+            <h4 className="text-base font-extrabold text-white tracking-tight">
+              {language === 'tr' ? 'Uygun Çözüm Bölgesi & Köşe Noktası Teoremi' : 'Feasible Polytope & Corner Point Theorem'}
+            </h4>
+          </div>
+          <span className="hidden sm:inline-flex self-start sm:self-auto px-3 py-1 rounded-full bg-[#ff7a00]/20 text-[#ff7a00] border border-[#ff7a00]/40 text-xs font-mono font-bold shrink-0">
+            <KatexFormula formula="\max Z = c_1 x_1 + c_2 x_2 \quad Ax \le b" displayMode={false} />
+          </span>
+        </div>
+        <div className="w-full my-3 flex justify-center">
+          <svg viewBox="0 0 600 130" className="w-full max-w-lg h-auto overflow-visible">
+            <line x1="100" y1="110" x2="500" y2="110" stroke="#64748b" strokeWidth="2" />
+            <line x1="100" y1="110" x2="100" y2="20" stroke="#64748b" strokeWidth="2" />
+            <polygon points="100,110 320,110 260,50 100,50" fill="#ff7a00" fillOpacity="0.3" stroke="#ff7a00" strokeWidth="2" />
+            <circle cx="100" cy="110" r="4" fill="#ffffff" />
+            <circle cx="320" cy="110" r="4" fill="#ffffff" />
+            <circle cx="260" cy="50" r="6" fill="#22c55e" stroke="#ffffff" strokeWidth="2" />
+            <circle cx="100" cy="50" r="4" fill="#ffffff" />
+            <text x="260" y="38" fill="#22c55e" fontSize="11" fontWeight="bold" textAnchor="middle">Optimal Köşe (Z*)</text>
+            <text x="200" y="85" fill="#ff7a00" fontSize="11" fontWeight="bold" textAnchor="middle">Uygun Bölge</text>
+            <line x1="180" y1="30" x2="340" y2="70" stroke="#22c55e" strokeWidth="2" strokeDasharray="4 4" />
+            <text x="345" y="75" fill="#22c55e" fontSize="9">Eş-Kâr Doğrusu</text>
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  // Fallback Default Diagram
   return (
     <div className="my-6 p-5 sm:p-6 rounded-3xl bg-slate-900 text-white shadow-xl relative overflow-hidden font-sans border border-slate-800">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">

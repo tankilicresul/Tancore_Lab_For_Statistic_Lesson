@@ -1,0 +1,511 @@
+{
+  "id": "module-21",
+  "order": 21,
+  "title": {
+    "tr": "Modül 21: Tesis Yerleşimi & Akış Şemaları",
+    "en": "Module 21: Facility Layout & Process Flow"
+  },
+  "description": {
+    "tr": "Süreç, ürün, hücresel ve sabit konumlu yerleşim tipleri, akış süreç şemaları, From-To matrisi ve Muther REL diyagramı.",
+    "en": "Process, product, cellular, and fixed-position layouts, flow process charts, From-To load-distance matrix, and Muther relationship grids."
+  },
+  "iconName": "LayoutGrid",
+  "lessons": [
+    {
+      "id": "m21-l1",
+      "moduleId": "module-21",
+      "order": 1,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Tesis Yerleşimi Temelleri ve 4 Ana Yerleşim Tipi",
+        "en": "Facility Layout Fundamentals & 4 Core Layout Types"
+      },
+      "conceptCard": {
+        "tr": "**Tesis Yerleşiminin Amacı:** Malzeme taşıma maliyetlerini minimize etmek, darboğazları önlemek ve iş güvenliğini sağlamaktır.\n\n**4 Temel Yerleşim Tipi:**\n1. **Süreç Odaklı (Process / Functional Layout):** Benzer makineler/işlevler aynı alanda toplanır (Tüm tornalar bir odada, kaynaklar başka odada).\n2. **Ürün Odaklı (Product / Flow-line Layout):** Makineler ürünün işlem sırasına göre bir hat (düz veya U-şekli) üzerine dizilir.\n3. **Hücresel Yerleşim (Cellular Layout):** Benzer parça ailelerini baştan sona işleyen U-şekilli esnek hücreler.\n4. **Sabit Konumlu (Fixed-Position Layout):** Ürün sabittir (gemi, uçak, inşaat); işçiler ve makineler ürünün yanına gelir.",
+        "en": "The 4 core layout types: Process (functional grouping), Product (sequential flow line), Cellular (group technology U-cells), and Fixed-Position (product stationary, resources move)."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Tersanede 300 metrelik bir kargo gemisi inşa edilirken kaynak makineleri, vinçler ve işçiler geminin bulunduğu kuru havuza getirilmektedir. Bu hangi yerleşim tipidir?\n\n**Çözüm:** Ürün aşırı büyük ve sabit olduğu için **Sabit Konumlu Yerleşim (Fixed-Position Layout)** uygulanmaktadır.",
+        "en": "**Worked Example:** Constructing a massive ship in dry dock where machines and labor travel to the stationary hull is a Fixed-Position layout."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "facility layout",
+          "explanation_tr": "Makinelerin, iş istasyonlarının ve malzeme yollarının fiziksel olarak yerleştirilmesi.",
+          "explanation_en": "The physical configuration of departments, workstations, and equipment within a facility.",
+          "exampleSentence_en": "An optimized facility layout minimized forklift travel distances."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m21-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Uçak, bina ve büyük gemi inşasında ürünün sabit durduğu, işçi ve makinelerin ürünün yanına geldiği yerleşim tipi hangisidir?",
+            "en": "Which layout type keeps the product stationary while resources move to it?"
+          },
+          "options": [
+            {
+              "tr": "Sabit Konumlu Yerleşim (Fixed-Position Layout)",
+              "en": "Fixed-Position Layout"
+            },
+            {
+              "tr": "Ürün Odaklı Yerleşim (Product Layout)",
+              "en": "Product Layout"
+            },
+            {
+              "tr": "Hücresel Yerleşim (Cellular Layout)",
+              "en": "Cellular Layout"
+            },
+            {
+              "tr": "Akan Bant Yerleşimi",
+              "en": "Conveyor Line Layout"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Büyük yapılar ve gemiler sabit konumlu yerleşim ile üretilir.",
+            "en": "Fixed-position layout applies when product size or weight prevents movement."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=EĞER(Ürün=\"Büyük ve Taşınamaz\"; \"Sabit Konumlu\"; \"Ürün/Süreç\")",
+        "pythonCode": "layout = 'Fixed-Position' if is_immovable_huge else 'Product/Process'",
+        "powerBiNote": {
+          "tr": "Fabrika yerleşim alanı sınıflandırması",
+          "en": "Facility layout spatial category"
+        }
+      }
+    },
+    {
+      "id": "m21-l2",
+      "moduleId": "module-21",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Süreç ve Ürün Odaklı Yerleşim Karşılaştırması",
+        "en": "Process vs Product Layout Comparison"
+      },
+      "conceptCard": {
+        "tr": "**Karşılaştırma Tablosu:**\n\n| Kriter | Süreç Odaklı (Process) | Ürün Odaklı (Product) |\n|---|---|---|\n| **Ürün Çeşitliliği** | Yüksek | Düşük (Standart) |\n| **Üretim Hacmi** | Düşük / Orta | Çok Yüksek |\n| **Ekipman** | Genel amaçlı | Özel amaçlı otomatik |\n| **Malzeme Akışı** | Zikzaklı, karmaşık rotalar | Doğrusal, pürüzsüz akış |\n| **Süreç İçi Envanter (WIP)** | Yüksek | Çok Düşük |\n| **Birim Maliyet** | Yüksek | Düşük (Ölçek ekonomisi) |",
+        "en": "Process layout offers high flexibility and general equipment with high WIP. Product layout provides continuous flow, low WIP, and low unit cost at high volume."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Günde 50.000 kutu konserve domates üreten bir fabrika neden süreç odaklı değil de ürün odaklı hat yerleşimi seçer?\n\n**Çözüm:** Tek tip ve devasa hacimli standart ürün üretildiğinde, malzeme taşıma maliyetini ve birim başına üretim maliyetini en aza indirmek için **Ürün Odaklı (Product Layout)** hat kurulur.",
+        "en": "**Worked Example:** High volume tomato canning selects a Product Layout to minimize unit handling costs."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "product layout",
+          "explanation_tr": "Makinelerin ürünün operasyon sırasına göre ardışık dizildiği hat yerleşimi.",
+          "explanation_en": "Layout where workstations are arranged according to the progressive assembly steps.",
+          "exampleSentence_en": "The automotive assembly line is a classic product layout."
+        },
+        {
+          "term_en": "process layout",
+          "explanation_tr": "Aynı tür işi yapan benzer tezgahların aynı bölümde toplandığı fonksiyonel yerleşim.",
+          "explanation_en": "Layout that groups machines performing similar functions together.",
+          "exampleSentence_en": "Hospitals use process layouts with dedicated cardiology and radiology wings."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m21-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Hangi yerleşim tipi yüksek ürün çeşitliliğine ve özel siparişlere en yüksek esnekliği sağlar?",
+            "en": "Which layout provides maximum flexibility for high variety and custom jobs?"
+          },
+          "options": [
+            {
+              "tr": "Süreç Odaklı Yerleşim (Process Layout)",
+              "en": "Process Layout"
+            },
+            {
+              "tr": "Ürün Odaklı Yerleşim (Product Layout)",
+              "en": "Product Layout"
+            },
+            {
+              "tr": "Seri Montaj Bandı",
+              "en": "Assembly Line"
+            },
+            {
+              "tr": "Kesintisiz Akış Hattı",
+              "en": "Continuous Line"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Süreç odaklı (fonksiyonel) yerleşim, farklı rotalara sahip değişken işleri esnek şekilde işleyebilir.",
+            "en": "Process layout allows custom routing for highly diverse jobs."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=EĞER(Hacim>10000; \"Ürün Odaklı\"; \"Süreç Odaklı\")",
+        "pythonCode": "layout_type = 'Product' if volume > 10000 and variety < 3 else 'Process'",
+        "powerBiNote": {
+          "tr": "Yerleşim türü verimlilik karşılaştırması",
+          "en": "Layout type cost comparison"
+        }
+      }
+    },
+    {
+      "id": "m21-l3",
+      "moduleId": "module-21",
+      "order": 3,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Hücresel Yerleşim ve Grup Teknolojisi",
+        "en": "Cellular Layout & Group Technology"
+      },
+      "conceptCard": {
+        "tr": "**Grup Teknolojisi (Group Technology - GT):** Benzer tasarım veya üretim özelliklerine sahip parçaların 'Parça Aileleri (Part Families)' halinde sınıflandırılmasıdır.\n\n**Hücresel Yerleşim (Cellular Manufacturing):**\n- Belirli bir parça ailesini baştan sona tamamlamak için gereken farklı makineler küçük bir **U-şekilli hücre** içinde toplanır.\n- **Avantajları:**\n  1. Hazırlık (setup) sürelerini %70-90 azaltır.\n  2. Süreç içi envanteri (WIP) ve taşıma mesafelerini minimuma indirir.\n  3. Operatörler hücre içinde birden fazla makineyi çok yönlü olarak yönetir.",
+        "en": "Cellular manufacturing groups dissimilar machines into U-shaped cells dedicated to processing part families identified via Group Technology, drastically slashing setup and WIP."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir parça ailesinde geleneksel atölye yerleşiminde parçalar toplam 450 metre dolaşırken, kurulan hücresel U-hücrede taşıma mesafesi 30 metreye inmiştir. Mesafe tasarruf yüzdesi nedir?\n\n**Çözüm:**\n$$\\text{Tasarruf} = \\frac{450 - 30}{450} \\times 100 = \\frac{420}{450} \\times 100 \\approx 93.33\\%$$",
+        "en": "**Worked Example:** Cellular layout reduces travel distance from 450m to 30m, achieving $(450-30)/450 \\times 100 = 93.33\\%$ reduction."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "cellular manufacturing",
+          "explanation_tr": "Benzer parça ailelerini U-şekilli hücrelerde sıralı işleyerek israfı yok eden yerleşim.",
+          "explanation_en": "Layout grouping dissimilar machines into cells dedicated to part families.",
+          "exampleSentence_en": "U-shaped cellular lines enabled one-piece flow with multi-skilled operators."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m21-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Benzer parça ailelerini işlemek üzere farklı tezgahların U-şeklinde bir araya getirildiği yerleşim tipi hangisidir?",
+            "en": "Which layout arranges dissimilar machines into U-shaped cells for part families?"
+          },
+          "options": [
+            {
+              "tr": "Hücresel Yerleşim (Cellular Layout)",
+              "en": "Cellular Layout"
+            },
+            {
+              "tr": "Sabit Konumlu Yerleşim",
+              "en": "Fixed Position Layout"
+            },
+            {
+              "tr": "Geleneksel Dağınık Atölye",
+              "en": "Traditional Job Shop"
+            },
+            {
+              "tr": "Düz Hat Montajı",
+              "en": "Straight Line Layout"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Hücresel yerleşim, Grup Teknolojisi ile parça ailelerini U-hücrelerinde işler.",
+            "en": "Cellular layout organizes workstations into dedicated cells for part families."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=(Eski_Mesafe - Yeni_Mesafe) / Eski_Mesafe",
+        "pythonCode": "dist_saving = (old_dist - new_dist) / old_dist",
+        "powerBiNote": {
+          "tr": "Spagetti diyagramı mesafe kısalma oranı",
+          "en": "Spaghetti diagram distance reduction"
+        }
+      }
+    },
+    {
+      "id": "m21-l4",
+      "moduleId": "module-21",
+      "order": 4,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Akış Süreç Şemaları (Flow Process Charts)",
+        "en": "Flow Process Chart Symbols & Mapping"
+      },
+      "conceptCard": {
+        "tr": "**ASME Akış Süreç Şeması Standart Sembolleri:**\n\n1. $\\Large \\bigcirc$ **İşlem (Operation):** Parçanın fiziksel veya kimyasal olarak değiştirilmesi (kesme, delme, montaj, kod yazma).\n2. $\\Large \\Rightarrow$ **Taşıma (Transportation):** Malzemenin bir noktadan diğerine taşınması.\n3. $\\Large \\square$ **Kontrol / Muayene (Inspection):** Kalite veya miktar doğrulaması (ölçüm, görsel kontrol).\n4. $\\Large \\text{D}$ **Gecikme / Bekleme (Delay):** Sürecin sonraki adımı için kuyrukta veya geçici bekleme.\n5. $\\Large \\bigtriangledown$ **Depolama (Storage):** Malzemenin kontrollü olarak depoda tutulması.\n\n*Yalın üretimde İşlem dışındaki tüm adımlar (Taşıma, Muayene, Bekleme, Depolama) potansiyel israf (muda) kabul edilir ve elenmeye çalışılır.*",
+        "en": "ASME process chart symbols: Operation (Circle), Transportation (Arrow), Inspection (Square), Delay (D-shape), Storage (Triangle). Non-operational steps represent potential waste."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir parçanın montajı 5 işlem ($\\bigcirc$), 4 taşıma ($\\Rightarrow$), 2 kontrol ($\\square$), 3 bekleme ($\\text{D}$) ve 1 depolama ($\\bigtriangledown$) içermektedir. Toplam aktivite adımı sayısı nedir?\n\n**Çözüm:**\n$$\\text{Toplam Adım} = 5 + 4 + 2 + 3 + 1 = 15 \\text{ adım}$$",
+        "en": "**Worked Example:** Process with 5 operations, 4 transportations, 2 inspections, 3 delays, and 1 storage has $5+4+2+3+1 = 15$ total steps."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "flow process chart",
+          "explanation_tr": "Bir ürünün hammaddeden bitmiş ürüne kadar geçirdiği tüm adımları sembollerle gösteren şema.",
+          "explanation_en": "Chart charting all operations, transportations, inspections, delays, and storages.",
+          "exampleSentence_en": "The flow process chart revealed 4 redundant transportation steps."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m21-l4-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "ASME süreç akış şemasında 'Kare' ($\\square$) sembolü hangi aktiviteyi temsil eder?",
+            "en": "In ASME process charts, what does a Square symbol represent?"
+          },
+          "options": [
+            {
+              "tr": "Kontrol / Muayene (Inspection)",
+              "en": "Inspection"
+            },
+            {
+              "tr": "İşlem (Operation)",
+              "en": "Operation"
+            },
+            {
+              "tr": "Taşıma (Transportation)",
+              "en": "Transportation"
+            },
+            {
+              "tr": "Gecikme (Delay)",
+              "en": "Delay"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Kare sembolü kalite kontrol ve muayene (Inspection) işlemlerini gösterir.",
+            "en": "The square symbol denotes an inspection step."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=EĞERTOPLA(Aktivite; \"İşlem\")",
+        "pythonCode": "is_value_added = (symbol == 'Operation')",
+        "powerBiNote": {
+          "tr": "Değer katan vs Değer katmayan adımlar oranı",
+          "en": "Value-added step ratio dashboard"
+        }
+      }
+    },
+    {
+      "id": "m21-l5",
+      "moduleId": "module-21",
+      "order": 5,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Nereden-Nereye (From-To) Matrisi ve Yük-Mesafe Puanı",
+        "en": "From-To Matrix & Load-Distance Score"
+      },
+      "conceptCard": {
+        "tr": "Süreç odaklı yerleşimlerde bölümler arasındaki toplam taşıma maliyetini hesaplamak için **Yük-Mesafe (Load-Distance - $LD$)** formülü kullanılır:\n\n$$\\mathbf{LD = \\sum_{i=1}^{n} \\sum_{j=1}^{n} l_{ij} \\cdot d_{ij}}$$\n\n- $l_{ij}$: $i$ bölümünden $j$ bölümüne taşınan yük/palet/sefer sayısı (From-To Matrisi).\n- $d_{ij}$: $i$ ve $j$ bölümleri arasındaki fiziksel mesafe (Metre veya ızgara adımı).\n\n**Amaç:** Birbirleri arasında en çok yük akışı ($l_{ij}$) olan bölümleri birbirine en yakın ($d_{ij}$) yerleştirerek toplam $LD$ puanını MİNİMİZE etmektir.",
+        "en": "The Load-Distance score $LD = \\sum l_{ij} d_{ij}$ evaluates layout alternatives by weighting inter-department material trip loads $l_{ij}$ with distances $d_{ij}$."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** A ve B bölümleri arasında günde 100 palet ($l_{AB} = 100$), B ve C arasında 50 palet ($l_{BC} = 50$) taşınmaktadır. Mesafeler: $d_{AB} = 10$ m, $d_{BC} = 20$ m ise toplam $LD$ puanı nedir?\n\n**Çözüm:**\n$$LD = (100 \\times 10) + (50 \\times 20) = 1.000 + 1.000 = 2.000 \\text{ palet-metre}$$",
+        "en": "**Worked Example:** $LD = (100 \\times 10) + (50 \\times 20) = 2,000$ pallet-meters."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "From-To matrix",
+          "explanation_tr": "Bölümler arasındaki malzeme veya sefer taşıma hacimlerini gösteren kare matris.",
+          "explanation_en": "Matrix tabulating the volume of material movements between departmental pairs.",
+          "exampleSentence_en": "The From-To matrix indicated heavy traffic between stamping and welding."
+        },
+        {
+          "term_en": "Load-Distance score",
+          "explanation_tr": "Taşınan yük miktarı ile kat edilen mesafenin çarpımları toplamı: sum(l_ij * d_ij).",
+          "explanation_en": "Mathematical metric quantifying total material movement effort across a layout.",
+          "exampleSentence_en": "Layout plan B reduced the total load-distance score by 25%."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m21-l5-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "$l_{12} = 40$ yük ($d_{12} = 5$ m) ve $l_{23} = 60$ yük ($d_{23} = 10$ m) için toplam Yük-Mesafe ($LD$) puanı kaçtır?",
+            "en": "Loads: l_12 = 40 (d=5m), l_23 = 60 (d=10m). What is the total LD score?"
+          },
+          "correctAnswer": 800,
+          "explanation": {
+            "tr": "$$LD = (40 \\times 5) + (60 \\times 10) = 200 + 600 = 800$$",
+            "en": "$$LD = 200 + 600 = 800$$"
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=TOPLA.ÇARPIM(Yük_Aralığı; Mesafe_Aralığı)",
+        "pythonCode": "ld_score = sum(loads[i][j] * dists[i][j] for i in range(n) for j in range(n))",
+        "powerBiNote": {
+          "tr": "Tesis içi lojistik yük-mesafe skor kartı",
+          "en": "Material handling LD score optimizer"
+        }
+      }
+    },
+    {
+      "id": "m21-l6",
+      "moduleId": "module-21",
+      "order": 6,
+      "difficulty": "ileri",
+      "title": {
+        "tr": "Bölüm İlişkileri Şeması (Muther REL Chart)",
+        "en": "Systematic Layout Planning & Muther REL Chart"
+      },
+      "conceptCard": {
+        "tr": "Sayısal yük taşınmayan ofis, hastane veya hizmet alanlarında Richard Muther'ın **İlişki Şeması (REL Chart / Muther Grid)** kullanılır:\n\n| Harf Kodu | Yakınlık Derecesi (Closeness) | Sayısal Ağırlık |\n|---|---|:---:|\n| **A** | Absolutely Necessary (Mutlaka Gerekli) | 16 |\n| **E** | Especially Important (Özellikle Önemli) | 8 |\n| **I** | Important (Önemli) | 4 |\n| **O** | Ordinary Closeness (Olağan) | 2 |\n| **U** | Unimportant (Önemsiz) | 0 |\n| **X** | Undesirable (Kesinlikle İstenmeyen / Zararlı) | -16 |\n\n*Örnek:* Boyahane ile Yemekhane yan yana olamaz (Gürültü/koku nedeniyle $X$ ilişkisi).",
+        "en": "Muther's REL chart rates closeness needs: A (Absolutely necessary), E (Especially important), I (Important), O (Ordinary), U (Unimportant), X (Undesirable)."
+      },
+      "companyExample": {
+        "tr": "**Örnek Soru:** Bir hastanede Acil Servis ile Ameliyathane arasındaki yakınlık ilişkisi hangi Muther harf kodu ile temsil edilmelidir?\n\n**Çözüm:** Hayati aciliyet nedeniyle bu iki bölümün bitişik olması şarttır $\\implies$ **A (Absolutely Necessary - Mutlaka Gerekli)**.",
+        "en": "**Worked Example:** Emergency room to operating theater requires closeness rating 'A' (Absolutely Necessary)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "REL chart (Muther grid)",
+          "explanation_tr": "Bölümlerin birbirine yakınlık önemini A-E-I-O-U-X harfleriyle puanlayan şema.",
+          "explanation_en": "Qualitative closeness rating grid for Systematic Layout Planning.",
+          "exampleSentence_en": "The Muther REL chart placed the cafeteria away from chemical storage (rated X)."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m21-l6-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Muther İlişkiler Şemasında (REL Chart) gürültü, koku veya güvenlik nedeniyle iki bölümün YAN YANA OLMASININ KESİNLİKLE İSTENMEDİĞİ durum hangi harfle gösterilir?",
+            "en": "In Muther REL chart, which code represents an 'Undesirable' placement?"
+          },
+          "options": [
+            {
+              "tr": "X (Undesirable - İstenmeyen)",
+              "en": "X (Undesirable)"
+            },
+            {
+              "tr": "A (Absolutely Necessary)",
+              "en": "A (Absolutely Necessary)"
+            },
+            {
+              "tr": "E (Especially Important)",
+              "en": "E (Especially Important)"
+            },
+            {
+              "tr": "U (Unimportant)",
+              "en": "U (Unimportant)"
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "X kodu istenmeyen (Undesirable) ve ayrılması gereken bölümleri temsil eder.",
+            "en": "Code X denotes undesirable closeness relationships."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "excelFormula": "=DÜŞEYARA(İlişkiKodu; {\"A\"\\16;\"E\"\\8;\"I\"\\4;\"O\"\\2;\"U\"\\0;\"X\"\\-16}; 2; 0)",
+        "pythonCode": "rel_weights = {'A': 16, 'E': 8, 'I': 4, 'O': 2, 'U': 0, 'X': -16}",
+        "powerBiNote": {
+          "tr": "Niteliksel yerleşim ilişkileri matrisi",
+          "en": "Muther layout relationship matrix"
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m21-c1",
+      "moduleId": "module-21",
+      "difficulty": "orta",
+      "title": {
+        "tr": "Vaka Sınavı: EcoRide Scooter Yenileme Tesisi Yerleşim & Akış Şeması Tasarımı",
+        "en": "Case Exam: EcoRide Refurbishment Facility Layout & Flow Optimization"
+      },
+      "businessQuestion": {
+        "tr": "EcoRide elektrikli scooter yenileme merkezinde 4 ana bölüm bulunmaktadır: 1) Giriş Muayene (I), 2) Batarya Test & Değişim (B), 3) Mekanik Onarım (M), 4) Son Test & Paketleme (P). Günlük parça akışları (From-To Matrisi): I->B: 80 adet, I->M: 40 adet, B->P: 70 adet, M->P: 30 adet. Mevcut Yerleşim Planında mesafeler: I-B = 30m, I-M = 10m, B-P = 40m, M-P = 20m. Yeni Önerilen Yerleşimde en yoğun akış olan I-B mesafesi 10m'ye, B-P mesafesi 15m'ye indirilmiştir (I-M = 25m, M-P = 20m). İki planın toplam Yük-Mesafe (LD) puanlarını hesaplayıp tasarruf miktarını bulunuz.",
+        "en": "EcoRide refurbishment center has 4 departments. Material trips: I->B: 80, I->M: 40, B->P: 70, M->P: 30. Layout 1 distances: I-B=30m, I-M=10m, B-P=40m, M-P=20m. Layout 2 distances: I-B=10m, I-M=25m, B-P=15m, M-P=20m. Compare LD scores and calculate net score reduction."
+      },
+      "dataset": {
+        "columns": [
+          "Rota",
+          "Günlük_Yük",
+          "Mevcut_Mesafe_m",
+          "Mevcut_LD",
+          "Yeni_Mesafe_m",
+          "Yeni_LD"
+        ],
+        "rows": [
+          [
+            "I -> B",
+            80,
+            30,
+            2400,
+            10,
+            800
+          ],
+          [
+            "I -> M",
+            40,
+            10,
+            400,
+            25,
+            1000
+          ],
+          [
+            "B -> P",
+            70,
+            40,
+            2800,
+            15,
+            1050
+          ],
+          [
+            "M -> P",
+            30,
+            20,
+            600,
+            20,
+            600
+          ],
+          [
+            "TOPLAM",
+            220,
+            null,
+            6200,
+            null,
+            3450
+          ]
+        ]
+      },
+      "guidedSteps": [
+        {
+          "tr": "1. Adım: Mevcut Plan LD Puanı: $(80 \\times 30) + (40 \\times 10) + (70 \\times 40) + (30 \\times 20) = 2400 + 400 + 2800 + 600 = 6.200$.",
+          "en": "Step 1: Current LD = 6,200."
+        },
+        {
+          "tr": "2. Adım: Yeni Plan LD Puanı: $(80 \\times 10) + (40 \\times 25) + (70 \\times 15) + (30 \\times 20) = 800 + 1000 + 1050 + 600 = 3.450$.",
+          "en": "Step 2: New LD = 3,450."
+        },
+        {
+          "tr": "3. Adım: Net LD Puanı Tasarrufu: $6.200 - 3.450 = 2.750$ puan.",
+          "en": "Step 3: Net reduction = 2,750."
+        }
+      ],
+      "expectedApproach": {
+        "tr": "Yük-Mesafe (LD) formülü ile From-To matrisini analiz ederek tesis içi taşıma mesafelerini optimize etme.",
+        "en": "Evaluating spatial departmental configurations using Load-Distance minimization."
+      },
+      "solutionQuestions": [
+        {
+          "id": "m21-c1-q1",
+          "type": "numeric",
+          "prompt": {
+            "tr": "Yeni yerleşim planı ile sağlanan net Yük-Mesafe ($LD$) puanı tasarrufu kaçtır?",
+            "en": "What is the net reduction in total Load-Distance (LD) score with the new layout?"
+          },
+          "correctAnswer": 2750,
+          "explanation": {
+            "tr": "$$\\text{Tasarruf} = 6.200 - 3.450 = 2.750 \\text{ yük-metre}$$",
+            "en": "$$\\text{Savings} = 6,200 - 3,450 = 2,750$$"
+          }
+        }
+      ]
+    }
+  ]
+}
