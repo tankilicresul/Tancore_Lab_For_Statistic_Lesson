@@ -7,7 +7,7 @@ interface Top3MusicPlayerProps {
 }
 
 const YOUTUBE_VIDEO_ID = 'MOlUTsZ2IWg';
-const START_SECONDS = 19;
+const START_SECONDS = 20;
 
 export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
   isTop3User = false,
