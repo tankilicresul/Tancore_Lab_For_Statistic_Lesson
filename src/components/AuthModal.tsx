@@ -511,7 +511,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   type="email"
                   required
                   autoComplete="email"
-                  placeholder={language === 'tr' ? 'ad.soyad@universite.edu.tr veya e-postanız' : 'your.email@example.com'}
+                  placeholder={language === 'tr' ? 'E-postanız' : 'Your email'}
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
                   className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
@@ -578,7 +578,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   type="email"
                   required
                   autoComplete="email"
-                  placeholder={language === 'tr' ? 'ad.soyad@universite.edu.tr veya e-postanız' : 'your.email@example.com'}
+                  placeholder={language === 'tr' ? 'E-postanız' : 'Your email'}
                   value={formData.schoolEmail}
                   onChange={(e) => setFormData({ ...formData, schoolEmail: e.target.value })}
                   className="w-full pl-10 pr-3 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-[#ff7a00] focus:bg-white transition-all"
