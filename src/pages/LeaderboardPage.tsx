@@ -135,26 +135,6 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans space-y-4 animate-fade-in relative">
-      {/* Unauthenticated Guest Alert Banner */}
-      {!isAuthenticated && (
-        <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md shadow-orange-500/20">
-          <div className="flex items-center space-x-2.5 text-center sm:text-left">
-            <Crown className="w-5 h-5 text-amber-200 shrink-0 hidden sm:block" />
-            <span className="font-bold text-xs leading-snug">
-              {language === 'tr'
-                ? 'Sıralamada yer almak ve XP puanları kazanmak için kayıt ol!'
-                : 'Sign up to earn XP points and join the global leaderboard!'}
-            </span>
-          </div>
-          <button
-            onClick={onOpenAuth}
-            className="px-4 py-1.5 rounded-xl bg-white text-orange-600 font-black text-xs shadow-sm hover:bg-orange-50 active:scale-95 transition-all cursor-pointer whitespace-nowrap uppercase tracking-wider"
-          >
-            {language === 'tr' ? 'KAYIT OL' : 'SIGN UP'}
-          </button>
-        </div>
-      )}
-
       {/* Seamless Top 3 Leaderboard Podium */}
       <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-sm relative overflow-hidden">
         <div className="flex items-end justify-center gap-2 sm:gap-4 pt-2 pb-1">
