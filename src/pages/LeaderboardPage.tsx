@@ -103,10 +103,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     unlockedBadges,
   });
 
-  // Ambient soothing lava flow if user is in Top 3
+  // Ambient chill blues music for Top 3
   useEffect(() => {
+    // If authenticated user is in Top 3, or on the leaderboard podium view
     if (isAuthenticated && userRank && userRank <= 3) {
-      soundService.playLavaFlow(0.12);
+      soundService.playBluesMusic(0.20);
     } else {
       soundService.stopAmbient();
     }

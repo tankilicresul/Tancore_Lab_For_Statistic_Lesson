@@ -922,7 +922,306 @@ class SoundService {
   }
 
   // ─────────────────────────────────────────────────────────────
-  // 9. AMBİYANS SESİNİ DURDURMA (Stop Ambient)
+  // 10. İLK 3 İÇİN CHILL BLUES MÜZİĞİ (Procedural Blues Groove)
+  // ─────────────────────────────────────────────────────────────
+  public playBluesMusic(volume: number = 0.22) {
+    if (this.isMuted) return;
+    this.stopAmbient();
+
+    const ctx = this.getAudioContext();
+    if (!ctx) return;
+
+    if (ctx.state === 'suspended') {
+      ctx.resume().catch(() => {});
+    }
+
+    let isPlaying = true;
+    let loopTimeout: NodeJS.Timeout | null = null;
+
+    // Master Gain for smooth fade-in and graceful fade-out
+    const masterGain = ctx.createGain();
+    masterGain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    masterGain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + 1.2);
+    masterGain.connect(ctx.destination);
+
+    // Warm Low-pass filter for cozy vintage tube-amp tone
+    const bluesFilter = ctx.createBiquadFilter();
+    bluesFilter.type = 'lowpass';
+    bluesFilter.frequency.setValueAtTime(1800, ctx.currentTime);
+    bluesFilter.Q.setValueAtTime(1.2, ctx.currentTime);
+    bluesFilter.connect(masterGain);
+
+    // Subtle Spring Reverb / Delay simulation
+    const delayNode = ctx.createDelay();
+    delayNode.delayTime.setValueAtTime(0.24, ctx.currentTime);
+    const delayFeedback = ctx.createGain();
+    delayFeedback.gain.setValueAtTime(0.25, ctx.currentTime);
+    const delayFilter = ctx.createBiquadFilter();
+    delayFilter.frequency.setValueAtTime(1200, ctx.currentTime);
+
+    delayNode.connect(delayFilter);
+    delayFilter.connect(delayFeedback);
+    delayFeedback.connect(delayNode);
+    delayNode.connect(bluesFilter);
+
+    // Instrument Helper: Warm Plucked Walking Bass
+    const playBassNote = (freq: number, startTime: number, duration: number = 0.45) => {
+      if (!isPlaying) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, startTime);
+
+      // Sub harmonic for rich low-end body
+      const subOsc = ctx.createOscillator();
+      const subGain = ctx.createGain();
+      subOsc.type = 'sine';
+      subOsc.frequency.setValueAtTime(freq / 2, startTime);
+
+      gain.gain.setValueAtTime(0.0001, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.45, startTime + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+      subGain.gain.setValueAtTime(0.0001, startTime);
+      subGain.gain.exponentialRampToValueAtTime(0.35, startTime + 0.02);
+      subGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+      osc.connect(gain);
+      gain.connect(bluesFilter);
+      subOsc.connect(subGain);
+      subGain.connect(bluesFilter);
+
+      osc.start(startTime);
+      osc.stop(startTime + duration + 0.05);
+      subOsc.start(startTime);
+      subOsc.stop(startTime + duration + 0.05);
+    };
+
+    // Instrument Helper: Rhodes / Electric Guitar Blues Chord
+    const playBluesChord = (freqs: number[], startTime: number, duration: number = 1.1) => {
+      if (!isPlaying) return;
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = idx === 0 ? 'triangle' : 'sine';
+        // Strum effect (slight micro-delay per string)
+        const noteStart = startTime + idx * 0.022;
+        osc.frequency.setValueAtTime(freq, noteStart);
+
+        gain.gain.setValueAtTime(0.0001, noteStart);
+        gain.gain.exponentialRampToValueAtTime(0.12, noteStart + 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.0001, noteStart + duration);
+
+        osc.connect(gain);
+        gain.connect(bluesFilter);
+        gain.connect(delayNode);
+
+        osc.start(noteStart);
+        osc.stop(noteStart + duration + 0.05);
+      });
+    };
+
+    // Instrument Helper: Soulful Blues Guitar Riff (with bend & slide)
+    const playGuitarLick = (
+      notes: { startFreq: number; endFreq?: number; time: number; dur: number; vol?: number }[],
+      barStart: number
+    ) => {
+      if (!isPlaying) return;
+      notes.forEach((n) => {
+        const t = barStart + n.time;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sawtooth';
+
+        // Tube amp saturation filter
+        const lickFilter = ctx.createBiquadFilter();
+        lickFilter.type = 'lowpass';
+        lickFilter.frequency.setValueAtTime(1400, t);
+        lickFilter.Q.setValueAtTime(2.5, t);
+
+        osc.frequency.setValueAtTime(n.startFreq, t);
+        if (n.endFreq && n.endFreq !== n.startFreq) {
+          // Blues pitch bend / slide
+          osc.frequency.exponentialRampToValueAtTime(n.endFreq, t + n.dur * 0.45);
+        }
+
+        const v = n.vol ?? 0.16;
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.exponentialRampToValueAtTime(v, t + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + n.dur);
+
+        osc.connect(lickFilter);
+        lickFilter.connect(gain);
+        gain.connect(bluesFilter);
+        gain.connect(delayNode);
+
+        osc.start(t);
+        osc.stop(t + n.dur + 0.08);
+      });
+    };
+
+    // Instrument Helper: Soft Jazz Brush / Hi-hat Swing
+    const playBrushTick = (time: number, isAccent: boolean = false) => {
+      if (!isPlaying) return;
+      const bufSize = Math.floor(ctx.sampleRate * 0.04);
+      const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufSize * 0.22));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buf;
+      const bFilter = ctx.createBiquadFilter();
+      bFilter.type = 'bandpass';
+      bFilter.frequency.setValueAtTime(isAccent ? 7500 : 9000, time);
+      bFilter.Q.setValueAtTime(3.0, time);
+
+      const bGain = ctx.createGain();
+      bGain.gain.setValueAtTime(0.0001, time);
+      bGain.gain.exponentialRampToValueAtTime(isAccent ? 0.07 : 0.035, time + 0.004);
+      bGain.gain.exponentialRampToValueAtTime(0.0001, time + 0.035);
+
+      noise.connect(bFilter);
+      bFilter.connect(bGain);
+      bGain.connect(masterGain);
+
+      noise.start(time);
+      noise.stop(time + 0.04);
+    };
+
+    // ─────────────────────────────────────────────────────────────
+    // 12-Bar Blues Pattern in A (A7 -> D7 -> A7 -> E7 -> D7 -> A7 turnaround)
+    // Tempo: ~76 BPM. 1 beat = 0.79s. 1 bar = 3.16s. Total loop = ~12.64s (4-bar phrase)
+    // ─────────────────────────────────────────────────────────────
+    const beatLen = 0.79;
+    const barLen = beatLen * 4;
+
+    // Frequencies
+    const A1 = 55.0, C2 = 65.41, Cs2 = 69.30, D2 = 73.42, Eb2 = 77.78, E2 = 82.41, Fs2 = 92.50, G2 = 98.0;
+    const A2 = 110.0, C3 = 130.81, D3 = 146.83, E3 = 164.81;
+    const A3 = 220.0, C4 = 261.63, Cs4 = 277.18, D4 = 293.66, Eb4 = 311.13, E4 = 329.63, G4 = 392.0, A4 = 440.0, C5 = 523.25;
+
+    // Chords
+    const A7_CHORD = [A3, Cs4, E4, G4];
+    const D7_CHORD = [D3, Fs2 * 4, A3, C4];
+    const E7_CHORD = [E3, 207.65, 246.94, D4];
+
+    const scheduleBluesPhrase = (phraseStartTime: number) => {
+      if (!isPlaying) return;
+
+      // ── BAR 1: A7 (Root / Soulful groove) ──
+      const b1 = phraseStartTime;
+      playBluesChord(A7_CHORD, b1 + 0.05, beatLen * 1.8);
+      playBassNote(A1, b1, beatLen * 0.9);
+      playBassNote(Cs2, b1 + beatLen, beatLen * 0.9);
+      playBassNote(E2, b1 + beatLen * 2, beatLen * 0.9);
+      playBassNote(G2, b1 + beatLen * 3, beatLen * 0.9);
+
+      // Blues Guitar Lick 1: Blue note slide (Eb -> E -> G -> A)
+      playGuitarLick([
+        { startFreq: C4, endFreq: Cs4, time: 0.2, dur: 0.45, vol: 0.15 },
+        { startFreq: Eb4, endFreq: E4, time: 0.8, dur: 0.55, vol: 0.18 },
+        { startFreq: G4, endFreq: A4, time: 1.6, dur: 0.85, vol: 0.20 },
+      ], b1);
+
+      // ── BAR 2: D7 (The IV chord lift) ──
+      const b2 = b1 + barLen;
+      playBluesChord(D7_CHORD, b2 + 0.05, beatLen * 1.8);
+      playBassNote(D2, b2, beatLen * 0.9);
+      playBassNote(Fs2, b2 + beatLen, beatLen * 0.9);
+      playBassNote(A2, b2 + beatLen * 2, beatLen * 0.9);
+      playBassNote(C3, b2 + beatLen * 3, beatLen * 0.9);
+
+      // Blues Guitar Lick 2: Downward soulful blues resolution
+      playGuitarLick([
+        { startFreq: C5, endFreq: A4, time: 0.3, dur: 0.6, vol: 0.18 },
+        { startFreq: G4, endFreq: E4, time: 1.1, dur: 0.5, vol: 0.16 },
+        { startFreq: D4, endFreq: C4, time: 1.8, dur: 0.45, vol: 0.14 },
+        { startFreq: A3, time: 2.4, dur: 0.7, vol: 0.17 },
+      ], b2);
+
+      // ── BAR 3: E7 to D7 (The V chord tension & release) ──
+      const b3 = b2 + barLen;
+      playBluesChord(E7_CHORD, b3 + 0.05, beatLen * 1.6);
+      playBassNote(E2, b3, beatLen * 0.9);
+      playBassNote(G2, b3 + beatLen, beatLen * 0.9);
+      playBluesChord(D7_CHORD, b3 + beatLen * 2 + 0.05, beatLen * 1.6);
+      playBassNote(D2, b3 + beatLen * 2, beatLen * 0.9);
+      playBassNote(C2, b3 + beatLen * 3, beatLen * 0.9);
+
+      // Blues Guitar Lick 3: High bend on the turnaround
+      playGuitarLick([
+        { startFreq: 370.0, endFreq: 392.0, time: 0.2, dur: 0.55, vol: 0.18 }, // F# -> G bend
+        { startFreq: E4, time: 0.9, dur: 0.45, vol: 0.16 },
+        { startFreq: D4, endFreq: C4, time: 1.6, dur: 0.5, vol: 0.15 },
+      ], b3);
+
+      // ── BAR 4: A7 (Turnaround resolution with walking chromatic line) ──
+      const b4 = b3 + barLen;
+      playBluesChord(A7_CHORD, b4 + 0.05, beatLen * 1.9);
+      playBassNote(A1, b4, beatLen * 0.9);
+      playBassNote(C2, b4 + beatLen, beatLen * 0.9);
+      playBassNote(Cs2, b4 + beatLen * 2, beatLen * 0.9);
+      playBassNote(E2, b4 + beatLen * 3, beatLen * 0.9);
+
+      // Final signature blues turnaround lick (Eb4 -> E4 -> A3)
+      playGuitarLick([
+        { startFreq: Eb4, endFreq: E4, time: 0.4, dur: 0.65, vol: 0.20 },
+        { startFreq: G4, endFreq: A4, time: 1.2, dur: 0.8, vol: 0.22 },
+        { startFreq: A3, time: 2.2, dur: 0.9, vol: 0.18 },
+      ], b4);
+
+      // Drum Swing Rhythm throughout the 4 bars
+      for (let bar = 0; bar < 4; bar++) {
+        const barStart = phraseStartTime + bar * barLen;
+        for (let beat = 0; beat < 4; beat++) {
+          const beatStart = barStart + beat * beatLen;
+          playBrushTick(beatStart, beat === 1 || beat === 3);
+          // Blues shuffle swing eighth note
+          playBrushTick(beatStart + beatLen * 0.64, false);
+        }
+      }
+
+      // Loop to next phrase seamlessly
+      const nextPhraseTime = phraseStartTime + barLen * 4;
+      const timeUntilNext = (nextPhraseTime - ctx.currentTime - 0.2) * 1000;
+      if (isPlaying && timeUntilNext > 0) {
+        loopTimeout = setTimeout(() => {
+          if (isPlaying) scheduleBluesPhrase(nextPhraseTime);
+        }, timeUntilNext);
+      }
+    };
+
+    // Start playing first phrase immediately
+    scheduleBluesPhrase(ctx.currentTime + 0.1);
+
+    this.activeAmbientNodes = {
+      gainNode: masterGain,
+      stop: () => {
+        isPlaying = false;
+        if (loopTimeout) clearTimeout(loopTimeout);
+        try {
+          const stopTime = ctx.currentTime + 0.6;
+          masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+          masterGain.gain.exponentialRampToValueAtTime(0.0001, stopTime);
+          setTimeout(() => {
+            try {
+              masterGain.disconnect();
+              bluesFilter.disconnect();
+              delayNode.disconnect();
+            } catch {
+              // ignore
+            }
+          }, 650);
+        } catch {
+          // ignore
+        }
+      },
+    };
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 11. AMBİYANS SESİNİ DURDURMA (Stop Ambient)
   // ─────────────────────────────────────────────────────────────
   public stopAmbient() {
     if (this.activeAmbientNodes) {
