@@ -418,24 +418,52 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="relative z-10 flex flex-col gap-3.5 sm:gap-4">
           {/* Speech bubble card */}
           <div className="relative bg-white text-slate-900 border border-amber-100 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-lg">
-            <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug mb-1">
+            <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug">
               {language === 'tr'
-                ? `Selam ${studentDisplayName}! Ben Tanco, senin TA'yin olacağım.`
-                : `Hi ${studentDisplayName}! I'm Tanco, your TA.`}
+                ? `Selam ${studentDisplayName}! Ben Tanco, senin yapay zeka asistanınım. Bana istediğin ismi verebilirsin :)`
+                : `Hi ${studentDisplayName}! I'm Tanco, your AI assistant. You can give me any name you want :)`}
             </h1>
-            <p className="text-[11.5px] sm:text-xs text-slate-700 font-medium leading-relaxed">
-              {language === 'tr' ? (
-                <>
-                  Seninle endüstri mühendisliğinde ihtiyaç duyduğun konular ve analitik araçlar için yardımcı olacağım. Bana dilediğin zaman fotoğrafıma tıklayarak ulaşabilirsin.{' '}
-                  <strong className="font-black text-[#ff7a00]">Fotoğrafıma dokunup kaydırmayı dene !</strong>
-                </>
-              ) : (
-                <>
-                  I'll be here to help you with the tools, courses, and analytical concepts you need across industrial engineering. You can reach me anytime by clicking on my photo.{' '}
-                  <strong className="font-black text-[#ff7a00]">Try tapping and dragging my photo!</strong>
-                </>
-              )}
-            </p>
+            {language === 'tr' ? (
+              <div className="mt-2">
+                <ul className="space-y-1 text-[11.5px] sm:text-xs text-slate-700 font-medium leading-relaxed">
+                  <li className="flex items-center space-x-1.5">
+                    <span className="text-[#ff7a00] font-bold">•</span>
+                    <span>Benimle sohbet edebilir,</span>
+                  </li>
+                  <li className="flex items-center space-x-1.5">
+                    <span className="text-[#ff7a00] font-bold">•</span>
+                    <span>Konular hakkında soru sorabilir,</span>
+                  </li>
+                  <li className="flex items-center space-x-1.5">
+                    <span className="text-[#ff7a00] font-bold">•</span>
+                    <span>Fotoğraf ve ses gönderebilirsin.</span>
+                  </li>
+                </ul>
+                <p className="text-[11px] sm:text-[11.5px] text-[#ff7a00] font-black mt-2">
+                  Fotoğrafıma dokunup kaydırmayı dene !
+                </p>
+              </div>
+            ) : (
+              <div className="mt-2">
+                <ul className="space-y-1 text-[11.5px] sm:text-xs text-slate-700 font-medium leading-relaxed">
+                  <li className="flex items-center space-x-1.5">
+                    <span className="text-[#ff7a00] font-bold">•</span>
+                    <span>Chat with me,</span>
+                  </li>
+                  <li className="flex items-center space-x-1.5">
+                    <span className="text-[#ff7a00] font-bold">•</span>
+                    <span>Ask questions about your courses,</span>
+                  </li>
+                  <li className="flex items-center space-x-1.5">
+                    <span className="text-[#ff7a00] font-bold">•</span>
+                    <span>Send photos and voice messages.</span>
+                  </li>
+                </ul>
+                <p className="text-[11px] sm:text-[11.5px] text-[#ff7a00] font-black mt-2">
+                  Try tapping and dragging my photo!
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Tanco avatar row */}
