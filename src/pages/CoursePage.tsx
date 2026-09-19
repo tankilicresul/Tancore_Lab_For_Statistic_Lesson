@@ -389,9 +389,9 @@ export const CoursePage: React.FC<CoursePageProps> = ({
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden animate-fade-in">
+    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pt-2 sm:pt-3 pb-8 font-sans overflow-x-hidden animate-fade-in">
       {/* Top Header Navigation Bar */}
-      <div className="flex items-center justify-between mb-6 gap-2">
+      <div className="flex items-center justify-between mb-3.5 sm:mb-4 gap-2">
         <button
           onClick={onBackToHome}
           className="flex items-center space-x-2 px-3.5 py-2 rounded-2xl bg-white border border-slate-200/90 text-xs font-black text-slate-700 hover:text-[#ff7a00] hover:border-[#ff7a00]/40 transition-all shadow-2xs group cursor-pointer shrink-0"
@@ -459,7 +459,6 @@ export const CoursePage: React.FC<CoursePageProps> = ({
             totalNodesCount > 0 ? Math.round((completedNodesCount / totalNodesCount) * 100) : 0;
 
           const rawTitle = getLocalized(module.title, language).replace(/^(Modül|Module)\s*\d+\s*:\s*/i, '').trim();
-          const moduleDisplayTitle = `${language === 'tr' ? `Modül ${trackModuleOrder}` : `Module ${trackModuleOrder}`}: ${rawTitle}`;
 
           return (
             <div key={module.id} id={`module-section-${module.id}`} className="relative">
@@ -474,7 +473,12 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex-1 min-w-0">
                     <h2 className="text-base xs:text-lg sm:text-xl font-black tracking-tight leading-snug">
-                      <MathFormulaText text={moduleDisplayTitle} inline />
+                      <span className={isModuleUnlocked ? 'text-slate-950 mr-1.5' : 'text-slate-700 mr-1.5'}>
+                        {language === 'tr' ? `Modül ${trackModuleOrder}:` : `Module ${trackModuleOrder}:`}
+                      </span>
+                      <span className={isModuleUnlocked ? 'text-white' : 'text-slate-600'}>
+                        <MathFormulaText text={rawTitle} inline />
+                      </span>
                     </h2>
                     <p className="text-xs sm:text-sm opacity-90 font-medium mt-1.5 leading-relaxed">
                       {getLocalized(module.description, language)}
