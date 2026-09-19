@@ -34,6 +34,8 @@ import {
   Menu,
   Globe,
   ChevronRight,
+  Settings,
+  BarChart3,
 } from 'lucide-react';
 
 interface ProfilePageProps {
@@ -606,7 +608,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       )}
 
       {/* Key Metrics Bar (3 Hero Stats) */}
-      <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+      <div id="profile-analytics-section" className="grid grid-cols-3 gap-2.5 sm:gap-3 scroll-mt-20">
         <div className="bg-orange-50 border border-orange-200/80 rounded-2xl p-3 sm:p-4 text-center">
           <div className="flex items-center justify-center space-x-1 text-[#ff7a00] mb-0.5">
             <Trophy className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -769,78 +771,63 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
               {/* Navigation & Action Items */}
               <div className="space-y-2.5">
-                {isAuthenticated && (
-                  <button
-                    onClick={() => {
-                      setIsSideMenuOpen(false);
-                      setIsEditing(true);
-                    }}
-                    className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-orange-50/80 border border-slate-200/80 text-left transition-all group cursor-pointer"
-                  >
-                    <div className="flex items-center space-x-3 min-w-0">
-                      <div className="p-2 rounded-xl bg-orange-100 text-[#ff7a00] group-hover:scale-105 transition-transform shrink-0">
-                        <Edit3 className="w-4 h-4 stroke-[2.5]" />
-                      </div>
-                      <div>
-                        <div className="text-xs font-black text-slate-900">{language === 'tr' ? 'Profili Düzenle' : 'Edit Profile'}</div>
-                        <div className="text-[10px] text-slate-500">{language === 'tr' ? 'İsim, avatar ve şifre' : 'Name, avatar and password'}</div>
-                      </div>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7a00] group-hover:translate-x-0.5 transition-all" />
-                  </button>
-                )}
-
-                {onNavigateLeaderboard && (
-                  <button
-                    onClick={() => {
-                      setIsSideMenuOpen(false);
-                      onNavigateLeaderboard();
-                    }}
-                    className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-orange-50/80 border border-slate-200/80 text-left transition-all group cursor-pointer"
-                  >
-                    <div className="flex items-center space-x-3 min-w-0">
-                      <div className="p-2 rounded-xl bg-amber-100 text-amber-600 group-hover:scale-105 transition-transform shrink-0">
-                        <Trophy className="w-4 h-4 stroke-[2.5]" />
-                      </div>
-                      <div>
-                        <div className="text-xs font-black text-slate-900">{language === 'tr' ? 'Liderlik Tablosu' : 'Leaderboard'}</div>
-                        <div className="text-[10px] text-slate-500">{language === 'tr' ? 'Sıralamanı ve puanları gör' : 'View rankings and scores'}</div>
-                      </div>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7a00] group-hover:translate-x-0.5 transition-all" />
-                  </button>
-                )}
-
-                {/* Language Selector */}
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 rounded-xl bg-blue-100 text-blue-600 shrink-0">
-                      <Globe className="w-4 h-4 stroke-[2.5]" />
+                {/* 1. Analizlerim (Üstte) */}
+                <button
+                  onClick={() => {
+                    setIsSideMenuOpen(false);
+                    setTimeout(() => {
+                      const el = document.getElementById('profile-analytics-section');
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }, 180);
+                  }}
+                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-orange-50/80 border border-slate-200/80 text-left transition-all group cursor-pointer active:scale-98"
+                >
+                  <div className="flex items-center space-x-3 min-w-0">
+                    <div className="p-2.5 rounded-xl bg-orange-100 text-[#ff7a00] group-hover:scale-105 transition-transform shrink-0">
+                      <BarChart3 className="w-4 h-4 stroke-[2.5]" />
                     </div>
                     <div>
-                      <div className="text-xs font-black text-slate-900">{language === 'tr' ? 'Uygulama Dili' : 'Language'}</div>
-                      <div className="text-[10px] text-slate-500">{language === 'tr' ? 'Türkçe / English' : 'Turkish / English'}</div>
+                      <div className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-[#ff7a00] transition-colors">
+                        {language === 'tr' ? 'Analizlerim' : 'My Analytics'}
+                      </div>
+                      <div className="text-[10px] sm:text-[11px] text-slate-500 font-medium">
+                        {language === 'tr' ? 'Başarı oranı, XP ve müfredat analizi' : 'Accuracy, XP & progress analytics'}
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-1 bg-white p-1 rounded-xl border border-slate-200">
-                    <button
-                      onClick={() => setLanguage('tr')}
-                      className={`px-2.5 py-1 rounded-lg text-[10.5px] font-black transition-colors cursor-pointer ${
-                        language === 'tr' ? 'bg-[#ff7a00] text-white' : 'text-slate-600 hover:text-slate-900'
-                      }`}
-                    >
-                      TR
-                    </button>
-                    <button
-                      onClick={() => setLanguage('en')}
-                      className={`px-2.5 py-1 rounded-lg text-[10.5px] font-black transition-colors cursor-pointer ${
-                        language === 'en' ? 'bg-[#ff7a00] text-white' : 'text-slate-600 hover:text-slate-900'
-                      }`}
-                    >
-                      EN
-                    </button>
+                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7a00] group-hover:translate-x-0.5 transition-all shrink-0" />
+                </button>
+
+                {/* 2. Ayarlar (Altta) */}
+                <button
+                  onClick={() => {
+                    setIsSideMenuOpen(false);
+                    if (isAuthenticated) {
+                      setIsEditing(true);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                      onOpenAuth?.();
+                    }
+                  }}
+                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-orange-50/80 border border-slate-200/80 text-left transition-all group cursor-pointer active:scale-98"
+                >
+                  <div className="flex items-center space-x-3 min-w-0">
+                    <div className="p-2.5 rounded-xl bg-slate-200/80 text-slate-700 group-hover:scale-105 transition-transform shrink-0">
+                      <Settings className="w-4 h-4 stroke-[2.5]" />
+                    </div>
+                    <div>
+                      <div className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-[#ff7a00] transition-colors">
+                        {language === 'tr' ? 'Ayarlar' : 'Settings'}
+                      </div>
+                      <div className="text-[10px] sm:text-[11px] text-slate-500 font-medium">
+                        {language === 'tr' ? 'Profil, şifre ve hesap tercihleri' : 'Profile, password & preferences'}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7a00] group-hover:translate-x-0.5 transition-all shrink-0" />
+                </button>
               </div>
             </div>
 
