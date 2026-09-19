@@ -14,12 +14,17 @@ export const MathFormulaText: React.FC<MathFormulaTextProps> = ({
 }) => {
   if (!text || typeof text !== 'string') return null;
 
+  // Normalize standard LaTeX \[...\] to $$...$$ and \(...\) to $...$
+  const normalizedText = text
+    .replace(/\\\[([\s\S]*?)\\\]/g, '$$$$$1$$$$')
+    .replace(/\\\(([\s\S]*?)\\\)/g, '$$$1$$');
+
   // Process block formulas ($$...$$) first
   const blockRegex = /\$\$([\s\S]*?)\$\$/g;
   
-  if (!blockRegex.test(text)) {
+  if (!blockRegex.test(normalizedText)) {
     // No block formulas, parse inline formulas
-    return <InlineMathParser text={text} className={className} darkBg={darkBg} />;
+    return <InlineMathParser text={normalizedText} className={className} darkBg={darkBg} />;
   }
 
   // Reset regex index
@@ -28,7 +33,7 @@ export const MathFormulaText: React.FC<MathFormulaTextProps> = ({
   let lastIndex = 0;
   let match: RegExpExecArray | null;
 
-  while ((match = blockRegex.exec(text)) !== null) {
+  while ((match = blockRegex.exec(normalizedText)) !== null) {
     const matchIndex = match.index;
     const formulaContent = match[1].trim();
 
@@ -58,8 +63,8 @@ export const MathFormulaText: React.FC<MathFormulaTextProps> = ({
     }
   }
 
-  if (lastIndex < text.length) {
-    const textChunk = text.substring(lastIndex);
+  if (lastIndex < normalizedText.length) {
+    const textChunk = normalizedText.substring(lastIndex);
     elements.push(
       <InlineMathParser key={`text-${lastIndex}`} text={textChunk} darkBg={darkBg} />
     );

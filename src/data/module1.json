@@ -410,8 +410,8 @@
         "en": "Key partitioning metrics for data spread:\n\n1. **Range:** $\\text{Range} = x_{max} - x_{min}$\n2. **First Quartile ($Q_1$):** 25th percentile (25% below).\n3. **Second Quartile ($Q_2$):** Median (50th percentile).\n4. **Third Quartile ($Q_3$):** 75th percentile (75% below).\n5. **Interquartile Range ($IQR$):** $IQR = Q_3 - Q_1$ (Spread of middle 50%)."
       },
       "companyExample": {
-        "tr": "Sipariş tutarları sıralandığında $Q_1 = 40\\$$, $Q_3 = 120\\$$ bulunmuştur. Çeyrekler açıklığı $IQR = 120 - 40 = 80\\$$'dır.",
-        "en": "When orders are sorted, $Q_1 = \\$40$ and $Q_3 = \\$120$. Interquartile range $IQR = 120 - 40 = \\$80$."
+        "tr": "Perakende zincirinde müşteri sepet tutarları incelendiğinde; ilk çeyrek $Q_1 = 40$ TL, medyan $Q_2 = 70$ TL ve üçüncü çeyrek $Q_3 = 120$ TL bulunmuştur. Çeyrekler açıklığı $IQR = Q_3 - Q_1 = 120 - 40 = 80$ TL olarak hesaplanır. Müşterilerin orta %50'lik dilimi 40 TL ile 120 TL arasında harcama yapmaktadır.",
+        "en": "In a retail chain basket study, the first quartile is $Q_1 = 40$ USD, median $Q_2 = 70$ USD, and third quartile $Q_3 = 120$ USD. The interquartile range is $IQR = Q_3 - Q_1 = 120 - 40 = 80$ USD. The middle 50% of customers spend between 40 USD and 120 USD."
       },
       "vocabTerms": [
         {
@@ -508,8 +508,8 @@
         "en": "Used to return variance to original units and evaluate relative risk:\n\n1. **Standard Deviation ($s$):** $s = \\sqrt{s^2}$\n2. **Coefficient of Variation ($CV$):**\n$$CV = \\frac{s}{\\bar{x}} \\times 100\\%$$\nCompares relative variation across datasets with different units or scales."
       },
       "companyExample": {
-        "tr": "A hissesi $\\bar{x}=100\\$, s=10\\$ ($CV=10\\%$); B hissesi $\\bar{x}=1000\\$, s=50\\$ ($CV=5\\%$). B hissesi mutlak sapması yüksek olsa da bağıl olarak daha kararlıdır.",
-        "en": "Stock A has mean $\\$100$, std dev $\\$10$ ($CV=10\\%$); Stock B has mean $\\$1000$, std dev $\\$50$ ($CV=5\\%$). Stock B is relatively more stable."
+        "tr": "Fintech ödeme altyapısında Sunucu A: $\\bar{x} = 100$ ms, $s = 10$ ms ($CV = 10\\%$); Sunucu B: $\\bar{x} = 200$ ms, $s = 50$ ms ($CV = 25\\%$). B sunucusunun bağıl değişkenliği çok daha yüksektir ve risklidir.",
+        "en": "In fintech latency analytics, Server A: $\\bar{x} = 100$ ms, $s = 10$ ms ($CV = 10\\%$); Server B: $\\bar{x} = 200$ ms, $s = 50$ ms ($CV = 25\\%$). Server B has much higher relative variability."
       },
       "vocabTerms": [
         {
@@ -557,8 +557,8 @@
         "en": "Tukey's $1.5 \\times IQR$ rule:\n\n1. **Lower Fence:** $LF = Q_1 - 1.5 \\times IQR$\n2. **Upper Fence:** $UF = Q_3 + 1.5 \\times IQR$\n\nPoints outside $[LF, UF]$ are designated as **Outliers**."
       },
       "companyExample": {
-        "tr": "Siparişlerde $Q_1 = 40\\$, $Q_3 = 120\\$, $IQR = 80\\$. Üst sınır $UF = 120 + 1.5(80) = 240\\$. $300\\$'lık işlem aykırı değerdir.",
-        "en": "Orders: $Q_1 = \\$40, Q_3 = \\$120, IQR = \\$80$. $UF = 120 + 1.5(80) = \\$240$. A $\\$300$ order is flagged as an outlier."
+        "tr": "Sipariş verilerinde $Q_1 = 40$ TL, $Q_3 = 120$ TL ve $IQR = 80$ TL olsun. Üst sınır: $UF = Q_3 + 1.5 \\times IQR = 120 + 1.5(80) = 240$ TL'dir. 300 TL'lik bir sipariş $300 > 240$ olduğu için sisteme potansiyel dolandırıcılık veya kurumsal sipariş (aykırı değer / outlier) olarak işaretlenir.",
+        "en": "In transaction data, with $Q_1 = 40$ USD, $Q_3 = 120$ USD, and $IQR = 80$ USD, Upper Fence is $UF = Q_3 + 1.5 \\times IQR = 120 + 1.5(80) = 240$ USD. A 300 USD order is flagged as an outlier since $300 > 240$."
       },
       "vocabTerms": [
         {
@@ -607,7 +607,7 @@
       },
       "companyExample": {
         "tr": "E-ticaret cirolarında Ortalama = 180 TL, Medyan = 70 TL çıkmıştır. Q-Q grafiğinde sağ üstte eğrilme görülür; veri sağa çarpıktır ve normal dağılmamaktadır.",
-        "en": "Revenue data has Mean = $\\$180$, Median = $\\$70$. Q-Q plot curves upward on top right, indicating positive skewness and non-normality."
+        "en": "Payment processing durations are plotted on a Normal Q-Q plot. The points fall on a straight 45-degree line, confirming normality and validating parametric Z-score limits."
       },
       "vocabTerms": [
         {

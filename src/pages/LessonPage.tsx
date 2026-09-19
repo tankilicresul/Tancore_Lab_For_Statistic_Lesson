@@ -258,18 +258,18 @@ export const LessonPage: React.FC<LessonPageProps> = ({
         <div className="h-1.5 w-20 bg-[#ff7a00] rounded-full" />
       </div>
 
-      {/* STEP 1: Concept Card (Kavram Kartı) */}
-      <div className="mb-5 p-5 rounded-3xl bg-white border border-slate-200 shadow-xs relative">
-        <div className="flex items-center space-x-3 mb-3">
+      {/* SECTION 1: Konunun Kendisi */}
+      <div className="mb-6 p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-xs relative">
+        <div className="flex items-center space-x-3 mb-3.5">
           <div className="p-2.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30 shrink-0">
             <Lightbulb className="w-5 h-5 stroke-[2.2]" />
           </div>
           <div className="min-w-0">
             <h3 className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#ff7a00]">
-              {language === 'tr' ? '1. Kavram Kartı' : '1. Concept Card'}
+              {language === 'tr' ? '1: Konunun Kendisi' : '1: Core Concept & Theory'}
             </h3>
             <p className="text-xs text-slate-500 font-medium truncate">
-              {language === 'tr' ? 'Temel teorik açıklama ve mantık' : 'Core theoretical explanation & logic'}
+              {language === 'tr' ? 'Temel teorik açıklamalar, kurallar ve formüller' : 'Theoretical foundations, rules and formulas'}
             </p>
           </div>
         </div>
@@ -285,36 +285,38 @@ export const LessonPage: React.FC<LessonPageProps> = ({
         })()}
       </div>
 
-      {/* STEP 1.5: High-Quality Visual Concept Diagram (Grafik & Görsel Şema) */}
+      {/* Visual Concept Diagram */}
       <ConceptDiagram moduleId={module.id} lessonId={lesson.id} />
 
-      {/* STEP 2: Company Example (Şirket Örneği) */}
-      <div className="mb-5 p-5 rounded-3xl bg-[#ff7a00]/5 border border-[#ff7a00]/25 shadow-xs">
-        <div className="flex items-center space-x-3 mb-3">
-          <div className="p-2.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30 shrink-0">
-            <Building2 className="w-5 h-5 stroke-[2.2]" />
+      {/* SECTION 2: Varsa Örnek Soru Çözümü */}
+      {lesson.companyExample && (
+        <div className="mb-6 p-5 sm:p-6 rounded-3xl bg-[#ff7a00]/5 border border-[#ff7a00]/25 shadow-xs">
+          <div className="flex items-center space-x-3 mb-3.5">
+            <div className="p-2.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30 shrink-0">
+              <Building2 className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <div className="min-w-0">
+              <h3 className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#ff7a00]">
+                {language === 'tr' ? '2: Varsa Örnek Soru Çözümü' : '2: Worked Example & Solution'}
+              </h3>
+              <p className="text-xs text-slate-600 font-medium truncate">
+                {language === 'tr' ? 'Adım adım çözümlü pratik uygulama ve soru çözümü' : 'Step-by-step practical problem solving & scenario'}
+              </p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <h3 className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#ff7a00]">
-              {language === 'tr' ? '2. Gerçek Şirket Örneği' : '2. Real Company Example'}
-            </h3>
-            <p className="text-xs text-slate-600 font-medium truncate">
-              {language === 'tr' ? 'Pratik e-ticaret & iş dünyası senaryosu' : 'Practical e-commerce & business scenario'}
-            </p>
+          <div className="text-xs sm:text-sm text-slate-900 leading-relaxed font-medium">
+            <MathFormulaText text={getLocalized(lesson.companyExample, language)} />
           </div>
         </div>
-        <p className="text-xs sm:text-sm text-slate-900 leading-relaxed font-medium">
-          <MathFormulaText text={getLocalized(lesson.companyExample, language)} />
-        </p>
-      </div>
+      )}
 
-      {/* STEP 3: Interactive Calculation Area */}
+      {/* Interactive Calculation Area (if applicable) */}
       <InteractiveCalc
         type={lesson.interactiveType}
         initialData={lesson.interactiveInitialData}
       />
 
-      {/* STEP 4: Mini Questions (Sorular) */}
+      {/* SECTION 3: Örnek Soru */}
       {lesson.questions && lesson.questions.length > 0 && (
         <div id="lesson-question-box" className="my-8 rounded-3xl bg-white border border-slate-200 overflow-hidden shadow-xs">
           <button
@@ -328,14 +330,14 @@ export const LessonPage: React.FC<LessonPageProps> = ({
               <div className="min-w-0">
                 <div className="flex items-center space-x-2">
                   <h3 className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#ff7a00]">
-                    {language === 'tr' ? '4. Mini Kavrama Sorusu' : '4. Mini Check Question'}
+                    {language === 'tr' ? '3: Örnek Soru' : '3: Practice Question'}
                   </h3>
                   <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-orange-100 text-[#ff7a00] border border-orange-200">
                     +15 XP
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 font-medium truncate mt-0.5">
-                  {language === 'tr' ? 'Soruyu doğru yanıtlayarak +15 XP kazan' : 'Answer correctly to earn +15 XP'}
+                  {language === 'tr' ? 'Soruyu çözerek kendini dene ve +15 XP kazan' : 'Test your understanding and earn +15 XP'}
                 </p>
               </div>
             </div>

@@ -325,7 +325,7 @@
       },
       "companyExample": {
         "tr": "AdTechX modelinde $\\hat{y} = 50 + 4.5 x$ bulunmuştur ($x$: Bin TL reklam, $y$: Bin TL ciro). Sıfır reklamda taban ciro 50 Bin TL'dir; her 1.000 TL ek reklam ciroyu 4.500 TL artırır.",
-        "en": "Sales model $\\hat{y} = 50 + 4.5x$. Base sales is $\\$50K$; every $\\$1K$ ad spend yields $\\$4.5K$ additional revenue."
+        "en": "AdTechX regression model: $\\hat{y} = 50 + 4.2x$, where $x$ is daily ad spend (in thousands USD) and $y$ is sales revenue. For $x = 10$ (10,000 USD ad spend), predicted revenue is $\\hat{y} = 50 + 4.2(10) = 92$ (92,000 USD). Each additional 1,000 USD spent yields an expected 4,200 USD revenue increase."
       },
       "vocabTerms": [
         {

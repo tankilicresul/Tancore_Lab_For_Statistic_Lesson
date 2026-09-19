@@ -26,7 +26,7 @@
       },
       "companyExample": {
         "tr": "EstateVal emlak modelinde: $\\hat{y} = 100 + 15(\\text{m}^2) + 50(\\text{Oda}) - 20(\\text{Yaş})$ (Bin TL). Oda sayısı ve bina yaşı sabit tutulduğunda, her 1 ek $\\text{m}^2$ fiyatı ortalama 15.000 TL artırır.",
-        "en": "Estate valuation: $\\hat{y} = 100 + 15(m^2) + 50(Rooms) - 20(Age)$. Holding rooms and age constant, each additional $m^2$ adds $\\$15K$ to expected price."
+        "en": "EstateVal property pricing model: $\\hat{y} = 100 + 15(x_1) + 50(x_2) - 20(x_3)$ (in thousands USD), where $x_1$ is area (sqm), $x_2$ is rooms, and $x_3$ is building age (years). Holding area and age constant, an extra room adds an expected 50,000 USD to property value."
       },
       "vocabTerms": [
         {
