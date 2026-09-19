@@ -21,7 +21,7 @@
         "en": "Discrete Random Variables, PMF & CDF"
       },
       "conceptCard": {
-        "tr": "Kesikli bir rastgele değişken $X$, sayılabilir sayıda değer alabilir. Olasılık Kütle Fonksiyonu (PMF) $p(x) = P(X = x)$ her değerin olasılığını verir ($p(x) \\ge 0$ ve $\\sum p(x) = 1$). Kümülatif Dağılım Fonksiyonu (CDF) ise $F(x) = P(X \\le x) = \\sum_{t \\le x} p(t)$ şeklinde tanımlanır.",
+        "tr": "Kesikli bir rastgele değişken $X$, sayılabilir sayıda değer alabilen değişkendir (`ENGR 200`):\n\n1. **Olasılık Kütle Fonksiyonu (PMF):** $p(x) = P(X = x)$,\n   - $p(x) \\ge 0$\n   - $\\sum_x p(x) = 1$\n2. **Kümülatif Dağılım Fonksiyonu (CDF):**\n   $$F(x) = P(X \\le x) = \\sum_{t \\le x} p(t)$$\n   - $F(x)$ monoton artandır, sağdan süreklidir, $\\lim_{x \\to -\\infty} F(x) = 0$ ve $\\lim_{x \\to \\infty} F(x) = 1$.",
         "en": "A discrete random variable $X$ takes countable values. PMF $p(x) = P(X=x)$ gives point probabilities ($\\sum p(x) = 1$). Cumulative distribution function is $F(x) = P(X \\le x)$."
       },
       "companyExample": {
@@ -63,7 +63,7 @@
         "en": "Expected Value ($E[X]$) & Variance ($Var(X)$)"
       },
       "conceptCard": {
-        "tr": "Kesikli bir değişken $X$ için Beklenen Değer (Ağırlıklı Ortalama):\n$$\\mathbb{E}[X] = \\mu = \\sum x \\cdot p(x)$$\nBeklenen Değerin Doğrusallığı: $\\mathbb{E}[aX + b] = a\\mathbb{E}[X] + b$.\n\nVaryans (Ortalama sapmanın karesi):\n$$\\text{Var}(X) = \\sigma^2 = \\mathbb{E}[(X - \\mu)^2] = \\mathbb{E}[X^2] - (\\mathbb{E}[X])^2$$\nÖzellik: $\\text{Var}(aX + b) = a^2 \\text{Var}(X)$.",
+        "tr": "**Beklenen Değer (Ağırlıklı Ortalama):**\n$$\\mathbb{E}[X] = \\mu = \\sum_x x \\cdot p(x)$$\n- **Doğrusallık (Linearity of Expectation):** $\\mathbb{E}[aX + b] = a\\mathbb{E}[X] + b$\n\n**Varyans ve Standart Sapma:**\n$$\\text{Var}(X) = \\sigma^2 = \\mathbb{E}[(X - \\mu)^2] = \\mathbb{E}[X^2] - (\\mathbb{E}[X])^2$$\n- $\\text{Var}(aX + b) = a^2 \\text{Var}(X)$\n- Standart sapma: $\\sigma = \\sqrt{\\text{Var}(X)}$",
         "en": "Expected Value: $\\mathbb{E}[X] = \\sum x p(x)$. Linearity: $\\mathbb{E}[aX+b] = a\\mathbb{E}[X]+b$. Variance: $\\text{Var}(X) = \\mathbb{E}[X^2] - (\\mathbb{E}[X])^2$, with $\\text{Var}(aX+b) = a^2\\text{Var}(X)$."
       },
       "companyExample": {
@@ -105,7 +105,7 @@
         "en": "Binomial & Geometric Distributions"
       },
       "conceptCard": {
-        "tr": "1. **Binom Dağılımı** ($X \\sim \\text{Bin}(n, p)$): $n$ bağımsız Bernoulli denemesinde $k$ başarı elde etme olasılığı:\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\qquad \\mathbb{E}[X] = np, \\quad \\text{Var}(X) = np(1-p)$$\n\n2. **Geometrik Dağılım** ($Y \\sim \\text{Geom}(p)$): İlk başarıya kadar gereken deneme sayısı:\n$$P(Y = k) = (1-p)^{k-1} p, \\qquad \\mathbb{E}[Y] = \\frac{1}{p}, \\quad \\text{Var}(Y) = \\frac{1-p}{p^2}$$",
+        "tr": "**1. Binom Dağılımı ($X \\sim \\text{Bin}(n, p)$):**\n$n$ bağımsız Bernoulli denemesinde $k$ başarı sayısı:\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\quad k = 0, 1, \\dots, n$$\n$$\\mathbb{E}[X] = np, \\qquad \\text{Var}(X) = np(1-p)$$\n\n**2. Geometrik Dağılım ($Y \\sim \\text{Geom}(p)$):**\nİlk başarıya kadar gereken bağımsız deneme sayısı:\n$$P(Y = k) = (1-p)^{k-1} p, \\quad k = 1, 2, \\dots$$\n$$\\mathbb{E}[Y] = \\frac{1}{p}, \\qquad \\text{Var}(Y) = \\frac{1-p}{p^2}$$",
         "en": "Binomial: $P(X=k) = \\binom{n}{k}p^k(1-p)^{n-k}$, $\\mathbb{E}[X]=np, \\text{Var}(X)=np(1-p)$. Geometric: First success at trial $k$, $P(Y=k)=(1-p)^{k-1}p, \\mathbb{E}[Y]=1/p$."
       },
       "companyExample": {
@@ -147,7 +147,7 @@
         "en": "Poisson Distribution & Poisson Process"
       },
       "conceptCard": {
-        "tr": "Belirli bir zaman veya alan aralığında nadir olayların gerçekleşme sayısı $X \\sim \\text{Poisson}(\\lambda)$ dağılımına uyar:\n\n$$P(X = k) = \\frac{e^{-\\lambda} \\lambda^k}{k!}, \\qquad k = 0, 1, 2, \\dots$$\n\nPoisson Dağılımının en ayırt edici özelliği, ortalaması ile varyansının eşit olmasıdır:\n$$\\mathbb{E}[X] = \\lambda, \\qquad \\text{Var}(X) = \\lambda$$\nBinom Yaklaşımı: $n \\ge 100$ ve $p \\le 0.05$ ise $\\text{Bin}(n, p) \\approx \\text{Poisson}(\\lambda = np)$.",
+        "tr": "**Poisson Dağılımı ($X \\sim \\text{Poisson}(\\lambda)$) (`ENGR 200`):**\nSabit bir zaman veya uzay aralığında gerçekleşen bağımsız nadir olay sayısı:\n\n$$P(X = k) = \\frac{e^{-\\lambda} \\lambda^k}{k!}, \\quad k = 0, 1, 2, \\dots$$\n\n**Karakteristik Özellik:**\n$$\\mathbb{E}[X] = \\lambda, \\qquad \\text{Var}(X) = \\lambda$$\n\n**Binom-Poisson Yaklaşımı (Law of Rare Events):**\n$n \\ge 100$ ve $p \\le 0.05$ ise $X \\sim \\text{Bin}(n, p) \\approx \\text{Poisson}(\\lambda = np)$.",
         "en": "Poisson distribution for counts in fixed interval: $P(X=k) = \\frac{e^{-\\lambda}\\lambda^k}{k!}$ where $\\mathbb{E}[X] = \\text{Var}(X) = \\lambda$. Binomial approximates Poisson when $n$ is large and $p$ is small."
       },
       "companyExample": {

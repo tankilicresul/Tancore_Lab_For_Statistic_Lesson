@@ -21,7 +21,7 @@
         "en": "Point Estimation and Unbiasedness"
       },
       "conceptCard": {
-        "tr": "Bilinmeyen bir anakütle parametresi $\\theta$ için örneklemden tek bir sayısal tahmin üreten fonksiyona **Nokta Tahmin Edici (Point Estimator $\\hat{\\Theta}$)** denir (`INDR 252 CEx4`).\n\n1. **Sapmasızlık (Unbiasedness):**\n$$E[\\hat{\\Theta}] = \\theta$$\nTahmin edicinin beklenen değeri tam olarak gerçek parametreye eşit olmalıdır. Örneklem ortalaması $E[\\bar{X}] = \\mu$ ve örneklem varyansı $E[s^2] = \\sigma^2$ sapmasızdır.\n2. **Sapma (Bias):** $\\text{Bias}(\\hat{\\Theta}) = E[\\hat{\\Theta}] - \\theta$",
+        "tr": "Bilinmeyen parametre $\\theta$ için örneklemden tek bir sayısal değer üreten fonksiyona **Nokta Tahmin Edici (Point Estimator / $\\hat{\\theta}$)** denir (`INDR 252 Lecture 4`):\n\n1. **Sapmasızlık (Unbiasedness):** $\\mathbb{E}[\\hat{\\theta}] = \\theta$ ise $\\hat{\\theta}$ sapmasızdır.\n   - Sapma: $\\text{Bias}(\\hat{\\theta}) = \\mathbb{E}[\\hat{\\theta}] - \\theta$\n2. **Ortalama Hata Karesi (MSE):**\n   $$\\text{MSE}(\\hat{\\theta}) = \\mathbb{E}[(\\hat{\\theta} - \\theta)^2] = \\text{Var}(\\hat{\\theta}) + [\\text{Bias}(\\hat{\\theta})]^2$$\n   - Sapmasız tahmin ediciler için $\\text{MSE} = \\text{Var}(\\hat{\\theta})$ olur.",
         "en": "A single numerical value used to estimate an unknown population parameter $\\theta$ (`INDR 252 CEx4`):\n\n1. **Unbiasedness:**\n$$E[\\hat{\\Theta}] = \\theta$$\nThe expected value of the estimator equals the true parameter. $\\bar{X}$ and $s^2$ (with $n-1$) are unbiased estimators.\n2. **Bias:** $\\text{Bias}(\\hat{\\Theta}) = E[\\hat{\\Theta}] - \\theta$"
       },
       "companyExample": {
@@ -88,7 +88,7 @@
         "en": "Maximum Likelihood Estimation (MLE)"
       },
       "conceptCard": {
-        "tr": "Verilen gözlem verilerini en olası kılan parametre değerini bulma yöntemi (`INDR 252 CEx5`):\n\n1. **Olabilirlik Fonksiyonu (Likelihood):** $L(\\theta) = \\prod_{i=1}^n f(x_i; \\theta)$\n2. **Log-Olabilirlik:** $\\ln L(\\theta) = \\sum_{i=1}^n \\ln f(x_i; \\theta)$\n3. **Türev Alıp Sıfıra Eşitleme:** $\\frac{d \\ln L(\\theta)}{d\\theta} = 0$\n\n**Örnek (Üstel Dağılım):** $f(x) = \\lambda e^{-\\lambda x} \\implies \\hat{\\lambda}_{MLE} = \\frac{n}{\\sum x_i} = \\frac{1}{\\bar{x}}$",
+        "tr": "**En Çok Olabilirlik Yöntemi (Maximum Likelihood Estimation - MLE) (`INDR 252 Lecture 4`, `CEx5`):**\n\nGözlemlenen verileri en olası kılan parametre değerini bulma prosedürü:\n\n1. **Likelihood Fonksiyonu:** $L(\\theta) = \\prod_{i=1}^n f(x_i; \\theta)$\n2. **Log-Likelihood Fonksiyonu:** $\\ln L(\\theta) = \\sum_{i=1}^n \\ln f(x_i; \\theta)$\n3. **Türev ve Sıfıra Eşitleme:** $\\frac{d \\ln L(\\theta)}{d\\theta} = 0 \\implies \\hat{\\theta}_{\\text{MLE}}$\n4. **İkinci Türev Testi:** $\\frac{d^2 \\ln L(\\theta)}{d\\theta^2} < 0$ (Maksimum olduğunu kanıtlar).",
         "en": "Finding parameter values that maximize the likelihood of observing the given sample (`INDR 252 CEx5`):\n\n1. **Likelihood Function:** $L(\\theta) = \\prod_{i=1}^n f(x_i; \\theta)$\n2. **Log-Likelihood:** $\\ln L(\\theta) = \\sum_{i=1}^n \\ln f(x_i; \\theta)$\n3. **First Derivative:** $\\frac{d \\ln L(\\theta)}{d\\theta} = 0$\n\n**Exponential Distribution MLE:** $\\hat{\\lambda}_{MLE} = \\frac{n}{\\sum x_i} = \\frac{1}{\\bar{x}}$"
       },
       "companyExample": {
@@ -235,7 +235,7 @@
         "en": "Confidence Interval for Proportions and Agresti-Coull"
       },
       "conceptCard": {
-        "tr": "1. **Klasik Wald Oran Güven Aralığı:**\n$$\\hat{p} \\pm z_{\\alpha/2} \\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$$\n2. **Agresti-Coull Düzeltmesi (`INDR 252 Lecture 9`):**\nKüçük $n$ veya uç $p$ değerlerinde klasik formül hatalı sonuç verir. 2 başarı ve 2 başarısızlık eklenerek düzeltilir:\n$$\\tilde{n} = n + 4, \\quad \\tilde{p} = \\frac{x + 2}{n + 4}$$\n$$\\tilde{p} \\pm z_{\\alpha/2} \\sqrt{\\frac{\\tilde{p}(1-\\tilde{p})}{\\tilde{n}}}$$",
+        "tr": "**Oranlar İçin Güven Aralığı (`INDR 252 Lecture 5`, `FormulaSheet`):**\n\n1. **Klasik Wald Aralığı ($n\\hat{p} \\ge 5, n(1-\\hat{p}) \\ge 5$):**\n$$\\hat{p} \\pm Z_{\\alpha/2} \\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$$\n\n2. **Agresti-Coull Düzeltmesi (Küçük $n$ veya uç $p$ için `INDR 252`):**\n$$\\tilde{n} = n + 4, \\qquad \\tilde{p} = \\frac{X + 2}{n + 4}$$\n$$\\tilde{p} \\pm Z_{\\alpha/2} \\sqrt{\\frac{\\tilde{p}(1-\\tilde{p})}{\\tilde{n}}}$$",
         "en": "1. **Wald Proportion CI:**\n$$\\hat{p} \\pm z_{\\alpha/2} \\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$$\n2. **Agresti-Coull \"Plus Four\" Interval (`INDR 252 Lecture 9`):**\nAdds 2 successes and 2 failures for robust coverage in small samples:\n$$\\tilde{n} = n + 4, \\quad \\tilde{p} = \\frac{x + 2}{n + 4}$$\n$$\\tilde{p} \\pm z_{\\alpha/2} \\sqrt{\\frac{\\tilde{p}(1-\\tilde{p})}{\\tilde{n}}}$$"
       },
       "companyExample": {
@@ -284,7 +284,7 @@
         "en": "Confidence Interval for Population Variance ($chi^2$)"
       },
       "conceptCard": {
-        "tr": "Normal dağılan bir popülasyonun varyansı $\\sigma^2$ için %$100(1-\\alpha)$ Güven Aralığı (`INDR 252 FormulaSheet`):\n\n$$\\left[ \\frac{(n-1)s^2}{\\chi^2_{\\alpha/2, n-1}}, \\quad \\frac{(n-1)s^2}{\\chi^2_{1-\\alpha/2, n-1}} \\right]$$\n\n- Ki-kare ($\\chi^2$) dağılımı simetrik değildir ($[0, \\infty)$ aralığında sağa çarpıktır).\n- Standart sapma için bu sınırların karekökü alınır.",
+        "tr": "**Tek Popülasyon Varyansı İçin Güven Aralığı ($chi^2$ Dağılımı - `INDR 252 Lecture 5`):**\n\nNormal dağılan bir popülasyondan çekilen $n$ gözlem için varyans $\\sigma^2$ güven aralığı:\n\n$$\\frac{(n-1)s^2}{\\chi^2_{\\alpha/2, n-1}} \\le \\sigma^2 \\le \\frac{(n-1)s^2}{\\chi^2_{1-\\alpha/2, n-1}}$$\n\n- $\\chi^2$ dağılımı simetrik değildir ($0$ ile $+\\infty$ arası), bu yüzden alt ve üst kritik değerler tablodan ayrı ayrı okunur.",
         "en": "Confidence interval for population variance $\\sigma^2$ (`INDR 252 FormulaSheet`):\n\n$$\\left[ \\frac{(n-1)s^2}{\\chi^2_{\\alpha/2, n-1}}, \\quad \\frac{(n-1)s^2}{\\chi^2_{1-\\alpha/2, n-1}} \\right]$$\n\n- Chi-square distribution is asymmetric and strictly positive.\n- Take square roots for standard deviation limits."
       },
       "companyExample": {
@@ -351,7 +351,7 @@
         "en": "Prediction Interval (PI) vs. Tolerance Interval (TI)"
       },
       "conceptCard": {
-        "tr": "Üç kritik aralığın farkı (`INDR 252 Lecture 10`, `CEx10`):\n\n1. **Güven Aralığı (CI):** Ortalama $\\mu$'yü kapsar: $\\bar{x} \\pm t s \\sqrt{\\frac{1}{n}}$\n2. **Tahmin Aralığı (Prediction Interval - PI):** Gelecekteki **tek bir $X_0$ gözlemini** kapsar (daha geniştir):\n$$\\bar{x} \\pm t_{\\alpha/2, n-1} s \\sqrt{1 + \\frac{1}{n}}$$\n3. **Tolerans Aralığı (Tolerance Interval - TI):** Popülasyonun en az $%k$'sını $%100(1-\\alpha)$ güvenle kapsayan aralıktır: $\\bar{x} \\pm k_2 s$.",
+        "tr": "**Aralık Türlerinin Kıyaslaması (`INDR 252 Lecture 5`, `CEx7`):**\n\n1. **Güven Aralığı (Confidence Interval - CI):** Popülasyon ortalaması $\\mu$'yü kapsar (En dar aralık: $\\bar{X} \\pm t s/\\sqrt{n}$).\n2. **Tahmin Aralığı (Prediction Interval - PI):** Gelecekteki tek bir yeni gözlemi ($X_{n+1}$) kapsar (Daha geniştir):\n$$\\bar{X} \\pm t_{\\alpha/2, n-1} s \\sqrt{1 + \\frac{1}{n}}$$\n3. **Tolerans Aralığı (Tolerance Interval - TI):** Popülasyonun en az $%\\gamma$'sını $%100(1-\\alpha)$ güvenle kapsar: $\\bar{X} \\pm k s$.",
         "en": "Comparison of three statistical intervals (`INDR 252 Lecture 10`, `CEx10`):\n\n1. **Confidence Interval (CI):** Captures mean $\\mu$: $\\bar{x} \\pm t s \\sqrt{1/n}$\n2. **Prediction Interval (PI):** Captures a single future observation $X_0$ (wider):\n$$\\bar{x} \\pm t_{\\alpha/2, n-1} s \\sqrt{1 + 1/n}$$\n3. **Tolerance Interval (TI):** Captures at least $k\\%$ of the entire population with $100(1-\\alpha)\\%$ confidence: $\\bar{x} \\pm k_2 s$."
       },
       "companyExample": {

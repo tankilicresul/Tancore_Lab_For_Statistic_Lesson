@@ -21,7 +21,7 @@
         "en": "Joint Distributions, Covariance & Correlation"
       },
       "conceptCard": {
-        "tr": "İki rastgele değişken $X$ ve $Y$ arasındaki ortak davranış Birleşik Olasılık Kütle Fonksiyonu $p(x, y) = P(X=x, Y=y)$ ile modellenir.\n\nKovaryans (Değişkenlerin birlikte yönelimi):\n$$\\text{Cov}(X, Y) = \\sigma_{XY} = \\mathbb{E}[(X - \\mu_X)(Y - \\mu_Y)] = \\mathbb{E}[XY] - \\mathbb{E}[X]\\mathbb{E}[Y]$$\n\nPearson Korelasyon Katsayısı (Boyutsuz ilişki gücü, $-1 \\le \\rho \\le 1$):\n$$\\rho_{XY} = \\frac{\\text{Cov}(X, Y)}{\\sigma_X \\sigma_Y}$$\n$X$ ve $Y$ bağımsız ise $\\text{Cov}(X,Y) = 0$ ve $\\rho = 0$ olur.",
+        "tr": "İki rastgele değişken $X$ ve $Y$ arasındaki ortak davranış Birleşik PMF $p(x, y) = P(X=x, Y=y)$ ile belirlenir (`INDR 252 Lecture 2`):\n\n**Kovaryans:**\n$$\\text{Cov}(X, Y) = \\sigma_{XY} = \\mathbb{E}[(X - \\mu_X)(Y - \\mu_Y)] = \\mathbb{E}[XY] - \\mathbb{E}[X]\\mathbb{E}[Y]$$\n\n**Pearson Korelasyon Katsayısı (Boyutsuz Ölçü):**\n$$\\rho_{XY} = \\frac{\\text{Cov}(X, Y)}{\\sigma_X \\sigma_Y}, \\qquad -1 \\le \\rho_{XY} \\le 1$$\n- $X$ ve $Y$ bağımsız ise $\\text{Cov}(X, Y) = 0$ ve $\\rho = 0$'dır.",
         "en": "Joint PMF is $p(x,y)=P(X=x,Y=y)$. Covariance is $\\text{Cov}(X,Y)=\\mathbb{E}[XY]-\\mathbb{E}[X]\\mathbb{E}[Y]$. Correlation is $\\rho = \\frac{\\text{Cov}(X,Y)}{\\sigma_X \\sigma_Y} \\in [-1, 1]$."
       },
       "companyExample": {
@@ -63,7 +63,7 @@
         "en": "Linear Combinations of Random Variables"
       },
       "conceptCard": {
-        "tr": "$X_1, X_2, \\dots, X_n$ rastgele değişkenlerinin doğrusal kombinasyonu $Y = \\sum_{i=1}^n a_i X_i$ olsun:\n\n1. **Beklenen Değer (Her zaman geçerlidir):**\n$$\\mathbb{E}[Y] = \\sum_{i=1}^n a_i \\mathbb{E}[X_i]$$\n\n2. **Genel Varyans:**\n$$\\text{Var}(Y) = \\sum_{i=1}^n a_i^2 \\text{Var}(X_i) + 2 \\sum_{i < j} a_i a_j \\text{Cov}(X_i, X_j)$$\n\n3. **Bağımsız Değişkenler İçin Varyans:**\n$$\\text{Var}(Y) = \\sum_{i=1}^n a_i^2 \\text{Var}(X_i) \\implies \\text{Var}(X_1 - X_2) = \\text{Var}(X_1) + \\text{Var}(X_2)$$",
+        "tr": "$X_1, X_2, \\dots, X_n$ rastgele değişkenlerinin doğrusal kombinasyonu $Y = \\sum a_i X_i$ için (`INDR 252 Lecture 2`):\n\n**1. Beklenen Değer (Her zaman geçerlidir):**\n$$\\mathbb{E}[Y] = \\sum_{i=1}^n a_i \\mathbb{E}[X_i]$$\n\n**2. Genel Varyans Formülü:**\n$$\\text{Var}(Y) = \\sum_{i=1}^n a_i^2 \\text{Var}(X_i) + 2 \\sum_{i < j} a_i a_j \\text{Cov}(X_i, X_j)$$\n\n**3. Bağımsız Değişkenler İçin:**\n$$\\text{Var}(X_1 - X_2) = (1)^2 \\text{Var}(X_1) + (-1)^2 \\text{Var}(X_2) = \\text{Var}(X_1) + \\text{Var}(X_2)$$",
         "en": "For linear combination $Y = \\sum a_i X_i$, expectation is $\\mathbb{E}[Y] = \\sum a_i \\mathbb{E}[X_i]$. For independent RVs, variance is $\\text{Var}(Y) = \\sum a_i^2 \\text{Var}(X_i)$."
       },
       "companyExample": {
@@ -105,7 +105,7 @@
         "en": "Propagation of Error (Taylor Series Approximation)"
       },
       "conceptCard": {
-        "tr": "Doğrusal olmayan bir fonksiyon $Y = f(X_1, X_2, \\dots, X_k)$ verildiğinde ve $X_i$ değişkenleri küçük varyanslarla bağımsız olduğunda, 1. derece Taylor serisi açılımı ile $Y$'nin yaklaşık varyansı (Hata Yayılımı / Error Propagation):\n\n$$\\sigma_Y^2 = \\text{Var}(Y) \\approx \\sum_{i=1}^k \\left( \\frac{\\partial f}{\\partial X_i} \\right)^2 \\sigma_{X_i}^2$$\n\nDeğişkenler bağımlı ise kovaryans terimleri eklenir:\n$$\\text{Var}(Y) \\approx \\sum_{i=1}^k \\left( \\frac{\\partial f}{\\partial X_i} \\right)^2 \\sigma_{X_i}^2 + 2 \\sum_{i < j} \\left( \\frac{\\partial f}{\\partial X_i} \\right) \\left( \\frac{\\partial f}{\\partial X_j} \\right) \\text{Cov}(X_i, X_j)$$",
+        "tr": "**Hata Yayılımı (Propagation of Error / Taylor Yaklaşımı - `INDR 252 Lecture 3`, `CEx3`):**\n\nDoğrusal olmayan bir fonksiyon $Y = f(X_1, X_2, \\dots, X_k)$ verildiğinde, birinci derece çok değişkenli Taylor serisi açılımı ile yaklaşık varyans:\n\n$$\\sigma_Y^2 = \\text{Var}(Y) \\approx \\sum_{i=1}^k \\left( \\frac{\\partial f}{\\partial X_i} \\right)^2 \\sigma_{X_i}^2$$\n\nDeğişkenler arasında kovaryans varsa:\n$$\\text{Var}(Y) \\approx \\sum_{i=1}^k \\left( \\frac{\\partial f}{\\partial X_i} \\right)^2 \\sigma_{X_i}^2 + 2 \\sum_{i < j} \\left( \\frac{\\partial f}{\\partial X_i} \\right) \\left( \\frac{\\partial f}{\\partial X_j} \\right) \\text{Cov}(X_i, X_j)$$",
         "en": "For non-linear function $Y = f(X_1,\\dots,X_k)$, first-order Taylor expansion yields $\\sigma_Y^2 \\approx \\sum (\\frac{\\partial f}{\\partial X_i})^2 \\sigma_{X_i}^2$."
       },
       "companyExample": {
@@ -161,7 +161,7 @@
         "en": "Sampling Distribution & Standard Error"
       },
       "conceptCard": {
-        "tr": "Anakütleden ($N$) çekilen $n$ birimlik rastgele örneklemlerin ortalaması ($\\bar{X}$) bir rastgele değişkendir ve Örneklem Dağılımını oluşturur:\n\n$$\\mathbb{E}[\\bar{X}] = \\mu, \\qquad \\sigma_{\\bar{X}} = \\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$$\n\nİki Bağımsız Örneklem Ortalamasının Farkı Dağılımı ($\\bar{X}_1 - \\bar{X}_2$):\n$$\\mathbb{E}[\\bar{X}_1 - \\bar{X}_2] = \\mu_1 - \\mu_2, \\qquad \\sigma_{\\bar{X}_1 - \\bar{X}_2} = \\sqrt{\\frac{\\sigma_1^2}{n_1} + \\frac{\\sigma_2^2}{n_2}}$$",
+        "tr": "Anakütleden çekilen $n$ birimlik bağımsız örneklemlerin ortalaması $\\bar{X}$ bir rastgele değişkendir (`INDR 252 Lecture 3`):\n\n$$\\mathbb{E}[\\bar{X}] = \\mu_{\\bar{X}} = \\mu, \\qquad \\sigma_{\\bar{X}} = \\text{SE} = \\frac{\\sigma}{\\sqrt{n}}$$\n\n**İki Bağımsız Örneklem Ortalamasının Farkı Dağılımı ($\\bar{X}_1 - \\bar{X}_2$):**\n$$\\mathbb{E}[\\bar{X}_1 - \\bar{X}_2] = \\mu_1 - \\mu_2, \\qquad \\sigma_{\\bar{X}_1 - \\bar{X}_2} = \\sqrt{\\frac{\\sigma_1^2}{n_1} + \\frac{\\sigma_2^2}{n_2}}$$",
         "en": "The sample mean $\\bar{X}$ has expectation $\\mu$ and standard error $\\text{SE} = \\sigma / \\sqrt{n}$. The difference of two independent sample means has $\\text{SE} = \\sqrt{\\sigma_1^2/n_1 + \\sigma_2^2/n_2}$."
       },
       "companyExample": {
@@ -203,7 +203,7 @@
         "en": "Central Limit Theorem (CLT) & Sample Size"
       },
       "conceptCard": {
-        "tr": "Merkezi Limit Teoremi (CLT), ana kütlenin dağılımı ne olursa olsun (çarpık, üniform, bimodal), yeterince büyük bir örneklem hacmi ($n \\ge 30$) seçildiğinde örneklem ortalamaları dağılımının yaklaşık olarak Normal Dağılıma yakınsayacağını belirtir:\n\n$$\\bar{X} \\xrightarrow{d} \\mathcal{N}\\left(\\mu, \\frac{\\sigma^2}{n}\\right), \\qquad Z = \\frac{\\bar{X} - \\mu}{\\frac{\\sigma}{\\sqrt{n}}} \\sim \\mathcal{N}(0, 1)$$\n\nBüyük Sayılar Yasası (LLN) ise $n \\to \\infty$ iken $\\bar{X} \\to \\mu$ olasılıkta yakınsamasını ifade eder.",
+        "tr": "**Merkezi Limit Teoremi (Central Limit Theorem - CLT) (`INDR 252 Lecture 3`):**\n\nAna kütlenin dağılımı ne olursa olsun (çarpık, düzgün, üstel), bağımsız ve özdeş dağılmış (i.i.d.) örneklemlerde $n \\ge 30$ olduğunda örneklem ortalamaları dağılımı yaklaşık olarak Normal Dağılıma yakınsar:\n\n$$\\bar{X} \\xrightarrow{d} \\mathcal{N}\\left(\\mu, \\frac{\\sigma^2}{n}\\right), \\qquad Z = \\frac{\\bar{X} - \\mu}{\\frac{\\sigma}{\\sqrt{n}}} \\sim \\mathcal{N}(0, 1)$$\n\n> **Büyük Sayılar Yasası (LLN):** $n \\to \\infty$ iken $\\bar{X} \\to \\mu$ olasılıkta yakınsar.",
         "en": "Central Limit Theorem guarantees that sample means converge to a normal distribution $\\mathcal{N}(\\mu, \\sigma^2/n)$ as $n \\ge 30$, regardless of the underlying population shape."
       },
       "companyExample": {

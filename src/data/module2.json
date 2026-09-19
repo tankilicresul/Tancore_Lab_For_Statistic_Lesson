@@ -112,7 +112,7 @@
         "en": "Sample Space & Algebra of Events"
       },
       "conceptCard": {
-        "tr": "Bir rassal deneyin tüm olası sonuçlarının kümesine Örneklem Uzayı ($S$), bu kümenin herhangi bir alt kümesine ise Olay ($A \\subseteq S$) denir. İki olayın birleşimi $A \\cup B$, kesişimi $A \\cap B$ ve $A$'nın tümleyeni $A'$ (veya $A^c$) ile gösterilir. $A \\cap B = \\emptyset$ ise bu olaylara Ayrık (Mutually Exclusive) olaylar denir.",
+        "tr": "Bir rassal deneyin tüm olası sonuçlarının kümesine **Örneklem Uzayı ($S$)**, bu kümenin herhangi bir alt kümesine ise **Olay ($A \\subseteq S$)** denir (`ENGR 200 Lecture 1`).\n\n- **Birleşim ($A \\cup B$):** $A$ veya $B$'den en az birinin gerçekleşmesi.\n- **Kesişim ($A \\cap B$):** Hem $A$ hem $B$'nin aynı anda gerçekleşmesi.\n- **Tümleyen ($A^c$ veya $A'$):** $A$'nın gerçekleşmeme olayı.\n- **Ayrık Olaylar (Mutually Exclusive):** $A \\cap B = \\emptyset$ ise iki olay aynı anda gerçekleşemez.",
         "en": "The set of all possible outcomes is the Sample Space ($S$), and any subset is an Event ($A \\subseteq S$). Union is $A \\cup B$, intersection is $A \\cap B$, and complement is $A^c$. If $A \\cap B = \\emptyset$, the events are Mutually Exclusive."
       },
       "companyExample": {
@@ -168,7 +168,7 @@
         "en": "Probability Axioms & Addition Rule"
       },
       "conceptCard": {
-        "tr": "Kolmogorov Olasılık Aksiyomları:\n1. Her olay $A$ için $0 \\le P(A) \\le 1$.\n2. Örneklem uzayı için $P(S) = 1$.\n3. Ayrık olaylar için $P(A \\cup B) = P(A) + P(B)$.\n\nGenel Toplam Kuralı (Ayrık olmayan durumlar için):\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$\n$$P(A^c) = 1 - P(A)$$",
+        "tr": "**Kolmogorov Olasılık Aksiyomları (`ENGR 200`):**\n1. Her olay $A$ için $0 \\le P(A) \\le 1$.\n2. Örneklem uzayı için kesin olay: $P(S) = 1$.\n3. Ayrık olaylar dizisi için: $P(A_1 \\cup A_2 \\cup \\dots) = \\sum P(A_i)$.\n\n**Genel Toplam Kuralı (Inclusion-Exclusion Principle):**\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$\nÜçlü olaylar için:\n$$P(A \\cup B \\cup C) = P(A)+P(B)+P(C) - P(AB) - P(AC) - P(BC) + P(ABC)$$",
         "en": "Kolmogorov Axioms: 1. $0 \\le P(A) \\le 1$, 2. $P(S) = 1$, 3. For disjoint events $P(A \\cup B) = P(A) + P(B)$. General Addition Rule: $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$."
       },
       "companyExample": {
@@ -210,7 +210,7 @@
         "en": "Conditional Probability & Multiplication Rule"
       },
       "conceptCard": {
-        "tr": "$B$ olayının gerçekleştiği bilindiğinde $A$ olayının gerçekleşme olasılığına Koşullu Olasılık denir ($P(B) > 0$):\n\n$$P(A|B) = \\frac{P(A \\cap B)}{P(B)}$$\n\nBuradan Genel Çarpım Kuralı elde edilir:\n$$P(A \\cap B) = P(B) \\cdot P(A|B) = P(A) \\cdot P(B|A)$$\nÇoklu olaylar için Çarpım Zinciri (Chain Rule):\n$$P(A_1 \\cap A_2 \\cap A_3) = P(A_1) \\cdot P(A_2|A_1) \\cdot P(A_3|A_1 \\cap A_2)$$",
+        "tr": "$B$ olayının gerçekleştiği bilindiğinde $A$ olayının koşullu olasılığı ($P(B) > 0$ olmak üzere):\n\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}$$\n\n**Çarpım Kuralı (Multiplication Rule):**\n$$P(A \\cap B) = P(B) \\cdot P(A \\mid B) = P(A) \\cdot P(B \\mid A)$$\n\n**Zincir Kuralı (Chain Rule):**\n$$P(A_1 \\cap A_2 \\cap \\dots \\cap A_n) = P(A_1) P(A_2 \\mid A_1) P(A_3 \\mid A_1 \\cap A_2) \\dots P(A_n \\mid A_1 \\cap \\dots \\cap A_{n-1})$$",
         "en": "Conditional probability given $B$ has occurred: $P(A|B) = \\frac{P(A \\cap B)}{P(B)}$. Multiplication rule: $P(A \\cap B) = P(B) \\cdot P(A|B)$."
       },
       "companyExample": {
@@ -252,7 +252,7 @@
         "en": "Independent Events"
       },
       "conceptCard": {
-        "tr": "İki olay $A$ ve $B$ için, birinin gerçekleşmesi diğerinin olasılığını etkilemiyorsa bu olaylar Bağımsızdır (Independent):\n\n$$P(A|B) = P(A) \\iff P(B|A) = P(B) \\iff P(A \\cap B) = P(A) \\cdot P(B)$$\n\n> **Dikkat**: Ayrık olaylar ($A \\cap B = \\emptyset$) ile Bağımsız olaylar ($P(A \\cap B) = P(A)P(B)$) tamamen farklı kavramlardır! $P(A) > 0, P(B) > 0$ ise ayrık olaylar asla bağımsız olamaz.",
+        "tr": "İki olay $A$ ve $B$ için, birinin gerçekleşmesi diğerinin olasılığını değiştirmiyorsa bu olaylar **İstatistiksel Olarak Bağımsızdır (Independent)** (`ENGR 200`):\n\n$$P(A \\mid B) = P(A) \\iff P(A \\cap B) = P(A) \\cdot P(B)$$\n\n> **Kritik Üniversite Sınav Kuralı:** Ayrık olaylar ($A \\cap B = \\emptyset$) ile Bağımsız olaylar ($P(A \\cap B) = P(A)P(B)$) tamamen farklıdır! Pozitif olasılıklı iki ayrık olay asla bağımsız olamaz, çünkü biri olduğunda diğeri imkansız hale gelir ($P(A|B)=0$).",
         "en": "Two events are independent if $P(A|B) = P(A)$, which is equivalent to $P(A \\cap B) = P(A)P(B)$. Disjoint events with non-zero probabilities can never be independent."
       },
       "companyExample": {
@@ -294,7 +294,7 @@
         "en": "Law of Total Probability & Bayes' Rule"
       },
       "conceptCard": {
-        "tr": "Örneklem uzayı $B_1, B_2, \\dots, B_k$ şeklinde ayrık parçalara bölünmüşse (partition), herhangi bir $A$ olayının Toplam Olasılığı:\n$$P(A) = \\sum_{i=1}^k P(A|B_i) \\cdot P(B_i)$$\n\nBayes Teoremi (Sonsal / Posterior Olasılık):\n$$P(B_j|A) = \\frac{P(A|B_j) \\cdot P(B_j)}{P(A)} = \\frac{P(A|B_j) \\cdot P(B_j)}{\\sum_{i=1}^k P(A|B_i) \\cdot P(B_i)}$$",
+        "tr": "Örneklem uzayı $B_1, B_2, \\dots, B_k$ şeklinde ayrık parçalara bölünmüşse (Partition: $\\bigcup B_i = S, B_i \\cap B_j = \\emptyset$):\n\n**1. Toplam Olasılık Yasası (Law of Total Probability):**\n$$P(A) = \\sum_{i=1}^k P(A \\mid B_i) P(B_i)$$\n\n**2. Bayes Teoremi (Posterior Probability / Sonsal Olasılık):**\n$$P(B_j \\mid A) = \\frac{P(A \\mid B_j) P(B_j)}{\\sum_{i=1}^k P(A \\mid B_i) P(B_i)}$$",
         "en": "Law of Total Probability: $P(A) = \\sum P(A|B_i)P(B_i)$. Bayes' Rule updates prior beliefs to posterior probabilities: $P(B_j|A) = \\frac{P(A|B_j)P(B_j)}{\\sum P(A|B_i)P(B_i)}$."
       },
       "companyExample": {
