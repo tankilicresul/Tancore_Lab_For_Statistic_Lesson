@@ -37,6 +37,8 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
     }
   };
 
+  const DEFAULT_VOLUME = 20;
+
   useEffect(() => {
     if (isPlaying) {
       sendCommand('playVideo');
@@ -44,7 +46,7 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
         sendCommand('mute');
       } else {
         sendCommand('unMute');
-        sendCommand('setVolume', [60]);
+        sendCommand('setVolume', [DEFAULT_VOLUME]);
       }
     } else {
       sendCommand('pauseVideo');
@@ -70,10 +72,17 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
         sendCommand('mute');
       } else {
         sendCommand('unMute');
-        sendCommand('setVolume', [60]);
+        sendCommand('setVolume', [DEFAULT_VOLUME]);
       }
       return next;
     });
+  };
+
+  const handleIframeLoad = () => {
+    sendCommand('setVolume', [DEFAULT_VOLUME]);
+    if (isTop3User) {
+      sendCommand('playVideo');
+    }
   };
 
   return (
@@ -83,6 +92,7 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
         ref={iframeRef}
         id="top3-yt-iframe"
         title="Top 3 Theme Music"
+        onLoad={handleIframeLoad}
         className="hidden w-0 h-0 pointer-events-none opacity-0 absolute -z-50"
         src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?enablejsapi=1&autoplay=${
           isTop3User ? '1' : '0'
