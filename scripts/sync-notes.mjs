@@ -106,7 +106,8 @@ async function syncCourseNotes() {
   async function processStorageItem(bucketName, filePath, item) {
     const cleanFileName = path.basename(filePath).replace(/^notes_/, '');
     const courseFolderMatch = filePath.match(/^([^/]+)\//);
-    const subFolder = courseFolderMatch ? courseFolderMatch[1] : 'genel_notlar';
+    const rawSubFolder = courseFolderMatch ? courseFolderMatch[1] : 'genel_notlar';
+    const subFolder = rawSubFolder.replace(/^notes_/, '');
     
     const targetFolder = path.join(outputDir, subFolder);
     if (!fs.existsSync(targetFolder)) {
