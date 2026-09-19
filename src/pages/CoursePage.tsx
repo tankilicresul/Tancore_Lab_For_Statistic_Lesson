@@ -391,36 +391,25 @@ export const CoursePage: React.FC<CoursePageProps> = ({
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 py-6 font-sans overflow-x-hidden animate-fade-in">
       {/* Top Header Navigation Bar */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 gap-2">
         <button
           onClick={onBackToHome}
-          className="flex items-center space-x-2 px-3.5 py-2 rounded-2xl bg-white border border-slate-200/90 text-xs font-black text-slate-700 hover:text-[#ff7a00] hover:border-[#ff7a00]/40 transition-all shadow-2xs group cursor-pointer"
+          className="flex items-center space-x-2 px-3.5 py-2 rounded-2xl bg-white border border-slate-200/90 text-xs font-black text-slate-700 hover:text-[#ff7a00] hover:border-[#ff7a00]/40 transition-all shadow-2xs group cursor-pointer shrink-0"
         >
           <ArrowLeft className="w-4 h-4 text-[#ff7a00] group-hover:-translate-x-0.5 transition-transform" />
           <span>{language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}</span>
         </button>
 
-        <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-[#ff7a00] font-mono text-xs font-black tracking-wider">
-          <span>{selectedTrack === 'statistics' ? 'INDR 252' : selectedTrack === 'indr100' ? 'INDR 100' : 'ENGR 200'}</span>
-        </div>
-      </div>
-
-      {/* Placement Test CTA Card */}
-      {onStartPlacementTest && (
-        <div className="relative mb-6 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-orange-50/90 via-amber-50/60 to-white border border-[#ff7a00]/30 shadow-2xs flex items-center justify-between gap-3">
-          <span className="text-xs sm:text-sm font-bold text-slate-800 tracking-tight">
-            {language === 'tr' ? 'İstediğin konudan başlamak için' : 'To start from any topic you want'}
-          </span>
-
+        {onStartPlacementTest && (
           <button
             onClick={onStartPlacementTest}
-            className="flex items-center justify-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black transition-all shadow-xs shadow-[#ff7a00]/25 group shrink-0 whitespace-nowrap cursor-pointer active:scale-95"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black transition-all shadow-xs shadow-[#ff7a00]/25 group cursor-pointer active:scale-95 shrink-0"
           >
-            <span>{language === 'tr' ? 'Seviyeni Belirle' : 'Take Placement Test'}</span>
-            <ArrowRight className="w-4 h-4 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
+            <span>{language === 'tr' ? 'Hızlıca seviyeni belirle' : 'Quickly determine your level'}</span>
+            <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Modules Flow */}
       <div className="space-y-12">
@@ -469,6 +458,9 @@ export const CoursePage: React.FC<CoursePageProps> = ({
           const progressPercent =
             totalNodesCount > 0 ? Math.round((completedNodesCount / totalNodesCount) * 100) : 0;
 
+          const rawTitle = getLocalized(module.title, language).replace(/^(Modül|Module)\s*\d+\s*:\s*/i, '').trim();
+          const moduleDisplayTitle = `${language === 'tr' ? `Modül ${trackModuleOrder}` : `Module ${trackModuleOrder}`}: ${rawTitle}`;
+
           return (
             <div key={module.id} id={`module-section-${module.id}`} className="relative">
               {/* Module Header Card */}
@@ -481,13 +473,10 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               >
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex-1 min-w-0">
-                    <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest opacity-90 font-mono">
-                      {language === 'tr' ? `MODÜL ${trackModuleOrder}` : `MODULE ${trackModuleOrder}`}
-                    </span>
-                    <h2 className="text-base xs:text-lg sm:text-xl font-black tracking-tight leading-snug mt-0.5">
-                      <MathFormulaText text={getLocalized(module.title, language)} inline />
+                    <h2 className="text-base xs:text-lg sm:text-xl font-black tracking-tight leading-snug">
+                      <MathFormulaText text={moduleDisplayTitle} inline />
                     </h2>
-                    <p className="text-xs sm:text-sm opacity-90 font-medium mt-1 leading-relaxed">
+                    <p className="text-xs sm:text-sm opacity-90 font-medium mt-1.5 leading-relaxed">
                       {getLocalized(module.description, language)}
                     </p>
                     {!isModuleUnlocked && (
