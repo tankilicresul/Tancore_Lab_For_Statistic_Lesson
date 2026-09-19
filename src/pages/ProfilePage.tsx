@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useAppStore, computeContiguousStreak } from '../store/useAppStore';
 import { ALL_MODULES } from '../data/modules';
 import { PublicProfile } from '../types/stats';
@@ -30,6 +31,9 @@ import {
   EyeOff,
   CheckCircle2,
   Check,
+  Menu,
+  Globe,
+  ChevronRight,
 } from 'lucide-react';
 
 interface ProfilePageProps {
@@ -45,6 +49,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 }) => {
   const {
     language,
+    setLanguage,
     userProfile,
     updateUserProfile,
     completedLessons,
@@ -58,6 +63,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     logout,
     registeredUsers,
   } = useAppStore();
+
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
   const displayStreak = Math.max(computeContiguousStreak(activityDates), streak || 1);
 
@@ -307,23 +314,14 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </div>
 
           <div className="flex items-center space-x-2 shrink-0">
-            {!isAuthenticated ? (
-              <button
-                onClick={onOpenAuth}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white/25 hover:bg-white/35 text-white text-xs font-black transition-colors border border-white/40 cursor-pointer"
-              >
-                <UserCheck className="w-4 h-4" />
-                <span>{language === 'tr' ? 'Kayıt Ol / Giriş' : 'Sign Up / In'}</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => logout()}
-                className="p-2 rounded-xl bg-white/20 hover:bg-rose-500/40 text-white hover:text-rose-100 border border-white/30 transition-colors cursor-pointer"
-                title={language === 'tr' ? 'Çıkış Yap' : 'Sign Out'}
-              >
-                <LogOut className="w-4 h-4" />
-              </button>
-            )}
+            <button
+              onClick={() => setIsSideMenuOpen(true)}
+              className="p-2.5 rounded-2xl bg-white/20 hover:bg-white/30 text-white border border-white/35 transition-all shadow-xs cursor-pointer active:scale-95 flex items-center justify-center shrink-0"
+              title={language === 'tr' ? 'Menüyü Aç' : 'Open Menu'}
+              aria-label="Menüyü Aç"
+            >
+              <Menu className="w-5 h-5 stroke-[2.5]" />
+            </button>
           </div>
         </div>
 
@@ -721,6 +719,161 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           onClose={() => setCropTargetImage(null)}
           language={language}
         />
+      )}
+
+      {/* 2/3 Width Side Drawer Panel (Ekranın Sağ Tarafından Açılan Panel) */}
+      {isSideMenuOpen && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-50 flex justify-end font-sans">
+          {/* Backdrop */}
+          <div
+            onClick={() => setIsSideMenuOpen(false)}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity animate-fade-in"
+          />
+
+          {/* 2/3 Width Slide Panel */}
+          <div
+            className="relative z-10 w-[78vw] sm:w-[66.666%] max-w-sm h-full bg-white shadow-2xl border-l border-slate-200 flex flex-col justify-between overflow-y-auto animate-slide-in-right p-5 sm:p-6"
+          >
+            {/* Drawer Top Header & User Card */}
+            <div>
+              <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
+                <div className="flex items-center space-x-3 min-w-0">
+                  <div className="w-10 h-10 rounded-2xl bg-[#ff7a00]/15 flex items-center justify-center text-[#ff7a00] shrink-0 border border-[#ff7a00]/30">
+                    <UserAvatar
+                      avatarUrl={userProfile?.avatarUrl}
+                      avatarEmoji={isAuthenticated ? userProfile?.avatarEmoji || '👨‍🎓' : '👤'}
+                      fullName={userProfile?.fullName}
+                      size="sm"
+                      className="w-9 h-9"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-black text-slate-900 truncate">
+                      {isAuthenticated
+                        ? userProfile?.fullName || (userProfile?.schoolEmail ? userProfile.schoolEmail.split('@')[0] : (language === 'tr' ? 'Kullanıcı' : 'User'))
+                        : (language === 'tr' ? 'Misafir Kullanıcı' : 'Guest User')}
+                    </h3>
+                    <p className="text-[10.5px] text-slate-500 font-semibold truncate">
+                      {isAuthenticated ? userProfile?.schoolEmail || (language === 'tr' ? 'Öğrenci Hesabı' : 'Student Account') : (language === 'tr' ? 'Giriş yapılmadı' : 'Not signed in')}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setIsSideMenuOpen(false)}
+                  className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer shrink-0"
+                  aria-label="Kapat"
+                >
+                  <X className="w-4 h-4 stroke-[2.5]" />
+                </button>
+              </div>
+
+              {/* Navigation & Action Items */}
+              <div className="space-y-2.5">
+                {isAuthenticated && (
+                  <button
+                    onClick={() => {
+                      setIsSideMenuOpen(false);
+                      setIsEditing(true);
+                    }}
+                    className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-orange-50/80 border border-slate-200/80 text-left transition-all group cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-3 min-w-0">
+                      <div className="p-2 rounded-xl bg-orange-100 text-[#ff7a00] group-hover:scale-105 transition-transform shrink-0">
+                        <Edit3 className="w-4 h-4 stroke-[2.5]" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-black text-slate-900">{language === 'tr' ? 'Profili Düzenle' : 'Edit Profile'}</div>
+                        <div className="text-[10px] text-slate-500">{language === 'tr' ? 'İsim, avatar ve şifre' : 'Name, avatar and password'}</div>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7a00] group-hover:translate-x-0.5 transition-all" />
+                  </button>
+                )}
+
+                {onNavigateLeaderboard && (
+                  <button
+                    onClick={() => {
+                      setIsSideMenuOpen(false);
+                      onNavigateLeaderboard();
+                    }}
+                    className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-orange-50/80 border border-slate-200/80 text-left transition-all group cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-3 min-w-0">
+                      <div className="p-2 rounded-xl bg-amber-100 text-amber-600 group-hover:scale-105 transition-transform shrink-0">
+                        <Trophy className="w-4 h-4 stroke-[2.5]" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-black text-slate-900">{language === 'tr' ? 'Liderlik Tablosu' : 'Leaderboard'}</div>
+                        <div className="text-[10px] text-slate-500">{language === 'tr' ? 'Sıralamanı ve puanları gör' : 'View rankings and scores'}</div>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7a00] group-hover:translate-x-0.5 transition-all" />
+                  </button>
+                )}
+
+                {/* Language Selector */}
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 rounded-xl bg-blue-100 text-blue-600 shrink-0">
+                      <Globe className="w-4 h-4 stroke-[2.5]" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-black text-slate-900">{language === 'tr' ? 'Uygulama Dili' : 'Language'}</div>
+                      <div className="text-[10px] text-slate-500">{language === 'tr' ? 'Türkçe / English' : 'Turkish / English'}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-1 bg-white p-1 rounded-xl border border-slate-200">
+                    <button
+                      onClick={() => setLanguage('tr')}
+                      className={`px-2.5 py-1 rounded-lg text-[10.5px] font-black transition-colors cursor-pointer ${
+                        language === 'tr' ? 'bg-[#ff7a00] text-white' : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      TR
+                    </button>
+                    <button
+                      onClick={() => setLanguage('en')}
+                      className={`px-2.5 py-1 rounded-lg text-[10.5px] font-black transition-colors cursor-pointer ${
+                        language === 'en' ? 'bg-[#ff7a00] text-white' : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      EN
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Footer Actions */}
+            <div className="pt-4 border-t border-slate-100 mt-6 space-y-2">
+              {!isAuthenticated ? (
+                <button
+                  onClick={() => {
+                    setIsSideMenuOpen(false);
+                    onOpenAuth?.();
+                  }}
+                  className="w-full py-3.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-black transition-all shadow-md shadow-[#ff7a00]/25 flex items-center justify-center space-x-2 cursor-pointer active:scale-95"
+                >
+                  <UserCheck className="w-4 h-4" />
+                  <span>{language === 'tr' ? 'Giriş Yap / Kayıt Ol' : 'Sign In / Register'}</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setIsSideMenuOpen(false);
+                    logout();
+                  }}
+                  className="w-full py-3.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 text-xs font-black transition-colors flex items-center justify-center space-x-2 cursor-pointer active:scale-95"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>{language === 'tr' ? 'Oturumu Kapat' : 'Sign Out'}</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>,
+        document.body
       )}
     </div>
   );
