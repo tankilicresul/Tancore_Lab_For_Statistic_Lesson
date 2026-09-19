@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getDefaultAvatarForUser } from '../utils/avatarHelper';
 
 interface UserAvatarProps {
   avatarUrl?: string | null;
@@ -8,6 +9,7 @@ interface UserAvatarProps {
   className?: string;
   imgClassName?: string;
   emojiClassName?: string;
+  disableDefaultFallback?: boolean;
 }
 
 const SIZE_CLASSES = {
@@ -27,19 +29,26 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
   className = '',
   imgClassName = '',
   emojiClassName = '',
+  disableDefaultFallback = false,
 }) => {
   const [imgError, setImgError] = useState(false);
 
-  // Reset error when avatarUrl changes
+  // Determine effective image URL
+  const defaultAvatar = disableDefaultFallback
+    ? null
+    : getDefaultAvatarForUser(fullName || avatarEmoji || 'student');
+  const effectiveUrl = avatarUrl || defaultAvatar;
+
+  // Reset error when URL changes
   useEffect(() => {
     setImgError(false);
-  }, [avatarUrl]);
+  }, [avatarUrl, effectiveUrl]);
 
   const sizeClass = SIZE_CLASSES[size] || SIZE_CLASSES.md;
   const initial = fullName ? fullName.trim().charAt(0).toUpperCase() : '';
   const emoji = avatarEmoji || '👨‍🎓';
 
-  const showImage = Boolean(avatarUrl && !imgError);
+  const showImage = Boolean(effectiveUrl && !imgError);
 
   return (
     <div
@@ -47,7 +56,7 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
     >
       {showImage ? (
         <img
-          src={avatarUrl!}
+          src={effectiveUrl!}
           alt={fullName || 'User Avatar'}
           onError={() => setImgError(true)}
           className={`w-full h-full object-cover rounded-full ${imgClassName}`}

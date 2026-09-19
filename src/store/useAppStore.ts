@@ -4,6 +4,7 @@ import { UserProfile, UserState, PublicProfile, RegisteredAccount } from '../typ
 import { saveUserProfileToSupabase, syncUserProgress, fetchUserProfileFromSupabase, isSupabaseConfigured, signInWithSupabase, supabase } from '../lib/supabase';
 import { isSameStudent } from '../utils/leaderboardHelper';
 import { soundService } from '../services/soundService';
+import { getDefaultAvatarForUser } from '../utils/avatarHelper';
 
 export function isValidStudentEmail(email: string): boolean {
   if (!email || typeof email !== 'string') return false;
@@ -150,6 +151,7 @@ const DEFAULT_PROFILE: UserProfile = {
   university: '',
   departmentAndClass: '',
   avatarEmoji: '👨‍🎓',
+  avatarUrl: '/avatars/avatar-1.jpg',
   isVerified: false,
   isPremium: false,
 };
@@ -247,7 +249,7 @@ function syncUserInList(state: UserState): PublicProfile[] {
     university: profile.university || '',
     departmentAndClass: profile.departmentAndClass || '',
     avatarEmoji: profile.avatarEmoji || '👨‍🎓',
-    avatarUrl: profile.avatarUrl,
+    avatarUrl: profile.avatarUrl || getDefaultAvatarForUser(currentEmail || profile.fullName),
     xp: state.xp,
     streak: state.streak,
     rank: 1,
@@ -267,6 +269,10 @@ export const useAppStore = create<UserState & AppStoreActions>()(
     (set, get) => ({
       ...INITIAL_STATE,
 
+      setLanguage: (lang) => set({ language: lang }),
+      toggleLanguage: () =>
+        set((state) => ({ language: state.language === 'tr' ? 'en' : 'tr' })),
+
       setIsTancoChatOpen: (open) => set({ isTancoChatOpen: open }),
 
       syncRegisteredUserInList: () => {
@@ -278,6 +284,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       registerAccountAndSendOtp: (accountInput, simulatedCode) => {
         const email = accountInput.schoolEmail?.trim().toLowerCase() || '';
         const currentStore = get();
+        const defaultAvatar = getDefaultAvatarForUser(email || accountInput.fullName);
         const newAccount: RegisteredAccount = {
           schoolEmail: email,
           fullName: accountInput.fullName?.trim() || 'Öğrenci',
@@ -285,7 +292,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           departmentAndClass: accountInput.departmentAndClass?.trim() || '',
           password: accountInput.password || '',
           avatarEmoji: accountInput.avatarEmoji || '👨‍🎓',
-          avatarUrl: accountInput.avatarUrl || currentStore.userProfile?.avatarUrl || undefined,
+          avatarUrl: accountInput.avatarUrl || currentStore.userProfile?.avatarUrl || defaultAvatar,
           isVerified: false,
           xp: Math.max(15, currentStore.xp || 15),
           streak: Math.max(1, currentStore.streak || 1),
@@ -812,11 +819,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       setSelectedPublicProfile: (profile) => {
         set({ selectedPublicProfile: profile });
       },
-
-      setLanguage: (language) => set({ language }),
-
-      toggleLanguage: () =>
-        set((state) => ({ language: state.language === 'tr' ? 'en' : 'tr' })),
 
       checkAndUpdateStreak: () => {
         const today = new Date().toISOString().split('T')[0];

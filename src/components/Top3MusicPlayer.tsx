@@ -7,6 +7,7 @@ interface Top3MusicPlayerProps {
 }
 
 const YOUTUBE_VIDEO_ID = 'MOlUTsZ2IWg';
+const START_SECONDS = 19;
 
 export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
   isTop3User = false,
@@ -15,6 +16,7 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const hasStartedRef = useRef<boolean>(false);
 
   // Auto-play when Top 3 user enters
   useEffect(() => {
@@ -41,6 +43,10 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
 
   useEffect(() => {
     if (isPlaying) {
+      if (!hasStartedRef.current) {
+        sendCommand('seekTo', [START_SECONDS, true]);
+        hasStartedRef.current = true;
+      }
       sendCommand('playVideo');
       if (isMuted) {
         sendCommand('mute');
@@ -80,6 +86,7 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
 
   const handleIframeLoad = () => {
     sendCommand('setVolume', [DEFAULT_VOLUME]);
+    sendCommand('seekTo', [START_SECONDS, true]);
     if (isTop3User) {
       sendCommand('playVideo');
     }
@@ -94,7 +101,7 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
         title="Top 3 Theme Music"
         onLoad={handleIframeLoad}
         className="hidden w-0 h-0 pointer-events-none opacity-0 absolute -z-50"
-        src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?enablejsapi=1&autoplay=${
+        src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?enablejsapi=1&start=${START_SECONDS}&autoplay=${
           isTop3User ? '1' : '0'
         }&loop=1&playlist=${YOUTUBE_VIDEO_ID}&playsinline=1&controls=0&rel=0`}
         allow="autoplay; encrypted-media"
