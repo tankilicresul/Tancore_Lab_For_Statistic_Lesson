@@ -424,8 +424,8 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               ))}
             </div>
 
-            {/* Lock / Sign Up CTA Overlay (Positioned higher up for immediate prominence) */}
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-start pt-7 sm:pt-9 px-5 pb-6 text-center bg-gradient-to-b from-white/95 via-white/90 to-white/80 backdrop-blur-[1.5px]">
+            {/* Lock / Sign Up CTA Overlay (Balanced centered position) */}
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-start pt-14 sm:pt-18 px-5 pb-6 text-center bg-gradient-to-b from-white/95 via-white/90 to-white/80 backdrop-blur-[1.5px]">
               <div className="w-12 h-12 sm:w-13 sm:h-13 rounded-3xl bg-gradient-to-tr from-[#ff7a00] to-amber-400 text-white flex items-center justify-center shadow-lg shadow-[#ff7a00]/30 mb-2.5 animate-pulse">
                 <Lock className="w-5.5 h-5.5 sm:w-6 sm:h-6 stroke-[2.5]" />
               </div>
