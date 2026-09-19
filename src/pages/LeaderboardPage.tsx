@@ -323,68 +323,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         </div>
       </div>
 
-      {/* Current User Floating/Top Preview Row (Visible only when user is authenticated, Rank 4+ and has not scrolled down yet) */}
-      {isAuthenticated && userRank > 3 && effectiveProfile && (
-        <div
-          className={`transition-all duration-300 ease-in-out ${
-            hasScrolledInLeaderboard
-              ? 'opacity-0 max-h-0 pointer-events-none -mt-2 overflow-hidden'
-              : 'opacity-100 max-h-24'
-          }`}
-        >
-          <div
-            onClick={() =>
-              setSelectedPublicProfile({
-                id: effectiveProfile.id || 'current_user',
-                fullName: effectiveProfile.fullName || (language === 'tr' ? 'Öğrenci' : 'Student'),
-                schoolEmail: effectiveProfile.schoolEmail,
-                university: effectiveProfile.university || 'Üniversite',
-                departmentAndClass: effectiveProfile.departmentAndClass || '',
-                avatarEmoji: effectiveProfile.avatarEmoji || '👨‍🎓',
-                avatarUrl: effectiveProfile.avatarUrl,
-                xp: xp || 0,
-                streak: streak || 0,
-                rank: userRank,
-                level: Math.floor((xp || 0) / 100) + 1,
-                completedCount: completedCount,
-                unlockedBadges: unlockedBadges,
-              })
-            }
-            className="flex items-center justify-between p-3.5 rounded-2xl text-slate-900 cursor-pointer transition-all shadow-xs group bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 hover:from-orange-100 hover:to-amber-100 border-2 border-[#ff7a00]/40"
-          >
-            <div className="flex items-center space-x-2.5 min-w-0">
-              <div className="px-2.5 py-1 rounded-xl bg-[#ff7a00] text-white font-black text-xs shadow-xs shrink-0 flex items-center space-x-1">
-                <span>{userRank}.</span>
-              </div>
-              <div className="w-8 h-8 rounded-full bg-white border border-orange-200 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden shadow-2xs">
-                <UserAvatar
-                  avatarUrl={effectiveProfile.avatarUrl}
-                  avatarEmoji={effectiveProfile.avatarEmoji || '👨‍🎓'}
-                  fullName={effectiveProfile.fullName}
-                  size="xs"
-                  className="w-full h-full"
-                />
-              </div>
-              <div className="min-w-0">
-                <span className="text-xs font-black text-slate-900 truncate block">
-                  {effectiveProfile.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')}{' '}
-                  <span className="text-[10px] font-black text-[#ff7a00] bg-orange-100 px-1.5 py-0.5 rounded-md">
-                    (Sen)
-                  </span>
-                </span>
-                <span className="text-[10px] text-slate-500 truncate block">
-                  {effectiveProfile.university || (language === 'tr' ? 'Üniversite' : 'University')}
-                </span>
-              </div>
-            </div>
 
-            <div className="flex items-center space-x-1 text-[#ff7a00] text-xs font-black shrink-0">
-              <span className="text-amber-500 font-serif">◆</span>
-              <span>{(xp || 0).toLocaleString('tr-TR')} XP</span>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Additional Registered Users (Rank 4+) or Blurred Preview when Unauthenticated */}
       {!isAuthenticated ? (
@@ -516,6 +455,60 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
             </div>
           </div>
         ) : null
+      )}
+
+      {/* Floating Persistent My Rank Bar for Authenticated Users */}
+      {isAuthenticated && effectiveProfile && userRank > 0 && (
+        <div className="sticky bottom-20 sm:bottom-6 z-30 mt-4 animate-fade-in">
+          <div
+            onClick={() => {
+              const el = document.getElementById(`leaderboard-row-${userRank}`);
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }}
+            className="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-[#ff7a00] via-amber-500 to-[#ff7a00] text-white shadow-xl shadow-orange-500/25 border-2 border-white/60 cursor-pointer hover:scale-[1.01] active:scale-95 transition-all"
+          >
+            <div className="flex items-center space-x-2.5 min-w-0">
+              <div className="w-8 h-8 rounded-xl bg-white text-[#ff7a00] font-black text-xs sm:text-sm flex items-center justify-center shadow-xs shrink-0">
+                #{userRank}
+              </div>
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/20 border border-white/60 flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
+                <UserAvatar
+                  avatarUrl={effectiveProfile.avatarUrl}
+                  avatarEmoji={effectiveProfile.avatarEmoji || '👨‍🎓'}
+                  fullName={effectiveProfile.fullName}
+                  size="xs"
+                  className="w-full h-full"
+                />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center space-x-1.5">
+                  <span className="text-xs sm:text-sm font-black truncate text-white">
+                    {effectiveProfile.fullName || (language === 'tr' ? 'Öğrenci' : 'Student')}
+                  </span>
+                  <span className="text-[10px] font-extrabold bg-white/25 text-white px-1.5 py-0.5 rounded-md leading-none">
+                    {language === 'tr' ? 'Sen' : 'You'}
+                  </span>
+                </div>
+                <span className="text-[10.5px] text-white/85 truncate block">
+                  {effectiveProfile.university || (language === 'tr' ? 'Üniversite' : 'University')}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-2 shrink-0 pl-2">
+              <div className="text-right">
+                <span className="text-xs sm:text-sm font-black text-white block leading-none">
+                  {(xp || 0).toLocaleString('tr-TR')} XP
+                </span>
+                <span className="text-[9px] font-bold text-white/75 block mt-0.5">
+                  {language === 'tr' ? 'Konumuma Git ↑' : 'Go to Rank ↑'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
