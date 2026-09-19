@@ -76,7 +76,7 @@ export const COURSES_DATA: CourseTrack[] = [
     track: 'statistics',
     icon: BarChart3,
     iconBg: 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25',
-    badge: { tr: '8 Modül', en: '8 Modules' },
+    badge: { tr: '9 Modül', en: '9 Modules' },
     badgeStyle: 'bg-emerald-100 text-emerald-800 border-emerald-200/80',
     cardStyle: 'border-2 border-emerald-200 bg-white shadow-xs hover:shadow-md hover:border-emerald-500',
     glowColor: 'bg-emerald-500/15',
@@ -507,9 +507,14 @@ export const HomePage: React.FC<HomePageProps> = ({
                   <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shrink-0 ${course.iconBg}`}>
                     <Icon className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 stroke-[2.25]" />
                   </div>
-                  <span className="text-sm sm:text-lg lg:text-xl font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors duration-200 whitespace-nowrap">
-                    {course.code}
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-sm sm:text-lg lg:text-xl font-black tracking-tight text-slate-900 group-hover:text-[#ff7a00] transition-colors duration-200 whitespace-nowrap">
+                      {course.code}
+                    </span>
+                    <span className="text-[10.5px] sm:text-xs font-bold text-slate-500">
+                      {isEn ? course.badge.en : course.badge.tr}
+                    </span>
+                  </div>
                 </div>
                 <ChevronRight className="w-5 h-5 sm:w-6.5 sm:h-6.5 text-[#ff7a00] stroke-[3.5] shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" />
               </div>
