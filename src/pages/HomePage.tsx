@@ -418,14 +418,14 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="relative z-10 flex flex-col gap-3.5 sm:gap-4">
           {/* Speech bubble card */}
           <div className="relative bg-white text-slate-900 border border-amber-100 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-lg">
-            <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug">
+            <h1 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight leading-snug">
               {language === 'tr'
                 ? `Selam ${studentDisplayName}! Ben Tanco, senin yapay zeka asistanınım. Bana istediğin ismi verebilirsin :)`
                 : `Hi ${studentDisplayName}! I'm Tanco, your AI assistant. You can give me any name you want :)`}
             </h1>
             {language === 'tr' ? (
-              <div className="mt-2">
-                <ul className="space-y-1 text-[11.5px] sm:text-xs text-slate-700 font-medium leading-relaxed">
+              <div className="mt-2.5">
+                <ul className="space-y-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
                   <li className="flex items-center space-x-1.5">
                     <span className="text-[#ff7a00] font-bold">•</span>
                     <span>Benimle sohbet edebilir,</span>
@@ -439,13 +439,13 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <span>Fotoğraf ve ses gönderebilirsin.</span>
                   </li>
                 </ul>
-                <p className="text-[11px] sm:text-[11.5px] text-[#ff7a00] font-black mt-2">
+                <p className="text-xs sm:text-sm text-[#ff7a00] font-black mt-2.5">
                   Fotoğrafıma dokunup kaydırmayı dene !
                 </p>
               </div>
             ) : (
-              <div className="mt-2">
-                <ul className="space-y-1 text-[11.5px] sm:text-xs text-slate-700 font-medium leading-relaxed">
+              <div className="mt-2.5">
+                <ul className="space-y-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
                   <li className="flex items-center space-x-1.5">
                     <span className="text-[#ff7a00] font-bold">•</span>
                     <span>Chat with me,</span>
@@ -459,7 +459,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <span>Send photos and voice messages.</span>
                   </li>
                 </ul>
-                <p className="text-[11px] sm:text-[11.5px] text-[#ff7a00] font-black mt-2">
+                <p className="text-xs sm:text-sm text-[#ff7a00] font-black mt-2.5">
                   Try tapping and dragging my photo!
                 </p>
               </div>
