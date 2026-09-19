@@ -299,8 +299,14 @@ export const CoursePage: React.FC<CoursePageProps> = ({
 
   // Check if a module is unlocked
   const isModuleUnlockedCheck = (module: Module, trackIdx: number): boolean => {
+    // 1st module is always unlocked
     if (trackIdx === 0) return true;
-    if (!isAuthenticated || !isVerified) return false;
+
+    // Guests can complete up to 2 modules (Module 1 and Module 2, i.e., trackIdx 0 and 1).
+    // For trackIdx >= 2 (Module 3 and above), guest users must sign up/login.
+    if ((!isAuthenticated || !isVerified) && trackIdx >= 2) {
+      return false;
+    }
 
     if (unlockedModules.includes(module.id)) return true;
 
@@ -484,13 +490,19 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                     <p className="text-xs sm:text-sm opacity-90 font-medium mt-1 leading-relaxed">
                       {getLocalized(module.description, language)}
                     </p>
-                    {!isModuleUnlocked && (!isAuthenticated || !isVerified) && (
-                      <button
-                        onClick={onGuestGateRequired}
-                        className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white hover:bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer"
-                      >
-                        <span>🔒 {language === 'tr' ? '2. Modül ve sonrası için ücretsiz kayıt olun' : 'Sign up to unlock Module 2+'}</span>
-                      </button>
+                    {!isModuleUnlocked && (
+                      trackIdx >= 2 && (!isAuthenticated || !isVerified) ? (
+                        <button
+                          onClick={onGuestGateRequired}
+                          className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white hover:bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer"
+                        >
+                          <span>🔒 {language === 'tr' ? '3. Modül ve sonrası için ücretsiz kayıt olun' : 'Sign up to unlock Module 3+'}</span>
+                        </button>
+                      ) : (
+                        <div className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-slate-300/80 text-slate-700 text-[11px] font-bold border border-slate-300">
+                          <span>🔒 {language === 'tr' ? 'Önceki modülü tamamlayarak kilidi açın' : 'Complete previous module to unlock'}</span>
+                        </div>
+                      )
                     )}
                   </div>
 
@@ -601,7 +613,9 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                             <button
                               onClick={() => {
                                 if (!node.isUnlocked) {
-                                  if (!isAuthenticated || !isVerified) onGuestGateRequired?.();
+                                  if (trackIdx >= 2 && (!isAuthenticated || !isVerified)) {
+                                    onGuestGateRequired?.();
+                                  }
                                   return;
                                 }
                                 if (node.type === 'case') {
@@ -957,7 +971,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
                 );
                 const trackIdx = modWithLesson ? activeModulesList.indexOf(modWithLesson) : 0;
                 const isUnlocked = modWithLesson ? isModuleUnlockedCheck(modWithLesson, trackIdx) : true;
-                if (!isUnlocked && (!isAuthenticated || !isVerified)) {
+                if (!isUnlocked && (!isAuthenticated || !isVerified) && trackIdx >= 2) {
                   onGuestGateRequired?.();
                   return;
                 }

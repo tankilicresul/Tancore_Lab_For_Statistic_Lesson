@@ -97,8 +97,13 @@ export const PlacementTestPage: React.FC<PlacementTestPageProps> = ({ onBackToHo
   const recommendedModule = getRecommendedModule(correctAnswersCount);
 
   const handleConfirmPlacement = (targetModId: string) => {
-    const isFirstModule = targetModId === 'module-1' || targetModId === 'module-2';
-    if ((!isAuthenticated || !isVerified) && !isFirstModule) {
+    const GUEST_ALLOWED_MODULES = [
+      'module-13', 'module-2', // Probability track Mod 1 & 2
+      'module-1', 'module-4',  // Statistics track Mod 1 & 2
+      'module-17', 'module-18' // INDR 100 track Mod 1 & 2
+    ];
+    const isAllowedForGuest = GUEST_ALLOWED_MODULES.includes(targetModId);
+    if ((!isAuthenticated || !isVerified) && !isAllowedForGuest) {
       setPendingModuleId(targetModId);
       setShowAuthModal(true);
       return;

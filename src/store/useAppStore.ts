@@ -964,7 +964,12 @@ export const useAppStore = create<UserState & AppStoreActions>()(
 
         // Unlock next module in the relevant course track sequence
         const isProb = PROBABILITY_TRACK_MODULE_IDS.includes(moduleId);
-        const trackList = isProb ? PROBABILITY_TRACK_MODULE_IDS : STATISTICS_TRACK_MODULE_IDS;
+        const isIndr = INDR100_TRACK_MODULE_IDS.includes(moduleId);
+        const trackList = isProb
+          ? PROBABILITY_TRACK_MODULE_IDS
+          : isIndr
+          ? INDR100_TRACK_MODULE_IDS
+          : STATISTICS_TRACK_MODULE_IDS;
         const trackIdx = trackList.indexOf(moduleId);
         const updatedUnlocked = [...state.unlockedModules];
         if (trackIdx >= 0 && trackIdx < trackList.length - 1) {

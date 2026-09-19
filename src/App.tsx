@@ -305,8 +305,8 @@ export const App: React.FC = () => {
 
   // Guest-aware lesson/case opener:
   // Authenticated users: full access.
-  // Guests: can freely work on any lesson and case in the 1st module of each course (module-1 for Statistics, module-2 for Probability).
-  // When attempting to access Module 2 or higher, GuestGateModal is automatically shown.
+  // Guests: can freely complete up to 2 modules in each track (Module 1 and Module 2).
+  // When attempting to access Module 3 or higher, GuestGateModal is automatically shown.
   const openLessonOrCase = (
     type: 'lesson' | 'case',
     id: string
@@ -335,16 +335,22 @@ export const App: React.FC = () => {
       topicModuleId = data?.module.id || '';
     }
 
-    // 1st module for Probability track is 'module-13'
-    // 1st module for Statistics track is 'module-1'
-    // 1st module for INDR 100 track is 'module-17'
-    const isFirstModule =
-      topicModuleId === 'module-1' ||
-      topicModuleId === 'module-2' ||
-      topicModuleId === 'module-13' ||
-      topicModuleId === 'module-17';
+    // Guests can complete up to 2 modules in any track:
+    // Probability track: Mod 1 ('module-13'), Mod 2 ('module-2')
+    // Statistics track: Mod 1 ('module-1'), Mod 2 ('module-4')
+    // INDR 100 track: Mod 1 ('module-17'), Mod 2 ('module-18')
+    const GUEST_ALLOWED_MODULE_IDS = [
+      'module-13',
+      'module-2',
+      'module-1',
+      'module-4',
+      'module-17',
+      'module-18',
+    ];
 
-    if (!isFirstModule) {
+    const isGuestAllowed = GUEST_ALLOWED_MODULE_IDS.includes(topicModuleId);
+
+    if (!isGuestAllowed) {
       setShowGuestGate(true);
       return;
     }

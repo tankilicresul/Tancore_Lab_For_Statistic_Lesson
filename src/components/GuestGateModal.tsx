@@ -80,13 +80,13 @@ export const GuestGateModal: React.FC<GuestGateModalProps> = ({ onClose }) => {
           {(isTr
             ? [
                 '✅ İlerlemeniz sıfırlanmaz, hesabınıza aktarılır',
-                '✅ 2. Modül ve tüm ileri düzey konular açılır',
+                '✅ 3. Modül ve tüm ileri düzey konular açılır',
                 '✅ Tanco AI asistan ile sınırsız sohbet',
                 '✅ XP, rozet ve liderlik tablosu',
               ]
             : [
                 '✅ Progress is preserved & transferred to your account',
-                '✅ Unlock Module 2 & all advanced courses',
+                '✅ Unlock Module 3 & all advanced courses',
                 '✅ XP, badges & global leaderboard',
                 '✅ Unlimited Tanco AI assistant',
               ]
