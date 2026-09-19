@@ -423,19 +423,19 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               ))}
             </div>
 
-            {/* Lock / Sign Up CTA Overlay in Center */}
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-t from-white via-white/85 to-white/40 backdrop-blur-[1.5px]">
-              <div className="w-13 h-13 rounded-3xl bg-gradient-to-tr from-[#ff7a00] to-amber-400 text-white flex items-center justify-center shadow-lg shadow-[#ff7a00]/30 mb-3 animate-pulse">
-                <Lock className="w-6 h-6 stroke-[2.5]" />
+            {/* Lock / Sign Up CTA Overlay (Positioned higher up for immediate prominence) */}
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-start pt-7 sm:pt-9 px-5 pb-6 text-center bg-gradient-to-b from-white/95 via-white/90 to-white/80 backdrop-blur-[1.5px]">
+              <div className="w-12 h-12 sm:w-13 sm:h-13 rounded-3xl bg-gradient-to-tr from-[#ff7a00] to-amber-400 text-white flex items-center justify-center shadow-lg shadow-[#ff7a00]/30 mb-2.5 animate-pulse">
+                <Lock className="w-5.5 h-5.5 sm:w-6 sm:h-6 stroke-[2.5]" />
               </div>
 
-              <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight mb-1 max-w-xs">
+              <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight mb-1 max-w-xs">
                 {language === 'tr'
                   ? 'Tüm Sıralamayı ve Kendi Dereceni Gör'
                   : 'Unlock Full Leaderboard & Your Rank'}
               </h3>
 
-              <p className="text-xs text-slate-600 font-medium max-w-sm mb-4 leading-relaxed">
+              <p className="text-[11px] sm:text-xs text-slate-600 font-medium max-w-sm mb-3.5 leading-relaxed px-2">
                 {language === 'tr'
                   ? 'Ücretsiz kayıt ol, dersleri tamamlayarak XP kazan ve üniversiteni liderlik tablosunun zirvesine taşı!'
                   : 'Sign up for free, earn XP by finishing lessons, and carry your university to the top of the leaderboard!'}
@@ -443,7 +443,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
               <button
                 onClick={onOpenAuth}
-                className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-[#ff7a00] to-amber-500 hover:from-[#e66e00] hover:to-amber-600 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 active:scale-95 transition-all cursor-pointer flex items-center space-x-2"
+                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-[#ff7a00] to-amber-500 hover:from-[#e66e00] hover:to-amber-600 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 active:scale-95 transition-all cursor-pointer flex items-center space-x-2"
               >
                 <span>{language === 'tr' ? 'Ücretsiz Kayıt Ol / Giriş Yap' : 'Sign Up / Sign In Free'}</span>
               </button>
