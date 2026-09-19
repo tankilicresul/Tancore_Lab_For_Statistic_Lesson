@@ -751,12 +751,33 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               </span>
             </button>
 
+            {/* Very brief, clean lesson teaser */}
             {(() => {
-              const rawText = getLocalized(selectedNode.lesson.conceptCard, language);
+              const isTr = language === 'tr';
+              const rawText = getLocalized(selectedNode.lesson.conceptCard, language) || '';
+
+              let clean = rawText
+                .replace(/\$\$[\s\S]*?\$\$/g, '')
+                .replace(/\\\[[\s\S]*?\\\]/g, '')
+                .replace(/\$[^$]*?\$/g, '')
+                .replace(/\\[a-zA-Z]+/g, '')
+                .replace(/[`*#_]/g, '')
+                .replace(/^[0-9]+\.\s*/gm, '')
+                .replace(/^[A-Za-z0-9ÇĞİÖŞÜçğıöşü\s]+:\s*/, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+
+              const sentenceMatch = clean.match(/^[^.!?]+[.!?]/);
+              const preview =
+                sentenceMatch && sentenceMatch[0].length >= 20 && sentenceMatch[0].length <= 130
+                  ? sentenceMatch[0].trim()
+                  : clean.slice(0, 100).trim() + (clean.length > 100 ? '...' : '');
 
               return (
-                <div className="text-xs text-slate-600 font-medium leading-relaxed max-h-32 overflow-y-auto p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
-                  <MathFormulaText text={rawText} />
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 font-medium leading-relaxed text-center">
+                  <p className="line-clamp-2">
+                    {preview || (isTr ? 'Bu derste temel kavramları ve interaktif uygulamaları keşfedeceksin.' : 'Explore key concepts and interactive exercises in this lesson.')}
+                  </p>
                 </div>
               );
             })()}
