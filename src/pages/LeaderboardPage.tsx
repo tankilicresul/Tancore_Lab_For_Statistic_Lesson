@@ -134,9 +134,10 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   const user3 = sortedLeaderboard[2] || null;
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans space-y-4 relative">
-      {/* Seamless Top 3 Leaderboard Podium (Sticky at top in fixed view) */}
-      <div className="sticky top-[52px] sm:top-[68px] z-30 pt-1 pb-1 bg-[#f8fafc]/95 backdrop-blur-md">
+    <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans -mt-4 sm:-mt-6 relative">
+      {/* Pinned Top Podium & Section Subtitle (Sticky with zero initial jump) */}
+      <div className="sticky top-[52px] sm:top-[68px] z-30 pt-1 pb-1.5 bg-[#f8fafc]">
+        {/* Seamless Top 3 Leaderboard Podium */}
         <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-md relative overflow-hidden transition-all">
           <div className="flex items-end justify-center gap-2 sm:gap-4 pt-2 pb-1">
             {/* 2nd Place (Silver) */}
@@ -308,6 +309,24 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
             </div>
           </div>
         </div>
+
+        {/* Pinned Subheader Bar (Üniversite Ligi Sıralaması / Tüm Öğrenciler) */}
+        <div className="flex items-center justify-between px-2 pt-3 pb-1">
+          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            {!isAuthenticated
+              ? (language === 'tr' ? 'Üniversite Ligi Sıralaması' : 'University League Ranking')
+              : (language === 'tr' ? 'Tüm Öğrenciler' : 'All Students')}
+          </span>
+          {!isAuthenticated ? (
+            <span className="text-[11px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
+              🔥 {language === 'tr' ? 'Canlı Lig' : 'Live League'}
+            </span>
+          ) : (
+            <span className="text-[11px] text-slate-400 font-medium">
+              {sortedLeaderboard.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Current User Floating/Top Preview Row (Visible only when user is authenticated, Rank 4+ and has not scrolled down yet) */}
@@ -375,16 +394,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
       {/* Additional Registered Users (Rank 4+) or Blurred Preview when Unauthenticated */}
       {!isAuthenticated ? (
-        <div className="space-y-2.5 pt-1">
-          <div className="flex items-center justify-between px-1">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              {language === 'tr' ? 'Üniversite Ligi Sıralaması' : 'University League Ranking'}
-            </span>
-            <span className="text-[11px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
-              🔥 {language === 'tr' ? 'Canlı Lig' : 'Live League'}
-            </span>
-          </div>
-
+        <div className="space-y-2.5">
           {/* Blurred Background Mock Students List with Centered Frosted Lock Card */}
           <div className="relative rounded-3xl overflow-hidden border border-slate-200/90 bg-white p-3 shadow-xs">
             <div className="space-y-2 select-none pointer-events-none filter blur-[4.5px] opacity-35">
@@ -443,17 +453,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       ) : (
         /* Authenticated: Render real list when rank > 3 */
         sortedLeaderboard.length > 3 ? (
-          <div className="space-y-2.5 pt-1">
-            <div className="flex items-center justify-between px-1">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                {language === 'tr' ? 'Tüm Öğrenciler' : 'All Students'}
-              </span>
-
-              <span className="text-[11px] text-slate-400 font-medium">
-                {sortedLeaderboard.length} {language === 'tr' ? 'kayıtlı' : 'registered'}
-              </span>
-            </div>
-
+          <div className="space-y-2">
             <div
               ref={listRef}
               onScroll={(e) => {
