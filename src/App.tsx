@@ -80,12 +80,17 @@ export const App: React.FC = () => {
             subscriptionStatus: remoteProfile.subscription_status || userProfile.subscriptionStatus,
             subscriptionRenewsAt: remoteProfile.subscription_renews_at || userProfile.subscriptionRenewsAt,
           });
-          if (typeof remoteProfile.xp === 'number' && remoteProfile.xp > 0) {
-            useAppStore.setState((state) => ({
-              xp: remoteProfile.xp,
-              streak: typeof remoteProfile.streak === 'number' ? remoteProfile.streak : state.streak,
-            }));
-          }
+
+          useAppStore.setState((state) => ({
+            xp: typeof remoteProfile.xp === 'number' && remoteProfile.xp > 0 ? remoteProfile.xp : state.xp,
+            streak: typeof remoteProfile.streak === 'number' ? remoteProfile.streak : state.streak,
+            lastActiveDate: remoteProfile.last_active_date || state.lastActiveDate,
+            activityDates: Array.isArray(remoteProfile.activity_dates) && remoteProfile.activity_dates.length > 0
+              ? remoteProfile.activity_dates
+              : state.activityDates,
+          }));
+
+          useAppStore.getState().checkAndUpdateStreak();
         }
       })
       .catch((err) => {
