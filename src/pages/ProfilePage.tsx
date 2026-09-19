@@ -556,46 +556,29 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       </div>
 
       {/* Standalone Action Panels: Profili Düzenle & Sıralama (Leaderboard) */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
         <button
           onClick={() => setIsEditing(true)}
-          className="p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl bg-white hover:bg-orange-50/60 border border-slate-200/90 hover:border-[#ff7a00]/40 shadow-xs transition-all flex items-center justify-between group cursor-pointer active:scale-98 text-left"
+          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-white hover:bg-orange-50/60 border border-slate-200/90 hover:border-[#ff7a00]/40 shadow-xs transition-all flex items-center justify-between group cursor-pointer active:scale-98 text-left"
         >
-          <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
-            <div className="p-2 sm:p-2.5 rounded-xl bg-orange-100/80 text-[#ff7a00] group-hover:scale-105 transition-transform shrink-0">
-              <Edit3 className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.2]" />
-            </div>
-            <div className="min-w-0">
-              <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-[#ff7a00] transition-colors truncate block">
-                {language === 'tr' ? 'Profili Düzenle' : 'Edit Profile'}
-              </span>
-              <span className="text-[10px] text-slate-500 font-medium hidden xs:block truncate">
-                {language === 'tr' ? 'Hesap & Bilgiler' : 'Account & Info'}
-              </span>
-            </div>
-          </div>
-          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ff7a00] group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
+          <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-[#ff7a00] transition-colors whitespace-nowrap truncate">
+            {language === 'tr' ? 'Profili Düzenle' : 'Edit Profile'}
+          </span>
+          <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-[#ff7a00] group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
         </button>
 
         <button
           onClick={() => onNavigateLeaderboard?.()}
-          className="p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl bg-white hover:bg-amber-50/60 border border-slate-200/90 hover:border-amber-400/50 shadow-xs transition-all flex items-center justify-between group cursor-pointer active:scale-98 text-left"
+          className="py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-2xl bg-white hover:bg-amber-50/60 border border-slate-200/90 hover:border-amber-400/50 shadow-xs transition-all flex items-center justify-between group cursor-pointer active:scale-98 text-left"
           title={language === 'tr' ? 'Genel Sıralamayı Gör' : 'View Leaderboard'}
         >
-          <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
-            <div className="p-2 sm:p-2.5 rounded-xl bg-amber-100/80 text-amber-600 group-hover:scale-105 transition-transform shrink-0">
-              <Trophy className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.2]" />
-            </div>
-            <div className="min-w-0">
-              <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-amber-600 transition-colors truncate block">
-                {userRank}. {language === 'tr' ? 'Sıra' : 'Rank'}
-              </span>
-              <span className="text-[10px] text-slate-500 font-medium hidden xs:block truncate">
-                {language === 'tr' ? 'Liderlik Tablosu' : 'Leaderboard'}
-              </span>
-            </div>
+          <div className="flex items-center space-x-1.5 min-w-0">
+            <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 shrink-0 stroke-[2.2]" />
+            <span className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-amber-600 transition-colors whitespace-nowrap truncate">
+              {userRank}. {language === 'tr' ? 'Sıra' : 'Rank'}
+            </span>
           </div>
-          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
+          <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
         </button>
       </div>
 
