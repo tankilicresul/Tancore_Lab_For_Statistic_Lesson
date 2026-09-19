@@ -147,7 +147,7 @@ export function computeUnifiedLeaderboard(params: {
         streak: finalStreak,
         level: Math.floor(finalXp / 100) + 1,
         completedCount: finalCompletedCount,
-        unlockedBadges: mergedBadges.length > 0 ? mergedBadges : ['badge-first-lesson'],
+        unlockedBadges: mergedBadges,
         isPremium: Boolean(incoming.isPremium || existing.isPremium),
       };
     } else {
@@ -176,7 +176,7 @@ export function computeUnifiedLeaderboard(params: {
       rank: 1,
       level: Math.floor(currentXp / 100) + 1,
       completedCount,
-      unlockedBadges: unlockedBadges.length > 0 ? unlockedBadges : ['badge-first-lesson'],
+      unlockedBadges: Array.isArray(unlockedBadges) ? unlockedBadges : [],
       isPremium: Boolean(currentUserProfile.isPremium),
     };
     upsertProfile(activeEntry, true);

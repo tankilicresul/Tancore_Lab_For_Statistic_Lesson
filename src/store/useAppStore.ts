@@ -300,7 +300,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           avatarEmoji: accountInput.avatarEmoji || '👨‍🎓',
           avatarUrl: accountInput.avatarUrl || currentStore.userProfile?.avatarUrl || defaultAvatar,
           isVerified: false,
-          xp: Math.max(15, currentStore.xp || 15),
+          xp: currentStore.xp || 0,
           streak: Math.max(1, currentStore.streak || 1),
           completedLessons: currentStore.completedLessons || [],
           completedCaseExams: currentStore.completedCaseExams || [],
@@ -357,7 +357,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const currentCompletedCases = state.completedCaseExams || [];
         const currentBadges = state.unlockedBadges || [];
         const currentUnlockedModules = state.unlockedModules || ['module-1', 'module-2'];
-        let userXp = Math.max(15, state.xp || 15);
+        let userXp = state.xp || 0;
         let userStreak = Math.max(1, state.streak || 1);
 
         if (accIdx >= 0) {
@@ -493,7 +493,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           const mergedCases = Array.from(new Set(guestCases));
           const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
           // Cloud remote XP is the authoritative source of truth; never double/sum XP upon login
-          const userXp = remoteXp > 0 ? remoteXp : Math.max(15, state.xp || 15);
+          const userXp = remoteXp > 0 ? remoteXp : (state.xp || 0);
           const accounts = state.userAccounts || [];
           const existingAccount = accounts.find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
 
@@ -658,7 +658,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const mergedLessons = Array.from(new Set(guestLessons));
         const mergedCases = Array.from(new Set(guestCases));
         const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
-        const userXp = remoteXp > 0 ? remoteXp : Math.max(15, state.xp || 15);
+        const userXp = remoteXp > 0 ? remoteXp : (state.xp || 0);
 
         const accounts = state.userAccounts || [];
         const existingAccount = accounts.find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
@@ -1214,40 +1214,82 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       name: 'tancorelab-statsim-v5',
       onRehydrateStorage: () => (state) => {
         if (state) {
-          // Sound is always enabled
-          state.isSoundEnabled = true;
-          soundService.setEnabled(true);
+          // 1. Backward-compatible migration: If current storage key has no completed lessons/cases, restore from previous version keys
+          if (typeof window !== 'undefined' && (state.completedLessons?.length || 0) === 0 && (state.completedCaseExams?.length || 0) === 0) {
+            const legacyKeys = [
+              'tancorelab-statsim-v4',
+              'tancorelab-statsim-v3',
+              'tancorelab-statsim-v2',
+              'tancorelab-statsim-v1',
+              'tancorelab-storage',
+              'tancorelab-guest-progress',
+            ];
+            for (const k of legacyKeys) {
+              try {
+                const raw = localStorage.getItem(k);
+                if (raw) {
+                  const parsed = JSON.parse(raw);
+                  const legacyState = parsed?.state || parsed;
+                  if (
+                    (Array.isArray(legacyState?.completedLessons) && legacyState.completedLessons.length > 0) ||
+                    (Array.isArray(legacyState?.completedCaseExams) && legacyState.completedCaseExams.length > 0) ||
+                    (typeof legacyState?.xp === 'number' && legacyState.xp > 0)
+                  ) {
+                    state.completedLessons = Array.isArray(legacyState.completedLessons) ? legacyState.completedLessons : state.completedLessons;
+                    state.completedCaseExams = Array.isArray(legacyState.completedCaseExams) ? legacyState.completedCaseExams : state.completedCaseExams;
+                    state.xp = typeof legacyState.xp === 'number' ? legacyState.xp : state.xp;
+                    state.streak = typeof legacyState.streak === 'number' ? legacyState.streak : state.streak;
+                    state.unlockedModules = Array.from(new Set([...(state.unlockedModules || ['module-1', 'module-2']), ...(legacyState.unlockedModules || [])]));
+                    state.unlockedBadges = Array.from(new Set([...(state.unlockedBadges || []), ...(legacyState.unlockedBadges || [])]));
+                    if (legacyState.userProfile && !state.userProfile?.schoolEmail && legacyState.userProfile.schoolEmail) {
+                      state.userProfile = legacyState.userProfile;
+                      state.isAuthenticated = Boolean(legacyState.isAuthenticated);
+                      state.isVerified = Boolean(legacyState.isVerified);
+                    }
+                    if (Array.isArray(legacyState.userAccounts) && legacyState.userAccounts.length > 0) {
+                      state.userAccounts = Array.from(new Set([...(state.userAccounts || []), ...legacyState.userAccounts]));
+                    }
+                    break;
+                  }
+                }
+              } catch {
+                // Ignore legacy parse errors
+              }
+            }
+          }
 
-          // Check Tanco session: if within 1 minute or returning from payment, preserve position; otherwise reset to card!
+          // 2. Ensure safe array defaults
+          state.completedLessons = Array.isArray(state.completedLessons) ? state.completedLessons : [];
+          state.completedCaseExams = Array.isArray(state.completedCaseExams) ? state.completedCaseExams : [];
+          state.unlockedModules = Array.isArray(state.unlockedModules) && state.unlockedModules.length > 0
+            ? state.unlockedModules
+            : ['module-1', 'module-2'];
+          state.unlockedBadges = Array.isArray(state.unlockedBadges) ? state.unlockedBadges : [];
+          state.activityDates = Array.isArray(state.activityDates) && state.activityDates.length > 0
+            ? state.activityDates
+            : [new Date().toISOString().split('T')[0]];
+
+          // 3. Sound is enabled
+          state.isSoundEnabled = state.isSoundEnabled ?? true;
+          soundService.setEnabled(state.isSoundEnabled);
+
+          // 4. Check Tanco session: if within 1 minute or returning from payment, preserve position; otherwise reset to card!
           const tancoSession = loadTancoSession();
           state.isTancoActive = tancoSession.isTancoActive;
           state.isTancoMoved = tancoSession.isTancoMoved;
           state.tancoPosition = tancoSession.tancoPosition;
 
-          // Anti-tamper sanity check on rehydration
-          const completedCount = (state.completedLessons?.length || 0) + (state.completedCaseExams?.length || 0);
+          // 5. Anti-tamper sanity check on XP
+          const completedCount = state.completedLessons.length + state.completedCaseExams.length;
           const maxAllowedXp = completedCount * 45 + Math.min(state.streak || 1, 365) * 50 + 2000;
 
           if (typeof state.xp !== 'number' || isNaN(state.xp) || state.xp < 0) {
             state.xp = 0;
           } else if (state.xp > maxAllowedXp) {
-            console.warn('TanCoreLab Security: Storage XP clamped to verified maximum.');
             state.xp = maxAllowedXp;
           }
 
-          // 1-day device retention check for unauthenticated guest users
-          if (!state.isAuthenticated && state.guestProgressTimestamp) {
-            const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-            if (Date.now() - state.guestProgressTimestamp > ONE_DAY_MS) {
-              state.completedLessons = [];
-              state.completedCaseExams = [];
-              state.xp = 0;
-              state.streak = 0;
-              state.unlockedBadges = [];
-              state.unlockedModules = ['module-1'];
-            }
-          }
-
+          // 6. User profile sync & remote preservation
           if (state.userProfile) {
             const acc = state.userAccounts?.find(
               (a) => a.schoolEmail.toLowerCase() === state.userProfile.schoolEmail?.toLowerCase()
@@ -1259,12 +1301,17 @@ export const useAppStore = create<UserState & AppStoreActions>()(
               state.userProfile.avatarUrl = acc.avatarUrl;
             }
 
-            // Sync real stats, avatar & PLUS status from Supabase on app load
+            // Sync real stats, avatar & PLUS status from Supabase on app load without overwriting local lesson progress
             if (state.isAuthenticated && state.userProfile.schoolEmail && isSupabaseConfigured) {
               fetchUserProfileFromSupabase(state.userProfile.schoolEmail).then((remote) => {
                 if (remote) {
                   const store = useAppStore.getState();
                   const remoteXp = typeof remote.xp === 'number' ? Math.min(remote.xp, maxAllowedXp) : store.xp;
+                  const mergedXp = Math.max(store.xp, remoteXp);
+                  const mergedStreak = Math.max(store.streak, typeof remote.streak === 'number' ? remote.streak : 1);
+                  const remoteUnlocked = Array.isArray(remote.unlocked_modules) ? remote.unlocked_modules : [];
+                  const mergedUnlocked = Array.from(new Set([...(store.unlockedModules || ['module-1', 'module-2']), ...remoteUnlocked]));
+
                   useAppStore.setState({
                     userProfile: {
                       ...store.userProfile,
@@ -1277,8 +1324,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
                       subscriptionStatus: remote.subscription_status || store.userProfile.subscriptionStatus,
                       subscriptionRenewsAt: remote.subscription_renews_at || store.userProfile.subscriptionRenewsAt,
                     },
-                    xp: remoteXp,
-                    streak: typeof remote.streak === 'number' ? Math.min(remote.streak, 365) : store.streak,
+                    xp: mergedXp,
+                    streak: Math.min(mergedStreak, 365),
+                    unlockedModules: mergedUnlocked,
                   });
                 }
               }).catch(() => {});
