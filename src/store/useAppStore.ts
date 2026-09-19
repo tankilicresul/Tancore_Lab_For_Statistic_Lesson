@@ -443,8 +443,21 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
           // Cloud remote XP is the authoritative source of truth; never double/sum XP upon login
           const userXp = remoteXp > 0 ? remoteXp : Math.max(15, state.xp || 15);
-          const remoteStreak = typeof remoteProfile?.streak === 'number' ? remoteProfile.streak : 1;
-          const userStreak = Math.max(remoteStreak, state.streak || 1);
+          const accounts = state.userAccounts || [];
+          const existingAccount = accounts.find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
+
+          // Email-based streak and activity history
+          const emailStreak = typeof remoteProfile?.streak === 'number'
+            ? remoteProfile.streak
+            : (existingAccount?.streak || 1);
+
+          const emailLastActive = remoteProfile?.last_active_date || existingAccount?.lastActiveDate || new Date().toISOString().split('T')[0];
+
+          const emailActivityDates = Array.isArray(remoteProfile?.activity_dates) && remoteProfile.activity_dates.length > 0
+            ? remoteProfile.activity_dates
+            : (Array.isArray(existingAccount?.activityDates) && existingAccount.activityDates.length > 0
+                ? existingAccount.activityDates
+                : [new Date().toISOString().split('T')[0]]);
 
           const remoteUnlocked = Array.isArray(remoteProfile?.unlocked_modules) && remoteProfile.unlocked_modules.length > 0
             ? remoteProfile.unlocked_modules
@@ -457,7 +470,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             isAuthenticated: true,
             isVerified: true,
             xp: userXp,
-            streak: userStreak,
+            streak: emailStreak,
+            lastActiveDate: emailLastActive,
+            activityDates: emailActivityDates,
             completedLessons: mergedLessons,
             completedCaseExams: mergedCases,
             unlockedModules,
@@ -470,7 +485,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             isAuthenticated: true,
             isVerified: true,
             xp: userXp,
-            streak: userStreak,
+            streak: emailStreak,
+            lastActiveDate: emailLastActive,
+            activityDates: emailActivityDates,
             completedLessons: mergedLessons,
             completedCaseExams: mergedCases,
             unlockedModules,
@@ -483,16 +500,19 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           saveUserProfileToSupabase({
             ...loggedInProfile,
             xp: userXp,
-            streak: userStreak,
+            streak: emailStreak,
             completedLessons: Math.max(remoteLessonsCount, mergedLessons.length + mergedCases.length),
           });
           syncUserProgress({
             totalXp: userXp,
             level: Math.floor(userXp / 100) + 1,
-            streak: userStreak,
+            streak: emailStreak,
             completedLessons: mergedLessons,
             completedCaseExams: mergedCases,
           });
+
+          // Evaluate today's streak for this email account
+          get().checkAndUpdateStreak();
 
           return { success: true };
         }
@@ -532,7 +552,11 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const mergedLessons = Array.from(new Set([...(account.completedLessons || []), ...(state.completedLessons || [])]));
         const mergedCases = Array.from(new Set([...(account.completedCaseExams || []), ...(state.completedCaseExams || [])]));
         const userXp = Math.max(account.xp || 0, state.xp || 0, (account.xp || 0) + (state.xp || 0));
-        const userStreak = Math.max(account.streak || 1, state.streak || 1);
+        const userStreak = account.streak || 1;
+        const userLastActive = account.lastActiveDate || new Date().toISOString().split('T')[0];
+        const userActivityDates = Array.isArray(account.activityDates) && account.activityDates.length > 0
+          ? account.activityDates
+          : [new Date().toISOString().split('T')[0]];
         const unlockedModules = Array.from(new Set([...(account.unlockedModules || ['module-1', 'module-2']), ...(state.unlockedModules || [])]));
 
         set({
@@ -541,10 +565,14 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           isVerified: true,
           xp: userXp,
           streak: userStreak,
+          lastActiveDate: userLastActive,
+          activityDates: userActivityDates,
           completedLessons: mergedLessons,
           completedCaseExams: mergedCases,
           unlockedModules,
         });
+
+        get().checkAndUpdateStreak();
 
         return { success: true };
       },
@@ -580,8 +608,22 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const mergedCases = Array.from(new Set(guestCases));
         const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
         const userXp = remoteXp > 0 ? remoteXp : Math.max(15, state.xp || 15);
-        const remoteStreak = typeof remoteProfile?.streak === 'number' ? remoteProfile.streak : 1;
-        const userStreak = Math.max(remoteStreak, state.streak || 1);
+
+        const accounts = state.userAccounts || [];
+        const existingAccount = accounts.find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
+
+        // Email-based streak and activity history
+        const emailStreak = typeof remoteProfile?.streak === 'number'
+          ? remoteProfile.streak
+          : (existingAccount?.streak || 1);
+
+        const emailLastActive = remoteProfile?.last_active_date || existingAccount?.lastActiveDate || new Date().toISOString().split('T')[0];
+
+        const emailActivityDates = Array.isArray(remoteProfile?.activity_dates) && remoteProfile.activity_dates.length > 0
+          ? remoteProfile.activity_dates
+          : (Array.isArray(existingAccount?.activityDates) && existingAccount.activityDates.length > 0
+              ? existingAccount.activityDates
+              : [new Date().toISOString().split('T')[0]]);
 
         const remoteUnlocked = Array.isArray(remoteProfile?.unlocked_modules) && remoteProfile.unlocked_modules.length > 0
           ? remoteProfile.unlocked_modules
@@ -594,7 +636,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           isAuthenticated: true,
           isVerified: true,
           xp: userXp,
-          streak: userStreak,
+          streak: emailStreak,
+          lastActiveDate: emailLastActive,
+          activityDates: emailActivityDates,
           completedLessons: mergedLessons,
           completedCaseExams: mergedCases,
           unlockedModules,
@@ -607,7 +651,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           isAuthenticated: true,
           isVerified: true,
           xp: userXp,
-          streak: userStreak,
+          streak: emailStreak,
+          lastActiveDate: emailLastActive,
+          activityDates: emailActivityDates,
           completedLessons: mergedLessons,
           completedCaseExams: mergedCases,
           unlockedModules,
@@ -619,16 +665,19 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         saveUserProfileToSupabase({
           ...loggedInProfile,
           xp: userXp,
-          streak: userStreak,
+          streak: emailStreak,
           completedLessons: Math.max(remoteLessonsCount, mergedLessons.length + mergedCases.length),
         });
         syncUserProgress({
           totalXp: userXp,
           level: Math.floor(userXp / 100) + 1,
-          streak: userStreak,
+          streak: emailStreak,
           completedLessons: mergedLessons,
           completedCaseExams: mergedCases,
         });
+
+        // Evaluate today's streak for this email account
+        get().checkAndUpdateStreak();
 
         return { success: true };
       },
@@ -697,6 +746,12 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             pendingOtpEmail: undefined,
             simulatedOtpCode: undefined,
             userProfile: DEFAULT_PROFILE,
+            xp: 0,
+            streak: 1,
+            lastActiveDate: new Date().toISOString().split('T')[0],
+            activityDates: [new Date().toISOString().split('T')[0]],
+            completedLessons: [],
+            completedCaseExams: [],
             currentView: 'home' as const,
             selectedLessonId: null,
             selectedCaseId: null,
@@ -728,43 +783,60 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       checkAndUpdateStreak: () => {
         const today = new Date().toISOString().split('T')[0];
         const state = get();
+        const activeEmail = state.userProfile?.schoolEmail?.trim().toLowerCase();
         const lastActive = state.lastActiveDate;
         const currentDates = Array.isArray(state.activityDates) ? state.activityDates : [];
         const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
 
+        let calculatedStreak = Math.max(1, state.streak || 1);
+
         if (!lastActive) {
-          set({ lastActiveDate: today, streak: 1, activityDates: updatedDates });
-          if (state.userProfile?.schoolEmail) {
-            saveUserProfileToSupabase({ ...state.userProfile, streak: 1, xp: state.xp, completedLessons: state.completedLessons.length + state.completedCaseExams.length });
+          calculatedStreak = 1;
+        } else if (lastActive === today) {
+          calculatedStreak = Math.max(1, state.streak || 1);
+        } else {
+          const lastParts = lastActive.split('-').map(Number);
+          const todayParts = today.split('-').map(Number);
+          const lastDateUTC = Date.UTC(lastParts[0], lastParts[1] - 1, lastParts[2]);
+          const todayDateUTC = Date.UTC(todayParts[0], todayParts[1] - 1, todayParts[2]);
+          const diffDays = Math.round((todayDateUTC - lastDateUTC) / (1000 * 60 * 60 * 24));
+
+          if (diffDays === 1) {
+            calculatedStreak = (state.streak || 0) + 1;
+          } else if (diffDays > 1) {
+            calculatedStreak = 1;
           }
-          return;
         }
 
-        if (lastActive === today) {
-          // Already logged in today
-          const realStreak = Math.max(1, state.streak || 1);
-          set({ streak: realStreak, activityDates: updatedDates });
-          return;
+        // Sync to accounts list for this email
+        let updatedAccounts = state.userAccounts || [];
+        if (activeEmail) {
+          const accIdx = updatedAccounts.findIndex((a) => a.schoolEmail.toLowerCase() === activeEmail);
+          if (accIdx >= 0) {
+            updatedAccounts = [...updatedAccounts];
+            updatedAccounts[accIdx] = {
+              ...updatedAccounts[accIdx],
+              streak: calculatedStreak,
+              lastActiveDate: today,
+              activityDates: updatedDates,
+            };
+          }
         }
 
-        const lastParts = lastActive.split('-').map(Number);
-        const todayParts = today.split('-').map(Number);
-        const lastDateUTC = Date.UTC(lastParts[0], lastParts[1] - 1, lastParts[2]);
-        const todayDateUTC = Date.UTC(todayParts[0], todayParts[1] - 1, todayParts[2]);
-        const diffDays = Math.round((todayDateUTC - lastDateUTC) / (1000 * 60 * 60 * 24));
+        set({
+          streak: calculatedStreak,
+          lastActiveDate: today,
+          activityDates: updatedDates,
+          userAccounts: updatedAccounts,
+        });
 
-        if (diffDays === 1) {
-          const newStreak = (state.streak || 0) + 1;
-          set({ streak: newStreak, lastActiveDate: today, activityDates: updatedDates });
-          if (state.userProfile?.schoolEmail) {
-            saveUserProfileToSupabase({ ...state.userProfile, streak: newStreak, xp: state.xp, completedLessons: state.completedLessons.length + state.completedCaseExams.length });
-          }
-        } else if (diffDays > 1) {
-          // Interrupted streak: reset active streak to 1, starting fresh today
-          set({ streak: 1, lastActiveDate: today, activityDates: updatedDates });
-          if (state.userProfile?.schoolEmail) {
-            saveUserProfileToSupabase({ ...state.userProfile, streak: 1, xp: state.xp, completedLessons: state.completedLessons.length + state.completedCaseExams.length });
-          }
+        if (state.userProfile?.schoolEmail) {
+          saveUserProfileToSupabase({
+            ...state.userProfile,
+            streak: calculatedStreak,
+            xp: state.xp,
+            completedLessons: state.completedLessons.length + state.completedCaseExams.length,
+          });
         }
       },
 

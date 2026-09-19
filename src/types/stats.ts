@@ -108,6 +108,7 @@ export interface RegisteredAccount {
   isVerified: boolean;
   xp: number;
   streak: number;
+  lastActiveDate?: string;
   activityDates?: string[];
   completedLessons: string[];
   completedCaseExams: string[];
