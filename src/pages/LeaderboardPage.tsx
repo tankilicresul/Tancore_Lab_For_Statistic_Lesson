@@ -135,8 +135,8 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   return (
     <div className="w-full max-w-2xl mx-auto px-3.5 sm:px-4 pb-8 font-sans space-y-4 animate-fade-in relative">
-      {/* Seamless Top 3 Leaderboard Podium */}
-      <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-sm relative overflow-hidden">
+      {/* Seamless Top 3 Leaderboard Podium (Sticky at top in fixed view) */}
+      <div className="sticky top-18 sm:top-22 z-20 bg-white/95 backdrop-blur-md rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-md relative overflow-hidden transition-all">
         <div className="flex items-end justify-center gap-2 sm:gap-4 pt-2 pb-1">
           {/* 2nd Place (Silver) */}
           <div id="leaderboard-row-2" className="flex flex-col items-center flex-1 min-w-0 max-w-[110px]">
