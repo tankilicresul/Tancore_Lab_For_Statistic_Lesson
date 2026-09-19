@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ALL_MODULES } from '../data/modules';
 import { useAppStore, PROBABILITY_TRACK_MODULE_IDS, STATISTICS_TRACK_MODULE_IDS } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
@@ -695,28 +696,31 @@ export const CoursePage: React.FC<CoursePageProps> = ({
         })}
       </div>
 
-      {/* Lesson Detail Dialog */}
-      {selectedNode && selectedNode.lesson && (
+      {/* Lesson Detail Dialog / Bottom Sheet (Rendered via Portal to viewport bottom) */}
+      {selectedNode && selectedNode.lesson && typeof document !== 'undefined' && createPortal(
         <div
           onClick={() => setSelectedNode(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl relative animate-scale-up"
+            className="w-full sm:max-w-md bg-white border-t sm:border border-slate-200 rounded-t-[32px] sm:rounded-3xl p-5 sm:p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl relative animate-sheet-enter sm:animate-modal-enter"
           >
+            {/* Top mobile drag handle */}
+            <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-3.5 sm:hidden" />
+
             <button
               onClick={() => setSelectedNode(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold text-lg cursor-pointer p-1"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold text-lg cursor-pointer p-1.5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
             >
               ✕
             </button>
 
-            <div className="flex items-center space-x-3 mb-4">
+            <div className="flex items-center space-x-3 mb-4 pr-8">
               <div className="w-12 h-12 rounded-2xl bg-[#ff7a00] text-white flex items-center justify-center shadow-md shadow-[#ff7a00]/25 shrink-0">
                 {getNodeAnimalIcon(selectedNode.order, 'text-white')}
               </div>
-              <div className="flex-1 min-w-0 pr-6">
+              <div className="flex-1 min-w-0">
                 <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug break-words">
                   {selectedNode.title}
                 </h3>
@@ -726,14 +730,14 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               </div>
             </div>
 
-            {/* Direct Prominent Start Button (Instant Viewport Visibility) */}
+            {/* Direct Prominent Start Button (Instant Viewport Visibility at bottom edge) */}
             <button
               onClick={() => {
                 const node = selectedNode;
                 setSelectedNode(null);
                 onSelectLesson(node.id);
               }}
-              className="w-full py-4 mb-4 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-98"
+              className="w-full py-4 mb-3.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#ff7a00]/30 transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-98"
             >
               <Play className="w-4 h-4 fill-white" />
               <span>
@@ -751,19 +755,29 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               const rawText = getLocalized(selectedNode.lesson.conceptCard, language);
 
               return (
-                <div className="text-xs text-slate-600 font-medium leading-relaxed max-h-36 overflow-y-auto p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
+                <div className="text-xs text-slate-600 font-medium leading-relaxed max-h-32 overflow-y-auto p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
                   <MathFormulaText text={rawText} />
                 </div>
               );
             })()}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* 3-Case Exam Selection Modal */}
-      {selectedCaseHubModule && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
-          <div className="w-full max-w-xl max-h-[90vh] flex flex-col bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden animate-scale-up">
+      {selectedCaseHubModule && typeof document !== 'undefined' && createPortal(
+        <div
+          onClick={() => setSelectedCaseHubModule(null)}
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-xl max-h-[90vh] flex flex-col bg-white border-t sm:border border-slate-200 rounded-t-[32px] sm:rounded-3xl shadow-2xl overflow-hidden animate-sheet-enter sm:animate-modal-enter pb-[calc(1rem+env(safe-area-inset-bottom))]"
+          >
+            {/* Top mobile drag handle */}
+            <div className="w-12 h-1.5 bg-white/40 rounded-full mx-auto my-2.5 sm:hidden" />
+
             {/* Modal Header */}
             <div className="p-5 sm:p-6 bg-gradient-to-r from-orange-500 via-[#ff7a00] to-amber-500 text-white relative">
               <button
@@ -896,11 +910,12 @@ export const CoursePage: React.FC<CoursePageProps> = ({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
-      {/* Floating Direct Start / Quick Action Button */}
-      {globalTargetNodeId && (
+      {/* Floating Direct Start / Quick Action Button (Rendered via Portal to viewport) */}
+      {globalTargetNodeId && typeof document !== 'undefined' && createPortal(
         <div className="fixed bottom-20 right-4 sm:right-6 z-30 animate-fade-in">
           <button
             onClick={() => {
@@ -933,7 +948,8 @@ export const CoursePage: React.FC<CoursePageProps> = ({
             </span>
             <ChevronRight className="w-4 h-4 text-white stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
           </button>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
