@@ -25,7 +25,7 @@ export const KatexFormula: React.FC<KatexFormulaProps> = ({
 
     return (
       <span
-        className={`inline-block align-middle ${className}`}
+        className={`inline-block align-middle max-w-full overflow-x-auto ${className}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );

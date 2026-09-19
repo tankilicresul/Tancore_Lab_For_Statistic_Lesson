@@ -38,7 +38,7 @@ export const MathFormulaText: React.FC<MathFormulaTextProps> = ({
     const formulaContent = match[1].trim();
 
     if (matchIndex > lastIndex) {
-      const textChunk = text.substring(lastIndex, matchIndex);
+      const textChunk = normalizedText.substring(lastIndex, matchIndex);
       elements.push(
         <InlineMathParser key={`text-${lastIndex}`} text={textChunk} darkBg={darkBg} />
       );
@@ -48,7 +48,7 @@ export const MathFormulaText: React.FC<MathFormulaTextProps> = ({
       elements.push(
         <div
           key={`block-${matchIndex}`}
-          className={`my-3 py-2.5 px-3 text-center overflow-x-auto max-w-full touch-pan-x ${
+          className={`my-2.5 sm:my-3 py-2 px-2 sm:px-3 text-center overflow-x-auto max-w-full touch-pan-x rounded-2xl bg-slate-50/70 border border-slate-100/80 scrollbar-thin ${
             darkBg ? 'text-amber-300' : 'text-slate-900'
           }`}
         >
@@ -105,7 +105,7 @@ const InlineMathParser: React.FC<{ text: string; className?: string; darkBg?: bo
       elements.push(
         <span
           key={`inline-${matchIndex}`}
-          className={`inline-block align-baseline mx-0.5 font-normal ${
+          className={`inline-block align-baseline mx-0.5 font-normal max-w-full overflow-x-auto touch-pan-x whitespace-nowrap ${
             darkBg ? 'text-amber-300' : 'text-slate-900'
           }`}
         >
