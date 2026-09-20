@@ -27,6 +27,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
 
   const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: string]: string | number }>({});
   const [submittedQuestions, setSubmittedQuestions] = useState<{ [questionId: string]: boolean }>({});
+  const [isSubmittingAnswer, setIsSubmittingAnswer] = useState<boolean>(false);
   const [showExpectedApproach, setShowExpectedApproach] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(completedCaseExams.includes(caseExam.id));
   const [isNextLoading, setIsNextLoading] = useState<boolean>(false);
@@ -74,6 +75,8 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
       : 'bg-rose-500/15 text-rose-800 border-rose-500/30';
 
   const handleAnswerSubmit = (qId: string) => {
+    if (isSubmittingAnswer) return;
+    setIsSubmittingAnswer(true);
     setSubmittedQuestions((prev) => ({ ...prev, [qId]: true }));
     const q = caseExam.solutionQuestions?.find((item) => item.id === qId);
     const userAnswer = selectedAnswers[qId];
@@ -96,6 +99,10 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
     } else {
       soundService.playWrong();
     }
+
+    setTimeout(() => {
+      setIsSubmittingAnswer(false);
+    }, 400);
   };
 
   const handleFinishCase = () => {
@@ -117,7 +124,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 pt-1 sm:pt-2 pb-8 font-sans animate-fade-in">
+    <div className="max-w-4xl mx-auto px-4 pt-1 sm:pt-2 pb-32 sm:pb-24 font-sans animate-fade-in">
       {/* Top Breadcrumb */}
       <div className="flex flex-col xs:flex-row gap-2.5 xs:items-center justify-between mb-3.5 sm:mb-4">
         <button
@@ -287,15 +294,17 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
                 {q.type === 'numeric' && (
                   <div className="mb-4">
                     <input
-                      type="number"
-                      step="any"
+                      type="text"
                       inputMode="decimal"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      spellCheck="false"
                       disabled={isSubmitted}
                       value={userAnswer !== undefined ? String(userAnswer) : ''}
                       onChange={(e) =>
                         setSelectedAnswers({ ...selectedAnswers, [q.id]: e.target.value })
                       }
-                      placeholder={language === 'tr' ? 'Sayısal cevabınızı girin...' : 'Enter numerical answer...'}
+                      placeholder={language === 'tr' ? 'Örn: 0.25 veya 0,25' : 'e.g. 0.25 or 0,25'}
                       className="w-full sm:w-64 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-mono text-base focus:outline-none focus:border-[#ff7a00] font-bold"
                     />
                   </div>
@@ -304,7 +313,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
                 {/* Submit button */}
                 {!isSubmitted ? (
                   <button
-                    disabled={userAnswer === undefined || String(userAnswer).trim() === ''}
+                    disabled={isSubmittingAnswer || userAnswer === undefined || String(userAnswer).trim() === ''}
                     onClick={() => handleAnswerSubmit(q.id)}
                     className="px-6 py-3.5 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-[#ff7a00]/20 flex items-center space-x-2"
                   >

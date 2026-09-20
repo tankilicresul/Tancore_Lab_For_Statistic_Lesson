@@ -27,12 +27,33 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
     userProfile,
     selectedPublicProfile,
     setSelectedPublicProfile,
+    checkAndUpdateStreak,
   } = useAppStore();
 
   const [showAuth, setShowAuth] = useState(false);
   const [isLogoSpinning, setIsLogoSpinning] = useState(false);
   const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
   const [isLanguagePopoverOpen, setIsLanguagePopoverOpen] = useState(false);
+
+  // Live Streak evaluation on mount and window focus (e.g., student keeps tab open overnight)
+  useEffect(() => {
+    checkAndUpdateStreak();
+    const handleFocus = () => {
+      checkAndUpdateStreak();
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkAndUpdateStreak();
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [checkAndUpdateStreak]);
 
   // XP float-up dopamine animation
   const [xpDelta, setXpDelta] = useState<number | null>(null);

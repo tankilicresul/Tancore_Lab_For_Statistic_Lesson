@@ -53,6 +53,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
 
   const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: string]: string | number }>({});
   const [submittedQuestions, setSubmittedQuestions] = useState<{ [questionId: string]: boolean }>({});
+  const [isSubmittingAnswer, setIsSubmittingAnswer] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(completedLessons.includes(lesson.id));
   const [isQuestionsOpen, setIsQuestionsOpen] = useState<boolean>(true);
   const [isNextLoading, setIsNextLoading] = useState<boolean>(false);
@@ -88,9 +89,14 @@ export const LessonPage: React.FC<LessonPageProps> = ({
   };
 
   const handleAnswerSubmit = (qId: string) => {
+    if (isSubmittingAnswer) return;
+    setIsSubmittingAnswer(true);
     setSubmittedQuestions((prev) => ({ ...prev, [qId]: true }));
     const q = lesson.questions?.find((item) => item.id === qId);
-    if (!q) return;
+    if (!q) {
+      setIsSubmittingAnswer(false);
+      return;
+    }
 
     const userAnswer = selectedAnswers[qId];
     let isCorrect = false;
@@ -113,6 +119,10 @@ export const LessonPage: React.FC<LessonPageProps> = ({
     } else {
       soundService.playWrong();
     }
+
+    setTimeout(() => {
+      setIsSubmittingAnswer(false);
+    }, 400);
   };
 
   const handleRetryQuestion = (qId: string) => {
@@ -135,7 +145,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
   // Dedicated Orientation / Roadmap view for the first introductory lesson
   if (lesson.isOrientation) {
     return (
-      <div className="max-w-4xl mx-auto px-4 pt-1 sm:pt-2 pb-8 font-sans animate-fade-in">
+      <div className="max-w-4xl mx-auto px-4 pt-1 sm:pt-2 pb-32 sm:pb-24 font-sans animate-fade-in">
         {/* Top Breadcrumb Navigation */}
         <div className="flex items-center justify-between gap-2 mb-3.5 sm:mb-4">
           <button
@@ -245,7 +255,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 pt-1 sm:pt-2 pb-8 font-sans animate-fade-in">
+    <div className="max-w-4xl mx-auto px-4 pt-1 sm:pt-2 pb-32 sm:pb-24 font-sans animate-fade-in">
       {/* Top Breadcrumb Navigation */}
       <div className="flex items-center justify-between gap-2 mb-3.5 sm:mb-4">
         <button
@@ -420,15 +430,17 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                     {q.type === 'numeric' && (
                       <div className="mb-4">
                         <input
-                          type="number"
-                          step="any"
+                          type="text"
                           inputMode="decimal"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          spellCheck="false"
                           disabled={isSubmitted && isCorrect}
                           value={userAnswer !== undefined ? String(userAnswer) : ''}
                           onChange={(e) =>
                             setSelectedAnswers({ ...selectedAnswers, [q.id]: e.target.value })
                           }
-                          placeholder={language === 'tr' ? 'Sayısal cevabınızı girin...' : 'Enter numerical answer...'}
+                          placeholder={language === 'tr' ? 'Örn: 0.25 veya 0,25' : 'e.g. 0.25 or 0,25'}
                           className="w-full sm:w-64 p-3.5 rounded-2xl bg-white border border-slate-200 text-slate-900 font-mono text-base focus:outline-none focus:border-[#ff7a00] font-bold"
                         />
                       </div>
@@ -437,7 +449,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                     {/* Submit button for question */}
                     {!isSubmitted ? (
                       <button
-                        disabled={userAnswer === undefined || String(userAnswer).trim() === ''}
+                        disabled={isSubmittingAnswer || userAnswer === undefined || String(userAnswer).trim() === ''}
                         onClick={() => handleAnswerSubmit(q.id)}
                         className="px-6 py-3 rounded-2xl bg-[#ff7a00] hover:bg-[#e56d00] disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider transition-colors shadow-md shadow-[#ff7a00]/20 cursor-pointer"
                       >

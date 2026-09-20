@@ -34,11 +34,11 @@ export const KatexFormula: React.FC<KatexFormulaProps> = ({
 
     return (
       <span
-        className={`inline-flex items-center align-baseline font-normal ${className}`}
+        className={`inline-flex items-center align-baseline font-normal max-w-full overflow-x-auto overflow-y-hidden touch-pan-x ${className}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );
   } catch (err) {
-    return <span className={`font-mono text-sm font-bold ${className}`}>{formula}</span>;
+    return <span className={`font-mono text-sm font-bold max-w-full overflow-x-auto ${className}`}>{formula}</span>;
   }
 };
