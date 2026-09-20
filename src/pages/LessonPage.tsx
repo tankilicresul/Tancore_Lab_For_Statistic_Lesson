@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Lesson, Module } from '../types/stats';
 import { getLocalized } from '../utils/localization';
 import { useAppStore } from '../store/useAppStore';
@@ -24,6 +24,12 @@ import {
   Home,
   RefreshCw,
   Lock,
+  Flame,
+  Sparkles,
+  BookOpen,
+  Check,
+  AlertCircle,
+  HelpCircle as QuestionIcon,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { soundService } from '../services/soundService';
@@ -49,7 +55,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
   onSelectNextTopic,
   onBackToHomeWithScroll,
 }) => {
-  const { language, completeLesson, completedLessons, setIsTancoChatOpen } = useAppStore();
+  const { language, completeLesson, completedLessons, setIsTancoChatOpen, addXp } = useAppStore();
 
   const [selectedAnswers, setSelectedAnswers] = useState<{ [questionId: string]: string | number }>({});
   const [submittedQuestions, setSubmittedQuestions] = useState<{ [questionId: string]: boolean }>({});
@@ -57,8 +63,25 @@ export const LessonPage: React.FC<LessonPageProps> = ({
   const [isCompleted, setIsCompleted] = useState<boolean>(completedLessons.includes(lesson.id));
   const [isQuestionsOpen, setIsQuestionsOpen] = useState<boolean>(true);
   const [isNextLoading, setIsNextLoading] = useState<boolean>(false);
+  const [showHintMap, setShowHintMap] = useState<{ [questionId: string]: boolean }>({});
+  const [comboCount, setComboCount] = useState<number>(() => {
+    try {
+      return parseInt(sessionStorage.getItem('tancore_combo_count') || '0', 10) || 0;
+    } catch {
+      return 0;
+    }
+  });
+  const [showComboAnimation, setShowComboAnimation] = useState<boolean>(false);
+  const [comboBonusAwarded, setComboBonusAwarded] = useState<number>(0);
 
   const nextTopic = getNextTopicItem(lesson.id);
+
+  const scrollToSection = (sectionId: string) => {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   const handleNextTopicClick = () => {
     if (isNextLoading || !nextTopic) return;
@@ -116,8 +139,27 @@ export const LessonPage: React.FC<LessonPageProps> = ({
       completeLesson(lesson.id, module.id, 15);
       setIsCompleted(true);
       triggerConfetti();
+
+      // Combo System: increment combo streak
+      const newCombo = comboCount + 1;
+      setComboCount(newCombo);
+      try {
+        sessionStorage.setItem('tancore_combo_count', String(newCombo));
+      } catch {}
+
+      if (newCombo >= 2) {
+        const bonus = newCombo === 2 ? 5 : 10;
+        setComboBonusAwarded(bonus);
+        addXp(bonus);
+        setShowComboAnimation(true);
+        setTimeout(() => setShowComboAnimation(false), 3000);
+      }
     } else {
       soundService.playWrong();
+      setComboCount(0);
+      try {
+        sessionStorage.setItem('tancore_combo_count', '0');
+      } catch {}
     }
 
     setTimeout(() => {
@@ -128,6 +170,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
   const handleRetryQuestion = (qId: string) => {
     setSubmittedQuestions((prev) => ({ ...prev, [qId]: false }));
     setSelectedAnswers((prev) => ({ ...prev, [qId]: '' }));
+    setShowHintMap((prev) => ({ ...prev, [qId]: false }));
   };
 
   const triggerConfetti = () => {
@@ -256,21 +299,86 @@ export const LessonPage: React.FC<LessonPageProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto px-4 pt-1 sm:pt-2 pb-32 sm:pb-24 font-sans animate-fade-in">
-      {/* Top Breadcrumb Navigation */}
-      <div className="flex items-center justify-between gap-2 mb-3.5 sm:mb-4">
+      {/* Combo Streak Float Banner */}
+      {showComboAnimation && (
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 animate-bounce pointer-events-none">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black text-sm shadow-xl border border-white/40">
+            <Flame className="w-5 h-5 fill-yellow-300 text-yellow-300 animate-pulse" />
+            <span>
+              {language === 'tr'
+                ? `🔥 ${comboCount}x COMBO! (+${comboBonusAwarded} Bonus XP)`
+                : `🔥 ${comboCount}x COMBO! (+${comboBonusAwarded} Bonus XP)`}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Top Breadcrumb Navigation & Course Track Badge */}
+      <div className="flex items-center justify-between gap-2 mb-3 sm:mb-3.5">
         <button
           onClick={() => (onBackToHomeWithScroll ? onBackToHomeWithScroll(lesson.id) : onBack())}
-          className="flex items-center space-x-1.5 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 bg-white px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-slate-200 shadow-2xs transition-colors shrink-0"
+          className="flex items-center space-x-1.5 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 bg-white px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-slate-200 shadow-2xs transition-colors shrink-0 cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#ff7a00] shrink-0" />
           <span className="whitespace-nowrap">{language === 'tr' ? 'Ana Sayfa' : 'Home'}</span>
         </button>
 
-        <div className="flex items-center text-[10.5px] sm:text-xs font-extrabold text-[#ff7a00] bg-[#ff7a00]/10 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#ff7a00]/30 min-w-0 max-w-[60%] xs:max-w-none">
-          <span className="truncate whitespace-nowrap">
-            <MathFormulaText text={getLocalized(module.title, language)} inline />
-          </span>
+        <div className="flex items-center space-x-2">
+          {comboCount >= 2 && (
+            <div className="hidden xs:flex items-center gap-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white px-2.5 py-1 rounded-full text-[11px] font-black shadow-xs">
+              <Flame className="w-3.5 h-3.5 fill-current" />
+              <span>{comboCount}x Combo</span>
+            </div>
+          )}
+          <div className="flex items-center text-[10.5px] sm:text-xs font-extrabold text-[#ff7a00] bg-[#ff7a00]/10 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#ff7a00]/30 min-w-0 max-w-[60%] xs:max-w-none">
+            <span className="truncate whitespace-nowrap">
+              <MathFormulaText text={getLocalized(module.title, language)} inline />
+            </span>
+          </div>
         </div>
+      </div>
+
+      {/* Modern 4-Step Learning Progress Bar (Sticky Navigation Stepper) */}
+      <div className="mb-6 p-2 rounded-2xl bg-slate-100/90 border border-slate-200/90 shadow-2xs grid grid-cols-4 gap-1.5 text-[10.5px] sm:text-xs font-black">
+        <button
+          onClick={() => scrollToSection('section-theory')}
+          className="py-1.5 px-2 rounded-xl bg-white text-slate-800 shadow-2xs flex items-center justify-center space-x-1 hover:text-[#ff7a00] transition-colors cursor-pointer"
+        >
+          <BookOpen className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
+          <span className="truncate">{language === 'tr' ? '1. Teori' : '1. Theory'}</span>
+        </button>
+
+        <button
+          onClick={() => scrollToSection('section-example')}
+          className="py-1.5 px-2 rounded-xl bg-white text-slate-800 shadow-2xs flex items-center justify-center space-x-1 hover:text-[#ff7a00] transition-colors cursor-pointer"
+        >
+          <Lightbulb className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+          <span className="truncate">{language === 'tr' ? '2. Örnek' : '2. Example'}</span>
+        </button>
+
+        <button
+          onClick={() => scrollToSection('lesson-question-box')}
+          className={`py-1.5 px-2 rounded-xl flex items-center justify-center space-x-1 transition-all cursor-pointer ${
+            isCompleted
+              ? 'bg-emerald-50 text-emerald-700 font-black border border-emerald-200'
+              : 'bg-[#ff7a00]/15 text-[#ff7a00] font-black border border-[#ff7a00]/30 shadow-xs'
+          }`}
+        >
+          <QuestionIcon className="w-3.5 h-3.5 shrink-0" />
+          <span className="truncate">{isCompleted ? (language === 'tr' ? '3. Çözüldü ✓' : '3. Solved ✓') : (language === 'tr' ? '3. Soru (+15XP)' : '3. Practice')}</span>
+        </button>
+
+        <button
+          onClick={() => scrollToSection('section-finish')}
+          className={`py-1.5 px-2 rounded-xl flex items-center justify-center space-x-1 transition-all cursor-pointer ${
+            isCompleted
+              ? 'bg-emerald-500 text-white shadow-xs'
+              : 'bg-white text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <PartyPopper className="w-3.5 h-3.5 shrink-0" />
+          <span className="truncate">{language === 'tr' ? '4. Bitiş' : '4. Finish'}</span>
+        </button>
       </div>
 
       {/* Lesson Main Header */}
@@ -281,15 +389,15 @@ export const LessonPage: React.FC<LessonPageProps> = ({
         <div className="h-1.5 w-20 bg-[#ff7a00] rounded-full" />
       </div>
 
-      {/* SECTION 1: Konunun Kendisi */}
-      <div className="mb-6 p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-xs relative">
+      {/* SECTION 1: Konunun Kendisi & Teori */}
+      <div id="section-theory" className="mb-6 p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-xs relative">
         <div className="flex items-center space-x-3 mb-3.5">
           <div className="p-2.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30 shrink-0">
-            <Lightbulb className="w-5 h-5 stroke-[2.2]" />
+            <BookOpen className="w-5 h-5 stroke-[2.2]" />
           </div>
           <div className="min-w-0">
             <h3 className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#ff7a00]">
-              {language === 'tr' ? '1: Konunun Kendisi' : '1: Core Concept & Theory'}
+              {language === 'tr' ? '1: Konunun Kendisi & Formül Mantığı' : '1: Core Concept & Theory'}
             </h3>
             <p className="text-xs text-slate-500 font-medium truncate">
               {language === 'tr' ? 'Temel teorik açıklamalar, kurallar ve formüller' : 'Theoretical foundations, rules and formulas'}
@@ -301,11 +409,24 @@ export const LessonPage: React.FC<LessonPageProps> = ({
           const rawConcept = getLocalized(lesson.conceptCard, language);
 
           return (
-            <div className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium mb-3">
+            <div className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium mb-4">
               <MathFormulaText text={rawConcept} />
             </div>
           );
         })()}
+
+        {/* Sınav Tüyosu / Pro-Tip Callout Banner */}
+        <div className="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-amber-900 flex items-start gap-3">
+          <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+          <div className="text-[11.5px] font-medium leading-relaxed">
+            <strong className="font-bold text-amber-950">
+              {language === 'tr' ? '💡 Sınav & Akran Tüyosu: ' : '💡 Exam & Pro Tip: '}
+            </strong>
+            {language === 'tr'
+              ? 'Bu konudaki formülleri uygularken verilen birimlerin ve bağımsızlık koşullarının doğruluğunu kontrol etmeyi unutmayın.'
+              : 'Always verify unit consistency and independence conditions before directly applying the standard formula.'}
+          </div>
+        </div>
       </div>
 
       {/* Visual Concept Diagram */}
@@ -313,10 +434,10 @@ export const LessonPage: React.FC<LessonPageProps> = ({
 
       {/* SECTION 2: Varsa Örnek Soru Çözümü */}
       {lesson.companyExample && (
-        <div className="mb-6 p-5 sm:p-6 rounded-3xl bg-[#ff7a00]/5 border border-[#ff7a00]/25 shadow-xs">
+        <div id="section-example" className="mb-6 p-5 sm:p-6 rounded-3xl bg-[#ff7a00]/5 border border-[#ff7a00]/25 shadow-xs">
           <div className="flex items-center space-x-3 mb-3.5">
             <div className="p-2.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] border border-[#ff7a00]/30 shrink-0">
-              <Building2 className="w-5 h-5 stroke-[2.2]" />
+              <Lightbulb className="w-5 h-5 stroke-[2.2]" />
             </div>
             <div className="min-w-0">
               <h3 className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#ff7a00]">
@@ -339,7 +460,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
         initialData={lesson.interactiveInitialData}
       />
 
-      {/* SECTION 3: Örnek Soru */}
+      {/* SECTION 3: Örnek Soru & Pratik */}
       {lesson.questions && lesson.questions.length > 0 && (
         <div id="lesson-question-box" className="my-8 rounded-3xl bg-white border border-slate-200 overflow-hidden shadow-xs">
           <button
@@ -353,7 +474,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
               <div className="min-w-0">
                 <div className="flex items-center space-x-2">
                   <h3 className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#ff7a00]">
-                    {language === 'tr' ? '3: Örnek Soru' : '3: Practice Question'}
+                    {language === 'tr' ? '3: Kavrama Sorusu' : '3: Practice Question'}
                   </h3>
                   <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-orange-100 text-[#ff7a00] border border-orange-200">
                     +15 XP
@@ -391,6 +512,8 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                       String(userAnswer).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase();
                   }
                 }
+
+                const isHintOpen = showHintMap[q.id];
 
                 return (
                   <div
@@ -443,6 +566,41 @@ export const LessonPage: React.FC<LessonPageProps> = ({
                           placeholder={language === 'tr' ? 'Örn: 0.25 veya 0,25' : 'e.g. 0.25 or 0,25'}
                           className="w-full sm:w-64 p-3.5 rounded-2xl bg-white border border-slate-200 text-slate-900 font-mono text-base focus:outline-none focus:border-[#ff7a00] font-bold"
                         />
+                      </div>
+                    )}
+
+                    {/* Smart Hint / Tanco'dan İpucu Al Button & Accordion */}
+                    <div className="mb-4 flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowHintMap((prev) => ({ ...prev, [q.id]: !prev[q.id] }))}
+                        className="inline-flex items-center space-x-1.5 text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-xl border border-amber-200/80 transition-colors cursor-pointer"
+                      >
+                        <Lightbulb className="w-3.5 h-3.5 text-amber-600" />
+                        <span>{language === 'tr' ? '💡 Tanco\'dan İpucu Al' : '💡 Ask Tanco for a Hint'}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setIsTancoChatOpen(true)}
+                        className="inline-flex items-center space-x-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 transition-colors cursor-pointer"
+                      >
+                        <Bot className="w-3.5 h-3.5 text-[#ff7a00]" />
+                        <span>{language === 'tr' ? 'Tanco\'ya Doğrudan Sor' : 'Ask Tanco Directly'}</span>
+                      </button>
+                    </div>
+
+                    {isHintOpen && (
+                      <div className="mb-4 p-4 rounded-2xl bg-amber-50/90 border border-amber-200 text-xs text-amber-950 leading-relaxed font-medium animate-fade-in">
+                        <div className="font-bold flex items-center space-x-1.5 text-amber-800 mb-1">
+                          <Lightbulb className="w-4 h-4 text-amber-600" />
+                          <span>{language === 'tr' ? 'Kavramsal Çözüm İpucu' : 'Conceptual Hint'}</span>
+                        </div>
+                        <p>
+                          {language === 'tr'
+                            ? 'Yukarıdaki formülde verilen değerleri yerine koyarken dikkat edin. Gerekirse Tanco Asistan butonuna tıklayarak adım adım yardım alabilirsiniz.'
+                            : 'Check the formula variables carefully. You can also click the assistant button to get step-by-step guidance from Tanco.'}
+                        </p>
                       </div>
                     )}
 
@@ -513,7 +671,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
       <RealWorldBox data={lesson.realWorldBox} />
 
       {/* Finish Lesson Banner & Action Buttons */}
-      <div className="mt-10 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 text-center shadow-xs">
+      <div id="section-finish" className="mt-10 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 text-center shadow-xs">
         <div
           className={`w-14 h-14 mx-auto mb-4 rounded-full flex items-center justify-center text-white shadow-lg transition-colors ${
             isCompleted

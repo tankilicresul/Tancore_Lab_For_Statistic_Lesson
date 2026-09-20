@@ -46,6 +46,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   const [hasScrolledInLeaderboard, setHasScrolledInLeaderboard] = useState(false);
   const [dbProfiles, setDbProfiles] = useState<PublicProfile[]>([]);
   const [_isLoadingProfiles, setIsLoadingProfiles] = useState(true);
+  const [selectedCohort, setSelectedCohort] = useState<'all' | '1xx' | '2xx' | '3xx_4xx'>('all');
   const listRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -304,13 +305,64 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
           </div>
         </div>
 
+        {/* Cohort League Filter Tabs */}
+        <div className="flex items-center gap-1.5 pt-2.5 pb-1 overflow-x-auto no-scrollbar">
+          <button
+            onClick={() => setSelectedCohort('all')}
+            className={`px-3 py-1.5 rounded-xl text-[11px] font-black transition-all cursor-pointer whitespace-nowrap ${
+              selectedCohort === 'all'
+                ? 'bg-[#ff7a00] text-white shadow-xs'
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+            }`}
+          >
+            {language === 'tr' ? '🌐 Tüm Üniversite' : '🌐 All Cohorts'}
+          </button>
+
+          <button
+            onClick={() => setSelectedCohort('1xx')}
+            className={`px-3 py-1.5 rounded-xl text-[11px] font-black transition-all cursor-pointer whitespace-nowrap ${
+              selectedCohort === '1xx'
+                ? 'bg-[#ff7a00] text-white shadow-xs'
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+            }`}
+          >
+            {language === 'tr' ? '📘 1xx Ligi (INDR 100)' : '📘 1xx League'}
+          </button>
+
+          <button
+            onClick={() => setSelectedCohort('2xx')}
+            className={`px-3 py-1.5 rounded-xl text-[11px] font-black transition-all cursor-pointer whitespace-nowrap ${
+              selectedCohort === '2xx'
+                ? 'bg-[#ff7a00] text-white shadow-xs'
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+            }`}
+          >
+            {language === 'tr' ? '📙 2xx Ligi (ENGR 200/252)' : '📙 2xx League'}
+          </button>
+
+          <button
+            onClick={() => setSelectedCohort('3xx_4xx')}
+            className={`px-3 py-1.5 rounded-xl text-[11px] font-black transition-all cursor-pointer whitespace-nowrap ${
+              selectedCohort === '3xx_4xx'
+                ? 'bg-[#ff7a00] text-white shadow-xs'
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+            }`}
+          >
+            {language === 'tr' ? '📕 3xx / 4xx Ligi' : '📕 3xx / 4xx League'}
+          </button>
+        </div>
+
         {/* Pinned Subheader Bar (Üniversite Ligi Sıralaması / Tüm Öğrenciler) */}
-        <div className="flex items-center justify-between px-2 pt-3 pb-1">
+        <div className="flex items-center justify-between px-2 pt-2 pb-1">
           <div className="flex items-center space-x-2">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              {!isAuthenticated
-                ? (language === 'tr' ? 'Üniversite Ligi Sıralaması' : 'University League Ranking')
-                : (language === 'tr' ? 'Tüm Öğrenciler' : 'All Students')}
+              {selectedCohort === 'all'
+                ? language === 'tr' ? 'Tüm Öğrenciler Sıralaması' : 'All Students Ranking'
+                : selectedCohort === '1xx'
+                ? language === 'tr' ? '1xx Kodlu Dersler Ligi (2.500 Öğrenci)' : '1xx Course League (2,500 Students)'
+                : selectedCohort === '2xx'
+                ? language === 'tr' ? '2xx Kodlu Dersler Ligi (2.500 Öğrenci)' : '2xx Course League (2,500 Students)'
+                : language === 'tr' ? '3xx / 4xx İleri Mühendislik Ligi' : '3xx / 4xx Advanced IE League'}
             </span>
           </div>
           {!isAuthenticated ? (
