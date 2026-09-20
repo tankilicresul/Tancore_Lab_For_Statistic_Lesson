@@ -662,10 +662,6 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
             <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
               {isTr ? 'Bu Haftaki İlerlemen' : 'This Week Progress'}
             </span>
-            <span className="text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60 flex items-center gap-1">
-              <Flame className="w-3 h-3 fill-amber-500 text-amber-500" />
-              {displayStreak} {isTr ? 'günlük seri' : 'day streak'}
-            </span>
           </div>
 
           {/* Current Week (Monday -> Sunday) */}
