@@ -1,0 +1,344 @@
+{
+  "id": "module-32",
+  "order": 32,
+  "title": {
+    "tr": "Tam Sayılı Programlama & Knapsack",
+    "en": "Integer Programming & Knapsack"
+  },
+  "description": {
+    "tr": "Karar değişkenlerinin tam sayı olduğu BIP/IP modellerini, LP Relaxation yöntemini ve Knapsack problemini öğren.",
+    "en": "Learn BIP/IP models where decision variables must be integers, LP Relaxation method, and the Knapsack problem."
+  },
+  "iconName": "Package",
+  "lessons": [
+    {
+      "id": "m32-l1",
+      "moduleId": "module-32",
+      "order": 1,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Neden Tam Sayı? IP ve BIP Modelleri",
+        "en": "Why Integer? IP and BIP Models"
+      },
+      "conceptCard": {
+        "tr": "**Tam Sayılı Programlama (Integer Programming - IP):** Karar değişkenlerinin bir kısmı veya tamamının tam sayı (integer) değer alması gereken optimizasyon modeli.\\n\\n**Neden Yuvarlama Yanlış?**\\nLP çözümünü yuvarlamak genellikle geçersiz (infeasible) veya optimal olmayan (suboptimal) sonuç verir:\\n- Yukarı yuvarlama → kısıtları ihlal edebilir\\n- Aşağı yuvarlama → daha düşük Z* verir\\n\\n**IP Modeli Türleri:**\\n\\n| Tür | Açıklama | Kısıt |\\n|-----|----------|-------|\\n| **Pure IP** | Tüm değişkenler tam sayı | $x_j \\\\in \\\\mathbb{Z}^+$ |\\n| **Mixed IP (MIP)** | Bazı değişkenler tam sayı, bazıları sürekli | Karma |\\n| **Binary IP (BIP)** | Tüm değişkenler 0 veya 1 | $x_j \\\\in \\\\{0,1\\\\}$ |\\n\\n**Binary (0-1) Değişkenler:**\\nEvet/hayır kararları modellemek için kullanılır:\\n- Proje yapılsın mı? ($x_j = 1$: evet, $x_j = 0$: hayır)\\n- Bir yatırım seçilsin mi?\\n- Bir ürün üretilsin mi (fixed setup cost varsa)?\\n\\n**0-1 Programlama (BIP) Modeli:**\\n$$\\\\max Z = \\\\sum_j c_j x_j \\\\quad \\\\text{s.t.} \\\\quad \\\\sum_j a_{ij} x_j \\\\leq b_i, \\\\quad x_j \\\\in \\\\{0,1\\\\}$$",
+        "en": "**Integer Programming (IP):** Optimization where some or all decision variables must be integers.\\n\\n**Why Rounding LP is Wrong:** Rounding LP solutions can violate constraints or give suboptimal answers.\\n\\n**Types:** Pure IP (all integer), Mixed IP (some integer), Binary IP / BIP (all 0-1).\\n\\n**Binary Variables:** Model yes/no decisions: invest or not, select a project or not, schedule an exam or not.\\n\\n$$\\\\max Z = \\\\sum_j c_j x_j \\\\quad \\\\text{s.t.} \\\\quad \\\\sum_j a_{ij} x_j \\\\leq b_i, \\\\quad x_j \\\\in \\\\{0,1\\\\}$$"
+      },
+      "companyExample": {
+        "tr": "**Örnek: Proje Seçim BIP**\\n\\nBir şirket 4 proje arasından seçim yapıyor. Bütçe: 6 M TL.\\n\\n| Proje | Yatırım (M TL) | NPV (M TL) |\\n|-------|--------------|-----------|\\n| A | 3 | 5 |\\n| B | 2 | 4 |\\n| C | 4 | 6 |\\n| D | 1 | 2 |\\n\\n$$\\\\max Z = 5x_A + 4x_B + 6x_C + 2x_D$$\\n$$3x_A + 2x_B + 4x_C + x_D \\\\leq 6$$\\n$$x_A, x_B, x_C, x_D \\\\in \\\\{0,1\\\\}$$\\n\\n**LP Relaxation çözümü:** $x_A=0, x_B=0.5, x_C=1, x_D=1$, $Z_{LP}=10$\\n**Yuvarlama dene:** $x_B=0 \\\\Rightarrow Z=8$ (A+C bütçe ihlali var; D+B+A denene).\\n**Doğru IP çözümü:** $x_A=1, x_B=1, x_D=1$, $Z^*=11$, maliyet=6 M TL ✓",
+        "en": "**Project Selection BIP:** 4 projects, budget 6M. LP relaxation gives $Z_{LP}=10$ with fractional $x_B=0.5$. Correct IP solution: select A+B+D with $Z^*=11$ and cost=6M."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "integer programming (IP)",
+          "explanation_tr": "Karar değişkenlerinin tam sayı (veya ikili) olması gereken matematiksel optimizasyon modeli.",
+          "explanation_en": "Optimization model where decision variables are restricted to integer (or binary) values.",
+          "exampleSentence_en": "Integer programming determined the optimal number of trucks to purchase."
+        },
+        {
+          "term_en": "binary variable (0-1)",
+          "explanation_tr": "Yalnızca 0 (hayır) veya 1 (evet) değeri alabilen karar değişkeni; evet/hayır kararları modellemek için kullanılır.",
+          "explanation_en": "A decision variable restricted to 0 (no) or 1 (yes), used to model yes/no decisions.",
+          "exampleSentence_en": "Binary variables encoded whether each project was selected or not."
+        },
+        {
+          "term_en": "integrality constraint",
+          "explanation_tr": "Bir değişkenin tam sayı olmasını zorunlu kılan kısıt: $x_j \\\\in \\\\mathbb{Z}^+$.",
+          "explanation_en": "The constraint requiring a variable to take an integer value: $x_j \\\\in \\\\mathbb{Z}^+$.",
+          "exampleSentence_en": "The integrality constraint prevented fractional machine purchases."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m32-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir LP çözümünde $x_1^* = 3.7$ bulunmuştur. Bu IP probleminde $x_1 \\\\in \\\\mathbb{Z}^+$ kısıtı varsa neden $x_1 = 4$ seçmek yanlış olabilir?",
+            "en": "An LP gives $x_1^* = 3.7$. In an IP with $x_1 \\\\in \\\\mathbb{Z}^+$, why could choosing $x_1 = 4$ be wrong?"
+          },
+          "options": [
+            { "tr": "Yukarı yuvarlama başka kısıtları ihlal edebilir ve çözüm geçersiz hale gelebilir.", "en": "Rounding up may violate other constraints, making the solution infeasible." },
+            { "tr": "IP çözücüler her zaman LP sonucunu aşağı yuvarlar.", "en": "IP solvers always round LP solutions down." },
+            { "tr": "Tam sayı programlamada yuvarlama her zaman optimaldir.", "en": "Rounding always gives the optimal IP solution." },
+            { "tr": "LP ile IP her zaman aynı optimal değere sahiptir.", "en": "LP and IP always have the same optimal value." }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Yukarı yuvarlama ($x_1 = 4$), diğer kısıtları ihlal edebilir çünkü bu değeri LP için bulunan diğer değişken değerleriyle birlikte kullanmak imkânsız olabilir. IP Branch & Bound veya diğer yöntemlerle doğru çözülmelidir.",
+            "en": "Rounding up $x_1$ from 3.7 to 4 may violate resource constraints when combined with other variable values. Proper IP methods (B&B) must be used."
+          }
+        },
+        {
+          "id": "m32-l1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Aşağıdakilerden hangisi Binary Integer Programming (BIP) için doğru bir uygulama alanıdır?",
+            "en": "Which of the following is a correct application of Binary Integer Programming (BIP)?"
+          },
+          "options": [
+            { "tr": "Günde kaç saat çalışılacağını belirlemek (kesirli saatler mümkün)", "en": "Determining how many hours to work per day (fractional hours allowed)" },
+            { "tr": "N proje arasından hangilerinin yapılacağına karar vermek (her proje ya tamamen yapılır ya da yapılmaz)", "en": "Deciding which of N projects to undertake (each project is either fully done or not)" },
+            { "tr": "Reklam bütçesini sürekli olarak bölüştürmek", "en": "Allocating advertising budget continuously across channels" },
+            { "tr": "Ürün fiyatlarını optimize etmek", "en": "Optimizing product prices" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "BIP, evet/hayır kararları için uygundur. Hangi projelerin seçileceği tam anlamıyla ikili bir karardır (yap = 1, yapma = 0). Sürekli veya kesirli kararlar BIP gerektirmez.",
+            "en": "BIP applies to yes/no decisions. Project selection is a perfect fit: do it ($x_j=1$) or don't ($x_j=0$). Continuous allocations do not require binary variables."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# BIP ile proje seçimi - PuLP\nfrom pulp import *\n\nproj = ['A', 'B', 'C', 'D']\nnpv  = {'A': 5, 'B': 4, 'C': 6, 'D': 2}\ncost = {'A': 3, 'B': 2, 'C': 4, 'D': 1}\n\nprob = LpProblem('Proje_Secimi', LpMaximize)\nx = {p: LpVariable(p, cat='Binary') for p in proj}\n\n# Amaç: NPV maksimize\nprob += lpSum(npv[p]*x[p] for p in proj)\n# Bütçe kısıtı\nprob += lpSum(cost[p]*x[p] for p in proj) <= 6\n\nprob.solve(PULP_CBC_CMD(msg=0))\nfor p in proj:\n    print(f'{p}: {int(x[p].value())}')  # 0 veya 1\nprint(f'Z* = {value(prob.objective)}')",
+        "powerBiNote": {
+          "tr": "Proje portföyü BIP sonuçları, yatırım dashboard'larında seçim matrisi olarak görselleştirilir.",
+          "en": "BIP project portfolio results visualize as a selection matrix in investment dashboards."
+        }
+      }
+    },
+    {
+      "id": "m32-l2",
+      "moduleId": "module-32",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "LP Relaxation ve Üst Sınır",
+        "en": "LP Relaxation and Upper Bound"
+      },
+      "conceptCard": {
+        "tr": "**LP Relaxation (Sürekli Gevşetme):** IP modelindeki tam sayı kısıtlarını kaldırarak elde edilen LP problemi. Karar değişkenlerinin kesirli (reel) değer almasına izin verilir.\\n\\n$$\\\\text{IP: } x_j \\\\in \\\\mathbb{Z}^+ \\\\quad \\\\Rightarrow \\\\quad \\\\text{LP Rel: } x_j \\\\geq 0 \\\\text{ (sürekli)}$$\\n\\n**Temel Özellik — Üst Sınır (Upper Bound):**\\nMaksimizasyon probleminde:\\n$$Z_{LP}^* \\\\geq Z_{IP}^*$$\\nYani LP Relaxation'ın optimal değeri, IP'nin optimal değerinin **üst sınırını** verir. IP çözücüler bu bilgiyi kullanır.\\n\\n**Neden Faydalı?**\\n1. LP çok hızlı çözülür → IP için sınır sağlar.\\n2. $Z_{LP}^* = Z_{IP}^*$ ise LP çözümü zaten tam sayılıdır ve IP optimaldir.\\n3. Fark = **Integer Gap** (tam sayı boşluğu).\\n\\n**Tamsayı Gap:**\\n$$\\\\text{Gap} = \\\\frac{Z_{LP}^* - Z_{IP}^*}{Z_{LP}^*} \\\\times 100\\\\%$$\\n\\nBranch & Bound, LP Relaxation'ı alt problemlere bölerek IP'yi çözer.",
+        "en": "**LP Relaxation:** Remove integrality constraints from IP; allow continuous variable values. For maximization: $Z_{LP}^* \\\\geq Z_{IP}^*$ — LP relaxation provides an **upper bound** on the IP optimum.\\n\\n**Integer Gap:** $\\\\text{Gap} = (Z_{LP}^* - Z_{IP}^*)/Z_{LP}^* \\\\times 100\\\\%$\\n\\nBranch & Bound uses LP relaxation bounds to systematically search for the optimal IP solution."
+      },
+      "companyExample": {
+        "tr": "**Örnek: Knapsack LP Relaxation (INDR262 Projesi - Küçük Örnek)**\\n\\n5 eşya: değerler $v=[10,6,4,5,3]$, ağırlıklar $w=[5,4,3,2,2]$, kapasite $C=10$.\\n\\n**Binary IP:**\\n$$\\\\max Z = 10x_1 + 6x_2 + 4x_3 + 5x_4 + 3x_5$$\\n$$5x_1 + 4x_2 + 3x_3 + 2x_4 + 2x_5 \\\\leq 10, \\\\quad x_j \\\\in \\\\{0,1\\\\}$$\\n**IP Çözümü:** $x_1=1, x_2=1, x_4=1$, $Z_{IP}^* = 21$, ağırlık = 11 → Hayır.\\nDoğru: $x_1=1, x_3=1, x_4=1, x_5=1$, $Z_{IP}^*=22$, ağırlık=12 → Hayır.\\nEn iyi: $x_2=1, x_3=1, x_4=1, x_5=1$, $Z_{IP}^*=18$, ağırlık=11 → Hayır.\\n$x_1=1, x_4=1, x_5=1$: değer=18, ağırlık=9 ✓; $x_1=1,x_3=1,x_4=1$: değer=19, ağırlık=10 ✓ → $Z_{IP}^*=19$\\n\\n**LP Relaxation:** $x_1=1, x_2=1, x_4=0.25$, $Z_{LP}^*=17.25$... (Fraction)\\n\\n$$\\\\text{Gap} = \\\\frac{Z_{LP}^* - Z_{IP}^*}{Z_{LP}^*}$$",
+        "en": "**Knapsack LP Relaxation:** Binary IP gives $Z_{IP}^*$ (integer). LP relaxation allows fractions, giving $Z_{LP}^* \\\\geq Z_{IP}^*$. The gap measures how much optimality is sacrificed by the integrality requirement."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "LP relaxation",
+          "explanation_tr": "IP modelindeki tam sayı kısıtlarının kaldırılmasıyla elde edilen, değişkenlerin kesirli olabildiği gevşetilmiş LP modeli.",
+          "explanation_en": "The LP obtained by removing integrality constraints from an IP, allowing continuous variable values.",
+          "exampleSentence_en": "The LP relaxation provided an upper bound of 247 for the integer program."
+        },
+        {
+          "term_en": "upper bound (for IP maximization)",
+          "explanation_tr": "Maksimizasyon IP'sinde LP Relaxation'ın optimal değeri, IP'nin en iyi olası değerinin üst sınırını verir.",
+          "explanation_en": "For IP maximization, $Z_{LP}^*$ is always ≥ $Z_{IP}^*$, serving as an upper bound.",
+          "exampleSentence_en": "The LP upper bound of 150 guided the Branch & Bound search."
+        },
+        {
+          "term_en": "integer gap",
+          "explanation_tr": "LP Relaxation optimal değeri ile IP optimal değeri arasındaki fark; tam sayı kısıtının bedeli.",
+          "explanation_en": "The difference between $Z_{LP}^*$ and $Z_{IP}^*$, measuring the cost of integrality.",
+          "exampleSentence_en": "An integer gap of 5% was acceptable for the scheduling problem."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m32-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir maksimizasyon IP probleminde LP Relaxation çözümü $Z_{LP}^* = 100$ ve IP çözümü $Z_{IP}^* = 87$'dir. Integer Gap nedir?",
+            "en": "For a maximization IP, $Z_{LP}^* = 100$ and $Z_{IP}^* = 87$. What is the integer gap?"
+          },
+          "options": [
+            { "tr": "%13", "en": "13%" },
+            { "tr": "%87", "en": "87%" },
+            { "tr": "%115", "en": "115%" },
+            { "tr": "%8.7", "en": "8.7%" }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "$$\\\\text{Gap} = \\\\frac{100 - 87}{100} \\\\times 100 = 13\\\\%$$\\nLP Relaxation, IP'nin optimal değerinin %13 üzerinde bir üst sınır vermektedir.",
+            "en": "$$\\\\text{Gap} = \\\\frac{100 - 87}{100} \\\\times 100 = 13\\\\%$$"
+          }
+        },
+        {
+          "id": "m32-l2-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Maksimizasyon IP probleminde LP Relaxation her zaman IP için hangi rolü üstlenir?",
+            "en": "In a maximization IP, what role does LP Relaxation always play?"
+          },
+          "options": [
+            { "tr": "Alt sınır (lower bound); $Z_{LP}^* \\\\leq Z_{IP}^*$", "en": "Lower bound; $Z_{LP}^* \\\\leq Z_{IP}^*$" },
+            { "tr": "Üst sınır (upper bound); $Z_{LP}^* \\\\geq Z_{IP}^*$", "en": "Upper bound; $Z_{LP}^* \\\\geq Z_{IP}^*$" },
+            { "tr": "Her zaman tam sayı optimal çözüm verir.", "en": "Always gives the integer-optimal solution." },
+            { "tr": "IP ile LP her zaman aynı optimal değere sahiptir.", "en": "LP and IP always share the same optimal value." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "LP Relaxation'ın uygun kümesi, IP'nin uygun kümesini kapsar (integrality kısıtı kaldırılınca daha geniş bir alan oluşur). Bu nedenle $Z_{LP}^* \\\\geq Z_{IP}^*$ (maksimizasyon için); LP relaxation üst sınır sağlar.",
+            "en": "The LP feasible region is a superset of the IP feasible region (removing integrality allows more solutions). Hence $Z_{LP}^* \\\\geq Z_{IP}^*$ for maximization."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "from pulp import *\n\nitems = list(range(5))\nv = [10, 6, 4, 5, 3]\nw = [5,  4, 3, 2, 2]\nC = 10\n\n# Binary IP (Knapsack)\nip = LpProblem('Knapsack_IP', LpMaximize)\nx  = [LpVariable(f'x{i}', cat='Binary') for i in items]\nip += lpSum(v[i]*x[i] for i in items)\nip += lpSum(w[i]*x[i] for i in items) <= C\nip.solve(PULP_CBC_CMD(msg=0))\nZ_ip = value(ip.objective)\n\n# LP Relaxation\nlp = LpProblem('Knapsack_LP', LpMaximize)\ny  = [LpVariable(f'y{i}', lowBound=0, upBound=1) for i in items]\nlp += lpSum(v[i]*y[i] for i in items)\nlp += lpSum(w[i]*y[i] for i in items) <= C\nlp.solve(PULP_CBC_CMD(msg=0))\nZ_lp = value(lp.objective)\n\nprint(f'Z_IP = {Z_ip}, Z_LP = {Z_lp}')\nprint(f'Integer Gap = {(Z_lp - Z_ip)/Z_lp*100:.2f}%')",
+        "powerBiNote": {
+          "tr": "Branch & Bound ilerleme durumu, MIP solver loglarından Power BI'a aktarılabilir.",
+          "en": "Branch & Bound progress from MIP solver logs can be streamed into Power BI for live monitoring."
+        }
+      }
+    },
+    {
+      "id": "m32-l3",
+      "moduleId": "module-32",
+      "order": 3,
+      "difficulty": "zor",
+      "title": {
+        "tr": "Knapsack Problemi: Binary, Integer ve Continuous",
+        "en": "Knapsack Problem: Binary, Integer, and Continuous"
+      },
+      "conceptCard": {
+        "tr": "**Knapsack (Sırt Çantası) Problemi:** Sınırlı kapasiteli bir sırt çantasına maksimum değeri taşıyacak eşyaları seçmek.\\n\\n**INDR262 Project Knapsack:**\\n- 50 eşya ($i = 1, \\\\ldots, 50$)\\n- Kapasite: $C_m = 1262$ (kütle) ve $C_v = 1262$ (hacim)\\n- Eşya $i$'nin değeri $v_i$, kütlesi $m_i$, hacmi $vol_i$\\n\\n**Üç Varyant:**\\n\\n**1. Binary Knapsack (BKP):** Her eşya ya alınır ya da alınmaz.\\n$$\\\\max Z = \\\\sum_{i=1}^{50} v_i x_i$$\\n$$\\\\sum_{i=1}^{50} m_i x_i \\\\leq 1262, \\\\quad \\\\sum_{i=1}^{50} vol_i x_i \\\\leq 1262$$\\n$$x_i \\\\in \\\\{0,1\\\\}$$\\n\\n**2. Integer Knapsack (IKP):** Her eşyadan birden fazla alınabilir.\\n$$x_i \\\\in \\\\mathbb{Z}^+, \\\\quad x_i \\\\geq 0$$\\n\\n**3. Continuous Knapsack (CKP):** Eşyaların kesirli miktarları alınabilir (LP Relaxation).\\n$$0 \\\\leq x_i \\\\leq 1 \\\\text{ (binary için)} \\\\quad \\\\text{ya da} \\\\quad x_i \\\\geq 0 \\\\text{ (integer için)}$$\\n\\n**Değer Yoğunluğu (Greedy Heuristic):**\\n$$\\\\rho_i = \\\\frac{v_i}{m_i} \\\\quad \\\\text{veya} \\\\quad \\\\frac{v_i}{m_i + vol_i}$$\\nCKP için greedy: yoğunluğa göre sırala, doluncaya kadar doldur.\\n\\n**Dual of CKP LP Relaxation:**\\nKapasite kısıtlarının gölge fiyatları = birim kapasite başına değer (maksimum ödeme istekliliği).",
+        "en": "**INDR262 Project Knapsack:** 50 items, mass_capacity = volume_capacity = 1262, maximize total value.\\n\\n**Three variants:**\\n1. **Binary KP (BKP):** $x_i \\\\in \\\\{0,1\\\\}$ — take each item or not.\\n2. **Integer KP (IKP):** $x_i \\\\in \\\\mathbb{Z}^+$ — take multiple copies.\\n3. **Continuous KP (CKP):** $x_i \\\\in [0,1]$ — LP relaxation, fractional items allowed.\\n\\n**Greedy for CKP:** Sort by value density $\\\\rho_i = v_i/m_i$; fill until capacity.\\n**Dual of LP relaxation:** Shadow prices of capacity constraints = marginal value of 1 unit of capacity."
+      },
+      "companyExample": {
+        "tr": "**INDR262 Knapsack Karşılaştırması:**\\n\\nVaryanlar ve ilişkileri:\\n$$Z_{CKP}^* \\\\geq Z_{IKP}^* \\\\geq Z_{BKP}^*$$\\n(Sürekli en az kısıtlı → en yüksek; binary en kısıtlı → en düşük)\\n\\n**Örnek Yorumlama (5 eşya, tek kapasite $C=10$):**\\n\\n| $i$ | $v_i$ | $m_i$ | $\\\\rho_i = v_i/m_i$ |\\n|-----|-------|-------|-----|\\n| 1 | 10 | 5 | 2.0 |\\n| 2 | 6 | 4 | 1.5 |\\n| 3 | 4 | 3 | 1.33 |\\n| 4 | 5 | 2 | 2.5 |\\n| 5 | 3 | 2 | 1.5 |\\n\\n**CKP Greedy:** Yoğunluğa göre sırala: 4,1,2,5,3. Doldur: $x_4=1$ (ağırlık 2), $x_1=1$ (7), $x_2=1$ (11>10) → $x_2=0.75$ (10). $Z_{CKP}^* = 5 + 10 + 4.5 = 19.5$\\n\\n**BKP Optimal:** $x_1=1, x_3=1, x_4=1$: değer=19, ağırlık=10 ✓ → $Z_{BKP}^*=19$\\n\\n**Dual Yorum:** LP Relaxation gölge fiyatı = 1.5 TL/kg → kapasite 1 kg artarsa değer 1.5 artar.",
+        "en": "**INDR262 Knapsack Comparison:** Hierarchy: $Z_{CKP}^* \\\\geq Z_{IKP}^* \\\\geq Z_{BKP}^*$. CKP greedy: sort by $\\\\rho_i$, fill greedily (last item may be fractional). BKP requires B&B. Dual of LP: shadow price = marginal value of capacity."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "knapsack problem",
+          "explanation_tr": "Sınırlı kapasiteli bir sırt çantasına alınacak eşyaların toplam değerini maksimize eden kombinatoryal optimizasyon problemi.",
+          "explanation_en": "Combinatorial optimization problem: select items to maximize total value within a capacity constraint.",
+          "exampleSentence_en": "The 0-1 knapsack problem determined which projects to fund within a limited budget."
+        },
+        {
+          "term_en": "value density",
+          "explanation_tr": "Bir eşyanın birim ağırlık (veya hacim) başına değeri; açgözlü (greedy) sezgisel için sıralama kriteri.",
+          "explanation_en": "Value per unit weight (or volume) of an item; used as the greedy sorting criterion for continuous knapsack.",
+          "exampleSentence_en": "Items with higher value density were prioritized in the greedy knapsack solution."
+        },
+        {
+          "term_en": "continuous knapsack (LP relaxation)",
+          "explanation_tr": "Eşyaların kesirli miktarlarına izin veren knapsack varyantı; LP gevşetmesidir ve BKP için üst sınır verir.",
+          "explanation_en": "Knapsack variant allowing fractional items; equals LP relaxation of BKP, providing an upper bound.",
+          "exampleSentence_en": "The continuous knapsack was solved greedily in O(n log n) time."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m32-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Knapsack varyantları için hangi sıralama doğrudur (maksimizasyon)?",
+            "en": "For knapsack maximization variants, which ordering is always correct?"
+          },
+          "options": [
+            { "tr": "$Z_{BKP}^* \\\\geq Z_{IKP}^* \\\\geq Z_{CKP}^*$", "en": "$Z_{BKP}^* \\\\geq Z_{IKP}^* \\\\geq Z_{CKP}^*$" },
+            { "tr": "$Z_{CKP}^* \\\\geq Z_{IKP}^* \\\\geq Z_{BKP}^*$", "en": "$Z_{CKP}^* \\\\geq Z_{IKP}^* \\\\geq Z_{BKP}^*$" },
+            { "tr": "$Z_{IKP}^* \\\\geq Z_{CKP}^* \\\\geq Z_{BKP}^*$", "en": "$Z_{IKP}^* \\\\geq Z_{CKP}^* \\\\geq Z_{BKP}^*$" },
+            { "tr": "Sıralama, eşyalara göre değişir; genel bir kural yoktur.", "en": "The ordering depends on items; no general rule applies." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Kısıtlar gevşedikçe optimal değer artabilir ama azalamaz. CKP (sürekli) < IKP (tam sayı, çoklu) kısıtları < BKP (binary) kısıtları → $Z_{CKP}^* \\\\geq Z_{IKP}^* \\\\geq Z_{BKP}^*$.",
+            "en": "Relaxing constraints can only improve (or maintain) the objective. CKP has fewest restrictions, BKP has most: $Z_{CKP}^* \\\\geq Z_{IKP}^* \\\\geq Z_{BKP}^*$."
+          }
+        },
+        {
+          "id": "m32-l3-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "INDR262 Knapsack LP Relaxation'ının kapasite kısıtlarının gölge fiyatları ne anlam taşır?",
+            "en": "What do the shadow prices of the capacity constraints in the INDR262 Knapsack LP relaxation represent?"
+          },
+          "options": [
+            { "tr": "Kapasite 1 birim artarsa optimal değerin ne kadar artacağı (birim kapasite başına marjinal değer).", "en": "How much the optimal value increases per 1-unit increase in capacity (marginal value of capacity)." },
+            { "tr": "Seçilen eşya sayısı.", "en": "The number of items selected." },
+            { "tr": "Her eşyanın ağırlık/hacim oranı.", "en": "The weight-to-volume ratio of each item." },
+            { "tr": "Integer gap büyüklüğü.", "en": "The size of the integer gap." }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "LP Relaxation'ın kapasite kısıtları için gölge fiyat, o kapasiteyi (kütle veya hacim) 1 birim artırmanın toplam değere olan katkısını gösterir. Bu, ek kapasite satın almak için ödemeye değer maksimum fiyattır.",
+            "en": "The shadow price of each capacity constraint (mass, volume) in the LP relaxation equals the marginal gain per unit of additional capacity — i.e., maximum willingness to pay for extra capacity."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# INDR262 Knapsack - BKP, IKP, CKP karşılaştırması\nfrom pulp import *\nimport numpy as np\n\n# Örnek: ilk 10 eşya (gerçek 50 eşya için aynı mantık)\nnp.random.seed(1262)\nn = 50\nv  = np.random.randint(1, 100, n).tolist()   # değerler\nm  = np.random.randint(1,  80, n).tolist()   # kütleler\nvol= np.random.randint(1,  80, n).tolist()   # hacimler\nCm, Cv = 1262, 1262\n\ndef solve_knapsack(cat='Binary'):\n    prob = LpProblem('Knapsack', LpMaximize)\n    ub = 1 if cat == 'Binary' else None\n    x = [LpVariable(f'x{i}', lowBound=0, upBound=ub, cat=cat) for i in range(n)]\n    prob += lpSum(v[i]*x[i] for i in range(n))\n    prob += lpSum(m[i]*x[i] for i in range(n))   <= Cm\n    prob += lpSum(vol[i]*x[i] for i in range(n)) <= Cv\n    prob.solve(PULP_CBC_CMD(msg=0))\n    return value(prob.objective)\n\nZ_bkp = solve_knapsack('Binary')\nZ_ikp = solve_knapsack('Integer')\nZ_ckp = solve_knapsack('Continuous')\n\nprint(f'Z_CKP = {Z_ckp:.2f}')\nprint(f'Z_IKP = {Z_ikp:.2f}')\nprint(f'Z_BKP = {Z_bkp:.2f}')\nprint(f'Gap(CKP-BKP) = {(Z_ckp-Z_bkp)/Z_ckp*100:.2f}%')",
+        "powerBiNote": {
+          "tr": "Knapsack çıktıları, lojistik yük planlama dashboard'larında kapasite kullanım oranı ile birlikte gösterilir.",
+          "en": "Knapsack results display alongside capacity utilization gauges in logistics load planning dashboards."
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m32-c1",
+      "moduleId": "module-32",
+      "difficulty": "zor",
+      "title": {
+        "tr": "Vaka Sınavı: INDR262 Knapsack Projesi",
+        "en": "Case Exam: INDR262 Knapsack Project"
+      },
+      "scenario": {
+        "tr": "**INDR262 Knapsack Problemi:**\\nBir keşif ekibi 50 farklı eşyadan bir seçim yapıyor. Sırt çantasının hem **kütle kapasitesi** hem de **hacim kapasitesi** = **1262** birimdir. Her eşyanın bir değeri ($v_i$), kütlesi ($m_i$) ve hacmi ($vol_i$) vardır.\\n\\n**Üç model kurulacak:**\\n\\n**1. Binary Knapsack (BKP):**\\n$$\\\\max Z = \\\\sum_{i=1}^{50} v_i x_i$$\\n$$\\\\sum_{i=1}^{50} m_i x_i \\\\leq 1262$$\\n$$\\\\sum_{i=1}^{50} vol_i x_i \\\\leq 1262$$\\n$$x_i \\\\in \\\\{0,1\\\\}$$\\n\\n**2. Integer Knapsack (IKP):** Aynı model, $x_i \\\\in \\\\mathbb{Z}^+$\\n\\n**3. Continuous Knapsack (CKP):** LP Relaxation, $x_i \\\\geq 0$ (sürekli)\\n\\nBeklenen ilişki: $Z_{CKP}^* \\\\geq Z_{IKP}^* \\\\geq Z_{BKP}^*$",
+        "en": "**INDR262 Knapsack:** 50 items, mass_capacity = volume_capacity = 1262. Formulate and solve BKP ($x_i \\\\in \\\\{0,1\\\\}$), IKP ($x_i \\\\in \\\\mathbb{Z}^+$), and CKP ($x_i \\\\geq 0$ continuous). Compare optimal values and verify $Z_{CKP}^* \\\\geq Z_{IKP}^* \\\\geq Z_{BKP}^*$."
+      },
+      "questions": [
+        {
+          "id": "m32-c1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "INDR262 Knapsack'te hem kütle hem hacim kapasitesi 1262 birimdir. Bu çift kapasiteli yapı, tek kapasiteli probleme göre nasıl bir fark yaratır?",
+            "en": "The INDR262 knapsack has both mass and volume capacity = 1262. How does this dual-capacity structure differ from a single-capacity problem?"
+          },
+          "options": [
+            { "tr": "Çift kapasite, iki ayrı kısıt ekler; bir eşya kütle sınırını aşmasa bile hacim sınırını aşabilir, dolayısıyla uygun küme daha küçüktür.", "en": "Dual capacity adds two constraints; an item may fit by mass but not volume, making the feasible set smaller." },
+            { "tr": "Çift kapasite, problemi daha kolay yapar çünkü iki ölçüt seçim yapmayı kolaylaştırır.", "en": "Dual capacity makes the problem easier because two criteria simplify selection." },
+            { "tr": "Hacim ve kütle katsayıları her zaman eşit olduğundan tek kısıtta birleştirilebilir.", "en": "Since mass and volume values are equal, they can always be merged into one constraint." },
+            { "tr": "Çift kapasite, LP Relaxation'ı anlamsız kılar.", "en": "Dual capacity makes LP relaxation meaningless." }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "İki ayrı kapasite kısıtı (kütle ve hacim), uygun çözüm kümesini daraltır. Bir eşya kütle açısından sığsa bile hacim açısından sığmayabilir. Bu durum, çift kapasiteli problemi tek kapasiteli knapsack'a göre daha kısıtlı ve genel olarak daha zor yapar.",
+            "en": "Two separate constraints shrink the feasible set. An item passing the mass test may fail the volume test. This makes dual-capacity knapsack more constrained (and generally harder) than single-capacity."
+          }
+        },
+        {
+          "id": "m32-c1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Binary Knapsack'in LP Relaxation'ı çözüldüğünde $Z_{CKP}^* = 4850$ bulunmuştur. Binary IP'nin optimal değeri $Z_{BKP}^* = 4712$'dir. Integer Gap nedir ve bu ne anlama gelir?",
+            "en": "LP relaxation gives $Z_{CKP}^* = 4850$ and binary IP gives $Z_{BKP}^* = 4712$. What is the integer gap and what does it mean?"
+          },
+          "options": [
+            { "tr": "Gap ≈ %2.85; tam sayı kısıtı, optimal değeri yaklaşık %2.85 düşürmektedir.", "en": "Gap ≈ 2.85%; integrality reduces optimal value by ~2.85%." },
+            { "tr": "Gap = 138; bu sayı eşya sayısını gösterir.", "en": "Gap = 138; this number represents the number of items." },
+            { "tr": "Gap = %48.5; BKP neredeyse CKP kadar iyidir.", "en": "Gap = 48.5%; BKP is almost as good as CKP." },
+            { "tr": "Gap sıfırdır; iki çözüm aynıdır.", "en": "Gap is zero; both solutions are identical." }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "$$\\\\text{Gap} = \\\\frac{4850 - 4712}{4850} \\\\times 100 \\\\approx 2.85\\\\%$$\\nBu, tam sayı kısıtının optimal değeri yaklaşık %2.85 azalttığını gösterir. LP Relaxation, IP'ye kıyasla yalnızca %2.85 daha iyidir; bu görece küçük bir gap'tir.",
+            "en": "$$\\\\text{Gap} = \\\\frac{4850 - 4712}{4850} \\\\times 100 \\\\approx 2.85\\\\%$$\\nIntegrality costs about 2.85% of the LP bound — a relatively tight gap."
+          }
+        },
+        {
+          "id": "m32-c1-q3",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Integer Knapsack (IKP) çözümünde $Z_{IKP}^* \\\\geq Z_{BKP}^*$ olması neden beklenir?",
+            "en": "Why is $Z_{IKP}^* \\\\geq Z_{BKP}^*$ expected in the INDR262 knapsack?"
+          },
+          "options": [
+            { "tr": "IKP'de her eşyadan birden fazla alınabilir; BKP'deki $x_i \\\\in \\\\{0,1\\\\}$ kısıtı IKP'de yoktur. IKP'nin uygun kümesi daha geniştir.", "en": "IKP allows multiple copies; the $x_i \\\\in \\\\{0,1\\\\}$ restriction of BKP is absent in IKP, making IKP's feasible set a superset." },
+            { "tr": "IKP her zaman BKP ile aynı sonucu verir.", "en": "IKP always gives the same result as BKP." },
+            { "tr": "BKP'nin uygun kümesi IKP'ninkini kapsar.", "en": "BKP's feasible set contains IKP's feasible set." },
+            { "tr": "İki problem arasında matematiksel bir ilişki yoktur.", "en": "There is no mathematical relationship between the two." }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "IKP'de $x_i \\\\in \\\\mathbb{Z}^+$ kısıtı, BKP'nin $x_i \\\\in \\\\{0,1\\\\}$ kısıtından daha gevşektir. Her BKP uygun çözümü aynı zamanda bir IKP uygun çözümüdür, ama tersi doğru değildir. Dolayısıyla IKP en iyi BKP kadar iyidir: $Z_{IKP}^* \\\\geq Z_{BKP}^*$.",
+            "en": "IKP's feasible set is a superset of BKP's (any BKP solution is feasible for IKP, but not vice versa). Hence $Z_{IKP}^* \\\\geq Z_{BKP}^*$."
+          }
+        }
+      ]
+    }
+  ]
+}

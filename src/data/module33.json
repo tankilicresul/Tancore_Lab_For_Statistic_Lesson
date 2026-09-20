@@ -1,0 +1,344 @@
+{
+  "id": "module-33",
+  "order": 33,
+  "title": {
+    "tr": "Çizelgeleme & Ağ Modelleri",
+    "en": "Scheduling & Network Models"
+  },
+  "description": {
+    "tr": "Atama, ulaştırma ve sınav çizelgeleme problemlerini matematiksel programlama ile çöz.",
+    "en": "Solve assignment, transportation, and exam scheduling problems with mathematical programming."
+  },
+  "iconName": "Network",
+  "lessons": [
+    {
+      "id": "m33-l1",
+      "moduleId": "module-33",
+      "order": 1,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Atama Problemi (Assignment Problem)",
+        "en": "Assignment Problem"
+      },
+      "conceptCard": {
+        "tr": "**Atama Problemi:** $N$ kişinin $N$ göreve bire-bir atanması problemini modeller. Her kişi tam olarak bir göreve, her görev tam olarak bir kişiye atanır.\\n\\n**Karar Değişkenleri (Binary):**\\n$$x_{ij} = \\\\begin{cases} 1 & \\\\text{kişi } i \\\\text{ görev } j\\\\text{'ye atanırsa} \\\\\\\\ 0 & \\\\text{atanmazsa} \\\\end{cases}$$\\n\\n**Model:**\\n$$\\\\min Z = \\\\sum_{i=1}^{N} \\\\sum_{j=1}^{N} c_{ij} x_{ij}$$\\n$$\\\\text{s.t.}$$\\n$$\\\\sum_{j=1}^{N} x_{ij} = 1 \\\\quad \\\\forall i \\\\quad \\\\text{(Her kişi tam bir göreve)}$$\\n$$\\\\sum_{i=1}^{N} x_{ij} = 1 \\\\quad \\\\forall j \\\\quad \\\\text{(Her görev tam bir kişiye)}$$\\n$$x_{ij} \\\\in \\\\{0,1\\\\}$$\\n\\n**Burada** $c_{ij}$: kişi $i$'nin görev $j$'yi yapmasının maliyeti (veya negatif karı).\\n\\n**Hungarian Method (Macar Algoritması):** Atama problemini $O(N^3)$ zaman karmaşıklığında çözen özel algoritma; simplex'ten çok daha verimlidir.",
+        "en": "**Assignment Problem:** Assign $N$ workers to $N$ tasks one-to-one.\\n\\n**Binary Decision Variables:** $x_{ij} = 1$ if person $i$ is assigned to task $j$.\\n\\n**Model:**\\n$$\\\\min Z = \\\\sum_i \\\\sum_j c_{ij} x_{ij}$$\\n$$\\\\sum_j x_{ij} = 1 \\\\; \\\\forall i \\\\quad (\\\\text{each person to exactly one task})$$\\n$$\\\\sum_i x_{ij} = 1 \\\\; \\\\forall j \\\\quad (\\\\text{each task to exactly one person})$$\\n$$x_{ij} \\\\in \\\\{0,1\\\\}$$\\n\\n**Hungarian Method:** Solves assignment in $O(N^3)$, far more efficient than general simplex."
+      },
+      "companyExample": {
+        "tr": "**Örnek: 3 Mühendis × 3 Proje Atama**\\n\\nMaliyet matrisi (k TL cinsinden):\\n\\n| | Proje A | Proje B | Proje C |\\n|---|---------|---------|---------|\\n| **Elif** | 9 | 2 | 7 |\\n| **Berk** | 3 | 6 | 4 |\\n| **Cansu** | 1 | 5 | 8 |\\n\\n**LP Modeli:**\\n$$\\\\min Z = 9x_{EA}+2x_{EB}+7x_{EC}+3x_{BA}+6x_{BB}+4x_{BC}+x_{CA}+5x_{CB}+8x_{CC}$$\\n\\nKısıtlar (her kişi 1 proje):\\n$$x_{EA}+x_{EB}+x_{EC}=1, \\\\quad x_{BA}+x_{BB}+x_{BC}=1, \\\\quad x_{CA}+x_{CB}+x_{CC}=1$$\\nKısıtlar (her proje 1 kişi):\\n$$x_{EA}+x_{BA}+x_{CA}=1, \\\\quad x_{EB}+x_{BB}+x_{CB}=1, \\\\quad x_{EC}+x_{BC}+x_{CC}=1$$\\n\\n**Optimal Atama:** Elif→B (2), Berk→C (4), Cansu→A (1) → $Z^*=7$ k TL",
+        "en": "**3×3 Engineer-Project Assignment:** Cost matrix yields optimal assignment Elif→B, Berk→C, Cansu→A with $Z^* = 7$ (k TL)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "assignment problem",
+          "explanation_tr": "N kişinin N göreve bire-bir, minimum maliyetle atandığı özel bir tam sayılı programlama problemi.",
+          "explanation_en": "Special IP problem of assigning N agents to N tasks one-to-one at minimum cost.",
+          "exampleSentence_en": "The assignment problem matched exam proctors to classrooms optimally."
+        },
+        {
+          "term_en": "Hungarian algorithm",
+          "explanation_tr": "Atama problemini $O(N^3)$ karmaşıklığında çözen, satır ve sütun indirgeme adımlarına dayalı verimli algoritma.",
+          "explanation_en": "Efficient $O(N^3)$ algorithm for the assignment problem based on row and column reduction.",
+          "exampleSentence_en": "The Hungarian algorithm solved the 100×100 scheduling matrix in seconds."
+        },
+        {
+          "term_en": "cost matrix",
+          "explanation_tr": "Atama probleminde her (kişi, görev) çiftinin maliyetini gösteren $N \\\\times N$ boyutlu matris.",
+          "explanation_en": "An $N \\\\times N$ matrix of costs $c_{ij}$ for each (agent, task) pair in the assignment problem.",
+          "exampleSentence_en": "The cost matrix encoded travel times between delivery drivers and customer locations."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m33-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Atama probleminde $\\\\sum_{j=1}^{N} x_{ij} = 1$ kısıtı ne anlama gelir?",
+            "en": "In the assignment problem, what does $\\\\sum_{j=1}^{N} x_{ij} = 1$ mean?"
+          },
+          "options": [
+            { "tr": "Her görev tam olarak bir kişiye atanmalıdır.", "en": "Each task must be assigned to exactly one person." },
+            { "tr": "Her kişi tam olarak bir göreve atanmalıdır.", "en": "Each person must be assigned to exactly one task." },
+            { "tr": "Toplam maliyet 1 birimi aşmamalıdır.", "en": "Total cost must not exceed 1 unit." },
+            { "tr": "Her kişi en az bir göreve atanabilir.", "en": "Each person can be assigned to at least one task." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$\\\\sum_{j=1}^{N} x_{ij} = 1$: $i$ kişisi için tüm $j$ görevleri üzerindeki atama değişkenlerinin toplamı 1'dir. Yani kişi $i$ tam olarak bir göreve atanır.",
+            "en": "$\\\\sum_{j} x_{ij} = 1$ sums over all tasks $j$ for a fixed person $i$, ensuring person $i$ is assigned to exactly one task."
+          }
+        },
+        {
+          "id": "m33-l1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "3×3 atama probleminde kaç tane $x_{ij}$ karar değişkeni vardır?",
+            "en": "How many decision variables $x_{ij}$ are there in a 3×3 assignment problem?"
+          },
+          "options": [
+            { "tr": "3", "en": "3" },
+            { "tr": "6", "en": "6" },
+            { "tr": "9", "en": "9" },
+            { "tr": "12", "en": "12" }
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "3 kişi × 3 görev = $3 \\\\times 3 = 9$ adet $x_{ij}$ değişkeni bulunur. Her (kişi, görev) çifti için bir binary değişken tanımlanır.",
+            "en": "3 persons × 3 tasks = 9 binary variables $x_{ij}$, one for each (person, task) pair."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Atama Problemi - PuLP\nfrom pulp import *\n\nkisiler = ['Elif', 'Berk', 'Cansu']\ngörevler = ['A', 'B', 'C']\nmaliyet = {\n    'Elif':  {'A': 9, 'B': 2, 'C': 7},\n    'Berk':  {'A': 3, 'B': 6, 'C': 4},\n    'Cansu': {'A': 1, 'B': 5, 'C': 8}\n}\n\nprob = LpProblem('Atama', LpMinimize)\nx = {(i,j): LpVariable(f'x_{i}_{j}', cat='Binary')\n     for i in kisiler for j in görevler}\n\n# Amaç fonksiyonu\nprob += lpSum(maliyet[i][j]*x[i,j] for i in kisiler for j in görevler)\n\n# Her kişi 1 görev\nfor i in kisiler:\n    prob += lpSum(x[i,j] for j in görevler) == 1\n\n# Her görev 1 kişi\nfor j in görevler:\n    prob += lpSum(x[i,j] for i in kisiler) == 1\n\nprob.solve(PULP_CBC_CMD(msg=0))\nprint(f'Minimum Maliyet: {value(prob.objective)}')\nfor i in kisiler:\n    for j in görevler:\n        if x[i,j].value() == 1:\n            print(f'  {i} → Proje {j}')",
+        "powerBiNote": {
+          "tr": "Atama sonuçları, İK görev dağıtım matrislerinde Gantt formatında görselleştirilir.",
+          "en": "Assignment results visualize as Gantt-style task distribution matrices in HR dashboards."
+        }
+      }
+    },
+    {
+      "id": "m33-l2",
+      "moduleId": "module-33",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Ulaştırma Problemi Çözüm Yöntemleri",
+        "en": "Transportation Problem Solution Methods"
+      },
+      "conceptCard": {
+        "tr": "**Ulaştırma Problemi:** $m$ arz noktasından $n$ talep noktasına minimum maliyetle ürün gönderme.\\n\\n$$\\\\min Z = \\\\sum_{i=1}^{m} \\\\sum_{j=1}^{n} c_{ij} x_{ij}$$\\n$$\\\\sum_{j=1}^{n} x_{ij} \\\\leq s_i \\\\; \\\\forall i \\\\quad (\\\\text{arz kısıtı})$$\\n$$\\\\sum_{i=1}^{m} x_{ij} \\\\geq d_j \\\\; \\\\forall j \\\\quad (\\\\text{talep kısıtı})$$\\n$$x_{ij} \\\\geq 0$$\\n\\n**Başlangıç Çözümü Yöntemleri:**\\n\\n1. **Kuzey-Batı Köşe Yöntemi (NW Corner):** Tabloyu sol üstten başlayarak doldur. Hızlı ama maliyet gözetmez; genellikle kötü başlangıç verir.\\n\\n2. **Vogel'in Yaklaşım Yöntemi (VAM):** Her satır/sütun için en küçük ve ikinci en küçük maliyet arasındaki fark hesaplanır (penaltı). En büyük penaltılı satır/sütunda en ucuz hücre doldurulur. Çok daha iyi başlangıç verir.\\n\\n**Optimallik Testi:**\\n\\n3. **MODI Yöntemi (Modified Distribution):** Dual değişkenler ($u_i, v_j$) ile doldurulan hücrelerin maliyeti test edilir. Boş hücre için $c_{ij} - u_i - v_j < 0$ ise o rota eklenerek döngü oluşturulur ve çözüm iyileştirilir.\\n\\n**Dengeli Tablo:** $\\\\sum s_i = \\\\sum d_j$ ise dengeli (balanced); değilse yapay arz/talep noktası eklenir.",
+        "en": "**Transportation Problem:** Ship from $m$ sources to $n$ destinations at minimum cost.\\n\\n**Initial BFS Methods:**\\n1. **NW Corner:** Start top-left, fill greedily. Fast but ignores costs.\\n2. **Vogel's Approximation (VAM):** Compute row/column penalties (gap between 2 cheapest costs); assign to cheapest cell in highest-penalty row/column. Gives much better start.\\n\\n**Optimality Test:**\\n3. **MODI Method:** Compute dual variables $u_i, v_j$; if $c_{ij} - u_i - v_j < 0$ for any empty cell, improvement is possible."
+      },
+      "companyExample": {
+        "tr": "**Örnek: 2 Fabrika → 3 Müşteri**\\n\\nMaliyet tablosu (TL/birim):\\n\\n| | Müş-1 | Müş-2 | Müş-3 | Arz |\\n|---|-------|-------|-------|-----|\\n| **F1** | 2 | 3 | 1 | 30 |\\n| **F2** | 5 | 4 | 8 | 50 |\\n| **Talep** | 20 | 40 | 20 | 80 |\\n\\n**Dengeli mi?** $\\\\sum s_i = 80 = \\\\sum d_j = 80$ ✓\\n\\n**VAM Adımları:**\\n- F1 penaltı: min(1,2)=1; ikinci=2 → fark=1\\n- F2 penaltı: min(4,5)=4; ikinci=5 → fark=1\\n- Müş-1 penaltı: |2-5|=3; Müş-2: |3-4|=1; Müş-3: |1-8|=7 → **Müş-3 en büyük**\\n- Müş-3'te en ucuz: F1 ($c=1$). $x_{13} = \\\\min(30,20) = 20$ → Müş-3 dolduruldu.\\n- ... VAM devam eder → başlangıç çözümü bulunur, MODI ile optimallik test edilir.\\n\\n**Optimal:** $x_{11}=10, x_{12}=0, x_{13}=20, x_{21}=10, x_{22}=40, x_{23}=0$, $Z^*=10(2)+20(1)+10(5)+40(4)=20+20+50+160=250$ TL",
+        "en": "**2-Factory 3-Customer Example:** VAM gives a near-optimal starting solution. MODI confirms optimality. Optimal $Z^* = 250$ TL."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Vogel's approximation method (VAM)",
+          "explanation_tr": "Ulaştırma problemine her satır/sütunun penaltı farkına göre iyi bir başlangıç uygun çözümü bulan sezgisel yöntem.",
+          "explanation_en": "Heuristic for transportation problems: compute row/column penalty gaps and assign to minimize cost regret.",
+          "exampleSentence_en": "Vogel's approximation provided a starting solution within 5% of optimal."
+        },
+        {
+          "term_en": "MODI method",
+          "explanation_tr": "Dual değişkenler ($u_i, v_j$) kullanarak mevcut ulaştırma çözümünün optimal olup olmadığını test eden yöntem.",
+          "explanation_en": "Optimality test for transportation: compute dual variables and check all empty cells for improvement.",
+          "exampleSentence_en": "The MODI method identified two improving routes in the transportation tableau."
+        },
+        {
+          "term_en": "balanced transportation problem",
+          "explanation_tr": "Toplam arz kapasitesi toplam talebe eşit olan ulaştırma problemi; $\\\\sum s_i = \\\\sum d_j$.",
+          "explanation_en": "Transportation problem where total supply exactly equals total demand: $\\\\sum s_i = \\\\sum d_j$.",
+          "exampleSentence_en": "A dummy destination was added to balance the unequal supply and demand."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m33-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Vogel Yaklaşım Yöntemi'nde her satır için 'penaltı' nasıl hesaplanır?",
+            "en": "In Vogel's Approximation Method, how is the 'penalty' computed for each row?"
+          },
+          "options": [
+            { "tr": "Satırdaki tüm maliyetlerin ortalaması.", "en": "Average of all costs in the row." },
+            { "tr": "Satırdaki en büyük maliyet.", "en": "The largest cost in the row." },
+            { "tr": "Satırdaki en küçük ve ikinci en küçük maliyet arasındaki fark.", "en": "Difference between the smallest and second-smallest cost in the row." },
+            { "tr": "Satırdaki toplam arz miktarı.", "en": "Total supply quantity in the row." }
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "VAM penaltısı, en ucuz rotanın kullanılmaması durumunda katlanılacak ek maliyeti temsil eder: $\\\\text{Penaltı}_i = c_i^{(2)} - c_i^{(1)}$ (ikinci en küçük − en küçük). En büyük penaltılı satır/sütunda en ucuz hücre doldurulur.",
+            "en": "VAM penalty = second-smallest cost minus smallest cost in the row/column. It represents the regret of not using the cheapest route."
+          }
+        },
+        {
+          "id": "m33-l2-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "MODI yönteminde boş bir $x_{ij}$ hücresi için $c_{ij} - u_i - v_j < 0$ bulunursa ne yapılır?",
+            "en": "In the MODI method, if $c_{ij} - u_i - v_j < 0$ for an empty cell, what should be done?"
+          },
+          "options": [
+            { "tr": "Mevcut çözüm optimaldir; değişiklik yapılmaz.", "en": "Current solution is optimal; no change needed." },
+            { "tr": "Bu hücre mevcut çözüme dahil edilerek çözüm iyileştirilir (döngü oluşturulur).", "en": "This cell is entered into the basis, forming a loop to improve the solution." },
+            { "tr": "Tabloya yapay değişken eklenir.", "en": "An artificial variable is added to the tableau." },
+            { "tr": "Problem dengesiz hale gelmiştir.", "en": "The problem has become unbalanced." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$c_{ij} - u_i - v_j < 0$ olması, bu rotanın kullanılmasının mevcut maliyeti azaltacağını gösterir. Bu hücre çözüme (baz değişkeni olarak) eklenir, bir döngü oluşturularak mevcut çözümde gerekli artırma/azaltmalar yapılır ve $Z$ iyileştirilir.",
+            "en": "$c_{ij} - u_i - v_j < 0$ signals that using route $(i,j)$ reduces total cost. The cell enters the basis, and adjustments along the loop improve $Z$."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Ulaştırma Problemi - scipy\nfrom scipy.optimize import linprog\nimport numpy as np\n\n# 2 Fabrika → 3 Müşteri\nc = [2, 3, 1,   # F1→M1, F1→M2, F1→M3\n     5, 4, 8]  # F2→M1, F2→M2, F2→M3\n\n# Arz kısıtları (<=)\nA_arz = [[1,1,1,0,0,0],  # F1\n         [0,0,0,1,1,1]]  # F2\nb_arz = [30, 50]\n\n# Talep kısıtları (>= → -1 * <=)\nA_tal = [[-1,0,0,-1,0,0],  # -M1\n         [0,-1,0,0,-1,0],  # -M2\n         [0,0,-1,0,0,-1]]  # -M3\nb_tal = [-20, -40, -20]\n\nA_ub = A_arz + A_tal\nb_ub = b_arz + b_tal\n\nres = linprog(c, A_ub=A_ub, b_ub=b_ub,\n              bounds=[(0,None)]*6, method='highs')\nprint(f'Z* = {res.fun}')\nprint(f'x = {res.x}')",
+        "powerBiNote": {
+          "tr": "Ulaştırma optimizasyon sonuçları, lojistik rotaları harita katmanı olarak Power BI'da görselleştirilir.",
+          "en": "Transportation optimization results visualize as map-layer route flows in Power BI logistics dashboards."
+        }
+      }
+    },
+    {
+      "id": "m33-l3",
+      "moduleId": "module-33",
+      "order": 3,
+      "difficulty": "zor",
+      "title": {
+        "tr": "Sınav Çizelgeleme BIP (INDR262 Projesi)",
+        "en": "Exam Scheduling BIP (INDR262 Project)"
+      },
+      "conceptCard": {
+        "tr": "**Sınav Çizelgeleme Problemi:** Koç Üniversitesi dönem sonu sınavlarını derslere oda ve gözetmen ataması problemine dönüştürmek.\\n\\n**Kümeler:**\\n- $C$: Dersler (courses), $R$: Odalar (rooms), $P$: Gözetmenler (proctors)\\n\\n**Karar Değişkenleri:**\\n$$x_{cr} = \\\\begin{cases} 1 & \\\\text{ders } c \\\\text{ oda } r\\\\text{'de yapılırsa} \\\\\\\\ 0 & \\\\text{aksi halde} \\\\end{cases}$$\\n$$y_{pcr} = \\\\begin{cases} 1 & \\\\text{gözetmen } p \\\\text{ ders } c\\\\text{'yi oda } r\\\\text{'de denetlerse} \\\\\\\\ 0 & \\\\text{aksi halde} \\\\end{cases}$$\\n\\n**Amaç (Maliyet Minimizasyonu):**\\n$$\\\\min Z = \\\\sum_p \\\\sum_c \\\\sum_r \\\\text{maliyet}_{pcr} \\\\cdot y_{pcr}$$\\n\\n**Kısıtlar:**\\n1. **Kapasite:** Her odada yapılan sınavda oturan öğrenci sayısı odanın kapasitesini geçemez.\\n2. **Oda Atama:** Her ders tam olarak bir odada yapılmalı: $\\\\sum_r x_{cr} = 1 \\\\; \\\\forall c$\\n3. **Gözetmen Uygunluğu:** Gözetmen $p$ yalnızca müsait olduğu oda ve derslere atanabilir.\\n4. **Gözetmen Sayısı:** Her ders-oda çiftine en az 1 (veya norma göre) gözetmen atanmalı.\\n5. **Çift Görev Yok:** Bir gözetmen aynı anda birden fazla sınavda olamaz.",
+        "en": "**Exam Scheduling BIP (INDR262 Project):** Assign courses to rooms and proctors to exam-room pairs at Koç University.\\n\\n**Decision Variables:**\\n$x_{cr} = 1$ if course $c$ is held in room $r$.\\n$y_{pcr} = 1$ if proctor $p$ supervises course $c$ in room $r$.\\n\\n**Objective:** $\\\\min Z = \\\\sum_{p,c,r} \\\\text{cost}_{pcr} \\\\cdot y_{pcr}$\\n\\n**Constraints:** Capacity, one room per course, proctor availability, minimum proctors per exam, no proctor double-booking."
+      },
+      "companyExample": {
+        "tr": "**Küçük Örnek: 2 Ders × 2 Oda × 3 Gözetmen**\\n\\n| | Oda-1 (kap:30) | Oda-2 (kap:50) |\\n|---|----------------|----------------|\\n| **INDR262** (25 öğrenci) | ✓ | ✓ |\\n| **MGMT101** (45 öğrenci) | ✗ (kapasitesiz) | ✓ |\\n\\nGözetmen maliyetleri (TL/sınav):\\n- $g_1$: Oda-1 uygun (30 TL), Oda-2 uygun (40 TL)\\n- $g_2$: Oda-1 müsait değil, Oda-2 uygun (35 TL)\\n- $g_3$: Oda-1 uygun (25 TL), Oda-2 müsait değil\\n\\n**BIP Çözümü:**\\n- $x_{INDR262,Oda1}=1$: INDR262 → Oda-1\\n- $x_{MGMT101,Oda2}=1$: MGMT101 → Oda-2\\n- $y_{g3,INDR262,Oda1}=1$: $g_3$ → INDR262/Oda-1 (25 TL)\\n- $y_{g2,MGMT101,Oda2}=1$: $g_2$ → MGMT101/Oda-2 (35 TL)\\n$$Z^* = 25 + 35 = 60 \\\\text{ TL}$$",
+        "en": "**Simplified 2-course example:** INDR262 → Room-1 (proctor $g_3$, 25 TL), MGMT101 → Room-2 (proctor $g_2$, 35 TL). Total cost: $Z^* = 60$ TL."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "exam scheduling problem",
+          "explanation_tr": "Derslerin oda ve gözetmen atamalarını kısıt altında (kapasite, uygunluk, çakışma) optimize eden ikili tam sayılı programlama problemi.",
+          "explanation_en": "BIP problem assigning courses to rooms and proctors to exams subject to capacity, availability, and conflict constraints.",
+          "exampleSentence_en": "The university exam scheduling BIP minimized total proctor overtime costs."
+        },
+        {
+          "term_en": "availability constraint",
+          "explanation_tr": "Bir gözetmenin yalnızca belirli sınav-oda çiftlerinde denetim yapabilmesini zorunlu kılan kısıt.",
+          "explanation_en": "Constraint ensuring a proctor is only assigned to exam-room pairs where they are available.",
+          "exampleSentence_en": "Availability constraints prevented assigning a proctor to two simultaneous exams."
+        },
+        {
+          "term_en": "conflict constraint",
+          "explanation_tr": "Bir gözetmenin aynı anda birden fazla sınavda olamayacağını modelleyen kısıt.",
+          "explanation_en": "Constraint preventing a proctor from being assigned to more than one exam at the same time slot.",
+          "exampleSentence_en": "Conflict constraints were modeled as binary feasibility restrictions in the BIP."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m33-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Sınav çizelgeleme BIP'inde $\\\\sum_r x_{cr} = 1 \\\\; \\\\forall c$ kısıtı ne anlama gelir?",
+            "en": "In the exam scheduling BIP, what does $\\\\sum_r x_{cr} = 1 \\\\; \\\\forall c$ mean?"
+          },
+          "options": [
+            { "tr": "Her oda tam olarak bir derse atanmalıdır.", "en": "Each room must be assigned to exactly one course." },
+            { "tr": "Her ders tam olarak bir odada yapılmalıdır.", "en": "Each course must be held in exactly one room." },
+            { "tr": "Toplam oda sayısı dersleri aşmamalıdır.", "en": "Total rooms must not exceed total courses." },
+            { "tr": "Her gözetmen en az bir derse atanmalıdır.", "en": "Every proctor must be assigned to at least one course." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$\\\\sum_r x_{cr} = 1$, ders $c$ için tüm odalar $r$ üzerinden toplam alır. Eşit 1 olması, ders $c$'nin tam olarak bir oda $r$'de yapılacağını garanti eder.",
+            "en": "$\\\\sum_r x_{cr} = 1$ sums over all rooms for a fixed course $c$. Equality to 1 ensures course $c$ is assigned to exactly one room."
+          }
+        },
+        {
+          "id": "m33-l3-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Sınav çizelgeleme modelinde amaç fonksiyonu neden genellikle minimizasyon yönünde kurulur?",
+            "en": "Why is the objective function in exam scheduling typically minimization?"
+          },
+          "options": [
+            { "tr": "Sınav sayısını minimuma indirmek istiyoruz.", "en": "We want to minimize the number of exams." },
+            { "tr": "Gözetmen ücretleri, fazla mesai ve ulaşım gibi operasyonel maliyetler minimize edilmek isteniyor.", "en": "Operational costs (proctor fees, overtime, travel) need to be minimized." },
+            { "tr": "Daha az oda kullanmak zorunludur.", "en": "Using fewer rooms is mandatory." },
+            { "tr": "BIP modelleri yalnızca minimizasyon yapabilir.", "en": "BIP models can only minimize." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Sınav çizelgeleme problemlerinde üniversitenin temel amacı; gözetmen ücretleri, fazla mesai maliyetleri ve oda tahsis masrafları gibi operasyonel maliyetleri minimize etmektir. BIP hem minimizasyon hem maksimizasyon yapabilir.",
+            "en": "The university minimizes operational costs: proctor wages, overtime, and room allocation expenses. BIP handles both min and max objectives."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Sınav Çizelgeleme BIP - 3 Ders, 3 Oda, 5 Gözetmen\nfrom pulp import *\n\nDersler = ['INDR262', 'MGMT101', 'ECON201']\nOdalar  = ['R1', 'R2', 'R3']\nGozetmenler = ['G1','G2','G3','G4','G5']\n\n# Kapasite ve öğrenci sayısı\nkap = {'R1': 30, 'R2': 50, 'R3': 40}\nogrenci = {'INDR262': 25, 'MGMT101': 45, 'ECON201': 35}\n\n# Gözetmen maliyeti (pcr)\nimport random; random.seed(42)\nmaliyet = {(g,c,r): random.randint(20,50)\n           for g in Gozetmenler for c in Dersler for r in Odalar}\n\n# Uygunluk (örnek: G3 R2'de mevcut değil)\nuygun = {(g,c,r): 1 for g in Gozetmenler for c in Dersler for r in Odalar}\nuygun[('G3','INDR262','R2')] = 0\n\nprob = LpProblem('SinavCizelge', LpMinimize)\n\n# x_cr: ders c oda r'de\nx = {(c,r): LpVariable(f'x_{c}_{r}', cat='Binary')\n     for c in Dersler for r in Odalar\n     if ogrenci[c] <= kap[r]}  # kapasite filtresi\n\n# y_pcr: gozetmen p, ders c, oda r\ny = {(g,c,r): LpVariable(f'y_{g}_{c}_{r}', cat='Binary')\n     for g in Gozetmenler for c in Dersler for r in Odalar\n     if uygun.get((g,c,r),1) == 1 and ogrenci[c] <= kap[r]}\n\n# Amaç\nprob += lpSum(maliyet[g,c,r]*y[g,c,r] for (g,c,r) in y)\n\n# Her ders tam 1 odada\nfor c in Dersler:\n    prob += lpSum(x.get((c,r),0) for r in Odalar) == 1\n\n# Her ders-oda çiftine en az 1 gozetmen\nfor (c,r) in x:\n    prob += lpSum(y.get((g,c,r),0) for g in Gozetmenler) >= x[c,r]\n\nprob.solve(PULP_CBC_CMD(msg=0))\nprint(f'Minimum Maliyet: {value(prob.objective):.0f} TL')\nfor (c,r) in x:\n    if x[c,r].value() and x[c,r].value() > 0.5:\n        print(f'  {c} → {r}')",
+        "powerBiNote": {
+          "tr": "Sınav çizelgeleme BIP çıktıları, üniversite takvim yönetim sistemlerine ve gözetmen bildirim e-postalarına otomatik bağlanabilir.",
+          "en": "Exam scheduling BIP outputs auto-integrate with university calendar systems and proctor notification emails."
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m33-c1",
+      "moduleId": "module-33",
+      "difficulty": "orta",
+      "title": {
+        "tr": "Vaka Sınavı: Basitleştirilmiş Sınav Çizelgeleme (3 Ders, 3 Oda, 5 Gözetmen)",
+        "en": "Case Exam: Simplified Exam Scheduling (3 Courses, 3 Rooms, 5 Proctors)"
+      },
+      "scenario": {
+        "tr": "Bir üniversite 3 dersi ($C_1, C_2, C_3$) 3 odaya ($R_1, R_2, R_3$) ve 5 gözetmen ($G_1, \\\\ldots, G_5$) atıyor.\\n\\n**Oda Kapasiteleri:** $R_1$: 30, $R_2$: 50, $R_3$: 40\\n**Öğrenci Sayıları:** $C_1$: 28, $C_2$: 45, $C_3$: 38\\n\\n**Kısıt:** Her ders kapasite yeterli bir odada yapılmalı.\\n\\n**Gözetmen Müsaitlik Matrisi** (1=müsait, 0=değil):\\n| | $C_1/R$ | $C_2/R$ | $C_3/R$ |\\n|---|---------|---------|---------|\\n| **G1** | R1,R2,R3 | R2,R3 | R1,R3 |\\n| **G2** | R1,R2 | R2 | R3 |\\n| **G3** | R3 | R2,R3 | R2,R3 |\\n| **G4** | R1,R2 | R2,R3 | R1 |\\n| **G5** | R2,R3 | R3 | R2,R3 |\\n\\n**Gözetmen Maliyetleri (TL/sınav):** $G_1$:40, $G_2$:35, $G_3$:30, $G_4$:45, $G_5$:25\\n\\n**Amaç:** Kapasite ve uygunluk kısıtlarını sağlayarak toplam gözetmen maliyetini minimize et.",
+        "en": "Assign 3 courses to 3 rooms and 5 proctors at minimum cost. Room capacities: R1=30, R2=50, R3=40. Student counts: C1=28, C2=45, C3=38. Each course needs a room with sufficient capacity and at least one available proctor. Minimize total proctor cost."
+      },
+      "questions": [
+        {
+          "id": "m33-c1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "$C_2$ dersi (45 öğrenci) hangi oda(lara) atanabilir?",
+            "en": "Course $C_2$ (45 students) can be assigned to which room(s)?"
+          },
+          "options": [
+            { "tr": "Yalnızca $R_1$ (kap:30)", "en": "Only $R_1$ (cap:30)" },
+            { "tr": "Yalnızca $R_2$ (kap:50)", "en": "Only $R_2$ (cap:50)" },
+            { "tr": "$R_2$ ve $R_3$ (kap:50 ve 40)", "en": "$R_2$ and $R_3$ (cap:50 and 40)" },
+            { "tr": "Tüm odalar", "en": "All rooms" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$C_2$'de 45 öğrenci var. $R_1$ kapasitesi 30 → yetersiz. $R_3$ kapasitesi 40 → yetersiz (45>40). Yalnızca $R_2$ kapasitesi 50 ≥ 45 olduğundan $C_2$ yalnızca $R_2$'ye atanabilir.",
+            "en": "$C_2$ has 45 students. $R_1$ (30) and $R_3$ (40) are insufficient. Only $R_2$ (50) has capacity ≥ 45, so $C_2$ must go to $R_2$."
+          }
+        },
+        {
+          "id": "m33-c1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "$C_2$ zorunlu olarak $R_2$'de yapılıyorsa, bu odaya müsait olan en ucuz gözetmen kimdir?",
+            "en": "Given $C_2$ must be in $R_2$, which proctor available for $C_2/R_2$ has the lowest cost?"
+          },
+          "options": [
+            { "tr": "$G_1$ (40 TL) — $C_2/R_2$'de müsait", "en": "$G_1$ (40 TL) — available for $C_2/R_2$" },
+            { "tr": "$G_2$ (35 TL) — $C_2/R_2$'de müsait", "en": "$G_2$ (35 TL) — available for $C_2/R_2$" },
+            { "tr": "$G_3$ (30 TL) — $C_2/R_2$'de müsait", "en": "$G_3$ (30 TL) — available for $C_2/R_2$" },
+            { "tr": "$G_5$ (25 TL) — $C_2/R_2$'de müsait değil", "en": "$G_5$ (25 TL) — not available for $C_2/R_2$" }
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "$C_2/R_2$ için müsait gözetmenler (tabloya göre): $G_1$ (40 TL), $G_2$ (35 TL), $G_3$ (30 TL). $G_5$ $C_2/R_2$'de müsait değildir. En ucuzu $G_3$ = 30 TL.",
+            "en": "Proctors available for $C_2/R_2$: $G_1$ (40), $G_2$ (35), $G_3$ (30). $G_5$ is not available. Cheapest is $G_3$ at 30 TL."
+          }
+        },
+        {
+          "id": "m33-c1-q3",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "$C_1$ (28 öğrenci) ve $C_3$ (38 öğrenci) hangi odalara atanabilir?",
+            "en": "Courses $C_1$ (28 students) and $C_3$ (38 students) — which rooms are feasible for each?"
+          },
+          "options": [
+            { "tr": "$C_1$: R1, R2, R3; $C_3$: R2, R3 (R3 kap:40 ≥ 38)", "en": "$C_1$: R1, R2, R3; $C_3$: R2, R3 (R3 cap:40 ≥ 38)" },
+            { "tr": "$C_1$: yalnızca R2; $C_3$: yalnızca R3", "en": "$C_1$: only R2; $C_3$: only R3" },
+            { "tr": "$C_1$ ve $C_3$: yalnızca R2", "en": "$C_1$ and $C_3$: only R2" },
+            { "tr": "$C_1$: R1, R2; $C_3$: R1 (R1 kap:30 yeterli)", "en": "$C_1$: R1, R2; $C_3$: R1 (R1 cap:30 sufficient)" }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "$C_1$ 28 öğrenci → R1 (30 ≥ 28 ✓), R2 (50 ≥ 28 ✓), R3 (40 ≥ 28 ✓). $C_3$ 38 öğrenci → R1 (30 < 38 ✗), R2 (50 ≥ 38 ✓), R3 (40 ≥ 38 ✓). $C_2$ zaten R2'de olduğundan $C_1$ R1 ya da R3'e, $C_3$ R3'e gider.",
+            "en": "$C_1$ (28): all rooms feasible. $C_3$ (38): R1 (30 < 38) infeasible; R2, R3 feasible. Since $C_2$ occupies R2, optimal: $C_1$ → R1, $C_3$ → R3."
+          }
+        }
+      ]
+    }
+  ]
+}

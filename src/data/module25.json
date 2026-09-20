@@ -1,0 +1,344 @@
+{
+  "id": "module-25",
+  "order": 25,
+  "title": {
+    "tr": "Doğrusal Programlama: Modelleme",
+    "en": "Linear Programming: Modeling"
+  },
+  "description": {
+    "tr": "Karar değişkenleri, amaç fonksiyonu ve kısıtların matematiksel dili ile LP modellerinin nasıl kurulduğunu öğren.",
+    "en": "Learn to formulate LP models using decision variables, objective function, and constraints."
+  },
+  "iconName": "TrendingUp",
+  "lessons": [
+    {
+      "id": "m25-l1",
+      "moduleId": "module-25",
+      "order": 1,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Optimizasyon Nedir? Karar Problemi Yapısı",
+        "en": "What is Optimization? Structure of a Decision Problem"
+      },
+      "conceptCard": {
+        "tr": "**Optimizasyon:** Belirli kısıtlar (constraints) altında bir amaç fonksiyonunu (objective function) maksimize ya da minimize etme sürecidir.\n\n**Her optimizasyon probleminin 3 temel bileşeni vardır:**\n\n1. **Karar Değişkenleri (Decision Variables):** Ne kadar üretileceği, kaç tane satın alınacağı gibi kontrol edebildiğimiz sayısal büyüklükler. Örnek: $x_1, x_2$\n2. **Amaç Fonksiyonu (Objective Function):** Maksimize veya minimize etmek istediğimiz ifade. Örnek: $\\max Z = 5x_1 + 4x_2$\n3. **Kısıtlar (Constraints):** Kaynakların sınırlılığından doğan eşitsizlik ya da eşitlikler. Örnek: $2x_1 + x_2 \\leq 100$\n\n**Doğrusal Programlama (LP) şartları:**\n- Orantılılık (Proportionality): Katkı her birimde sabit.\n- Toplanabilirlik (Additivity): Toplam katkılar birbirinden bağımsız.\n- Bölünebilirlik (Divisibility): Karar değişkenleri kesirli değer alabilir.\n- Kesinlik (Certainty): Tüm parametreler bilinmektedir.",
+        "en": "**Optimization:** Maximizing or minimizing an objective function subject to constraints.\n\n**Three core components:**\n1. **Decision Variables** ($x_1, x_2$): Controllable quantities.\n2. **Objective Function** ($\\max Z = 5x_1+4x_2$): What we optimize.\n3. **Constraints** ($2x_1+x_2 \\leq 100$): Resource limitations.\n\n**LP Assumptions:** Proportionality, Additivity, Divisibility, Certainty."
+      },
+      "companyExample": {
+        "tr": "**Gerçek Dünya:** Bir mobilya fabrikası iki ürün üretiyor: Sandalye ($x_1$) ve Masa ($x_2$). Her sandalye $\\$5$ kar, her masa $\\$8$ kar sağlıyor. Hedef toplam karı maksimize etmek.\n\n**LP Modeli:**\n$$\\max Z = 5x_1 + 8x_2$$\n$$\\text{subject to: } x_1 \\geq 0,\\quad x_2 \\geq 0$$\n\nŞimdi kaynak kısıtlarını da ekleyince tam LP modelini kurabiliriz.",
+        "en": "**Real World:** A furniture factory produces Chairs ($x_1$) and Tables ($x_2$) with profits \\$5 and \\$8. Objective: $\\max Z = 5x_1 + 8x_2$ subject to resource constraints."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "objective function",
+          "explanation_tr": "Minimize ya da maksimize etmek istediğimiz matematiksel ifade; LP'nin 'amacı'.",
+          "explanation_en": "The mathematical expression to be maximized or minimized in an optimization model.",
+          "exampleSentence_en": "The objective function maximized total weekly profit."
+        },
+        {
+          "term_en": "constraint",
+          "explanation_tr": "Karar değişkenleri üzerindeki sınır koşulu; kaynakların veya politikaların yansıması.",
+          "explanation_en": "A restriction that limits the values of decision variables.",
+          "exampleSentence_en": "The labor constraint prevented producing more than 200 units per day."
+        },
+        {
+          "term_en": "decision variable",
+          "explanation_tr": "Modelde kontrol edebileceğimiz ve değerini optimize ederek belirleyeceğimiz bilinmeyen.",
+          "explanation_en": "An unknown that we control and determine through optimization.",
+          "exampleSentence_en": "Decision variables represented the number of units of each product to produce."
+        },
+        {
+          "term_en": "feasible solution",
+          "explanation_tr": "Tüm kısıtları sağlayan herhangi bir değer atama; 'geçerli' çözüm.",
+          "explanation_en": "Any assignment of values to decision variables that satisfies all constraints.",
+          "exampleSentence_en": "Many feasible solutions exist, but only one is optimal."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m25-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Aşağıdakilerden hangisi doğrusal programlama modelinin temel bileşenlerinden biri DEĞİLDİR?",
+            "en": "Which of the following is NOT a fundamental component of a linear programming model?"
+          },
+          "options": [
+            {"tr": "Karar değişkenleri", "en": "Decision variables"},
+            {"tr": "Amaç fonksiyonu", "en": "Objective function"},
+            {"tr": "Kısıtlar", "en": "Constraints"},
+            {"tr": "Tahmin aralığı", "en": "Prediction interval"}
+          ],
+          "correctAnswer": 3,
+          "explanation": {
+            "tr": "LP modeli üç temel bileşenden oluşur: karar değişkenleri, amaç fonksiyonu ve kısıtlar. 'Tahmin aralığı' istatistiksel bir kavramdır, LP'nin bileşeni değildir.",
+            "en": "An LP model consists of decision variables, objective function, and constraints. Prediction intervals belong to statistics, not LP."
+          }
+        },
+        {
+          "id": "m25-l1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir fabrika her birim A ürününden 10 TL, her birim B ürününden 15 TL kar elde ediyor. Hedef karı maksimize etmektir. Bu problemi modellemek için doğru amaç fonksiyonu hangisidir?",
+            "en": "A factory earns 10 per unit of A and 15 per unit of B. The goal is to maximize profit. Which is the correct objective function?"
+          },
+          "options": [
+            {"tr": "$\\min Z = 10x_A + 15x_B$", "en": "$\\min Z = 10x_A + 15x_B$"},
+            {"tr": "$\\max Z = 15x_A + 10x_B$", "en": "$\\max Z = 15x_A + 10x_B$"},
+            {"tr": "$\\max Z = 10x_A + 15x_B$", "en": "$\\max Z = 10x_A + 15x_B$"},
+            {"tr": "$\\max Z = 10 + 15$", "en": "$\\max Z = 10 + 15$"}
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "Her birim A'dan 10 TL, her birim B'den 15 TL kazanılıyor. Toplam kar $Z = 10x_A + 15x_B$ ve bunu maksimize etmek istiyoruz.",
+            "en": "Total profit is $Z = 10x_A + 15x_B$ and we want to maximize it, so $\\max Z = 10x_A + 15x_B$."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# PuLP ile basit LP kurulumu\nfrom pulp import *\n\nprob = LpProblem('Mobilea_Factory', LpMaximize)\nx1 = LpVariable('Sandalye', lowBound=0)\nx2 = LpVariable('Masa', lowBound=0)\n\n# Amaç fonksiyonu\nprob += 5*x1 + 8*x2, 'Kar'\n\nprint(prob)",
+        "powerBiNote": {
+          "tr": "LP modeli kurulurken kısıtlar Excel'deki Çözücü (Solver) eklentisine de girilebilir.",
+          "en": "LP constraints can also be entered into Excel Solver add-in."
+        }
+      }
+    },
+    {
+      "id": "m25-l2",
+      "moduleId": "module-25",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Üretim Planlama LP Modeli Kurma",
+        "en": "Formulating a Production Planning LP Model"
+      },
+      "conceptCard": {
+        "tr": "**Üretim Planlama Problemi:** Birden fazla ürün üretilirken birden fazla kaynak kısıtını (işçilik, hammadde, makine saati) optimize etmek için LP kullanılır.\n\n**Formülasyon Adımları:**\n1. **Ürünleri belirle** → Karar değişkenleri $x_j$\n2. **Karları belirle** → Amaç fonksiyonu katsayıları $c_j$\n3. **Her kaynak için:** Kullanım = $\\sum a_{ij} x_j \\leq b_i$\n4. **Negatif olamayan kısıt:** $x_j \\geq 0$\n\n**Standart Üretim LP'si:**\n$$\\max Z = \\sum_{j=1}^{n} c_j x_j$$\n$$\\text{s.t. } \\sum_{j=1}^{n} a_{ij} x_j \\leq b_i \\quad \\forall i$$\n$$x_j \\geq 0 \\quad \\forall j$$\n\nBurada:\n- $c_j$: $j$ ürününün birim karı\n- $a_{ij}$: $j$ ürününün $i$ kaynağından tüketim miktarı\n- $b_i$: $i$ kaynağının toplam kapasitesi",
+        "en": "**Production Planning:** Optimize multiple products over multiple limited resources.\n\n**Steps:** Define decision variables $x_j$, set profit coefficients $c_j$, write resource constraints $\\sum a_{ij}x_j \\leq b_i$, add non-negativity $x_j \\geq 0$."
+      },
+      "companyExample": {
+        "tr": "**Örnek: Wyndor Glass Co.**\n\nBir cam fabrikası 2 ürün üretiyor:\n- **Ürün 1 (Kapı):** $x_1$ birim → 3 TL/birim kar\n- **Ürün 2 (Pencere):** $x_2$ birim → 5 TL/birim kar\n\n**Kaynaklar:**\n| Fabrika | Ürün 1 | Ürün 2 | Kapasite |\n|---------|--------|--------|----------|\n| F1 | 1 saat | 0 saat | 4 saat |\n| F2 | 0 saat | 2 saat | 12 saat |\n| F3 | 3 saat | 2 saat | 18 saat |\n\n**LP Modeli:**\n$$\\max Z = 3x_1 + 5x_2$$\n$$\\text{s.t.}$$\n$$x_1 \\leq 4$$\n$$2x_2 \\leq 12$$\n$$3x_1 + 2x_2 \\leq 18$$\n$$x_1, x_2 \\geq 0$$",
+        "en": "**Wyndor Glass Co.:** $\\max Z = 3x_1 + 5x_2$, subject to $x_1 \\leq 4$, $2x_2 \\leq 12$, $3x_1 + 2x_2 \\leq 18$, $x_1,x_2 \\geq 0$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "resource constraint",
+          "explanation_tr": "Bir kaynağın (işçilik, makine, para) toplam kullanımının kapasitesini aşamayacağını ifade eden kısıt.",
+          "explanation_en": "A constraint limiting total resource usage to available capacity.",
+          "exampleSentence_en": "The labor resource constraint limited weekly production to 500 hours."
+        },
+        {
+          "term_en": "non-negativity constraint",
+          "explanation_tr": "Tüm karar değişkenlerinin negatif olamayacağını söyleyen temel LP şartı ($x_j \\geq 0$).",
+          "explanation_en": "The fundamental requirement that all decision variables must be non-negative.",
+          "exampleSentence_en": "The non-negativity constraint ensured we could not produce negative quantities."
+        },
+        {
+          "term_en": "right-hand side (RHS)",
+          "explanation_tr": "Kısıt eşitsizliğinin sağ tarafındaki sayı; mevcut kaynak miktarını temsil eder.",
+          "explanation_en": "The value on the right side of a constraint, representing available resource.",
+          "exampleSentence_en": "The RHS of the labor constraint was 480 man-hours per week."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m25-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Wyndor Glass modelinde F3 fabrikasındaki kısıt $3x_1 + 2x_2 \\leq 18$ ifadesinin anlamı nedir?",
+            "en": "In the Wyndor Glass model, what does the constraint $3x_1 + 2x_2 \\leq 18$ mean?"
+          },
+          "options": [
+            {"tr": "Ürün 1 ve Ürün 2'nin toplamı 18'i geçemez.", "en": "Total units of Product 1 and 2 cannot exceed 18."},
+            {"tr": "F3 fabrikasında Ürün 1 için 3 saat, Ürün 2 için 2 saat kullanılır ve toplam 18 saati geçemez.", "en": "F3 uses 3 hrs for Product 1 and 2 hrs for Product 2, total cannot exceed 18 hrs."},
+            {"tr": "Minimum 18 birim üretilmelidir.", "en": "At least 18 units must be produced."},
+            {"tr": "F3 fabrikası yalnızca Ürün 1 üretebilir.", "en": "F3 can only produce Product 1."}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Kısıt, F3 fabrikasında her birim $x_1$ için 3 saat, her birim $x_2$ için 2 saat harcandığını ve toplam kapasitesinin 18 saat olduğunu gösterir.",
+            "en": "Each unit of $x_1$ uses 3 hours and each unit of $x_2$ uses 2 hours at F3, with total capacity of 18 hours."
+          }
+        },
+        {
+          "id": "m25-l2-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir LP modelinde minimizasyon probleminin örneği hangisidir?",
+            "en": "Which of the following is an example of a minimization LP problem?"
+          },
+          "options": [
+            {"tr": "Haftada üretilecek ürün sayısını maksimize etmek", "en": "Maximizing the number of products per week"},
+            {"tr": "Müşteri memnuniyetini artırmak", "en": "Maximizing customer satisfaction"},
+            {"tr": "Belirli besin değerlerini karşılayan en ucuz diyet planını bulmak", "en": "Finding the cheapest diet that meets nutritional requirements"},
+            {"tr": "Piyasa payını büyütmek", "en": "Maximizing market share"}
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "Diyet problemi, belirli besin kısıtlarını sağlarken toplam maliyet/kaloriyi minimize etme hedefler. Bu klasik bir LP minimizasyon problemidir.",
+            "en": "The diet problem minimizes total cost subject to meeting minimum nutritional requirements — a classic LP minimization."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "from pulp import *\n\nprob = LpProblem('Wyndor_Glass', LpMaximize)\nx1 = LpVariable('Kapi', lowBound=0)\nx2 = LpVariable('Pencere', lowBound=0)\n\n# Amaç fonksiyonu\nprob += 3*x1 + 5*x2, 'Toplam Kar'\n\n# Kısıtlar\nprob += x1 <= 4         # F1 kapasitesi\nprob += 2*x2 <= 12      # F2 kapasitesi\nprob += 3*x1 + 2*x2 <= 18  # F3 kapasitesi\n\nprob.solve()\nprint(f'x1={x1.value()}, x2={x2.value()}, Z={value(prob.objective)}')",
+        "powerBiNote": {
+          "tr": "Üretim planlamasında LP çıktıları genellikle kapasite kullanım raporlarıyla birleştirilir.",
+          "en": "LP production plan outputs are often combined with capacity utilization dashboards."
+        }
+      }
+    },
+    {
+      "id": "m25-l3",
+      "moduleId": "module-25",
+      "order": 3,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Diyet, Karışım ve Ulaştırma Problemleri",
+        "en": "Diet, Blending, and Transportation Problems"
+      },
+      "conceptCard": {
+        "tr": "**LP'nin Üç Klasik Uygulama Türü:**\n\n---\n**1. Diyet Problemi (Diet Problem):**\nMinimum besin ihtiyacını (protein, vitamin) en düşük maliyetle karşılayan yiyecek kombinasyonu.\n$$\\min Z = \\sum_j c_j x_j$$\n$$\\sum_j a_{ij} x_j \\geq r_i \\quad \\forall i \\quad \\text{(minimum besin gereksinimi)}$$\n\n---\n**2. Karışım Problemi (Blending Problem):**\nFarklı ham maddeler belirli özellik (yüzde, konsantrasyon) oranlarına uygun şekilde karıştırılarak hedef ürün elde edilir. (Petrol rafinerisi, yem fabrikası)\n$$\\min Z = \\sum_j c_j x_j \\quad \\text{(hammadde maliyeti)}$$\n$$\\frac{\\sum_j p_{ij} x_j}{\\sum_j x_j} \\geq P_i^{\\min} \\quad \\text{(özellik kısıtları)}$$\n\n---\n**3. Ulaştırma Problemi (Transportation Problem):**\nBirden fazla arz noktasından (fabrika) birden fazla talep noktasına (müşteri) en düşük nakil maliyetiyle ürün gönderme.\n$$\\min Z = \\sum_i \\sum_j c_{ij} x_{ij}$$\n$$\\sum_j x_{ij} \\leq s_i \\quad (arz) \\qquad \\sum_i x_{ij} \\geq d_j \\quad (talep)$$",
+        "en": "**Three Classic LP Types:**\n\n1. **Diet Problem:** $\\min$ cost subject to minimum nutritional requirements.\n2. **Blending Problem:** Mix raw materials to meet quality specs at min cost.\n3. **Transportation Problem:** Ship from suppliers to customers at min freight cost."
+      },
+      "companyExample": {
+        "tr": "**Örnek: Petrol Karışım Problemi (Shell / Petrol Rafinerisi)**\n\nBir rafinerisi ham petrol A ve ham petrol B'yi karıştırarak 3 tip yakıt üretiyor. A ham petrolünün oktanı 80, B'nin oktanı 95'tir.\n\n**Yakıt X kısıtı:** Karışımın oktanı en az 90 olmalı ve toplam 10.000 litre üretilmeli.\n\n$x_A$ = A'dan kullanılan litre, $x_B$ = B'den kullanılan litre\n\n$$\\min Z = 0.30 x_A + 0.50 x_B$$\n$$x_A + x_B = 10{,}000$$\n$$\\frac{80 x_A + 95 x_B}{x_A + x_B} \\geq 90 \\quad \\Rightarrow \\quad 80x_A + 95x_B \\geq 900{,}000$$\n$$x_A, x_B \\geq 0$$",
+        "en": "**Example: Petroleum Blending.** Mix crude A (octane 80) and crude B (octane 95) to produce 10,000 liters with octane $\\geq$ 90 at minimum cost."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "blending problem",
+          "explanation_tr": "Farklı hammaddelerin belirli özellik kısıtlarını sağlayacak şekilde karıştırılması optimizasyonu.",
+          "explanation_en": "Optimization problem of mixing raw materials to meet specifications at minimum cost.",
+          "exampleSentence_en": "The refinery used an LP blending model to minimize crude oil costs."
+        },
+        {
+          "term_en": "transportation problem",
+          "explanation_tr": "Arz noktalarından talep noktalarına en düşük nakliye maliyetiyle ürün dağıtım optimizasyonu.",
+          "explanation_en": "LP model to ship goods from sources to destinations at minimum transportation cost.",
+          "exampleSentence_en": "The distribution center solved a transportation LP to route deliveries cheaply."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m25-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Diyet probleminde amaç fonksiyonu genellikle neyi temsil eder?",
+            "en": "In the diet problem, what does the objective function typically represent?"
+          },
+          "options": [
+            {"tr": "Maksimum kalori alımı", "en": "Maximum calorie intake"},
+            {"tr": "Minimum toplam yiyecek maliyeti", "en": "Minimum total food cost"},
+            {"tr": "Maksimum protein miktarı", "en": "Maximum protein quantity"},
+            {"tr": "Minimum yiyecek sayısı", "en": "Minimum number of food items"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Diyet probleminde amaç, belirli besin gereksinimlerini sağlarken toplam maliyeti minimize etmektir.",
+            "en": "The diet problem minimizes total food cost while meeting minimum nutritional requirements."
+          }
+        },
+        {
+          "id": "m25-l3-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Ulaştırma probleminde $\\sum_j x_{ij} \\leq s_i$ kısıtı neyi ifade eder?",
+            "en": "In the transportation problem, what does $\\sum_j x_{ij} \\leq s_i$ represent?"
+          },
+          "options": [
+            {"tr": "Her müşterinin toplam talebinin karşılanması", "en": "Meeting each customer's total demand"},
+            {"tr": "Her arz noktasından gönderilen toplam miktarın kapasiteyi aşmaması", "en": "Total shipments from each supply point cannot exceed its supply capacity"},
+            {"tr": "Toplam nakliye maliyetinin minimizasyonu", "en": "Minimization of total transportation cost"},
+            {"tr": "Her rotanın kullanılması zorunluluğu", "en": "Every route must be used"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$\\sum_j x_{ij} \\leq s_i$ kısıtı, $i$ arz noktasından gönderilen toplam miktarın $s_i$ kapasitesini aşamayacağını belirtir.",
+            "en": "$\\sum_j x_{ij} \\leq s_i$ ensures total shipments from supply point $i$ do not exceed its supply $s_i$."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Diyet Problemi - PuLP\nfrom pulp import *\n\nfiyat = {'Ekmek': 0.5, 'Sut': 1.2, 'Peynir': 2.0}\nprotein = {'Ekmek': 3, 'Sut': 8, 'Peynir': 25}\n\nprob = LpProblem('Diyet', LpMinimize)\nx = {f: LpVariable(f, lowBound=0) for f in fiyat}\n\nprob += lpSum(fiyat[f]*x[f] for f in fiyat)\nprob += lpSum(protein[f]*x[f] for f in fiyat) >= 50  # min 50g protein\n\nprob.solve()\nfor f in fiyat:\n    print(f'{f}: {x[f].value()}')",
+        "powerBiNote": {
+          "tr": "Karışım problemleri, tedarik zinciri kalite raporlarıyla entegre edilebilir.",
+          "en": "Blending LP outputs integrate with supply chain quality control dashboards."
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m25-case1",
+      "moduleId": "module-25",
+      "order": 1,
+      "title": {
+        "tr": "Bisküvi Fabrikası Üretim Planlama",
+        "en": "Biscuit Factory Production Planning"
+      },
+      "scenario": {
+        "tr": "Bir bisküvi fabrikası iki ürün üretiyor: **Petit Beurre** ($x_1$) ve **Çikolatalı Bisküvi** ($x_2$). Her kutuda Petit Beurre 4 TL, Çikolatalı 6 TL kar sağlıyor.\n\n**Kaynaklar (günlük):**\n| Kaynak | Petit Beurre | Çikolatalı | Kapasite |\n|--------|-------------|------------|----------|\n| Un (kg) | 2 | 3 | 120 kg |\n| İşçilik (saat) | 1 | 2 | 70 saat |\n| Ambalaj (m²) | 1 | 1 | 50 m² |\n\nFabrika hangi miktarda üretim yapmalı?",
+        "en": "A biscuit factory produces Petit Beurre ($x_1$, \\$4 profit) and Chocolate Biscuits ($x_2$, \\$6 profit) with flour, labor, and packaging constraints."
+      },
+      "questions": [
+        {
+          "id": "m25-case1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bu problemin amaç fonksiyonu hangisidir?",
+            "en": "What is the correct objective function for this problem?"
+          },
+          "options": [
+            {"tr": "$\\max Z = 2x_1 + 3x_2$", "en": "$\\max Z = 2x_1 + 3x_2$"},
+            {"tr": "$\\max Z = 4x_1 + 6x_2$", "en": "$\\max Z = 4x_1 + 6x_2$"},
+            {"tr": "$\\min Z = 4x_1 + 6x_2$", "en": "$\\min Z = 4x_1 + 6x_2$"},
+            {"tr": "$\\max Z = x_1 + x_2$", "en": "$\\max Z = x_1 + x_2$"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Her birim $x_1$'den 4 TL, her birim $x_2$'den 6 TL kar elde ediliyor. Toplam karı maksimize etmek istiyoruz: $\\max Z = 4x_1 + 6x_2$.",
+            "en": "Profit is 4 per unit of $x_1$ and 6 per unit of $x_2$. We maximize: $\\max Z = 4x_1 + 6x_2$."
+          }
+        },
+        {
+          "id": "m25-case1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Un kısıtı doğru şekilde nasıl yazılır?",
+            "en": "Which expression correctly represents the flour constraint?"
+          },
+          "options": [
+            {"tr": "$x_1 + x_2 \\leq 120$", "en": "$x_1 + x_2 \\leq 120$"},
+            {"tr": "$2x_1 + 3x_2 \\leq 120$", "en": "$2x_1 + 3x_2 \\leq 120$"},
+            {"tr": "$2x_1 + 3x_2 \\geq 120$", "en": "$2x_1 + 3x_2 \\geq 120$"},
+            {"tr": "$3x_1 + 2x_2 \\leq 120$", "en": "$3x_1 + 2x_2 \\leq 120$"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Her birim $x_1$ için 2 kg, her birim $x_2$ için 3 kg un kullanılıyor. Toplam un 120 kg'ı geçemez: $2x_1 + 3x_2 \\leq 120$.",
+            "en": "Each unit of $x_1$ uses 2 kg flour and $x_2$ uses 3 kg. Total cannot exceed 120 kg: $2x_1 + 3x_2 \\leq 120$."
+          }
+        },
+        {
+          "id": "m25-case1-q3",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bu LP modelinde kaç tane kısıt bulunmaktadır (negatif olmayan kısıtlar dahil)?",
+            "en": "How many constraints does this LP model have (including non-negativity)?"
+          },
+          "options": [
+            {"tr": "2", "en": "2"},
+            {"tr": "3", "en": "3"},
+            {"tr": "4", "en": "4"},
+            {"tr": "5", "en": "5"}
+          ],
+          "correctAnswer": 3,
+          "explanation": {
+            "tr": "3 kaynak kısıtı (un, işçilik, ambalaj) + 2 negatif olmayan kısıt ($x_1 \\geq 0$, $x_2 \\geq 0$) = toplam 5 kısıt.",
+            "en": "3 resource constraints (flour, labor, packaging) + 2 non-negativity constraints = 5 constraints total."
+          }
+        }
+      ]
+    }
+  ]
+}

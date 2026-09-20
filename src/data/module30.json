@@ -1,0 +1,344 @@
+{
+  "id": "module-30",
+  "order": 30,
+  "title": {
+    "tr": "Dualite Teorisi",
+    "en": "Duality Theory"
+  },
+  "description": {
+    "tr": "Her LP modelinin (Primal) bir ayna modeli (Dual) vardır. Zayıf ve Güçlü Dualite, ekonomik yorum ve Tamamlayıcı Gevşeklik teoremini öğren.",
+    "en": "Every LP (Primal) has a mirror model (Dual). Learn Weak and Strong Duality, economic interpretation, and the Complementary Slackness theorem."
+  },
+  "iconName": "ArrowLeftRight",
+  "lessons": [
+    {
+      "id": "m30-l1",
+      "moduleId": "module-30",
+      "order": 1,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Primal-Dual Dönüşüm Kuralları",
+        "en": "Primal-to-Dual Conversion Rules"
+      },
+      "conceptCard": {
+        "tr": "**Dualite:** Her LP modeline karşılık gelen, orijinalin (Primal) matematiksel aynası olan bir **Dual** model vardır.\n\n---\n\n**Standart Maksimizasyon Primal'ı:**\n$$\\\\max Z = c^T x$$\n$$Ax \\\\leq b,\\quad x \\\\geq 0$$\n\n**Karşılık Dual (Minimizasyon):**\n$$\\\\min W = b^T y$$\n$$A^T y \\\\geq c,\\quad y \\\\geq 0$$\n\n---\n\n**Dönüşüm Kuralları Tablosu:**\n\n| Primal (max) | Dual (min) |\n|---|---|\n| $\\\\leq$ kısıt | $y_i \\\\geq 0$ |\n| $\\\\geq$ kısıt | $y_i \\\\leq 0$ |\n| $=$ kısıt | $y_i$ serbest (urs) |\n| $x_j \\\\geq 0$ | $\\\\geq$ dual kısıtı |\n| $x_j \\\\leq 0$ | $\\\\leq$ dual kısıtı |\n| $x_j$ serbest | $=$ dual kısıtı |\n\n**Katsayı Matrisi:** Primal $A$ matrisinin **transpozu** $A^T$ dual kısıtlarını oluşturur.\n\n**Kural Özeti (max primal → min dual):**\n- Primal'da $m$ kısıt → Dual'da $m$ değişken ($y_1, \\\\ldots, y_m$)\n- Primal'da $n$ değişken → Dual'da $n$ kısıt\n- Primal RHS ($b$) → Dual amaç katsayıları\n- Primal amaç katsayıları ($c$) → Dual RHS",
+        "en": "**Duality:** Every LP has a corresponding Dual. For a max primal $\\\\max c^Tx$ s.t. $Ax\\\\leq b$, $x\\\\geq0$, the dual is $\\\\min b^Ty$ s.t. $A^Ty\\\\geq c$, $y\\\\geq0$.\n\nConversion rules: $\\\\leq$ primal constraint $\\\\to$ $y_i\\\\geq0$; $\\\\geq$ primal constraint $\\\\to$ $y_i\\\\leq0$; $=$ primal constraint $\\\\to$ $y_i$ unrestricted. Roles of $b$ and $c$ swap; $A$ becomes $A^T$."
+      },
+      "companyExample": {
+        "tr": "**Örnek: Wyndor Glass Primal → Dual**\n\n**Primal (max):**\n$$\\\\max Z = 3x_1 + 5x_2$$\n$$x_1 \\\\leq 4 \\\\quad (y_1)$$\n$$2x_2 \\\\leq 12 \\\\quad (y_2)$$\n$$3x_1 + 2x_2 \\\\leq 18 \\\\quad (y_3)$$\n$$x_1, x_2 \\\\geq 0$$\n\n**Dual (min) — adım adım dönüşüm:**\n\nDual değişkenler: $y_1, y_2, y_3 \\\\geq 0$ (tüm kısıtlar $\\\\leq$)\n\nDual amaç: RHS katsayıları ile $y$'ler:\n$$\\\\min W = 4y_1 + 12y_2 + 18y_3$$\n\nDual kısıtları ($A^T y \\\\geq c$):\n$$y_1 + 3y_3 \\\\geq 3 \\\\quad (x_1 \\\\text{ için})$$\n$$2y_2 + 2y_3 \\\\geq 5 \\\\quad (x_2 \\\\text{ için})$$\n$$y_1, y_2, y_3 \\\\geq 0$$\n\n**Ekonomik Yorum:** $y_i$ → fabrika $i$'nin birim kapasite değeri (shadow price).",
+        "en": "**Wyndor Glass Primal → Dual:**\n\nPrimal: $\\\\max Z=3x_1+5x_2$ s.t. $x_1\\\\leq4$, $2x_2\\\\leq12$, $3x_1+2x_2\\\\leq18$.\n\nDual: $\\\\min W=4y_1+12y_2+18y_3$ s.t. $y_1+3y_3\\\\geq3$, $2y_2+2y_3\\\\geq5$, $y_1,y_2,y_3\\\\geq0$.\n\nEach $y_i$ represents the shadow price (marginal value) of plant $i$'s capacity."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "primal problem",
+          "explanation_tr": "Dualite bağlamında orijinal LP modeli; karar değişkenleri $x_j$ ile tanımlanır.",
+          "explanation_en": "The original LP model in the context of duality, defined by decision variables $x_j$.",
+          "exampleSentence_en": "The primal problem maximized glass factory profit subject to plant capacity constraints."
+        },
+        {
+          "term_en": "dual problem",
+          "explanation_tr": "Primal LP'nin matematiksel aynası; dual değişkenler $y_i$ ile tanımlanan karşıt optimizasyon modeli.",
+          "explanation_en": "The mirror optimization model of the primal; defined by dual variables $y_i$, one per primal constraint.",
+          "exampleSentence_en": "The dual problem minimized the implicit cost of plant capacity."
+        },
+        {
+          "term_en": "shadow price",
+          "explanation_tr": "Dual değişken $y_i$'nin optimal değeri; primal kısıt $i$'nin RHS'i bir birim artınca amaç fonksiyonunun değişim miktarı.",
+          "explanation_en": "The optimal dual variable value $y_i^*$; the marginal improvement in objective per unit increase in constraint $i$'s RHS.",
+          "exampleSentence_en": "A shadow price of 1.5 means each extra hour of plant capacity adds $1.50 to profit."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m30-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Primal (max) problemde $\\\\leq$ tipindeki bir kısıta karşılık gelen dual değişken $y_i$ için hangi koşul geçerlidir?",
+            "en": "In a maximization primal, what sign restriction applies to the dual variable $y_i$ corresponding to a $\\\\leq$ constraint?"
+          },
+          "options": [
+            { "tr": "$y_i \\\\leq 0$", "en": "$y_i \\\\leq 0$" },
+            { "tr": "$y_i \\\\geq 0$", "en": "$y_i \\\\geq 0$" },
+            { "tr": "$y_i$ serbest (kısıtsız)", "en": "$y_i$ unrestricted in sign" },
+            { "tr": "$y_i = 0$", "en": "$y_i = 0$" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Maksimizasyon primalında $\\\\leq$ kısıtlar için $y_i \\\\geq 0$ olur. Eşitlik kısıtlar serbest $y_i$, $\\\\geq$ kısıtlar ise $y_i \\\\leq 0$ verir (ya da işaret dönüşümü uygulanarak $y_i \\\\geq 0$ yapılır).",
+            "en": "For a max primal, $\\\\leq$ constraints correspond to $y_i \\\\geq 0$; equality constraints to unrestricted $y_i$; $\\\\geq$ constraints to $y_i \\\\leq 0$."
+          }
+        },
+        {
+          "id": "m30-l1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Wyndor Glass primalında 3 kısıt ve 2 karar değişkeni vardır. Karşılık gelen dual modelde kaç dual değişken ve kaç dual kısıt bulunur?",
+            "en": "The Wyndor Glass primal has 3 constraints and 2 decision variables. How many dual variables and dual constraints does the dual have?"
+          },
+          "options": [
+            { "tr": "2 dual değişken, 3 dual kısıt", "en": "2 dual variables, 3 dual constraints" },
+            { "tr": "3 dual değişken, 2 dual kısıt", "en": "3 dual variables, 2 dual constraints" },
+            { "tr": "3 dual değişken, 3 dual kısıt", "en": "3 dual variables, 3 dual constraints" },
+            { "tr": "2 dual değişken, 2 dual kısıt", "en": "2 dual variables, 2 dual constraints" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Dualite dönüşümünde: Primal'ın $m$ kısıtı → Dual'da $m$ değişken ($y_1, y_2, y_3$); Primal'ın $n$ değişkeni → Dual'da $n$ kısıt ($x_1$, $x_2$ için birer kısıt).",
+            "en": "Duality rules: $m$ primal constraints → $m$ dual variables; $n$ primal variables → $n$ dual constraints. Wyndor: 3 dual variables ($y_1,y_2,y_3$), 2 dual constraints."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Primal -> Dual donusumu (Wyndor Glass)\nimport numpy as np\n\n# Primal: max Z = 3x1 + 5x2\n# s.t. x1<=4, 2x2<=12, 3x1+2x2<=18\nc = np.array([3, 5])   # Primal amac katsayilari\nb = np.array([4, 12, 18])  # Primal RHS -> Dual amac katsayilari\nA = np.array([[1, 0],\n              [0, 2],\n              [3, 2]])   # Primal A matrisi\n\nprint('Dual amac katsayilari (b):', b)\nprint('Dual kisit matrisi (A^T):')\nprint(A.T)\nprint('Dual RHS (c):', c)\nprint()\nprint('Dual: min W = 4y1 + 12y2 + 18y3')\nprint('s.t.  y1 + 3y3 >= 3')\nprint('      2y2 + 2y3 >= 5')\nprint('      y1, y2, y3 >= 0')",
+        "powerBiNote": {
+          "tr": "Shadow price değerleri (dual optimal değerler) Excel Solver Duyarlılık Raporu'nda otomatik raporlanır.",
+          "en": "Shadow prices (optimal dual values) are automatically reported in Excel Solver's Sensitivity Report."
+        }
+      }
+    },
+    {
+      "id": "m30-l2",
+      "moduleId": "module-30",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Zayıf ve Güçlü Dualite Teoremleri",
+        "en": "Weak and Strong Duality Theorems"
+      },
+      "conceptCard": {
+        "tr": "**Dualite Teoremlerinin Çekirdeği**\n\n---\n\n**1. Zayıf Dualite Teoremi (Weak Duality)**\n\nEğer $x$ primal uygun (feasible) ve $y$ dual uygun ise:\n$$c^T x \\\\leq b^T y \\\\quad (\\\\text{max primal için})$$\n\nYani: *Her dual uygun çözüm, primal optimal değerine bir üst sınır verir.*\n\n**Sonuç:** $Z_{\\\\text{primal}} \\\\leq W_{\\\\text{dual}}$ (max-primal için) her zaman.\n\n---\n\n**2. Güçlü Dualite Teoremi (Strong Duality)**\n\nEğer primal optimal çözümü varsa ($x^*$), dual'ın da optimal çözümü vardır ($y^*$) ve:\n$$c^T x^* = b^T y^* \\\\quad (Z^* = W^*)$$\n\nYani: *Optimal primal ve dual amaç değerleri eşittir.*\n\n---\n\n**3. İlişki Tablosu (Primal-Dual Simetrik İlişki):**\n\n| Primal | Dual |\n|--------|------|\n| Uygun ve sınırlı (optimal mevcut) | Uygun ve sınırlı (optimal mevcut) |\n| Sınırsız (unbounded) | Uygun çözümsüz (infeasible) |\n| Uygun çözümsüz (infeasible) | Sınırsız veya infeasible |\n\n**Önemli:** Primal infeasible → Dual unbounded **veya** infeasible (ikisi de mümkün).",
+        "en": "**Weak Duality:** Any dual feasible $y$ gives an upper bound for the max primal: $c^Tx \\\\leq b^Ty$ for all feasible $x,y$.\n\n**Strong Duality:** If either problem has an optimal, so does the other, and $Z^* = W^*$.\n\n**Relationship:** Primal unbounded $\\\\Rightarrow$ Dual infeasible. Primal infeasible $\\\\Rightarrow$ Dual unbounded or infeasible."
+      },
+      "companyExample": {
+        "tr": "**Örnek: Wyndor Glass Zayıf Dualite Doğrulaması**\n\n**Primal uygun nokta:** $x_1 = 2,\\ x_2 = 3$\n$$Z = 3(2) + 5(3) = 6 + 15 = 21$$\n\n**Dual uygun nokta:** $y_1 = 0,\\ y_2 = 1.5,\\ y_3 = 1$\n\nDual amaç kontrolü:\n$$W = 4(0) + 12(1.5) + 18(1) = 0 + 18 + 18 = 36$$\n\nZayıf Dualite: $Z = 21 \\\\leq W = 36$ ✓\n\n---\n\n**Güçlü Dualite — Optimal Nokta:**\n\nWyndor Glass optimal çözümü: $x_1^* = 2,\\ x_2^* = 6$\n$$Z^* = 3(2) + 5(6) = 6 + 30 = 36$$\n\nDual optimal: $y_1^* = 0,\\ y_2^* = 1.5,\\ y_3^* = 1$\n$$W^* = 4(0) + 12(1.5) + 18(1) = 36$$\n\n$$Z^* = W^* = 36 \\\\quad \\\\checkmark \\\\text{ Güçlü Dualite}$$",
+        "en": "**Wyndor Glass:** Primal optimal $x_1^*=2, x_2^*=6$ gives $Z^*=36$. Dual optimal $y_1^*=0, y_2^*=1.5, y_3^*=1$ gives $W^*=4(0)+12(1.5)+18(1)=36$. Strong Duality: $Z^*=W^*=36$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "weak duality theorem",
+          "explanation_tr": "Her primal uygun $x$ ve dual uygun $y$ için $c^Tx \\\\leq b^Ty$ (max-primal) olduğunu söyleyen teorem.",
+          "explanation_en": "States that for any feasible primal $x$ and dual $y$: $c^Tx \\\\leq b^Ty$ (max-primal case).",
+          "exampleSentence_en": "Weak duality confirmed that any dual feasible solution upper-bounds the primal optimum."
+        },
+        {
+          "term_en": "strong duality theorem",
+          "explanation_tr": "Primal optimal çözümü varsa dual da optimale sahiptir ve iki amaç değeri eşittir ($Z^* = W^*$).",
+          "explanation_en": "States that if the primal has an optimal solution, so does the dual, and their objective values are equal.",
+          "exampleSentence_en": "Strong duality allowed recovery of shadow prices directly from the primal simplex tableau."
+        },
+        {
+          "term_en": "duality gap",
+          "explanation_tr": "Primal ve dual amaç değerleri arasındaki fark; LP'de Güçlü Dualite sayesinde optimal noktada sıfırdır.",
+          "explanation_en": "The difference between primal and dual objective values; equals zero at LP optimality by strong duality.",
+          "exampleSentence_en": "The duality gap closed to zero at the optimal simplex tableau."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m30-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Zayıf Dualite Teoremi'ne göre (max-primal), herhangi bir primal uygun $x$ ve dual uygun $y$ için aşağıdaki eşitsizliklerden hangisi her zaman doğrudur?",
+            "en": "According to Weak Duality (max-primal), which inequality always holds for any feasible primal $x$ and dual $y$?"
+          },
+          "options": [
+            { "tr": "$c^T x \\\\geq b^T y$", "en": "$c^T x \\\\geq b^T y$" },
+            { "tr": "$c^T x \\\\leq b^T y$", "en": "$c^T x \\\\leq b^T y$" },
+            { "tr": "$c^T x = b^T y$", "en": "$c^T x = b^T y$" },
+            { "tr": "$c^T x + b^T y = 0$", "en": "$c^T x + b^T y = 0$" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Zayıf Dualite: Max-primal için, her uygun $(x,y)$ çiftinde $c^Tx \\\\leq b^Ty$. Dual değer primal değere her zaman üstten sınır koyar.",
+            "en": "Weak Duality for max-primal: $c^Tx \\\\leq b^Ty$ for all feasible $(x,y)$ pairs. Any dual feasible $y$ provides an upper bound on the primal objective."
+          }
+        },
+        {
+          "id": "m30-l2-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir LP'nin primalı sınırsız (unbounded) ise, karşılık gelen dual problem ne olur?",
+            "en": "If the primal LP is unbounded, what happens to the corresponding dual?"
+          },
+          "options": [
+            { "tr": "Dual da sınırsız olur.", "en": "The dual is also unbounded." },
+            { "tr": "Dual uygun çözümsüz (infeasible) olur.", "en": "The dual is infeasible." },
+            { "tr": "Dual'ın unique bir optimal çözümü vardır.", "en": "The dual has a unique optimal solution." },
+            { "tr": "Dual her zaman dejenere çözüme sahip olur.", "en": "The dual always has a degenerate solution." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Primal sınırsızsa zayıf dualite gereği dual'ın uygun bölgesi boştur (infeasible). Çünkü dual uygun bir $y$ var olsaydı, primal amaç buna göre sınırlanırdı.",
+            "en": "If the primal is unbounded, weak duality implies the dual must be infeasible. A feasible dual solution would provide a finite upper bound on the primal — contradiction."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Guclu Dualite Dogrulamasi - Wyndor Glass\nfrom pulp import *\n\n# ---- PRIMAL ----\nprimal = LpProblem('Wyndor_Primal', LpMaximize)\nx1 = LpVariable('x1', lowBound=0)\nx2 = LpVariable('x2', lowBound=0)\nprimal += 3*x1 + 5*x2\nprimal += x1 <= 4\nprimal += 2*x2 <= 12\nprimal += 3*x1 + 2*x2 <= 18\nprimal.solve(PULP_CBC_CMD(msg=0))\nZ_star = value(primal.objective)\n\n# ---- DUAL (manuel gosterim) ----\ny1, y2, y3 = 0, 1.5, 1\nW_star = 4*y1 + 12*y2 + 18*y3\n\nprint(f'Primal Z* = {Z_star}')\nprint(f'Dual   W* = {W_star}')\nprint(f'Guclu Dualite saglanıyor mu? {abs(Z_star - W_star) < 1e-6}')",
+        "powerBiNote": {
+          "tr": "Duality gap = 0 koşulu, LP çözücü sağlıklılık kontrolü olarak production dashboard'a eklenebilir.",
+          "en": "The duality gap = 0 condition can be added as an LP solver health check in production dashboards."
+        }
+      }
+    },
+    {
+      "id": "m30-l3",
+      "moduleId": "module-30",
+      "order": 3,
+      "difficulty": "zor",
+      "title": {
+        "tr": "Tamamlayıcı Gevşeklik (Complementary Slackness)",
+        "en": "Complementary Slackness Theorem"
+      },
+      "conceptCard": {
+        "tr": "**Tamamlayıcı Gevşeklik Teoremi (CS)**\n\nPrimal $x^*$ ve dual $y^*$ çözümlerinin ikisi de optimaldır **ancak ve ancak** aşağıdaki CS koşulları sağlanıyorsa:\n\n---\n\n**CS Koşul 1 — Primal Slack × Dual Değişken = 0:**\n$$s_i^* \\\\cdot y_i^* = 0 \\\\quad \\\\forall i$$\n\nYani: Primal kısıt $i$ tam dolu ise ($s_i^* = 0$, bağlayıcı kısıt) → $y_i^*$ herhangi bir değer alabilir. Ama kısıt artık varsa ($s_i^* > 0$) → $y_i^* = 0$ zorunlu.\n\n---\n\n**CS Koşul 2 — Primal Değişken × Dual Slack = 0:**\n$$x_j^* \\\\cdot (A^T y^* - c)_j = 0 \\\\quad \\\\forall j$$\n\nYani: $x_j^* > 0$ ise dual kısıt $j$ tam bağlayıcı ($=$ ile sağlanır). $x_j^* = 0$ ise dual kısıtta artık olabilir.\n\n---\n\n**Pratik Kullanım: Primal Optimal → Dual Optimal Türetme**\n\n1. Primal $x^*$ çözümünden bağlayıcı kısıtları belirle.\n2. CS Koşul 1 ile $y_i^* = 0$ olanları belirle.\n3. Kalan $y_i$'leri dual kısıt eşitliklerinden ($A^T y = c$, bağlayıcı kısıtlarda) çöz.\n\nBu yaklaşım, Simplex tableau çalıştırmadan dual çözümü bulmayı sağlar.",
+        "en": "**Complementary Slackness (CS):** $x^*, y^*$ are simultaneously optimal iff:\n\n1. $s_i^* \\\\cdot y_i^* = 0$ for all $i$ (primal slack times dual variable)\n2. $x_j^* \\\\cdot (A^Ty^*-c)_j = 0$ for all $j$ (primal variable times dual slack)\n\n**Application:** Use primal $x^*$ to identify binding constraints, set non-binding dual variables to 0, then solve remaining $y_i$ from dual equalities."
+      },
+      "companyExample": {
+        "tr": "**Örnek: Wyndor Glass CS ile Dual Optimal Türetme**\n\n**Primal Optimal:** $x_1^* = 2,\\ x_2^* = 6,\\ Z^* = 36$\n\n**Adım 1: Primal Slack Hesapla**\n$$s_1^* = 4 - x_1^* = 4 - 2 = 2 > 0 \\\\quad (\\\\text{kısıt 1 bağlayıcı değil})$$\n$$s_2^* = 12 - 2x_2^* = 12 - 12 = 0 \\\\quad (\\\\text{kısıt 2 bağlayıcı})$$\n$$s_3^* = 18 - 3x_1^* - 2x_2^* = 18 - 6 - 12 = 0 \\\\quad (\\\\text{kısıt 3 bağlayıcı})$$\n\n**Adım 2: CS Koşul 1 → $y_1^*$**\n$$s_1^* \\\\cdot y_1^* = 0 \\\\Rightarrow 2 \\\\cdot y_1^* = 0 \\\\Rightarrow y_1^* = 0$$\n\n**Adım 3: CS Koşul 2 → $y_2^*, y_3^*$**\n\n$x_1^* = 2 > 0$ → Dual kısıt 1 bağlayıcı:\n$$y_1^* + 3y_3^* = 3 \\\\Rightarrow 0 + 3y_3^* = 3 \\\\Rightarrow y_3^* = 1$$\n\n$x_2^* = 6 > 0$ → Dual kısıt 2 bağlayıcı:\n$$2y_2^* + 2y_3^* = 5 \\\\Rightarrow 2y_2^* + 2(1) = 5 \\\\Rightarrow y_2^* = 1.5$$\n\n**Dual Optimal:** $y_1^* = 0,\\ y_2^* = 1.5,\\ y_3^* = 1$\n$$W^* = 4(0) + 12(1.5) + 18(1) = 36 = Z^* \\\\checkmark$$",
+        "en": "**Wyndor Glass CS:** From primal optimal $x_1^*=2, x_2^*=6$: $s_1^*=2>0\\\\Rightarrow y_1^*=0$; binding constraints 2,3 give $2y_2^*+2y_3^*=5$ and $y_1^*+3y_3^*=3$. Solving: $y_3^*=1$, $y_2^*=1.5$, $y_1^*=0$. $W^*=36=Z^*$. ✓"
+      },
+      "vocabTerms": [
+        {
+          "term_en": "complementary slackness",
+          "explanation_tr": "Primal ve dual optimalliğin eşdeğer koşulu: her primal slack ile karşılık gelen dual değişkenin çarpımı sıfır olmalı.",
+          "explanation_en": "A necessary and sufficient condition for simultaneous primal-dual optimality: each primal slack times corresponding dual variable equals zero.",
+          "exampleSentence_en": "Complementary slackness conditions confirmed the dual solution was optimal."
+        },
+        {
+          "term_en": "binding constraint",
+          "explanation_tr": "Optimal çözümde eşitlik olarak sağlanan (slack = 0) kısıt; kaynağın tamamı kullanılmıştır.",
+          "explanation_en": "A constraint satisfied with equality at the optimal solution (zero slack); the resource is fully consumed.",
+          "exampleSentence_en": "The labor constraint was binding, so its shadow price was positive."
+        },
+        {
+          "term_en": "nonbinding constraint",
+          "explanation_tr": "Optimal çözümde artık (slack > 0) olan kısıt; CS gereği karşılık gelen dual değişken sıfır olur.",
+          "explanation_en": "A constraint with positive slack at optimality; by complementary slackness, its dual variable must be zero.",
+          "exampleSentence_en": "The nonbinding machine capacity constraint had a shadow price of zero."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m30-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Tamamlayıcı Gevşeklik Teoremi'ne göre, primal kısıt $i$ optimal çözümde bağlayıcı değilse ($s_i^* > 0$), karşılık gelen dual değişken $y_i^*$ ne olmalıdır?",
+            "en": "By Complementary Slackness, if primal constraint $i$ is non-binding at optimality ($s_i^* > 0$), what must $y_i^*$ equal?"
+          },
+          "options": [
+            { "tr": "$y_i^* > 0$", "en": "$y_i^* > 0$" },
+            { "tr": "$y_i^* = 0$", "en": "$y_i^* = 0$" },
+            { "tr": "$y_i^* < 0$", "en": "$y_i^* < 0$" },
+            { "tr": "$y_i^*$ herhangi bir değer alabilir.", "en": "$y_i^*$ can be any value." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "CS Koşul 1: $s_i^* \\\\cdot y_i^* = 0$. $s_i^* > 0$ ise çarpımın sıfır olması için $y_i^* = 0$ zorunlu. Bu ekonomik olarak da mantıklı: bağlayıcı olmayan bir kısıtın artık kapasite değeri sıfırdır.",
+            "en": "CS Condition 1: $s_i^* \\\\cdot y_i^* = 0$. Since $s_i^*>0$, we must have $y_i^*=0$. Economically, a non-binding constraint has zero marginal value (shadow price)."
+          }
+        },
+        {
+          "id": "m30-l3-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "CS Koşul 2'ye göre, primal değişken $x_j^* > 0$ ise karşılık gelen dual kısıt nasıl sağlanmalıdır?",
+            "en": "By CS Condition 2, if primal variable $x_j^* > 0$, how must the corresponding dual constraint be satisfied?"
+          },
+          "options": [
+            { "tr": "Dual kısıt artık ($>$) ile sağlanmalı.", "en": "The dual constraint must be satisfied with strict inequality ($>$)." },
+            { "tr": "Dual kısıt tam eşitlik ($=$) ile sağlanmalı (bağlayıcı).", "en": "The dual constraint must be binding (satisfied with equality)." },
+            { "tr": "Dual kısıt ihlal edilebilir.", "en": "The dual constraint may be violated." },
+            { "tr": "$x_j^* > 0$ ise dual kısıt hakkında hiçbir şey söylenemez.", "en": "If $x_j^* > 0$, nothing can be said about the dual constraint." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "CS Koşul 2: $x_j^* \\\\cdot (A^T y^* - c)_j = 0$. $x_j^* > 0$ ise $(A^T y^* - c)_j = 0$ yani dual kısıt $j$ tam eşitlikle (bağlayıcı olarak) sağlanmalıdır.",
+            "en": "CS Condition 2: $x_j^*(A^Ty^*-c)_j=0$. Since $x_j^*>0$, we need $(A^Ty^*-c)_j=0$, meaning the $j$-th dual constraint must be binding (equality holds)."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Complementary Slackness Dogrulamasi - Wyndor Glass\nimport numpy as np\n\n# Primal optimal\nx_star = np.array([2.0, 6.0])\n\n# Primal kisit matrisi ve RHS\nA = np.array([[1, 0], [0, 2], [3, 2]])\nb = np.array([4, 12, 18])\nc = np.array([3, 5])\n\n# Primal slack\ns_star = b - A @ x_star\nprint('Primal Slack:', s_star)  # [2. 0. 0.]\n\n# Dual optimal (CS ile turetilmis)\ny_star = np.array([0.0, 1.5, 1.0])\n\n# CS Kosul 1: s_i * y_i = 0\ncs1 = s_star * y_star\nprint('CS Kosul 1 (s*y):', cs1)  # [0. 0. 0.] Tum sifir\n\n# CS Kosul 2: x_j * (A^T y - c)_j = 0\ndual_slack = A.T @ y_star - c\ncs2 = x_star * dual_slack\nprint('CS Kosul 2 (x*dual_slack):', cs2)  # [0. 0.] Tum sifir\n\nprint('\\nGuclu Dualite:', np.dot(c, x_star), '==', np.dot(b, y_star))",
+        "powerBiNote": {
+          "tr": "Shadow price (dual değişken) değerleri, kısıt gevşekliği ile birlikte kaynak yönetimi raporlarında yorumlanır.",
+          "en": "Shadow prices (dual variables) combined with constraint slackness are interpreted in resource management dashboards."
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m30-case1",
+      "moduleId": "module-30",
+      "order": 1,
+      "title": {
+        "tr": "Vaka Sınavı: Wyndor Glass Primal-Dual Analizi ve CS ile Dual Optimal Bulma",
+        "en": "Case Exam: Wyndor Glass Primal-Dual Analysis and Finding Dual Optimal via CS"
+      },
+      "scenario": {
+        "tr": "**Wyndor Glass Co. Dualite Problemi:**\n\nWyndor Glass'ın primal LP modeli aşağıdaki gibidir:\n\n$$\\\\max Z = 3x_1 + 5x_2$$\n$$x_1 \\\\leq 4 \\\\quad (\\\\text{F1 kapasitesi})$$\n$$2x_2 \\\\leq 12 \\\\quad (\\\\text{F2 kapasitesi})$$\n$$3x_1 + 2x_2 \\\\leq 18 \\\\quad (\\\\text{F3 kapasitesi})$$\n$$x_1, x_2 \\\\geq 0$$\n\n**Görevler:**\n1. Primal modelin dual modelini yaz.\n2. Primal optimal çözümü ($x_1^*=2, x_2^*=6, Z^*=36$) kullanarak Tamamlayıcı Gevşeklik ile dual optimal $y^*$ değerlerini bul.\n3. Güçlü Dualite'yi $W^* = Z^*$ ile doğrula.",
+        "en": "**Wyndor Glass Duality Case:**\n\nPrimal: $\\\\max Z=3x_1+5x_2$, $x_1\\\\leq4$, $2x_2\\\\leq12$, $3x_1+2x_2\\\\leq18$, $x_1,x_2\\\\geq0$.\n\n1. Write the dual model.\n2. Given primal optimal $x_1^*=2$, $x_2^*=6$, $Z^*=36$, use Complementary Slackness to find $y^*$.\n3. Verify Strong Duality: $W^*=Z^*=36$."
+      },
+      "questions": [
+        {
+          "id": "m30-case1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Wyndor Glass dual modelinin amaç fonksiyonu hangisidir?",
+            "en": "Which is the correct dual objective function for Wyndor Glass?"
+          },
+          "options": [
+            { "tr": "$\\\\max W = 3y_1 + 5y_2$", "en": "$\\\\max W = 3y_1 + 5y_2$" },
+            { "tr": "$\\\\min W = 4y_1 + 12y_2 + 18y_3$", "en": "$\\\\min W = 4y_1 + 12y_2 + 18y_3$" },
+            { "tr": "$\\\\min W = 3y_1 + 5y_2 + 18y_3$", "en": "$\\\\min W = 3y_1 + 5y_2 + 18y_3$" },
+            { "tr": "$\\\\max W = 4y_1 + 12y_2 + 18y_3$", "en": "$\\\\max W = 4y_1 + 12y_2 + 18y_3$" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Max primal için dual minimizasyon problemine dönüşür. Dual amaç katsayıları primal RHS değerleridir: $b_1=4, b_2=12, b_3=18$. Dolayısıyla $\\\\min W = 4y_1 + 12y_2 + 18y_3$.",
+            "en": "For a max primal, the dual is a minimization. Dual objective coefficients are the primal RHS values: $b=(4,12,18)$, giving $\\\\min W=4y_1+12y_2+18y_3$."
+          }
+        },
+        {
+          "id": "m30-case1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Primal optimal $x_1^*=2, x_2^*=6$'da F1 kapasitesi kısıtının ($x_1 \\\\leq 4$) primal slackı nedir ve bu CS ile dual $y_1^*$'e ne söyler?",
+            "en": "At primal optimal $x_1^*=2$, $x_2^*=6$, what is the slack of the F1 constraint ($x_1\\\\leq4$) and what does CS imply for dual $y_1^*$?"
+          },
+          "options": [
+            { "tr": "$s_1^* = 0$ → $y_1^*$ herhangi bir pozitif değer alabilir", "en": "$s_1^* = 0$ → $y_1^*$ can be any positive value" },
+            { "tr": "$s_1^* = 2$ → $y_1^* = 0$ (CS gereği)", "en": "$s_1^* = 2$ → $y_1^* = 0$ (by CS)" },
+            { "tr": "$s_1^* = 2$ → $y_1^* = 2$ (CS gereği)", "en": "$s_1^* = 2$ → $y_1^* = 2$ (by CS)" },
+            { "tr": "$s_1^* = 4$ → $y_1^* = 4$", "en": "$s_1^* = 4$ → $y_1^* = 4$" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "F1 kısıtı: $s_1^* = 4 - x_1^* = 4 - 2 = 2 > 0$ (bağlayıcı değil). CS Koşul 1: $s_1^* \\\\cdot y_1^* = 0 \\\\Rightarrow 2 \\\\cdot y_1^* = 0 \\\\Rightarrow y_1^* = 0$. F1 fabrikasının atıl kapasitesi olduğundan shadow price sıfırdır.",
+            "en": "F1 slack: $s_1^*=4-2=2>0$ (non-binding). CS: $s_1^*\\\\cdot y_1^*=0 \\\\Rightarrow y_1^*=0$. Economically, F1 has idle capacity so its shadow price is zero."
+          }
+        },
+        {
+          "id": "m30-case1-q3",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "CS koşulları ile $y_1^*=0, y_3^*=1$ bulunmuştur. Dual kısıt 2 ($2y_2^* + 2y_3^* \\\\geq 5$) bağlayıcıysa $y_2^*$ kaçtır?",
+            "en": "Given $y_1^*=0$, $y_3^*=1$, and dual constraint 2 ($2y_2^*+2y_3^*\\\\geq5$) is binding, what is $y_2^*$?"
+          },
+          "options": [
+            { "tr": "$y_2^* = 1$", "en": "$y_2^* = 1$" },
+            { "tr": "$y_2^* = 1.5$", "en": "$y_2^* = 1.5$" },
+            { "tr": "$y_2^* = 2.5$", "en": "$y_2^* = 2.5$" },
+            { "tr": "$y_2^* = 0$", "en": "$y_2^* = 0$" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Dual kısıt 2 bağlayıcı ($x_2^*=6>0$ olduğundan CS gereği): $2y_2^* + 2y_3^* = 5 \\\\Rightarrow 2y_2^* + 2(1) = 5 \\\\Rightarrow 2y_2^* = 3 \\\\Rightarrow y_2^* = 1.5$.",
+            "en": "Dual constraint 2 binding (since $x_2^*=6>0$): $2y_2^*+2(1)=5 \\\\Rightarrow y_2^*=1.5$."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,416 @@
+{
+  "id": "module-29",
+  "order": 29,
+  "title": {
+    "tr": "Two-Phase & Big-M Yöntemleri",
+    "en": "Two-Phase & Big-M Methods"
+  },
+  "description": {
+    "tr": "Yapay değişkenlerle başlangıç BFS bulamadığımızda Phase I / Phase II ve Big-M stratejilerini uygula.",
+    "en": "Apply Phase I / Phase II and Big-M strategies when no starting BFS exists due to \u2265 or = constraints."
+  },
+  "iconName": "Layers",
+  "lessons": [
+    {
+      "id": "m29-l1",
+      "moduleId": "module-29",
+      "order": 1,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Yapay Değişkenler ve Başlangıç BFS Sorunu",
+        "en": "Artificial Variables and the Starting BFS Problem"
+      },
+      "conceptCard": {
+        "tr": "**Başlangıç BFS Neden Gereklidir?**\n\nSimplex yöntemi her iterasyonda bir temel uygun çözümden (Basic Feasible Solution) diğerine geçer. Ama her LP'de kolayca bir başlangıç BFS bulunamaz:\n\n- **$\\\\leq$ kısıtları:** Gevşek değişken (slack variable) $s_i \\\\geq 0$ ekleyince başlangıç tabanı doğrudan elde edilir.\n- **$\\\\geq$ kısıtları:** Fazla değişken (surplus variable) $s_i$ eklenince $-s_i$ ile katsayı negatif olur — bu BFS değil!\n- **$=$ kısıtları (eşitlik):** Doğrudan temel değişken bulunamaz.\n\n**Çözüm: Yapay Değişkenler (Artificial Variables)**\n\nHer $\\\\geq$ ve $=$ kısıtına bir yapay değişken $a_i \\\\geq 0$ eklenerek yapay bir başlangıç BFS oluşturulur:\n$$-s_i + a_i = b_i \\\\quad (\\\\geq \\\\text{ kısıtı için})$$\n$$a_i = b_i \\\\quad (= \\\\text{ kısıtı için})$$\n\nBaşlangıç tablosunda $a_i = b_i$, tüm gerçek değişkenler sıfır — bu geçerli bir BFS'tir ancak yapay değişkenler **gerçek** problemde sıfıra inmek zorundadır.",
+        "en": "**Why Do We Need an Initial BFS?**\n\nSimplex moves between Basic Feasible Solutions. For $\\\\leq$ constraints, slack variables $s_i \\\\geq 0$ give an immediate starting BFS. For $\\\\geq$ and $=$ constraints, no such start exists directly.\n\n**Solution: Artificial Variables $a_i \\\\geq 0$**\n\nAdd $a_i$ to each $\\\\geq$ and $=$ constraint to construct a feasible starting basis. At optimality, all $a_i$ must be driven to zero, otherwise the original problem is infeasible."
+      },
+      "companyExample": {
+        "tr": "**Örnek: $\\\\geq$ Kısıtı Olan LP**\n\n$$\\\\min Z = 2x_1 + 3x_2$$\n$$x_1 + x_2 \\\\geq 4 \\\\quad (\\\\text{kısıt 1})$$\n$$x_1, x_2 \\\\geq 0$$\n\n**Standart forma dönüştürme:**\n1. Fazla değişken ekle: $x_1 + x_2 - s_1 = 4$\n2. Yapay değişken ekle: $x_1 + x_2 - s_1 + a_1 = 4$\n\n**Başlangıç BFS:** $x_1=0,\\ x_2=0,\\ s_1=0,\\ a_1=4$ ✓\n\nBu noktada $a_1=4 > 0$ olduğu için henüz orijinal kısıtı sağlamıyoruz. Simplex'in görevi $a_1$'i sıfıra indirmektir.",
+        "en": "**Example:** $\\\\min Z = 2x_1 + 3x_2$ s.t. $x_1+x_2 \\\\geq 4$.\n\nStandard form with surplus and artificial: $x_1+x_2-s_1+a_1=4$.\n\nStarting BFS: $x_1=0,x_2=0,s_1=0,a_1=4$. Simplex must drive $a_1 \\\\to 0$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "basic feasible solution (BFS)",
+          "explanation_tr": "Tüm kısıtları sağlayan ve temel olmayan değişkenlerin sıfır olduğu köşe noktası çözümü.",
+          "explanation_en": "A feasible solution where non-basic variables equal zero and the basis is invertible.",
+          "exampleSentence_en": "The simplex method moves from one BFS to an adjacent improving BFS."
+        },
+        {
+          "term_en": "artificial variable",
+          "explanation_tr": "Gerçekçi olmayan, yalnızca başlangıç BFS oluşturmak için kısıta eklenen geçici değişken ($a_i \\\\geq 0$).",
+          "explanation_en": "A fictitious variable added to achieve an initial basis; must be zero at optimality.",
+          "exampleSentence_en": "Artificial variables enabled the simplex method to start on a \u2265 constrained problem."
+        },
+        {
+          "term_en": "surplus variable",
+          "explanation_tr": "$\\\\geq$ kısıtını eşitliğe dönüştürmek için çıkarılan negatif olamayan değişken.",
+          "explanation_en": "A non-negative variable subtracted from a \u2265 constraint to convert it to equality.",
+          "exampleSentence_en": "Adding a surplus variable transforms $x_1+x_2 \\\\geq 4$ into $x_1+x_2-s_1=4$."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m29-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir LP kısıtı $3x_1 + 2x_2 \\\\geq 12$ olduğunda standart forma getirmek için hangi değişkenler eklenir?",
+            "en": "To convert $3x_1 + 2x_2 \\\\geq 12$ to standard form, which variables must be added?"
+          },
+          "options": [
+            {
+              "tr": "Yalnızca bir slack (gevşek) değişken $+s_1$",
+              "en": "Only a slack variable $+s_1$"
+            },
+            {
+              "tr": "Bir fazla (surplus) değişken $-s_1$ ve bir yapay değişken $+a_1$",
+              "en": "A surplus variable $-s_1$ and an artificial variable $+a_1$"
+            },
+            {
+              "tr": "Yalnızca bir yapay değişken $+a_1$",
+              "en": "Only an artificial variable $+a_1$"
+            },
+            {
+              "tr": "Hiçbir ek değişken gerekmez",
+              "en": "No additional variables are needed"
+            }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$\\\\geq$ kısıtı için önce fazla değişken ($-s_1$) çıkarılır, ardından başlangıç BFS oluşturmak için yapay değişken ($+a_1$) eklenir. Sonuç: $3x_1+2x_2-s_1+a_1=12$.",
+            "en": "For a $\\\\geq$ constraint, subtract a surplus variable ($-s_1$) and add an artificial variable ($+a_1$) to obtain a starting basis: $3x_1+2x_2-s_1+a_1=12$."
+          }
+        },
+        {
+          "id": "m29-l1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Simplex iterasyonları tamamlandığında bazı yapay değişkenler hâlâ sıfırdan büyükse ($a_i > 0$) bu ne anlama gelir?",
+            "en": "If any artificial variable remains positive ($a_i > 0$) at the end of the simplex iterations, what does this indicate?"
+          },
+          "options": [
+            {
+              "tr": "Orijinal LP problemi uygun çözümsüzdür (infeasible).",
+              "en": "The original LP is infeasible."
+            },
+            {
+              "tr": "Optimal çözüme ulaşıldı.",
+              "en": "The optimal solution has been reached."
+            },
+            {
+              "tr": "Amaç fonksiyonu sınırsızdır (unbounded).",
+              "en": "The objective function is unbounded."
+            },
+            {
+              "tr": "Birden fazla optimal çözüm vardır.",
+              "en": "Multiple optimal solutions exist."
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Yapay değişkenler orijinal problemde yer almaz; eğer optimumda $a_i > 0$ ise orijinal kısıtlar aynı anda sağlanamıyor demektir — problem uygun çözümsüzdür.",
+            "en": "Artificial variables are not part of the real problem. If $a_i > 0$ at optimality, the original constraints cannot be simultaneously satisfied — the problem is infeasible."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Yapay değişken ve surplus kontrolü\nfrom pulp import *\n\nprob = LpProblem('ArtificialVar_Demo', LpMinimize)\nx1 = LpVariable('x1', lowBound=0)\nx2 = LpVariable('x2', lowBound=0)\n\nprob += 2*x1 + 3*x2   # Amaç fonksiyonu\nprob += x1 + x2 >= 4  # >= kisit (PuLP otomatik artificial ekler)\n\nstatus = prob.solve(PULP_CBC_CMD(msg=0))\nprint(f'Durum: {LpStatus[prob.status]}')\nprint(f'x1={x1.value():.2f}, x2={x2.value():.2f}')\nprint(f'Z={value(prob.objective):.2f}')",
+        "powerBiNote": {
+          "tr": "Yapay değişken > 0 iken 'infeasible' uyarısı Solver Status panelinde görüntülenir.",
+          "en": "Artificial variable remaining positive triggers an 'Infeasible' status in Solver dashboards."
+        }
+      }
+    },
+    {
+      "id": "m29-l2",
+      "moduleId": "module-29",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "İki Aşamalı Yöntem (Two-Phase Simplex)",
+        "en": "Two-Phase Simplex Method"
+      },
+      "conceptCard": {
+        "tr": "**İki Aşamalı Yöntem — Genel Yapı**\n\n**Phase I — Uygunluk Aşaması:**\nTüm yapay değişkenlerin toplamını minimize et:\n$$\\\\min w = \\\\sum_{i} a_i$$\n\nPhase I amaç fonksiyonu orijinal $Z$'den bağımsızdır. Simplex bu amaçla başlangıç tablosundan çalışır.\n\n**Phase I Sonucu:**\n- $w^* = 0$ ve tüm $a_i = 0$: Uygun çözüm (BFS) bulundu → **Phase II'ye geç**.\n- $w^* > 0$: Orijinal problem **infeasible** → dur.\n\n**Phase II — Optimizasyon Aşaması:**\nPhase I'in sonuç tablosunu al, yapay değişken sütunlarını sil, orijinal $Z$ satırını ekle ve Simplex'i devam ettir:\n$$\\\\min / \\\\max Z = c^T x$$\n\n**Avantaj:** İki aşama birbirinden bağımsız; Phase I tamamen uygunluğu çözer, Phase II optimizasyonu.\n\n**Dikkat:** Phase I sonunda bazı yapay değişkenler **dejenere** biçimde tabanada kalabilir ($a_i = 0$, ama bazı). Bu durumda Phase II'de dikkatli sütun seçimi gerekir.",
+        "en": "**Phase I:** Minimize $w = \\\\sum a_i$. If $w^*=0$, a feasible BFS exists; go to Phase II. If $w^*>0$, the problem is infeasible.\n\n**Phase II:** Drop artificial columns, restore original objective $Z$, continue simplex from Phase I final tableau."
+      },
+      "companyExample": {
+        "tr": "**Örnek: INDR 262 Tipi Problem**\n\nLP:\n$$\\\\min Z = 2x_1 + x_2$$\n$$x_1 + x_2 = 6 \\\\quad (\\\\text{eşitlik})$$\n$$x_1 - x_2 \\\\geq 2$$\n$$x_1, x_2 \\\\geq 0$$\n\n**Standart form (yapay değişkenlerle):**\n$$x_1 + x_2 + a_1 = 6$$\n$$x_1 - x_2 - s_1 + a_2 = 2$$\n\n**Phase I amaç:** $\\\\min w = a_1 + a_2$\n\n**Phase I Başlangıç Tablosu:**\n| Temel | $x_1$ | $x_2$ | $s_1$ | $a_1$ | $a_2$ | RHS |\n|-------|--------|--------|--------|--------|--------|-----|\n| $a_1$ | 1 | 1 | 0 | 1 | 0 | 6 |\n| $a_2$ | 1 | -1 | -1 | 0 | 1 | 2 |\n| $w$ | -2 | 0 | 1 | 0 | 0 | -8 |\n\n*(w satırı = $-(R_1 + R_2)$ ile sıfırlandı)*\n\nPivot: $x_1$ girer, $a_2$ çıkar → Ardından $x_2$ girer, $a_1$ çıkar.\n\n**Phase I Sonuç:** $w^* = 0$ → Feasible. Phase II'de $Z=2x_1+x_2$ ile devam et.",
+        "en": "**Example:** $\\\\min Z=2x_1+x_2$, $x_1+x_2=6$, $x_1-x_2\\\\geq2$. Add artificials $a_1,a_2$. Phase I minimizes $w=a_1+a_2$. After pivoting, $w^*=0$, confirming feasibility. Phase II then optimizes original $Z$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Phase I (Two-Phase Simplex)",
+          "explanation_tr": "Yapay değişkenlerin toplamını minimize ederek gerçek bir başlangıç BFS arayan birinci aşama.",
+          "explanation_en": "The first phase that minimizes the sum of artificial variables to find a genuine starting BFS.",
+          "exampleSentence_en": "Phase I confirmed feasibility by driving all artificial variables to zero."
+        },
+        {
+          "term_en": "Phase II (Two-Phase Simplex)",
+          "explanation_tr": "Phase I'den gelen BFS'i başlangıç alarak orijinal amaç fonksiyonunu optimize eden ikinci aşama.",
+          "explanation_en": "The second phase that optimizes the original objective starting from the Phase I feasible solution.",
+          "exampleSentence_en": "Phase II used the Phase I basis to minimize the true cost function."
+        },
+        {
+          "term_en": "infeasible LP",
+          "explanation_tr": "Tüm kısıtları aynı anda sağlayan herhangi bir çözümün bulunmadığı doğrusal program.",
+          "explanation_en": "An LP for which no solution satisfies all constraints simultaneously.",
+          "exampleSentence_en": "Phase I yielded w*>0, proving the problem was infeasible."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m29-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Two-Phase Simplex'te Phase I amaç fonksiyonu ne ifade eder?",
+            "en": "In Two-Phase Simplex, what does the Phase I objective function represent?"
+          },
+          "options": [
+            {
+              "tr": "Orijinal LP'nin $Z$ fonksiyonunu minimize etmek",
+              "en": "Minimizing the original LP objective $Z$"
+            },
+            {
+              "tr": "Tüm yapay değişkenlerin toplamını minimize etmek ($\\\\min w = \\\\sum a_i$)",
+              "en": "Minimizing the sum of all artificial variables ($\\\\min w = \\\\sum a_i$)"
+            },
+            {
+              "tr": "Tüm slack değişkenlerin toplamını maksimize etmek",
+              "en": "Maximizing the sum of all slack variables"
+            },
+            {
+              "tr": "Orijinal LP'nin $Z$ fonksiyonunu maksimize etmek",
+              "en": "Maximizing the original LP objective $Z$"
+            }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Phase I'de asıl amaç yapay değişkenleri sıfıra indirmektir. Bu nedenle $\\\\min w = \\\\sum a_i$ formülasyonu kullanılır. $w^*=0$ elde edilirse gerçek bir BFS bulunmuş demektir.",
+            "en": "Phase I aims to eliminate artificial variables. The objective $\\\\min w = \\\\sum a_i$ is minimized; if $w^*=0$, a true feasible basis has been found."
+          }
+        },
+        {
+          "id": "m29-l2-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Phase I'in optimal değeri $w^* = 3 > 0$ olarak bulundu. Bu sonuç ne anlama gelir?",
+            "en": "Phase I terminates with $w^* = 3 > 0$. What does this result indicate?"
+          },
+          "options": [
+            {
+              "tr": "Orijinal LP uygun çözümsüzdür (infeasible).",
+              "en": "The original LP is infeasible."
+            },
+            {
+              "tr": "Optimal çözüm bulunmuştur; Phase II'ye geçilmeli.",
+              "en": "The optimal solution has been found; proceed to Phase II."
+            },
+            {
+              "tr": "Amaç fonksiyonu sınırsızdır.",
+              "en": "The objective function is unbounded."
+            },
+            {
+              "tr": "Phase I'de hata yapılmıştır; tekrar çalıştırılmalı.",
+              "en": "An error occurred in Phase I; it should be rerun."
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "$w^* > 0$ olması demek, yapay değişkenlerin sıfıra indirilemediği — yani orijinal kısıtların aynı anda sağlanamadığı anlamına gelir. Problem kesinlikle infeasible'dır.",
+            "en": "$w^* > 0$ means the artificial variables cannot all be driven to zero, so the original constraints are mutually inconsistent — the LP is infeasible."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Two-Phase Simplex - PuLP ile\nfrom pulp import *\n\n# Ornek: min Z = 2x1 + x2\n# s.t. x1+x2=6, x1-x2>=2\nprob = LpProblem('TwoPhase_Demo', LpMinimize)\nx1 = LpVariable('x1', lowBound=0)\nx2 = LpVariable('x2', lowBound=0)\n\nprob += 2*x1 + x2          # Gercek amac\nprob += x1 + x2 == 6       # Esitlik kisiti\nprob += x1 - x2 >= 2       # >= kisiti\n\nstatus = prob.solve(PULP_CBC_CMD(msg=0))\nprint(f'Durum   : {LpStatus[prob.status]}')\nprint(f'x1 = {x1.value():.2f}')\nprint(f'x2 = {x2.value():.2f}')\nprint(f'Z  = {value(prob.objective):.2f}')",
+        "powerBiNote": {
+          "tr": "Phase I ve Phase II iterasyon sayıları optimize edici performans KPI'si olarak raporlanabilir.",
+          "en": "Phase I and Phase II iteration counts serve as optimizer performance KPIs."
+        }
+      }
+    },
+    {
+      "id": "m29-l3",
+      "moduleId": "module-29",
+      "order": 3,
+      "difficulty": "zor",
+      "title": {
+        "tr": "Big-M Yöntemi ve Karşılaştırma",
+        "en": "Big-M Method and Comparison"
+      },
+      "conceptCard": {
+        "tr": "**Big-M Yöntemi — Tek Aşamada Yapay Değişken Cezası**\n\nTwo-Phase yerine tek bir LP formülasyonuyla çözüm yapılabilir: Her yapay değişkene amaç fonksiyonunda büyük bir $M$ cezası (penalty) verilir.\n\n**Minimizasyon için:**\n$$\\\\min Z = c^T x + M \\\\sum_{i} a_i$$\n\n**Maksimizasyon için:**\n$$\\\\max Z = c^T x - M \\\\sum_{i} a_i$$\n\nBurada $M$ çok büyük pozitif bir sayıdır (pratikte $M=10^6$ veya sembolik $M$).\n\n**Nasıl Çalışır?**\nSimplex, $Ma_i$ cezasından kaçınmak için yapay değişkeni tabandan atar. Eğer optimal tabanda $a_i > 0$ kalırsa problem infeasible.\n\n---\n\n**Two-Phase vs. Big-M Karşılaştırması:**\n\n| Özellik | Two-Phase | Big-M |\n|---------|-----------|-------|\n| Aşama sayısı | 2 | 1 |\n| Sayısal kararlılık | Yüksek | M seçimine duyarlı |\n| Infeasibility tespiti | Phase I sonunda net | Optimal tablo sonunda |\n| Uygulamada tercih | Akademik & yazılım | Hızlı el hesabı |\n| M değeri belirsizliği | Yok | Kritik; çok küçük M hatalı sonuç |\n\n**INDR 262 Bağlantısı:** Term Project Part 1'deki $\\\\geq$ ve $=$ kısıtlı minimize problemler için Big-M veya Two-Phase seçimi yapılabilir; Two-Phase genellikle daha güvenlidir.",
+        "en": "**Big-M Method:** Add penalty $M \\\\cdot a_i$ to objective for each artificial variable. Simplex naturally eliminates artificials. If $a_i > 0$ at optimality, the LP is infeasible.\n\n**Comparison:** Two-Phase is numerically more stable; Big-M is faster to set up but sensitive to the magnitude of $M$."
+      },
+      "companyExample": {
+        "tr": "**Örnek: INDR 262 Term Project Part 1 Bağlantılı Problem**\n\nLP (minimizasyon):\n$$\\\\min Z = 16x_1 + 20x_2$$\n$$-x_1 + 3x_2 \\\\geq 0 \\\\quad (\\\\text{kısıt 1})$$\n$$-5x_1 + x_2 \\\\leq 0 \\\\quad (\\\\text{kısıt 2})$$\n$$x_1 + x_2 \\\\geq 25 \\\\quad (\\\\text{kısıt 3})$$\n$$x_1, x_2 \\\\geq 0$$\n\n**Big-M Standart Formu:**\n$$-x_1 + 3x_2 - s_1 + a_1 = 0$$\n$$-5x_1 + x_2 + s_2 = 0$$\n$$x_1 + x_2 - s_3 + a_2 = 25$$\n\n**Big-M Amaç Fonksiyonu:**\n$$\\\\min Z = 16x_1 + 20x_2 + Ma_1 + Ma_2$$\n\n**Başlangıç Tablosu:**\n| Temel | $x_1$ | $x_2$ | $s_1$ | $s_2$ | $s_3$ | $a_1$ | $a_2$ | RHS |\n|-------|--------|--------|--------|--------|--------|--------|--------|-----|\n| $a_1$ | -1 | 3 | -1 | 0 | 0 | 1 | 0 | 0 |\n| $s_2$ | -5 | 1 | 0 | 1 | 0 | 0 | 0 | 0 |\n| $a_2$ | 1 | 1 | 0 | 0 | -1 | 0 | 1 | 25 |\n| $Z$ | $16+2M$→ | $20-4M$→ | $M$ | 0 | $-M$ | 0 | 0 | $-25M$ |\n\n*(Z satırı: $Z - Ma_1 - Ma_2 = 0$ iken $a_1=0, a_2=25$ olan başlangıç BFS'i normalize etmek için $R_Z = R_Z + M\\\\cdot R_1 + M\\\\cdot R_3$ uygulanır.)*\n\n**İlk Pivot:** En negatif Z katsayısı $x_2$ sütunu (katsayı: $20-4M < 0$ büyük $M$ için). $a_1$ satırı minimum ratio $0/3 = 0$ → pivot $(1,2)$.\n\nÇözüme devam edildiğinde **$x_1 = 18.75,\\ x_2 = 6.25$** ve $Z = 425$ elde edilir.",
+        "en": "**INDR 262 Term Project Part 1 Example:**\n$\\\\min Z=16x_1+20x_2$ subject to $-x_1+3x_2\\\\geq0$, $-5x_1+x_2\\\\leq0$, $x_1+x_2\\\\geq25$, $x_1,x_2\\\\geq0$.\n\nBig-M objective: $\\\\min Z=16x_1+20x_2+Ma_1+Ma_2$. After simplex pivoting, optimal solution: $x_1=18.75$, $x_2=6.25$, $Z=425$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "Big-M method",
+          "explanation_tr": "Yapay değişkenlere amaç fonksiyonunda çok büyük ceza (M) vererek Simplex'i tek aşamada çözen yöntem.",
+          "explanation_en": "A one-phase method that penalizes artificial variables with a large M in the objective function.",
+          "exampleSentence_en": "The Big-M method solved the equality-constrained LP without a separate Phase I."
+        },
+        {
+          "term_en": "penalty coefficient",
+          "explanation_tr": "Big-M yönteminde yapay değişkene verilen büyük $M$ ceza katsayısı.",
+          "explanation_en": "The large constant M multiplying artificial variables to discourage them from being positive at optimality.",
+          "exampleSentence_en": "A penalty coefficient of M=1,000,000 effectively eliminated the artificial variable."
+        },
+        {
+          "term_en": "numerical stability",
+          "explanation_tr": "Büyük sayıların hesaplama sürecinde yuvarlama hatalarına yol açmaması; Two-Phase'in Big-M'e göre avantajı.",
+          "explanation_en": "The property of an algorithm being insensitive to floating-point rounding errors.",
+          "exampleSentence_en": "Two-Phase simplex has better numerical stability than Big-M for large-scale problems."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m29-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Big-M yönteminde $M$ değeri çok küçük seçilirse ne olabilir?",
+            "en": "What can happen if the Big-M constant M is chosen too small?"
+          },
+          "options": [
+            {
+              "tr": "Yapay değişkenler ceza görmez ve optimal çözümde sıfırdan büyük kalabilir → Yanlış sonuç.",
+              "en": "Artificial variables are not penalized enough and may remain positive at optimality → Wrong solution."
+            },
+            {
+              "tr": "Problem otomatik olarak infeasible ilan edilir.",
+              "en": "The problem is automatically declared infeasible."
+            },
+            {
+              "tr": "Phase I yeniden çalıştırılır.",
+              "en": "Phase I is restarted automatically."
+            },
+            {
+              "tr": "Simplex daha hızlı iter.",
+              "en": "Simplex iterates faster."
+            }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "$M$ çok küçükse yapay değişkenleri sıfıra indirmek için yeterli ceza olmaz. Simplex $a_i > 0$ olan bir 'optimal' çözüme yakınsayabilir ki bu orijinal problemi karşılamayan sahte bir sonuçtur.",
+            "en": "If $M$ is too small, the penalty is insufficient to force $a_i = 0$. The simplex may converge to a false 'optimal' with $a_i > 0$, which violates the original constraints."
+          }
+        },
+        {
+          "id": "m29-l3-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Two-Phase yönteminin Big-M yöntemine kıyasla en önemli avantajı nedir?",
+            "en": "What is the most important advantage of Two-Phase simplex over Big-M?"
+          },
+          "options": [
+            {
+              "tr": "Daha az değişken kullanır.",
+              "en": "It uses fewer variables."
+            },
+            {
+              "tr": "M değeri seçimine bağlı sayısal kararsızlık riskini ortadan kaldırır.",
+              "en": "It eliminates numerical instability risk from choosing M."
+            },
+            {
+              "tr": "Her zaman daha az iterasyonda sonuca ulaşır.",
+              "en": "It always reaches the solution in fewer iterations."
+            },
+            {
+              "tr": "Yapay değişken gerektirmez.",
+              "en": "It does not require artificial variables."
+            }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Big-M yönteminde $M$'nin sayısal değeri seçilmek zorundadır ve bu yuvarlama hatalarına yol açabilir. Two-Phase bu riski tamamen ortadan kaldırır çünkü $M$ sembolik olarak hiçbir zaman sayıya dönüştürülmez.",
+            "en": "Big-M requires selecting a specific numeric value for M, which can cause rounding errors in large-scale problems. Two-Phase avoids this entirely by never numerically representing M."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Big-M Yontemi - INDR 262 Term Project Part 1\nfrom pulp import *\n\nM = 1e6  # Buyuk ceza katsayisi\n\nprob = LpProblem('BigM_INDR262', LpMinimize)\nx1 = LpVariable('x1', lowBound=0)\nx2 = LpVariable('x2', lowBound=0)\n\n# Gercek amac fonksiyonu\nprob += 16*x1 + 20*x2\n\n# Kisitlar (>= ve <= karisik)\nprob += -x1 + 3*x2 >= 0    # Kisit 1\nprob += -5*x1 + x2 <= 0   # Kisit 2 (slack zaten pozitif)\nprob += x1 + x2 >= 25     # Kisit 3\n\nstatus = prob.solve(PULP_CBC_CMD(msg=0))\nprint(f'Durum : {LpStatus[prob.status]}')\nprint(f'x1 = {x1.value():.4f}')\nprint(f'x2 = {x2.value():.4f}')\nprint(f'Z  = {value(prob.objective):.4f}')  # Beklenen: 425",
+        "powerBiNote": {
+          "tr": "Big-M ceza katsayısı hassasiyeti, endüstriyel LP çözücülerde duyarlılık raporu ile izlenir.",
+          "en": "Big-M penalty sensitivity is monitored via sensitivity analysis reports in industrial LP solvers."
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m29-case1",
+      "moduleId": "module-29",
+      "order": 1,
+      "title": {
+        "tr": "Vaka Sınavı: INDR 262 Term Project Part 1 — Big-M ile Tam Çözüm",
+        "en": "Case Exam: INDR 262 Term Project Part 1 — Full Big-M Solution"
+      },
+      "scenario": {
+        "tr": "**INDR 262 Term Project Part 1 Problemi:**\n\nAşağıdaki LP'yi Big-M yöntemi ile çöz:\n\n$$\\\\min Z = 16x_1 + 20x_2$$\n\n**Kısıtlar:**\n$$-x_1 + 3x_2 \\\\geq 0 \\\\quad (1)$$\n$$-5x_1 + x_2 \\\\leq 0 \\\\quad (2)$$\n$$x_1 + x_2 \\\\geq 25 \\\\quad (3)$$\n$$x_1, x_2 \\\\geq 0$$\n\n**Adım adım çöz:**\n1. Standart forma getir (slack, surplus, artificial ekle).\n2. Big-M amaç fonksiyonu yaz.\n3. Başlangıç tablosunu kur ve Z satırını normalize et.\n4. Optimal çözümü bul.",
+        "en": "**INDR 262 Term Project Part 1:**\n\nSolve $\\\\min Z = 16x_1+20x_2$ subject to $-x_1+3x_2\\\\geq0$, $-5x_1+x_2\\\\leq0$, $x_1+x_2\\\\geq25$, $x_1,x_2\\\\geq0$ using the Big-M method. Set up the initial tableau, normalize the Z row, then pivot to optimality."
+      },
+      "questions": [
+        {
+          "id": "m29-case1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bu problem standart forma getirildiğinde toplam kaç yapay değişken (artificial variable) gereklidir?",
+            "en": "When converted to standard form, how many artificial variables are required?"
+          },
+          "options": [
+            { "tr": "0", "en": "0" },
+            { "tr": "1", "en": "1" },
+            { "tr": "2", "en": "2" },
+            { "tr": "3", "en": "3" }
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "Kısıt (1) $\\\\geq$ tipinde ($a_1$ gerekli) ve Kısıt (3) $\\\\geq$ tipinde ($a_2$ gerekli). Kısıt (2) $\\\\leq$ tipinde — sadece slack $s_2$ yeterli. Toplam **2 yapay değişken** gerekir.",
+            "en": "Constraints (1) and (3) are $\\\\geq$ type, each requiring an artificial variable. Constraint (2) is $\\\\leq$, needing only a slack. Total: **2 artificial variables**."
+          }
+        },
+        {
+          "id": "m29-case1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Big-M yöntemi uygulandıktan sonra bu problemin optimal çözümü yaklaşık kaçtır?",
+            "en": "After applying the Big-M method, what is the approximate optimal solution of this problem?"
+          },
+          "options": [
+            { "tr": "$x_1 = 25,\\ x_2 = 0,\\ Z = 400$", "en": "$x_1 = 25,\\ x_2 = 0,\\ Z = 400$" },
+            { "tr": "$x_1 = 18.75,\\ x_2 = 6.25,\\ Z = 425$", "en": "$x_1 = 18.75,\\ x_2 = 6.25,\\ Z = 425$" },
+            { "tr": "$x_1 = 0,\\ x_2 = 25,\\ Z = 500$", "en": "$x_1 = 0,\\ x_2 = 25,\\ Z = 500$" },
+            { "tr": "$x_1 = 12.5,\\ x_2 = 12.5,\\ Z = 450$", "en": "$x_1 = 12.5,\\ x_2 = 12.5,\\ Z = 450$" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Tüm kısıtlar incelendiğinde: $x_1 + x_2 = 25$, $-x_1 + 3x_2 = 0 \\\\Rightarrow x_1 = 3x_2$. $3x_2 + x_2 = 25 \\\\Rightarrow x_2 = 6.25,\\ x_1 = 18.75$. $Z = 16(18.75) + 20(6.25) = 300 + 125 = 425$.",
+            "en": "From constraints: $x_1+x_2=25$ and $-x_1+3x_2=0 \\\\Rightarrow x_1=3x_2$. Substituting: $4x_2=25 \\\\Rightarrow x_2=6.25$, $x_1=18.75$. $Z=16(18.75)+20(6.25)=425$."
+          }
+        },
+        {
+          "id": "m29-case1-q3",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Kısıt (1) $-x_1 + 3x_2 \\\\geq 0$ için standart forma dönüşüm doğru şekilde hangisidir?",
+            "en": "Which correctly converts constraint (1) $-x_1 + 3x_2 \\\\geq 0$ to standard form?"
+          },
+          "options": [
+            { "tr": "$-x_1 + 3x_2 + s_1 = 0$", "en": "$-x_1 + 3x_2 + s_1 = 0$" },
+            { "tr": "$-x_1 + 3x_2 - s_1 + a_1 = 0$", "en": "$-x_1 + 3x_2 - s_1 + a_1 = 0$" },
+            { "tr": "$x_1 - 3x_2 + a_1 = 0$", "en": "$x_1 - 3x_2 + a_1 = 0$" },
+            { "tr": "$-x_1 + 3x_2 + a_1 = 0$", "en": "$-x_1 + 3x_2 + a_1 = 0$" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$\\\\geq$ kısıtı için: fazla değişken $-s_1$ çıkarılır, yapay değişken $+a_1$ eklenir: $-x_1 + 3x_2 - s_1 + a_1 = 0$. Bu şekilde başlangıç BFS'te $a_1 = 0$ (RHS=0 olduğundan) ve $s_1=0$.",
+            "en": "For a $\\\\geq$ constraint: subtract surplus $s_1$ and add artificial $a_1$: $-x_1+3x_2-s_1+a_1=0$. With RHS=0, the starting BFS has $a_1=0$ immediately."
+          }
+        }
+      ]
+    }
+  ]
+}

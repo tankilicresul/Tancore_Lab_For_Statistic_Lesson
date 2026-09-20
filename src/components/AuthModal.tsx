@@ -915,6 +915,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </span>
                 </button>
               </div>
+
+              <p className="text-[11px] text-slate-400 text-center font-medium pt-1">
+                {language === 'tr'
+                  ? '💡 Kodun gelmesi birkaç saniye sürebilir veya Spam/Gereksiz klasörüne düşmüş olabilir.'
+                  : '💡 The code might take a few seconds or land in your Spam/Junk folder.'}
+              </p>
             </div>
           </form>
         )}
@@ -1003,6 +1009,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </span>
                 </button>
               </div>
+
+              <p className="text-[11px] text-slate-400 text-center font-medium pt-1">
+                {language === 'tr'
+                  ? '💡 Kodun gelmesi birkaç saniye sürebilir veya Spam/Gereksiz klasörüne düşmüş olabilir.'
+                  : '💡 The code might take a few seconds or land in your Spam/Junk folder.'}
+              </p>
             </div>
           </form>
         )}

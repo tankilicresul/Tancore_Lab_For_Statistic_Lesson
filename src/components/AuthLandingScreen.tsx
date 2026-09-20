@@ -614,6 +614,12 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
                   </span>
                 </button>
 
+                <p className="text-[11px] text-slate-400 text-center font-medium">
+                  {language === 'tr'
+                    ? '💡 E-posta birkaç saniye sürebilir veya Spam/Gereksiz klasörüne düşmüş olabilir.'
+                    : '💡 The email might take a few seconds or land in your Spam/Junk folder.'}
+                </p>
+
                 <button
                   onClick={() => setStep('form')}
                   className="text-center text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer pt-1 transition-colors"

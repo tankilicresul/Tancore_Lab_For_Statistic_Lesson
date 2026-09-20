@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ALL_MODULES } from '../data/modules';
-import { useAppStore, PROBABILITY_TRACK_MODULE_IDS, STATISTICS_TRACK_MODULE_IDS, INDR100_TRACK_MODULE_IDS } from '../store/useAppStore';
+import { useAppStore, PROBABILITY_TRACK_MODULE_IDS, STATISTICS_TRACK_MODULE_IDS, INDR100_TRACK_MODULE_IDS, INDR262_TRACK_MODULE_IDS } from '../store/useAppStore';
 import { getLocalized } from '../utils/localization';
 import { TanCoreMascotAvatar } from '../components/TanCoreMascotAvatar';
 import { MathFormulaText } from '../components/MathFormulaText';
@@ -144,7 +144,7 @@ export const getNodeAnimalIcon = (subStepIndex: number, colorClass: string) => {
 };
 
 interface CoursePageProps {
-  selectedTrack: 'probability' | 'statistics' | 'indr100';
+  selectedTrack: 'probability' | 'statistics' | 'indr100' | 'indr262';
   inDesignCourse?: CourseTrack | null;
   onSelectLesson: (lessonId: string) => void;
   onSelectCaseExam: (caseId: string) => void;
@@ -170,6 +170,7 @@ interface PathNodeItem {
 const PROBABILITY_MODULE_IDS = PROBABILITY_TRACK_MODULE_IDS;
 const STATISTICS_MODULE_IDS = STATISTICS_TRACK_MODULE_IDS;
 const INDR100_MODULE_IDS = INDR100_TRACK_MODULE_IDS;
+const INDR262_MODULE_IDS = INDR262_TRACK_MODULE_IDS;
 
 export const CoursePage: React.FC<CoursePageProps> = ({
   selectedTrack,
@@ -291,6 +292,8 @@ export const CoursePage: React.FC<CoursePageProps> = ({
       ? STATISTICS_MODULE_IDS
       : selectedTrack === 'indr100'
       ? INDR100_MODULE_IDS
+      : selectedTrack === 'indr262'
+      ? INDR262_MODULE_IDS
       : PROBABILITY_MODULE_IDS;
 
   const activeModulesList = targetIds

@@ -30,10 +30,15 @@ export const INDR100_TRACK_MODULE_IDS = [
   'module-17', 'module-18', 'module-19', 'module-20', 'module-21', 'module-22', 'module-23', 'module-24'
 ];
 
+export const INDR262_TRACK_MODULE_IDS = [
+  'module-25', 'module-26', 'module-27', 'module-28', 'module-29', 'module-30', 'module-31', 'module-32', 'module-33'
+];
+
 export const ALL_SYSTEM_MODULE_IDS = [
   ...STATISTICS_TRACK_MODULE_IDS,
   ...PROBABILITY_TRACK_MODULE_IDS,
   ...INDR100_TRACK_MODULE_IDS,
+  ...INDR262_TRACK_MODULE_IDS,
 ];
 
 
@@ -57,7 +62,7 @@ interface AppStoreActions {
   setCurrentView: (view: 'home' | 'course' | 'profile' | 'leaderboard' | 'lesson' | 'caseExam' | 'placementTest') => void;
   setSelectedLessonId: (id: string | null) => void;
   setSelectedCaseId: (id: string | null) => void;
-  setSelectedTrack: (track: 'probability' | 'statistics' | 'indr100') => void;
+  setSelectedTrack: (track: 'probability' | 'statistics' | 'indr100' | 'indr262') => void;
   setCustomActiveModuleName: (name: string | null) => void;
   logout: () => void;
   deleteAccount: (email?: string) => Promise<void>;

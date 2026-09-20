@@ -23,32 +23,50 @@ import module21 from './module21.json';
 import module22 from './module22.json';
 import module23 from './module23.json';
 import module24 from './module24.json';
+import module25 from './module25.json';
+import module26 from './module26.json';
+import module27 from './module27.json';
+import module28 from './module28.json';
+import module29 from './module29.json';
+import module30 from './module30.json';
+import module31 from './module31.json';
+import module32 from './module32.json';
+import module33 from './module33.json';
 
 export const ALL_MODULES: Module[] = [
-  module1 as Module,
-  module2 as Module,
-  module3 as Module,
-  module4 as Module,
-  module5 as Module,
-  module6 as Module,
-  module7 as Module,
-  module8 as Module,
-  module9 as Module,
-  module10 as Module,
-  module11 as Module,
-  module12 as Module,
-  module13 as Module,
-  module14 as Module,
-  module15 as Module,
-  module16 as Module,
-  module17 as Module,
-  module18 as Module,
-  module19 as Module,
-  module20 as Module,
-  module21 as Module,
-  module22 as Module,
-  module23 as Module,
-  module24 as Module,
+  module1 as unknown as Module,
+  module2 as unknown as Module,
+  module3 as unknown as Module,
+  module4 as unknown as Module,
+  module5 as unknown as Module,
+  module6 as unknown as Module,
+  module7 as unknown as Module,
+  module8 as unknown as Module,
+  module9 as unknown as Module,
+  module10 as unknown as Module,
+  module11 as unknown as Module,
+  module12 as unknown as Module,
+  module13 as unknown as Module,
+  module14 as unknown as Module,
+  module15 as unknown as Module,
+  module16 as unknown as Module,
+  module17 as unknown as Module,
+  module18 as unknown as Module,
+  module19 as unknown as Module,
+  module20 as unknown as Module,
+  module21 as unknown as Module,
+  module22 as unknown as Module,
+  module23 as unknown as Module,
+  module24 as unknown as Module,
+  module25 as unknown as Module,
+  module26 as unknown as Module,
+  module27 as unknown as Module,
+  module28 as unknown as Module,
+  module29 as unknown as Module,
+  module30 as unknown as Module,
+  module31 as unknown as Module,
+  module32 as unknown as Module,
+  module33 as unknown as Module,
 ];
 
 export function getModuleById(id: string): Module | undefined {
@@ -83,6 +101,10 @@ export const INDR100_MODULE_ORDER = [
   'module-17', 'module-18', 'module-19', 'module-20', 'module-21', 'module-22', 'module-23', 'module-24'
 ];
 
+export const INDR262_MODULE_ORDER = [
+  'module-25', 'module-26', 'module-27', 'module-28', 'module-29', 'module-30', 'module-31', 'module-32', 'module-33'
+];
+
 export interface SequentialTopicNode {
   id: string;
   type: 'lesson' | 'case';
@@ -90,10 +112,11 @@ export interface SequentialTopicNode {
   module: Module;
 }
 
-export function getSequentialTopicsForTrack(track: 'probability' | 'statistics' | 'indr100'): SequentialTopicNode[] {
+export function getSequentialTopicsForTrack(track: 'probability' | 'statistics' | 'indr100' | 'indr262'): SequentialTopicNode[] {
   let moduleOrder = STATISTICS_MODULE_ORDER;
   if (track === 'probability') moduleOrder = PROBABILITY_MODULE_ORDER;
   if (track === 'indr100') moduleOrder = INDR100_MODULE_ORDER;
+  if (track === 'indr262') moduleOrder = INDR262_MODULE_ORDER;
 
   const topics: SequentialTopicNode[] = [];
 
@@ -118,17 +141,20 @@ export function getAllSequentialTopics(): SequentialTopicNode[] {
     ...getSequentialTopicsForTrack('statistics'),
     ...getSequentialTopicsForTrack('probability'),
     ...getSequentialTopicsForTrack('indr100'),
+    ...getSequentialTopicsForTrack('indr262'),
   ];
 }
 
-export function getNextTopicItem(currentId: string, track?: 'probability' | 'statistics' | 'indr100'): SequentialTopicNode | undefined {
+export function getNextTopicItem(currentId: string, track?: 'probability' | 'statistics' | 'indr100' | 'indr262'): SequentialTopicNode | undefined {
   let effectiveTrack = track;
   if (!effectiveTrack) {
     const lessonInfo = getLessonById(currentId);
     const caseInfo = !lessonInfo ? getCaseExamById(currentId) : undefined;
     const modId = lessonInfo?.module.id || caseInfo?.module.id;
     if (modId) {
-      if (INDR100_MODULE_ORDER.includes(modId)) {
+      if (INDR262_MODULE_ORDER.includes(modId)) {
+        effectiveTrack = 'indr262';
+      } else if (INDR100_MODULE_ORDER.includes(modId)) {
         effectiveTrack = 'indr100';
       } else if (PROBABILITY_MODULE_ORDER.includes(modId)) {
         effectiveTrack = 'probability';
@@ -147,4 +173,3 @@ export function getNextTopicItem(currentId: string, track?: 'probability' | 'sta
   }
   return undefined;
 }
-

@@ -33,7 +33,7 @@ export interface CourseTrack {
   name: { tr: string; en: string };
   desc: { tr: string; en: string };
   status: 'active' | 'in_design';
-  track?: 'probability' | 'statistics' | 'indr100';
+  track?: 'probability' | 'statistics' | 'indr100' | 'indr262';
   icon: React.ComponentType<{ className?: string }>;
   iconBg: string;
   badge: { tr: string; en: string };
@@ -164,14 +164,16 @@ export const COURSES_DATA: CourseTrack[] = [
       tr: 'Modelleme kavramları, doğrusal programlama problem formülasyonu, simplex yöntemi, dualite, duyarlılık analizi ve bilgisayar uygulamaları.',
       en: 'Modeling concepts, linear programming formulation, simplex method, duality, sensitivity analysis and computer implementations.',
     },
-    status: 'in_design',
+    status: 'active',
+    track: 'indr262',
     icon: Target,
-    iconBg: 'bg-violet-600 text-white shadow-md shadow-violet-600/20',
-    badge: { tr: 'Yakında', en: 'Coming Soon' },
+    iconBg: 'bg-violet-600 text-white shadow-md shadow-violet-600/25',
+    badge: { tr: '9 Modül', en: '9 Modules' },
     badgeStyle: 'bg-violet-100 text-violet-700 border-violet-200/80',
-    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-violet-300',
-    glowColor: 'bg-violet-500/10',
+    cardStyle: 'border-2 border-violet-200 bg-white shadow-xs hover:shadow-md hover:border-violet-500',
+    glowColor: 'bg-violet-500/15',
   },
+
   {
     code: 'INDR 343',
     name: {
@@ -301,7 +303,7 @@ export const COURSES_DATA: CourseTrack[] = [
 ];
 
 export interface HomePageProps {
-  onSelectTrack: (track: 'probability' | 'statistics' | 'indr100') => void;
+  onSelectTrack: (track: 'probability' | 'statistics' | 'indr100' | 'indr262') => void;
   onSelectInDesignCourse?: (course: CourseTrack) => void;
   onOpenProfile?: () => void;
 }

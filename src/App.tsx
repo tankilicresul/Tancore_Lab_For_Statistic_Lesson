@@ -454,7 +454,7 @@ export const App: React.FC = () => {
     activeModuleName = customActiveModuleName;
   }
 
-  const handleSelectTrack = (track: 'probability' | 'statistics' | 'indr100') => {
+  const handleSelectTrack = (track: 'probability' | 'statistics' | 'indr100' | 'indr262') => {
     setSelectedTrack(track);
     setSelectedInDesignCourse(null);
     setCustomActiveModuleName(null);

@@ -143,72 +143,78 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
         <div className="h-1.5 w-20 bg-[#ff7a00] rounded-full" />
       </div>
 
-      {/* Business Question Box */}
-      <div className="mb-5 p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-xs">
-        <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-2.5">
-          {language === 'tr' ? 'İş Vakası & Problem Tanımı' : 'Business Question & Case Problem'}
-        </h3>
-        <div className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
-          <MathFormulaText text={getLocalized(caseExam.businessQuestion, language)} />
+      {/* Business Question / Context */}
+      {caseExam.businessQuestion && (
+        <div className="mb-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs">
+          <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-3">
+            {language === 'tr' ? 'Vaka Hedefi & İş Problemi' : 'Case Objective & Business Problem'}
+          </h3>
+          <div className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
+            <MathFormulaText text={getLocalized(caseExam.businessQuestion, language)} />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Dataset Preview Table */}
-      <div className="mb-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs">
-        <div className="flex items-center justify-between text-[#ff7a00] mb-4">
-          <div className="flex items-center space-x-2.5">
-            <Table className="w-5 h-5 stroke-[2.2] text-[#ff7a00]" />
-            <h3 className="text-xs font-black uppercase tracking-widest">
-              {language === 'tr' ? 'Vaka Veri Seti' : 'Case Dataset'}
-            </h3>
+      {caseExam.dataset && caseExam.dataset.columns && caseExam.dataset.columns.length > 0 && (
+        <div className="mb-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs">
+          <div className="flex items-center justify-between text-[#ff7a00] mb-4">
+            <div className="flex items-center space-x-2.5">
+              <Table className="w-5 h-5 stroke-[2.2] text-[#ff7a00]" />
+              <h3 className="text-xs font-black uppercase tracking-widest">
+                {language === 'tr' ? 'Vaka Veri Seti' : 'Case Dataset'}
+              </h3>
+            </div>
+            <span className="text-[10px] font-bold text-slate-400 sm:hidden">
+              {language === 'tr' ? '← Tabloyu Kaydır →' : '← Scroll Table →'}
+            </span>
           </div>
-          <span className="text-[10px] font-bold text-slate-400 sm:hidden">
-            {language === 'tr' ? '← Tabloyu Kaydır →' : '← Scroll Table →'}
-          </span>
-        </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-slate-200">
-          <table className="w-full text-left text-xs sm:text-sm">
-            <thead className="bg-[#ff7a00]/10 text-[#ff7a00] font-extrabold uppercase tracking-wider border-b border-[#ff7a00]/20">
-              <tr>
-                {caseExam.dataset.columns.map((col, cIdx) => (
-                  <th key={cIdx} className="p-3.5 whitespace-nowrap">
-                    {col}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 bg-white font-mono">
-              {caseExam.dataset.rows.map((row, rIdx) => (
-                <tr key={rIdx} className="hover:bg-[#ff7a00]/5 transition-colors">
-                  {row.map((cell, cIdx) => (
-                    <td key={cIdx} className="p-3.5 text-slate-800 font-medium whitespace-nowrap">
-                      {cell}
-                    </td>
+          <div className="overflow-x-auto rounded-2xl border border-slate-200">
+            <table className="w-full text-left text-xs sm:text-sm">
+              <thead className="bg-[#ff7a00]/10 text-[#ff7a00] font-extrabold uppercase tracking-wider border-b border-[#ff7a00]/20">
+                <tr>
+                  {caseExam.dataset.columns.map((col, cIdx) => (
+                    <th key={cIdx} className="p-3.5 whitespace-nowrap">
+                      {col}
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-100 bg-white font-mono">
+                {caseExam.dataset.rows.map((row, rIdx) => (
+                  <tr key={rIdx} className="hover:bg-[#ff7a00]/5 transition-colors">
+                    {row.map((cell, cIdx) => (
+                      <td key={cIdx} className="p-3.5 text-slate-800 font-medium whitespace-nowrap">
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Guided Steps */}
-      <div className="mb-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs">
-        <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-4">
-          {language === 'tr' ? 'Adım Adım Yol Haritası (Guided Steps)' : 'Step-by-Step Guided Roadmap'}
-        </h3>
-        <div className="space-y-3">
-          {caseExam.guidedSteps.map((step, idx) => (
-            <div
-              key={idx}
-              className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 font-medium leading-relaxed"
-            >
-              <MathFormulaText text={getLocalized(step, language)} />
-            </div>
-          ))}
+      {caseExam.guidedSteps && caseExam.guidedSteps.length > 0 && (
+        <div className="mb-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-xs">
+          <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-widest mb-4">
+            {language === 'tr' ? 'Adım Adım Yol Haritası (Guided Steps)' : 'Step-by-Step Guided Roadmap'}
+          </h3>
+          <div className="space-y-3">
+            {caseExam.guidedSteps.map((step, idx) => (
+              <div
+                key={idx}
+                className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 font-medium leading-relaxed"
+              >
+                <MathFormulaText text={getLocalized(step, language)} />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Solution Questions */}
       {caseExam.solutionQuestions && caseExam.solutionQuestions.length > 0 && (

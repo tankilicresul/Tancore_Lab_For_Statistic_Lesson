@@ -52,15 +52,18 @@ export interface Lesson {
 export interface CaseExam {
   id: string;
   moduleId: string;
-  difficulty: "kolay" | "orta" | "zor";
+  order?: number;
+  difficulty?: "kolay" | "orta" | "zor" | string;
   title: LocalizedText;
-  businessQuestion: LocalizedText;
-  dataset: {
+  scenario?: LocalizedText;
+  businessQuestion?: LocalizedText;
+  dataset?: {
     columns: string[];
     rows: (string | number)[][];
   };
-  guidedSteps: LocalizedText[];
-  expectedApproach: LocalizedText;
+  guidedSteps?: LocalizedText[];
+  expectedApproach?: LocalizedText;
+  questions?: any[];
   solutionQuestions?: Question[];
 }
 
@@ -157,7 +160,7 @@ export interface UserState {
   currentView?: 'home' | 'course' | 'profile' | 'leaderboard' | 'lesson' | 'caseExam' | 'placementTest';
   selectedLessonId?: string | null;
   selectedCaseId?: string | null;
-  selectedTrack?: 'probability' | 'statistics' | 'indr100';
+  selectedTrack?: 'probability' | 'statistics' | 'indr100' | 'indr262';
   customActiveModuleName?: string | null;
   isTancoChatOpen?: boolean;
   guestProgressTimestamp?: number;

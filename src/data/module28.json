@@ -1,0 +1,338 @@
+{
+  "id": "module-28",
+  "order": 28,
+  "title": {
+    "tr": "Simplex Algoritması & Tablo Yöntemi",
+    "en": "The Simplex Algorithm & Tableau Method"
+  },
+  "description": {
+    "tr": "Simplex algoritmasının başlangıç tablosunun kurulmasını, pivotlama kurallarını (giren/çıkan değişken), Minimum Ratio Testini ve optimallik kriterini adım adım öğren.",
+    "en": "Master the Simplex algorithm: setting up the initial tableau, pivoting rules (entering/leaving variables), Minimum Ratio Test, and optimality criteria."
+  },
+  "iconName": "GitCommit",
+  "lessons": [
+    {
+      "id": "m28-l1",
+      "moduleId": "module-28",
+      "order": 1,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Başlangıç Simplex Tablosunun Kurulması",
+        "en": "Setting Up the Initial Simplex Tableau"
+      },
+      "conceptCard": {
+        "tr": "**Simplex Tablosunun Mantığı:**\nSimplex yöntemi, tüm denklemleri (amaç fonksiyonu satırı dahil) organize bir tabloda tutarak Gauss-Jordan satır işlemleri uygular.\n\n**Amaç Fonksiyonu Satırı (Row 0 / Z-Satırı):**\n$$\\max Z = 3x_1 + 5x_2 \\quad \\Longrightarrow \\quad Z - 3x_1 - 5x_2 - 0s_1 - 0s_2 - 0s_3 = 0$$\nTablodaki $Z$ satırında değişkenlerin katsayıları $c_j$'nin negatifi olarak yazılır ($-c_j$).\n\n**Başlangıç Tablo Yapısı:**\n| Temel Değişken (BV) | $Z$ | $x_1$ | $x_2$ | $s_1$ | $s_2$ | $s_3$ | Sağ Taraf (RHS) |\n|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n| **$Z$ (Row 0)** | 1 | $-3$ | $-5$ | 0 | 0 | 0 | **0** |\n| **$s_1$ (Row 1)** | 0 | 1 | 0 | 1 | 0 | 0 | **4** |\n| **$s_2$ (Row 2)** | 0 | 0 | 2 | 0 | 1 | 0 | **12** |\n| **$s_3$ (Row 3)** | 0 | 3 | 2 | 0 | 0 | 1 | **18** |\n\n**Birim Matris Özelliği:**\nBaşlangıç temel değişkenleri olan $s_1, s_2, s_3$ sütunları birim matris ($I$) oluşturur. Sağ taraf sütunu (RHS), mevcut temel değişkenlerin sayısal değerlerini verir: $s_1=4, s_2=12, s_3=18, Z=0$.",
+        "en": "**Simplex Tableau Structure:**\nThe objective function is rewritten as $Z - \\sum c_j x_j = 0$ in Row 0.\nInitial basic variables (usually slacks) form an identity matrix, and the RHS directly gives their current values ($s_1=4, s_2=12, s_3=18, Z=0$)."
+      },
+      "companyExample": {
+        "tr": "**Başlangıç Durumu Yorumu:**\n- Temel Değişkenler: $s_1 = 4, s_2 = 12, s_3 = 18$\n- Temel Olmayan Değişkenler: $x_1 = 0, x_2 = 0$\n- Amaç Fonksiyonu Değeri: $Z = 0$\n\nBu durum geometrik olarak orijin $(0,0)$ köşe noktasına karşılık gelir. Henüz hiçbir şey üretilmediği için tüm fabrikaların kapasitesi boştadır (slack tam kapasitedir) ve kar sıfırdır.",
+        "en": "**Interpretation:**\nAt the initial tableau, $x_1=0, x_2=0$, all slacks are at full capacity, and total profit $Z=0$ (the origin vertex)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "simplex tableau",
+          "explanation_tr": "Bir LP modelinin katsayılarını, temel değişkenlerini ve amaç fonksiyonunu gösteren matris tablosu.",
+          "explanation_en": "A matrix table recording the current basic variables, constraint coefficients, and objective row.",
+          "exampleSentence_en": "The initial simplex tableau had slack variables occupying the basis."
+        },
+        {
+          "term_en": "Row 0 (Z-row)",
+          "explanation_tr": "Tabloda amaç fonksiyonu denklemini temsil eden ve optimallik kriterinin kontrol edildiği en üst satır.",
+          "explanation_en": "The top row of the tableau representing the objective function equation $Z - c^T x = 0$.",
+          "exampleSentence_en": "Negative values in Row 0 indicated that further profit improvement was possible."
+        },
+        {
+          "term_en": "identity column",
+          "explanation_tr": "Bir temel değişkenin sütununda kendi satırında 1, diğer tüm satırlarda (Z satırı dahil) 0 bulunan sütun.",
+          "explanation_en": "A column having 1 in the basic variable's row and 0 in all other rows including Row 0.",
+          "exampleSentence_en": "Each basic variable corresponds to an identity column in the simplex tableau."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m28-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Maksimizasyon probleminde amaç fonksiyonu $\\max Z = 8x_1 + 12x_2$ ise başlangıç simplex tablosunun Z-satırında (Row 0) $x_1$ ve $x_2$ sütunlarına hangi katsayılar yazılır?",
+            "en": "In a maximization problem with $\\max Z = 8x_1 + 12x_2$, what coefficients are placed in the Z-row for $x_1$ and $x_2$?"
+          },
+          "options": [
+            {"tr": "$+8$ ve $+12$", "en": "$+8$ and $+12$"},
+            {"tr": "$-8$ ve $-12$", "en": "$-8$ and $-12$"},
+            {"tr": "$0$ ve $0$", "en": "$0$ and $0$"},
+            {"tr": "$1/8$ ve $1/12$", "en": "$1/8$ and $1/12$"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Denklem $Z - 8x_1 - 12x_2 = 0$ şeklinde standart satır formatına getirildiğinde $x_1$'in katsayısı $-8$, $x_2$'nin katsayısı $-12$ olur.",
+            "en": "Rewriting $Z - 8x_1 - 12x_2 = 0$ puts $-8$ and $-12$ under $x_1$ and $x_2$ in Row 0."
+          }
+        },
+        {
+          "id": "m28-l1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Başlangıç simplex tablosunda temel değişkenlerin (BV) değerleri tablonun hangi sütunundan okunur?",
+            "en": "From which column of the initial simplex tableau are the values of basic variables read?"
+          },
+          "options": [
+            {"tr": "$x_1$ sütunundan", "en": "From $x_1$ column"},
+            {"tr": "Sağ Taraf (RHS) sütunundan", "en": "From the Right-Hand Side (RHS) column"},
+            {"tr": "$Z$ sütunundan", "en": "From the $Z$ column"},
+            {"tr": "Z-satırından (Row 0)", "en": "From Row 0"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Temel değişkenler birim matris sütunlarına sahip olduğu için kendi satırlarındaki RHS değeri o değişkenin doğrudan çözüm değerini verir.",
+            "en": "Because each basic variable has an identity column, its value equals the RHS value of its row."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import numpy as np\n\n# Başlangıç Simplex Tablosu Oluşturma\n# Değişkenler: [Z, x1, x2, s1, s2, s3, RHS]\ntableau = np.array([\n    [1, -3, -5,  0,  0,  0,  0],  # Row 0 (Z)\n    [0,  1,  0,  1,  0,  0,  4],  # Row 1 (s1)\n    [0,  0,  2,  0,  1,  0, 12],  # Row 2 (s2)\n    [0,  3,  2,  0,  0,  1, 18],  # Row 3 (s3)\n], dtype=float)\n\nprint('Başlangıç Tablosu:')\nprint(tableau)",
+        "powerBiNote": {
+          "tr": "Simplex matris yapısı büyük ölçekli optimizasyon kütüphanelerinde (SciPy, COIN-OR) sparse matrix formatında saklanır.",
+          "en": "Modern large-scale solvers store the simplex tableau in sparse matrix representations."
+        }
+      }
+    },
+    {
+      "id": "m28-l2",
+      "moduleId": "module-28",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Giren/Çıkan Değişken Seçimi ve Pivotlama",
+        "en": "Entering/Leaving Variable Selection and Pivoting"
+      },
+      "conceptCard": {
+        "tr": "**Simplex İterasyonunun 3 Ana Adımı:**\n\n---\n**1. Giren Değişken (Entering Variable):**\n- Maksimizasyon probleminde Z-satırındaki **en negatif (en küçük)** katsayıya sahip temel olmayan değişken seçilir (En dik eğim kuralı - Dantzig Kuralı).\n- Tablomuzda: $x_1$ katsayısı $-3$, $x_2$ katsayısı $-5$ $\\Rightarrow$ **Giren Değişken: $x_2$** (Pivot Sütunu: $x_2$ sütunu).\n\n---\n**2. Çıkan Değişken (Leaving Variable) & Minimum Ratio Test:**\nPivot sütunundaki elemanları kesinlikle **pozitif ($a_{ik} > 0$)** olan satırlar için $\\text{Oran} = \\frac{\\text{RHS}}{a_{ik}}$ hesaplanır:\n- Row 1 ($s_1$): $a_{12} = 0 \\leq 0$ (Test edilmez)\n- Row 2 ($s_2$): $12 / 2 = \\mathbf{6}$\n- Row 3 ($s_3$): $18 / 2 = \\mathbf{9}$\n- **Minimum Oran:** $\\min(6, 9) = 6$ (Row 2)\n- **Çıkan Değişken: $s_2$** (Pivot Satırı: Row 2, **Pivot Elemanı: $2$**).\n\n---\n**3. Pivotlama İşlemi (Gauss-Jordan Eliminasyonu):**\n- Pivot satırı pivot elemanına bölünür (pivot elemanı $1$ yapılır).\n- Diğer tüm satırlardaki (Row 0, Row 1, Row 3) pivot sütunu elemanları satır işlemleriyle **$0$ yapılır**.",
+        "en": "**Three Pivoting Steps:**\n1. **Entering Variable:** Most negative coefficient in Row 0 (maximization). Here $x_2$ ($-5$).\n2. **Leaving Variable (Min Ratio Test):** Compute $\\text{Ratio} = \\frac{\\text{RHS}}{a_{ik}}$ for strictly positive $a_{ik} > 0$. The minimum positive ratio determines the leaving variable ($s_2$).\n3. **Pivot Row Operations:** Normalize the pivot row so the pivot element is 1, then eliminate all other entries in the pivot column to 0."
+      },
+      "companyExample": {
+        "tr": "**Wyndor Glass — 1. İterasyon Pivotlama Sonucu:**\nPivot elemanı Row 2, $x_2$ sütunundaki $2$'dir.\n- Row 2 yeni hali: $\\text{Row 2} / 2 \\Rightarrow [0, 0, 1, 0, 0.5, 0, 6]$\n- Row 0 yeni hali: $\\text{Row 0} + 5 \\times \\text{Yeni Row 2} \\Rightarrow [1, -3, 0, 0, 2.5, 0, 30]$\n- Row 3 yeni hali: $\\text{Row 3} - 2 \\times \\text{Yeni Row 2} \\Rightarrow [0, 3, 0, 0, -1, 1, 6]$\n\n**Yeni Çözüm:**\nTemel Değişkenler: $s_1 = 4, x_2 = 6, s_3 = 6$\nKar Değeri: **$Z = 30$** (Orijinden $(0,6)$ köşe noktasına ilerledik!)",
+        "en": "**Iteration 1 Result:**\nPivot on Row 2 ($x_2$ enters, $s_2$ leaves). New solution: $s_1=4, x_2=6, s_3=6$ with profit $Z=30$ (moved from $(0,0)$ to $(0,6)$)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "entering variable",
+          "explanation_tr": "Amaç fonksiyonunu en çok artırma potansiyeline sahip olan ve temele (basis) giren değişken.",
+          "explanation_en": "The non-basic variable chosen to enter the basis to improve the objective function.",
+          "exampleSentence_en": "Variable $x_2$ was chosen as the entering variable due to its $-5$ reduced cost."
+        },
+        {
+          "term_en": "leaving variable",
+          "explanation_tr": "Minimum Ratio Testi sonucunda değeri ilk önce sıfıra düşerek temelden çıkan değişken.",
+          "explanation_en": "The basic variable that drops to zero first as the entering variable increases.",
+          "exampleSentence_en": "Slack variable $s_2$ was the leaving variable in the first pivot."
+        },
+        {
+          "term_en": "minimum ratio test",
+          "explanation_tr": "Çözümün Feasible bölgeden dışarı çıkmasını önlemek için en küçük pozitif $\\frac{\\text{RHS}}{a_{ik}}$ oranını seçme kuralı.",
+          "explanation_en": "The rule $\\min \\{b_i / a_{ik} \\mid a_{ik} > 0\\}$ ensuring the next BFS remains within the feasible region.",
+          "exampleSentence_en": "The minimum ratio test prevented the pivot from producing negative basic variables."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m28-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Minimum Ratio Testinde bir satırın pivot sütunu katsayısı $a_{ik} = -2$ veya $a_{ik} = 0$ ise bu satır için oran nasıl hesaplanır?",
+            "en": "In the Minimum Ratio Test, if a row has $a_{ik} = -2$ or $a_{ik} = 0$ in the pivot column, how is the ratio computed?"
+          },
+          "options": [
+            {"tr": "Negatif oran olarak hesaplanır ve en küçük olarak seçilir.", "en": "Computed as negative ratio and selected as the minimum."},
+            {"tr": "Bu satırlar teste DAHİL EDİLMEZ (ihmal edilir), oran hesaplanmaz.", "en": "These rows are EXCLUDED from the test and not considered."},
+            {"tr": "Sıfıra bölme hatası verir ve algoritma durur.", "en": "Causes a division by zero error and stops."},
+            {"tr": "RHS ile çarpılır.", "en": "Multiplied by RHS."}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Minimum Ratio Testi sadece kesinlikle pozitif ($a_{ik} > 0$) elemanlar için tanımlıdır. $a_{ik} \\leq 0$ olan satırlarda giren değişken arttıkça temel değişken küçülmez, dolayısıyla feasibility'yi tehdit etmez.",
+            "en": "The ratio test only applies to $a_{ik} > 0$. Non-positive entries do not limit the increase of the entering variable."
+          }
+        },
+        {
+          "id": "m28-l2-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Tüm satırlardaki pivot sütunu elemanları $a_{ik} \\leq 0$ ise bu durum ne anlama gelir?",
+            "en": "If all constraint coefficients in the pivot column are $a_{ik} \\leq 0$, what does this signify?"
+          },
+          "options": [
+            {"tr": "Problem optimaldir.", "en": "The problem is optimal."},
+            {"tr": "Problem Infeasible'dır.", "en": "The problem is infeasible."},
+            {"tr": "Problem SINIRSIZDIR (Unbounded) — Z sonsuza gidebilir.", "en": "The problem is UNBOUNDED — Z can increase indefinitely."},
+            {"tr": "Problemde alternatif optimal çözümler vardır.", "en": "The problem has alternative optimal solutions."}
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "Eğer giren değişkenin artışını durduracak hiçbir pozitif katsayı yoksa değişken sonsuza kadar artırılabilir, dolayısıyla problem sınırsızdır (unbounded).",
+            "en": "If no positive constraint entries restrict the entering variable, it can grow without bound, meaning the LP is unbounded."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Tek Bir Simplex Pivot Adımı\nimport numpy as np\n\ndef simplex_pivot(T, p_row, p_col):\n    T = T.copy()\n    pivot_val = T[p_row, p_col]\n    T[p_row, :] /= pivot_val\n    for i in range(T.shape[0]):\n        if i != p_row:\n            T[i, :] -= T[i, p_col] * T[p_row, :]\n    return T\n\nT0 = np.array([\n    [1, -3, -5, 0, 0, 0, 0],\n    [0,  1,  0, 1, 0, 0, 4],\n    [0,  0,  2, 0, 1, 0, 12],\n    [0,  3,  2, 0, 0, 1, 18]\n], dtype=float)\n\n# Pivot: Row 2, Col 2 (x2 sütunu)\nT1 = simplex_pivot(T0, 2, 2)\nprint('1. İterasyon Sonrası Tablo:\\n', np.round(T1, 2))",
+        "powerBiNote": {
+          "tr": "Gelişmiş optimizasyon kütüphaneleri her pivotta LU çarpanlarına ayırma (LU factorization) güncellemeleri kullanarak yüksek sayısal kararlılık sağlar.",
+          "en": "Production solvers perform eta-updates or Forrest-Tomlin LU updates at each pivot for numerical stability."
+        }
+      }
+    },
+    {
+      "id": "m28-l3",
+      "moduleId": "module-28",
+      "order": 3,
+      "difficulty": "zor",
+      "title": {
+        "tr": "Optimallik Kriteri, Çözüm Okuma ve Nihai Tablo",
+        "en": "Optimality Criterion, Tableau Reading, and Final Solution"
+      },
+      "conceptCard": {
+        "tr": "**Optimallik Kriteri (Maximization):**\n> Bir maksimizasyon tablosunda **Z-satırındaki (Row 0) tüm değişken katsayıları $\\geq 0$** olduğunda tablo **OPTIMALDIR**! Artık Z'yi artırabilecek hiçbir temel olmayan değişken kalmamıştır.\n\n**Wyndor Glass 2. İterasyon (Nihai Optimal Tablo):**\n1. İterasyon tablosunda Row 0'da $x_1$ katsayısı $-3$ idi $\\Rightarrow x_1$ giren değişken olur.\nMinimum ratio test: $\\min(4/1, 6/3) = 2$ (Row 3, $s_3$ çıkar).\nPivotlama yapıldıktan sonra elde edilen nihai tablo:\n\n| BV | $Z$ | $x_1$ | $x_2$ | $s_1$ | $s_2$ | $s_3$ | RHS |\n|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n| **$Z$** | 1 | **0** | **0** | **0** | **1.5** | **1.0** | **36** |\n| **$s_1$** | 0 | 0 | 0 | 1 | 0.333 | $-0.333$ | **2** |\n| **$x_2$** | 0 | 0 | 1 | 0 | 0.5 | 0 | **6** |\n| **$x_1$** | 0 | 1 | 0 | 0 | $-0.333$ | 0.333 | **2** |\n\n**Optimal Çözümün Okunması:**\n- Row 0'daki tüm katsayılar $\\geq 0$ $\\Rightarrow$ **Çözüm Optimaldir!**\n- Karar Değişkenleri: $x_1^* = 2, \\quad x_2^* = 6$\n- Slack Değişkenleri: $s_1^* = 2, \\quad s_2^* = 0, \\quad s_3^* = 0$\n- Maksimum Kar: **$Z^* = 36$**\n- **Gölge Fiyatlar (Shadow Prices):** Row 0'daki $s_1, s_2, s_3$ katsayıları doğrudan kaynakların marjinal değerleridir: $y_1 = 0, y_2 = 1.5, y_3 = 1.0$!",
+        "en": "**Optimality Criterion:**\nFor maximization, when all coefficients in Row 0 are non-negative ($\\geq 0$), the current BFS is optimal.\n\n**Optimal Solution Reading:**\n- $x_1^* = 2, x_2^* = 6, Z^* = 36$\n- $s_1^* = 2, s_2^* = 0, s_3^* = 0$\n- Shadow prices of constraints appear directly under slack variables in Row 0 ($y_1=0, y_2=1.5, y_3=1.0$)."
+      },
+      "companyExample": {
+        "tr": "**Yönetimsel Çıkarımlar:**\n- Fabrika 1'de $s_1 = 2$ saat boş kapasite vardır (Gölge fiyatı $0$ TL/saat).\n- Fabrika 2 ve 3 tam kapasite çalışmaktadır ($s_2=0, s_3=0$).\n- Fabrika 2'ye ilave 1 saat kapasite eklenirse kar $1.5$ TL artar.\n- Fabrika 3'e ilave 1 saat kapasite eklenirse kar $1.0$ TL artar.",
+        "en": "**Business Insights:**\nPlant 1 has 2 hours unused slack (shadow price \\$0). Plants 2 and 3 are fully utilized with shadow prices \\$1.50/hr and \\$1.00/hr."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "optimality condition",
+          "explanation_tr": "Simplex tablosunun Row 0'ındaki tüm katsayıların hedeflenen işarete ulaşması durumu (maksimizasyonda $\\geq 0$).",
+          "explanation_en": "The condition where all reduced costs in Row 0 are non-negative for a maximization problem.",
+          "exampleSentence_en": "The algorithm terminated because the optimality condition was satisfied."
+        },
+        {
+          "term_en": "reduced cost",
+          "explanation_tr": "Bir temel olmayan değişkenin temele girmesi durumunda amaç fonksiyonundaki birim değişim miktarı ($z_j - c_j$).",
+          "explanation_en": "The rate at which the objective function will change if a non-basic variable is increased from zero.",
+          "exampleSentence_en": "The reduced cost of zero indicated alternative optimal solutions existed."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m28-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Nihai optimal simplex tablosunda bir temel olmayan değişkenin Z-satırı katsayısı (reduced cost) tam olarak 0 ise bu ne anlama gelir?",
+            "en": "In the final optimal simplex tableau, if a non-basic variable has a Row 0 coefficient of exactly 0, what does this indicate?"
+          },
+          "options": [
+            {"tr": "Problem Infeasible'dır.", "en": "The problem is infeasible."},
+            {"tr": "ALTERNATİF (Birden fazla) OPTİMAL ÇÖZÜM mevcuttur.", "en": "ALTERNATIVE (multiple) OPTIMAL SOLUTIONS exist."},
+            {"tr": "Problem sınırsızdır.", "en": "The problem is unbounded."},
+            {"tr": "Hesaplama hatası yapılmıştır.", "en": "A computational error has occurred."}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Bir temel olmayan değişkenin Z katsayısı 0 ise, o değişken temele sokulduğunda Z değeri hiç değişmeden yeni bir optimal BFS (köşe noktası) elde edilir. Bu, alternatif optimal çözümler olduğunu kanıtlar.",
+            "en": "A zero reduced cost for a non-basic variable means it can enter the basis without changing Z, yielding an alternative optimal BFS."
+          }
+        },
+        {
+          "id": "m28-l3-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Nihai simplex tablosunun Row 0 satırında gevşeklik değişkenlerinin ($s_1, s_2, s_3$) altında okunan değerler neyi temsil eder?",
+            "en": "What do the coefficients under the slack variables in Row 0 of the final simplex tableau represent?"
+          },
+          "options": [
+            {"tr": "Ürünlerin toplam üretim adetlerini", "en": "Total production quantities of products"},
+            {"tr": "Kısıtların GÖLGE FİYATLARINI (Dual Değişken Değerlerini - Shadow Prices)", "en": "SHADOW PRICES of the constraints (Dual Variable Values)"},
+            {"tr": "Fabrikaların sabit maliyetlerini", "en": "Fixed costs of plants"},
+            {"tr": "Minimum sipariş miktarlarını", "en": "Minimum order quantities"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Simplex teorisinin en zarif sonucudur: Z-satırındaki slack katsayıları, kısıtların marjinal değerlerini (gölge fiyatlarını / dual değişkenlerini $y_i$) doğrudan verir.",
+            "en": "A cornerstone of LP theory: the Row 0 coefficients under slack variables equal the shadow prices (dual variables $y_i$)."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "from scipy.optimize import linprog\n\n# Wyndor Glass Simplex Çözümü\nc = [-3, -5]\nA = [[1, 0], [0, 2], [3, 2]]\nb = [4, 12, 18]\n\nres = linprog(c, A_ub=A, b_ub=b, method='simplex')\nprint('Optimal Nokta (x1, x2):', res.x)\nprint('Maksimum Kar Z:', -res.fun)\nprint('İterasyon Sayısı:', res.nit)\nprint('Slack Değerleri:', res.slack)",
+        "powerBiNote": {
+          "tr": "Nihai simplex tablosu Power BI raporlarında hem ürün miksi hem de darboğaz analizi tablolarını besler.",
+          "en": "Final simplex tableau feeds both product mix recommendations and bottleneck analytics in enterprise dashboards."
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m28-case1",
+      "moduleId": "module-28",
+      "order": 1,
+      "title": {
+        "tr": "Vaka Sınavı: Simplex Tablosu ve Pivot İterasyonu",
+        "en": "Case Exam: Simplex Tableau and Pivot Iterations"
+      },
+      "scenario": {
+        "tr": "Bir marangoz atölyesi Sandalye ($x_1$) ve Masa ($x_2$) üretmektedir.\n$$\\max Z = 6x_1 + 8x_2$$\n$$\\text{s.t. } 2x_1 + 4x_2 + s_1 = 40 \\quad \\text{(Ahşap)}$$\n$$3x_1 + 2x_2 + s_2 = 30 \\quad \\text{(Montaj Süresi)}$$\n$$x_1, x_2, s_1, s_2 \\geq 0$$\n\nBaşlangıç simplex tablosunu kurarak 1. pivot adımını uygulayın.",
+        "en": "A carpentry shop produces Chairs ($x_1$) and Tables ($x_2$). Maximize $Z = 6x_1 + 8x_2$ subject to wood and assembly constraints. Perform the first simplex pivot."
+      },
+      "questions": [
+        {
+          "id": "m28-case1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Başlangıç tablosunda Row 0 satırında en negatif katsayı hangisidir ve hangi değişken temele girer?",
+            "en": "In the initial tableau, which is the most negative coefficient in Row 0 and which variable enters the basis?"
+          },
+          "options": [
+            {"tr": "$-8$ katsayısı ile $x_2$ değişkeni girer.", "en": "$x_2$ enters the basis with coefficient $-8$."},
+            {"tr": "$-6$ katsayısı ile $x_1$ değişkeni girer.", "en": "$x_1$ enters the basis with coefficient $-6$."},
+            {"tr": "$s_1$ değişkeni girer.", "en": "$s_1$ enters the basis."},
+            {"tr": "$s_2$ değişkeni girer.", "en": "$s_2$ enters the basis."}
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Row 0: $Z - 6x_1 - 8x_2 = 0$. En negatif katsayı $-8$'dir, dolayısıyla $x_2$ temele girer.",
+            "en": "Row 0 is $Z - 6x_1 - 8x_2 = 0$. The most negative coefficient is $-8$, so $x_2$ enters."
+          }
+        },
+        {
+          "id": "m28-case1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "$x_2$ sütunu için Minimum Ratio Testi yapıldığında hangi satır minimum oranı verir ve hangi değişken temelden çıkar?",
+            "en": "Performing the Minimum Ratio Test for the $x_2$ column, which row gives the minimum ratio and which variable leaves?"
+          },
+          "options": [
+            {"tr": "Row 1: $40 / 4 = 10$, Row 2: $30 / 2 = 15 \\Rightarrow \\min = 10$ (Row 1, $s_1$ çıkar)", "en": "Row 1: $40/4=10$, Row 2: $30/2=15 \\Rightarrow \\min=10$ (Row 1, $s_1$ leaves)"},
+            {"tr": "Row 2: $30 / 2 = 15 \\Rightarrow s_2$ çıkar", "en": "Row 2: $30/2=15 \\Rightarrow s_2$ leaves"},
+            {"tr": "Her iki oran eşit olduğu için rastgele seçilir.", "en": "Both ratios are equal so randomly chosen."},
+            {"tr": "Oran hesaplanamaz.", "en": "Ratio cannot be computed."}
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Row 1 oranı $40/4 = 10$, Row 2 oranı $30/2 = 15$. Minimum oran $10$ olduğu için Row 1 seçilir ve $s_1$ temelden çıkar.",
+            "en": "Row 1 ratio is $40/4 = 10$, Row 2 ratio is $30/2 = 15$. The minimum ratio is $10$, so $s_1$ leaves."
+          }
+        },
+        {
+          "id": "m28-case1-q3",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "1. Pivotlama işlemi tamamlandıktan sonra $Z$ amaç fonksiyonunun yeni değeri kaç olur?",
+            "en": "After completing the first pivot operation, what is the new value of the objective function $Z$?"
+          },
+          "options": [
+            {"tr": "$Z = 0$", "en": "$Z = 0$"},
+            {"tr": "$Z = 80$ ($8 \\times 10$)", "en": "$Z = 80$ ($8 \\times 10$)"},
+            {"tr": "$Z = 120$", "en": "$Z = 120$"},
+            {"tr": "$Z = 40$", "en": "$Z = 40$"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$x_2 = 10$ birim üretilmeye başlandığı için ve her birim $x_2$'nin karı $8$ TL olduğu için yeni kar $Z = 8 \\times 10 = 80$ TL olur.",
+            "en": "Since $x_2 = 10$ units are produced with profit 8 per unit, the new objective value is $Z = 8 \\times 10 = 80$."
+          }
+        }
+      ]
+    }
+  ]
+}

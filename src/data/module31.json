@@ -1,0 +1,344 @@
+{
+  "id": "module-31",
+  "order": 31,
+  "title": {
+    "tr": "Duyarlılık Analizi & Gölge Fiyatlar",
+    "en": "Sensitivity Analysis & Shadow Prices"
+  },
+  "description": {
+    "tr": "Parametrelerdeki değişikliklerin optimal çözümü nasıl etkilediğini analiz et; gölge fiyatları ve aralıkları yorumla.",
+    "en": "Analyze how changes in parameters affect the optimal solution; interpret shadow prices and sensitivity ranges."
+  },
+  "iconName": "Activity",
+  "lessons": [
+    {
+      "id": "m31-l1",
+      "moduleId": "module-31",
+      "order": 1,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Gölge Fiyat (Shadow Price) Kavramı",
+        "en": "Shadow Price Concept"
+      },
+      "conceptCard": {
+        "tr": "**Gölge Fiyat (Shadow Price / Dual Variable):** Bir kısıtın RHS'i (sağ taraf değeri) 1 birim artırıldığında optimal amaç fonksiyon değerinin ($Z^*$) ne kadar değiştiğini gösteren miktardır.\\n\\n$$\\\\text{Gölge Fiyat}_i = \\\\frac{\\\\Delta Z^*}{\\\\Delta b_i}$$\\n\\n**Temel Kurallar:**\\n1. **Bağlayıcı Kısıt (Binding Constraint):** Optimal çözümde tam kapasite kullanılan kısıt. **Gölge fiyatı > 0** (maksimizasyon için). RHS artışı $Z^*$'i iyileştirir.\\n2. **Bağlayıcı Olmayan Kısıt (Non-Binding Constraint):** Optimal çözümde slack (artık) olan kısıt. **Gölge fiyatı = 0**. Fazla kapasite zaten var, RHS artışı $Z^*$'i değiştirmez.\\n3. **Dual Değişken:** Her kısıtın gölge fiyatı, dual LP'deki ilgili değişkenin değerine eşittir.\\n\\n**Sezgisel Anlam:** Gölge fiyat, o kaynaktan 1 birim daha satın almak için ödemeye değer maksimum miktardır.",
+        "en": "**Shadow Price (Dual Variable):** The amount by which the optimal objective value $Z^*$ changes when the RHS of a constraint increases by 1 unit.\\n\\n$$\\\\text{Shadow Price}_i = \\\\frac{\\\\Delta Z^*}{\\\\Delta b_i}$$\\n\\n**Key Rules:**\\n1. **Binding Constraint:** Active at optimality (slack = 0). Shadow price > 0. Increasing RHS improves $Z^*$.\\n2. **Non-Binding Constraint:** Has slack at optimality. Shadow price = 0. Extra capacity already exists.\\n3. **Economic Meaning:** Shadow price = maximum willingness to pay for one additional unit of that resource."
+      },
+      "companyExample": {
+        "tr": "**Örnek: Wyndor Glass Co.** (Optimal: $x_1^* = 2$, $x_2^* = 6$, $Z^* = 36$)\\n\\nKısıtlar:\\n- F1: $x_1 \\\\leq 4$ → **Bağlayıcı değil** (slack = 2) → Gölge fiyat = **0**\\n- F2: $2x_2 \\\\leq 12$ → **Bağlayıcı** (slack = 0) → Gölge fiyat = ?\\n- F3: $3x_1 + 2x_2 \\\\leq 18$ → **Bağlayıcı** (slack = 0) → Gölge fiyat = ?\\n\\nF2 kapasitesini 12→13 yaparsak yeni optimal $Z^* = 37.5$ olur:\\n$$\\\\text{Gölge Fiyat}_{F2} = 37.5 - 36 = 1.5 \\\\text{ TL/saat}$$\\n\\nF3 kapasitesini 18→19 yaparsak $Z^* = 36 + 1 = 37$ olur:\\n$$\\\\text{Gölge Fiyat}_{F3} = 37 - 36 = 1.0 \\\\text{ TL/saat}$$",
+        "en": "**Wyndor Glass** (Optimal: $x_1^*=2$, $x_2^*=6$, $Z^*=36$): F1 non-binding (shadow price = 0). F2 binding: increasing RHS from 12 to 13 gives $Z^*=37.5$, so shadow price = **1.5**. F3 binding: shadow price = **1.0**."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "shadow price",
+          "explanation_tr": "Bir kısıtın RHS'i 1 birim artınca optimal amaç fonksiyon değerinin ne kadar değiştiğini gösteren dual değişken.",
+          "explanation_en": "The change in optimal objective value per unit increase in a constraint's RHS.",
+          "exampleSentence_en": "The shadow price of the labor constraint was $2.50, meaning one extra hour of labor adds $2.50 to profit."
+        },
+        {
+          "term_en": "binding constraint",
+          "explanation_tr": "Optimal çözümde tam kapasite kullanan kısıt; artık (slack) değeri sıfırdır ve gölge fiyatı pozitiftir.",
+          "explanation_en": "A constraint satisfied with equality at the optimal solution; its slack is zero.",
+          "exampleSentence_en": "The binding machine capacity constraint limited our production output."
+        },
+        {
+          "term_en": "dual variable",
+          "explanation_tr": "LP'nin dual problemindeki değişken; primal kısıtların gölge fiyatına karşılık gelir.",
+          "explanation_en": "Variable in the dual LP corresponding to a primal constraint; equals the shadow price.",
+          "exampleSentence_en": "The dual variable for the overtime constraint reflected its scarcity value."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m31-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Optimal çözümde slack değeri 5 olan bir kısıtın gölge fiyatı nedir?",
+            "en": "What is the shadow price of a constraint that has a slack of 5 at the optimal solution?"
+          },
+          "options": [
+            { "tr": "5", "en": "5" },
+            { "tr": "1", "en": "1" },
+            { "tr": "0", "en": "0" },
+            { "tr": "Belirsiz; ek bilgi gerekir.", "en": "Cannot be determined without more information." }
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "Slack > 0 olan kısıt bağlayıcı değildir. Bağlayıcı olmayan kısıtların gölge fiyatı her zaman 0'dır; çünkü RHS'i biraz artırmak zaten fazla olan kapasiteyi artırır ve $Z^*$'i değiştirmez.",
+            "en": "A constraint with positive slack is non-binding. Non-binding constraints always have shadow price = 0 because extra capacity already exists."
+          }
+        },
+        {
+          "id": "m31-l1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir maksimizasyon LP'sinde F2 kısıtının gölge fiyatı 2.5 TL/birim olarak bulunmuştur. Bu ne anlama gelir?",
+            "en": "In a maximization LP, the shadow price of constraint F2 is 2.5 per unit. What does this mean?"
+          },
+          "options": [
+            { "tr": "F2 kısıtının RHS'i 1 birim azaltılırsa $Z^*$ 2.5 TL artar.", "en": "Decreasing F2's RHS by 1 unit increases $Z^*$ by 2.5." },
+            { "tr": "F2 kısıtının RHS'i 1 birim artırılırsa $Z^*$ 2.5 TL artar.", "en": "Increasing F2's RHS by 1 unit increases $Z^*$ by 2.5." },
+            { "tr": "F2 kısıtı bağlayıcı değildir ve slack 2.5 birimdir.", "en": "F2 is non-binding with slack of 2.5." },
+            { "tr": "F2 kısıtının gölge fiyatı çözümün duyarlılık aralığı dışındadır.", "en": "The shadow price is outside the sensitivity range." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Gölge fiyat, RHS 1 birim artırıldığında $Z^*$'in ne kadar artacağını gösterir. Gölge fiyat = 2.5 ise F2 kapasitesi 1 birim genişletildiğinde toplam kar 2.5 TL iyileşir.",
+            "en": "Shadow price measures the improvement in $Z^*$ per unit increase in RHS. Shadow price = 2.5 means one more unit of F2 capacity adds 2.5 to profit."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "from pulp import *\n\nprob = LpProblem('Wyndor_Sensitivity', LpMaximize)\nx1 = LpVariable('x1', lowBound=0)\nx2 = LpVariable('x2', lowBound=0)\n\nprob += 3*x1 + 5*x2\nf1 = prob += x1 <= 4\nf2 = prob += 2*x2 <= 12\nf3 = prob += 3*x1 + 2*x2 <= 18\n\nprob.solve(PULP_CBC_CMD(msg=0))\nprint(f'Z* = {value(prob.objective)}')\nprint(f'x1 = {x1.value()}, x2 = {x2.value()}')\n# Shadow prices via dual\nfor name, c in prob.constraints.items():\n    print(f'Shadow price [{name}] = {-c.pi}')",
+        "powerBiNote": {
+          "tr": "Gölge fiyatlar, kapasite yatırım kararı raporlarında 'marjinal değer' göstergesi olarak kullanılır.",
+          "en": "Shadow prices appear in capacity investment reports as 'marginal resource value' KPIs."
+        }
+      }
+    },
+    {
+      "id": "m31-l2",
+      "moduleId": "module-31",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "RHS ve Katsayı Duyarlılık Aralıkları",
+        "en": "RHS and Coefficient Sensitivity Ranges"
+      },
+      "conceptCard": {
+        "tr": "**Duyarlılık Analizi:** Bir LP parametresi değiştiğinde mevcut temel (basis) ve optimal çözümün geçerliliğini koruduğu aralığı belirler.\\n\\n---\\n**1. RHS Duyarlılık Aralığı (b_i için):**\\nBir kısıtın sağ taraf değeri $b_i$, belirli bir aralık içinde değiştiğinde aynı **temel** optimal kalır ve gölge fiyat geçerli olmaya devam eder:\\n$$b_i^{\\\\min} \\\\leq b_i \\\\leq b_i^{\\\\max}$$\\nBu aralık dışına çıkıldığında optimal temel değişir (farklı köşe noktası aktif olur).\\n\\n---\\n**2. Amaç Fonksiyonu Katsayısı Duyarlılık Aralığı (c_j için):**\\nBir amaç katsayısı $c_j$, belirli bir aralık içinde değiştiğinde **optimal temel değişmez** (aynı köşe noktası hâlâ optimal):  \\n$$c_j^{\\\\min} \\\\leq c_j \\\\leq c_j^{\\\\max}$$\\nBu aralık, optimalliğin bozulmadığı sınırları gösterir. Aralık dışında farklı bir çözüm optimal olur.\\n\\n---\\n**Fark:** RHS analizi **çözüm değerlerini** etkiler ama aynı temeli korur; $c_j$ analizi **çözümün optimalliğini** etkiler.",
+        "en": "**Sensitivity Analysis** identifies the range over which a parameter can change without changing the optimal basis.\\n\\n**RHS Range ($b_i$):** The interval $[b_i^{\\\\min}, b_i^{\\\\max}]$ within which the current basis remains optimal and the shadow price stays valid.\\n\\n**Objective Coefficient Range ($c_j$):** The interval $[c_j^{\\\\min}, c_j^{\\\\max}]$ within which the current optimal basis (same corner point) remains optimal, though $Z^*$ changes value."
+      },
+      "companyExample": {
+        "tr": "**Örnek: Wyndor Glass Duyarlılık Raporu**\\n\\nOptimal çözüm: $x_1^* = 2$, $x_2^* = 6$, $Z^* = 36$\\n\\n**RHS Aralıkları:**\\n| Kısıt | Mevcut $b_i$ | Alt Sınır | Üst Sınır | Gölge Fiyat |\\n|-------|-------------|-----------|-----------|-------------|\\n| F1 ($x_1 \\\\leq 4$) | 4 | 2 | $\\\\infty$ | 0 |\\n| F2 ($2x_2 \\\\leq 12$) | 12 | 6 | 18 | 1.5 |\\n| F3 ($3x_1+2x_2 \\\\leq 18$) | 18 | 12 | 24 | 1.0 |\\n\\n**$c_j$ Aralıkları ($\\\\max Z = c_1 x_1 + c_2 x_2$):**\\n| Değişken | Mevcut $c_j$ | Alt Sınır | Üst Sınır |\\n|---------|-------------|-----------|-----------|\\n| $x_1$ ($c_1 = 3$) | 3 | 0 | 7.5 |\\n| $x_2$ ($c_2 = 5$) | 5 | 2 | $\\\\infty$ |\\n\\nÖrnek Yorum: $c_1$ değeri 0 ile 7.5 arasında kaldığı sürece $x_1^*=2$, $x_2^*=6$ optimal temel değişmez.",
+        "en": "**Wyndor Glass Sensitivity Report** (Optimal: $x_1^*=2$, $x_2^*=6$, $Z^*=36$): F2 shadow price 1.5 valid for RHS in [6,18]. $c_1$ range [0, 7.5] — current basis optimal while $c_1$ stays in that range."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "sensitivity range",
+          "explanation_tr": "Bir parametrenin, mevcut optimal temeli bozmadan değişebileceği alt ve üst sınır aralığı.",
+          "explanation_en": "The interval within which a parameter can change without altering the optimal basis.",
+          "exampleSentence_en": "The sensitivity range for the labor coefficient was [$8, $15] per hour."
+        },
+        {
+          "term_en": "allowable increase / decrease",
+          "explanation_tr": "Mevcut parametrenin, optimal temeli değiştirmeden alabileceği maksimum artış veya azalış miktarı.",
+          "explanation_en": "Maximum amount a parameter can increase or decrease while keeping the current basis optimal.",
+          "exampleSentence_en": "The allowable increase for RHS of constraint 2 was 6 units."
+        },
+        {
+          "term_en": "optimality range",
+          "explanation_tr": "Amaç fonksiyonu katsayısı için, mevcut köşe noktasının optimal kalmaya devam ettiği aralık.",
+          "explanation_en": "The range of an objective coefficient within which the current corner point remains optimal.",
+          "exampleSentence_en": "Within the optimality range, the production mix does not change."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m31-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Wyndor Glass'ta F2 kısıtının RHS duyarlılık aralığı [6, 18]'dir. F2 kapasitesi 20 saate çıkarılırsa ne olur?",
+            "en": "In Wyndor Glass, the RHS sensitivity range for F2 is [6, 18]. What happens if F2 capacity is increased to 20 hours?"
+          },
+          "options": [
+            { "tr": "Gölge fiyat 1.5 olmaya devam eder ve $Z^*$ 3 TL artar.", "en": "Shadow price remains 1.5 and $Z^*$ increases by 3." },
+            { "tr": "Optimal temel değişir; gölge fiyat 1.5 artık geçerli değildir.", "en": "The optimal basis changes; shadow price of 1.5 is no longer valid." },
+            { "tr": "Optimal çözüm değişmez; $Z^* = 36$ kalır.", "en": "Optimal solution is unchanged; $Z^*$ remains 36." },
+            { "tr": "Problem çözümsüz hale gelir.", "en": "The problem becomes infeasible." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "RHS değeri 20 olarak duyarlılık aralığı olan [6, 18]'in dışına çıkmaktadır. Bu durumda optimal temel değişir ve mevcut gölge fiyat (1.5) artık geçerli olmaz; yeni bir simplex iterasyonu gerekir.",
+            "en": "RHS of 20 exceeds the upper bound of the sensitivity range [6, 18]. The optimal basis changes and the shadow price of 1.5 is no longer valid beyond this range."
+          }
+        },
+        {
+          "id": "m31-l2-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "$c_1$ katsayısının duyarlılık aralığı [0, 7.5] ise, $c_1 = 4$ yapıldığında optimal üretim planı nasıl değişir?",
+            "en": "If the optimality range for $c_1$ is [0, 7.5], what happens to the optimal production plan when $c_1$ is set to 4?"
+          },
+          "options": [
+            { "tr": "Optimal plan değişmez; aynı $x_1^*, x_2^*$ değerleri geçerliliğini korur.", "en": "Optimal plan unchanged; same $x_1^*, x_2^*$ values remain optimal." },
+            { "tr": "Optimal plan değişir; farklı bir köşe noktası daha iyi olur.", "en": "Optimal plan changes; a different corner point becomes better." },
+            { "tr": "Problem sınırsız (unbounded) hale gelir.", "en": "Problem becomes unbounded." },
+            { "tr": "Gölge fiyatlar sıfıra iner.", "en": "All shadow prices drop to zero." }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "$c_1 = 4$ değeri [0, 7.5] aralığı içindedir. Dolayısıyla mevcut optimal temel (köşe noktası) değişmez; $x_1^*$ ve $x_2^*$ aynı kalır. Sadece $Z^*$'in sayısal değeri güncellenir: $Z^* = 4(2) + 5(6) = 38$.",
+            "en": "$c_1 = 4$ falls within [0, 7.5], so the current optimal basis is unchanged. $x_1^*$ and $x_2^*$ stay the same; only the value of $Z^*$ updates to $4(2)+5(6)=38$."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Duyarlılık aralıkları - scipy ile\nfrom scipy.optimize import linprog\nimport numpy as np\n\n# Wyndor Glass (min -Z)\nc = [-3, -5]\nA_ub = [[1, 0], [0, 2], [3, 2]]\nb_ub = [4, 12, 18]\nbounds = [(0, None), (0, None)]\n\nres = linprog(c, A_ub=A_ub, b_ub=b_ub, bounds=bounds, method='highs')\nprint(f'Optimal Z* = {-res.fun}')\nprint(f'x1 = {res.x[0]:.2f}, x2 = {res.x[1]:.2f}')\n# Dual values (shadow prices)\nprint(f'Shadow prices: {-res.ineqlin.marginals}')",
+        "powerBiNote": {
+          "tr": "Duyarlılık aralıkları, üretim bütçesi tahsis raporlarında 'izin verilen değişim' sütunu olarak yer alır.",
+          "en": "Sensitivity ranges appear as 'allowable change' columns in production budget allocation reports."
+        }
+      }
+    },
+    {
+      "id": "m31-l3",
+      "moduleId": "module-31",
+      "order": 3,
+      "difficulty": "zor",
+      "title": {
+        "tr": "Raporlama ve Ekonomik Yorumlama",
+        "en": "Reporting & Economic Interpretation"
+      },
+      "conceptCard": {
+        "tr": "**LP Duyarlılık Raporunu Yöneticiye Sunmak:**\\n\\nBir LP çözümünden yalnızca $x^*$ ve $Z^*$ değil; şu bilgiler de raporlanır:\\n\\n1. **Her kısıt için:**\\n   - Slack/Surplus değeri (kaynağın ne kadarı kullanılmadı)\\n   - Gölge fiyatı (o kaynaktan 1 birim daha almanın değeri)\\n   - RHS duyarlılık aralığı (gölge fiyatın geçerli olduğu aralık)\\n\\n2. **Her karar değişkeni için:**\\n   - Azaltılmış maliyet (reduced cost): Bağlanamayan bir değişkeni baza sokmanın bedeli\\n   - $c_j$ duyarlılık aralığı\\n\\n3. **Yönetimsel Karar:**\\n   - **Kapasite genişletme:** Gölge fiyat > genişleme maliyeti ise yatırım yapılmalı\\n   - **Kaynak satın alma:** Gölge fiyat = piyasa fiyatından yüksekse satın al\\n   - **Fiyat değişimi:** $c_j$ duyarlılık aralığını aşacak fiyat düşüşü varsa ürünü kesmek gerekebilir\\n\\n**INDR262 Knapsack Bağlantısı:** Knapsack'in LP Relaxation'ının dual değişkenleri de kapasite kısıtlarının (ağırlık, hacim) gölge fiyatlarıdır; birim kapasite başına kazanç marjı yorumunu verir.",
+        "en": "**LP Sensitivity Reporting for Management:**\\n\\nBeyond $x^*$ and $Z^*$, a full sensitivity report includes:\\n1. Slack/surplus per constraint, shadow price, and RHS range.\\n2. Reduced cost per variable and $c_j$ range.\\n\\n**Managerial Decisions:**\\n- **Capacity expansion:** Invest if shadow price > expansion cost per unit.\\n- **Resource purchase:** Buy if shadow price > market price.\\n- **Price change:** Drop product if $c_j$ falls below its lower sensitivity bound.\\n\\n**Knapsack Link:** Dual variables of the LP relaxation represent the shadow price of weight/volume capacity — marginal gain per unit of capacity."
+      },
+      "companyExample": {
+        "tr": "**Örnek: Wyndor Glass Yönetim Raporu**\\n\\nSimplex çözümü: $x_1^*=2$, $x_2^*=6$, $Z^*=36$\\n\\n**Karar: F2 fabrikasında kapasite artırımı yapılmalı mı?**\\n- F2 gölge fiyatı = 1.5 TL/saat\\n- Ek kapasitanın maliyeti = 1.0 TL/saat (fazla mesai)\\n\\n$$\\\\text{Net Fayda} = 1.5 - 1.0 = 0.5 \\\\text{ TL/saat (pozitif → yatırım yap)}$$\\n\\n**Kaç saate kadar yatırım yapılmalı?**\\nRHS duyarlılık aralığı [6, 18] → mevcut 12 saatten en fazla 18 saate çıkılabilir.\\n$$\\\\Delta b_{F2}^{\\\\max} = 18 - 12 = 6 \\\\text{ saat}$$\\n\\nBu 6 ek saatin getireceği ek kar:\\n$$\\\\Delta Z^* = 6 \\\\times 1.5 = 9 \\\\text{ TL}$$\\n\\n**Karar:** F2'ye 6 ek saate kadar 1.0 TL/saat maliyetle kapasite ekle; net fayda 3 TL/dönem.",
+        "en": "**Wyndor Glass Management Report:** F2 shadow price = 1.5, overtime cost = 1.0 → net gain = 0.5 per hour. Max feasible expansion: 6 hours (to upper RHS limit of 18). Total gain: $6 \\\\times 1.5 = 9$ TL. Decision: add up to 6 overtime hours at F2."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "reduced cost",
+          "explanation_tr": "Temelde olmayan bir karar değişkenini baza sokmanın maliyeti; o değişkenin ne kadar kâr artışına yol açacağını veya ne kadar kâr kaybına neden olacağını gösterir.",
+          "explanation_en": "The amount by which an objective coefficient must improve before a non-basic variable enters the basis.",
+          "exampleSentence_en": "The reduced cost of -3 meant Product 3 would reduce profit if produced."
+        },
+        {
+          "term_en": "sensitivity report",
+          "explanation_tr": "LP çözücünün ürettiği; gölge fiyatlar, duyarlılık aralıkları ve azaltılmış maliyetleri içeren tam analiz raporu.",
+          "explanation_en": "The output from an LP solver summarizing shadow prices, allowable ranges, and reduced costs.",
+          "exampleSentence_en": "The sensitivity report revealed that the packaging constraint was the most critical bottleneck."
+        },
+        {
+          "term_en": "marginal value of a resource",
+          "explanation_tr": "O kaynaktan 1 birim daha edinmenin toplam kâra katkısı; gölge fiyat ile eş anlamlıdır.",
+          "explanation_en": "The additional profit from one more unit of a resource; synonymous with shadow price.",
+          "exampleSentence_en": "The marginal value of machine hours was $4 per hour at the optimal solution."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m31-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir kısıtın gölge fiyatı 3 TL/birim ve ek kapasite maliyeti 4 TL/birim ise yönetim ne yapmalıdır?",
+            "en": "A constraint has a shadow price of 3 per unit and the cost to add capacity is 4 per unit. What should management do?"
+          },
+          "options": [
+            { "tr": "Ek kapasite satın almalı; gölge fiyat pozitif.", "en": "Buy extra capacity; shadow price is positive." },
+            { "tr": "Ek kapasite satın almamalı; maliyet faydan büyük.", "en": "Do not buy extra capacity; cost exceeds the shadow price benefit." },
+            { "tr": "Kısıtı modelden kaldırmalı.", "en": "Remove the constraint from the model." },
+            { "tr": "Amaç fonksiyonunu yeniden formüle etmeli.", "en": "Reformulate the objective function." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Ek kapasitenin marjinal getirisi (gölge fiyat = 3 TL) ek kapasitenin marjinal maliyetinden (4 TL) düşüktür. Yatırım net zarar yaratır ($3 - 4 = -1$ TL/birim), bu nedenle kapasite genişletilmemelidir.",
+            "en": "Marginal benefit (shadow price = 3) < marginal cost (4). Net impact = -1 per unit of capacity added. Do not invest."
+          }
+        },
+        {
+          "id": "m31-l3-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir amaç fonksiyonu katsayısı $c_j = 10$'un duyarlılık aralığı [6, 15]'dir. Pazar koşulları $c_j$'yi 5'e düşürürse ne olur?",
+            "en": "An objective coefficient $c_j = 10$ has an optimality range of [6, 15]. Market conditions drop $c_j$ to 5. What happens?"
+          },
+          "options": [
+            { "tr": "Mevcut optimal temel korunur; $Z^*$ sadece sayısal olarak değişir.", "en": "Current optimal basis is preserved; only the value of $Z^*$ changes." },
+            { "tr": "Mevcut optimal temel değişir; farklı bir ürün bileşimi daha iyi olur.", "en": "Current basis changes; a different product mix becomes optimal." },
+            { "tr": "Problem sınırsız olur.", "en": "The problem becomes unbounded." },
+            { "tr": "Tüm gölge fiyatlar sıfıra iner.", "en": "All shadow prices drop to zero." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$c_j = 5$ değeri [6, 15] duyarlılık aralığının altına düşmektedir. Bu durumda mevcut temel artık optimal değildir; $x_j$'nin mevcut üretim düzeyi karlı olmaktan çıkar ve farklı bir köşe noktası optimale taşınır.",
+            "en": "$c_j = 5$ is below the lower bound of [6, 15]. The current basis is no longer optimal; a different corner point becomes the new optimum."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Tam duyarlılık raporu - PuLP + manuel analiz\nfrom pulp import *\n\nprob = LpProblem('Wyndor_Report', LpMaximize)\nx1 = LpVariable('Kapi', lowBound=0)\nx2 = LpVariable('Pencere', lowBound=0)\nprob += 3*x1 + 5*x2\nprob += x1 <= 4\nprob += 2*x2 <= 12\nprob += 3*x1 + 2*x2 <= 18\nprob.solve(PULP_CBC_CMD(msg=0))\n\nprint('=== WYNDOR GLASS DUYARLILIK RAPORU ===')\nprint(f'Z* = {value(prob.objective)}')\nfor v in prob.variables():\n    print(f'  {v.name} = {v.varValue}')\nprint('Gölge Fiyatlar:')\nfor name, c in prob.constraints.items():\n    print(f'  [{name}] shadow_price = {-c.pi:.3f}, slack = {c.slack:.3f}')",
+        "powerBiNote": {
+          "tr": "Yönetim raporunda her kısıt için gölge fiyat ve kapasite yatırım kararı yan yana gösterilir.",
+          "en": "Management dashboards display shadow prices alongside capacity investment ROI per constraint."
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m31-c1",
+      "moduleId": "module-31",
+      "difficulty": "orta",
+      "title": {
+        "tr": "Vaka Sınavı: Wyndor Glass Duyarlılık Raporu",
+        "en": "Case Exam: Wyndor Glass Sensitivity Report"
+      },
+      "scenario": {
+        "tr": "Wyndor Glass Co. iki ürün üretiyor (Kapı $x_1$, Pencere $x_2$):\\n$$\\\\max Z = 3x_1 + 5x_2$$\\n$$x_1 \\\\leq 4 \\\\quad (F1)$$\\n$$2x_2 \\\\leq 12 \\\\quad (F2)$$\\n$$3x_1 + 2x_2 \\\\leq 18 \\\\quad (F3)$$\\n$$x_1, x_2 \\\\geq 0$$\\n\\nSimplex çözümü: $x_1^*=2$, $x_2^*=6$, $Z^*=36$.\\n\\nDuyarlılık raporu:\\n| Kısıt | Slack | Gölge Fiyat | RHS Alt | RHS Üst |\\n|-------|-------|-------------|---------|---------|\\n| F1 | 2 | 0 | 2 | ∞ |\\n| F2 | 0 | 1.5 | 6 | 18 |\\n| F3 | 0 | 1.0 | 12 | 24 |\\n\\n$c_j$ Aralıkları: $c_1 \\\\in [0, 7.5]$, $c_2 \\\\in [2, \\\\infty)$",
+        "en": "Wyndor Glass Co. sensitivity report: Optimal $x_1^*=2$, $x_2^*=6$, $Z^*=36$. F1 shadow price=0 (non-binding), F2 shadow price=1.5 (range [6,18]), F3 shadow price=1.0 (range [12,24]). Objective ranges: $c_1 \\\\in [0,7.5]$, $c_2 \\\\in [2,\\\\infty)$."
+      },
+      "questions": [
+        {
+          "id": "m31-c1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "F1 fabrikasının kapasitesini 4'ten 6'ya çıkarmanın $Z^*$'e etkisi nedir?",
+            "en": "What is the effect on $Z^*$ of increasing F1 capacity from 4 to 6?"
+          },
+          "options": [
+            { "tr": "$Z^*$ 2 × 0 = 0 TL artar; F1 bağlayıcı değildir.", "en": "$Z^*$ increases by 2 × 0 = 0; F1 is non-binding." },
+            { "tr": "$Z^*$ 2 × 1.5 = 3 TL artar.", "en": "$Z^*$ increases by 2 × 1.5 = 3." },
+            { "tr": "$Z^*$ 2 × 1.0 = 2 TL artar.", "en": "$Z^*$ increases by 2 × 1.0 = 2." },
+            { "tr": "Optimal çözüm değişir ve $Z^* = 40$ olur.", "en": "Optimal solution changes and $Z^* = 40$." }
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "F1'in gölge fiyatı 0'dır; bu kısıt bağlayıcı değildir (slack = 2). RHS'i artırmak zaten boşta olan kapasiteyi büyütür, $Z^*$'i iyileştirmez.",
+            "en": "F1's shadow price is 0 (non-binding, slack = 2). Increasing its RHS only adds idle capacity and has no effect on $Z^*$."
+          }
+        },
+        {
+          "id": "m31-c1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "F3 kapasitesi 18'den 21'e çıkarılırsa (aralık içinde) $Z^*$ ne olur?",
+            "en": "If F3 capacity increases from 18 to 21 (within range), what is the new $Z^*$?"
+          },
+          "options": [
+            { "tr": "36", "en": "36" },
+            { "tr": "39", "en": "39" },
+            { "tr": "37.5", "en": "37.5" },
+            { "tr": "41", "en": "41" }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$\\\\Delta b_{F3} = 21 - 18 = 3$, gölge fiyat = 1.0. Yeni $Z^* = 36 + 3 \\\\times 1.0 = 39$. 21 ≤ 24 olduğundan aralık içindedir ve gölge fiyat geçerlidir.",
+            "en": "$\\\\Delta b_{F3} = 3$, shadow price = 1.0. New $Z^* = 36 + 3(1.0) = 39$. Since 21 ≤ 24, we are within the sensitivity range."
+          }
+        },
+        {
+          "id": "m31-c1-q3",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Kapı ($x_1$) birim karı 3 TL'den 8 TL'ye yükselirse optimal üretim planı değişir mi?",
+            "en": "If the unit profit of Door ($x_1$) rises from 3 to 8, does the optimal production plan change?"
+          },
+          "options": [
+            { "tr": "Hayır; $c_1 = 8$ hâlâ [0, 7.5] içindedir.", "en": "No; $c_1 = 8$ is still within [0, 7.5]." },
+            { "tr": "Evet; $c_1 = 8$ duyarlılık aralığı [0, 7.5]'in dışına çıkar ve yeni bir temel optimal olur.", "en": "Yes; $c_1 = 8$ exceeds [0, 7.5] upper bound and a new basis becomes optimal." },
+            { "tr": "Hayır; amaç katsayısı hiçbir zaman optimal planı etkilemez.", "en": "No; objective coefficients never affect the optimal plan." },
+            { "tr": "Problem çözümsüz hale gelir.", "en": "The problem becomes infeasible." }
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$c_1 = 8$ değeri üst sınır 7.5'in üzerine çıkmaktadır. Bu durumda mevcut optimal köşe noktası ($x_1^*=2, x_2^*=6$) yerine farklı bir köşe noktası daha kârlı hale gelir ve optimal üretim planı değişir.",
+            "en": "$c_1 = 8 > 7.5$ exceeds the optimality range. The current corner point is no longer optimal; the model will shift to a different vertex where more $x_1$ is produced."
+          }
+        }
+      ]
+    }
+  ]
+}

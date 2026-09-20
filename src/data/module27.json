@@ -1,0 +1,338 @@
+{
+  "id": "module-27",
+  "order": 27,
+  "title": {
+    "tr": "Standart Form & Temel Çözümler (BFS)",
+    "en": "Standard Form & Basic Feasible Solutions"
+  },
+  "description": {
+    "tr": "Slack ve surplus değişkenleriyle LP'yi standart eşitlik formuna dönüştürmeyi, temel ve temel olmayan değişken kavramlarını ve Köşe Noktası (BFS) geometrisini öğren.",
+    "en": "Learn to convert LPs into standard equality form using slack and surplus variables, understand basic vs non-basic variables, and master Basic Feasible Solutions (BFS)."
+  },
+  "iconName": "Table2",
+  "lessons": [
+    {
+      "id": "m27-l1",
+      "moduleId": "module-27",
+      "order": 1,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Standart Form Dönüşümü ve Slack/Surplus Değişkenler",
+        "en": "Standard Form Conversion and Slack/Surplus Variables"
+      },
+      "conceptCard": {
+        "tr": "**Neden Standart Form?**\nSimplex algoritması cebirsel bir matris yöntemidir ve yalnızca **eşitlik ($=$)** kısıtları üzerinde çalışır. Bu nedenle eşitsizlikleri standart eşitlik formuna çeviririz.\n\n**Standart Form Kuralları:**\n1. Tüm kısıtlar denklem (eşitlik) haline getirilir.\n2. Sağ taraf değerleri (RHS: $b_i$) negatif olamaz ($b_i \\geq 0$). Eğer $b_i < 0$ ise denklem $-1$ ile çarpılır.\n3. Tüm karar değişkenleri negatif olmayan olmalıdır ($x_j \\geq 0$).\n\n**Dönüşüm Yöntemleri:**\n- **Küçük Eşit ($\\leq$) Kısıtları:** Atıl kapasiteyi temsil eden bir **Gevşeklik Değişkeni (Slack Variable, $s_i \\geq 0$)** eklenir:\n  $$a_{i1}x_1 + a_{i2}x_2 \\leq b_i \\quad \\Longrightarrow \\quad a_{i1}x_1 + a_{i2}x_2 + s_i = b_i$$\n- **Büyük Eşit ($\\geq$) Kısıtları:** Fazlalığı temsil eden bir **Artık Değişken (Surplus Variable, $e_i \\geq 0$)** çıkarılır:\n  $$a_{i1}x_1 + a_{i2}x_2 \\geq b_i \\quad \\Longrightarrow \\quad a_{i1}x_1 + a_{i2}x_2 - e_i = b_i$$\n- **İşareti Serbest Değişken (Unrestricted in Sign - URS):** $x_j = x_j^+ - x_j^-$ şeklinde iki negatif olmayan değişkenin farkı olarak yazılır ($x_j^+, x_j^- \\geq 0$).",
+        "en": "**Why Standard Form?**\nThe Simplex algorithm operates on systems of linear equations. Hence, all inequalities must be converted to standard equality form.\n\n**Conversion Rules:**\n- For $\\leq$ constraints, add a non-negative **Slack variable** ($+s_i$):\n  $$a_{i1}x_1 + a_{i2}x_2 + s_i = b_i$$\n- For $\\geq$ constraints, subtract a non-negative **Surplus variable** ($-e_i$):\n  $$a_{i1}x_1 + a_{i2}x_2 - e_i = b_i$$\n- All RHS parameters must be non-negative ($b_i \\geq 0$).\n- All variables must satisfy non-negativity ($x_j \\geq 0, s_i \\geq 0, e_i \\geq 0$)."
+      },
+      "companyExample": {
+        "tr": "**Örnek Dönüşüm:**\n\nOrijinal Model:\n$$\\max Z = 3x_1 + 5x_2$$\n$$\\text{s.t. } x_1 \\leq 4$$\n$$2x_2 \\leq 12$$\n$$3x_1 + 2x_2 \\leq 18$$\n$$x_1, x_2 \\geq 0$$\n\n**Standart Form:**\n$$\\max Z = 3x_1 + 5x_2 + 0s_1 + 0s_2 + 0s_3$$\n$$\\text{s.t. } x_1 + s_1 = 4$$\n$$2x_2 + s_2 = 12$$\n$$3x_1 + 2x_2 + s_3 = 18$$\n$$x_1, x_2, s_1, s_2, s_3 \\geq 0$$\n\nBurada $s_1, s_2, s_3$ değişkenleri sırasıyla 1., 2. ve 3. fabrikadaki kullanılmayan boş kapasiteyi (slack) temsil eder.",
+        "en": "**Standard Form Example:**\nConverting Wyndor Glass to standard form by adding slack variables $s_1, s_2, s_3 \\geq 0$:\n$$x_1 + s_1 = 4$$\n$$2x_2 + s_2 = 12$$\n$$3x_1 + 2x_2 + s_3 = 18$$\n$$x_1, x_2, s_1, s_2, s_3 \\geq 0$$"
+      },
+      "vocabTerms": [
+        {
+          "term_en": "slack variable",
+          "explanation_tr": "$\\leq$ kısıtını eşitliğe dönüştürmek için eklenen ve kullanılmayan atıl kaynak miktarını gösteren negatif olmayan değişken.",
+          "explanation_en": "A variable added to a $\\leq$ constraint to convert it to an equality, representing unused resource.",
+          "exampleSentence_en": "The slack variable $s_1 = 2$ means 2 hours of plant capacity remained unused."
+        },
+        {
+          "term_en": "surplus variable",
+          "explanation_tr": "$\\geq$ kısıtını eşitliğe dönüştürmek için çıkarılan ve asgari gereksinimin üzerindeki fazlalığı gösteren değişken.",
+          "explanation_en": "A variable subtracted from a $\\geq$ constraint to convert it to an equality, representing excess over requirement.",
+          "exampleSentence_en": "The surplus variable indicated that nutritional intake exceeded the minimum by 5 units."
+        },
+        {
+          "term_en": "standard equality form",
+          "explanation_tr": "Tüm kısıtların eşitlik, tüm sağ taraf değerlerinin ve değişkenlerin negatif olmadığı LP formülasyonu.",
+          "explanation_en": "An LP formulation where all constraints are equalities and all variables and RHS values are non-negative.",
+          "exampleSentence_en": "Before applying Simplex, the model was converted to standard equality form."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m27-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "$2x_1 + 5x_2 \\geq 30$ kısıtı standart eşitlik formuna nasıl dönüştürülür ($x_1, x_2 \\geq 0$)?",
+            "en": "How is the constraint $2x_1 + 5x_2 \\geq 30$ converted to standard equality form ($x_1, x_2 \\geq 0$)?"
+          },
+          "options": [
+            {"tr": "$2x_1 + 5x_2 + s_1 = 30, \\quad s_1 \\geq 0$", "en": "$2x_1 + 5x_2 + s_1 = 30, \\quad s_1 \\geq 0$"},
+            {"tr": "$2x_1 + 5x_2 - e_1 = 30, \\quad e_1 \\geq 0$", "en": "$2x_1 + 5x_2 - e_1 = 30, \\quad e_1 \\geq 0$"},
+            {"tr": "$-2x_1 - 5x_2 + s_1 = 30, \\quad s_1 \\geq 0$", "en": "$-2x_1 - 5x_2 + s_1 = 30, \\quad s_1 \\geq 0$"},
+            {"tr": "$2x_1 + 5x_2 = 30$", "en": "$2x_1 + 5x_2 = 30$"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Büyük eşit ($\\geq$) kısıtlarında sol taraf sağ taraftan büyük veya eşittir. Eşitliği sağlamak için pozitif bir artık değişken ($e_1 \\geq 0$) çıkarılır: $2x_1 + 5x_2 - e_1 = 30$.",
+            "en": "For $\\geq$ constraints, we subtract a non-negative surplus variable: $2x_1 + 5x_2 - e_1 = 30, e_1 \\geq 0$."
+          }
+        },
+        {
+          "id": "m27-l1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir kısıt $-3x_1 + 4x_2 \\leq -12$ olarak verilmiştir. Standart form için ilk yapılması gereken işlem nedir?",
+            "en": "A constraint is given as $-3x_1 + 4x_2 \\leq -12$. What is the first step required for standard form?"
+          },
+          "options": [
+            {"tr": "Doğrudan slack değişkeni eklemek: $-3x_1 + 4x_2 + s_1 = -12$", "en": "Directly add a slack variable: $-3x_1 + 4x_2 + s_1 = -12$"},
+            {"tr": "Kısıtı -1 ile çarparak sağ tarafı pozitif yapmak: $3x_1 - 4x_2 \\geq 12$", "en": "Multiply by -1 to make RHS non-negative: $3x_1 - 4x_2 \\geq 12$"},
+            {"tr": "Amaç fonksiyonunu -1 ile çarpmak", "en": "Multiply the objective function by -1"},
+            {"tr": "Bu kısıt çözülemez olduğu için modelden çıkarmak", "en": "Drop the constraint because it is unsolvable"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Standart formda sağ taraf ($b_i$) daima $\\geq 0$ olmalıdır. $-12 < 0$ olduğu için denklem $-1$ ile çarpılır, eşitsizlik yön değiştirir: $3x_1 - 4x_2 \\geq 12$, ardından surplus çıkarılır.",
+            "en": "In standard form, RHS must be $\\geq 0$. Multiplying by $-1$ flips the inequality to $3x_1 - 4x_2 \\geq 12$."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# scipy.optimize.linprog standart form matris gösterimi (A_eq @ x = b_eq)\nimport numpy as np\nfrom scipy.optimize import linprog\n\n# c = [-3, -5, 0, 0, 0] (scipy min yaptığı için - ile çarpılır)\nc = [-3, -5, 0, 0, 0]\nA_eq = [\n    [1, 0, 1, 0, 0],\n    [0, 2, 0, 1, 0],\n    [3, 2, 0, 0, 1]\n]\nb_eq = [4, 12, 18]\n\nres = linprog(c, A_eq=A_eq, b_eq=b_eq, bounds=(0, None))\nprint('Optimal değişkenler [x1, x2, s1, s2, s3]:', res.x)\nprint('Optimal Kar Z:', -res.fun)",
+        "powerBiNote": {
+          "tr": "Slack değişkenlerinin değeri, üretim panolarında 'Kapasite Kullanım Oranı' KPI'ını hesaplamak için kullanılır.",
+          "en": "Slack variable values directly determine capacity utilization rate KPIs in manufacturing dashboards."
+        }
+      }
+    },
+    {
+      "id": "m27-l2",
+      "moduleId": "module-27",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Temel Çözüm (Basic Solution) ve BFS Kavramı",
+        "en": "Basic Solutions and Basic Feasible Solutions (BFS)"
+      },
+      "conceptCard": {
+        "tr": "**Temel Çözüm Matris Yapısı:**\n$m$ adet kısıt denklemi ve $n$ adet değişken ($n > m$) içeren standart formda bir denklem sistemi düşünelim: $Ax = b$.\n\n- Değişkenlerden $n - m$ tanesi **$0$'a eşitlenir**. Bu değişkenlere **Temel Olmayan Değişkenler (Non-Basic Variables, NBV)** denir.\n- Kalan $m$ adet değişken, geriye kalan $m \\times m$ boyutundaki lineer denklem sistemi çözülerek bulunur. Bu değişkenlere **Temel Değişkenler (Basic Variables, BV)** denir.\n\n**Temel Çözüm vs. Temel Uygun Çözüm (BFS):**\n1. **Temel Çözüm (Basic Solution):** $n-m$ değişken $0$ yapılıp geriye kalan $m$ değişkenin çözülmesiyle elde edilen herhangi bir çözüm vektörüdür. Temel değişkenlerden biri negatif çıkabilir.\n2. **Temel Uygun Çözüm (Basic Feasible Solution - BFS):** Eğer bulunan tüm temel değişkenler negatif değilse ($x_B \\geq 0$), bu çözüm bir **BFS**'dir.\n\n**Temel Teorem (Corner Point Theorem):**\n> Bir LP'nin grafiksel uygun bölgesindeki her bir **Köşe Noktası (Extreme Point)**, standart formdaki tam olarak bir **Temel Uygun Çözüme (BFS)** karşılık gelir!",
+        "en": "**Matrix Structure of Basic Solutions:**\nFor an $m \\times n$ system $Ax = b$ with $n > m$:\n- Set $n - m$ variables to $0$. These are **Non-Basic Variables (NBV)**.\n- Solve the remaining $m \\times m$ system for the $m$ **Basic Variables (BV)**.\n\n**Definitions:**\n1. **Basic Solution:** Any solution obtained by setting $n-m$ non-basic variables to zero.\n2. **Basic Feasible Solution (BFS):** A basic solution where all basic variables are non-negative ($x_B \\geq 0$).\n\n**Fundamental Equivalence:**\n> Every **Corner Point** of the feasible region corresponds to a **Basic Feasible Solution (BFS)** in algebraic space."
+      },
+      "companyExample": {
+        "tr": "**Wyndor Glass Örneğinde BFS İncelemesi:**\n$m = 3$ kısıt, $n = 5$ değişken ($x_1, x_2, s_1, s_2, s_3$).\n$n - m = 5 - 3 = 2$ değişken $0$ yapılmalıdır.\n\n**Durum 1: Başlangıç Noktası $(x_1 = 0, x_2 = 0)$**\n- Non-Basic: $x_1 = 0, x_2 = 0$\n- Basic: $s_1 = 4, s_2 = 12, s_3 = 18$\n- Tüm değerler $\\geq 0$ olduğu için bu bir **BFS**'dir (Orijin köşe noktası $(0,0)$).\n\n**Durum 2: $x_1 = 4, x_2 = 6$ Seçimi**\n- Non-Basic: $s_1 = 0, s_2 = 0$\n- Kısıt 3'ten: $3(4) + 2(6) + s_3 = 18 \\Rightarrow 24 + s_3 = 18 \\Rightarrow s_3 = -6$\n- $s_3 = -6 < 0$ olduğu için bu bir Temel Çözümdür ancak **FEASIBLE DEĞİLDİR (Infeasible Basic Solution)**. Grafik düzlemde kısıtların kesiştiği ancak uygun bölgenin dışında kalan $(4,6)$ noktasıdır!",
+        "en": "**Wyndor Glass BFS Breakdown:**\n- At $(x_1=0, x_2=0)$: $s_1=4, s_2=12, s_3=18 \\geq 0$ → **BFS** (Origin corner point).\n- At $(x_1=4, x_2=6)$: $s_3 = 18 - 3(4) - 2(6) = -6 < 0$ → **Infeasible Basic Solution** (Outside feasible region)."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "basic variable",
+          "explanation_tr": "Bir temel çözümde değeri sıfırdan farklı olabilen ve denklem sistemi çözülerek bulunan $m$ adet değişkenden her biri.",
+          "explanation_en": "One of the $m$ variables solved from the linear system after setting non-basic variables to zero.",
+          "exampleSentence_en": "In the initial basis, the slack variables served as the basic variables."
+        },
+        {
+          "term_en": "non-basic variable",
+          "explanation_tr": "Temel çözümü bulmak için değeri sıfıra eşitlenen $n-m$ adet serbest değişkenden her biri.",
+          "explanation_en": "One of the $n-m$ variables explicitly set to zero to determine a basic solution.",
+          "exampleSentence_en": "Decision variables $x_1$ and $x_2$ were non-basic in the first simplex iteration."
+        },
+        {
+          "term_en": "basic feasible solution (BFS)",
+          "explanation_tr": "Tüm temel değişkenlerinin değeri $\\geq 0$ olan temel çözüm; uygun bölgenin köşe noktasına eşdeğerdir.",
+          "explanation_en": "A basic solution where all variables satisfy non-negativity; algebraically identical to an extreme corner point.",
+          "exampleSentence_en": "The Simplex method navigates from one adjacent BFS to another until optimality."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m27-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "4 kısıt ve 7 değişkenden oluşan standart formdaki bir LP'de bir temel çözüm bulmak için kaç değişken 0'a eşitlenmelidir?",
+            "en": "In a standard form LP with 4 constraints and 7 variables, how many variables must be set to zero to find a basic solution?"
+          },
+          "options": [
+            {"tr": "4", "en": "4"},
+            {"tr": "7", "en": "7"},
+            {"tr": "3", "en": "3"},
+            {"tr": "11", "en": "11"}
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "Temel olmayan değişken sayısı $n - m$ formülüyle bulunur. $n = 7, m = 4 \\Rightarrow n - m = 7 - 4 = 3$ değişken sıfır yapılır.",
+            "en": "Number of non-basic variables to set to zero is $n - m = 7 - 4 = 3$."
+          }
+        },
+        {
+          "id": "m27-l2-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Temel Çözüm ile Temel Uygun Çözüm (BFS) arasındaki temel fark nedir?",
+            "en": "What is the key difference between a Basic Solution and a Basic Feasible Solution (BFS)?"
+          },
+          "options": [
+            {"tr": "Temel çözümde amaç fonksiyonu hesaplanamaz.", "en": "Objective function cannot be computed for a basic solution."},
+            {"tr": "BFS'de tüm temel değişkenler negatif olmama kısıtını ($x_B \\geq 0$) sağlar, temel çözümde negatif değerler bulunabilir.", "en": "In a BFS all basic variables satisfy non-negativity ($x_B \\geq 0$), whereas a basic solution may have negative values."},
+            {"tr": "Temel çözümde kısıt sayısı değişken sayısından fazladır.", "en": "In a basic solution the number of constraints exceeds the number of variables."},
+            {"tr": "BFS yalnızca minimizasyon problemlerinde mevcuttur.", "en": "BFS only exists for minimization problems."}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Temel çözüm $Ax = b$ sisteminin cebirsel çözümüdür. Eğer tüm değişkenler $x_j \\geq 0$ şartını sağlıyorsa buna Temel Uygun Çözüm (BFS) denir.",
+            "en": "A basic solution becomes a BFS if and only if all variable values are non-negative ($x_j \\geq 0$)."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# BFS kontrol fonksiyonu\nimport numpy as np\n\ndef is_bfs(A, b, basic_indices):\n    B = A[:, basic_indices]\n    try:\n        x_B = np.linalg.solve(B, b)\n        is_feasible = np.all(x_B >= 0)\n        return is_feasible, x_B\n    except np.linalg.LinAlgError:\n        return False, 'Singular Basis (No Unique Solution)'\n\nA = np.array([[1, 0, 1, 0, 0], [0, 2, 0, 1, 0], [3, 2, 0, 0, 1]])\nb = np.array([4, 12, 18])\n\n# Temel değişkenler: s1(2), s2(3), s3(4) -> Orijin\nprint('Origin basis [2,3,4]:', is_bfs(A, b, [2, 3, 4]))\n# Temel değişkenler: x1(0), x2(1), s3(4) -> (4, 6) kesişimi\nprint('Intersection [0,1,4]:', is_bfs(A, b, [0, 1, 4]))",
+        "powerBiNote": {
+          "tr": "Simplex algoritmaları BFS'den BFS'ye geçerek ilerler; arka plandaki matris optimizasyonu bu prensiple çalışır.",
+          "en": "Modern linear solvers navigate from BFS to BFS; enterprise optimizers leverage this exact algebraic structure."
+        }
+      }
+    },
+    {
+      "id": "m27-l3",
+      "moduleId": "module-27",
+      "order": 3,
+      "difficulty": "zor",
+      "title": {
+        "tr": "Tüm Temel Çözümlerin Sistematik Analizi",
+        "en": "Systematic Enumeration of All Basic Solutions"
+      },
+      "conceptCard": {
+        "tr": "**Maksimum Temel Çözüm Sayısı:**\n$n$ değişken ve $m$ kısıt içeren bir sistemde seçilebilecek temel değişken kombinasyonu sayısı:\n$$\\binom{n}{m} = \\frac{n!}{m!(n-m)!}$$\n\nWyndor Glass örneğinde $n = 5, m = 3$:\n$$\\binom{5}{3} = \\frac{5 \\times 4 \\times 3}{3 \\times 2 \\times 1} = 10 \\text{ adet olası temel çözüm vardır.}$$\n\n**Temel Çözüm Tablosu İncelemesi:**\n10 durumdan kaçı **Feasible (BFS)**, kaçı **Infeasible**?\n- Her seçimde 2 değişken $0$ yapılır.\n- Kalan 3 değişkenin oluşturduğu $3 \\times 3$ matris çözülür.\n- Eğer tekil (singular/det=0) ise temel çözüm yoktur.\n- Eğer $x_B \\geq 0$ ise **BFS (Köşe Noktası)**.\n- Eğer en az bir $x_i < 0$ ise **Infeasible Temel Çözüm** (Kısıt doğrularının uygun bölge dışındaki kesişimi).\n\n**Neden Simplex Gerekir?**\nBüyük problemlerde $\\binom{1000}{100}$ sayısı evrendeki atom sayısından büyüktür! Tüm kombinasyonları denemek imkansızdır. Simplex, sadece **Z'yi artıran komşu BFS'ler** arasında akıllıca gezinerek optimali birkaç adımda bulur.",
+        "en": "**Maximum Number of Basic Solutions:**\n$$\\binom{n}{m} = \\frac{n!}{m!(n-m)!}$$\nFor $n=5, m=3$, there are $\\binom{5}{3} = 10$ candidate bases.\n\n**Why Simplex?**\nEnumerating all $\\binom{n}{m}$ solutions is computationally impossible for large scale problems ($n=1000, m=100$). Simplex intelligently traverses only improving adjacent BFS."
+      },
+      "companyExample": {
+        "tr": "**Koç Üniversitesi INDR 262 Term Project Part 1b Analizi:**\n\nModel:\n$$\\min Z = 16x_1 + 20x_2$$\n$$\\text{s.t. } -x_1 + 3x_2 - e_1 = 0$$\n$$-5x_1 + x_2 + s_2 = 0$$\n$$x_1 + x_2 - e_3 = 25$$\n$$x_1, x_2, e_1, s_2, e_3 \\geq 0$$\n\n$n = 5$ değişken, $m = 3$ kısıt $\\Rightarrow \\binom{5}{3} = 10$ temel çözüm noktası vardır.\n\n| No | Non-Basic (0) | Basic Değişkenler | Feasible? | $Z = 16x_1 + 20x_2$ |\n|---|---|---|---|---|\n| 1 | $x_1=0, x_2=0$ | $e_1=0, s_2=0, e_3=-25$ | **Infeasible** ($e_3 < 0$) | 0 |\n| 2 | $x_2=0, e_1=0$ | $x_1=0, s_2=0, e_3=-25$ | **Infeasible** | 0 |\n| 3 | $e_1=0, e_3=0$ | $x_1=18.75, x_2=6.25, s_2=87.5$ | **FEASIBLE (BFS)** | $16(18.75)+20(6.25) = \\mathbf{425}$ |\n| 4 | $s_2=0, e_3=0$ | $x_1=4.167, x_2=20.833, e_1=58.33$ | **FEASIBLE (BFS)** | $16(4.167)+20(20.833) = \\mathbf{483.33}$ |\n\nOptimal çözüm $\\min Z = 425$ ile $(18.75, 6.25)$ köşe noktasındadır!",
+        "en": "**INDR 262 Term Project Part 1b Table:**\nOut of 10 basic solutions, the feasible corner points are evaluated. The optimal BFS is $(x_1=18.75, x_2=6.25)$ with $\\min Z = 425$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "adjacent basic feasible solutions",
+          "explanation_tr": "Aralarında yalnızca tek bir temel değişken farkı bulunan iki komşu köşe noktası.",
+          "explanation_en": "Two BFSs that differ by exactly one basic variable, geometrically connected by an edge.",
+          "exampleSentence_en": "Each Simplex pivot moves the solution to an adjacent basic feasible solution."
+        },
+        {
+          "term_en": "extreme point enumeration",
+          "explanation_tr": "Tüm köşe noktalarını tek tek hesaplayarak en iyisini bulma yöntemi; değişken sayısı arttıkça verimsizleşir.",
+          "explanation_en": "Solving for all $\\binom{n}{m}$ candidate vertices; computationally intractable for large models.",
+          "exampleSentence_en": "Extreme point enumeration was replaced by the Simplex algorithm."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m27-l3-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "6 değişkenli ve 2 kısıtlı bir LP modelinde en fazla kaç adet temel çözüm bulunabilir?",
+            "en": "In an LP with 6 variables and 2 constraints, what is the maximum number of basic solutions?"
+          },
+          "options": [
+            {"tr": "$\\binom{6}{2} = 15$", "en": "$\\binom{6}{2} = 15$"},
+            {"tr": "$\\binom{6}{4} = 30$", "en": "$\\binom{6}{4} = 30$"},
+            {"tr": "$6 \\times 2 = 12$", "en": "$6 \\times 2 = 12$"},
+            {"tr": "$6^2 = 36$", "en": "$6^2 = 36$"}
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "Formül $\\binom{n}{m} = \\binom{6}{2} = \\frac{6 \\times 5}{2 \\times 1} = 15$ adet temel çözüm adayı vardır.",
+            "en": "Formula $\\binom{n}{m} = \\binom{6}{2} = \\frac{6 \\times 5}{2} = 15$ basic solutions."
+          }
+        },
+        {
+          "id": "m27-l3-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Simplex algoritması neden tüm $\\binom{n}{m}$ çözümleri tek tek denemek yerine komşu BFS'ler arasında adım adım ilerler?",
+            "en": "Why does the Simplex algorithm pivot between adjacent BFSs instead of enumerating all $\\binom{n}{m}$ solutions?"
+          },
+          "options": [
+            {"tr": "Çünkü diğer köşe noktalarında amaç fonksiyonu tanımlı değildir.", "en": "Because the objective function is not defined at other corners."},
+            {"tr": "Büyük problemlerde $\\binom{n}{m}$ sayısı milyarları aşar; Simplex sadece Z'yi iyileştiren yoldan giderek çok hızlı sonuca ulaşır.", "en": "For large models $\\binom{n}{m}$ reaches billions; Simplex navigates only improving edges to reach the optimum quickly."},
+            {"tr": "Grafik yöntem daha kesin sonuç verdiği için.", "en": "Because graphical methods are more accurate."},
+            {"tr": "Tüm temel çözümler her zaman feasible olduğu için.", "en": "Because all basic solutions are always feasible."}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Kombinasyon sayısı üssel olarak patlar ($n=100, m=20$ için trilyonlarca çözüm). Simplex tepe tırmanma (hill-climbing) mantığıyla yalnızca iyileşme sağlayan kenarları takip eder.",
+            "en": "Combinatorial explosion makes full enumeration impossible. Simplex efficiently navigates along improving edges."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import itertools\nimport numpy as np\n\n# INDR 262 Term Project Part 1b - Tüm temel çözümleri otomatik bulan script\nA = np.array([\n    [-1, 3, -1, 0, 0],\n    [-5, 1, 0, 1, 0],\n    [1, 1, 0, 0, -1]\n], dtype=float)\nb = np.array([0, 0, 25], dtype=float)\nc = np.array([16, 20, 0, 0, 0], dtype=float)\n\nn, m = A.shape[1], A.shape[0]\nprint(f'Toplam Temel Çözüm Adayı: C({n},{m}) = 10\\n')\n\nfor idxs in itertools.combinations(range(n), m):\n    B = A[:, idxs]\n    if np.linalg.matrix_rank(B) == m:\n        xB = np.linalg.solve(B, b)\n        is_feas = np.all(xB >= -1e-6)\n        full_x = np.zeros(n)\n        full_x[list(idxs)] = xB\n        Z = np.dot(c, full_x)\n        print(f'Basis {idxs}: Feasible={is_feas}, x1={full_x[0]:.2f}, x2={full_x[1]:.2f}, Z={Z:.2f}')",
+        "powerBiNote": {
+          "tr": "Dönem projesinin 1b sorusundaki tablonun tamamı bu python döngüsü ile doğrudan üretilebilir.",
+          "en": "The entire basic solution table for Term Project Part 1b is generated via this Python script."
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m27-case1",
+      "moduleId": "module-27",
+      "order": 1,
+      "title": {
+        "tr": "Vaka İncelemesi: Standart Form ve BFS Çözüm Analizi",
+        "en": "Case Study: Standard Form and BFS Analysis"
+      },
+      "scenario": {
+        "tr": "Bir lojistik şirketi iki rota üzerinde kamyon seferleri planlamaktadır ($x_1, x_2$).\n\nModel:\n$$\\max Z = 5x_1 + 4x_2$$\n$$\\text{s.t. } 2x_1 + x_2 \\leq 20 \\quad \\text{(Yakıt)}$$\n$$x_1 + 2x_2 \\leq 20 \\quad \\text{(Şoför Süresi)}$$\n$$x_1, x_2 \\geq 0$$\n\nBu modeli standart forma dönüştürerek ($s_1, s_2$ gevşeklik değişkenleri ile) temel çözümleri inceleyin.",
+        "en": "A logistics company plans truck dispatches on two routes ($x_1, x_2$) under fuel and driver hours constraints. Analyze the standard form and BFS."
+      },
+      "questions": [
+        {
+          "id": "m27-case1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bu modelin standart formunda kaç değişken ($n$) ve kaç kısıt ($m$) vardır?",
+            "en": "In the standard form of this model, how many variables ($n$) and constraints ($m$) exist?"
+          },
+          "options": [
+            {"tr": "$n = 4$ değişken ($x_1, x_2, s_1, s_2$) ve $m = 2$ kısıt", "en": "$n = 4$ variables ($x_1, x_2, s_1, s_2$) and $m = 2$ constraints"},
+            {"tr": "$n = 2$ değişken ve $m = 2$ kısıt", "en": "$n = 2$ variables and $m = 2$ constraints"},
+            {"tr": "$n = 4$ değişken ve $m = 4$ kısıt", "en": "$n = 4$ variables and $m = 4$ constraints"},
+            {"tr": "$n = 6$ değişken ve $m = 2$ kısıt", "en": "$n = 6$ variables and $m = 2$ constraints"}
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "2 karar değişkeni ($x_1, x_2$) + 2 slack değişkeni ($s_1, s_2$) = toplam $n = 4$ değişken. $m = 2$ adet kaynak kısıt eşitliği vardır.",
+            "en": "2 decision variables + 2 slack variables = $n = 4$ variables, and $m = 2$ constraint equations."
+          }
+        },
+        {
+          "id": "m27-case1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Non-basic değişkenler $s_1 = 0, s_2 = 0$ olarak seçildiğinde elde edilen temel çözümün ($x_1, x_2$) değerleri ve Feasible olma durumu nedir?",
+            "en": "When non-basic variables are chosen as $s_1 = 0, s_2 = 0$, what are the values of ($x_1, x_2$) and is it feasible?"
+          },
+          "options": [
+            {"tr": "$x_1 = 20/3, x_2 = 20/3$ (Yaklaşık 6.67, 6.67) ve FEASIBLE (BFS)", "en": "$x_1 = 20/3, x_2 = 20/3$ (Approx 6.67, 6.67) and FEASIBLE (BFS)"},
+            {"tr": "$x_1 = 10, x_2 = 10$ ve Infeasible", "en": "$x_1 = 10, x_2 = 10$ and Infeasible"},
+            {"tr": "$x_1 = 0, x_2 = 0$ ve Feasible", "en": "$x_1 = 0, x_2 = 0$ and Feasible"},
+            {"tr": "$x_1 = -5, x_2 = 15$ ve Infeasible", "en": "$x_1 = -5, x_2 = 15$ and Infeasible"}
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "$2x_1 + x_2 = 20$ ve $x_1 + 2x_2 = 20$ sistemi çözülürse: $3x_1 + 3x_2 = 40 \\Rightarrow x_1 + x_2 = 40/3$. Çözüm: $x_1 = 20/3 \\approx 6.67, x_2 = 20/3 \\approx 6.67$. Her iki değer de $\\geq 0$ olduğu için bu bir BFS'dir (iki kısıtın kesişim köşe noktası).",
+            "en": "Solving $2x_1 + x_2 = 20$ and $x_1 + 2x_2 = 20$ gives $x_1 = 20/3, x_2 = 20/3 \\geq 0$, which is a valid BFS."
+          }
+        },
+        {
+          "id": "m27-case1-q3",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bu modelde toplam olası temel çözüm sayısı $\\binom{4}{2}$ kaçtır?",
+            "en": "What is the total number of candidate basic solutions $\\binom{4}{2}$ in this model?"
+          },
+          "options": [
+            {"tr": "4", "en": "4"},
+            {"tr": "6", "en": "6"},
+            {"tr": "8", "en": "8"},
+            {"tr": "12", "en": "12"}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$\\binom{4}{2} = \\frac{4 \\times 3}{2 \\times 1} = 6$ adet temel çözüm adayı vardır.",
+            "en": "$\\binom{4}{2} = \\frac{4 \\times 3}{2} = 6$ candidate basic solutions."
+          }
+        }
+      ]
+    }
+  ]
+}

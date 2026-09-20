@@ -1,0 +1,265 @@
+{
+  "id": "module-26",
+  "order": 26,
+  "title": {
+    "tr": "Grafik Çözüm & Uygun Bölge",
+    "en": "Graphical Solution & Feasible Region"
+  },
+  "description": {
+    "tr": "İki değişkenli LP modellerini koordinat düzleminde görselleştir, uygun bölgeyi (feasible region) belirle ve köşe noktalarından optimal çözümü bul.",
+    "en": "Visualize two-variable LP models, identify the feasible region, and find the optimal solution at corner points."
+  },
+  "iconName": "BarChart2",
+  "lessons": [
+    {
+      "id": "m26-l1",
+      "moduleId": "module-26",
+      "order": 1,
+      "difficulty": "basit",
+      "title": {
+        "tr": "Kısıt Doğruları ve Uygun Bölge (Feasible Region)",
+        "en": "Constraint Lines and Feasible Region"
+      },
+      "conceptCard": {
+        "tr": "**Grafik Çözüm Yöntemi** yalnızca 2 karar değişkeni olduğunda kullanılır.\n\n**Adım 1 — Kısıt Doğrusunu Çiz:**\nHer $\\leq$ kısıtı için önce eşitlik ($=$) hali çizilir. Örnek: $2x_1 + x_2 = 10$\n- $x_2 = 0 \\Rightarrow x_1 = 5$ → $(5, 0)$\n- $x_1 = 0 \\Rightarrow x_2 = 10$ → $(0, 10)$\n\n**Adım 2 — Uygun Tarafı Belirle:**\n$\\leq$ kısıtlar için orijin $(0,0)$ testi yapılır:\n- $2(0) + 0 = 0 \\leq 10$ ✓ → Orijin uygun bölgededir → Doğrunun **altı** uygun bölge.\n\n**Adım 3 — Uygun Bölge (Feasible Region):**\nTüm kısıtların aynı anda sağlandığı alan. Tipik olarak **konveks (dışbükey) bir çokgen** ya da **sınırsız bölge**dir.\n\n**Köşe Noktası Teoremi:**\n> Eğer optimal çözüm varsa, uygun bölgenin en az bir **köşe noktasında (extreme point)** bulunur.",
+        "en": "**Graphical Method** applies only to 2-variable LPs.\n\n**Steps:**\n1. Plot each constraint as an equality line.\n2. Shade the feasible side (origin test for $\\leq$).\n3. Identify the feasible region (intersection of all half-planes).\n\n**Corner Point Theorem:** If an optimal solution exists, it occurs at a corner point of the feasible region."
+      },
+      "companyExample": {
+        "tr": "**Wyndor Glass — Uygun Bölge Belirleme:**\n\nKısıtlar:\n- $x_1 \\leq 4$\n- $2x_2 \\leq 12 \\Rightarrow x_2 \\leq 6$\n- $3x_1 + 2x_2 \\leq 18$\n- $x_1, x_2 \\geq 0$\n\n$3x_1 + 2x_2 = 18$ doğrusu için:\n- $(0, 9)$ ve $(6, 0)$ noktalarını birleştir.\n- Orijin testi: $3(0)+2(0)=0 \\leq 18$ ✓ → Alt sol bölge uygun.\n\n**Uygun bölge köşe noktaları:**\n| Köşe Noktası | $x_1$ | $x_2$ | $Z = 3x_1 + 5x_2$ |\n|---|---|---|---|\n| $(0, 0)$ | 0 | 0 | 0 |\n| $(4, 0)$ | 4 | 0 | 12 |\n| $(4, 3)$ | 4 | 3 | 27 |\n| $(2, 6)$ | 2 | 6 | **36** ← Optimal |\n| $(0, 6)$ | 0 | 6 | 30 |",
+        "en": "**Wyndor Glass Corner Points:** $(0,0)→Z=0$, $(4,0)→12$, $(4,3)→27$, $(2,6)→36$★, $(0,6)→30$. Optimal at $(2,6)$."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "feasible region",
+          "explanation_tr": "Tüm kısıtları aynı anda sağlayan noktaların oluşturduğu bölge; LP çözümünün aranacağı alan.",
+          "explanation_en": "The set of all points satisfying every constraint simultaneously; the search space for LP.",
+          "exampleSentence_en": "The feasible region was a bounded convex polygon with five corner points."
+        },
+        {
+          "term_en": "corner point (extreme point)",
+          "explanation_tr": "Uygun bölgenin en az iki kısıt sınırının kesiştiği köşe noktası; optimalin arandığı yer.",
+          "explanation_en": "A vertex of the feasible region where at least two constraints are binding.",
+          "exampleSentence_en": "The optimal solution was found at the corner point (2, 6)."
+        },
+        {
+          "term_en": "binding constraint",
+          "explanation_tr": "Optimal çözümde eşitlik halini sağlayan kısıt; iyileştirme yapılsa o kısıt çözümü sınırlar.",
+          "explanation_en": "A constraint that holds with equality at the optimal solution (no slack).",
+          "exampleSentence_en": "The labor constraint was binding at the optimal production plan."
+        },
+        {
+          "term_en": "isoprofit line",
+          "explanation_tr": "Aynı $Z$ değerini veren noktaların geometrik yeri olan doğru; optimal çözüme ulaşmak için kaydırılır.",
+          "explanation_en": "A line of constant objective value, slid to the extreme of the feasible region to find the optimum.",
+          "exampleSentence_en": "Moving the isoprofit line outward until touching the feasible region gave the optimal corner."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m26-l1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "$x_1 + 2x_2 \\leq 8$ kısıtında orijin $(0,0)$ noktasını test ediyoruz. Sonuç ne olur?",
+            "en": "We test the origin $(0,0)$ for constraint $x_1 + 2x_2 \\leq 8$. What is the result?"
+          },
+          "options": [
+            {"tr": "Orijin kısıtı sağlamaz, orijin uygun bölge dışındadır.", "en": "Origin does not satisfy the constraint, it is outside the feasible region."},
+            {"tr": "Orijin kısıtı sağlar (0+0=0≤8), orijin uygun bölgededir.", "en": "Origin satisfies the constraint (0+0=0≤8), it is inside the feasible region."},
+            {"tr": "Test yeterli değildir, orijin her zaman uygun bölgededir.", "en": "The test is insufficient; origin is always feasible."},
+            {"tr": "Orijin kısıtı tam olarak sağlar (bağlayıcı).", "en": "Origin exactly satisfies the constraint (binding)."}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "$(0,0)$ için: $0 + 2(0) = 0 \\leq 8$ doğrudur. Bu nedenle orijin uygun bölgede, yani kısıt doğrusunun orijin tarafındadır.",
+            "en": "At $(0,0)$: $0+2(0)=0 \\leq 8$ ✓. Origin is feasible, so we shade the origin side of the constraint line."
+          }
+        },
+        {
+          "id": "m26-l1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Wyndor Glass modelinde optimal çözümün olduğu köşe noktası hangisidir?",
+            "en": "At which corner point does the optimal solution of the Wyndor Glass model occur?"
+          },
+          "options": [
+            {"tr": "$(0, 0)$", "en": "$(0, 0)$"},
+            {"tr": "$(4, 0)$", "en": "$(4, 0)$"},
+            {"tr": "$(2, 6)$", "en": "$(2, 6)$"},
+            {"tr": "$(0, 6)$", "en": "$(0, 6)$"}
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "$(2,6)$ noktasında $Z = 3(2) + 5(6) = 6 + 30 = 36$ elde edilir. Bu, tüm köşe noktaları arasındaki en yüksek değerdir.",
+            "en": "At $(2,6)$: $Z = 3(2)+5(6) = 36$, which is the highest among all corner points."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "import numpy as np\nimport matplotlib.pyplot as plt\n\nx1 = np.linspace(0, 7, 300)\n\n# Kısıt doğruları\nplt.figure(figsize=(8,6))\nplt.plot([4,4], [0,10], 'b-', label='$x_1 \\\\leq 4$')\nplt.plot(x1, (12 - 0*x1)/2, 'r-', label='$2x_2 \\\\leq 12$')\nplt.plot(x1, (18 - 3*x1)/2, 'g-', label='$3x_1+2x_2 \\\\leq 18$')\n\n# Optimal nokta\nplt.scatter([2], [6], s=150, color='gold', zorder=5, label='Optimal (2,6) Z=36')\nplt.xlim(0,7); plt.ylim(0,10)\nplt.xlabel('$x_1$'); plt.ylabel('$x_2$')\nplt.legend(); plt.grid(True)\nplt.title('Wyndor Glass - Uygun Bölge')\nplt.show()",
+        "powerBiNote": {
+          "tr": "2D grafik çözümü Python matplotlib ile interaktif hale getirilebilir.",
+          "en": "2D graphical LP can be made interactive using Python matplotlib or Plotly."
+        }
+      }
+    },
+    {
+      "id": "m26-l2",
+      "moduleId": "module-26",
+      "order": 2,
+      "difficulty": "orta",
+      "title": {
+        "tr": "Sonsuz, Boş ve Dejenere Uygun Bölgeler",
+        "en": "Unbounded, Infeasible, and Degenerate Cases"
+      },
+      "conceptCard": {
+        "tr": "**Bir LP'nin Olası Sonuçları:**\n\n---\n**1. Tek Optimal Çözüm:**\nUygun bölge var ve sınırlı (bounded). Optimal çözüm tek bir köşe noktasında bulunur. (En yaygın durum)\n\n---\n**2. Alternatif Optimal Çözümler:**\nAmaç fonksiyonu doğrusu (isoprofit line), uygun bölgenin bir kenarına paralel ise o kenar üzerindeki tüm noktalar optimaldir.\n\n---\n**3. Sınırsız Çözüm (Unbounded):**\nUygun bölge sınırsız yönde uzuyor ve Z sonsuza çıkabiliyorsa, problem sınırsızdır. **Gerçek hayat modellerinde bu genellikle bir formülasyon hatasına işaret eder.**\n\n---\n**4. Uygunsuz / İmkânsız (Infeasible):**\nTüm kısıtları aynı anda sağlayan hiçbir nokta yok. Uygun bölge **boş küme**. Bu durum çoğunlukla çelişen kısıtlar yüzünden olur.\n\n---\n**5. Dejenere Çözüm:**\nBir köşe noktasında ikiden fazla kısıt bağlayıcıdır. Bu, simplex algoritmasında döngü (cycling) riskini beraberinde getirebilir.",
+        "en": "**LP Outcomes:**\n1. **Unique Optimal** — bounded feasible region, one corner is best.\n2. **Multiple Optima** — isoprofit line parallel to a feasible edge.\n3. **Unbounded** — feasible region open, objective goes to infinity.\n4. **Infeasible** — no point satisfies all constraints simultaneously.\n5. **Degenerate** — more than two constraints binding at a corner."
+      },
+      "companyExample": {
+        "tr": "**Örnek: İmkânsız (Infeasible) Problem**\n\n$$\\max Z = 3x_1 + 2x_2$$\n$$x_1 + x_2 \\leq 4$$\n$$x_1 + x_2 \\geq 6$$\n$$x_1, x_2 \\geq 0$$\n\nİlk kısıt toplamın 4'ü geçemeyeceğini, ikinci kısıt toplamın en az 6 olması gerektiğini söylüyor. Bu iki koşul **aynı anda sağlanamaz** → Uygun bölge boştur → **Infeasible**.\n\n**Sonuç:** Modelde çelişen kısıtlar var. Gerçekte bu veri giriş hatası ya da tutarsız hedefler anlamına gelir.",
+        "en": "**Infeasible Example:** $x_1+x_2 \\leq 4$ AND $x_1+x_2 \\geq 6$ cannot be satisfied simultaneously → no feasible region → infeasible."
+      },
+      "vocabTerms": [
+        {
+          "term_en": "infeasible",
+          "explanation_tr": "Tüm kısıtları eş zamanlı olarak sağlayan çözüm noktasının bulunmadığı durum.",
+          "explanation_en": "No solution satisfies all constraints simultaneously; the feasible region is empty.",
+          "exampleSentence_en": "Conflicting demand and supply constraints made the model infeasible."
+        },
+        {
+          "term_en": "unbounded",
+          "explanation_tr": "Amaç fonksiyonunun sonsuz büyük (veya küçük) değer aldığı; uygun bölgenin açık uçlu olduğu durum.",
+          "explanation_en": "The objective function can be improved indefinitely; feasible region extends to infinity.",
+          "exampleSentence_en": "A forgotten upper bound made the production maximization unbounded."
+        },
+        {
+          "term_en": "degenerate solution",
+          "explanation_tr": "Bir köşe noktasında ikiden fazla kısıtın bağlayıcı olduğu durum; simplex'te döngüye yol açabilir.",
+          "explanation_en": "A corner point where more than two constraints are simultaneously binding.",
+          "exampleSentence_en": "The degenerate corner had three binding constraints, causing simplex to stall."
+        }
+      ],
+      "questions": [
+        {
+          "id": "m26-l2-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Bir maksimizasyon LP'sinde uygun bölge sınırsız (unbounded) ise ne söylenebilir?",
+            "en": "If the feasible region of a maximization LP is unbounded, what can be said?"
+          },
+          "options": [
+            {"tr": "Optimal çözüm kesinlikle mevcuttur.", "en": "The optimal solution definitely exists."},
+            {"tr": "Problem her zaman sonsuz büyük Z değerine ulaşır.", "en": "The problem always achieves infinitely large Z."},
+            {"tr": "Optimal çözüm mevcut olmayabilir (Z sonsuz büyüyebilir), bu gerçekte model hatasına işaret eder.", "en": "Optimal may not exist (Z can go to infinity); this usually signals a modeling error."},
+            {"tr": "Uygun bölge boştur.", "en": "The feasible region is empty."}
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "Sınırsız uygun bölge, Z'nin sonsuz büyüyebileceği anlamına gelebilir (maksimizasyon için). Pratikte bu genellikle eksik kısıt veya yanlış model anlamına gelir.",
+            "en": "An unbounded feasible region for maximization may allow Z→∞. In practice this signals a modeling error such as a missing constraint."
+          }
+        },
+        {
+          "id": "m26-l2-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Amaç fonksiyonu doğrusu uygun bölgenin bir kenarına paralelse ne olur?",
+            "en": "If the objective function line is parallel to an edge of the feasible region, what happens?"
+          },
+          "options": [
+            {"tr": "Problem infeasible hale gelir.", "en": "The problem becomes infeasible."},
+            {"tr": "O kenar üzerindeki tüm noktalar eşit derecede optimal olur (alternatif optimal çözümler).", "en": "All points on that edge are equally optimal (alternative optima)."},
+            {"tr": "Yalnızca orijine en yakın köşe optimal olur.", "en": "Only the corner point nearest the origin is optimal."},
+            {"tr": "Problem sınırsız olur.", "en": "The problem becomes unbounded."}
+          ],
+          "correctAnswer": 1,
+          "explanation": {
+            "tr": "Amaç fonksiyonu eğimi ile bir kısıt kenarının eğimi aynı olduğunda, o kenardaki her nokta aynı Z değerini verir → sonsuz sayıda optimal çözüm.",
+            "en": "When the objective line slope matches a feasible edge slope, every point on that edge gives the same Z — infinitely many optimal solutions."
+          }
+        }
+      ],
+      "realWorldBox": {
+        "pythonCode": "# Infeasible durumunu tespit etmek\nfrom pulp import *\n\nprob = LpProblem('Infeasible_Test', LpMaximize)\nx1 = LpVariable('x1', lowBound=0)\nx2 = LpVariable('x2', lowBound=0)\n\nprob += 3*x1 + 2*x2\nprob += x1 + x2 <= 4\nprob += x1 + x2 >= 6  # Çelişen kısıt!\n\nstatus = prob.solve()\nprint('Durum:', LpStatus[status])  # → 'Infeasible'",
+        "powerBiNote": {
+          "tr": "Infeasible sonucu alınan modeller için PuLP 'Infeasible' statüsünü döndürür; gerçek uygulamalarda kısıt verisi gözden geçirilmelidir.",
+          "en": "PuLP returns 'Infeasible' status; review constraint data in real applications."
+        }
+      }
+    }
+  ],
+  "caseExams": [
+    {
+      "id": "m26-case1",
+      "moduleId": "module-26",
+      "order": 1,
+      "title": {
+        "tr": "Tekstil Fabrikası: Grafik Yöntemle Optimal Üretim",
+        "en": "Textile Factory: Graphical Optimal Production"
+      },
+      "scenario": {
+        "tr": "Bir tekstil fabrikası **Gömlek** ($x_1$) ve **Pantolon** ($x_2$) üretiyor.\n- Gömlek karı: 4 TL/adet, Pantolon karı: 7 TL/adet\n- **Kumaş kısıtı:** $2x_1 + 4x_2 \\leq 80$ metre\n- **Dikiş kısıtı:** $3x_1 + 2x_2 \\leq 60$ saat\n- $x_1, x_2 \\geq 0$\n\nKöşe noktalarını belirle ve optimal üretim miktarını bul.",
+        "en": "A textile factory produces Shirts ($x_1$, 4 TL) and Trousers ($x_2$, 7 TL). Fabric: $2x_1+4x_2\\leq80$, Sewing: $3x_1+2x_2\\leq60$. Find corner points and optimal."
+      },
+      "questions": [
+        {
+          "id": "m26-case1-q1",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Kumaş kısıtı doğrusu ($2x_1 + 4x_2 = 80$) eksenleri hangi noktalarda keser?",
+            "en": "Where does the fabric constraint line ($2x_1+4x_2=80$) intersect the axes?"
+          },
+          "options": [
+            {"tr": "$(40, 0)$ ve $(0, 20)$", "en": "$(40, 0)$ and $(0, 20)$"},
+            {"tr": "$(80, 0)$ ve $(0, 80)$", "en": "$(80, 0)$ and $(0, 80)$"},
+            {"tr": "$(20, 0)$ ve $(0, 40)$", "en": "$(20, 0)$ and $(0, 40)$"},
+            {"tr": "$(4, 0)$ ve $(0, 2)$", "en": "$(4, 0)$ and $(0, 2)$"}
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "$x_2=0$: $2x_1=80 \\Rightarrow x_1=40$. $x_1=0$: $4x_2=80 \\Rightarrow x_2=20$. Kesim noktaları: $(40,0)$ ve $(0,20)$.",
+            "en": "$x_2=0 \\Rightarrow x_1=40$; $x_1=0 \\Rightarrow x_2=20$. Intercepts: $(40,0)$ and $(0,20)$."
+          }
+        },
+        {
+          "id": "m26-case1-q2",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "İki kısıt doğrusunun kesiştiği nokta $2x_1+4x_2=80$ ve $3x_1+2x_2=60$ denklemlerini çözerek bulunur. Bu nokta nedir?",
+            "en": "Solve $2x_1+4x_2=80$ and $3x_1+2x_2=60$ simultaneously. What is the intersection point?"
+          },
+          "options": [
+            {"tr": "$(8, 16)$", "en": "$(8, 16)$"},
+            {"tr": "$(10, 15)$", "en": "$(10, 15)$"},
+            {"tr": "$(12, 14)$", "en": "$(12, 14)$"},
+            {"tr": "$(20, 10)$", "en": "$(20, 10)$"}
+          ],
+          "correctAnswer": 0,
+          "explanation": {
+            "tr": "İkinci denklemden $x_2$'yi çekelim: $2x_1+4x_2=80 \\Rightarrow x_1+2x_2=40$. Birleşim: $3x_1+2x_2=60$ ve $x_1+2x_2=40$ → $2x_1=20 \\Rightarrow x_1=10$... Yeniden: $2(10)+4x_2=80 \\Rightarrow 4x_2=60 \\Rightarrow x_2=15$. Yani $(10,15)$.",
+            "en": "From $x_1+2x_2=40$ and $3x_1+2x_2=60$: subtract → $2x_1=20$ → $x_1=10$, $x_2=15$. So $(10,15)$."
+          }
+        },
+        {
+          "id": "m26-case1-q3",
+          "type": "multiple-choice",
+          "prompt": {
+            "tr": "Köşe noktaları $(0,0)$, $(20,0)$, $(10,15)$, $(0,20)$ için $Z = 4x_1 + 7x_2$ değerlerini hesapla. Optimal nokta hangisidir?",
+            "en": "Calculate $Z=4x_1+7x_2$ at corner points $(0,0)$, $(20,0)$, $(10,15)$, $(0,20)$. Which is optimal?"
+          },
+          "options": [
+            {"tr": "$(20, 0)$ → $Z=80$", "en": "$(20, 0)$ → $Z=80$"},
+            {"tr": "$(0, 20)$ → $Z=140$", "en": "$(0, 20)$ → $Z=140$"},
+            {"tr": "$(10, 15)$ → $Z=145$ ← Optimal", "en": "$(10, 15)$ → $Z=145$ ← Optimal"},
+            {"tr": "$(0, 0)$ → $Z=0$", "en": "$(0, 0)$ → $Z=0$"}
+          ],
+          "correctAnswer": 2,
+          "explanation": {
+            "tr": "$(10,15)$: $Z=4(10)+7(15)=40+105=145$. $(0,20)$: $Z=0+140=140$. $(20,0)$: $Z=80$. En büyük $Z=145$ değeri $(10,15)$ noktasında.",
+            "en": "$(10,15)$: $Z=40+105=145$ ★. $(0,20)$: $Z=140$. $(20,0)$: $Z=80$. Optimal at $(10,15)$."
+          }
+        }
+      ]
+    }
+  ]
+}
