@@ -868,9 +868,18 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const state = get();
         const activeEmail = state.userProfile?.schoolEmail?.trim().toLowerCase();
         const currentDates = Array.isArray(state.activityDates) ? state.activityDates.filter(Boolean) : [];
-        const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
+        const dateSet = new Set(currentDates);
+        dateSet.add(today);
 
-        const calculatedStreak = Math.max(state.streak || 1, computeContiguousStreak(updatedDates, today));
+        const currentStreak = Math.max(state.streak || 1, 1);
+        for (let i = 0; i < currentStreak; i++) {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          dateSet.add(getLocalDateStr(d));
+        }
+
+        const updatedDates = Array.from(dateSet).sort();
+        const calculatedStreak = Math.max(currentStreak, computeContiguousStreak(updatedDates, today));
 
         // Sync to accounts list for this email
         let updatedAccounts = state.userAccounts || [];

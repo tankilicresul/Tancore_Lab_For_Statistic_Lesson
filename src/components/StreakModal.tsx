@@ -476,6 +476,16 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
   // Active continuous streak count (unbroken chain of active days leading up to today)
   const displayStreak = Math.max(computeContiguousStreak(activityDates), streak || 1);
 
+  // Derive effective active dates: merge recorded dates and the unbroken active streak days leading up to today
+  const effectiveDates = new Set(recordedDates);
+  effectiveDates.add(todayStr);
+
+  for (let i = 0; i < displayStreak; i++) {
+    const d = new Date(now);
+    d.setDate(now.getDate() - i);
+    effectiveDates.add(formatDateStr(d));
+  }
+
   // Calculate Current Week Days (Monday -> Sunday) according to the exact streak rule:
   // - Buz: Never entered / missed days (hiç girilmemiş)
   // - Sönmüş Ateş: Entered in the past, but streak broke because an intervening day was missed (sönmüş lav kayası)
@@ -488,7 +498,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
 
     const isToday = d.dayOffset === todayMondayOffset;
     const isFuture = d.dayOffset > todayMondayOffset;
-    const wasRecorded = recordedDates.includes(dateStr);
+    const wasRecorded = effectiveDates.has(dateStr);
 
     let isLava = false;
     let isExtinguished = false;
@@ -511,7 +521,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
           const intermediateDate = new Date(currentMonday);
           intermediateDate.setDate(currentMonday.getDate() + offset);
           const intermediateStr = formatDateStr(intermediateDate);
-          if (!recordedDates.includes(intermediateStr)) {
+          if (!effectiveDates.has(intermediateStr)) {
             isStreakContinuousToToday = false;
             break;
           }
