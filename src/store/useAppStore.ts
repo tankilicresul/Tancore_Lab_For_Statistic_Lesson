@@ -70,17 +70,12 @@ interface AppStoreActions {
   syncRegisteredUserInList: () => void;
   setIsTancoChatOpen: (open: boolean) => void;
   addXp: (amount: number) => void;
-  isPlusUpgradeModalOpen?: boolean;
-  setIsPlusUpgradeModalOpen: (open: boolean) => void;
-  openLemonCheckout: (customEmail?: string) => void;
-  setSubscriptionStatus: (isPremium: boolean, status?: string) => void;
   isTancoActive?: boolean;
   isTancoMoved?: boolean;
   tancoPosition?: { x: number; y: number } | null;
   activateTanco: (initialPos: { x: number; y: number }) => void;
   setTancoPosition: (pos: { x: number; y: number }, isMoved?: boolean) => void;
   deactivateTanco: () => void;
-  markTancoPaymentPending: () => void;
   isSoundEnabled?: boolean;
   toggleSound: () => void;
   setSoundEnabled: (enabled: boolean) => void;
@@ -219,7 +214,6 @@ const INITIAL_STATE: UserState = {
   selectedTrack: 'probability',
   customActiveModuleName: null,
   isTancoChatOpen: false,
-  isPlusUpgradeModalOpen: false,
   isTancoActive: initialTanco.isTancoActive,
   isTancoMoved: initialTanco.isTancoMoved,
   tancoPosition: initialTanco.tancoPosition,
@@ -291,7 +285,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           avatarEmoji: accountInput.avatarEmoji || '👨‍🎓',
           avatarUrl: defaultAvatar,
           isVerified: false,
-          password: accountInput.password || '',
           xp: 0,
           streak: 1,
           completedLessons: [],
@@ -323,7 +316,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
               avatarEmoji: cleanNewAccount.avatarEmoji,
               avatarUrl: cleanNewAccount.avatarUrl,
               isVerified: false,
-              password: cleanNewAccount.password,
             },
             // Reset device progress so new registration does not inherit previous user's stats
             xp: 0,
@@ -586,14 +578,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           };
         }
 
-        if (account.password && account.password !== pass.trim()) {
-          return {
-            success: false,
-            errorType: 'WRONG_PASSWORD',
-            message: 'Şifreniz yanlış.',
-          };
-        }
-
         const loggedInProfile: UserProfile = {
           id: `usr_${cleanEmail}`,
           fullName: account.fullName,
@@ -758,7 +742,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           return { success: false, message: 'Doğrulama kodu yanlış.' };
         }
 
-        accounts[accIdx].password = newPass.trim();
         set({ userAccounts: accounts });
         return { success: true, message: 'Şifreniz başarıyla sıfırlandı. Yeni şifrenizle giriş yapabilirsiniz.' };
       },
@@ -766,9 +749,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       updateUserProfile: (profile, newPassword) => {
         set((state) => {
           const updatedProfile = { ...state.userProfile, ...profile };
-          if (newPassword && newPassword.trim()) {
-            updatedProfile.password = newPassword.trim();
-          }
 
           saveUserProfileToSupabase(updatedProfile);
 
@@ -783,7 +763,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
               ...updatedAccounts[accIdx],
               ...updatedProfile,
               schoolEmail: targetEmail,
-              password: newPassword && newPassword.trim() ? newPassword.trim() : (updatedAccounts[accIdx].password || ''),
             };
           }
 
@@ -1154,49 +1133,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedLessons: state.completedLessons,
           completedCaseExams: state.completedCaseExams,
         });
-      },
-
-      setIsPlusUpgradeModalOpen: (open) => set({ isPlusUpgradeModalOpen: open }),
-
-      openLemonCheckout: (customEmail) => {
-        const state = get();
-        state.markTancoPaymentPending();
-        const email = customEmail || state.userProfile?.schoolEmail || '';
-        const name = state.userProfile?.fullName || '';
-        const baseUrl = 'https://tancorelab.lemonsqueezy.com/checkout/buy/7f8fd627-8384-4a2c-9b36-da2f05a7b216';
-        const params = new URLSearchParams({
-          desc: '0',
-          discount: '0',
-        });
-        if (email) {
-          params.set('checkout[email]', email);
-          params.set('checkout[custom][user_email]', email);
-        }
-        if (name) {
-          params.set('checkout[name]', name);
-        }
-        const finalUrl = `${baseUrl}?${params.toString()}`;
-        window.open(finalUrl, '_blank');
-      },
-
-      setSubscriptionStatus: (isPremium, status) => {
-        const state = get();
-        const updatedProfile: UserProfile = {
-          ...state.userProfile,
-          isPremium,
-          subscriptionStatus: status || (isPremium ? 'active' : 'inactive'),
-        };
-        set({
-          userProfile: updatedProfile,
-        });
-        if (state.isAuthenticated && updatedProfile.schoolEmail) {
-          saveUserProfileToSupabase({
-            ...updatedProfile,
-            xp: state.xp,
-            streak: state.streak,
-            completedLessons: state.completedLessons.length + state.completedCaseExams.length,
-          });
-        }
       },
 
       resetProgress: () => {

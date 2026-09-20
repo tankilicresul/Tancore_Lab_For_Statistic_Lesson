@@ -40,7 +40,6 @@ import {
   AlertTriangle,
   Crown,
 } from 'lucide-react';
-import { AdminAuditModal } from '../components/AdminAuditModal';
 
 interface ProfilePageProps {
   onOpenAuth?: () => void;
@@ -102,12 +101,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   const [settingsStatus, setSettingsStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
-  const [isAdminAuditModalOpen, setIsAdminAuditModalOpen] = useState(false);
-
-  const isAdmin = Boolean(
-    userProfile?.schoolEmail?.trim().toLowerCase() === 'admin@tancorelab.com' ||
-    userProfile?.schoolEmail?.toLowerCase().includes('admin@')
-  );
 
   // Keep form fields in sync with userProfile
   useEffect(() => {
@@ -617,25 +610,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         </button>
       </div>
 
-      {/* Admin Audit Console Trigger Button */}
-      {isAdmin && (
-        <button
-          onClick={() => setIsAdminAuditModalOpen(true)}
-          className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 hover:from-slate-800 hover:to-indigo-900 text-white border border-indigo-400/40 shadow-lg shadow-indigo-950/25 active:scale-98 transition-all flex items-center justify-between group cursor-pointer"
-        >
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shrink-0">
-              <Crown className="w-4 h-4 fill-slate-950 stroke-[2]" />
-            </div>
-            <div className="text-left">
-              <div className="text-xs sm:text-sm font-black text-amber-300">👑 Yönetici & Cihaz Denetim Paneli</div>
-              <div className="text-[10.5px] text-slate-300 font-medium">Aynı cihazdan açılan çoklu hesapları ve kullanıcıları gör</div>
-            </div>
-          </div>
-          <ChevronRight className="w-5 h-5 text-amber-300 group-hover:translate-x-1 transition-transform shrink-0" />
-        </button>
-      )}
-
       {/* Guest CTA Card: shown only when not authenticated */}
       {!isAuthenticated && (
         <div className="bg-white border-2 border-[#ff7a00]/40 rounded-3xl p-5 sm:p-6 shadow-sm relative overflow-hidden">
@@ -1130,11 +1104,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </div>
         </div>,
         document.body
-      )}
-
-      {/* Admin Audit & Multi-Account Modal */}
-      {isAdminAuditModalOpen && (
-        <AdminAuditModal onClose={() => setIsAdminAuditModalOpen(false)} />
       )}
     </div>
   );

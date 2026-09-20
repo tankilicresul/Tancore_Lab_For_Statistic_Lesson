@@ -294,7 +294,6 @@ export const AuthLandingScreen: React.FC<AuthLandingScreenProps> = ({ onSuccess 
           university: university.trim(),
           departmentAndClass: departmentAndClass.trim(),
           avatarEmoji: randomEmoji,
-          password: '123456',
         },
         res.simulatedCode
       );

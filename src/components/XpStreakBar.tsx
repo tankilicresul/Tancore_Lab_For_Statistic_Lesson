@@ -27,7 +27,6 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
     userProfile,
     selectedPublicProfile,
     setSelectedPublicProfile,
-    setIsPlusUpgradeModalOpen,
   } = useAppStore();
 
   const [showAuth, setShowAuth] = useState(false);
@@ -41,7 +40,6 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
   const prevXpRef = useRef<number | null>(null);
 
   const langRef = useRef<HTMLDivElement>(null);
-  const isPlus = Boolean(userProfile?.isPremium);
   const displayStreak = Math.max(computeContiguousStreak(activityDates), streak || 1);
   const currentXp = xp ?? 0;
 
@@ -210,37 +208,6 @@ export const XpStreakBar: React.FC<XpStreakBarProps> = ({
                 </div>
               )}
             </div>
-
-            {/* Plus Upgrade or VIP Badge - ONLY shown for logged-in & verified students */}
-            {isAuthenticated && isVerified && (
-              isPlus ? (
-                <button
-                  onClick={() => {
-                    soundService.playModalOpen();
-                    setIsPlusUpgradeModalOpen(true);
-                  }}
-                  className="flex items-center space-x-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 border border-amber-400/80 text-amber-600 font-bold text-xs sm:text-sm tracking-wide shadow-xs cursor-pointer hover:scale-105 transition-transform"
-                  title="TanCoreLab Plus Üyeliği Aktif"
-                >
-                  <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 fill-amber-400" />
-                  <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent font-black">
-                    PLUS
-                  </span>
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    soundService.playModalOpen();
-                    setIsPlusUpgradeModalOpen(true);
-                  }}
-                  className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-2xl bg-gradient-to-r from-amber-500 to-[#ff7a00] hover:from-amber-600 hover:to-[#e66e00] text-white font-bold text-xs sm:text-sm transition-all shadow-md shadow-orange-500/25 hover:scale-105 active:scale-95 cursor-pointer"
-                  title={language === 'tr' ? "TanCoreLab Plus'a Yükselt (3 Gün Ücretsiz)" : 'Upgrade to Plus (3 Days Free)'}
-                >
-                  <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-200 text-white animate-pulse" />
-                  <span>Plus</span>
-                </button>
-              )
-            )}
           </div>
         </div>
       </header>

@@ -94,7 +94,6 @@ export interface UserProfile {
   avatarUrl?: string;
   isVerified?: boolean;
   createdAt?: string;
-  password?: string;
   isPremium?: boolean;
   subscriptionStatus?: string;
   subscriptionRenewsAt?: string;
@@ -105,7 +104,6 @@ export interface RegisteredAccount {
   fullName: string;
   university: string;
   departmentAndClass: string;
-  password: string;
   avatarEmoji?: string;
   avatarUrl?: string;
   isVerified: boolean;
@@ -164,7 +162,6 @@ export interface UserState {
   customActiveModuleName?: string | null;
   isTancoChatOpen?: boolean;
   guestProgressTimestamp?: number;
-  isPlusUpgradeModalOpen?: boolean;
   isTancoActive?: boolean;
   isTancoMoved?: boolean;
   tancoPosition?: { x: number; y: number } | null;

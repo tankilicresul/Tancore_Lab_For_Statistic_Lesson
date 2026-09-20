@@ -255,7 +255,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           ...formData,
           fullName: fallbackName,
           avatarEmoji: randomEmoji,
-          password: registerPassword.trim(),
         },
         simulated || undefined
       );
@@ -492,7 +491,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           {
             ...formData,
             avatarEmoji: randomEmoji,
-            password: registerPassword || '123456',
           },
           res.simulatedCode
         );

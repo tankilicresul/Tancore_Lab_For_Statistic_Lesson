@@ -10,7 +10,6 @@ import { PlacementTestPage } from './pages/PlacementTestPage';
 import { TancoChatModal } from './components/TancoChatModal';
 import { FloatingTancoButton } from './components/FloatingTancoButton';
 import { GuestGateModal } from './components/GuestGateModal';
-import { PlusUpgradeModal } from './components/PlusUpgradeModal';
 import { AuthModal } from './components/AuthModal';
 import { BottomNavBar } from './components/BottomNavBar';
 import { AppSplashScreen } from './components/AppSplashScreen';
@@ -581,9 +580,6 @@ export const App: React.FC = () => {
       {/* Tanco Assistant Chat Modal & Floating Launcher */}
       <TancoChatModal />
       <FloatingTancoButton />
-
-      {/* Plus Upgrade Modal */}
-      <PlusUpgradeModal />
 
       {/* Direct Auth Modal when unauthenticated user clicks Profile */}
       {showDirectAuthModal && (

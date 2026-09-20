@@ -536,34 +536,28 @@ export async function fetchAdminAuditProfilesFromSupabase(): Promise<any[]> {
 }
 
 /**
- * Admin action: Reset a user's XP to 0
+ * Server-side secure lesson completion via Postgres RPC (Prevents client-side XP manipulation)
  */
-export async function adminResetUserXpInSupabase(email: string): Promise<boolean> {
-  if (!supabase || !isSupabaseConfigured) return false;
-  try {
-    const { error } = await supabase
-      .from('profiles')
-      .update({ xp: 0, completed_lessons: 0, streak: 1, updated_at: new Date().toISOString() })
-      .eq('email', email.trim().toLowerCase());
-    return !error;
-  } catch {
-    return false;
-  }
-}
+export async function completeLessonViaRPC(
+  lessonId: string,
+  moduleId: string,
+  xpToAward: number = 15
+): Promise<{ success: boolean; data?: any; error?: string }> {
+  if (!supabase || !isSupabaseConfigured) return { success: false, error: 'Database not configured' };
 
-/**
- * Admin action: Delete a user profile from Supabase
- */
-export async function adminDeleteUserProfileInSupabase(email: string): Promise<boolean> {
-  if (!supabase || !isSupabaseConfigured) return false;
   try {
-    const { error } = await supabase
-      .from('profiles')
-      .delete()
-      .eq('email', email.trim().toLowerCase());
-    return !error;
-  } catch {
-    return false;
+    const { data, error } = await supabase.rpc('complete_lesson_secure', {
+      p_lesson_id: lessonId,
+      p_module_id: moduleId,
+      p_xp_to_award: xpToAward,
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    return { success: true, data };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'RPC call failed' };
   }
 }
 
