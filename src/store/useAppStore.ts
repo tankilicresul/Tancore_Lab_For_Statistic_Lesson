@@ -171,41 +171,26 @@ const DEFAULT_PROFILE: UserProfile = {
 const DEFAULT_DEMO_ACCOUNTS: RegisteredAccount[] = [];
 
 /**
- * Computes contiguous active streak count backwards from today (or reference date)
+ * Returns local YYYY-MM-DD date string based on client's local timezone (split at 00:00 midnight)
+ */
+export function getLocalDateStr(d: Date = new Date()): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Computes active streak / alev count based on distinct calendar days entered (midnight to midnight)
  */
 export function computeContiguousStreak(activityDates?: string[], referenceDateStr?: string): number {
-  const dates = Array.isArray(activityDates) ? activityDates : [];
-  if (dates.length === 0) return 1;
-
-  const today = referenceDateStr || new Date().toISOString().split('T')[0];
-  const todayParts = today.split('-').map(Number);
-  const todayDate = new Date(todayParts[0], todayParts[1] - 1, todayParts[2]);
-
-  let streak = 0;
-  let checkDate = new Date(todayDate);
-  const checkStr = checkDate.toISOString().split('T')[0];
-
-  // If today is not in recorded dates, check if yesterday was recorded
-  if (!dates.includes(checkStr)) {
-    checkDate.setDate(checkDate.getDate() - 1);
-    const yesterdayStr = checkDate.toISOString().split('T')[0];
-    if (!dates.includes(yesterdayStr)) {
-      return 1;
-    }
+  const rawDates = Array.isArray(activityDates) ? activityDates.filter(Boolean) : [];
+  const today = referenceDateStr || getLocalDateStr(new Date());
+  const uniqueDates = Array.from(new Set(rawDates));
+  if (!uniqueDates.includes(today)) {
+    uniqueDates.push(today);
   }
-
-  // Walk backwards day by day to count unbroken active chain
-  while (true) {
-    const dStr = checkDate.toISOString().split('T')[0];
-    if (dates.includes(dStr)) {
-      streak++;
-      checkDate.setDate(checkDate.getDate() - 1);
-    } else {
-      break;
-    }
-  }
-
-  return Math.max(1, streak);
+  return Math.max(1, uniqueDates.length);
 }
 
 const initialTanco = typeof window !== 'undefined' ? loadTancoSession() : { isTancoActive: false, isTancoMoved: false, tancoPosition: null };
@@ -214,8 +199,8 @@ const INITIAL_STATE: UserState = {
   language: 'tr',
   xp: 0,
   streak: 1,
-  lastActiveDate: new Date().toISOString().split('T')[0],
-  activityDates: [new Date().toISOString().split('T')[0]],
+  lastActiveDate: getLocalDateStr(new Date()),
+  activityDates: [getLocalDateStr(new Date())],
   completedLessons: [],
   completedCaseExams: [],
   unlockedModules: ['module-1', 'module-2'],
@@ -508,13 +493,13 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             ? remoteProfile.streak
             : (existingAccount?.streak || 1);
 
-          const emailLastActive = remoteProfile?.last_active_date || existingAccount?.lastActiveDate || new Date().toISOString().split('T')[0];
+          const emailLastActive = remoteProfile?.last_active_date || existingAccount?.lastActiveDate || getLocalDateStr(new Date());
 
           const emailActivityDates = Array.isArray(remoteProfile?.activity_dates) && remoteProfile.activity_dates.length > 0
             ? remoteProfile.activity_dates
             : (Array.isArray(existingAccount?.activityDates) && existingAccount.activityDates.length > 0
                 ? existingAccount.activityDates
-                : [new Date().toISOString().split('T')[0]]);
+                : [getLocalDateStr(new Date())]);
 
           const remoteUnlocked = Array.isArray(remoteProfile?.unlocked_modules) && remoteProfile.unlocked_modules.length > 0
             ? remoteProfile.unlocked_modules
@@ -610,10 +595,10 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const mergedCases = Array.from(new Set([...(account.completedCaseExams || []), ...(state.completedCaseExams || [])]));
         const userXp = Math.max(account.xp || 0, state.xp || 0, (account.xp || 0) + (state.xp || 0));
         const userStreak = account.streak || 1;
-        const userLastActive = account.lastActiveDate || new Date().toISOString().split('T')[0];
+        const userLastActive = account.lastActiveDate || getLocalDateStr(new Date());
         const userActivityDates = Array.isArray(account.activityDates) && account.activityDates.length > 0
           ? account.activityDates
-          : [new Date().toISOString().split('T')[0]];
+          : [getLocalDateStr(new Date())];
         const unlockedModules = Array.from(new Set([...(account.unlockedModules || ['module-1', 'module-2']), ...(state.unlockedModules || [])]));
 
         set({
@@ -674,13 +659,13 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           ? remoteProfile.streak
           : (existingAccount?.streak || 1);
 
-        const emailLastActive = remoteProfile?.last_active_date || existingAccount?.lastActiveDate || new Date().toISOString().split('T')[0];
+        const emailLastActive = remoteProfile?.last_active_date || existingAccount?.lastActiveDate || getLocalDateStr(new Date());
 
         const emailActivityDates = Array.isArray(remoteProfile?.activity_dates) && remoteProfile.activity_dates.length > 0
           ? remoteProfile.activity_dates
           : (Array.isArray(existingAccount?.activityDates) && existingAccount.activityDates.length > 0
               ? existingAccount.activityDates
-              : [new Date().toISOString().split('T')[0]]);
+              : [getLocalDateStr(new Date())]);
 
         const remoteUnlocked = Array.isArray(remoteProfile?.unlocked_modules) && remoteProfile.unlocked_modules.length > 0
           ? remoteProfile.unlocked_modules
@@ -805,8 +790,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             userProfile: DEFAULT_PROFILE,
             xp: 0,
             streak: 1,
-            lastActiveDate: new Date().toISOString().split('T')[0],
-            activityDates: [new Date().toISOString().split('T')[0]],
+            lastActiveDate: getLocalDateStr(new Date()),
+            activityDates: [getLocalDateStr(new Date())],
             completedLessons: [],
             completedCaseExams: [],
             currentView: 'home' as const,
@@ -851,8 +836,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             userProfile: DEFAULT_PROFILE,
             xp: 0,
             streak: 1,
-            lastActiveDate: new Date().toISOString().split('T')[0],
-            activityDates: [new Date().toISOString().split('T')[0]],
+            lastActiveDate: getLocalDateStr(new Date()),
+            activityDates: [getLocalDateStr(new Date())],
             completedLessons: [],
             completedCaseExams: [],
             currentView: 'home' as const,
@@ -879,13 +864,13 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       },
 
       checkAndUpdateStreak: () => {
-        const today = new Date().toISOString().split('T')[0];
+        const today = getLocalDateStr(new Date());
         const state = get();
         const activeEmail = state.userProfile?.schoolEmail?.trim().toLowerCase();
-        const currentDates = Array.isArray(state.activityDates) ? state.activityDates : [];
+        const currentDates = Array.isArray(state.activityDates) ? state.activityDates.filter(Boolean) : [];
         const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
 
-        const calculatedStreak = computeContiguousStreak(updatedDates, today);
+        const calculatedStreak = Math.max(state.streak || 1, computeContiguousStreak(updatedDates, today));
 
         // Sync to accounts list for this email
         let updatedAccounts = state.userAccounts || [];
@@ -949,10 +934,10 @@ export const useAppStore = create<UserState & AppStoreActions>()(
 
         const guestTimestamp = !state.isAuthenticated ? Date.now() : state.guestProgressTimestamp;
 
-        const today = new Date().toISOString().split('T')[0];
-        const currentDates = Array.isArray(state.activityDates) ? state.activityDates : [];
+        const today = getLocalDateStr(new Date());
+        const currentDates = Array.isArray(state.activityDates) ? state.activityDates.filter(Boolean) : [];
         const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
-        const calculatedStreak = computeContiguousStreak(updatedDates, today);
+        const calculatedStreak = Math.max(state.streak || 1, computeContiguousStreak(updatedDates, today));
 
         const nextState: UserState = {
           ...state,
@@ -1033,10 +1018,10 @@ export const useAppStore = create<UserState & AppStoreActions>()(
 
         const guestTimestamp = !state.isAuthenticated ? Date.now() : state.guestProgressTimestamp;
 
-        const today = new Date().toISOString().split('T')[0];
-        const currentDates = Array.isArray(state.activityDates) ? state.activityDates : [];
+        const today = getLocalDateStr(new Date());
+        const currentDates = Array.isArray(state.activityDates) ? state.activityDates.filter(Boolean) : [];
         const updatedDates = currentDates.includes(today) ? currentDates : [...currentDates, today];
-        const calculatedStreak = computeContiguousStreak(updatedDates, today);
+        const calculatedStreak = Math.max(state.streak || 1, computeContiguousStreak(updatedDates, today));
 
         const nextState: UserState = {
           ...state,
@@ -1319,7 +1304,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           state.unlockedBadges = Array.isArray(state.unlockedBadges) ? state.unlockedBadges : [];
           state.activityDates = Array.isArray(state.activityDates) && state.activityDates.length > 0
             ? state.activityDates
-            : [new Date().toISOString().split('T')[0]];
+            : [getLocalDateStr(new Date())];
 
           // 3. Sound is enabled
           state.isSoundEnabled = state.isSoundEnabled ?? true;

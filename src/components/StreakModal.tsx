@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAppStore, computeContiguousStreak } from '../store/useAppStore';
+import { useAppStore, computeContiguousStreak, getLocalDateStr } from '../store/useAppStore';
 import { X, Check, Flame } from 'lucide-react';
 import { soundService } from '../services/soundService';
 
@@ -465,7 +465,7 @@ export const StreakModal: React.FC<StreakModalProps> = ({ onClose }) => {
   const currentMonday = new Date(now);
   currentMonday.setDate(now.getDate() - todayMondayOffset);
 
-  const formatDateStr = (d: Date) => d.toISOString().split('T')[0];
+  const formatDateStr = (d: Date) => getLocalDateStr(d);
   const todayStr = formatDateStr(now);
 
   // Real recorded activity dates from store
