@@ -15,17 +15,9 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [hasPlayedOnce, setHasPlayedOnce] = useState<boolean>(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const hasStartedRef = useRef<boolean>(false);
-
-  // Auto-play when Top 3 user enters
-  useEffect(() => {
-    if (isTop3User) {
-      setIsPlaying(true);
-    } else {
-      setIsPlaying(false);
-    }
-  }, [isTop3User]);
 
   // Handle postMessage commands to YouTube IFrame
   const sendCommand = (func: string, args: any = '') => {
@@ -41,7 +33,26 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
     }
   };
 
-  const DEFAULT_VOLUME = 20;
+  const DEFAULT_VOLUME = 25;
+
+  // Listen for YouTube IFrame state changes (ended = 0)
+  useEffect(() => {
+    const handleWindowMessage = (event: MessageEvent) => {
+      try {
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        if (data && data.event === 'onStateChange' && data.info === 0) {
+          // Video ended: stop playing and mark as played
+          setIsPlaying(false);
+          setHasPlayedOnce(true);
+        }
+      } catch {
+        // non-youtube message
+      }
+    };
+
+    window.addEventListener('message', handleWindowMessage);
+    return () => window.removeEventListener('message', handleWindowMessage);
+  }, []);
 
   useEffect(() => {
     if (!isTop3User) return;
@@ -94,7 +105,6 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
     if (!isTop3User) return;
     sendCommand('setVolume', [DEFAULT_VOLUME]);
     sendCommand('seekTo', [START_SECONDS, true]);
-    sendCommand('playVideo');
   };
 
   // If user is NOT in the Top 3, do not load iframe and show locked exclusive indicator
@@ -103,13 +113,13 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
       <div className="w-full flex items-center justify-center mb-2">
         <div
           className="flex items-center gap-1.5 py-1 px-3.5 rounded-full bg-slate-100/90 border border-slate-200/70 text-[10.5px] font-bold text-slate-500 select-none shadow-2xs"
-          title={language === 'tr' ? 'Bu özel tema müziği yalnızca ilk 3 sıradaki kullanıcılar için çalar' : 'This exclusive theme music plays only for top 3 ranked users'}
+          title={language === 'tr' ? 'Bu özel kutlama müziği yalnızca ilk 3 sıradaki şampiyonlar için açılır' : 'This celebration theme is exclusive to top 3 champions'}
         >
           <span className="text-xs">🔒</span>
           <span>
             {language === 'tr'
-              ? 'İlk 3 Şampiyon Müziği (Yalnızca İlk 3\'e Özel)'
-              : 'Top 3 Champion Theme (Exclusive to Top 3)'}
+              ? 'Şampiyonluk Müziği (İlk 3\'e Özel)'
+              : 'Champion Theme (Top 3 Exclusive)'}
           </span>
         </div>
       </div>
@@ -118,21 +128,21 @@ export const Top3MusicPlayer: React.FC<Top3MusicPlayerProps> = ({
 
   return (
     <div className="w-full flex items-center justify-center mb-2">
-      {/* Hidden YouTube IFrame - Loaded ONLY for Top 3 users */}
+      {/* Hidden YouTube IFrame - Non-looping, single play */}
       <iframe
         ref={iframeRef}
         id="top3-yt-iframe"
         title="Top 3 Theme Music"
         onLoad={handleIframeLoad}
         className="hidden w-0 h-0 pointer-events-none opacity-0 absolute -z-50"
-        src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?enablejsapi=1&start=${START_SECONDS}&autoplay=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}&playsinline=1&controls=0&rel=0`}
+        src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?enablejsapi=1&start=${START_SECONDS}&autoplay=0&loop=0&playsinline=1&controls=0&rel=0`}
         allow="autoplay; encrypted-media"
       />
 
       {/* Minimal Floating Music Player (Exclusive for Top 3) */}
       <div
         onClick={togglePlay}
-        className="group relative flex items-center gap-2 py-0.5 cursor-pointer transition-all duration-200 select-none text-slate-700 hover:text-slate-900"
+        className="group relative flex items-center gap-2 py-1 px-3 rounded-full bg-amber-50 border border-amber-200/80 cursor-pointer transition-all duration-200 select-none text-slate-700 hover:text-slate-900 shadow-xs"
         title={language === 'tr' ? 'İlk 3 Şampiyon Müziği: Kır Çiçeği (made by solorijin)' : 'Top 3 Champion Theme: Wildflower (made by solorijin)'}
       >
         {/* Animated Equalizer or Music Icon */}
