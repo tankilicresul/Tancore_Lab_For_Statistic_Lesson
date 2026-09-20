@@ -317,6 +317,51 @@ export default async function handler(req: any, res: any) {
       }
     }
 
+    // Optional Groq Serverless Fallback
+    const groqApiKey = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
+    if (groqApiKey && !imageBase64 && prompt) {
+      try {
+        const groqEndpoint = 'https://api.groq.com/openai/v1/chat/completions';
+        const groqMessages = [
+          {
+            role: 'system',
+            content: `${TANCO_SYSTEM_INSTRUCTION}\n\nŞu anda konuştuğun öğrencinin adı: "${studentName}". Dili: ${
+              language === 'tr' ? 'Türkçe' : 'İngilizce'
+            }${liveContextStr}`,
+          },
+          ...((history || []).slice(-40).map((h: any) => ({
+            role: h.role === 'assistant' || h.role === 'model' ? 'assistant' : 'user',
+            content: h.content,
+          }))),
+          { role: 'user', content: prompt },
+        ];
+
+        const groqRes = await fetch(groqEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${groqApiKey}`,
+          },
+          body: JSON.stringify({
+            model: 'llama-3.3-70b-versatile',
+            messages: groqMessages,
+            temperature: 0.7,
+            max_tokens: 1500,
+          }),
+        });
+
+        if (groqRes.ok) {
+          const groqData = await groqRes.json();
+          const groqText = groqData?.choices?.[0]?.message?.content?.trim();
+          if (groqText) {
+            return res.status(200).json({ success: true, text: groqText });
+          }
+        }
+      } catch (groqErr) {
+        console.warn('Groq server-side fallback error:', groqErr);
+      }
+    }
+
     const errMsg = String(lastError?.message || '');
     if (errMsg.includes('429') || errMsg.includes('Quota') || errMsg.includes('quota') || errMsg.includes('rate-limit') || errMsg.includes('exceeded')) {
       const match = errMsg.match(/retry in\s*([0-9.]+)\s*s/i);
