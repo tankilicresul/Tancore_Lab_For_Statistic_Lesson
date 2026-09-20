@@ -52,10 +52,15 @@ const QUICK_PROMPTS = {
 };
 
 /**
- * Rich message parser supporting KaTeX ($$...$$ and $...$) and basic Markdown (bold, lists, linebreaks)
+ * Rich message parser supporting KaTeX ($$...$$, $...$, \[...\], \(...\)) and Markdown formatting
  */
 const FormattedMessageText: React.FC<{ text: string; isTanco: boolean }> = ({ text, isTanco }) => {
-  const blockParts = text.split(/(\$\$[\s\S]*?\$\$)/g);
+  // Pre-normalize LaTeX delimiters: \[...\] -> $$...$$, \(...\) -> $...$
+  const normalizedText = (text || '')
+    .replace(/\\\[([\s\S]*?)\\\]/g, '$$$$$1$$$$')
+    .replace(/\\\(([\s\S]*?)\\\)/g, '$$$1$$');
+
+  const blockParts = normalizedText.split(/(\$\$[\s\S]*?\$\$)/g);
 
   return (
     <div className="space-y-1.5 leading-relaxed break-words whitespace-pre-wrap">
@@ -97,19 +102,34 @@ const FormattedMessageText: React.FC<{ text: string; isTanco: boolean }> = ({ te
                 );
               }
 
-              const boldParts = inline.split(/(\*\*[^*]+\*\*)/g);
+              // Parse inline code `code` and bold **text**
+              const codeOrBoldParts = inline.split(/(`[^`]+`|\*\*[^*]+\*\*)/g);
 
               return (
                 <span key={iIdx}>
-                  {boldParts.map((bChunk, chunkIdx) => {
-                    if (bChunk.startsWith('**') && bChunk.endsWith('**')) {
+                  {codeOrBoldParts.map((chunk, cIdx) => {
+                    if (chunk.startsWith('**') && chunk.endsWith('**')) {
                       return (
-                        <strong key={chunkIdx} className="font-bold">
-                          {bChunk.slice(2, -2)}
+                        <strong key={cIdx} className="font-bold">
+                          {chunk.slice(2, -2)}
                         </strong>
                       );
                     }
-                    return <span key={chunkIdx}>{bChunk}</span>;
+                    if (chunk.startsWith('`') && chunk.endsWith('`') && chunk.length > 2) {
+                      return (
+                        <code
+                          key={cIdx}
+                          className={`px-1.5 py-0.5 rounded text-[11.5px] font-mono ${
+                            isTanco
+                              ? 'bg-slate-100 text-slate-800 border border-slate-200'
+                              : 'bg-black/20 text-white'
+                          }`}
+                        >
+                          {chunk.slice(1, -1)}
+                        </code>
+                      );
+                    }
+                    return <span key={cIdx}>{chunk}</span>;
                   })}
                 </span>
               );
@@ -119,6 +139,59 @@ const FormattedMessageText: React.FC<{ text: string; isTanco: boolean }> = ({ te
       })}
     </div>
   );
+};
+
+/**
+ * Resize and compress high-resolution photos before base64 upload to prevent Vercel 4.5MB payload limit errors
+ */
+const resizeImageForUpload = (file: File): Promise<{ base64: string; mimeType: string }> => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (readerEvent) => {
+      const img = new Image();
+      img.onload = () => {
+        const maxDim = 1200;
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          resolve({
+            base64: compressedDataUrl,
+            mimeType: 'image/jpeg',
+          });
+          return;
+        }
+        resolve({
+          base64: readerEvent.target?.result as string,
+          mimeType: file.type || 'image/jpeg',
+        });
+      };
+      img.onerror = () => {
+        resolve({
+          base64: readerEvent.target?.result as string,
+          mimeType: file.type || 'image/jpeg',
+        });
+      };
+      img.src = readerEvent.target?.result as string;
+    };
+    reader.onerror = () => {
+      resolve({ base64: '', mimeType: 'image/jpeg' });
+    };
+    reader.readAsDataURL(file);
+  });
 };
 
 export const TancoChatModal: React.FC = () => {
@@ -277,16 +350,20 @@ export const TancoChatModal: React.FC = () => {
     }
   }, [messages, isTancoChatOpen]);
 
-  // Auto scroll to bottom of chat
+  // Auto scroll to bottom of chat (only auto-focus input on desktop screens to prevent mobile viewport shifts)
   useEffect(() => {
     if (isTancoChatOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      inputRef.current?.focus();
+      if (window.innerWidth >= 640) {
+        inputRef.current?.focus();
+      }
     }
   }, [messages, isTancoChatOpen, isTyping]);
 
   const isListeningRef = useRef(false);
   const baseTextBeforeListeningRef = useRef('');
+  const inputMessageRef = useRef(inputMessage);
+  inputMessageRef.current = inputMessage;
 
   // Handle Continuous Speech-to-Text Setup
   useEffect(() => {
@@ -321,11 +398,17 @@ export const TancoChatModal: React.FC = () => {
         if (event.error !== 'no-speech') {
           console.warn('Speech recognition error:', event.error);
         }
+        // Immediately terminate listening state on fatal permissions/hardware errors to prevent infinite loops
+        if (event.error === 'not-allowed' || event.error === 'service-not-allowed' || event.error === 'audio-capture') {
+          isListeningRef.current = false;
+          setIsListening(false);
+        }
       };
 
       recognition.onend = () => {
         // Keep listening continuous unless user explicitly pressed the stop button
         if (isListeningRef.current) {
+          baseTextBeforeListeningRef.current = inputMessageRef.current.trim();
           try {
             recognition.start();
           } catch (e) {
@@ -384,7 +467,7 @@ export const TancoChatModal: React.FC = () => {
     }
   };
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -393,14 +476,21 @@ export const TancoChatModal: React.FC = () => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setSelectedImage({
-        base64: reader.result as string,
-        mimeType: file.type,
-      });
-    };
-    reader.readAsDataURL(file);
+    try {
+      const resized = await resizeImageForUpload(file);
+      if (resized.base64) {
+        setSelectedImage(resized);
+      }
+    } catch {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage({
+          base64: reader.result as string,
+          mimeType: file.type,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
     e.target.value = '';
   };
 
@@ -511,7 +601,8 @@ export const TancoChatModal: React.FC = () => {
         studentName,
         currentImage?.base64,
         currentImage?.mimeType,
-        currentStudyContext
+        currentStudyContext,
+        userProfile?.schoolEmail
       );
 
       const tancoMsg: ChatMessage = {
@@ -534,8 +625,8 @@ export const TancoChatModal: React.FC = () => {
         sender: 'tanco',
         text:
           language === 'tr'
-            ? 'Üzgünüm, şu an bağlantıda kısa bir kesinti oldu. Lütfen sorunu tekrar sor veya .env dosyandaki API anahtarını kontrol et!'
-            : 'Sorry, a connection issue occurred. Please retry your question or check your API key in .env!',
+            ? 'Bağlantıda kısa bir duraksama oldu kanka, lütfen sorunu tekrar gönderir misin?'
+            : 'There was a brief pause in the connection, could you please resend your question?',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, fallbackMsg]);

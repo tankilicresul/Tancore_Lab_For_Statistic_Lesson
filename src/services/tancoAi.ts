@@ -278,7 +278,8 @@ export async function askTancoAI(
   studentName: string = 'Öğrenci',
   imageBase64?: string,
   imageMimeType?: string,
-  studyContext?: any
+  studyContext?: any,
+  studentEmail?: string
 ): Promise<string> {
   // Panoramic Application Scan: Look up any referenced module, lesson, or case table
   const retrievedInfo = scanAndRetrieveAppKnowledge(userPrompt, language);
@@ -297,6 +298,7 @@ export async function askTancoAI(
         history,
         language,
         studentName,
+        studentEmail,
         imageBase64,
         imageMimeType,
         studyContext: enhancedStudyContext,

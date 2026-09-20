@@ -142,7 +142,7 @@ export const FloatingTancoButton: React.FC = () => {
       const deltaX = moveEv.clientX - dragStartRef.current.startX;
       const deltaY = moveEv.clientY - dragStartRef.current.startY;
 
-      if (!hasMovedRef.current && Math.hypot(deltaX, deltaY) > 5) {
+      if (!hasMovedRef.current && Math.hypot(deltaX, deltaY) > 12) {
         hasMovedRef.current = true;
         setIsDragging(true);
       }

@@ -141,7 +141,8 @@ export default async function handler(req: any, res: any) {
     origin === 'https://tancorelab.com' ||
     origin === 'https://www.tancorelab.com' ||
     origin.includes('tancorelab') ||
-    origin.includes('localhost');
+    origin.includes('localhost') ||
+    origin.includes('vercel.app');
 
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', isAllowedOrigin && origin ? origin : 'https://tancorelab.com');
@@ -160,7 +161,7 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method not allowed. Use POST.' });
   }
 
-  const { prompt, history, language = 'tr', studentName = 'Öğrenci', imageBase64, imageMimeType, studyContext } = req.body || {};
+  const { prompt, history, language = 'tr', studentName = 'Öğrenci', studentEmail, imageBase64, imageMimeType, studyContext } = req.body || {};
 
   // Rate Limiting check
   const clientIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
@@ -201,7 +202,7 @@ export default async function handler(req: any, res: any) {
         user_message: prompt,
         detected_issue: prompt,
         screen_context: typeof studyContext === 'object' ? JSON.stringify(studyContext) : String(studyContext || 'Genel'),
-        user_email: studentName || 'ogrenci',
+        user_email: studentEmail || studentName || 'ogrenci',
         user_name: studentName || 'Öğrenci',
         severity: lowerPrompt.includes('çöktü') || lowerPrompt.includes('dondu') ? 'High' : 'Medium',
         status: 'Open',
@@ -214,10 +215,11 @@ export default async function handler(req: any, res: any) {
 
   try {
     const models = [
-      'gemini-1.5-flash',
-      'gemini-2.0-flash',
-      'gemini-1.5-flash-8b',
-      'gemini-1.5-pro',
+      'gemini-flash-latest',
+      'gemini-3.5-flash',
+      'gemini-flash-lite-latest',
+      'gemini-3.1-flash-lite',
+      'gemini-2.5-flash',
     ];
     let lastError: any = null;
 
