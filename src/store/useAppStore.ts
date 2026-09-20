@@ -279,51 +279,59 @@ export const useAppStore = create<UserState & AppStoreActions>()(
       },
 
       registerAccountAndSendOtp: (accountInput, simulatedCode) => {
-        const email = accountInput.schoolEmail?.trim().toLowerCase() || '';
-        const currentStore = get();
-        const defaultAvatar = getDefaultAvatarForUser(accountInput.fullName || email, accountInput.avatarEmoji);
-        const newAccount: RegisteredAccount = {
-          schoolEmail: email,
-          fullName: accountInput.fullName?.trim() || 'Öğrenci',
-          university: accountInput.university?.trim() || '',
-          departmentAndClass: accountInput.departmentAndClass?.trim() || '',
-          password: accountInput.password || '',
+        const cleanEmail = accountInput.schoolEmail?.trim().toLowerCase() || '';
+        const fallbackName = accountInput.fullName?.trim() || cleanEmail.split('@')[0];
+        const defaultAvatar = accountInput.avatarUrl || getDefaultAvatarForUser(fallbackName, accountInput.avatarEmoji || '👨‍🎓');
+
+        const cleanNewAccount: RegisteredAccount = {
+          fullName: fallbackName,
+          schoolEmail: cleanEmail,
+          university: accountInput.university || '',
+          departmentAndClass: accountInput.departmentAndClass || '',
           avatarEmoji: accountInput.avatarEmoji || '👨‍🎓',
-          avatarUrl: accountInput.avatarUrl || currentStore.userProfile?.avatarUrl || defaultAvatar,
+          avatarUrl: defaultAvatar,
           isVerified: false,
-          xp: currentStore.xp || 0,
-          streak: Math.max(1, currentStore.streak || 1),
-          completedLessons: currentStore.completedLessons || [],
-          completedCaseExams: currentStore.completedCaseExams || [],
-          unlockedModules: currentStore.unlockedModules || ['module-1', 'module-2'],
-          unlockedBadges: currentStore.unlockedBadges || [],
+          password: accountInput.password || '',
+          xp: 0,
+          streak: 1,
+          completedLessons: [],
+          completedCaseExams: [],
+          unlockedModules: ['module-1', 'module-2'],
+          unlockedBadges: [],
         };
 
         set((state) => {
           const accounts = state.userAccounts || [];
-          const existingIdx = accounts.findIndex((a) => a.schoolEmail.toLowerCase() === email);
+          const existingIdx = accounts.findIndex((a) => a.schoolEmail.toLowerCase() === cleanEmail);
           let updatedAccounts: RegisteredAccount[];
           if (existingIdx >= 0) {
             updatedAccounts = [...accounts];
-            updatedAccounts[existingIdx] = newAccount;
+            updatedAccounts[existingIdx] = cleanNewAccount;
           } else {
-            updatedAccounts = [...accounts, newAccount];
+            updatedAccounts = [...accounts, cleanNewAccount];
           }
 
           return {
             userAccounts: updatedAccounts,
-            pendingOtpEmail: email,
+            pendingOtpEmail: cleanEmail,
             simulatedOtpCode: simulatedCode || undefined,
             userProfile: {
-              fullName: newAccount.fullName,
-              schoolEmail: newAccount.schoolEmail,
-              university: newAccount.university,
-              departmentAndClass: newAccount.departmentAndClass,
-              avatarEmoji: newAccount.avatarEmoji,
-              avatarUrl: newAccount.avatarUrl,
+              fullName: cleanNewAccount.fullName,
+              schoolEmail: cleanNewAccount.schoolEmail,
+              university: cleanNewAccount.university,
+              departmentAndClass: cleanNewAccount.departmentAndClass,
+              avatarEmoji: cleanNewAccount.avatarEmoji,
+              avatarUrl: cleanNewAccount.avatarUrl,
               isVerified: false,
-              password: newAccount.password,
+              password: cleanNewAccount.password,
             },
+            // Reset device progress so new registration does not inherit previous user's stats
+            xp: 0,
+            streak: 1,
+            completedLessons: [],
+            completedCaseExams: [],
+            unlockedBadges: [],
+            unlockedModules: ['module-1', 'module-2'],
           };
         });
       },
@@ -344,41 +352,41 @@ export const useAppStore = create<UserState & AppStoreActions>()(
         const accIdx = accounts.findIndex((a) => a.schoolEmail.toLowerCase() === pendingEmail);
 
         let activeProfile: UserProfile;
-        const currentCompletedLessons = state.completedLessons || [];
-        const currentCompletedCases = state.completedCaseExams || [];
-        const currentBadges = state.unlockedBadges || [];
-        const currentUnlockedModules = state.unlockedModules || ['module-1', 'module-2'];
-        let userXp = state.xp || 0;
-        let userStreak = Math.max(1, state.streak || 1);
+        let currentCompletedLessons: string[] = [];
+        let currentCompletedCases: string[] = [];
+        let currentBadges: string[] = [];
+        let currentUnlockedModules: string[] = ['module-1', 'module-2'];
+        let userXp = 0;
+        let userStreak = 1;
 
         if (accIdx >= 0) {
           accounts[accIdx].isVerified = true;
           activeProfile = {
             id: `usr_${pendingEmail}`,
-            fullName: accounts[accIdx].fullName,
+            fullName: accounts[accIdx].fullName || pendingEmail.split('@')[0],
             schoolEmail: accounts[accIdx].schoolEmail,
-            university: accounts[accIdx].university,
-            departmentAndClass: accounts[accIdx].departmentAndClass,
+            university: accounts[accIdx].university || '',
+            departmentAndClass: accounts[accIdx].departmentAndClass || '',
             avatarEmoji: accounts[accIdx].avatarEmoji || '👨‍🎓',
-            avatarUrl: accounts[accIdx].avatarUrl || state.userProfile?.avatarUrl || getDefaultAvatarForUser(accounts[accIdx].fullName || pendingEmail, accounts[accIdx].avatarEmoji),
+            avatarUrl: accounts[accIdx].avatarUrl || getDefaultAvatarForUser(accounts[accIdx].fullName || pendingEmail, accounts[accIdx].avatarEmoji),
             isVerified: true,
             createdAt: new Date().toISOString(),
           };
-          userXp = Math.max(accounts[accIdx].xp || 0, userXp);
-          userStreak = Math.max(accounts[accIdx].streak || 1, userStreak);
-          accounts[accIdx].xp = userXp;
-          accounts[accIdx].streak = userStreak;
-          accounts[accIdx].completedLessons = Array.from(new Set([...(accounts[accIdx].completedLessons || []), ...currentCompletedLessons]));
-          accounts[accIdx].completedCaseExams = Array.from(new Set([...(accounts[accIdx].completedCaseExams || []), ...currentCompletedCases]));
+          userXp = accounts[accIdx].xp || 0;
+          userStreak = accounts[accIdx].streak || 1;
+          currentCompletedLessons = accounts[accIdx].completedLessons || [];
+          currentCompletedCases = accounts[accIdx].completedCaseExams || [];
+          currentBadges = accounts[accIdx].unlockedBadges || [];
+          currentUnlockedModules = accounts[accIdx].unlockedModules || ['module-1', 'module-2'];
         } else {
           activeProfile = {
             id: `usr_${pendingEmail}`,
-            fullName: state.userProfile.fullName || 'Öğrenci',
+            fullName: pendingEmail.split('@')[0],
             schoolEmail: pendingEmail,
-            university: state.userProfile.university || '',
-            departmentAndClass: state.userProfile.departmentAndClass || '',
-            avatarEmoji: state.userProfile.avatarEmoji || '👨‍🎓',
-            avatarUrl: state.userProfile?.avatarUrl || getDefaultAvatarForUser(state.userProfile.fullName || pendingEmail, state.userProfile.avatarEmoji),
+            university: '',
+            departmentAndClass: '',
+            avatarEmoji: '👨‍🎓',
+            avatarUrl: getDefaultAvatarForUser(pendingEmail, '👨‍🎓'),
             isVerified: true,
             createdAt: new Date().toISOString(),
           };
@@ -395,6 +403,8 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           completedCaseExams: currentCompletedCases,
           unlockedBadges: currentBadges,
           unlockedModules: currentUnlockedModules,
+          pendingOtpEmail: undefined,
+          simulatedOtpCode: undefined,
           userAccounts: accounts,
         };
 
@@ -461,6 +471,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           // Fetch full profile from Supabase profiles table
           const remoteProfile = await fetchUserProfileFromSupabase(cleanEmail);
 
+          const isSameUser = state.userProfile?.schoolEmail?.trim().toLowerCase() === cleanEmail;
+          const accountAvatar = isSameUser ? state.userProfile?.avatarUrl : undefined;
+
           const loggedInProfile: UserProfile = {
             id: authRes.user?.id || `usr_${cleanEmail}`,
             fullName: remoteProfile?.full_name || authRes.user?.user_metadata?.full_name || cleanEmail.split('@')[0],
@@ -468,7 +481,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             university: remoteProfile?.university || 'Üniversite',
             departmentAndClass: remoteProfile?.department_and_class || 'Öğrenci',
             avatarEmoji: remoteProfile?.avatar_emoji || '👨‍🎓',
-            avatarUrl: remoteProfile?.avatar_url || state.userProfile?.avatarUrl || getDefaultAvatarForUser(remoteProfile?.full_name || cleanEmail, remoteProfile?.avatar_emoji),
+            avatarUrl: remoteProfile?.avatar_url || accountAvatar || getDefaultAvatarForUser(remoteProfile?.full_name || cleanEmail, remoteProfile?.avatar_emoji),
             isVerified: true,
             createdAt: new Date().toISOString(),
             isPremium: Boolean(remoteProfile?.is_premium || remoteProfile?.isPremium),
@@ -476,17 +489,19 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             subscriptionRenewsAt: remoteProfile?.subscription_renews_at || undefined,
           };
 
-          // Seamlessly merge guest progress with remote account progress
-          const guestLessons = state.completedLessons || [];
-          const guestCases = state.completedCaseExams || [];
+          // If guest session prior to login, only merge if not previously authenticated as another user
+          const guestLessons = !state.isAuthenticated ? (state.completedLessons || []) : [];
+          const guestCases = !state.isAuthenticated ? (state.completedCaseExams || []) : [];
           const remoteLessonsCount = typeof remoteProfile?.completed_lessons === 'number' ? remoteProfile.completed_lessons : 0;
-          const mergedLessons = Array.from(new Set(guestLessons));
-          const mergedCases = Array.from(new Set(guestCases));
-          const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
-          // Cloud remote XP is the authoritative source of truth; never double/sum XP upon login
-          const userXp = remoteXp > 0 ? remoteXp : (state.xp || 0);
           const accounts = state.userAccounts || [];
           const existingAccount = accounts.find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
+          const userStoredLessons = existingAccount?.completedLessons || [];
+          const userStoredCases = existingAccount?.completedCaseExams || [];
+          const mergedLessons = Array.from(new Set([...userStoredLessons, ...guestLessons]));
+          const mergedCases = Array.from(new Set([...userStoredCases, ...guestCases]));
+
+          const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
+          const userXp = remoteXp > 0 ? remoteXp : (existingAccount?.xp || 0);
 
           // Email-based streak and activity history
           const emailStreak = typeof remoteProfile?.streak === 'number'
@@ -628,6 +643,9 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           remoteProfile = await fetchUserProfileFromSupabase(cleanEmail);
         }
 
+        const isSameUser = state.userProfile?.schoolEmail?.trim().toLowerCase() === cleanEmail;
+        const accountAvatar = isSameUser ? state.userProfile?.avatarUrl : undefined;
+
         const loggedInProfile: UserProfile = {
           id: sessionUser?.id || remoteProfile?.id || `usr_${cleanEmail}`,
           fullName: remoteProfile?.full_name || sessionUser?.user_metadata?.full_name || cleanEmail.split('@')[0],
@@ -635,7 +653,7 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           university: remoteProfile?.university || 'Üniversite',
           departmentAndClass: remoteProfile?.department_and_class || 'Öğrenci',
           avatarEmoji: remoteProfile?.avatar_emoji || '👨‍🎓',
-          avatarUrl: remoteProfile?.avatar_url || state.userProfile?.avatarUrl || getDefaultAvatarForUser(remoteProfile?.full_name || sessionUser?.user_metadata?.full_name || cleanEmail, remoteProfile?.avatar_emoji),
+          avatarUrl: remoteProfile?.avatar_url || accountAvatar || getDefaultAvatarForUser(remoteProfile?.full_name || sessionUser?.user_metadata?.full_name || cleanEmail, remoteProfile?.avatar_emoji),
           isVerified: true,
           createdAt: new Date().toISOString(),
           isPremium: Boolean(remoteProfile?.is_premium || remoteProfile?.isPremium),
@@ -643,16 +661,18 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           subscriptionRenewsAt: remoteProfile?.subscription_renews_at || undefined,
         };
 
-        const guestLessons = state.completedLessons || [];
-        const guestCases = state.completedCaseExams || [];
+        const guestLessons = !state.isAuthenticated ? (state.completedLessons || []) : [];
+        const guestCases = !state.isAuthenticated ? (state.completedCaseExams || []) : [];
         const remoteLessonsCount = typeof remoteProfile?.completed_lessons === 'number' ? remoteProfile.completed_lessons : 0;
-        const mergedLessons = Array.from(new Set(guestLessons));
-        const mergedCases = Array.from(new Set(guestCases));
-        const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
-        const userXp = remoteXp > 0 ? remoteXp : (state.xp || 0);
-
         const accounts = state.userAccounts || [];
         const existingAccount = accounts.find((a) => a.schoolEmail.trim().toLowerCase() === cleanEmail);
+        const userStoredLessons = existingAccount?.completedLessons || [];
+        const userStoredCases = existingAccount?.completedCaseExams || [];
+        const mergedLessons = Array.from(new Set([...userStoredLessons, ...guestLessons]));
+        const mergedCases = Array.from(new Set([...userStoredCases, ...guestCases]));
+
+        const remoteXp = typeof remoteProfile?.xp === 'number' ? remoteProfile.xp : 0;
+        const userXp = remoteXp > 0 ? remoteXp : (existingAccount?.xp || 0);
 
         // Email-based streak and activity history
         const emailStreak = typeof remoteProfile?.streak === 'number'
