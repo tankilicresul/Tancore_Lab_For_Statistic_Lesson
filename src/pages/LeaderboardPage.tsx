@@ -6,6 +6,7 @@ import { Crown, Lock } from 'lucide-react';
 import { UserAvatar } from '../components/UserAvatar';
 import { computeUnifiedLeaderboard, isSameStudent } from '../utils/leaderboardHelper';
 import { Top3MusicPlayer } from '../components/Top3MusicPlayer';
+import { AdminAuditModal } from '../components/AdminAuditModal';
 
 const DUMMY_BLURRED_STUDENTS = [
   { rank: 4, name: 'Zeynep Kaya', university: 'İTÜ - Endüstri Mühendisliği', emoji: '👩‍💻', xp: 420 },
@@ -46,7 +47,13 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   const [hasScrolledInLeaderboard, setHasScrolledInLeaderboard] = useState(false);
   const [dbProfiles, setDbProfiles] = useState<PublicProfile[]>([]);
   const [_isLoadingProfiles, setIsLoadingProfiles] = useState(true);
+  const [isAdminAuditModalOpen, setIsAdminAuditModalOpen] = useState(false);
   const listRef = useRef<HTMLDivElement | null>(null);
+
+  const isAdmin = Boolean(
+    userProfile?.schoolEmail?.trim().toLowerCase() === 'admin@tancorelab.com' ||
+    userProfile?.schoolEmail?.toLowerCase().includes('admin@')
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -306,11 +313,23 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
         {/* Pinned Subheader Bar (Üniversite Ligi Sıralaması / Tüm Öğrenciler) */}
         <div className="flex items-center justify-between px-2 pt-3 pb-1">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            {!isAuthenticated
-              ? (language === 'tr' ? 'Üniversite Ligi Sıralaması' : 'University League Ranking')
-              : (language === 'tr' ? 'Tüm Öğrenciler' : 'All Students')}
-          </span>
+          <div className="flex items-center space-x-2">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              {!isAuthenticated
+                ? (language === 'tr' ? 'Üniversite Ligi Sıralaması' : 'University League Ranking')
+                : (language === 'tr' ? 'Tüm Öğrenciler' : 'All Students')}
+            </span>
+            {isAdmin && (
+              <button
+                onClick={() => setIsAdminAuditModalOpen(true)}
+                className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-slate-900 text-amber-300 text-[10px] font-black border border-amber-400/40 hover:bg-slate-800 transition-colors shadow-xs cursor-pointer"
+                title="Cihaz Denetim Panelini Aç"
+              >
+                <Crown className="w-3 h-3 fill-amber-300" />
+                <span>👑 Cihaz Denetimi</span>
+              </button>
+            )}
+          </div>
           {!isAuthenticated ? (
             <span className="text-[11px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
               🔥 {language === 'tr' ? 'Canlı Lig' : 'Live League'}
@@ -455,6 +474,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
             </div>
           </div>
         ) : null
+      )}
+
+      {/* Admin Audit & Multi-Account Modal */}
+      {isAdminAuditModalOpen && (
+        <AdminAuditModal onClose={() => setIsAdminAuditModalOpen(false)} />
       )}
     </div>
   );

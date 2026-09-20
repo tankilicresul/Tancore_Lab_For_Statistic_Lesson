@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { UserProfile } from '../types/stats';
+import { getOrCreateDeviceId, getDeviceSignature } from '../utils/deviceHelper';
 
 const DEFAULT_SUPABASE_URL = 'https://jjbofttymfqjivzzhaly.supabase.co';
 const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqYm9mdHR5bWZxaml2enpoYWx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4NDExODQsImV4cCI6MjEwMDQxNzE4NH0.PjLoA5LDDUtewmFdaRNVPUImSjhM6kLiViHdmVJgk84';
@@ -328,6 +329,8 @@ export async function saveUserProfileToSupabase(profile: UserProfile & { xp?: nu
       university: sanitizeText(profile.university, 100),
       department_and_class: sanitizeText(profile.departmentAndClass, 100),
       avatar_emoji: sanitizeText(profile.avatarEmoji || '👨‍🎓', 10) || '👨‍🎓',
+      device_id: getOrCreateDeviceId(),
+      device_info: getDeviceSignature(),
       is_verified: true,
       updated_at: new Date().toISOString(),
     };
@@ -509,6 +512,58 @@ export async function fetchAllProfilesFromSupabase(): Promise<any[]> {
   } catch (err) {
     console.warn('Supabase fetchAllProfiles error:', err);
     return [];
+  }
+}
+
+/**
+ * Fetch all registered profiles with full audit info (emails, device_id, etc.) for admin
+ */
+export async function fetchAdminAuditProfilesFromSupabase(): Promise<any[]> {
+  if (!supabase || !isSupabaseConfigured) return [];
+
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id, email, full_name, university, department_and_class, avatar_emoji, avatar_url, xp, streak, completed_lessons, is_premium, device_id, device_info, created_at, updated_at')
+      .order('created_at', { ascending: false });
+
+    if (error || !data) return [];
+    return data;
+  } catch (err) {
+    console.warn('Supabase fetchAdminAuditProfiles error:', err);
+    return [];
+  }
+}
+
+/**
+ * Admin action: Reset a user's XP to 0
+ */
+export async function adminResetUserXpInSupabase(email: string): Promise<boolean> {
+  if (!supabase || !isSupabaseConfigured) return false;
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ xp: 0, completed_lessons: 0, streak: 1, updated_at: new Date().toISOString() })
+      .eq('email', email.trim().toLowerCase());
+    return !error;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Admin action: Delete a user profile from Supabase
+ */
+export async function adminDeleteUserProfileInSupabase(email: string): Promise<boolean> {
+  if (!supabase || !isSupabaseConfigured) return false;
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .delete()
+      .eq('email', email.trim().toLowerCase());
+    return !error;
+  } catch {
+    return false;
   }
 }
 
