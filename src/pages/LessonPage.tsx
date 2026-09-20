@@ -17,13 +17,13 @@ import {
   ChevronDown,
   ChevronUp,
   PartyPopper,
-  Check,
   Eye,
   Loader2,
   Bot,
   ArrowRight,
   Home,
   RefreshCw,
+  Lock,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { soundService } from '../services/soundService';
@@ -61,6 +61,17 @@ export const LessonPage: React.FC<LessonPageProps> = ({
 
   const handleNextTopicClick = () => {
     if (isNextLoading || !nextTopic) return;
+
+    // If lesson has questions and is not completed yet, scroll to the practice question
+    if (!isCompleted && !lesson.isOrientation) {
+      setIsQuestionsOpen(true);
+      const el = document.getElementById('lesson-question-box');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
     setIsNextLoading(true);
 
     setTimeout(() => {
@@ -73,7 +84,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
         onSelectNextTopic(nextTopic.id, nextTopic.type);
       }
       setIsNextLoading(false);
-    }, 1200);
+    }, 600);
   };
 
   const handleAnswerSubmit = (qId: string) => {
@@ -561,15 +572,24 @@ export const LessonPage: React.FC<LessonPageProps> = ({
             <span>{language === 'tr' ? 'Yönetici Özeti' : 'Executive Summary'}</span>
           </button>
 
-          {/* 3. Next Topic Button with 3s loader */}
+          {/* 3. Next Topic Button with dynamic completion state */}
           {nextTopic && (
             <button
               disabled={isNextLoading}
               onClick={handleNextTopicClick}
+              title={
+                !isCompleted && !lesson.isOrientation
+                  ? language === 'tr'
+                    ? 'Dersi tamamlamak ve sonraki konuyu açmak için yukarıdaki soruyu çözün'
+                    : 'Solve practice question to complete lesson and unlock next topic'
+                  : undefined
+              }
               className={`w-full sm:w-auto px-7 py-3.5 rounded-2xl font-bold text-xs tracking-wide border transition-all flex items-center justify-center space-x-2 cursor-pointer ${
                 isNextLoading
                   ? 'bg-[#ff7a00] text-white border-[#ff7a00] shadow-lg shadow-[#ff7a00]/20'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200'
+                  : isCompleted || lesson.isOrientation
+                  ? 'bg-[#ff7a00] hover:bg-[#e66e00] text-white border-[#ff7a00] shadow-md shadow-[#ff7a00]/25 active:scale-95'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200 active:scale-95'
               }`}
             >
               {isNextLoading ? (
@@ -582,9 +602,20 @@ export const LessonPage: React.FC<LessonPageProps> = ({
               ) : (
                 <>
                   <span>
+                    {isCompleted || lesson.isOrientation
+                      ? language === 'tr'
+                        ? 'Sıradaki Konu: '
+                        : 'Next: '
+                      : language === 'tr'
+                      ? 'Sonraki Konu: '
+                      : 'Next Topic: '}
                     <MathFormulaText text={getLocalized(nextTopic.title, language)} inline />
                   </span>
-                  <Check className="w-4 h-4 text-[#ff7a00] stroke-[2.5]" />
+                  {isCompleted || lesson.isOrientation ? (
+                    <ArrowRight className="w-4 h-4 text-white stroke-[2.5]" />
+                  ) : (
+                    <Lock className="w-3.5 h-3.5 text-slate-400 stroke-[2.2]" />
+                  )}
                 </>
               )}
             </button>

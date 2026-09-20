@@ -4,7 +4,7 @@ import { getLocalized } from '../utils/localization';
 import { useAppStore } from '../store/useAppStore';
 import { getNextTopicItem } from '../data/modules';
 import { MathFormulaText } from '../components/MathFormulaText';
-import { ArrowLeft, Trophy, CheckCircle2, Table, HelpCircle, Eye, AlertCircle, ArrowRight, Home, RefreshCw, PartyPopper, Check, Loader2 } from 'lucide-react';
+import { ArrowLeft, Trophy, CheckCircle2, Table, HelpCircle, Eye, AlertCircle, ArrowRight, Home, RefreshCw, PartyPopper, Check, Loader2, Lock } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { soundService } from '../services/soundService';
 
@@ -35,6 +35,15 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
 
   const handleNextTopicClick = () => {
     if (isNextLoading || !nextTopic) return;
+
+    if (!isCompleted) {
+      const el = document.getElementById('case-solution-section') || document.getElementById('expected-approach-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
     setIsNextLoading(true);
 
     setTimeout(() => {
@@ -42,7 +51,7 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
         onSelectNextTopic(nextTopic.id, nextTopic.type);
       }
       setIsNextLoading(false);
-    }, 2000);
+    }, 600);
   };
 
   const triggerConfetti = () => {
@@ -404,15 +413,24 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
             <span>{language === 'tr' ? 'Yönetici Özeti' : 'Executive Summary'}</span>
           </button>
 
-          {/* 3. Next Topic Button with 3s loader */}
+          {/* 3. Next Topic Button with dynamic completion state */}
           {nextTopic && (
             <button
               disabled={isNextLoading}
               onClick={handleNextTopicClick}
-              className={`w-full sm:w-auto px-7 py-3.5 rounded-2xl font-bold text-xs tracking-wide border transition-all flex items-center justify-center space-x-2 ${
+              title={
+                !isCompleted
+                  ? language === 'tr'
+                    ? 'Vaka sınavını tamamlamak ve sonraki konuyu açmak için soruyu çözün'
+                    : 'Solve case to complete and unlock next topic'
+                  : undefined
+              }
+              className={`w-full sm:w-auto px-7 py-3.5 rounded-2xl font-bold text-xs tracking-wide border transition-all flex items-center justify-center space-x-2 cursor-pointer ${
                 isNextLoading
                   ? 'bg-[#ff7a00] text-white border-[#ff7a00] shadow-lg shadow-[#ff7a00]/20'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200'
+                  : isCompleted
+                  ? 'bg-[#ff7a00] hover:bg-[#e66e00] text-white border-[#ff7a00] shadow-md shadow-[#ff7a00]/25 active:scale-95'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200 active:scale-95'
               }`}
             >
               {isNextLoading ? (
@@ -425,9 +443,20 @@ export const CaseExamPage: React.FC<CaseExamPageProps> = ({
               ) : (
                 <>
                   <span>
+                    {isCompleted
+                      ? language === 'tr'
+                        ? 'Sıradaki Konu: '
+                        : 'Next: '
+                      : language === 'tr'
+                      ? 'Sonraki Konu: '
+                      : 'Next Topic: '}
                     <MathFormulaText text={getLocalized(nextTopic.title, language)} inline />
                   </span>
-                  <Check className="w-4 h-4 text-[#ff7a00] stroke-[2.5]" />
+                  {isCompleted ? (
+                    <ArrowRight className="w-4 h-4 text-white stroke-[2.5]" />
+                  ) : (
+                    <Lock className="w-3.5 h-3.5 text-slate-400 stroke-[2.2]" />
+                  )}
                 </>
               )}
             </button>
