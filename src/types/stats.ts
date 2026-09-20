@@ -94,9 +94,6 @@ export interface UserProfile {
   avatarUrl?: string;
   isVerified?: boolean;
   createdAt?: string;
-  isPremium?: boolean;
-  subscriptionStatus?: string;
-  subscriptionRenewsAt?: string;
 }
 
 export interface RegisteredAccount {
@@ -115,9 +112,6 @@ export interface RegisteredAccount {
   completedCaseExams: string[];
   unlockedModules: string[];
   unlockedBadges: string[];
-  isPremium?: boolean;
-  subscriptionStatus?: string;
-  subscriptionRenewsAt?: string;
 }
 
 export interface PublicProfile {
@@ -134,7 +128,6 @@ export interface PublicProfile {
   level: number;
   completedCount: number;
   unlockedBadges: string[];
-  isPremium?: boolean;
 }
 
 export interface UserState {

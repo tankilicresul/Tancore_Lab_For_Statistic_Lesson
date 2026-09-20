@@ -153,11 +153,6 @@ export const LegalTermsModal: React.FC<LegalTermsModalProps> = ({
               <p>
                 TancoreLab arayüz tasarımı, özgün iş vaka senaryoları, hesaplama algoritmaları ve görsel materyallerin tüm telif hakları TancoreLab'e aittir. Yazılı izin olmaksızın kısmen veya tamamen kopyalanamaz veya çoğaltılamaz.
               </p>
-
-              <h4 className="font-bold text-slate-900">4. Plus Üyelik ve Ön Bilgilendirme Formu (Mesafeli Satış)</h4>
-              <p>
-                TancoreLab Plus üyeliği; dijital eğitim içeriklerine ve gelişmiş yapay zeka özelliklerine sınırsız erişim sağlayan bir abonelik hizmetidir. Satın alma işlemi tamamlandığında <strong>3 günlük ücretsiz deneme süresi</strong> başlar. Deneme süresinin sonunda seçilen plan kapsamında periyodik ücret tahsilatı gerçekleştirilir. Aboneliğinizi dilediğiniz zaman hesap ayarlarından iptal edebilirsiniz. 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği kapsamında; dijital içeriklere erişim sağlandığı andan itibaren cayma hakkı kullanılamaz.
-              </p>
             </div>
           )}
 

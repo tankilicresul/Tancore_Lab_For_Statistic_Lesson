@@ -160,7 +160,6 @@ const DEFAULT_PROFILE: UserProfile = {
   avatarEmoji: '👨‍🎓',
   avatarUrl: '/avatars/avatar-1.jpg',
   isVerified: false,
-  isPremium: false,
 };
 
 const DEFAULT_DEMO_ACCOUNTS: RegisteredAccount[] = [];
@@ -247,7 +246,6 @@ function syncUserInList(state: UserState): PublicProfile[] {
     level: Math.floor(state.xp / 100) + 1,
     completedCount: state.completedLessons.length + state.completedCaseExams.length,
     unlockedBadges: state.unlockedBadges,
-    isPremium: Boolean(profile.isPremium),
   };
 
   const newList = [userEntry, ...otherUsers];
@@ -476,9 +474,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
             avatarUrl: remoteProfile?.avatar_url || accountAvatar || getDefaultAvatarForUser(remoteProfile?.full_name || cleanEmail, remoteProfile?.avatar_emoji),
             isVerified: true,
             createdAt: new Date().toISOString(),
-            isPremium: Boolean(remoteProfile?.is_premium || remoteProfile?.isPremium),
-            subscriptionStatus: remoteProfile?.subscription_status || undefined,
-            subscriptionRenewsAt: remoteProfile?.subscription_renews_at || undefined,
           };
 
           // If guest session prior to login, only merge if not previously authenticated as another user
@@ -640,9 +635,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
           avatarUrl: remoteProfile?.avatar_url || accountAvatar || getDefaultAvatarForUser(remoteProfile?.full_name || sessionUser?.user_metadata?.full_name || cleanEmail, remoteProfile?.avatar_emoji),
           isVerified: true,
           createdAt: new Date().toISOString(),
-          isPremium: Boolean(remoteProfile?.is_premium || remoteProfile?.isPremium),
-          subscriptionStatus: remoteProfile?.subscription_status || undefined,
-          subscriptionRenewsAt: remoteProfile?.subscription_renews_at || undefined,
         };
 
         const guestLessons = !state.isAuthenticated ? (state.completedLessons || []) : [];
@@ -1322,9 +1314,6 @@ export const useAppStore = create<UserState & AppStoreActions>()(
                       avatarEmoji: remote.avatar_emoji || store.userProfile.avatarEmoji,
                       university: remote.university || store.userProfile.university,
                       departmentAndClass: remote.department_and_class || store.userProfile.departmentAndClass,
-                      isPremium: Boolean(remote.is_premium || remote.isPremium),
-                      subscriptionStatus: remote.subscription_status || store.userProfile.subscriptionStatus,
-                      subscriptionRenewsAt: remote.subscription_renews_at || store.userProfile.subscriptionRenewsAt,
                     },
                     xp: mergedXp,
                     streak: Math.min(mergedStreak, 365),

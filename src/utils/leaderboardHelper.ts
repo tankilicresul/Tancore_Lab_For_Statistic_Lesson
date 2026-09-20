@@ -148,7 +148,6 @@ export function computeUnifiedLeaderboard(params: {
         level: Math.floor(finalXp / 100) + 1,
         completedCount: finalCompletedCount,
         unlockedBadges: mergedBadges,
-        isPremium: Boolean(incoming.isPremium || existing.isPremium),
       };
     } else {
       list.push({ ...incoming });
@@ -177,7 +176,6 @@ export function computeUnifiedLeaderboard(params: {
       level: Math.floor(currentXp / 100) + 1,
       completedCount,
       unlockedBadges: Array.isArray(unlockedBadges) ? unlockedBadges : [],
-      isPremium: Boolean(currentUserProfile.isPremium),
     };
     upsertProfile(activeEntry, true);
   }

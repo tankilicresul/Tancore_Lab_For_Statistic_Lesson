@@ -348,15 +348,6 @@ export async function saveUserProfileToSupabase(profile: UserProfile & { xp?: nu
     if (typeof profile.completedLessons === 'number') {
       payload.completed_lessons = Math.max(0, Math.min(Math.round(profile.completedLessons), 200));
     }
-    if (typeof profile.isPremium === 'boolean') {
-      payload.is_premium = profile.isPremium;
-    }
-    if (profile.subscriptionStatus) {
-      payload.subscription_status = profile.subscriptionStatus;
-    }
-    if (profile.subscriptionRenewsAt) {
-      payload.subscription_renews_at = profile.subscriptionRenewsAt;
-    }
 
     // 1. Resolve exact Supabase auth UUID if available
     let resolvedId: string | undefined = undefined;

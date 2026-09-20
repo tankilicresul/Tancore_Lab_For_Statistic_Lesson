@@ -75,9 +75,6 @@ export const App: React.FC = () => {
             departmentAndClass: remoteProfile.department_and_class || userProfile.departmentAndClass,
             avatarEmoji: remoteProfile.avatar_emoji || userProfile.avatarEmoji,
             avatarUrl: remoteProfile.avatar_url || userProfile.avatarUrl,
-            isPremium: Boolean(remoteProfile.is_premium || remoteProfile.isPremium),
-            subscriptionStatus: remoteProfile.subscription_status || userProfile.subscriptionStatus,
-            subscriptionRenewsAt: remoteProfile.subscription_renews_at || userProfile.subscriptionRenewsAt,
           });
 
           useAppStore.setState((state) => ({
