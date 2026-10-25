@@ -6,6 +6,7 @@ import {
   CourseModuleItem,
   AdvancedCourse,
 } from '../data/indrCoursesData';
+import { INDR_MENTOR_DATA, CourseMentorGuide } from '../data/indrMentorData';
 import { KatexFormula } from './KatexFormula';
 import { MathFormulaText } from './MathFormulaText';
 import {
@@ -38,7 +39,7 @@ export const IndrCourseHub: React.FC<IndrCourseHubProps> = ({
 }) => {
   const { language, toggleLanguage } = useAppStore();
   const [selectedCourseKey, setSelectedCourseKey] = useState<IndrCourseKey>(initialCourseKey);
-  const [activeTab, setActiveTab] = useState<'syllabus' | 'lab'>('syllabus');
+  const [activeTab, setActiveTab] = useState<'mentor' | 'syllabus' | 'lab'>('mentor');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedModuleId, setExpandedModuleId] = useState<string | null>('slide-0');
 
@@ -110,8 +111,19 @@ export const IndrCourseHub: React.FC<IndrCourseHubProps> = ({
 
           {/* Right Tools: View Tabs & Language */}
           <div className="flex items-center space-x-3">
-            {/* View Switcher: Syllabus vs Lab */}
+            {/* View Switcher: 95+ Mentor vs Syllabus vs Lab */}
             <div className="inline-flex rounded-lg border border-slate-200/90 bg-slate-100/80 p-0.5 text-xs font-medium">
+              <button
+                onClick={() => setActiveTab('mentor')}
+                className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-md transition-all cursor-pointer ${
+                  activeTab === 'mentor'
+                    ? 'bg-amber-600 text-white font-bold shadow-2xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>{isTr ? '95+ Özel Ders' : '95+ Mentor'}</span>
+              </button>
               <button
                 onClick={() => setActiveTab('syllabus')}
                 className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-md transition-all cursor-pointer ${
@@ -132,7 +144,7 @@ export const IndrCourseHub: React.FC<IndrCourseHubProps> = ({
                 }`}
               >
                 <Calculator className="w-3.5 h-3.5" />
-                <span>{isTr ? 'Akademik Lab' : 'Interactive Lab'}</span>
+                <span>{isTr ? 'Akademik Lab' : 'Lab'}</span>
               </button>
             </div>
 
@@ -216,6 +228,11 @@ export const IndrCourseHub: React.FC<IndrCourseHubProps> = ({
         </div>
 
         {/* Tab 1: Syllabus & Module Breakdown */}
+                {/* Tab 0: 95+ Mentor & Exam Strategy View */}
+        {activeTab === 'mentor' && (
+          <IndrMentorView courseKey={selectedCourseKey} isTr={isTr} onSwitchToLab={() => setActiveTab('lab')} />
+        )}
+
         {activeTab === 'syllabus' && (
           <div className="space-y-6">
             {/* Search Bar & Module Counter */}
@@ -1304,6 +1321,254 @@ const Indr100NewsvendorLab: React.FC<{ isTr: boolean }> = ({ isTr }) => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+/* ─── 95+ PRIVATE TUTOR & ACADEMIC MENTOR VIEW ─────────────────────────── */
+interface IndrMentorViewProps {
+  courseKey: string;
+  isTr: boolean;
+  onSwitchToLab: () => void;
+}
+
+const IndrMentorView: React.FC<IndrMentorViewProps> = ({ courseKey, isTr, onSwitchToLab }) => {
+  const guide: CourseMentorGuide = INDR_MENTOR_DATA[courseKey] || INDR_MENTOR_DATA.indr343;
+
+  return (
+    <div className="space-y-8 animate-page-enter">
+      {/* Mentor Philosophy Card */}
+      <div className="bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent border border-amber-300/80 rounded-2xl p-6 sm:p-8 shadow-2xs">
+        <div className="flex items-start space-x-4">
+          <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-amber-500/25">
+            <Sparkles className="w-6 h-6 stroke-[2.5]" />
+          </div>
+          <div className="space-y-1.5">
+            <div className="flex items-center space-x-2">
+              <span className="font-mono text-[11px] font-black uppercase tracking-widest text-amber-700 bg-amber-100/90 px-2.5 py-0.5 rounded-md border border-amber-200">
+                {isTr ? '95+ AKADEMİK ÖZEL DERS METODOLOJİSİ' : '95+ ACADEMIC MENTORSHIP SYSTEM'}
+              </span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              {isTr ? 'Ezberlemek Yok, Mantığını Kavrayıp Sınavı Dağıtmak Var' : 'No Rote Memorization: Master Intuition & Ace Exams'}
+            </h2>
+            <p className="text-sm text-slate-700 leading-relaxed italic">
+              "{isTr ? guide.mentorQuote : guide.mentorQuote_en}"
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 1. Mental Model (Sezgisel Kavrayış) */}
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-2xs space-y-3">
+        <div className="flex items-center space-x-2">
+          <span className="font-mono text-xs font-bold text-slate-400 uppercase tracking-wider">
+            {isTr ? 'ADIM 1' : 'STEP 1'}
+          </span>
+          <span className="text-slate-300">•</span>
+          <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">
+            {isTr ? 'Gözünde Canlandır' : 'Mental Model'}
+          </span>
+        </div>
+
+        <h3 className="text-lg font-bold text-slate-900">
+          {isTr ? guide.mentalModelTitle : guide.mentalModelTitle_en}
+        </h3>
+
+        <div className="p-4 sm:p-5 bg-amber-50/50 rounded-xl border border-amber-200/70 text-slate-800 text-sm leading-relaxed">
+          {isTr ? guide.mentalModelText : guide.mentalModelText_en}
+        </div>
+      </div>
+
+      {/* 2. Exam Blueprint (Sınav Röntgeni - Hoca Ne Sorar?) */}
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-2xs space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="font-mono text-xs font-bold text-slate-400 uppercase tracking-wider">
+              {isTr ? 'ADIM 2' : 'STEP 2'}
+            </span>
+            <h3 className="text-lg font-bold text-slate-900 mt-0.5">
+              {isTr ? '📋 Sınav Röntgeni: Vize & Finalde Kesin Çıkacak 3 Soru Şablonu' : '📋 Exam Blueprint: Guaranteed 3 Problem Templates'}
+            </h3>
+          </div>
+          <span className="text-xs font-mono font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+            100 Puan
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+          {guide.blueprint.map((b, idx) => (
+            <div key={idx} className="p-4 rounded-xl border border-slate-200/90 bg-slate-50/60 flex flex-col justify-between space-y-3">
+              <div>
+                <div className="flex items-center justify-between text-xs font-mono mb-1.5">
+                  <span className="font-bold text-slate-500 uppercase">{b.questionNumber}</span>
+                  <span className="font-black text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                    {b.points} Puan
+                  </span>
+                </div>
+                <h4 className="font-bold text-sm text-slate-900 leading-snug">
+                  {isTr ? b.topic : b.topic_en}
+                </h4>
+                <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                  {isTr ? b.expectedQuestionType : b.expectedQuestionType_en}
+                </p>
+              </div>
+
+              <div className="pt-2 border-t border-slate-200/80">
+                <span className="text-[10px] font-mono font-bold text-amber-700 uppercase block mb-0.5">
+                  {isTr ? '💡 95+ Kurtarma Tüyosu' : '💡 Survival Tip'}
+                </span>
+                <p className="text-[11px] text-slate-700 font-medium leading-relaxed">
+                  {isTr ? b.survivalTip : b.survivalTip_en}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 3. Top Traps (Hoca Nereden Vurur? Öğrencilerin %85'inin Düştüğü Hatalar) */}
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-2xs space-y-4">
+        <div>
+          <span className="font-mono text-xs font-bold text-red-600 uppercase tracking-wider">
+            {isTr ? 'ADIM 3 • KRİTİK ALAN' : 'STEP 3 • CRITICAL ZONE'}
+          </span>
+          <h3 className="text-lg font-bold text-slate-900 mt-0.5">
+            {isTr ? "⚠️ Hoca Nereden Vurur? Öğrencilerin %85'inin 15-20 Puan Kaybettiği Tuzaklar" : "⚠️ Top Midterm Traps where 85% of Students Lose Points"}
+          </h3>
+        </div>
+
+        <div className="space-y-4 pt-1">
+          {guide.traps.map((t, idx) => (
+            <div key={idx} className="p-4 sm:p-5 rounded-xl border border-red-200/80 bg-red-50/20 space-y-2.5">
+              <div className="flex items-center space-x-2">
+                <span className="w-5 h-5 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-mono text-xs font-bold shrink-0">
+                  !
+                </span>
+                <h4 className="text-sm sm:text-base font-bold text-red-950">
+                  {isTr ? t.trapTitle : t.trapTitle_en}
+                </h4>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs leading-relaxed">
+                <div className="p-3 bg-white rounded-lg border border-slate-200">
+                  <span className="font-mono font-bold text-slate-400 uppercase block mb-1">
+                    {isTr ? '❌ Öğrenciler Nerede Çuvallıyor?' : '❌ Why Students Fail'}
+                  </span>
+                  <p className="text-slate-600">
+                    {isTr ? t.whyStudentsFail : t.whyStudentsFail_en}
+                  </p>
+                </div>
+
+                <div className="p-3 bg-white rounded-lg border border-slate-200">
+                  <span className="font-mono font-bold text-emerald-600 uppercase block mb-1">
+                    {isTr ? '✅ 95+ Alanlar Nasıl Çözüyor?' : '✅ How 95+ Students Solve It'}
+                  </span>
+                  <p className="text-slate-700 font-medium">
+                    {isTr ? t.howToSolve : t.howToSolve_en}
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-900 text-xs font-mono font-bold flex items-center space-x-2">
+                <span>⚡</span>
+                <span>{isTr ? t.goldenRule : t.goldenRule_en}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. Cheat Sheet Formulas */}
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-2xs space-y-4">
+        <div>
+          <span className="font-mono text-xs font-bold text-slate-400 uppercase tracking-wider">
+            {isTr ? 'ADIM 4' : 'STEP 4'}
+          </span>
+          <h3 className="text-lg font-bold text-slate-900 mt-0.5">
+            {isTr ? '📐 Sınav Kurtaran Formül Hileleri (KaTeX)' : '📐 Exam Formula Cheat Sheet (KaTeX)'}
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {guide.formulas.map((f, idx) => (
+            <div key={idx} className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2">
+              <span className="font-bold text-xs text-slate-900 block">
+                {isTr ? f.name : f.name_en}
+              </span>
+              <div className="p-3 bg-white rounded-lg border border-slate-200/80 font-mono text-sm overflow-x-auto text-center">
+                <KatexFormula formula={f.latex} displayMode={true} />
+              </div>
+              <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                <strong className="text-slate-700">{isTr ? 'Ne Zaman Kullanılır:' : 'When to use:'}</strong> {isTr ? f.whenToUse : f.whenToUse_en}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 5. Real Solved Exam Question with Rubric */}
+      <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-inner space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-4">
+          <div>
+            <span className="font-mono text-xs font-bold text-amber-400 uppercase tracking-wider">
+              {isTr ? 'ADIM 5 • RESMİ ÇÖZÜMLÜ SINAV SORUSU' : 'STEP 5 • OFFICIAL EXAM WALKTHROUGH'}
+            </span>
+            <h3 className="text-lg sm:text-xl font-black text-white mt-0.5">
+              {isTr ? guide.sampleQuestion.title : guide.sampleQuestion.title_en}
+            </h3>
+          </div>
+          <span className="font-mono text-xs font-black text-amber-400 bg-amber-400/10 border border-amber-400/30 px-3 py-1 rounded-md self-start sm:self-auto">
+            {guide.sampleQuestion.points} {isTr ? 'Puan' : 'Pts'}
+          </span>
+        </div>
+
+        {/* Question Prompt */}
+        <div className="p-4 bg-slate-800/80 rounded-xl border border-slate-700/80 text-xs sm:text-sm text-slate-200 leading-relaxed font-sans">
+          <strong>{isTr ? 'Soru Metni:' : 'Question:'}</strong> {isTr ? guide.sampleQuestion.prompt : guide.sampleQuestion.prompt_en}
+        </div>
+
+        {/* Step-by-Step Rubric */}
+        <div className="space-y-3">
+          <span className="font-mono text-xs font-bold text-slate-400 uppercase tracking-wider block">
+            {isTr ? 'Puan Kazandıran Çözüm Adımları (Hocanın Puan Anahtarı)' : 'Point-Scoring Solution Steps (Professor Rubric)'}
+          </span>
+
+          <div className="space-y-3">
+            {guide.sampleQuestion.steps.map((s, idx) => (
+              <div key={idx} className="p-4 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-2">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="font-bold text-amber-400">{isTr ? s.stepTitle : s.stepTitle_en}</span>
+                  <span className="text-slate-400">+{s.points} Puan</span>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {isTr ? s.explanation : s.explanation_en}
+                </p>
+                {s.math && (
+                  <div className="p-2.5 bg-slate-950/80 rounded-lg font-mono text-xs sm:text-sm text-center text-amber-300 overflow-x-auto">
+                    <KatexFormula formula={s.math} displayMode={true} />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Final Answer Banner */}
+        <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-mono text-xs sm:text-sm font-bold flex items-center justify-between gap-3">
+          <div className="flex items-center space-x-2">
+            <Check className="w-4 h-4 stroke-[3] text-emerald-400 shrink-0" />
+            <span>{isTr ? guide.sampleQuestion.finalAnswer : guide.sampleQuestion.finalAnswer_en}</span>
+          </div>
+          <button
+            onClick={onSwitchToLab}
+            className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-black transition-colors shrink-0 cursor-pointer"
+          >
+            {isTr ? 'Simülatörde Test Et →' : 'Test in Lab →'}
+          </button>
         </div>
       </div>
     </div>
