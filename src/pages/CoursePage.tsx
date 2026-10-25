@@ -144,7 +144,8 @@ export const getNodeAnimalIcon = (subStepIndex: number, colorClass: string) => {
 };
 
 interface CoursePageProps {
-  selectedTrack: 'probability' | 'statistics' | 'indr100' | 'indr262';
+  selectedTrack: 'probability' | 'statistics' | 'indr100' | 'indr262' | 'indr343' | 'indr344' | 'indr363' | 'indr371';
+  onOpenMasterHub?: (courseKey: string) => void;
   inDesignCourse?: CourseTrack | null;
   onSelectLesson: (lessonId: string) => void;
   onSelectCaseExam: (caseId: string) => void;
@@ -181,6 +182,7 @@ export const CoursePage: React.FC<CoursePageProps> = ({
   scrollToNodeId,
   onStartPlacementTest,
   onGuestGateRequired,
+  onOpenMasterHub,
 }) => {
   const { language, unlockedModules, completedLessons, completedCaseExams, isAuthenticated, isVerified, setIsTancoChatOpen } = useAppStore();
   const [selectedNode, setSelectedNode] = useState<PathNodeItem | null>(null);
@@ -413,6 +415,36 @@ export const CoursePage: React.FC<CoursePageProps> = ({
           </button>
         )}
       </div>
+
+      {/* INDR 100 Master Hub Switcher Banner */}
+      {selectedTrack === 'indr100' && onOpenMasterHub && (
+        <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-cyan-50/90 border border-cyan-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
+          <div className="flex items-center space-x-3">
+            <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-md bg-cyan-800 text-white shadow-2xs">
+              INDR 100
+            </span>
+            <div>
+              <div className="text-xs sm:text-sm font-bold text-cyan-950">
+                {language === 'tr'
+                  ? '40 Konuluk Koç Üniversitesi Master Müfredatı & Newsvendor Lab'
+                  : '40-Topic Koç University Master Syllabus & Newsvendor Lab'}
+              </div>
+              <div className="text-[11px] text-cyan-800 mt-0.5">
+                {language === 'tr'
+                  ? 'Prof. Dr. Ceyda Oğuz müfredatı: CPM, Hat Dengeleme, LP ve Envanter simülasyonu.'
+                  : 'Prof. Dr. Ceyda Oğuz curriculum: CPM, Line Balancing, LP, and Inventory simulation.'}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => onOpenMasterHub('indr100')}
+            className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-cyan-800 hover:bg-cyan-900 text-white text-xs font-bold transition-all shadow-xs cursor-pointer shrink-0"
+          >
+            <span>{language === 'tr' ? 'Master Sunumu Aç' : 'Open Master Hub'}</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       {/* Modules Flow */}
       <div className="space-y-12">

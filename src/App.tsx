@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { XpStreakBar } from './components/XpStreakBar';
 import { HomePage, CourseTrack } from './pages/HomePage';
 import { CoursePage } from './pages/CoursePage';
+import { IndrCourseHub } from './components/IndrCourseHub';
+import { IndrCourseKey } from './data/indrCoursesData';
 import { ProfilePage } from './pages/ProfilePage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
 import { LessonPage } from './pages/LessonPage';
@@ -42,6 +44,7 @@ export const App: React.FC = () => {
 
   const [scrollToNodeId, setScrollToNodeId] = useState<string | null>(null);
   const [selectedInDesignCourse, setSelectedInDesignCourse] = useState<CourseTrack | null>(null);
+  const [isIndrMasterHubOpen, setIsIndrMasterHubOpen] = useState(false);
   const [showDirectAuthModal, setShowDirectAuthModal] = useState(false);
 
   // Guest session: track how many distinct lessons/cases have been opened this session
@@ -205,6 +208,7 @@ export const App: React.FC = () => {
       }
       if (selectedInDesignCourse) {
         setSelectedInDesignCourse(null);
+    setIsIndrMasterHubOpen(false);
         return;
       }
 
@@ -275,6 +279,7 @@ export const App: React.FC = () => {
       }
       if (selectedInDesignCourse) {
         setSelectedInDesignCourse(null);
+    setIsIndrMasterHubOpen(false);
         return;
       }
 
@@ -378,6 +383,7 @@ export const App: React.FC = () => {
   const handleBackToHome = () => {
     setCurrentView('home');
     setSelectedInDesignCourse(null);
+    setIsIndrMasterHubOpen(false);
     setSelectedLessonId(null);
     setSelectedCaseId(null);
     setScrollToNodeId(null);
@@ -388,6 +394,7 @@ export const App: React.FC = () => {
   const handleOpenLeaderboard = () => {
     setCurrentView('leaderboard');
     setSelectedInDesignCourse(null);
+    setIsIndrMasterHubOpen(false);
     setSelectedLessonId(null);
     setSelectedCaseId(null);
     setScrollToNodeId(null);
@@ -402,6 +409,7 @@ export const App: React.FC = () => {
     }
     setCurrentView('profile');
     setSelectedInDesignCourse(null);
+    setIsIndrMasterHubOpen(false);
     setSelectedLessonId(null);
     setSelectedCaseId(null);
     setScrollToNodeId(null);
@@ -412,6 +420,7 @@ export const App: React.FC = () => {
   const handleBackToCourse = (targetNodeId?: string) => {
     setCurrentView('course');
     setSelectedInDesignCourse(null);
+    setIsIndrMasterHubOpen(false);
     setSelectedLessonId(null);
     setSelectedCaseId(null);
     setScrollToNodeId(targetNodeId || null);
@@ -422,6 +431,7 @@ export const App: React.FC = () => {
   const handleBackToHomeWithScroll = (lastNodeId?: string) => {
     setCurrentView('course');
     setSelectedInDesignCourse(null);
+    setIsIndrMasterHubOpen(false);
     setSelectedLessonId(null);
     setSelectedCaseId(null);
     setScrollToNodeId(lastNodeId || null);
@@ -450,9 +460,10 @@ export const App: React.FC = () => {
     activeModuleName = customActiveModuleName;
   }
 
-  const handleSelectTrack = (track: 'probability' | 'statistics' | 'indr100' | 'indr262') => {
+  const handleSelectTrack = (track: 'probability' | 'statistics' | 'indr100' | 'indr262' | 'indr343' | 'indr344' | 'indr363' | 'indr371') => {
     setSelectedTrack(track);
     setSelectedInDesignCourse(null);
+    setIsIndrMasterHubOpen(false);
     setCustomActiveModuleName(null);
     setCurrentView('course');
     setSelectedLessonId(null);
@@ -489,18 +500,43 @@ export const App: React.FC = () => {
         )}
 
         {currentView === 'course' && (
-          <div key={`course-${selectedTrack}-${selectedInDesignCourse?.code ?? ''}`} className="animate-page-enter">
-            <CoursePage
-              selectedTrack={selectedTrack}
-              inDesignCourse={selectedInDesignCourse}
-              onSelectLesson={handleSelectLesson}
-              onSelectCaseExam={handleSelectCaseExam}
-              onBackToHome={handleBackToHome}
-              scrollToNodeId={scrollToNodeId}
-              onStartPlacementTest={handleStartPlacementTest}
-              onGuestGateRequired={() => setShowGuestGate(true)}
-            />
-          </div>
+          (['indr343', 'indr344', 'indr363', 'indr371'].includes(selectedTrack) || isIndrMasterHubOpen) ? (
+            <div key={`indr-hub-${selectedTrack}`} className="animate-page-enter">
+              <IndrCourseHub
+                initialCourseKey={
+                  (isIndrMasterHubOpen && selectedTrack === 'indr100'
+                    ? 'indr100'
+                    : ['indr343', 'indr344', 'indr363', 'indr371'].includes(selectedTrack)
+                    ? selectedTrack
+                    : 'indr343') as IndrCourseKey
+                }
+                onBackToHome={() => {
+                  setIsIndrMasterHubOpen(false);
+                  handleBackToHome();
+                }}
+                onSelectCourse={(key) => {
+                  setSelectedTrack(key as any);
+                }}
+              />
+            </div>
+          ) : (
+            <div key={`course-${selectedTrack}-${selectedInDesignCourse?.code ?? ''}`} className="animate-page-enter">
+              <CoursePage
+                selectedTrack={selectedTrack}
+                inDesignCourse={selectedInDesignCourse}
+                onSelectLesson={handleSelectLesson}
+                onSelectCaseExam={handleSelectCaseExam}
+                onBackToHome={handleBackToHome}
+                scrollToNodeId={scrollToNodeId}
+                onStartPlacementTest={handleStartPlacementTest}
+                onGuestGateRequired={() => setShowGuestGate(true)}
+                onOpenMasterHub={(courseKey) => {
+                  setIsIndrMasterHubOpen(true);
+                  if (courseKey === 'indr100') setSelectedTrack('indr100');
+                }}
+              />
+            </div>
+          )
         )}
 
         {currentView === 'profile' && (

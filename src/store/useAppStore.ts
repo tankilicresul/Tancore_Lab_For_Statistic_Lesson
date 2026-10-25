@@ -62,7 +62,7 @@ interface AppStoreActions {
   setCurrentView: (view: 'home' | 'course' | 'profile' | 'leaderboard' | 'lesson' | 'caseExam' | 'placementTest') => void;
   setSelectedLessonId: (id: string | null) => void;
   setSelectedCaseId: (id: string | null) => void;
-  setSelectedTrack: (track: 'probability' | 'statistics' | 'indr100' | 'indr262') => void;
+  setSelectedTrack: (track: 'probability' | 'statistics' | 'indr100' | 'indr262' | 'indr343' | 'indr344' | 'indr363' | 'indr371') => void;
   setCustomActiveModuleName: (name: string | null) => void;
   logout: () => void;
   deleteAccount: (email?: string) => Promise<void>;

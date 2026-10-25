@@ -151,7 +151,7 @@ export interface UserState {
   currentView?: 'home' | 'course' | 'profile' | 'leaderboard' | 'lesson' | 'caseExam' | 'placementTest';
   selectedLessonId?: string | null;
   selectedCaseId?: string | null;
-  selectedTrack?: 'probability' | 'statistics' | 'indr100' | 'indr262';
+  selectedTrack?: 'probability' | 'statistics' | 'indr100' | 'indr262' | 'indr343' | 'indr344' | 'indr363' | 'indr371';
   customActiveModuleName?: string | null;
   isTancoChatOpen?: boolean;
   guestProgressTimestamp?: number;

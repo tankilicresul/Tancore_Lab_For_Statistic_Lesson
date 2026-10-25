@@ -33,7 +33,7 @@ export interface CourseTrack {
   name: { tr: string; en: string };
   desc: { tr: string; en: string };
   status: 'active' | 'in_design';
-  track?: 'probability' | 'statistics' | 'indr100' | 'indr262';
+  track?: 'probability' | 'statistics' | 'indr100' | 'indr262' | 'indr343' | 'indr344' | 'indr363' | 'indr371';
   icon: React.ComponentType<{ className?: string }>;
   iconBg: string;
   badge: { tr: string; en: string };
@@ -95,7 +95,7 @@ export const COURSES_DATA: CourseTrack[] = [
     track: 'indr100',
     icon: GraduationCap,
     iconBg: 'bg-cyan-600 text-white shadow-md shadow-cyan-600/25',
-    badge: { tr: '8 Modül', en: '8 Modules' },
+    badge: { tr: '8 Modül • 40 Konu & Lab', en: '8 Modules • 40 Topics & Lab' },
     badgeStyle: 'bg-cyan-100 text-cyan-800 border-cyan-200/80',
     cardStyle: 'border-2 border-cyan-200 bg-white shadow-xs hover:shadow-md hover:border-cyan-500',
     glowColor: 'bg-cyan-500/15',
@@ -184,13 +184,14 @@ export const COURSES_DATA: CourseTrack[] = [
       tr: 'Envanter yönetimi, Markov zincirleri ve süreçleri, kuyruk sistemleri, Poisson süreci, Markov karar modelleri ve dinamik programlama.',
       en: 'Inventory management, Markov chains & processes, queueing systems, Poisson process, Markov decision models & dynamic programming.',
     },
-    status: 'in_design',
+    status: 'active',
+    track: 'indr343',
     icon: Activity,
-    iconBg: 'bg-amber-600 text-white shadow-md shadow-amber-600/20',
-    badge: { tr: 'Yakında', en: 'Coming Soon' },
+    iconBg: 'bg-amber-600 text-white shadow-md shadow-amber-600/25',
+    badge: { tr: '14 Modül • 27 Ders & Lab', en: '14 Modules • 27 Lectures & Lab' },
     badgeStyle: 'bg-amber-100 text-amber-800 border-amber-200/80',
-    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-amber-300',
-    glowColor: 'bg-amber-500/10',
+    cardStyle: 'border-2 border-amber-200 bg-white shadow-xs hover:shadow-md hover:border-amber-500',
+    glowColor: 'bg-amber-500/15',
   },
   {
     code: 'INDR 344',
@@ -202,13 +203,14 @@ export const COURSES_DATA: CourseTrack[] = [
       tr: 'Karmaşık stokastik sistem analizi, rassal değişken üretimi, simülasyon dilleri, çıktı analizi, Monte Carlo ve varyans azaltma.',
       en: 'Complex stochastic systems, random variate generation, simulation software, output analysis, Monte Carlo methods & variance reduction.',
     },
-    status: 'in_design',
+    status: 'active',
+    track: 'indr344',
     icon: Workflow,
-    iconBg: 'bg-teal-600 text-white shadow-md shadow-teal-600/20',
-    badge: { tr: 'Yakında', en: 'Coming Soon' },
+    iconBg: 'bg-teal-600 text-white shadow-md shadow-teal-600/25',
+    badge: { tr: '14 Modül • DES Kuyruk Lab', en: '14 Modules • DES Queue Lab' },
     badgeStyle: 'bg-teal-100 text-teal-800 border-teal-200/80',
-    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-teal-300',
-    glowColor: 'bg-teal-500/10',
+    cardStyle: 'border-2 border-teal-200 bg-white shadow-xs hover:shadow-md hover:border-teal-500',
+    glowColor: 'bg-teal-500/15',
   },
   {
     code: 'INDR 363',
@@ -220,13 +222,14 @@ export const COURSES_DATA: CourseTrack[] = [
       tr: 'Tamsayılı programlama, ağ modelleri, dinamik programlama, konvekslik, doğrusal olmayan optimizasyon ve tedarik zinciri uygulamaları.',
       en: 'Integer programming, network models, dynamic programming, convexity, nonlinear optimization and supply chain applications.',
     },
-    status: 'in_design',
+    status: 'active',
+    track: 'indr363',
     icon: Network,
-    iconBg: 'bg-purple-600 text-white shadow-md shadow-purple-600/20',
-    badge: { tr: 'Yakında', en: 'Coming Soon' },
+    iconBg: 'bg-purple-600 text-white shadow-md shadow-purple-600/25',
+    badge: { tr: '15 Modül • Dijkstra Lab', en: '15 Modules • Dijkstra Lab' },
     badgeStyle: 'bg-purple-100 text-purple-700 border-purple-200/80',
-    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-purple-300',
-    glowColor: 'bg-purple-500/10',
+    cardStyle: 'border-2 border-purple-200 bg-white shadow-xs hover:shadow-md hover:border-purple-500',
+    glowColor: 'bg-purple-500/15',
   },
   {
     code: 'INDR 371',
@@ -238,13 +241,14 @@ export const COURSES_DATA: CourseTrack[] = [
       tr: 'Tesis planlama süreci, malzeme taşıma prensipleri, fabrika yerleşim düzeni, depolama, sipariş toplama ve AS/RS otomatik sistemler.',
       en: 'Facilities design process, material handling principles, facility layout, warehousing, order picking & automated storage/retrieval systems.',
     },
-    status: 'in_design',
+    status: 'active',
+    track: 'indr371',
     icon: Factory,
-    iconBg: 'bg-slate-800 text-white shadow-md shadow-slate-800/20',
-    badge: { tr: 'Yakında', en: 'Coming Soon' },
-    badgeStyle: 'bg-slate-100 text-slate-700 border-slate-300',
-    cardStyle: 'border border-slate-200 bg-white shadow-xs hover:shadow-md hover:border-slate-400',
-    glowColor: 'bg-slate-800/10',
+    iconBg: 'bg-slate-800 text-white shadow-md shadow-slate-800/25',
+    badge: { tr: '14 Modül • Tesis Lab', en: '14 Modules • Facility Lab' },
+    badgeStyle: 'bg-slate-100 text-slate-800 border-slate-300',
+    cardStyle: 'border-2 border-slate-300 bg-white shadow-xs hover:shadow-md hover:border-slate-700',
+    glowColor: 'bg-slate-800/15',
   },
   {
     code: 'INDR 372',
@@ -303,7 +307,7 @@ export const COURSES_DATA: CourseTrack[] = [
 ];
 
 export interface HomePageProps {
-  onSelectTrack: (track: 'probability' | 'statistics' | 'indr100' | 'indr262') => void;
+  onSelectTrack: (track: 'probability' | 'statistics' | 'indr100' | 'indr262' | 'indr343' | 'indr344' | 'indr363' | 'indr371') => void;
   onSelectInDesignCourse?: (course: CourseTrack) => void;
   onOpenProfile?: () => void;
 }
